@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased — rustdx-complete 1.12.0 / rustdx-cli 1.8.0 (2026-10-10)
+
+- 修复连接池借用身份、完整帧重试/解压、安全解码与可复用Kline。
+- 单只/批量复用配置及分页逻辑，非法日期和无进展明确报错。
+- 标准 `Symbol/Market/Bar/VolumeUnit`，UTC+8、股与手、收益因子语义明确。
+- 交易日历标明2024–2026覆盖范围，排除午休；NaN/OHLC/缺口/重复检查。
+- 增量因子继承前状态，停牌事件连续应用，前因子文件只读。
+- `day --report/--strict/--workers`；原子输出、文件错误报告、线程和大小限制。
+- 新ClickHouse版本表及FINAL查询约定，旧表迁移说明；MongoDB upsert和失败传播。
+- 缓存容量/过期清理/稳定键/原子文件、显式try接口、同键请求合并。
+- ZIP .part续传及版本边界检查、来源隔离/文件锁/解压失败保护。
+- SMA/RSI线性滚动与RollingSma；KDJ缺数据为None，横盘RSI为50。
+- `east --json`、收盘及当前日期校验，上一交易日基准衔接；Excel输入保留前导零。
+- Rust1.89最低版本实测，三平台CI、tag发布正确CLI包名及SHA256草稿。
+- 可运行本地/网络示例，README、迁移文档和架构评估更新。
+
+兼容性：CSV成交量仍为手；factor不是价格乘数。旧ClickHouse表不自动改引擎；
+旧文件缓存不复用；旧east `-i`停用。详见[迁移说明](docs/MIGRATION.md)。
+本轮为本地源码迭代，尚未发布到crates.io；外部行情/数据库未做在线验收。
+
 ## rustdx-cli v1.7.2 (2026-09-10)
 
 ### 🔧 ClickHouse HTTP 诊断与数据边界输出

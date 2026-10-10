@@ -59,7 +59,9 @@ impl Lc {
 
     /// 一次性以**同步**方式读取单个 `*.lc` 文件所有数据，然后转化成 Vec。
     pub fn from_file_into_vec<P: AsRef<Path>>(code: u32, p: P) -> crate::Result<Vec<Lc>> {
-        Ok(std::fs::read(p)?
+        let bytes = std::fs::read(p)?;
+        crate::file::day::validate_records(&bytes)?;
+        Ok(bytes
             .as_chunks::<32>()
             .0
             .iter()
@@ -83,9 +85,8 @@ impl Lc {
     }
 
     pub fn datetime_string(&self) -> String {
-        self.hm_arr()
-            .iter()
-            .fold(self.date_string(), |acc, &x| format!("{acc:02}:{x:02}"))
+        let [hour, minute] = self.hm_arr();
+        format!("{} {hour:02}:{minute:02}", self.date_string())
     }
 
     /// `%Y-%m-%d` 格式的日期
@@ -107,14 +108,15 @@ impl Lc {
 
     /// chrono 格式的日期：用于某些序列化或者与时间相关的计算
     pub fn datetime(&self) -> chrono::naive::NaiveDateTime {
-        use chrono::naive::NaiveDate;
-        const ERR: &str = "日期格式不对";
+        self.try_datetime().expect("日期格式不对")
+    }
+
+    pub fn try_datetime(&self) -> crate::Result<chrono::NaiveDateTime> {
         let [y, m, d] = self.ymd_arr();
         let [h, min] = self.hm_arr();
-        NaiveDate::from_ymd_opt(y as i32, m as u32, d as u32)
-            .expect(ERR)
-            .and_hms_opt(h as u32, min as u32, 0)
-            .expect(ERR)
+        chrono::NaiveDate::from_ymd_opt(y as i32, m as u32, d as u32)
+            .and_then(|date| date.and_hms_opt(h as u32, min as u32, 0))
+            .ok_or(crate::Error::Custom("分钟文件日期或时间非法"))
     }
 }
 

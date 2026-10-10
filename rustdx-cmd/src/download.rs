@@ -647,9 +647,10 @@ mod tests {
         std::fs::write(&path, b"invalid zip").unwrap();
         assert!(extract_and_discover(&path, &extracted, "fixture").is_err());
         assert!(dirs[0].join("sh600000.day").exists());
-        let _lock = CacheLock::acquire(&dir).unwrap();
+        let lock = CacheLock::acquire(&dir).unwrap();
         assert!(CacheLock::acquire(&dir).is_err());
         assert_ne!(cache_dir_for("local:a"), cache_dir_for("local:b"));
+        drop(lock);
         std::fs::remove_dir_all(dir).unwrap();
     }
 

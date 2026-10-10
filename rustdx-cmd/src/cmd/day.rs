@@ -29,13 +29,12 @@ pub struct DayCmd {
     #[argh(switch)]
     pub keep_factor: bool,
 
-    /// 可选。指定复权数据（csv 文件路径）。如果没有指定这个参数，则不会计算复权。
+    /// 可选。通达信二进制 gbbq 文件；计算累计收益因子，不改写OHLC。
     #[argh(option, short = 'g')]
     pub gbbq: Option<std::path::PathBuf>,
 
     /// 可选。提供前一日复权数据（csv 文件路径）。在指定了复权时，除非从上市日开始解析，
-    /// 否则必须指定前一日复权数据。因为前复权数据必须是日期连贯的、基于上市日的。
-    /// 【注意】复权数据尚不支持 `-o clickhouse`。
+    /// 否则必须指定前一日复权数据。支持CSV或clickhouse，输入文件不会被删除。
     #[argh(option, short = 'p')]
     pub previous: Option<std::path::PathBuf>,
 
@@ -84,6 +83,35 @@ pub struct DayCmd {
 
 impl DayCmd {
     pub fn run(&self) -> Result<()> {
+        if !self.description.is_empty() {
+            self.help_info();
+            return Ok(());
+        }
+        if !matches!(self.output.as_str(), "clickhouse" | "mongodb")
+            && !self.output.ends_with(".csv")
+        {
+            eyre::bail!("不支持的输出方式：{}", self.output);
+        }
+        if self.amount == Some(0) || self.workers.is_some_and(|n| !(1..=64).contains(&n)) {
+            eyre::bail!("amount必须大于0，workers必须为1–64");
+        }
+        if self.previous.is_some() && self.gbbq.is_none() {
+            eyre::bail!("previous需要搭配gbbq使用");
+        }
+        if self
+            .report
+            .as_ref()
+            .is_some_and(|p| p == std::path::Path::new(&self.output))
+        {
+            eyre::bail!("report不能与行情输出文件相同");
+        }
+        if self
+            .exchange
+            .as_deref()
+            .is_some_and(|s| !matches!(s, "sh" | "sz" | "bj" | "auto"))
+        {
+            eyre::bail!("exchange必须为sh、sz、bj或auto");
+        }
         // 无参数模式：自动下载官网日线完整包 → 解压 → 用 lday 目录继续解析。
         // 若传入的是 URL 或本地 zip 路径，也走同一套下载/解压流程。
         if let Some(dirs) = self.resolve_source_dirs()? {
@@ -176,22 +204,17 @@ impl DayCmd {
     pub fn stocklist(&self) -> Result<Option<fetch_code::StockList>> {
         use crate::io::read_xlsx;
         use fetch_code::get_offical_stocks;
-        let result = match (
-            self.stocklist.as_deref(),
-            self.exchange.as_deref(),
-            self.xlsx_col,
-        ) {
-            (Some("official"), _, _) => Some(get_offical_stocks("official")?),
-            (Some("sse"), _, _) => Some(get_offical_stocks("sse")?),
-            (Some("szse"), _, _) => Some(get_offical_stocks("szse")?),
-            (Some(ex), Some(prefix), _) if ex.len() == 6 || ex.contains(',') => {
-                self.parse_list(prefix)
+        let result = match self.stocklist.as_deref() {
+            None => None,
+            Some("official" | "sse" | "szse") => {
+                Some(get_offical_stocks(self.stocklist.as_deref().unwrap())?)
             }
-            (Some(ex), Some("sz"), _) => read_xlsx(ex, 4, "sz"),
-            (Some(ex), Some("sh"), _) => read_xlsx(ex, 0, "sh"),
-            (Some(ex), None, Some(n)) => read_xlsx(ex, n, ""),
-            (Some(ex), Some(prefix), Some(n)) => read_xlsx(ex, n, prefix),
-            _ => self.parse_list(""),
+            Some(path) if path.ends_with(".xls") || path.ends_with(".xlsx") => {
+                let prefix = self.exchange.as_deref().unwrap_or("");
+                let col = self.xlsx_col.unwrap_or(if prefix == "sz" { 4 } else { 0 });
+                Some(read_xlsx(path, col, prefix)?)
+            }
+            Some(_) => self.parse_list(self.exchange.as_deref().unwrap_or(""))?,
         };
         if self.stocklist.is_some() && result.as_ref().is_none_or(|set| set.is_empty()) {
             eyre::bail!("股票名单读取失败或为空");
@@ -232,11 +255,21 @@ impl DayCmd {
         )
     }
 
-    fn parse_list(&self, p: &str) -> Option<StockList> {
-        let prefix = |x: &str| format!("{}{}", auto_prefix(p, x), x);
-        self.stocklist
-            .as_ref()
-            .map(|s| s.split(',').map(prefix).collect())
+    fn parse_list(&self, p: &str) -> Result<Option<StockList>> {
+        let Some(list) = &self.stocklist else {
+            return Ok(None);
+        };
+        let mut result = StockList::new();
+        for value in list.split(',').map(str::trim) {
+            let full = if value.len() == 8 {
+                value.to_owned()
+            } else {
+                format!("{}{}", auto_prefix(p, value), value)
+            };
+            full.parse::<rustdx_complete::data::Symbol>()?;
+            result.insert(full);
+        }
+        Ok(Some(result))
     }
 }
 
@@ -244,6 +277,10 @@ impl DayCmd {
 pub fn auto_prefix<'a>(prefix: &'a str, code: &'a str) -> &'a str {
     if prefix == "auto" && code.starts_with('6') {
         "sh"
+    } else if prefix == "auto"
+        && (code.starts_with('4') || code.starts_with('8') || code.starts_with("92"))
+    {
+        "bj"
     } else if prefix == "auto" {
         "sz"
     } else {

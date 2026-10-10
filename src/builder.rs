@@ -212,6 +212,9 @@ impl<'a> KlineBuilder<'a> {
     pub fn build(self) -> Result<Kline<'a>, String> {
         // 检查必填参数
         let code = self.code.ok_or("缺少必填参数: code（股票代码）")?;
+        if code.len() != 6 || !code.bytes().all(|b| b.is_ascii_alphanumeric()) {
+            return Err("code必须为六位ASCII字母数字".into());
+        }
 
         // 设置默认值
         let market = self.market.unwrap_or_else(|| {
@@ -227,6 +230,12 @@ impl<'a> KlineBuilder<'a> {
         let start = self.start.unwrap_or(0); // 默认从0开始
         let count = self.count.unwrap_or(100); // 默认100条
 
+        if market > 1 {
+            return Err("行情协议仅支持0深圳或1上海".into());
+        }
+        if category > 11 || count == 0 {
+            return Err("category必须为0–11，count必须大于0".into());
+        }
         // 验证参数范围
         if count > 800 {
             return Err("count 参数不能超过 800".to_string());
@@ -440,6 +449,28 @@ mod tests {
         let result = KlineBuilder::new().build();
         assert!(result.is_err());
         assert_eq!(result.unwrap_err(), "缺少必填参数: code（股票代码）");
+    }
+
+    #[test]
+    fn invalid_builder_inputs_return_errors() {
+        for code in ["", "中文", "12345", "sh600000"] {
+            assert!(KlineBuilder::new().code(code).build().is_err());
+        }
+        assert!(
+            KlineBuilder::new()
+                .code("600000")
+                .market(2)
+                .build()
+                .is_err()
+        );
+        assert!(
+            KlineBuilder::new()
+                .code("600000")
+                .category(12)
+                .build()
+                .is_err()
+        );
+        assert!(KlineBuilder::new().code("600000").count(0).build().is_err());
     }
 
     #[test]

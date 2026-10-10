@@ -619,6 +619,7 @@ impl Client {
 
     /// 证券数量（mootdx `stock_count`）。
     pub fn stock_count(&mut self, market: u16) -> std::io::Result<u16> {
+        validate_request(market, "000001", 9)?;
         let mut sc = super::super::basic::SecurityCount::new(market);
         let c = sc
             .recv_parsed(&mut self.tcp)
@@ -628,6 +629,7 @@ impl Client {
 
     /// 全部证券列表（mootdx `stocks`），自动分页聚合。
     pub fn stocks(&mut self, market: u16) -> crate::Result<Vec<SecurityListData>> {
+        validate_request(market, "000001", 9)?;
         super::stocks(&mut self.tcp, market).map_err(|e| {
             crate::Error::Io(std::io::Error::other(format!(
                 "Client::stocks(market={market}): {e}"

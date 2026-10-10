@@ -486,6 +486,8 @@ pub fn previous_csv(p: impl AsRef<Path>, _keep_factor: bool) -> Previous {
         .collect::<std::result::Result<_, _>>()?;
     let mut prev = std::collections::HashMap::new();
     for f in rows {
+        f.code.parse::<rustdx_complete::data::Symbol>()?;
+        chrono::NaiveDate::parse_from_str(&f.date, "%Y-%m-%d")?;
         if !f.factor.is_finite() || f.factor <= 0.0 || !f.preclose.is_finite() || f.preclose <= 0.0
         {
             eyre::bail!("{}前因子或收盘价非法", f.code);
@@ -515,11 +517,9 @@ fn clickhouse_factor_csv(table: &str, keep_factor: bool) -> Previous {
     Ok(rows.into_iter().map(|f| (f.code.clone(), f)).collect())
 }
 
-/// TODO: 与数据库有关的，把库名、表名可配置
 pub fn run_mongodb(cmd: &DayCmd) -> Result<()> {
-    cmd.run_csv()?;
-    // TODO:排查为什么 date 列无法变成 date 类型 date.date(2006-01-02)
     let (database_name, table_name) = database_table(&cmd.table)?;
+    cmd.run_csv()?;
     let args = [
         "--db",
         database_name,
@@ -528,19 +528,23 @@ pub fn run_mongodb(cmd: &DayCmd) -> Result<()> {
         "--type=csv",
         "--file",
         &cmd.output,
-        "--columnsHaveTypes",
-        "--fields=code.string()",
+        "--headerline",
+        "--mode=upsert",
+        "--upsertFields=date,code",
     ];
     let output = Command::new("mongoimport").args(args).output()?;
-    check_output(output);
+    check_output(output)?;
     keep_csv(&cmd.output, cmd.keep_csv)?;
     Ok(())
 }
 
-fn check_output(output: std::process::Output) {
-    io::stdout().write_all(&output.stdout).unwrap();
-    io::stderr().write_all(&output.stderr).unwrap();
-    assert!(output.status.success());
+fn check_output(output: std::process::Output) -> Result<()> {
+    io::stdout().write_all(&output.stdout)?;
+    io::stderr().write_all(&output.stderr)?;
+    if !output.status.success() {
+        eyre::bail!("数据库导入失败: {}", output.status);
+    }
+    Ok(())
 }
 
 fn keep_csv(fname: &impl AsRef<Path>, keep: bool) -> io::Result<()> {
@@ -552,32 +556,99 @@ fn keep_csv(fname: &impl AsRef<Path>, keep: bool) -> io::Result<()> {
 }
 
 /// 读取本地 xls(x) 文件
-pub fn read_xlsx(path: &str, col: usize, prefix: &str) -> Option<StockList> {
+pub fn read_xlsx(path: &str, col: usize, prefix: &str) -> Result<StockList> {
     use calamine::{Data, Reader, open_workbook_auto};
-    let mut workbook = open_workbook_auto(path).ok()?;
-    let format_ = |x: &str| format!("{}{}", crate::cmd::auto_prefix(prefix, x), x);
-    // 每个单元格被解析的类型可能会不一样，所以把股票代码统一转化成字符型
-    if let Some(Ok(range)) = workbook.worksheet_range_at(0) {
-        Some(
-            range
-                .rows()
-                .skip(1)
-                .map(|r| match &r[col] {
-                    Data::Int(x) => format_(&x.to_string()),
-                    Data::Float(x) => format_(&(*x as i64).to_string()),
-                    Data::String(x) => format_(x),
-                    _ => unreachable!(),
-                })
-                .collect(),
-        )
-    } else {
-        None
+    let mut workbook = open_workbook_auto(path)?;
+    let range = workbook
+        .worksheet_range_at(0)
+        .ok_or_else(|| eyre!("Excel没有工作表"))??;
+    if col >= range.width() {
+        eyre::bail!("Excel列索引{col}超出列数{}", range.width());
     }
+    let mut result = StockList::new();
+    for (index, row) in range.rows().enumerate().skip(1) {
+        let code = match row.get(col) {
+            None | Some(Data::Empty) => continue,
+            Some(Data::Int(x)) if (0..=999999).contains(x) => format!("{x:06}"),
+            Some(Data::Float(x))
+                if x.is_finite() && x.fract() == 0.0 && (0.0..=999999.0).contains(x) =>
+            {
+                format!("{:06}", *x as u32)
+            }
+            Some(Data::String(x)) => {
+                let value = x.trim();
+                if value.is_empty() {
+                    continue;
+                }
+                if value.len() <= 6 && value.bytes().all(|b| b.is_ascii_digit()) {
+                    format!("{:0>6}", value)
+                } else {
+                    value.to_owned()
+                }
+            }
+            _ => {
+                eyre::bail!("Excel第{}行不是合法证券代码", index + 1);
+            }
+        };
+        let full = if code.len() == 8 {
+            code
+        } else {
+            format!("{}{}", crate::cmd::auto_prefix(prefix, &code), code)
+        };
+        full.parse::<rustdx_complete::data::Symbol>()?;
+        result.insert(full);
+    }
+    if result.is_empty() {
+        eyre::bail!("Excel股票列表为空");
+    }
+    Ok(result)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn excel_codes_keep_leading_zero_and_invalid_columns_fail() {
+        let dir = std::env::temp_dir().join(format!("rustdx-excel-test-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("stocks.xlsx");
+        let mut zip = zip::ZipWriter::new(File::create(&path).unwrap());
+        for (name, content) in [
+            (
+                "_rels/.rels",
+                r#"<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>"#,
+            ),
+            (
+                "[Content_Types].xml",
+                r#"<?xml version="1.0"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>"#,
+            ),
+            (
+                "xl/workbook.xml",
+                r#"<?xml version="1.0"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="Stocks" sheetId="1" r:id="rId1"/></sheets></workbook>"#,
+            ),
+            (
+                "xl/_rels/workbook.xml.rels",
+                r#"<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>"#,
+            ),
+            (
+                "xl/worksheets/sheet1.xml",
+                r#"<?xml version="1.0"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:A2"/><sheetData><row r="1"><c r="A1" t="inlineStr"><is><t>code</t></is></c></row><row r="2"><c r="A2"><v>1</v></c></row></sheetData></worksheet>"#,
+            ),
+        ] {
+            zip.start_file(name, zip::write::SimpleFileOptions::default())
+                .unwrap();
+            zip.write_all(content.as_bytes()).unwrap();
+        }
+        zip.finish().unwrap();
+        assert!(
+            read_xlsx(path.to_str().unwrap(), 0, "sz")
+                .unwrap()
+                .contains("sz000001")
+        );
+        assert!(read_xlsx(path.to_str().unwrap(), 10, "sz").is_err());
+        fs::remove_dir_all(dir).unwrap();
+    }
+
     #[test]
     fn invalid_collection_preserves_last_success_and_records_failure() {
         use argh::FromArgs;

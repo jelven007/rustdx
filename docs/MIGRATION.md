@@ -15,6 +15,10 @@ rustdx day ./vipdoc/sh/lday -o stocks.csv --report collection.json --strict
 
 报告记录版本、时间、来源文件、代码、行数、日期边界和质量问题。非法数值、重复/逆序日期、文件失败都会返回非零状态，输出通过临时文件原子替换，上次成功结果不会因本次失败被覆盖。缺少交易日不能直接认定为停牌，默认记录警告；`--strict` 将缺口和日历覆盖不足也视为失败。
 
+`east -j` 现在写入JSON数组，默认文件为eastmoney.json；不能同时使用 `-o clickhouse`。`east --report` 记录未输出的无收盘证券（状态未知）及运行错误。快照必须属于当前行情日，`-p` 前因子必须是上一交易日；跨日漏跑应先回补历史，禁止用单日快照直接计算跨日收益。旧 `-i` 绕过校验参数已停用。
+
+gbbq输入是通达信二进制文件。`Fq::new/concat` 现在仅返回交易日行，停牌事件不额外生成伪交易日；`xdxr` 标记在后续实际交易日是否应用过事件。SMA支持周期1，RSI横盘为50，KDJ缺数据不再填0。文件缓存使用新格式和稳定文件键，旧缓存不会复用。
+
 ## ClickHouse
 
 新表使用 `ReplacingMergeTree(version)`，逻辑键是 `(date, code)`，`version UInt64 DEFAULT toUnixTimestamp64Nano(now64(9))` 为每次导入生成版本。重复导入会在合并时替换旧行，读取立即一致的结果须使用 `FINAL`。历史 CSV 仍可通过 `input_format_defaults_for_omitted_fields=1` 补足 version；未提供 preclose/factor 时默认为0（表示未计算）。

@@ -114,7 +114,10 @@ impl Day {
 
     /// chrono 格式的日期：用于某些序列化或者与时间相关的计算
     pub fn ymd(&self) -> chrono::naive::NaiveDate {
-        let [y, m, d] = self.ymd_arr();
-        chrono::naive::NaiveDate::from_ymd_opt(y as i32, m, d).unwrap()
+        self.try_ymd().expect("非法day日期")
+    }
+
+    pub fn try_ymd(&self) -> crate::Result<chrono::NaiveDate> {
+        crate::data::date_from_u32(self.date)
     }
 }

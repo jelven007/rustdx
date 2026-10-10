@@ -43,7 +43,7 @@ impl TopLevel {
     pub fn match_subcmd(&self) -> Result<()> {
         use SubCommand::*;
         match &self.sub {
-            Day(cmd) => cmd.help_info().run(),
+            Day(cmd) => cmd.run(),
             EastMoney(cmd) => cmd.run(),
             Help(help) => {
                 if help.version {

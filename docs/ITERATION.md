@@ -7,7 +7,7 @@
 | 1 正确性 | 稳定连接归还、完整帧重试、安全解析、分页、增量因子、代码日期、导入错误 | 完成 |
 | 2 数据语义 | 标准类型、日历时段、质量校验、采集记录、数据库一致性 | 完成 |
 | 3 性能与交付 | 有界管道、缓存/下载、增量计算、CI、发布 | 完成 |
-| 4 项目使用能力 | 可用的 API/CLI、示例、迁移文档与整体验证 | 待完成 |
+| 4 项目使用能力 | 可用的 API/CLI、示例、迁移文档与整体验证 | 完成 |
 
 第一阶段验证：离线 workspace 测试（含5个本地可靠性回归）、文档测试及 Clippy 均通过。原有网络案例由 `RUSTDX_SKIP_INTEGRATION_TESTS=1` 跳过；连接池回归使用本地协议服务器。
 
@@ -43,3 +43,16 @@
 - CLI `--workers`（1–64，默认最多8）、结果有界通道、排序选取文件、单个day文件32MiB限制。
 - SMA/RSI O(n)滚动计算及 `RollingSma` 流式接口，KDJ预热/缺口返回None，横盘RSI为50。
 - CI覆盖Linux/macOS/Windows及MSRV；tag触发正确包名的release构建，草稿发布带SHA256校验文件。
+
+第四阶段验证：完整离线workspace测试通过（核心库141单测、CLI库2单测、CLI二进制12单测、CLI端到端2例、核心库52文档测试及既有回归）；Clippy `-D warnings`、格式检查、Rust1.89 all-targets检查通过。`local_data` 对仓库存量day文件运行成功，两个包离线打包后解包编译成功。外部网络测试按变量跳过；依赖proc-macro-error2仍有未来编译器兼容提示，不影响当前检查。
+
+第四阶段行为变化：
+
+- `east -j` 输出JSON，支持质量报告和原子输出；校验收盘/当前行情日，前因子必须为上一交易日，旧ignore参数停用。
+- `day` 帮助即退出、输出/参数错误及无效市场提前失败；Excel列验证、前导零和显式名单解析。
+- 交易所名单使用结构化JSONP、检查分页total/重复/无进展；Excel源异常不再panic或取消过滤。
+- MongoDB以date/code执行upsert，进程错误返回Result；Client/KlineBuilder及文件日期添加输入验证和安全入口。
+- 补充本地数据/可靠批量客户端示例、CLI smoke、JSON失败保护、Excel输入回归。
+- 核心库版本1.12.0、CLI1.8.0；README、CHANGELOG、MIGRATION和PROJECT_ANALYSIS收窄至本项目现有能力。
+
+全部改动本地按阶段提交。未推送、创建tag或发布；本轮未下载官网全量包、访问真实行情/东财/交易所或连接数据库。真实服务兼容性及全市场资源基准仍需部署环境验收。

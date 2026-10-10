@@ -88,6 +88,15 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
             report.first_date = Some(date.to_string());
         }
         report.last_date = Some(date.to_string());
+        match TradingCalendar::try_is_trading_day(&date) {
+            Ok(false) => report
+                .warnings
+                .push(format!("{date}: 记录落在非交易日，源口径待核实")),
+            Err(_) if !report.warnings.iter().any(|w| w.contains("日历")) => report
+                .warnings
+                .push("内置日历仅覆盖2024–2026，部分日期未检查连续性".into()),
+            _ => {}
+        }
         if let Some(prev) = previous {
             if date <= prev {
                 report
@@ -128,6 +137,7 @@ pub struct CollectionReport {
     pub volume_unit: &'static str,
     pub factor_semantics: &'static str,
     pub status: &'static str,
+    pub errors: Vec<String>,
     pub files: Vec<FileReport>,
 }
 
@@ -142,6 +152,7 @@ impl CollectionReport {
             volume_unit: "lots_100_shares",
             factor_semantics: "cumulative_return_index",
             status: "running",
+            errors: vec![],
             files: vec![],
         }
     }

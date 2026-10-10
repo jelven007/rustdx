@@ -176,7 +176,12 @@ impl Day {
         if self.code.len() != 6 || !self.code.bytes().all(|b| b.is_ascii_digit()) {
             eyre::bail!("东财证券代码非法：{}", self.code);
         }
-        self.code = format!("{prefix}{}", self.code);
+        let code = format!("{prefix}{}", self.code);
+        if self.close.is_none() && self.timestamp.is_none_or(|t| t <= 0) {
+            self.code = code;
+            self.date.clear();
+            return Ok(());
+        }
         let ts = self
             .timestamp
             .and_then(|t| chrono::DateTime::from_timestamp(t, 0))
@@ -184,9 +189,10 @@ impl Day {
         let date = ts
             .with_timezone(&chrono::FixedOffset::east_opt(8 * 3600).unwrap())
             .date_naive();
-        if !rustdx_complete::calendar::TradingCalendar::is_trading_day(&date) {
+        if !rustdx_complete::calendar::TradingCalendar::try_is_trading_day(&date)? {
             eyre::bail!("{}行情时间戳落在非交易日：{date}", self.code);
         }
+        self.code = code;
         self.date = date.to_string();
         Ok(())
     }
