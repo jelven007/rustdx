@@ -1,8 +1,8 @@
 # 数据语义与迁移
 
-## 源码1.12.1 / CLI1.8.1
+## jelven-rustdx-complete 1.12.1 / jelven-rustdx-cli 1.8.1
 
-crates.io核心库仍为1.12.0。本轮改动需使用workspace路径或Git源码；未执行新注册表发布。
+均已发布到 crates.io。核心库安装 `cargo add jelven-rustdx-complete --rename rustdx-complete`；CLI 安装 `cargo install jelven-rustdx-cli --locked`（二进制 `rustdx`）。CLI 更名因 crates.io 上 `rustdx-cli` 归属他人，Rust 导入名仍为 `rustdx_cli`。
 
 同一 Client 的批量调用现在排队，单个批次内部仍并行，可能增加重叠调用的等待时间；避免30个任务分别创建Client并开独立池。每个Client含1条主连接及最多max_parallel条批量连接，进程总预算应由上层统一管理，建议从4–8条开始观测。连接池 `get_connection` 仍在饱和时返回WouldBlock；需要有界等待时使用 `get_connection_timeout`，其等待时限不包含建连。
 

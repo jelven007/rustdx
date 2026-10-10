@@ -90,7 +90,8 @@ A股继续严格校验OHLC、非负成交数据和日期顺序。指数、基金
 | ClickHouse真实小表 | 认证、DDL、完整元数据、流式写入及重复去重通过，FINAL/合并后均2行；错误排序键被拒绝 |
 | 东财分页 | 0参数、重复证券及total变化拒绝，上限超过实际total正常结束；未重新请求限流中的公共接口 |
 | Clippy / 格式 / Rust1.89 | workspace/all-targets检查通过，Clippy -D warnings |
-| 两个源码包联合打包 | 离线临时注册表解包编译通过，CLI包包含LICENSE-MIT；未发布注册表 |
+| 两个源码包联合打包 | 离线临时注册表解包编译通过，CLI包包含LICENSE-MIT |
+| crates.io 发布 | 先发 `jelven-rustdx-complete 1.12.1`，索引可见后发 `jelven-rustdx-cli 1.8.1`；CLI 验证步骤从注册表拉取核心库编译通过；发布用的受限 token 发布后已吊销 |
 | 测试脚本/文档 | report模式真实保存完整日志并通过；shell语法及维护文档本地链接检查通过 |
 
 复现命令：
@@ -100,9 +101,16 @@ bash scripts/run_comprehensive_test.sh report
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo fmt --all -- --check
 cargo +1.89.0 check --workspace --all-targets --locked
-cargo package -p jelven-rustdx-complete -p rustdx-cli --offline
+cargo package -p jelven-rustdx-complete -p jelven-rustdx-cli --offline
 # 先加载部署目录的CLICKHOUSE_*环境配置，移除外部测试跳过变量
-cargo test -p rustdx-cli --bin rustdx io::test_insert_clickhouse --locked -- --nocapture
+cargo test -p jelven-rustdx-cli --bin rustdx io::test_insert_clickhouse --locked -- --nocapture
 ```
 
-CLI打包单独执行时尚需已发布的核心依赖；联合打包使用本地临时注册表。源码版本与已发布核心库1.12.0明确区分。本轮保留原MIT版权声明和技术协议对照，删除与当前维护无关的旧归档及错误概念样例。后续仍需2027日历、历史规则、进程连接预算/总时限和MongoDB验收，见[架构评估](PROJECT_ANALYSIS.md)。
+发布命令（受限 token，publish-new + publish-update，仅限这两个 crate）：
+
+```sh
+cargo publish -p jelven-rustdx-complete --locked
+cargo publish -p jelven-rustdx-cli --locked
+```
+
+CLI 依赖同时写注册表版本与 path，单独发布依赖已发布的核心库 1.12.1。本轮保留原MIT版权声明和技术协议对照，删除与当前维护无关的旧归档及错误概念样例。后续仍需2027日历、历史规则、进程连接预算/总时限和MongoDB验收，见[架构评估](PROJECT_ANALYSIS.md)。

@@ -50,7 +50,7 @@ flowchart TB
 
 ## 当前源码复查（基线00df6f4）
 
-复查覆盖行情Client/连接池、文件解析与质量报告、东财分页、ClickHouse/MongoDB导入、缓存/下载、指标、CLI、发布元数据及全部维护文档。源码更新为核心库1.12.1、CLI1.8.1；注册表已发布核心库仍为1.12.0。
+复查覆盖行情Client/连接池、文件解析与质量报告、东财分页、ClickHouse/MongoDB导入、缓存/下载、指标、CLI、发布元数据及全部维护文档。已发布 `jelven-rustdx-complete 1.12.1` 与 `jelven-rustdx-cli 1.8.1`（CLI 因 crates.io 上 `rustdx-cli` 归属他人而改用自有命名空间）。
 
 | 确认的问题 | 本轮处理 |
 | --- | --- |

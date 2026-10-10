@@ -1,6 +1,6 @@
 # 变更记录
 
-## 源码 1.12.1 / CLI 1.8.1（2026-10-10，未发布 crates.io）
+## jelven-rustdx-complete 1.12.1 / jelven-rustdx-cli 1.8.1（2026-10-10，已发布 crates.io）
 
 - 同一 Client 的 `k_batch` / `bars_batch` 排队，避免同时借空池或关闭在用池；批次内保留并行。
 - `k_adjusted` 提前验证日期区间；字母证券代码不再误判 A 股，非法行情不再判为未触涨停。
@@ -11,9 +11,9 @@
 - 移除错误静态概念样例；旧查询函数弃用并返回无数据，示例改用 `Client::block`。
 - 删除20份旧归档、旧设计稿、4个第三方样例生成脚本和重复示例；保留版权和协议对照资料。
 - 测试脚本修复退出状态及日志保存，默认离线，在线测试使用显式 `live`。
-- CLI 元数据更新维护者，源码包包含 MIT 许可证；更新架构、迁移和验证文档。
+- CLI 更名为 `jelven-rustdx-cli`（crates.io 上 `rustdx-cli` 归属他人；Rust 导入名仍为 `rustdx_cli`，二进制名仍为 `rustdx`），源码包包含 MIT 许可证；更新架构、迁移和验证文档。
 
-已发布核心库仍为 `jelven-rustdx-complete 1.12.0`。新改动从本仓库源码使用，未自动发布。
+发布顺序：先 `jelven-rustdx-complete 1.12.1`，索引可见后再 `jelven-rustdx-cli 1.8.1`。
 行为迁移与采集并发建议见 [MIGRATION.md](docs/MIGRATION.md) 和 [README](README.md)。
 
 ## 核心库 1.12.0 / CLI 源码 1.8.0（2026-10-10）

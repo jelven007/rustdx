@@ -1,6 +1,6 @@
 # rustdx
 
-Rust 行情库与数据导入工具。当前源码版本：jelven-rustdx-complete 1.12.1、rustdx-cli 1.8.1，最低 Rust 1.89。crates.io 已发布核心库仍为1.12.0，本轮源码改动尚未发布。
+Rust 行情库与数据导入工具。当前版本：jelven-rustdx-complete 1.12.1、jelven-rustdx-cli 1.8.1，最低 Rust 1.89，均已发布到 crates.io（crates.io 上的 `rustdx-cli` 归属其他所有者，CLI 使用自有命名空间 `jelven-rustdx-cli`，二进制名仍为 `rustdx`）。
 
 核心库实现通达信 TCP 行情协议、本地 day/lc/gbbq 文件解析、价格复权、技术指标、交易日历、连接池和缓存。CLI 提供日线下载/解析、东方财富收盘快照、CSV/JSON 输出及数据库导入。采用同步 I/O 和有界线程并发。
 
@@ -25,7 +25,7 @@ rustdx-complete = { package = "jelven-rustdx-complete", path = "/path/to/rustdx"
 cargo add jelven-rustdx-complete --rename rustdx-complete
 ```
 
-CLI 当前从仓库源码安装：`cargo install --git https://github.com/jelven007/rustdx rustdx-cli --locked`。
+CLI 从 crates.io 安装：`cargo install jelven-rustdx-cli --locked`（二进制名为 `rustdx`）；也可从源码安装：`cargo install --git https://github.com/jelven007/rustdx jelven-rustdx-cli --locked`。
 
 ## 行情 API
 
@@ -170,10 +170,10 @@ bash scripts/run_comprehensive_test.sh report
 
 默认CI在Linux/macOS/Windows上跳过外部网络案例，另有最低版本检查；本地TCP/HTTP模拟和文件回归正常执行。移除跳过变量会启用网络案例，需要可用行情/HTTP/数据库环境。`Tcp` 包含平台相关的 `TcpStream`，结构尺寸测试使用受控范围，协议数据结构仍保留精确快照。
 
-核心库通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、测试、Clippy 和发布预检，经人工确认后发布。核心库1.12.1尚未发布，单独打包CLI时依赖仍需注册表版本；两个包可通过下面的联合打包在临时注册表验证，开发和安装使用workspace路径或Git源码。仓库不再通过 tag 自动构建 CLI 二进制或创建 GitHub Release，CLI 按上文方式从源码安装。
+核心库通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、测试、Clippy 和发布预检，经人工确认后发布。1.12.1 / 1.8.1 已发布：先发核心库 `jelven-rustdx-complete`，待索引可见后再发 CLI `jelven-rustdx-cli`（CLI 的 `rustdx-complete` 依赖同时写了注册表版本与 path）。仓库不再通过 tag 自动构建 CLI 二进制或创建 GitHub Release。发布前可用下面的联合打包在临时注册表核验：
 
 ```sh
-cargo package -p jelven-rustdx-complete -p rustdx-cli --offline
+cargo package -p jelven-rustdx-complete -p jelven-rustdx-cli --offline
 ```
 
 东财公共接口会按出口和节点限流。CLI 使用 HTTPS、多节点、15秒单请求总超时和低频分页，并可通过
