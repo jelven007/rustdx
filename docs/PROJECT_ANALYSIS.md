@@ -63,4 +63,4 @@ flowchart TB
 
 本轮执行离线workspace测试、完整截断边界、TCP断线重连和连接池本地服务器、HTTP续传、ZIP解压失败保护、坏文件原子输出、JSON导出、编译示例、Clippy、格式和Rust1.89检查；另完成真实通达信全功能smoke、官网526.2MiB全量包解析、2981万行ClickHouse导入和重复写入去重。
 
-基准仅测本机合成10万行SMA+RSI（10轮约23–42ms），未测P95网络延迟和目标生产机负载。东财单页曾成功，后续请求被502或提前断连，已作为外部可用性风险记录。CI三平台配置已更新，本机实际验证平台为macOS/aarch64；未创建tag、未发布包或release。
+基准仅测本机合成10万行SMA+RSI（10轮约23–42ms），未测P95网络延迟和目标生产机负载。东财单页曾成功，后续请求被502或提前断连，已作为外部可用性风险记录。CI覆盖Linux/macOS/Windows，本机实际验证平台为macOS/aarch64；核心库已发布为 `jelven-rustdx-complete 1.12.0`。

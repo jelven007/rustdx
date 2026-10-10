@@ -65,4 +65,4 @@
 - ClickHouse集成测试使用HTTP真实服务，覆盖同一CSV重复写入和合并去重。
 - 东财改用HTTPS、多节点及15秒总超时；单页曾成功，最终复测仍受502/TLS断连限制，不能承担唯一生产源。
 
-验收详情见[PRODUCTION_ACCEPTANCE.md](PRODUCTION_ACCEPTANCE.md)。MongoDB、目标生产操作系统和2027年交易日历仍需单独验收；未创建tag或发布crates.io包。
+验收详情见[PRODUCTION_ACCEPTANCE.md](PRODUCTION_ACCEPTANCE.md)。核心库已发布为 `jelven-rustdx-complete 1.12.0`；MongoDB、目标生产操作系统和2027年交易日历仍需单独验收。

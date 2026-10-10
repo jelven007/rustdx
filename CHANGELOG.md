@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased — jelven-rustdx-complete 1.12.0 / rustdx-cli 1.8.0 (2026-10-10)
+## jelven-rustdx-complete v1.12.0 (2026-10-10)
+
+核心库发布到 crates.io；workspace 同时包含源码版 rustdx-cli 1.8.0。
 
 - 修复连接池借用身份、完整帧重试/解压、安全解码与可复用Kline。
 - 单只/批量复用配置及分页逻辑，非法日期和无进展明确报错。
@@ -22,8 +24,9 @@
 
 兼容性：CSV成交量仍为手；factor不是价格乘数。旧ClickHouse表不自动改引擎；
 旧文件缓存不复用；旧east `-i`停用。详见[迁移说明](docs/MIGRATION.md)。
-本轮源码尚未发布到crates.io；真实行情、官网全量包及ClickHouse已完成本地生产验收，
-东财受上游限流，MongoDB未验收。详见[生产验收报告](docs/PRODUCTION_ACCEPTANCE.md)。
+核心库已发布为 `jelven-rustdx-complete 1.12.0`；真实行情、官网全量包及ClickHouse
+已完成本地生产验收，东财受上游限流，MongoDB未验收。详见
+[生产验收报告](docs/PRODUCTION_ACCEPTANCE.md)。
 
 ## rustdx-cli v1.7.2 (2026-09-10)
 

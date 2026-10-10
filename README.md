@@ -19,7 +19,7 @@ rustdx show -v
 rustdx-complete = { package = "jelven-rustdx-complete", path = "/path/to/rustdx" }
 ```
 
-crates.io 安装核心库，同时保留代码中的 `rustdx_complete` 导入名：
+从 [crates.io](https://crates.io/crates/jelven-rustdx-complete) 安装核心库，同时保留代码中的 `rustdx_complete` 导入名：
 
 ```sh
 cargo add jelven-rustdx-complete --rename rustdx-complete
