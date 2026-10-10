@@ -32,9 +32,10 @@ where
     T: serde::Serialize + Send,
 {
     let start = Instant::now();
-    let hm = cmd.stocklist();
+    let hm = cmd.stocklist()?;
     let mut total_files = 0usize;
     let mut total_rows = 0usize;
+    let mut failures = Vec::new();
     for dir in &cmd.path {
         // 收集 (完整代码, 文件路径)，代码含市场前缀（如 `sz000001`、`sz200b07`）
         let work: Vec<(String, std::path::PathBuf)> = filter_file(dir)?
@@ -59,7 +60,7 @@ where
         let workers = thread::available_parallelism()
             .map(|n| n.get())
             .unwrap_or(4);
-        let (tx, rx) = mpsc::channel::<Vec<T>>();
+        let (tx, rx) = mpsc::sync_channel::<(String, eyre::Result<Vec<T>>)>(workers.max(1) * 2);
 
         // 所有 worker 共享的引用：原子计数器与任务列表
         let count = &count;
@@ -77,16 +78,25 @@ where
                             break;
                         }
                         let (code, src) = &work[i];
-                        if let Ok(v) = parse(code, src) {
+                        let result = parse(code, src);
+                        if result.is_ok() {
                             count.fetch_add(1, Ordering::Relaxed);
-                            // 发送失败说明主线程已退出，直接结束
-                            let _ = tx.send(v);
+                        }
+                        if tx.send((src.display().to_string(), result)).is_err() {
+                            break;
                         }
                     }
                 });
             }
             drop(tx); // 关闭发送端，主线程的迭代才能结束
-            for v in rx {
+            for (path, result) in rx {
+                let v = match result {
+                    Ok(v) => v,
+                    Err(e) => {
+                        failures.push(format!("{path}: {e:#}"));
+                        continue;
+                    }
+                };
                 total_rows += v.len();
                 for t in v {
                     wtr.serialize(t)?;
@@ -99,6 +109,16 @@ where
         print(dir, count.load(Ordering::Relaxed), take);
     }
     wtr.flush()?;
+    if !failures.is_empty() {
+        eyre::bail!(
+            "{}个文件解析失败：\n{}",
+            failures.len(),
+            failures.join("\n")
+        );
+    }
+    if total_files == 0 {
+        eyre::bail!("没有符合条件的day文件");
+    }
 
     // 解析后校验报告
     let elapsed = start.elapsed();
@@ -267,10 +287,12 @@ impl ClickHouseConfig {
         debug!("clickhouse 导入完成：{table}（{len} 字节 CSV）");
         // 输出数据边界：缓存解压目录可能滞后于最新交易日（实测 09-10 命中
         // 09-06 的旧缓存，包行数相近极易误判为新包）——一眼确认新鲜度
-        let info = self.exec(&format!(
-            "SELECT concat(toString(count()), ' 行，数据截至 ', toString(max(dt))) FROM {table}"
-        ))?;
-        info!("day_file 数据边界: {info}");
+        match self.exec(&format!(
+            "SELECT concat(toString(count()), ' 行，数据截至 ', toString(max(date))) FROM {table} FINAL"
+        )) {
+            Ok(info) => info!("day_file 数据边界: {info}"),
+            Err(e) => warn!("数据已写入，边界查询失败（无需重新导入）：{e}"),
+        }
         Ok(())
     }
 }
@@ -348,6 +370,9 @@ pub fn insert_clickhouse(output: &impl AsRef<Path>, table: &str, keep: bool) -> 
 /// 需要日线 clickhouse csv 文件
 #[test]
 fn test_insert_clickhouse() -> Result<()> {
+    if std::env::var_os("RUSTDX_SKIP_INTEGRATION_TESTS").is_some() {
+        return Ok(());
+    }
     // 本地未安装 clickhouse-client 时跳过（该测试依赖本机 ClickHouse 服务）
     if std::process::Command::new("clickhouse-client")
         .arg("--version")
@@ -383,15 +408,20 @@ pub fn previous_csv_table(
 ///
 /// 注意：`code` 列需为**含市场前缀的完整代码**（如 `sh600000`），
 /// 与 day 命令输出的 code 格式一致，否则无法匹配。
-pub fn previous_csv(p: impl AsRef<Path>, keep_factor: bool) -> Previous {
+pub fn previous_csv(p: impl AsRef<Path>, _keep_factor: bool) -> Previous {
     let path = p.as_ref();
-    let prev = csv::Reader::from_reader(File::open(path)?)
+    let rows: Vec<Factor> = csv::Reader::from_reader(File::open(path)?)
         .deserialize::<Factor>()
-        .filter_map(|f| f.ok())
-        .map(|f| (f.code.clone(), f))
-        .collect();
-    if !keep_factor {
-        fs::remove_file(path)?;
+        .collect::<std::result::Result<_, _>>()?;
+    let mut prev = std::collections::HashMap::new();
+    for f in rows {
+        if !f.factor.is_finite() || f.factor <= 0.0 || !f.preclose.is_finite() || f.preclose <= 0.0
+        {
+            eyre::bail!("{}前因子或收盘价非法", f.code);
+        }
+        if prev.insert(f.code.clone(), f).is_some() {
+            eyre::bail!("前因子文件包含重复代码");
+        }
     }
     Ok(prev)
 }
@@ -399,31 +429,18 @@ pub fn previous_csv(p: impl AsRef<Path>, keep_factor: bool) -> Previous {
 /// 获取当前最新 factor
 fn clickhouse_factor_csv(table: &str, keep_factor: bool) -> Previous {
     let query = format!(
-        "\
-WITH 
-  df AS (
-  SELECT
-    code,
-  arrayLast(
-      x->true, 
-      arraySort(x->x.1, groupArray((
-        date, close, factor
-      )))
-    ) AS t
-  FROM
-    {table}
-  GROUP BY
-    code
-  )
-SELECT code, t.1 AS date, t.2 AS close, t.3 AS factor FROM df
-INTO OUTFILE 'factor.csv'
-FORMAT CSVWithNames;"
+        "SELECT code, t.1 AS date, t.2 AS close, t.3 AS factor FROM \
+        (SELECT code, argMax(tuple(date, close, factor), date) AS t FROM {table} FINAL GROUP BY code) \
+        FORMAT CSVWithNames"
     );
-    let args = ["--query", &query];
-    let output = Command::new("clickhouse-client").args(args).output()?;
-    info!("clickhouse-client --query {query:?}");
-    check_output(output);
-    previous_csv("factor.csv", keep_factor)
+    let text = ClickHouseConfig::from_env().exec(&query)?;
+    let rows: Vec<Factor> = csv::Reader::from_reader(text.as_bytes())
+        .deserialize()
+        .collect::<std::result::Result<_, _>>()?;
+    if keep_factor {
+        fs::write("factor.csv", text)?;
+    }
+    Ok(rows.into_iter().map(|f| (f.code.clone(), f)).collect())
 }
 
 /// TODO: 与数据库有关的，把库名、表名可配置
@@ -483,5 +500,27 @@ pub fn read_xlsx(path: &str, col: usize, prefix: &str) -> Option<StockList> {
         )
     } else {
         None
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn previous_inputs_are_preserved_and_invalid_rows_fail() {
+        let dir = std::env::temp_dir().join(format!("rustdx-factor-test-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("factor.csv");
+        fs::write(&path, "date,code,close,factor\n2026-09-01,sh600000,10,2\n").unwrap();
+        assert_eq!(previous_csv(&path, false).unwrap()["sh600000"].factor, 2.0);
+        assert!(path.exists());
+        fs::write(
+            &path,
+            "date,code,close,factor\n2026-09-01,sh600000,invalid,2\n",
+        )
+        .unwrap();
+        assert!(previous_csv(&path, false).is_err());
+        assert!(path.exists());
+        fs::remove_dir_all(dir).unwrap();
     }
 }

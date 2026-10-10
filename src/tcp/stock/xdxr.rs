@@ -67,35 +67,25 @@ impl<'a> Tdx for Xdxr<'a> {
     }
 
     fn parse(&mut self, v: Vec<u8>) {
-        if v.len() < 11 {
-            return;
-        }
-        let count = crate::bytes_helper::u16_from_le_bytes(&v, 9) as usize;
-        let old = self.count.replace(count);
-        if old.is_some() {
-            self.data.resize_with(count, XdxrData::default);
-            self.data
-                .iter_mut()
-                .zip(
-                    v[11..]
-                        .as_chunks::<29>()
-                        .0
-                        .iter()
-                        .map(|c| XdxrData::parse(c)),
-                )
-                .map(|(d, x)| *d = x)
-                .last();
-        } else {
-            self.data = Vec::with_capacity(count);
-            v[11..]
-                .as_chunks::<29>()
-                .0
-                .iter()
-                .map(|c| XdxrData::parse(c))
-                .map(|x| self.data.push(x))
-                .last();
-        };
+        let _ = self.try_parse(v);
+    }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        use crate::tcp::reader::{Reader, require_len};
+        self.data.clear();
+        self.count = None;
         self.response = v;
+        require_len(&self.response, 11)?;
+        let count = crate::bytes_helper::u16_from_le_bytes(&self.response, 9) as usize;
+        require_len(&self.response, 11 + count * 29)?;
+        let mut data = Vec::with_capacity(count);
+        for c in self.response[11..11 + count * 29].as_chunks::<29>().0 {
+            Reader::new(&c[1..]).code()?;
+            data.push(XdxrData::parse(c));
+        }
+        self.data = data;
+        self.count = Some(count);
+        Ok(())
     }
 
     fn result(&self) -> &Self::Item {
@@ -154,7 +144,10 @@ impl XdxrData {
             }
         }
         let market = u8_from_le_bytes(bytes, 0);
-        let code = unsafe { std::str::from_utf8_unchecked(&bytes[1..7]) }.into();
+        if bytes.len() < 29 {
+            return Self::default();
+        }
+        let code = std::str::from_utf8(&bytes[1..7]).unwrap_or("").into();
         let date = crate::tcp::helper::datetime(&bytes[8..12], 9).to_u32();
         let category = u8_from_le_bytes(bytes, 12);
         let (fh_qltp, pgj_qzgb, sg_hltp, pg_hzgb) = match category {

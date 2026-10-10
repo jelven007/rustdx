@@ -39,6 +39,9 @@ impl Fq {
     ///    比如 #000001#、#601975#。
     /// 2. 解析后的交易日天数、除权日天数会在 debug build 下校验。
     pub fn new(days: impl ExactSizeIterator<Item = Day> + Clone, g1: &[Gbbq]) -> Option<Vec<Fq>> {
+        if g1.is_empty() {
+            return Self::no_gbbq(days);
+        }
         let count = days.len();
         let mut fqs: Vec<Fq> = Vec::with_capacity(count + 128);
         let mut preclose = days.clone().next()?.close;
@@ -110,6 +113,9 @@ impl Fq {
         mut preclose: f64,
         mut factor: f64,
     ) -> Option<Vec<Fq>> {
+        if g1.is_empty() {
+            return Self::no_gbbq_with_previous(days, preclose, factor);
+        }
         let count = days.len();
         let mut fqs: Vec<Fq> = Vec::with_capacity(count + 128);
         let mut gbbq = g1.iter();
@@ -165,8 +171,19 @@ impl Fq {
     }
 
     pub fn no_gbbq(days: impl ExactSizeIterator<Item = Day> + Clone) -> Option<Vec<Fq>> {
-        let mut preclose = days.clone().next()?.close;
-        let mut factor = 1.;
+        let preclose = days.clone().next()?.close;
+        Self::no_gbbq_with_previous(days, preclose, 1.0)
+    }
+
+    /// 无除权事件的增量序列仍须继承上一条的收盘和累计收益因子。
+    pub fn no_gbbq_with_previous(
+        days: impl ExactSizeIterator<Item = Day> + Clone,
+        mut preclose: f64,
+        mut factor: f64,
+    ) -> Option<Vec<Fq>> {
+        if !preclose.is_finite() || preclose <= 0.0 || !factor.is_finite() || factor <= 0.0 {
+            return None;
+        }
         Some(
             days.map(|d| {
                 let close = d.close;

@@ -20,13 +20,13 @@ fn daily() {
     #[derive(Tabled)]
     pub struct Data {
         pub code: String,
-        pub open: f32,
-        pub high: f32,
-        pub low: f32,
-        pub close: f32,
-        pub amount: f32,
-        pub vol: f32,
-        pub preclose: f32,
+        pub open: f64,
+        pub high: f64,
+        pub low: f64,
+        pub close: f64,
+        pub amount: f64,
+        pub vol: f64,
+        pub preclose: f64,
     }
     impl Data {
         fn try_from(d: Day) -> Option<Data> {

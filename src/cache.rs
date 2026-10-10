@@ -614,15 +614,15 @@ mod tests {
     fn test_memory_cache_expiry() {
         let cache = MemoryCache::new();
 
-        // 设置缓存（10ms TTL）
-        cache.set("key1", b"data1", Duration::from_millis(10));
+        // 留出文件系统修改时间精度与测试线程调度的余量。
+        cache.set("key1", b"data1", Duration::from_millis(200));
 
         // 立即获取应该成功
         let result = cache.get("key1");
         assert_eq!(result, Some(b"data1".to_vec()));
 
         // 等待过期
-        thread::sleep(Duration::from_millis(20));
+        thread::sleep(Duration::from_millis(250));
 
         // 过期后应该返回 None
         let result = cache.get("key1");

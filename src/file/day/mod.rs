@@ -7,6 +7,15 @@ use {
 
 pub mod fq;
 
+pub(crate) fn validate_records(bytes: &[u8]) -> crate::Result<()> {
+    if !bytes.len().is_multiple_of(32) {
+        return Err(
+            std::io::Error::new(std::io::ErrorKind::InvalidData, "day文件末尾记录截断").into(),
+        );
+    }
+    Ok(())
+}
+
 /// 解析 `*.day` 文件中的一条日线数据，即其 32 个字节所代表的所有信息。
 ///
 /// 注意：这个类型只对 `*.day` 文件进行了初步解析，
@@ -81,8 +90,10 @@ impl Day {
     /// 一次性以**同步**方式读取单个 `*.day` 文件所有数据，然后转化成 Vec。
     /// `code` 为含市场前缀的字符串（如 `sh600000`、`sz200b07`）。
     pub fn from_file_into_vec<P: AsRef<Path>>(code: &str, p: P) -> crate::Result<Vec<Day>> {
+        let bytes = std::fs::read(p)?;
+        validate_records(&bytes)?;
         let code = code.to_owned();
-        Ok(std::fs::read(p)?
+        Ok(bytes
             .as_chunks::<32>()
             .0
             .iter()

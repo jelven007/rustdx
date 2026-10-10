@@ -23,6 +23,7 @@ pub struct Day {
 impl Day {
     pub fn new(code: &str, p: impl AsRef<Path>, gbbqs: Option<&[Gbbq]>) -> Result<Vec<Self>> {
         let raw = std::fs::read(p)?;
+        super::validate_records(&raw)?;
         let code = code.to_owned();
         let days = raw
             .as_chunks::<32>()
@@ -59,22 +60,29 @@ impl Day {
         f: Option<&Factor>,
     ) -> Result<Vec<Self>> {
         let raw = std::fs::read(p)?;
+        super::validate_records(&raw)?;
         let code = code.to_owned();
         let days = raw
             .as_chunks::<32>()
             .0
             .iter()
             .map(|b| super::Day::from_bytes(&code, b));
-        let (preclose, factor) = f.map(|f| (f.preclose, f.factor)).unwrap_or((
-            days.clone()
-                .next()
-                .ok_or(Custom("初始化前收盘价失败"))?
-                .close as f64,
-            1.,
-        ));
+        let first = days.clone().next().ok_or(Custom("初始化前收盘价失败"))?;
+        if let Some(previous) = f {
+            let date = chrono::NaiveDate::parse_from_str(&previous.date, "%Y-%m-%d")
+                .map_err(|_| Custom("前因子日期非法"))?;
+            use chrono::Datelike;
+            let date = (date.year() as u32) * 10000 + date.month() * 100 + date.day();
+            if previous.code != code || date >= first.date {
+                return Err(Custom("前因子代码不匹配或日期不早于增量首日"));
+            }
+        }
+        let (preclose, factor) = f
+            .map(|f| (f.preclose, f.factor))
+            .unwrap_or((first.close, 1.0));
         let fq = gbbqs
             .map(|g| Fq::concat(days.clone(), g, preclose, factor))
-            .unwrap_or(Fq::no_gbbq(days.clone()))
+            .unwrap_or_else(|| Fq::no_gbbq_with_previous(days.clone(), preclose, factor))
             .ok_or(Custom("复权失败"))?
             .into_iter()
             .filter(|d| d.trading);

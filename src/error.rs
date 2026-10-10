@@ -45,6 +45,13 @@ pub enum Error {
     #[error("{0}")]
     Custom(&'static str),
 
+    #[error("{context}: {source}")]
+    Context {
+        context: String,
+        #[source]
+        source: Box<dyn std::error::Error + Send + Sync>,
+    },
+
     /// TCP 连接错误
     #[error("TCP 错误: {0}")]
     Tcp(#[from] TcpError),
@@ -309,9 +316,10 @@ where
     E: std::error::Error + Send + Sync + 'static,
 {
     fn with_context(self, context: &str) -> Result<T> {
-        // 使用 Box::leak 将字符串转换为 'static 生命周期
-        let static_msg: &'static str = Box::leak(context.to_string().into_boxed_str());
-        self.map_err(|_e| Error::Custom(static_msg))
+        self.map_err(|e| Error::Context {
+            context: context.to_owned(),
+            source: Box::new(e),
+        })
     }
 
     fn map_tcp(self) -> Result<T> {

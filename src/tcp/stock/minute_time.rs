@@ -131,6 +131,21 @@ impl<'a> Tdx for MinuteTime<'a> {
     fn result(&self) -> &Self::Item {
         &self.data
     }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.data.clear();
+        crate::tcp::reader::require_len(&v, 4)?;
+        let expected = u16_from_le_bytes(&v, 0) as usize;
+        self.parse(v);
+        if self.data.len() != expected {
+            self.data.clear();
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "分时协议格式无法识别",
+            ));
+        }
+        Ok(())
+    }
 }
 
 /// 分时数据点。
@@ -144,18 +159,10 @@ pub struct MinuteTimeData {
 
 /// [`price`] 的越界安全版本：字节不足时返回 `None`。
 pub(crate) fn price_checked(arr: &[u8], pos: &mut usize) -> Option<i32> {
-    let mut shl = 6;
-    let mut bit = *arr.get(*pos)? as i32;
-    let mut res = bit & 0x3f;
-    let sign = (bit & 0x40) == 0;
-    while (bit & 0x80) != 0 {
-        *pos += 1;
-        bit = *arr.get(*pos)? as i32;
-        res += (bit & 0x7f) << shl;
-        shl += 7;
-    }
-    *pos += 1;
-    Some(if sign { res } else { -res })
+    let mut reader = crate::tcp::reader::Reader::new(arr.get(*pos..)?);
+    let value = reader.varint().ok()?;
+    *pos = arr.len() - reader.remaining();
+    Some(value)
 }
 
 /// 定位 2026 新协议响应中的分时数据块并解码。
@@ -201,12 +208,12 @@ fn locate_data_block(v: &[u8], num_points: usize) -> Option<Vec<MinuteTimeData>>
 fn decode_points(v: &[u8], pos: usize, num: usize) -> Option<(Vec<MinuteTimeData>, usize)> {
     let mut pos = pos;
     let mut out = Vec::with_capacity(num.min(241));
-    let mut last_price = 0i32;
+    let mut last_price = 0i64;
     for _ in 0..num {
         let price_raw = price_checked(v, &mut pos)?;
         let _reversed1 = price_checked(v, &mut pos)?;
         let vol = price_checked(v, &mut pos)?;
-        last_price += price_raw;
+        last_price += price_raw as i64;
         out.push(MinuteTimeData {
             price: last_price as f64 / 100.0,
             vol,

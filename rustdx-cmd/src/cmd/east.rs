@@ -48,9 +48,11 @@ impl EastCmd {
             let mut wrt = csv::Writer::from_writer(file);
             for row in &data.data.diff {
                 if row.close.is_some() {
+                    row.ensure_closed()?;
                     wrt.serialize(row)?;
                 }
             }
+            wrt.flush()?;
         }
         self.insert_clickhouse()
     }
@@ -70,38 +72,22 @@ impl EastCmd {
             // 排除掉无数据的股票：停牌、未上市之类
             if let (&Some(c), &Some(p)) = (&row.close, &row.preclose) {
                 // 东方财富返回的是 6 位裸代码，需拼上市场前缀才能匹配 factor（含市场前缀）
-                let key = format!("{}{}", crate::cmd::auto_prefix("auto", &row.code), row.code);
-                if let Some(f) = previous.get(&key) {
-                    row.factor = c as f64 / p as f64 * f.factor;
-                    // 1. 由于数据源不同导致有误差，无法比较相等；
-                    // 2. 当今天为除权除息日时，两边的 preclose 是不想等的，所以此时无法校验
-                    // debug_assert_eq!(row.factor, f.compute_factor(c as f64));
-                    #[cfg(debug_assertions)]
-                    {
-                        assert!(
-                            if self.ignore.first().map(|x| x == "all").unwrap_or(false) {
-                                true
-                            } else if (p as f64 - f.preclose).abs() < 0.01 {
-                                (row.factor - f.compute_factor(c as f64)).abs() < 0.01
-                            } else {
-                                self.ignore.iter().any(|x| x == row.code.as_str())
-                            },
-                            "code: #{}#\neast: factor: {}, preclose: {}\nfq: factor: {}, \
-                                 preclose: {}",
-                            row.code,
-                            row.factor,
-                            p,
-                            f.compute_factor(c as f64),
-                            f.preclose
-                        );
+                row.ensure_closed()?;
+                if p <= 0.0 || c <= 0.0 {
+                    eyre::bail!("{}价格非法", row.code);
+                }
+                if let Some(f) = previous.get(&row.code) {
+                    if f.date >= row.date {
+                        eyre::bail!("{}前因子日期必须早于增量日期", row.code);
                     }
+                    row.factor = c / p * f.factor;
                 } else {
-                    warn!("{} 无前日收盘价数据", row.code);
-                    row.factor = c as f64 / p as f64;
+                    eyre::bail!("{}缺少前因子，无法保证增量连续性", row.code);
                 }
                 wrt.serialize(row)?;
             }
         }
+        wrt.flush()?;
         Ok(())
     }
 

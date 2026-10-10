@@ -132,84 +132,49 @@ impl<'a> Tdx for Kline<'a> {
         &self.send
     }
 
-    #[rustfmt::skip]
     fn parse(&mut self, v: Vec<u8>) {
-        use crate::{
-            tcp::helper::{datetime, vol_amount},
-            bytes_helper::u16_from_le_bytes
+        let _ = self.try_parse(v);
+    }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        use crate::tcp::{
+            helper::{datetime, vol_amount},
+            reader::Reader,
         };
-
-        // ① 服务器可能返回少于请求数（历史尽头 / 长期停牌等）；② 响应体可能被
-        // 截断（代理环境实测出现过只有 2 字节包头的响应）。两种情况都必须只解析
-        // 实际可读的记录并截断 data——否则 debug 构建在此 panic（越界切片），
-        // release 下读到垃圾数据，违背本 crate「解析异常时返回空数据而非垃圾数据」
-        // 的约定。价格字段是 varint（1~5 字节不定长），无法按固定步长预算，
-        // 只能逐字段安全读取。
-        if v.len() < 2 {
-            self.data.clear();
-            self.response = v;
-            return;
-        }
-        let count = u16_from_le_bytes(&v, 0) as usize;
-        self.data.truncate(count.min(self.count as usize));
-
-        // 与 helper::price 同逻辑的越界安全版：响应截断时返回 None。
-        fn price_checked(arr: &[u8], pos: &mut usize) -> Option<i32> {
-            let mut shl = 6;
-            let mut bit = *arr.get(*pos)? as i32;
-            let mut res = bit & 0x3f;
-            let sign = (bit & 0x40) == 0;
-
-            while (bit & 0x80) != 0 {
-                *pos += 1;
-                bit = *arr.get(*pos)? as i32;
-                res += (bit & 0x7f) << shl;
-                shl += 7;
-            }
-            *pos += 1;
-
-            if sign { Some(res) } else { Some(-res) }
-        }
-
-        let (mut pos, mut base, mut parsed) = (2usize, 0i32, 0usize);
-        for item in self.data.iter_mut() {
-            if pos + 4 > v.len() {
-                break; // dt
-            }
-            let dt = datetime(&v[pos..pos + 4], self.category);
-            pos += 4;
-            let (Some(open), Some(close), Some(high), Some(low)) = (
-                price_checked(&v, &mut pos),
-                price_checked(&v, &mut pos),
-                price_checked(&v, &mut pos),
-                price_checked(&v, &mut pos),
-            ) else {
-                break;
-            };
-            if pos + 8 > v.len() {
-                break; // vol + amount 各 4 字节
-            }
-            let vol_raw = u32::from_le_bytes(v[pos..pos + 4].try_into().expect("4 bytes"));
-            pos += 4;
-            let amt_raw = u32::from_le_bytes(v[pos..pos + 4].try_into().expect("4 bytes"));
-            pos += 4;
-
-            *item = KlineData { dt, code: self.code,
-                                open:   { base += open; base as f64 / 1000. },
-                                close:  real_price(close, base),
-                                high:   real_price(high, base),
-                                low:    real_price(low, base),
-                                vol:    vol_amount(vol_raw as i32),
-                                amount: vol_amount(amt_raw as i32) };
-
-            base += close;
-            parsed += 1;
-        }
-        self.data.truncate(parsed);
-        // 升序契约：实测服务端返回顺序与早前相反（2026-09 起，疑与当日分时
-        // 协议变更同期调整），解析层统一排序，消费方不再各自兜底。
-        self.data.sort_by_key(|b| b.dt);
+        self.data.clear();
         self.response = v;
+        let mut reader = Reader::new(&self.response);
+        let count = reader.u16()? as usize;
+        if count > self.count as usize {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "K线数量超过请求数量",
+            ));
+        }
+        let mut data = Vec::with_capacity(count);
+        let mut base = 0i64;
+        for _ in 0..count {
+            let dt = datetime(reader.take(4)?, self.category);
+            let open = reader.varint()? as i64;
+            let close = reader.varint()? as i64;
+            let high = reader.varint()? as i64;
+            let low = reader.varint()? as i64;
+            base += open;
+            data.push(KlineData {
+                dt,
+                code: self.code,
+                open: base as f64 / 1000.0,
+                close: (base + close) as f64 / 1000.0,
+                high: (base + high) as f64 / 1000.0,
+                low: (base + low) as f64 / 1000.0,
+                vol: vol_amount(reader.u32()? as i32),
+                amount: vol_amount(reader.u32()? as i32),
+            });
+            base += close;
+        }
+        data.sort_by_key(|b| b.dt);
+        self.data = data;
+        Ok(())
     }
 
     fn result(&self) -> &Self::Item {
@@ -257,11 +222,6 @@ pub struct KlineData<'d> {
 //         (pos, base, kline)
 //     }
 // }
-
-#[inline]
-fn real_price(p: i32, base: i32) -> f64 {
-    (p + base) as f64 / 1000.
-}
 
 #[test]
 fn day_new_modify() {

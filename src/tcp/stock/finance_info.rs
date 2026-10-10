@@ -85,13 +85,9 @@ impl<'a> Tdx for FinanceInfo<'a> {
     /// - 7字节：market(1) + code(6)
     /// - 之后：32个财务字段
     fn parse(&mut self, v: Vec<u8>) {
+        self.data.clear();
         // 检查最小长度：2(跳过) + 7(market+code) + 136(1f+2H+2I+30f 字段) = 145
         if v.len() < 145 {
-            debug_assert!(
-                false,
-                "财务信息数据长度不足: {} 字节（需要至少 145 字节）",
-                v.len()
-            );
             self.response = v;
             self.data = Vec::new();
             return;
@@ -107,7 +103,7 @@ impl<'a> Tdx for FinanceInfo<'a> {
         pos += 1;
         let code_bytes = &v[pos..pos + 6];
         pos += 6;
-        let code = unsafe { std::str::from_utf8_unchecked(code_bytes) };
+        let code = std::str::from_utf8(code_bytes).unwrap_or("");
         let code = String::from(code);
 
         // 解析32个财务字段（混合浮点数和整数）
@@ -226,6 +222,14 @@ impl<'a> Tdx for FinanceInfo<'a> {
 
         self.data.push(info);
         self.response = v;
+    }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.data.clear();
+        crate::tcp::reader::require_len(&v, 145)?;
+        crate::tcp::reader::Reader::new(&v[3..]).code()?;
+        self.parse(v);
+        Ok(())
     }
 
     fn result(&self) -> &Self::Item {

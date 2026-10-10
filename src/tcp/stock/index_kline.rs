@@ -81,65 +81,55 @@ impl<'a> Tdx for IndexKline<'a> {
     ///
     /// 价格为相对前一根收盘价的差值累加（÷1000），与股票K线相同。
     fn parse(&mut self, v: Vec<u8>) {
-        use crate::bytes_helper::{u16_from_le_bytes, u32_from_le_bytes};
-        use crate::tcp::helper::{datetime, price, vol_amount};
+        let _ = self.try_parse(v);
+    }
 
-        if v.len() < 2 {
-            self.response = v;
-            return;
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        use crate::tcp::{
+            helper::{datetime, vol_amount},
+            reader::Reader,
+        };
+        self.data.clear();
+        self.response = v;
+        let mut reader = Reader::new(&self.response);
+        let count = reader.u16()? as usize;
+        if count > self.count as usize {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "指数K线数量超过请求数量",
+            ));
         }
-        let (count, mut pos, mut base) = (u16_from_le_bytes(&v, 0), 2usize, 0i32);
-        let n = (count as usize).min(self.data.len());
-        let mut parsed = 0usize;
-        for item in self.data.iter_mut().take(n) {
-            if v.len() - pos < 4 + 4 + 8 + 4 {
-                break;
-            }
-            let dt = datetime(&v[pos..pos + 4], self.category);
-            pos += 4;
-            let open = price(&v, &mut pos);
-            let close = price(&v, &mut pos);
-
-            *item = IndexKlineData {
+        let mut data = Vec::with_capacity(count);
+        let mut base = 0i64;
+        for _ in 0..count {
+            let dt = datetime(reader.take(4)?, self.category);
+            let open = reader.varint()? as i64;
+            let close = reader.varint()? as i64;
+            let high = reader.varint()? as i64;
+            let low = reader.varint()? as i64;
+            base += open;
+            data.push(IndexKlineData {
                 dt,
                 code: self.code,
-                open: {
-                    base += open;
-                    base as f64 / 1000.
-                },
-                close: real_price(close, base),
-                high: real_price(price(&v, &mut pos), base),
-                low: real_price(price(&v, &mut pos), base),
-                vol: {
-                    pos += 4;
-                    vol_amount(u32_from_le_bytes(&v, pos - 4) as i32)
-                },
-                amount: {
-                    pos += 4;
-                    vol_amount(u32_from_le_bytes(&v, pos - 4) as i32)
-                },
-                up_count: u16_from_le_bytes(&v, pos),
-                down_count: u16_from_le_bytes(&v, pos + 2),
-            };
-            pos += 4;
-
+                open: base as f64 / 1000.0,
+                close: (base + close) as f64 / 1000.0,
+                high: (base + high) as f64 / 1000.0,
+                low: (base + low) as f64 / 1000.0,
+                vol: vol_amount(reader.u32()? as i32),
+                amount: vol_amount(reader.u32()? as i32),
+                up_count: reader.u16()?,
+                down_count: reader.u16()?,
+            });
             base += close;
-            parsed += 1;
         }
-        // 与 Kline 同款：服务器少返回（历史尽头）时截断默认填充项，并落实升序契约
-        self.data.truncate(parsed);
-        self.data.sort_by_key(|b| b.dt);
-        self.response = v;
+        data.sort_by_key(|b| b.dt);
+        self.data = data;
+        Ok(())
     }
 
     fn result(&self) -> &Self::Item {
         &self.data
     }
-}
-
-#[inline]
-fn real_price(p: i32, base: i32) -> f64 {
-    (p + base) as f64 / 1000.
 }
 
 /// 指数K线数据点。与 [`KlineData`](super::KlineData) 相比多了涨跌家数。

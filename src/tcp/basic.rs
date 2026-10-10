@@ -53,6 +53,12 @@ impl Tdx for SecurityCount {
         self.count = u16_from_le_bytes(&response, 0);
     }
 
+    fn try_parse(&mut self, response: Vec<u8>) -> Result<()> {
+        super::reader::require_len(&response, 2)?;
+        self.parse(response);
+        Ok(())
+    }
+
     fn result(&self) -> &Self::Item {
         &self.count
     }
@@ -131,8 +137,20 @@ impl Tdx for SecurityList {
 
     /// 前 2 字节表示列表的长度，剩余字节中，每 29 字节使用 [`SecurityListData::parse`] 解析。
     fn parse(&mut self, v: Vec<u8>) {
-        self.count = u16_from_le_bytes(&v, 0) as usize;
-        self.data = v[2..]
+        let _ = self.try_parse(v);
+    }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> Result<()> {
+        self.data = [].into();
+        self.count = 0;
+        super::reader::require_len(&v, 2)?;
+        let count = u16_from_le_bytes(&v, 0) as usize;
+        super::reader::require_len(&v, 2 + count * 29)?;
+        for c in v[2..2 + count * 29].as_chunks::<29>().0 {
+            super::reader::Reader::new(c).code()?;
+        }
+        self.count = count;
+        self.data = v[2..2 + count * 29]
             .as_chunks::<29>()
             .0
             .iter()
@@ -140,6 +158,7 @@ impl Tdx for SecurityList {
             .collect();
         debug_assert_eq!(self.count, self.data.len());
         self.response = v;
+        Ok(())
     }
 
     fn result(&self) -> &Self::Item {
@@ -184,7 +203,7 @@ impl SecurityListData {
     /// ) = struct.unpack("<6sH8s4sBI4s", bytes) # python 表示方式
     /// ```
     pub fn parse(bytes: &[u8]) -> Self {
-        let code = unsafe { std::str::from_utf8_unchecked(&bytes[0..6]) }.into();
+        let code = std::str::from_utf8(&bytes[0..6]).unwrap_or("").into();
         let (name, encoding_used, had_errors) = encoding_rs::GBK.decode(&bytes[8..16]);
         debug_assert_eq!(encoding_used, encoding_rs::GBK);
         debug_assert!(!had_errors);

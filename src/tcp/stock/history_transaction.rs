@@ -101,7 +101,7 @@ impl<'a> Tdx for HistoryTransaction<'a> {
         let num_ticks = u16_from_le_bytes(&v, 0);
         let mut pos = 6; // 数量(2) + 跳过4
 
-        let mut last_price = 0i32;
+        let mut last_price = 0i64;
 
         for _ in 0..num_ticks {
             if v.len() - pos < 3 {
@@ -130,7 +130,7 @@ impl<'a> Tdx for HistoryTransaction<'a> {
                 return;
             };
 
-            last_price += price_raw;
+            last_price += price_raw as i64;
             let price = last_price as f64 / 100.0;
 
             self.data.push(super::transaction::TransactionData {
@@ -159,6 +159,21 @@ impl<'a> Tdx for HistoryTransaction<'a> {
 
     fn result(&self) -> &Self::Item {
         &self.data
+    }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.data.clear();
+        crate::tcp::reader::require_len(&v, 6)?;
+        let expected = u16_from_le_bytes(&v, 0) as usize;
+        self.parse(v);
+        if self.data.len() != expected {
+            self.data.clear();
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "历史逐笔响应不完整或价格非法",
+            ));
+        }
+        Ok(())
     }
 }
 

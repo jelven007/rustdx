@@ -82,56 +82,24 @@ impl Tdx for SecurityList {
     /// - 前2字节：股票数量
     /// - 之后每只股票：29字节
     fn parse(&mut self, v: Vec<u8>) {
-        // 检查最小长度：至少需要 2 字节（数量）
-        if v.len() < 2 {
-            debug_assert!(
-                false,
-                "股票列表数据长度不足: {} 字节（需要至少 2 字节）",
-                v.len()
-            );
-            self.response = v;
-            self.data = Vec::new();
-            return;
-        }
+        let _ = self.try_parse(v);
+    }
 
-        let mut pos = 0;
-
-        // 读取股票数量
-        let num_stocks = u16_from_le_bytes(&v, pos);
-        pos += 2;
-
-        // 检查数据长度是否足够：2(数量) + num_stocks * 29(每只股票)
-        let expected_len = 2 + (num_stocks as usize) * 29;
-        if v.len() < expected_len {
-            debug_assert!(
-                false,
-                "股票列表数据长度不足: {} 字节（预期 {} 字节，包含 {} 只股票）",
-                v.len(),
-                expected_len,
-                num_stocks
-            );
-            // 只解析能完整解析的股票数量
-            let available_stocks = (v.len() - 2) / 29;
-            self.data = Vec::with_capacity(available_stocks);
-
-            for _ in 0..available_stocks {
-                if pos + 29 <= v.len() {
-                    let stock = parse_security_list_data(&v, &mut pos);
-                    self.data.push(stock);
-                } else {
-                    break;
-                }
-            }
-        } else {
-            self.data = Vec::with_capacity(num_stocks as usize);
-
-            for _ in 0..num_stocks {
-                let stock = parse_security_list_data(&v, &mut pos);
-                self.data.push(stock);
-            }
-        }
-
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        use crate::tcp::reader::{Reader, require_len};
+        self.data.clear();
         self.response = v;
+        require_len(&self.response, 2)?;
+        let count = u16_from_le_bytes(&self.response, 0) as usize;
+        require_len(&self.response, 2 + count * 29)?;
+        let mut data = Vec::with_capacity(count);
+        let mut pos = 2;
+        for _ in 0..count {
+            Reader::new(&self.response[pos..]).code()?;
+            data.push(parse_security_list_data(&self.response, &mut pos));
+        }
+        self.data = data;
+        Ok(())
     }
 
     fn result(&self) -> &Self::Item {
@@ -144,7 +112,7 @@ fn parse_security_list_data(data: &[u8], pos: &mut usize) -> SecurityListData {
     // code (6字节)
     let code_bytes = &data[*pos..*pos + 6];
     *pos += 6;
-    let code = unsafe { std::str::from_utf8_unchecked(code_bytes) };
+    let code = std::str::from_utf8(code_bytes).unwrap_or("");
     let code = String::from(code);
 
     // volunit (2字节)

@@ -102,6 +102,15 @@ impl<'a> Tdx for CompanyInfoCategory<'a> {
     fn result(&self) -> &Self::Item {
         &self.data
     }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.data.clear();
+        crate::tcp::reader::require_len(&v, 2)?;
+        let count = u16_from_le_bytes(&v, 0) as usize;
+        crate::tcp::reader::require_len(&v, 2 + count * 152)?;
+        self.parse(v);
+        Ok(())
+    }
 }
 
 /// 获取 F10 公司资料某栏目的内容。对应于 pytdx 的 hq.get_company_info_content。
@@ -179,6 +188,15 @@ impl<'a> Tdx for CompanyInfoContent<'a> {
 
     fn result(&self) -> &Self::Item {
         &self.data
+    }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.data.clear();
+        crate::tcp::reader::require_len(&v, 12)?;
+        let count = u16_from_le_bytes(&v, 10) as usize;
+        crate::tcp::reader::require_len(&v, 12 + count)?;
+        self.parse(v);
+        Ok(())
     }
 }
 

@@ -1,5 +1,4 @@
-use crate::bytes_helper::u16_from_le_bytes;
-use crate::tcp::{Tdx, helper::price};
+use crate::tcp::{Tdx, reader::Reader};
 
 /// 获取股票成交明细。对应于 pytdx 中的 hq.get_transaction_data、GetTransactionDataCmd。
 ///
@@ -98,35 +97,40 @@ impl<'a> Tdx for Transaction<'a> {
     /// - 前2字节：成交笔数
     /// - 之后每笔成交：可变长度编码
     fn parse(&mut self, v: Vec<u8>) {
-        let mut pos = 0;
+        let _ = self.try_parse(v);
+    }
 
-        // 读取成交笔数
-        let num_ticks = u16_from_le_bytes(&v, pos);
-        pos += 2;
-
-        self.data = Vec::with_capacity(num_ticks as usize);
-
-        let mut last_price = 0i32;
-
-        for _ in 0..num_ticks {
-            // 解析时间（2字节：分钟数）
-            let time_minutes = u16_from_le_bytes(&v, pos);
-            pos += 2;
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.data.clear();
+        self.response = v;
+        let mut reader = Reader::new(&self.response);
+        let count = reader.u16()? as usize;
+        if count > self.count as usize {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "逐笔数量超过请求数量",
+            ));
+        }
+        let mut data = Vec::with_capacity(count);
+        let mut last_price = 0i64;
+        for _ in 0..count {
+            let time_minutes = reader.u16()?;
             let hour = time_minutes / 60;
             let minute = time_minutes % 60;
-
-            // 解析成交明细（可变长度编码）
-            let price_raw = price(&v, &mut pos);
-            let vol = price(&v, &mut pos);
-            let num = price(&v, &mut pos);
-            let buyorsell = price(&v, &mut pos);
-            let _reserved = price(&v, &mut pos);
-
-            // 累加计算实际价格
-            last_price += price_raw;
+            if hour > 23 {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "逐笔时间非法",
+                ));
+            }
+            let price_raw = reader.varint()?;
+            let vol = reader.varint()?;
+            let num = reader.varint()?;
+            let buyorsell = reader.varint()?;
+            let _reserved = reader.varint()?;
+            last_price += price_raw as i64;
             let price = last_price as f64 / 100.0;
-
-            self.data.push(TransactionData {
+            data.push(TransactionData {
                 time: format!("{:02}:{:02}", hour, minute),
                 price,
                 vol,
@@ -135,7 +139,8 @@ impl<'a> Tdx for Transaction<'a> {
             });
         }
 
-        self.response = v;
+        self.data = data;
+        Ok(())
     }
 
     fn result(&self) -> &Self::Item {

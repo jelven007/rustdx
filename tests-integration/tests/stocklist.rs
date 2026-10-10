@@ -25,6 +25,9 @@ static SZ: LazyLock<Vec<String>> = LazyLock::new(|| get!(sz));
 /// 打印当前抓取结果（证券名单随上市/退市每日变动，无法快照对比，仅供人工查看）。
 #[test]
 fn head() {
+    if std::env::var_os("RUSTDX_SKIP_INTEGRATION_TESTS").is_some() {
+        return;
+    }
     let (sh8, sh1, sz) = (&*SH8, &*SH1, &*SZ);
     println!(
         "sh8: {}\n{:?}\n{:?}",
@@ -50,6 +53,9 @@ fn head() {
 /// 并对名单数量与代码格式做合理性断言（不对比具体名单）。
 #[test]
 fn stocklist() {
+    if std::env::var_os("RUSTDX_SKIP_INTEGRATION_TESTS").is_some() {
+        return;
+    }
     let (sh8, sh1, sz) = (&*SH8, &*SH1, &*SZ);
     let (lsh8, lsh1, lsz) = (sh8.len(), sh1.len(), sz.len());
 
@@ -105,7 +111,7 @@ fn east_crosscheck() {
         [sh8.iter(), sh1.iter(), sz.iter()]
             .into_iter()
             .flatten()
-            .map(|s| s[2..].to_string()),
+            .cloned(),
     );
     let diff_east_exchange = east.difference(&exchange).count();
     let diff_exchange_east = exchange.difference(&east).count();

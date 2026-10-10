@@ -15,6 +15,7 @@ pub use basic::*;
 
 pub mod helper;
 pub mod ip;
+pub(crate) mod reader;
 
 pub mod stock;
 
@@ -25,7 +26,7 @@ pub type BufTcp = BufReader<TcpStream>;
 ///
 /// - [`Tcp::new`] 使用默认配置（5 秒超时，按 [`ip::STOCK_IP`] 列表故障转移）；
 /// - [`Tcp::with_config`] 可指定服务器与超时（`ip = None` 时依然按列表故障转移）。
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TcpConfig {
     /// 连接与读写的超时时间。
     pub timeout: Duration,
@@ -81,6 +82,7 @@ pub struct Tcp {
     recv: [u8; RECV_SIZE],
     /// 创建本连接所用的配置，[`Tcp::reconnect`] 时使用。
     config: TcpConfig,
+    reusable: bool,
 }
 
 impl Tcp {
@@ -100,6 +102,12 @@ impl Tcp {
     /// - 为 `None` 时按 [`ip::STOCK_IP`] 列表顺序故障转移——TCP 连接与协议握手
     ///   都成功才算可用（部分服务器 TCP 可连但不响应行情协议）。
     pub fn with_config(config: &TcpConfig) -> Result<Self> {
+        if config.timeout.is_zero() {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "超时必须大于0",
+            ));
+        }
         match config.ip {
             Some(addr) => Self::connect_addr(&addr, config),
             None => {
@@ -125,14 +133,31 @@ impl Tcp {
             buffer,
             recv,
             config: config.clone(),
+            reusable: true,
         };
-        send_packs(&mut tcp, false)?;
+        // 握手失败由服务器选择处理，禁止在握手内部递归重连。
+        for pack in [PACK1, PACK2, PACK3] {
+            tcp.read_frame_once(pack)?;
+        }
         Ok(tcp)
     }
 
     /// 当前连接配置（[`TcpConfig::recheck_empty`] 等高级选项由此读取）。
     pub fn config(&self) -> &TcpConfig {
         &self.config
+    }
+
+    pub fn is_reusable(&self) -> bool {
+        self.reusable
+    }
+
+    pub(crate) fn check_health(&mut self, timeout: Duration) -> Result<()> {
+        self.stream.set_read_timeout(Some(timeout))?;
+        self.stream.set_write_timeout(Some(timeout))?;
+        let result = self.heartbeat().map(|_| ());
+        self.stream.set_read_timeout(Some(self.config.timeout))?;
+        self.stream.set_write_timeout(Some(self.config.timeout))?;
+        result
     }
 
     /// 重新建立连接（按创建时的配置），并重发握手包。原连接被丢弃。
@@ -166,7 +191,12 @@ impl Tcp {
         mut f: impl FnMut(&mut Tcp) -> Result<T>,
         attempts: usize,
     ) -> Result<T> {
-        debug_assert!(attempts >= 1);
+        if attempts == 0 {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "尝试次数必须大于0",
+            ));
+        }
         let mut last_err = None;
         for attempt in 0..attempts {
             match f(self) {
@@ -186,7 +216,9 @@ impl Tcp {
     /// 重试退避：第 `n` 次失败后按 `retry_delay_ms × n` 等待（配置为 0 时不等待）。
     fn backoff(&self, failed: u64) {
         if self.config.retry_delay_ms > 0 {
-            std::thread::sleep(Duration::from_millis(self.config.retry_delay_ms * failed));
+            std::thread::sleep(Duration::from_millis(
+                self.config.retry_delay_ms.saturating_mul(failed),
+            ));
         }
     }
 
@@ -200,7 +232,7 @@ impl Tcp {
     /// 配置了 [`TcpConfig::auto_reconnect`] 时，请求失败会自动重连并按原请求
     /// 字节重发（行情查询请求幂等，可安全重试）。
     pub fn send_recv(&mut self, send: &[u8]) -> Result<(usize, usize)> {
-        let attempts = self.config.auto_reconnect.max(1);
+        let attempts = self.config.auto_reconnect.saturating_add(1);
         let mut last_err: Option<std::io::Error> = None;
         for attempt in 0..attempts {
             match self.send_recv_once(send) {
@@ -230,12 +262,68 @@ impl Tcp {
 
     /// 单次发送并接收（不重试）。
     fn send_recv_once(&mut self, send: &[u8]) -> Result<(usize, usize)> {
+        self.reusable = false;
         self.stream.write_all(send)?;
         // 一次性读满 16 字节响应头：单次 read 在 TCP 分段时可能只返回部分字节，
         // 导致后续从错误偏移解析响应长度。
         self.buffer.read_exact(&mut self.recv)?;
         trace!("send: {:?}\nrecv[16B]: {:?}", send, self);
         Ok((send.len(), RECV_SIZE))
+    }
+
+    fn read_frame_once(&mut self, send: &[u8]) -> Result<(Vec<u8>, u16, u16)> {
+        self.send_recv_once(send)?;
+        let deflate = u16_from_le_bytes(&self.recv, 12);
+        let inflate = u16_from_le_bytes(&self.recv, 14);
+        let mut body = vec![0; deflate as usize];
+        self.buffer.read_exact(&mut body)?;
+        self.reusable = true;
+        Ok((body, deflate, inflate))
+    }
+
+    fn request_frame(&mut self, send: &[u8], decompress: bool) -> Result<(Vec<u8>, u16, u16)> {
+        for attempt in 0..=self.config.auto_reconnect {
+            if !self.reusable {
+                self.reconnect()?;
+            }
+            let result = self
+                .read_frame_once(send)
+                .and_then(|(body, deflate, inflate)| {
+                    let body = if decompress && deflate != inflate {
+                        let decoded = miniz_oxide::inflate::decompress_to_vec_zlib_with_limit(
+                            &body,
+                            inflate as usize,
+                        )
+                        .map_err(|e| {
+                            std::io::Error::new(
+                                std::io::ErrorKind::InvalidData,
+                                format!("响应解压失败: {e:?}"),
+                            )
+                        })?;
+                        if decoded.len() != inflate as usize {
+                            return Err(std::io::Error::new(
+                                std::io::ErrorKind::InvalidData,
+                                "响应解压长度不匹配",
+                            ));
+                        }
+                        decoded
+                    } else {
+                        body
+                    };
+                    Ok((body, deflate, inflate))
+                });
+            match result {
+                Ok(frame) => return Ok(frame),
+                Err(err) => {
+                    self.reusable = false;
+                    if attempt == self.config.auto_reconnect {
+                        return Err(err);
+                    }
+                    self.backoff(attempt as u64 + 1);
+                }
+            }
+        }
+        unreachable!()
     }
 
     pub fn into_inner(self) -> (TcpStream, BufTcp, [u8; RECV_SIZE]) {
@@ -283,10 +371,17 @@ pub trait Tdx {
     /// 解析响应的字节。
     fn parse(&mut self, response: Vec<u8>);
 
+    /// 带错误返回的解析入口。旧的 parse 保留用于兼容；内置协议应重写此方法。
+    fn try_parse(&mut self, response: Vec<u8>) -> Result<()> {
+        self.parse(response);
+        Ok(())
+    }
+
     /// 得到和解析响应的字节，并返回解析的数据。
     fn recv_parsed(&mut self, tcp: &mut Tcp) -> Result<&Self::Item> {
         let response = self.recv(tcp)?;
-        self.parse(response);
+        self.try_parse(response)
+            .map_err(|e| std::io::Error::new(e.kind(), format!("{}: {e}", Self::TAG)))?;
         Ok(self.result())
     }
 
@@ -301,16 +396,8 @@ pub trait Tdx {
 ///
 /// 有效数据：包含实际有用信息的数据。
 pub fn send_recv_decompress(tcp: &mut Tcp, send: &[u8], tag: &str) -> Result<Vec<u8>> {
-    let (mut buf, deflate_size, inflate_size) = send_recv(tcp, send, tag)?;
-
-    if deflate_size != inflate_size {
-        buf = miniz_oxide::inflate::decompress_to_vec_zlib(&buf).unwrap();
-        trace!("解压后数据：\n{:?}\n", buf);
-        debug_assert_eq!(buf.len(), inflate_size as usize);
-    } else {
-        trace!("无需解压\n");
-    };
-
+    let (buf, _, _) = tcp.request_frame(send, true)?;
+    trace!("{tag}: {} 字节", buf.len());
     Ok(buf)
 }
 
@@ -320,19 +407,9 @@ pub fn send_recv_decompress(tcp: &mut Tcp, send: &[u8], tag: &str) -> Result<Vec
 // 如果不使用 BufReader ，那么需要手动 read 剩余字节。
 // 对于 TcpStream ，Write::flush 没有做任何事情，所以无需调用。
 pub fn send_recv(tcp: &mut Tcp, send: &[u8], tag: &str) -> Result<(Vec<u8>, u16, u16)> {
-    tcp.send_recv(send)?;
-    trace!("{tag}\nsend: {:?}\nrecv[16B]: {:?}", send, tcp);
-
-    let deflate_size = u16_from_le_bytes(&tcp.recv, 12); // 响应信息中的待解压长度
-    let mut buf = vec![0; deflate_size as usize];
-    tcp.buffer.read_exact(&mut buf)?;
-
-    let inflate_size = u16_from_le_bytes(&tcp.recv, 14); // 响应信息中的解压后长度
-    #[rustfmt::skip]
-    trace!("\n解压前：#{:?}# -> {}，解压后：#{:?}# -> {}\n剩余数据（即解压前）：{:x?}\n",
-           &tcp.recv[12..14], deflate_size, &tcp.recv[14..16], inflate_size, buf);
-
-    Ok((buf, deflate_size, inflate_size))
+    let frame = tcp.request_frame(send, false)?;
+    trace!("{tag}: {} 字节", frame.0.len());
+    Ok(frame)
 }
 
 /// 默认的超时值。

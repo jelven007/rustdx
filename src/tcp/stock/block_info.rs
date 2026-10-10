@@ -69,6 +69,13 @@ impl Tdx for BlockInfoMeta {
     fn result(&self) -> &Self::Item {
         &self.size
     }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.size = 0;
+        crate::tcp::reader::require_len(&v, 4)?;
+        self.parse(v);
+        Ok(())
+    }
 }
 
 /// 板块文件内容块下载请求（内部使用）。
@@ -121,6 +128,13 @@ impl Tdx for BlockInfoChunk {
     fn result(&self) -> &Self::Item {
         &self.data
     }
+
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.data.clear();
+        crate::tcp::reader::require_len(&v, 4)?;
+        self.parse(v);
+        Ok(())
+    }
 }
 
 /// 下载并解析板块文件，返回全部板块成分记录。
@@ -154,6 +168,11 @@ pub fn get_block_info(
     if size == 0 {
         return Ok(Vec::new());
     }
+    if size > 64 * 1024 * 1024 {
+        return Err(
+            std::io::Error::new(std::io::ErrorKind::InvalidData, "板块文件超过64MiB限制").into(),
+        );
+    }
 
     // 2. 分块下载（pytdx：单块 0x7530 字节）
     const ONE_CHUNK: u32 = 0x7530;
@@ -164,6 +183,13 @@ pub fn get_block_info(
         let take = ONE_CHUNK.min(size - start);
         let mut chunk = BlockInfoChunk::new(block_file, start, take);
         chunk.recv_parsed(tcp)?;
+        if chunk.result().len() != take as usize {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::UnexpectedEof,
+                "板块文件块长度不完整",
+            )
+            .into());
+        }
         content.extend_from_slice(chunk.result());
     }
 

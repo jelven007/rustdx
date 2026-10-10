@@ -18,7 +18,7 @@ use super::{
     HistoryMinuteTime, HistoryTransaction, IndexKline, IndexKlineData, Kline, KlineData,
     MinuteTimeData, QuoteData, SecurityListData, TransactionData, Xdxr, XdxrData,
 };
-use crate::pool::ConnectionPool;
+use crate::pool::{ConnectionPool, PoolConfig};
 use crate::tcp::helper::DateTime;
 use crate::tcp::{Tcp, TcpConfig, Tdx};
 use chrono::Datelike;
@@ -30,6 +30,7 @@ use std::sync::{Arc, Mutex};
 pub struct Client {
     /// 底层连接（需要更细粒度控制时可直接使用）。
     pub tcp: Tcp,
+    batch_pool: Mutex<Option<(usize, TcpConfig, ConnectionPool)>>,
 }
 
 /// `k_batch` 的任务队列：`(输入序号, market, code)`。
@@ -40,13 +41,14 @@ type BatchResults<'a> = Arc<Mutex<Vec<Option<std::io::Result<Vec<KlineData<'a>>>
 impl Client {
     /// 连接服务器（内置故障转移），等价于 `Tcp::new()`。
     pub fn new() -> std::io::Result<Self> {
-        Ok(Self { tcp: Tcp::new()? })
+        Self::with_config(&TcpConfig::default())
     }
 
     /// 以指定配置连接服务器。
     pub fn with_config(config: &TcpConfig) -> std::io::Result<Self> {
         Ok(Self {
             tcp: Tcp::with_config(config)?,
+            batch_pool: Mutex::new(None),
         })
     }
 
@@ -78,6 +80,18 @@ impl Client {
     /// 注意：非交易时段 quotes 本就为空，业务层应按时段判断后再调用，
     /// 否则每次都会多付一次重查代价。
     pub fn quotes(&mut self, stocks: &[(u16, &str)]) -> std::io::Result<Vec<QuoteData>> {
+        if stocks.is_empty() {
+            return Ok(Vec::new());
+        }
+        for &(market, code) in stocks {
+            validate_request(market, code, 9)?;
+        }
+        if stocks.len() > 80 {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "单次行情查询最多80只证券",
+            ));
+        }
         let run = |tcp: &mut Tcp| {
             let mut quotes = SecurityQuotesRef::new(stocks.to_vec());
             quotes.recv_parsed(tcp)?;
@@ -103,6 +117,13 @@ impl Client {
         start: u16,
         count: u16,
     ) -> std::io::Result<Vec<super::KlineData<'a>>> {
+        validate_request(market, code, category)?;
+        if count > 800 {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "K线单页上限800",
+            ));
+        }
         let mut kline = Kline::new(market, code, category, start, count);
         kline.recv_parsed(&mut self.tcp).map_err(|e| {
             ctx_err(
@@ -156,6 +177,13 @@ impl Client {
         start: u16,
         count: u16,
     ) -> std::io::Result<Vec<super::IndexKlineData<'a>>> {
+        validate_request(market, code, category)?;
+        if count > 800 {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "K线单页上限800",
+            ));
+        }
         let mut kline = IndexKline::new(market, code, category, start, count);
         kline.recv_parsed(&mut self.tcp).map_err(|e| {
             ctx_err(
@@ -259,7 +287,7 @@ impl Client {
         .min(stocks.len())
         .max(1);
 
-        let pool = ConnectionPool::new(workers)?;
+        let pool = self.batch_pool(workers)?;
         let queue: BatchQueue<'a> = Arc::new(Mutex::new(
             stocks
                 .iter()
@@ -287,7 +315,7 @@ impl Client {
                             break;
                         };
                         let r = conn.execute(|tcp| {
-                            fetch_k(tcp, market, code, begin, end).map_err(|e| {
+                            fetch_k_checked(tcp, market, code, begin, end).map_err(|e| {
                                 ctx_err(e, format_args!("k_batch(market={market}, code={code})"))
                             })
                         });
@@ -347,7 +375,7 @@ impl Client {
         .min(stocks.len())
         .max(1);
 
-        let pool = ConnectionPool::new(workers)?;
+        let pool = self.batch_pool(workers)?;
         let queue: BatchQueue<'a> = Arc::new(Mutex::new(
             stocks
                 .iter()
@@ -430,7 +458,7 @@ impl Client {
         end: Option<u32>,
     ) -> std::io::Result<Vec<super::KlineData<'a>>> {
         // 复权因子需从上市日起连续累积，先全量拉取再在本地过滤区间
-        let all = fetch_k(&mut self.tcp, market, code, None, None).map_err(|e| {
+        let all = fetch_k_checked(&mut self.tcp, market, code, None, None).map_err(|e| {
             ctx_err(
                 e,
                 format_args!("Client::k_adjusted(market={market}, code={code})"),
@@ -469,11 +497,20 @@ impl Client {
     ///
     /// 两个接口返回相同的数据结构（每分钟一个价格/成交量点）。
     pub fn minute(&mut self, market: u16, code: &str) -> std::io::Result<Vec<MinuteTimeData>> {
+        validate_request(market, code, 9)?;
         let ctx = format_args!("Client::minute(market={market}, code={code})");
         let mut mt = super::MinuteTime::new(market, code);
-        mt.recv_parsed(&mut self.tcp).map_err(|e| ctx_err(e, ctx))?;
-        if !mt.result().is_empty() {
-            return Ok(mt.result().to_vec());
+        match mt.recv_parsed(&mut self.tcp) {
+            Ok(data) if !data.is_empty() => return Ok(data.to_vec()),
+            Err(e)
+                if !matches!(
+                    e.kind(),
+                    std::io::ErrorKind::InvalidData | std::io::ErrorKind::UnexpectedEof
+                ) =>
+            {
+                return Err(ctx_err(e, ctx));
+            }
+            _ => {}
         }
 
         // 回退：当日分时接口不可用 → 今日历史分时接口（协议稳定）
@@ -490,6 +527,7 @@ impl Client {
         code: &str,
         date: u32,
     ) -> std::io::Result<Vec<MinuteTimeData>> {
+        validate_request(market, code, 9)?;
         let mut mt = HistoryMinuteTime::new(market, code, date);
         mt.recv_parsed(&mut self.tcp).map_err(|e| {
             ctx_err(
@@ -508,6 +546,7 @@ impl Client {
         start: u16,
         count: u16,
     ) -> std::io::Result<Vec<TransactionData>> {
+        validate_request(market, code, 9)?;
         let mut tx = super::Transaction::new(market, code, start, count);
         tx.recv_parsed(&mut self.tcp).map_err(|e| {
             ctx_err(
@@ -527,6 +566,7 @@ impl Client {
         count: u16,
         date: u32,
     ) -> std::io::Result<Vec<TransactionData>> {
+        validate_request(market, code, 9)?;
         let mut tx = HistoryTransaction::new(market, code, start, count, date);
         tx.recv_parsed(&mut self.tcp).map_err(|e| {
             ctx_err(
@@ -539,6 +579,7 @@ impl Client {
 
     /// 财务信息（mootdx `finance`）。
     pub fn finance(&mut self, market: u16, code: &str) -> std::io::Result<FinanceInfoData> {
+        validate_request(market, code, 9)?;
         let mut fin = super::FinanceInfo::new(market as u8, code);
         fin.recv_parsed(&mut self.tcp).map_err(|e| {
             ctx_err(
@@ -546,11 +587,17 @@ impl Client {
                 format_args!("Client::finance(market={market}, code={code})"),
             )
         })?;
-        Ok(fin.result().first().cloned().unwrap_or_default())
+        fin.result().first().cloned().ok_or_else(|| {
+            std::io::Error::new(
+                std::io::ErrorKind::NotFound,
+                format!("Client::finance({market}, {code}): 无财务数据"),
+            )
+        })
     }
 
     /// 除权除息信息（mootdx `xdxr`）。
     pub fn xdxr(&mut self, market: u16, code: &str) -> std::io::Result<Vec<super::XdxrData>> {
+        validate_request(market, code, 9)?;
         let mut xdxr = Xdxr::new(market, code);
         xdxr.recv_parsed(&mut self.tcp).map_err(|e| {
             ctx_err(
@@ -590,6 +637,7 @@ impl Client {
 
     /// F10 公司资料全部栏目（mootdx `F10`），返回 `(栏目名, 内容)`。
     pub fn f10(&mut self, market: u16, code: &str) -> std::io::Result<Vec<(String, String)>> {
+        validate_request(market, code, 9)?;
         let ctx = format_args!("Client::f10(market={market}, code={code})");
         let mut cat = CompanyInfoCategory::new(market, code);
         cat.recv_parsed(&mut self.tcp)
@@ -612,6 +660,7 @@ impl Client {
         market: u16,
         code: &str,
     ) -> std::io::Result<Vec<CompanyInfoCategoryItem>> {
+        validate_request(market, code, 9)?;
         let mut cat = CompanyInfoCategory::new(market, code);
         cat.recv_parsed(&mut self.tcp).map_err(|e| {
             ctx_err(
@@ -620,6 +669,77 @@ impl Client {
             )
         })?;
         Ok(cat.result().to_vec())
+    }
+
+    fn batch_pool(&self, workers: usize) -> std::io::Result<ConnectionPool> {
+        let config = self.tcp.config();
+        let mut slot = self.batch_pool.lock().unwrap();
+        if let Some((size, saved, pool)) = slot.as_ref()
+            && *size == workers
+            && saved == config
+        {
+            return Ok(pool.clone());
+        }
+        if let Some((_, _, pool)) = slot.take() {
+            pool.close();
+        }
+        let pool = ConnectionPool::with_tcp_config(
+            PoolConfig {
+                max_size: workers,
+                ..Default::default()
+            },
+            config.clone(),
+        )?;
+        *slot = Some((workers, config.clone(), pool.clone()));
+        Ok(pool)
+    }
+}
+
+fn validate_request(market: u16, code: &str, category: u16) -> std::io::Result<()> {
+    if market > 1
+        || code.len() != 6
+        || !code.bytes().all(|b| b.is_ascii_alphanumeric())
+        || category > 11
+    {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "市场、六位ASCII代码或K线周期非法",
+        ));
+    }
+    Ok(())
+}
+
+fn validate_range(begin: Option<u32>, end: Option<u32>) -> std::io::Result<()> {
+    for date in [begin, end].into_iter().flatten() {
+        if chrono::NaiveDate::from_ymd_opt((date / 10000) as i32, date / 100 % 100, date % 100)
+            .is_none()
+        {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "日期必须是合法YYYYMMDD",
+            ));
+        }
+    }
+    if begin.zip(end).is_some_and(|(b, e)| b > e) {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "开始日期晚于结束日期",
+        ));
+    }
+    Ok(())
+}
+
+fn fetch_k_checked<'a>(
+    tcp: &mut Tcp,
+    market: u16,
+    code: &'a str,
+    begin: Option<u32>,
+    end: Option<u32>,
+) -> std::io::Result<Vec<KlineData<'a>>> {
+    if tcp.config().recheck_empty {
+        recheck_empty(tcp, |tcp| fetch_k(tcp, market, code, begin, end))
+    } else {
+        fetch_k(tcp, market, code, begin, end)
     }
 }
 
@@ -657,7 +777,7 @@ fn recheck_empty<T>(
 const BARS_PAGE: u16 = 800;
 /// 区间翻页页数上限：分钟线历史深度有限（约近年），超深分页服务器会返回
 /// 乱码日期，封顶兜底（800 × 40 = 3.2 万根，约 660 个交易日的 5 分钟线）。
-const MAX_BARS_PAGES: usize = 40;
+const MAX_BARS_PAGES: usize = 82;
 
 /// 从给定连接按日期区间拉取任意周期 K 线：自动翻页、去重、窗口过滤、升序。
 ///
@@ -670,17 +790,35 @@ fn fetch_bars_range<'a>(
     begin: Option<u32>,
     end: Option<u32>,
 ) -> std::io::Result<Vec<KlineData<'a>>> {
-    let _ = tcp.config(); // 保留扩展点：页级退避等
+    validate_request(market, code, category)?;
+    validate_range(begin, end)?;
     let mut all: Vec<KlineData<'a>> = Vec::new();
     let mut start = 0u16;
     let mut pages = 0usize;
+    let mut previous_oldest = None;
     loop {
-        let mut kline = Kline::new(market, code, category, start, BARS_PAGE);
-        kline.recv_parsed(tcp)?;
-        let bars = kline.result().to_vec();
+        let kline = Kline::new(market, code, category, start, BARS_PAGE);
+        let run = |tcp: &mut Tcp| {
+            let mut kline = kline.clone();
+            kline.recv_parsed(tcp)?;
+            Ok(kline.result().to_vec())
+        };
+        let bars = if tcp.config().recheck_empty {
+            recheck_empty(tcp, run)?
+        } else {
+            run(tcp)?
+        };
+        validate_bar_dates(bars.iter().map(|b| b.dt))?;
         let n = bars.len();
         // 页内最旧一根（顺序无关；乱码日期页由下方年份校验拦截）
         let oldest = bars.iter().map(|b| b.dt).min();
+        if n > 0 && previous_oldest.is_some_and(|prev| oldest >= Some(prev)) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "K线分页未向历史方向推进",
+            ));
+        }
+        previous_oldest = oldest;
         all.extend(bars);
         pages += 1;
         if n < BARS_PAGE as usize {
@@ -689,9 +827,6 @@ fn fetch_bars_range<'a>(
         let Some(oldest) = oldest else {
             break;
         };
-        if !(2000..=2070).contains(&oldest.year) {
-            break; // 服务器历史深度耗尽，开始返回乱码日期（实测 2004/2035 年）
-        }
         if let Some(begin) = begin {
             // 页内最旧数据已早于 begin，停止翻页（min 判停，顺序无关）
             if DateTime::to_u32(oldest) < begin {
@@ -699,12 +834,14 @@ fn fetch_bars_range<'a>(
             }
         }
         if pages >= MAX_BARS_PAGES {
-            break;
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "K线分页超过协议偏移上限",
+            ));
         }
-        start = start.saturating_add(BARS_PAGE);
-        if start == 0 {
-            break; // u16 溢出，服务器历史已耗尽
-        }
+        start = start.checked_add(BARS_PAGE).ok_or_else(|| {
+            std::io::Error::new(std::io::ErrorKind::InvalidData, "K线分页偏移溢出")
+        })?;
     }
 
     // 升序 + 翻页偏移重叠去重（排序后重复时间戳相邻）+ 窗口过滤（丢弃乱码日期页残留）
@@ -729,17 +866,35 @@ fn fetch_index_bars_range<'a>(
     begin: Option<u32>,
     end: Option<u32>,
 ) -> std::io::Result<Vec<IndexKlineData<'a>>> {
-    let _ = tcp.config(); // 保留扩展点：页级退避等
+    validate_request(market, code, category)?;
+    validate_range(begin, end)?;
     let mut all: Vec<IndexKlineData<'a>> = Vec::new();
     let mut start = 0u16;
     let mut pages = 0usize;
+    let mut previous_oldest = None;
     loop {
-        let mut kline = IndexKline::new(market, code, category, start, BARS_PAGE);
-        kline.recv_parsed(tcp)?;
-        let bars = kline.result().to_vec();
+        let kline = IndexKline::new(market, code, category, start, BARS_PAGE);
+        let run = |tcp: &mut Tcp| {
+            let mut kline = kline.clone();
+            kline.recv_parsed(tcp)?;
+            Ok(kline.result().to_vec())
+        };
+        let bars = if tcp.config().recheck_empty {
+            recheck_empty(tcp, run)?
+        } else {
+            run(tcp)?
+        };
+        validate_bar_dates(bars.iter().map(|b| b.dt))?;
         let n = bars.len();
         // 页内最旧一根（顺序无关；乱码日期页由下方年份校验拦截）
         let oldest = bars.iter().map(|b| b.dt).min();
+        if n > 0 && previous_oldest.is_some_and(|prev| oldest >= Some(prev)) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "指数K线分页未推进",
+            ));
+        }
+        previous_oldest = oldest;
         all.extend(bars);
         pages += 1;
         if n < BARS_PAGE as usize {
@@ -748,9 +903,6 @@ fn fetch_index_bars_range<'a>(
         let Some(oldest) = oldest else {
             break;
         };
-        if !(2000..=2070).contains(&oldest.year) {
-            break; // 服务器历史深度耗尽，开始返回乱码日期
-        }
         if let Some(begin) = begin {
             // 页内最旧数据已早于 begin，停止翻页（min 判停，顺序无关）
             if DateTime::to_u32(oldest) < begin {
@@ -758,12 +910,14 @@ fn fetch_index_bars_range<'a>(
             }
         }
         if pages >= MAX_BARS_PAGES {
-            break;
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "指数K线分页超过偏移上限",
+            ));
         }
-        start = start.saturating_add(BARS_PAGE);
-        if start == 0 {
-            break; // u16 溢出，服务器历史已耗尽
-        }
+        start = start.checked_add(BARS_PAGE).ok_or_else(|| {
+            std::io::Error::new(std::io::ErrorKind::InvalidData, "指数K线分页偏移溢出")
+        })?;
     }
 
     // 升序 + 翻页偏移重叠去重 + 窗口过滤
@@ -805,43 +959,26 @@ fn fetch_k<'a>(
     begin: Option<u32>,
     end: Option<u32>,
 ) -> std::io::Result<Vec<KlineData<'a>>> {
-    const PAGE: u16 = 800;
-    const CATEGORY_DAY: u16 = 9;
+    fetch_bars_range(tcp, market, code, 9, begin, end)
+}
 
-    let mut all = Vec::new();
-    let mut start = 0u16;
-    loop {
-        let mut kline = Kline::new(market, code, CATEGORY_DAY, start, PAGE);
-        kline.recv_parsed(tcp)?;
-        let bars = kline.result().to_vec();
-        let n = bars.len();
-        // 页内顺序不再假设（2026-09 实测部分服务器返回顺序与早前相反，
-        // 猜测与「当日分时协议变更」同期调整），统一在末端排序兜底。
-        all.extend(bars);
-        if n < PAGE as usize {
-            break; // 历史尽头
-        }
-        if let Some(begin) = begin {
-            // 页内最旧数据已早于 begin，停止翻页（min 而非 first，顺序无关）
-            if let Some(oldest) = all.iter().map(|b| DateTime::to_u32(b.dt)).min()
-                && oldest < begin
-            {
-                break;
-            }
-        }
-        start = start.saturating_add(PAGE);
-        if start == 0 {
-            break; // u16 溢出，服务器历史已耗尽
+fn validate_bar_dates(dates: impl Iterator<Item = DateTime>) -> std::io::Result<()> {
+    let today = chrono::Utc::now()
+        .with_timezone(&chrono::FixedOffset::east_opt(8 * 3600).unwrap())
+        .date_naive();
+    for dt in dates {
+        let date = chrono::NaiveDate::from_ymd_opt(dt.year as i32, dt.month as u32, dt.day as u32);
+        if date.is_none_or(|date| date.year() < 1990 || date > today)
+            || dt.hour > 23
+            || dt.minute > 59
+        {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                format!("K线日期非法: {dt:?}"),
+            ));
         }
     }
-
-    all.retain(|bar| {
-        let d = DateTime::to_u32(bar.dt);
-        begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
-    });
-    // 契约：按日期升序（文档承诺「统一按升序存放」）
-    all.sort_by_key(|bar| DateTime::to_u32(bar.dt));
-    Ok(all)
+    Ok(())
 }
 
 /// 批量 K 线单项结果。

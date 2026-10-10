@@ -159,17 +159,17 @@ impl DayCmd {
     }
 
     /// 匹配 `.day` 之前的内容：比如 `sz000001`
-    pub fn stocklist(&self) -> Option<fetch_code::StockList> {
+    pub fn stocklist(&self) -> Result<Option<fetch_code::StockList>> {
         use crate::io::read_xlsx;
         use fetch_code::get_offical_stocks;
-        match (
+        let result = match (
             self.stocklist.as_deref(),
             self.exchange.as_deref(),
             self.xlsx_col,
         ) {
-            (Some("official"), _, _) => get_offical_stocks("official").ok(),
-            (Some("sse"), _, _) => get_offical_stocks("sse").ok(),
-            (Some("szse"), _, _) => get_offical_stocks("szse").ok(),
+            (Some("official"), _, _) => Some(get_offical_stocks("official")?),
+            (Some("sse"), _, _) => Some(get_offical_stocks("sse")?),
+            (Some("szse"), _, _) => Some(get_offical_stocks("szse")?),
             (Some(ex), Some(prefix), _) if ex.len() == 6 || ex.contains(',') => {
                 self.parse_list(prefix)
             }
@@ -178,7 +178,11 @@ impl DayCmd {
             (Some(ex), None, Some(n)) => read_xlsx(ex, n, ""),
             (Some(ex), Some(prefix), Some(n)) => read_xlsx(ex, n, prefix),
             _ => self.parse_list(""),
+        };
+        if self.stocklist.is_some() && result.as_ref().is_none_or(|set| set.is_empty()) {
+            eyre::bail!("股票名单读取失败或为空");
         }
+        Ok(result)
     }
 
     /// 筛选 sz/sh 交易所和股票代码的开头，并把代码转换为
@@ -189,9 +193,18 @@ impl DayCmd {
     /// `200b07`，`u32` 无法表示），也让输出 code 保留市场前缀从而避免
     /// 合并多市场（sh/sz/bj）时的代码混叠。
     pub fn filter_ec(&self, fname: &str) -> (bool, String) {
-        let len = fname.len();
-        let code = &fname[len - 10..len - 4]; // 6 位代码，可含字母
-        let ex_f = &fname[len - 12..len - 10]; // 市场前缀 sh/sz/bj
+        let name = std::path::Path::new(fname)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or("");
+        if name.len() != 8 || !name.is_ascii() {
+            return (false, String::new());
+        }
+        let code = &name[2..];
+        let ex_f = &name[..2];
+        if !matches!(ex_f, "sh" | "sz" | "bj") || !code.bytes().all(|b| b.is_ascii_alphanumeric()) {
+            return (false, String::new());
+        }
         let match_ex = |ex: &str| ex == ex_f || ex == "auto";
         let full = format!("{ex_f}{code}");
         (
@@ -215,7 +228,7 @@ impl DayCmd {
 
 #[inline]
 pub fn auto_prefix<'a>(prefix: &'a str, code: &'a str) -> &'a str {
-    if prefix == "auto" && &code[0..1] == "6" {
+    if prefix == "auto" && code.starts_with('6') {
         "sh"
     } else if prefix == "auto" {
         "sz"

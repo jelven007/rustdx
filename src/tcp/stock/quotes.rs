@@ -1,5 +1,4 @@
-use crate::bytes_helper::{u16_from_le_bytes, u32_from_le_bytes};
-use crate::tcp::{Tdx, helper::price};
+use crate::tcp::{Tdx, reader::Reader};
 
 /// 获取股票实时行情快照。对应于 pytdx 中的 hq.get_security_quotes、GetSecurityQuotesCmd。
 ///
@@ -128,36 +127,27 @@ impl<'a> Tdx for SecurityQuotes<'a> {
     /// - 接下来2字节：股票数量（小端 u16）
     /// - 之后每只股票的字段见 [`parse_quote`]。
     fn parse(&mut self, v: Vec<u8>) {
-        // 检查最小长度：至少需要 4 字节（2跳过 + 2数量）
-        if v.len() < 4 {
-            self.response = v;
-            self.data = Vec::new();
-            return;
-        }
+        let _ = self.try_parse(v);
+    }
 
-        let mut pos = 0;
-
-        // 跳过前2字节
-        pos += 2;
-
-        // 读取股票数量
-        let num_stocks = u16_from_le_bytes(&v, pos);
-        pos += 2;
-
-        self.data = Vec::with_capacity(num_stocks as usize);
-
-        for i in 0..num_stocks {
-            // 剩余数据不足以包含一只股票的最小头部（market+code+active1 = 9 字节）时停止
-            if pos + 9 > v.len() {
-                debug_assert!(false, "行情数据不完整，只解析了 {i}/{num_stocks} 只股票");
-                break;
-            }
-            // 解析每只股票数据
-            let quote = parse_quote(&v, &mut pos);
-            self.data.push(quote);
-        }
-
+    fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
+        self.data.clear();
         self.response = v;
+        let mut reader = Reader::new(&self.response);
+        reader.skip(2)?;
+        let count = reader.u16()? as usize;
+        if count > self.stocks.len() {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "行情数量超过请求数量",
+            ));
+        }
+        let mut data = Vec::with_capacity(count);
+        for _ in 0..count {
+            data.push(parse_quote(&mut reader)?);
+        }
+        self.data = data;
+        Ok(())
     }
 
     fn result(&self) -> &Self::Item {
@@ -174,85 +164,77 @@ impl<'a> Tdx for SecurityQuotes<'a> {
 /// rev4(u16), rev5..rev8, rev9(i16, 涨速×100) + active2(u16)。
 ///
 /// 价格还原公式（pytdx `_cal_price`）：`真实价格 = (price_raw + diff) / 100`。
-fn parse_quote(data: &[u8], pos: &mut usize) -> QuoteData {
+fn parse_quote(reader: &mut Reader<'_>) -> std::io::Result<QuoteData> {
     // market (1字节) + code (6字节) + active1 (2字节)
-    let _market = data[*pos] as u16;
-    *pos += 1;
-    let code_bytes = &data[*pos..*pos + 6];
-    *pos += 6;
-    let code = unsafe { std::str::from_utf8_unchecked(code_bytes) };
-    let code = String::from(code); // 转换为拥有所有权的String
-    let _active1 = u16_from_le_bytes(data, *pos);
-    *pos += 2;
+    let _market = reader.u8()?;
+    let code = reader.code()?;
+    let _active1 = reader.u16()?;
 
     // 价格与差值（变长编码；price 为绝对价×100，其余字段为相对 price 的差值）
-    let price_raw = price(data, pos);
-    let last_close_diff = price(data, pos);
-    let open_diff = price(data, pos);
-    let high_diff = price(data, pos);
-    let low_diff = price(data, pos);
+    let price_raw = reader.varint()?;
+    let last_close_diff = reader.varint()?;
+    let open_diff = reader.varint()?;
+    let high_diff = reader.varint()?;
+    let low_diff = reader.varint()?;
 
     // reversed_bytes0：服务器时间，编码为 HHMM+SSMM 的十进制拼接
     // （如 11298811 = 11:29:52.866，见 [`servertime_string`]）
-    let reversed_bytes0 = price(data, pos);
+    let reversed_bytes0 = reader.varint()?;
     // reversed_bytes1：实测恒为 -price
-    let _reversed_bytes1 = price(data, pos);
+    let _reversed_bytes1 = reader.varint()?;
 
     // vol、cur_vol：累计成交量与现量，单位：手（原始值，不做 /100）
-    let vol = price(data, pos);
-    let cur_vol = price(data, pos);
+    let vol = reader.varint()?;
+    let cur_vol = reader.varint()?;
 
     // amount (4字节 u32，TDX 浮点编码)
-    let amount_raw = u32_from_le_bytes(data, *pos);
-    *pos += 4;
+    let amount_raw = reader.u32()?;
     let amount = crate::tcp::helper::vol_amount(amount_raw as i32);
 
     // s_vol、b_vol：外盘、内盘（手）
-    let s_vol = price(data, pos);
-    let b_vol = price(data, pos);
+    let s_vol = reader.varint()?;
+    let b_vol = reader.varint()?;
 
     // reversed_bytes2-3
-    let _reversed_bytes2 = price(data, pos);
-    let _reversed_bytes3 = price(data, pos);
+    let _reversed_bytes2 = reader.varint()?;
+    let _reversed_bytes3 = reader.varint()?;
 
     // 买一到买五、卖一到卖五：价格（相对差值）及其成交量（手）
-    let bid1 = price(data, pos);
-    let ask1 = price(data, pos);
-    let bid1_vol = price(data, pos);
-    let ask1_vol = price(data, pos);
+    let bid1 = reader.varint()?;
+    let ask1 = reader.varint()?;
+    let bid1_vol = reader.varint()?;
+    let ask1_vol = reader.varint()?;
 
-    let bid2 = price(data, pos);
-    let ask2 = price(data, pos);
-    let bid2_vol = price(data, pos);
-    let ask2_vol = price(data, pos);
+    let bid2 = reader.varint()?;
+    let ask2 = reader.varint()?;
+    let bid2_vol = reader.varint()?;
+    let ask2_vol = reader.varint()?;
 
-    let bid3 = price(data, pos);
-    let ask3 = price(data, pos);
-    let bid3_vol = price(data, pos);
-    let ask3_vol = price(data, pos);
+    let bid3 = reader.varint()?;
+    let ask3 = reader.varint()?;
+    let bid3_vol = reader.varint()?;
+    let ask3_vol = reader.varint()?;
 
-    let bid4 = price(data, pos);
-    let ask4 = price(data, pos);
-    let bid4_vol = price(data, pos);
-    let ask4_vol = price(data, pos);
+    let bid4 = reader.varint()?;
+    let ask4 = reader.varint()?;
+    let bid4_vol = reader.varint()?;
+    let ask4_vol = reader.varint()?;
 
-    let bid5 = price(data, pos);
-    let ask5 = price(data, pos);
-    let bid5_vol = price(data, pos);
-    let ask5_vol = price(data, pos);
+    let bid5 = reader.varint()?;
+    let ask5 = reader.varint()?;
+    let bid5_vol = reader.varint()?;
+    let ask5_vol = reader.varint()?;
 
     // reversed_bytes4 (u16)
-    let _reversed_bytes4 = u16_from_le_bytes(data, *pos);
-    *pos += 2;
+    let _reversed_bytes4 = reader.u16()?;
     // reversed_bytes5-8
-    let _reversed_bytes5 = price(data, pos);
-    let _reversed_bytes6 = price(data, pos);
-    let _reversed_bytes7 = price(data, pos);
-    let _reversed_bytes8 = price(data, pos);
+    let _reversed_bytes5 = reader.varint()?;
+    let _reversed_bytes6 = reader.varint()?;
+    let _reversed_bytes7 = reader.varint()?;
+    let _reversed_bytes8 = reader.varint()?;
     // reversed_bytes9（涨速×100，有符号 i16）+ active2（u16）
-    let reversed_bytes9 = u16_from_le_bytes(data, *pos) as i16;
-    let _active2 = u16_from_le_bytes(data, *pos + 2);
-    *pos += 4;
+    let reversed_bytes9 = reader.u16()? as i16;
+    let _active2 = reader.u16()?;
 
     // 按 pytdx _cal_price 公式还原真实价格：`(price_raw + diff) / 100`
     let base = price_raw as f64;
@@ -270,7 +252,7 @@ fn parse_quote(data: &[u8], pos: &mut usize) -> QuoteData {
         0.0
     };
 
-    QuoteData {
+    Ok(QuoteData {
         code,
         price,
         last_close,
@@ -306,7 +288,7 @@ fn parse_quote(data: &[u8], pos: &mut usize) -> QuoteData {
         ask5: (base + ask5 as f64) / 100.0,
         bid5_vol: bid5_vol as f64,
         ask5_vol: ask5_vol as f64,
-    }
+    })
 }
 
 /// 将 reversed_bytes0 解码为服务器时间字符串。
