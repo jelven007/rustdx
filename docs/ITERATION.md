@@ -43,7 +43,7 @@
 - 下载/本地ZIP按来源隔离并用系统文件锁；解压先写临时目录，失败保留上次有效目录；非交互环境不等待输入。
 - CLI `--workers`（1–64，默认最多8）、结果有界通道、排序选取文件、单个day文件32MiB限制。
 - SMA/RSI O(n)滚动计算及 `RollingSma` 流式接口，KDJ预热/缺口返回None，横盘RSI为50。
-- CI覆盖Linux/macOS/Windows及MSRV；tag触发正确包名的release构建，草稿发布带SHA256校验文件。
+- CI覆盖Linux/macOS/Windows及MSRV，执行全目标构建、测试、Clippy和格式检查。
 
 第四阶段验证：完整离线workspace测试通过（核心库141单测、CLI库2单测、CLI二进制12单测、CLI端到端2例、核心库52文档测试及既有回归）；Clippy `-D warnings`、格式检查、Rust1.89 all-targets检查通过。`local_data` 对仓库存量day文件运行成功，两个包离线打包后解包编译成功。外部网络测试按变量跳过；依赖proc-macro-error2仍有未来编译器兼容提示，不影响当前检查。
 
@@ -64,5 +64,11 @@
 - A股维持严格OHLC校验；指数、基金等历史源异常保留并告警，输出按日期排序、同日保留源文件最后一条。
 - ClickHouse集成测试使用HTTP真实服务，覆盖同一CSV重复写入和合并去重。
 - 东财改用HTTPS、多节点及15秒总超时；单页曾成功，最终复测仍受502/TLS断连限制，不能承担唯一生产源。
+
+发布收尾：
+
+- `Tcp` 包含平台相关的 `TcpStream`，结构尺寸测试改为受控范围；协议数据结构继续使用精确快照。
+- 核心包改名为 `jelven-rustdx-complete`，保留 `rustdx_complete` 导入名，并发布1.12.0。
+- 发布入口收敛为 `scripts/publish.sh`，发布前执行格式、测试、Clippy和dry-run；删除tag触发的CLI二进制Release流程。
 
 验收详情见[PRODUCTION_ACCEPTANCE.md](PRODUCTION_ACCEPTANCE.md)。核心库已发布为 `jelven-rustdx-complete 1.12.0`；MongoDB、目标生产操作系统和2027年交易日历仍需单独验收。

@@ -16,6 +16,8 @@
 - SMA/RSI线性滚动与RollingSma；KDJ缺数据为None，横盘RSI为50。
 - `east --json`、收盘及当前日期校验，上一交易日基准衔接；Excel输入保留前导零。
 - Rust1.89最低版本实测，Linux/macOS/Windows CI覆盖构建、测试和Clippy。
+- `Tcp` 结构尺寸按平台使用受控范围回归，协议数据结构继续使用精确快照。
+- 核心包改为唯一名称 `jelven-rustdx-complete`；发布收敛为 crates.io 脚本，移除tag触发的CLI二进制Release。
 - 可运行本地/网络示例，README、迁移文档和架构评估更新。
 - 当前行情服务器改用单个标准握手包，修复旧登录包导致K线返回`0x0320`。
 - 全量day输出按代码内日期排序并去重；A股严格校验，非A股历史源异常保留并告警。

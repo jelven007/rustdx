@@ -6,7 +6,7 @@
 
 | 包 | 职责 | 实现 |
 | --- | --- | --- |
-| rustdx-complete | 行情及计算核心 | 阻塞TCP、协议解码、文件解析、复权、标准数据类型、指标、日历、连接池、缓存 |
+| jelven-rustdx-complete | 行情及计算核心 | 阻塞TCP、协议解码、文件解析、复权、标准数据类型、指标、日历、连接池、缓存 |
 | rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、线程解析、有界结果通道、CSV/JSON、数据库导入 |
 | tests-integration | 外部接口样本与检查 | 不发布；外部测试通过变量跳过 |
 
@@ -42,7 +42,8 @@ flowchart TB
 | 无界结果通道和缓存 | 有界通道、线程/单文件限制、缓存容量和过期清理 |
 | 续传旧ZIP拼新版本，解压目录冲突 | .part/If-Range/Content-Range、来源隔离、文件锁、先临时解压 |
 | RSI/KDJ预热与非有限值错误 | 线性滚动、边界处理、None缺口、明确平滑口径 |
-| release用错误包名和分支ref | tag草稿发布、正确rustdx-cli包名、三平台与SHA256 |
+| Tcp结构尺寸断言依赖平台布局 | Tcp使用受控尺寸范围，协议数据结构保留精确快照 |
+| release用错误包名和分支ref | 唯一核心包名、crates.io发布脚本；移除tag二进制Release |
 | CLI JSON/帮助/Excel入口不可用 | JSON原子导出、帮助即退出、输入验证及前导零保留 |
 
 阶段实现及验证见[ITERATION.md](ITERATION.md)，兼容性变化见[MIGRATION.md](MIGRATION.md)。
@@ -63,4 +64,4 @@ flowchart TB
 
 本轮执行离线workspace测试、完整截断边界、TCP断线重连和连接池本地服务器、HTTP续传、ZIP解压失败保护、坏文件原子输出、JSON导出、编译示例、Clippy、格式和Rust1.89检查；另完成真实通达信全功能smoke、官网526.2MiB全量包解析、2981万行ClickHouse导入和重复写入去重。
 
-基准仅测本机合成10万行SMA+RSI（10轮约23–42ms），未测P95网络延迟和目标生产机负载。东财单页曾成功，后续请求被502或提前断连，已作为外部可用性风险记录。CI覆盖Linux/macOS/Windows，本机实际验证平台为macOS/aarch64；核心库已发布为 `jelven-rustdx-complete 1.12.0`。
+基准仅测本机合成10万行SMA+RSI（10轮约23–42ms），未测P95网络延迟和目标生产机负载。东财单页曾成功，后续请求被502或提前断连，已作为外部可用性风险记录。CI覆盖Linux/macOS/Windows，本机实际验证平台为macOS/aarch64；核心库已发布为 `jelven-rustdx-complete 1.12.0`，仓库不再配置tag触发的CLI二进制Release。

@@ -162,7 +162,9 @@ cargo +1.89.0 check --workspace --all-targets --locked
 cargo bench --bench indicators
 ```
 
-默认CI在Linux/macOS/Windows上跳过外部网络案例，另有最低版本检查；本地TCP/HTTP模拟和文件回归正常执行。移除跳过变量会启用网络案例，需要可用行情/HTTP/数据库环境。tag `v*` 构建三平台CLI并生成带SHA256的release草稿，仍需人工发布。
+默认CI在Linux/macOS/Windows上跳过外部网络案例，另有最低版本检查；本地TCP/HTTP模拟和文件回归正常执行。移除跳过变量会启用网络案例，需要可用行情/HTTP/数据库环境。`Tcp` 包含平台相关的 `TcpStream`，结构尺寸测试使用受控范围，协议数据结构仍保留精确快照。
+
+核心库通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、测试、Clippy 和发布预检，经人工确认后发布。仓库不再通过 tag 自动构建 CLI 二进制或创建 GitHub Release，CLI 按上文方式从源码安装。
 
 东财公共接口会按出口和节点限流。CLI 使用 HTTPS、多节点、15秒单请求总超时和低频分页，并可通过
 `RUSTDX_EASTMONEY_IPS=ip1,ip2` 覆盖备用节点；生产调度仍应限制为收盘后单任务运行。
