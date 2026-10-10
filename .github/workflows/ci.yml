@@ -7,11 +7,18 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  RUSTDX_SKIP_INTEGRATION_TESTS: "1"
+
+permissions:
+  contents: read
 
 jobs:
   test:
     name: Build / Test / Clippy
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
@@ -24,16 +31,23 @@ jobs:
         uses: swatinem/rust-cache@v2
 
       - name: Build (all targets)
-        run: cargo build --workspace --all-targets
+        run: cargo build --workspace --all-targets --locked
 
       - name: Test
-        run: cargo test --workspace
-        env:
-          # 网络相关测试在 CI 环境不稳定，跳过实盘验证
-          RUSTDX_SKIP_INTEGRATION_TESTS: "1"
+        run: cargo test --workspace --locked
 
       - name: Clippy (deny warnings)
-        run: cargo clippy --workspace --all-targets -- -D warnings
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
       - name: Format check
         run: cargo fmt --all -- --check
+
+  msrv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.89.0"
+      - uses: swatinem/rust-cache@v2
+      - run: cargo check --workspace --all-targets --locked

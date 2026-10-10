@@ -41,7 +41,20 @@ use std::collections::HashMap;
 use std::fs;
 use std::io::{self, Write};
 use std::path::{Path, PathBuf};
-use std::time::{Duration, Instant};
+use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
+
+/// 稳定文件键（FNV-1a两组种子）；文件内部另存原键校验，碰撞不会误读其他键。
+pub fn stable_key(key: &str) -> String {
+    let hash = |seed: u64| {
+        key.bytes()
+            .fold(seed, |h, b| (h ^ b as u64).wrapping_mul(0x100000001b3))
+    };
+    format!(
+        "{:016x}{:016x}",
+        hash(0xcbf29ce484222325),
+        hash(0x84222325cbf29ce4)
+    )
+}
 
 // ============================================================================
 // Cache Backend Trait
@@ -118,6 +131,8 @@ pub struct MemoryCache {
     /// 存储缓存数据的 HashMap
     /// 键: String, 值: (数据, 过期时间)
     data: std::sync::RwLock<HashMap<String, (Vec<u8>, Instant)>>,
+    max_entries: usize,
+    max_bytes: usize,
 }
 
 impl MemoryCache {
@@ -131,19 +146,33 @@ impl MemoryCache {
     /// let cache = MemoryCache::new();
     /// ```
     pub fn new() -> Self {
+        Self::with_capacity(4096, 64 * 1024 * 1024)
+    }
+
+    pub fn with_capacity(max_entries: usize, max_bytes: usize) -> Self {
         Self {
             data: std::sync::RwLock::new(HashMap::new()),
+            max_entries,
+            max_bytes,
         }
+    }
+
+    pub fn cleanup_expired(&self) -> usize {
+        let mut data = self.data.write().unwrap_or_else(|e| e.into_inner());
+        let before = data.len();
+        data.retain(|_, (_, expiry)| *expiry > Instant::now());
+        before - data.len()
     }
 
     /// 获取缓存大小
     pub fn len(&self) -> usize {
-        self.data.read().unwrap().len()
+        self.cleanup_expired();
+        self.data.read().unwrap_or_else(|e| e.into_inner()).len()
     }
 
     /// 检查缓存是否为空
     pub fn is_empty(&self) -> bool {
-        self.data.read().unwrap().is_empty()
+        self.len() == 0
     }
 }
 
@@ -155,7 +184,7 @@ impl Default for MemoryCache {
 
 impl CacheBackend for MemoryCache {
     fn get(&self, key: &str) -> Option<Vec<u8>> {
-        let data = self.data.read().unwrap();
+        let data = self.data.read().unwrap_or_else(|e| e.into_inner());
 
         if let Some((value, expiry)) = data.get(key) {
             // 检查是否过期
@@ -172,8 +201,37 @@ impl CacheBackend for MemoryCache {
     }
 
     fn set(&self, key: &str, value: &[u8], ttl: Duration) {
-        let mut data = self.data.write().unwrap();
-        let expiry = Instant::now() + ttl;
+        let mut data = self.data.write().unwrap_or_else(|e| e.into_inner());
+        data.retain(|_, (_, expiry)| *expiry > Instant::now());
+        data.remove(key);
+        if value.len().saturating_add(key.len()) > self.max_bytes
+            || self.max_entries == 0
+            || ttl.is_zero()
+        {
+            return;
+        }
+        let Some(expiry) = Instant::now().checked_add(ttl) else {
+            return;
+        };
+        while data.len() >= self.max_entries
+            || data
+                .iter()
+                .map(|(k, (v, _))| k.len() + v.len())
+                .sum::<usize>()
+                + value.len()
+                + key.len()
+                > self.max_bytes
+        {
+            let oldest = data
+                .iter()
+                .min_by_key(|(_, (_, expiry))| *expiry)
+                .map(|(k, _)| k.clone());
+            if let Some(oldest) = oldest {
+                data.remove(&oldest);
+            } else {
+                break;
+            }
+        }
         data.insert(key.to_string(), (value.to_vec(), expiry));
     }
 
@@ -259,9 +317,68 @@ impl FileCache {
 
     /// 获取缓存文件路径
     fn cache_path(&self, key: &str) -> PathBuf {
-        // 使用安全的文件名（替换特殊字符）
-        let safe_key = key.replace(['/', '\\'], "_");
-        self.dir.join(format!("{}.cache", safe_key))
+        self.dir.join(format!("{}.cache", stable_key(key)))
+    }
+
+    pub fn try_new(dir: impl AsRef<Path>) -> io::Result<Self> {
+        fs::create_dir_all(dir.as_ref())?;
+        Ok(Self {
+            dir: dir.as_ref().to_owned(),
+        })
+    }
+
+    pub fn try_set(&self, key: &str, value: &[u8], ttl: Duration) -> io::Result<()> {
+        if key.len() > 65536 || value.len() > 64 * 1024 * 1024 {
+            return Err(io::Error::other("缓存项超出大小限制"));
+        }
+        let expiry = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map_err(io::Error::other)?
+            .checked_add(ttl)
+            .ok_or_else(|| io::Error::other("缓存TTL溢出"))?;
+        let expiry = u64::try_from(expiry.as_millis()).map_err(io::Error::other)?;
+        let (atomic, mut file) = crate::atomic_file::AtomicFile::create(self.cache_path(key))?;
+        file.write_all(b"RDXC0002")?;
+        file.write_all(&expiry.to_le_bytes())?;
+        file.write_all(&(key.len() as u32).to_le_bytes())?;
+        file.write_all(key.as_bytes())?;
+        file.write_all(value)?;
+        drop(file);
+        atomic.commit()
+    }
+
+    pub fn try_get(&self, key: &str) -> io::Result<Option<Vec<u8>>> {
+        let path = self.cache_path(key);
+        let file = match fs::File::open(&path) {
+            Ok(file) => file,
+            Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(None),
+            Err(e) => return Err(e),
+        };
+        if file.metadata()?.len() > 64 * 1024 * 1024 + 65556 {
+            return Err(io::Error::other("缓存文件超出大小限制"));
+        }
+        let data = {
+            use std::io::Read;
+            let mut data = Vec::new();
+            file.take(64 * 1024 * 1024 + 65557).read_to_end(&mut data)?;
+            data
+        };
+        if data.len() < 20 || &data[..8] != b"RDXC0002" {
+            return Err(io::Error::other("缓存格式损坏或版本过旧"));
+        }
+        let length = u32::from_le_bytes(data[16..20].try_into().unwrap()) as usize;
+        if length > 65536 || data.get(20..20 + length) != Some(key.as_bytes()) {
+            return Err(io::Error::other("缓存键不匹配"));
+        }
+        let expiry = u64::from_le_bytes(data[8..16].try_into().unwrap());
+        let now = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map_err(io::Error::other)?
+            .as_millis();
+        if now >= expiry as u128 {
+            return Ok(None);
+        }
+        Ok(Some(data[20 + length..].to_vec()))
     }
 
     /// 清理过期的缓存文件
@@ -282,9 +399,7 @@ impl FileCache {
             }
 
             // 读取过期时间
-            if let Ok(Some(expiry)) = self.read_expiry(&path)
-                && Instant::now() >= expiry
-            {
+            if self.read_expiry(&path).unwrap_or(true) {
                 // 文件已过期，删除
                 fs::remove_file(&path)?;
                 removed += 1;
@@ -295,72 +410,33 @@ impl FileCache {
     }
 
     /// 从文件读取过期时间
-    fn read_expiry(&self, path: &Path) -> io::Result<Option<Instant>> {
-        // 读取文件内容
-        let data = fs::read(path)?;
-
-        // 前 8 字节是存储的TTL（微秒）
-        if data.len() < 8 {
-            return Ok(None);
+    fn read_expiry(&self, path: &Path) -> io::Result<bool> {
+        use std::io::Read;
+        let mut header = [0; 16];
+        fs::File::open(path)?.read_exact(&mut header)?;
+        if &header[..8] != b"RDXC0002" {
+            return Ok(true);
         }
-
-        let ttl_micros = u64::from_le_bytes(data[0..8].try_into().unwrap());
-        let stored_ttl = Duration::from_micros(ttl_micros);
-
-        // 检查文件修改时间
-        let metadata = fs::metadata(path)?;
-        let modified = metadata.modified()?;
-        let file_age = modified.elapsed().unwrap_or_default();
-
-        // 如果文件存在时间超过TTL，则认为已过期
-        if file_age > stored_ttl {
-            Ok(Some(Instant::now())) // 已过期
-        } else {
-            Ok(None) // 未过期
-        }
+        let expiry = u64::from_le_bytes(header[8..16].try_into().unwrap());
+        Ok(SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map_err(io::Error::other)?
+            .as_millis()
+            >= expiry as u128)
     }
 }
 
 impl CacheBackend for FileCache {
     fn get(&self, key: &str) -> Option<Vec<u8>> {
-        let path = self.cache_path(key);
-
-        // 读取文件
-        let data = fs::read(&path).ok()?;
-
-        // 检查文件格式
-        if data.len() < 8 {
-            return None;
-        }
-
-        // 前 8 字节是存储的TTL（微秒）
-        let ttl_micros = u64::from_le_bytes(data[0..8].try_into().unwrap());
-        let stored_ttl = Duration::from_micros(ttl_micros);
-
-        // 检查文件修改时间
-        let metadata = fs::metadata(&path).ok()?;
-        let modified = metadata.modified().ok()?;
-        let file_age = modified.elapsed().ok()?;
-
-        // 检查是否过期
-        if file_age > stored_ttl {
-            // 已过期，删除文件
-            fs::remove_file(&path).ok();
-            return None;
-        }
-
-        // 返回实际数据（跳过前8字节）
-        Some(data[8..].to_vec())
+        self.try_get(key).unwrap_or_else(|e| {
+            log::warn!("缓存读取失败: {e}");
+            None
+        })
     }
 
     fn set(&self, key: &str, value: &[u8], ttl: Duration) {
-        let path = self.cache_path(key);
-
-        // 写入文件：前8字节是TTL，后面是实际数据
-        if let Ok(mut file) = fs::File::create(&path) {
-            let ttl_micros = ttl.as_micros() as u64;
-            file.write_all(&ttl_micros.to_le_bytes()).ok();
-            file.write_all(value).ok();
+        if let Err(e) = self.try_set(key, value, ttl) {
+            log::warn!("缓存写入失败: {e}");
         }
     }
 
@@ -370,8 +446,13 @@ impl CacheBackend for FileCache {
     }
 
     fn clear(&self) {
-        fs::remove_dir_all(&self.dir).ok();
-        fs::create_dir_all(&self.dir).ok();
+        if let Ok(entries) = fs::read_dir(&self.dir) {
+            for entry in entries.flatten() {
+                if entry.path().extension().is_some_and(|s| s == "cache") {
+                    let _ = fs::remove_file(entry.path());
+                }
+            }
+        }
     }
 }
 
@@ -418,6 +499,7 @@ pub struct Cache<B: CacheBackend> {
     backend: B,
     /// 默认TTL
     ttl: Duration,
+    flights: [std::sync::Mutex<()>; 64],
 }
 
 impl<B: CacheBackend> Cache<B> {
@@ -440,7 +522,11 @@ impl<B: CacheBackend> Cache<B> {
     /// );
     /// ```
     pub fn new(backend: B, ttl: Duration) -> Self {
-        Self { backend, ttl }
+        Self {
+            backend,
+            ttl,
+            flights: std::array::from_fn(|_| std::sync::Mutex::new(())),
+        }
     }
 
     /// 获取缓存数据
@@ -526,6 +612,16 @@ impl<B: CacheBackend> Cache<B> {
         if let Some(data) = self.get(key) {
             return Ok(data);
         }
+        let stripe = key
+            .bytes()
+            .fold(0usize, |h, b| h.wrapping_mul(31).wrapping_add(b as usize))
+            % self.flights.len();
+        let _flight = self.flights[stripe]
+            .lock()
+            .unwrap_or_else(|e| e.into_inner());
+        if let Some(data) = self.get(key) {
+            return Ok(data);
+        }
 
         // 缓存未命中，执行 fetch
         let data = fetch()?;
@@ -592,7 +688,6 @@ impl Cache<FileCache> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::thread;
     use std::time::Duration;
 
     #[test]
@@ -614,15 +709,14 @@ mod tests {
     fn test_memory_cache_expiry() {
         let cache = MemoryCache::new();
 
-        // 留出文件系统修改时间精度与测试线程调度的余量。
-        cache.set("key1", b"data1", Duration::from_millis(200));
+        cache.set("key1", b"data1", Duration::from_secs(60));
 
         // 立即获取应该成功
         let result = cache.get("key1");
         assert_eq!(result, Some(b"data1".to_vec()));
 
-        // 等待过期
-        thread::sleep(Duration::from_millis(250));
+        cache.data.write().unwrap().get_mut("key1").unwrap().1 =
+            Instant::now() - Duration::from_secs(1);
 
         // 过期后应该返回 None
         let result = cache.get("key1");
@@ -729,5 +823,50 @@ mod tests {
 
         // 清理
         cache.clear();
+    }
+
+    #[test]
+    fn capacity_and_file_keys_do_not_alias() {
+        let cache = MemoryCache::with_capacity(2, 20);
+        for key in ["a", "b", "c"] {
+            cache.set(key, b"1", Duration::from_secs(60));
+        }
+        assert_eq!(cache.len(), 2);
+        cache.set("large", &[0; 30], Duration::from_secs(60));
+        assert_eq!(cache.len(), 2);
+        let dir = std::env::temp_dir().join(format!("rustdx-cache-keys-{}", std::process::id()));
+        let cache = FileCache::try_new(&dir).unwrap();
+        cache
+            .try_set("a/b", b"one", Duration::from_secs(60))
+            .unwrap();
+        cache
+            .try_set("a_b", b"two", Duration::from_secs(60))
+            .unwrap();
+        assert_eq!(cache.try_get("a/b").unwrap().unwrap(), b"one");
+        assert_eq!(cache.try_get("a_b").unwrap().unwrap(), b"two");
+        fs::write(dir.join("unrelated"), b"preserve").unwrap();
+        cache.clear();
+        assert!(dir.join("unrelated").exists());
+        fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn concurrent_fetch_is_coalesced() {
+        let cache = Cache::memory(Duration::from_secs(60));
+        let calls = std::sync::atomic::AtomicUsize::new(0);
+        let barrier = std::sync::Barrier::new(8);
+        std::thread::scope(|scope| {
+            for _ in 0..8 {
+                scope.spawn(|| {
+                    barrier.wait();
+                    let result: Result<_, ()> = cache.get_or_fetch("same", || {
+                        calls.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+                        Ok(vec![42])
+                    });
+                    assert_eq!(result.unwrap(), vec![42]);
+                });
+            }
+        });
+        assert_eq!(calls.load(std::sync::atomic::Ordering::Relaxed), 1);
     }
 }

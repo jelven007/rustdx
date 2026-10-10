@@ -2,6 +2,7 @@
 name        = "rustdx-complete"
 version     = "1.11.0"
 edition     = "2024"
+rust-version = "1.89"
 license     = "MIT"
 description = "功能完整的 A 股数据获取库，完全对标 pytdx"
 repository  = "https://github.com/jackluo2012/rustdx"
@@ -27,6 +28,10 @@ features = ["fast-gb-hanzi-encode"]
 [dev-dependencies]
 insta = "1"
 csv = "1"
+
+[[bench]]
+name = "indicators"
+harness = false
 
 [profile.test]
 opt-level = 3

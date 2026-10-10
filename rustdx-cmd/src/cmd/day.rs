@@ -69,6 +69,10 @@ pub struct DayCmd {
     #[argh(switch)]
     pub strict: bool,
 
+    /// 可选。解析线程数（1–64），默认最多8个。
+    #[argh(option)]
+    pub workers: Option<usize>,
+
     /// 可选。显示详细的使用说明。
     #[argh(option, short = 'h')]
     description: Vec<String>,

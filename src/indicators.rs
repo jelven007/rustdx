@@ -74,30 +74,52 @@ pub fn sma(data: &[f64], period: usize) -> Vec<Option<f64>> {
         return vec![];
     }
 
-    if period < 2 {
+    if period == 0 {
         return vec![None; data.len()];
     }
 
-    let mut result = Vec::with_capacity(data.len());
+    let mut state = RollingSma::new(period);
+    data.iter().map(|&value| state.update(value)).collect()
+}
 
-    // 如果数据长度小于 period，所有位置都是 None
-    if data.len() < period {
-        return vec![None; data.len()];
+/// O(1)更新的移动均值；非有限值返回None，离开窗口后恢复。
+pub struct RollingSma {
+    period: usize,
+    window: std::collections::VecDeque<f64>,
+    sum: f64,
+    invalid: usize,
+}
+
+impl RollingSma {
+    pub fn new(period: usize) -> Self {
+        Self {
+            period,
+            window: std::collections::VecDeque::new(),
+            sum: 0.0,
+            invalid: 0,
+        }
     }
-
-    // 前面的数据不足，返回 None
-    for _ in 0..period - 1 {
-        result.push(None);
+    pub fn update(&mut self, value: f64) -> Option<f64> {
+        if self.period == 0 {
+            return None;
+        }
+        self.window.push_back(value);
+        if value.is_finite() {
+            self.sum += value;
+        } else {
+            self.invalid += 1;
+        }
+        if self.window.len() > self.period {
+            let old = self.window.pop_front().unwrap();
+            if old.is_finite() {
+                self.sum -= old;
+            } else {
+                self.invalid -= 1;
+            }
+        }
+        (self.window.len() == self.period && self.invalid == 0 && self.sum.is_finite())
+            .then_some(self.sum / self.period as f64)
     }
-
-    // 计算移动平均
-    for window in data.windows(period) {
-        let sum: f64 = window.iter().sum();
-        let avg = sum / period as f64;
-        result.push(Some(avg));
-    }
-
-    result
 }
 
 /// 计算指数移动平均线 (Exponential Moving Average)
@@ -300,39 +322,31 @@ pub fn macd(
 /// - **RSI = 50**：中性区域
 /// - **背离**：价格创新高但 RSI 未创新高 → 顶背离（看跌）
 pub fn rsi(data: &[f64], period: usize) -> Vec<Option<f64>> {
-    if data.len() < period + 1 {
+    if period == 0 || data.len() <= period {
         return vec![None; data.len()];
     }
-
-    let mut result = vec![None; period]; // 前面数据不足
-
-    for window in data.windows(period + 1) {
-        let mut gains = 0.0;
-        let mut losses = 0.0;
-
-        // 计算累计涨幅和跌幅
-        for i in 1..=period {
-            let change = window[i] - window[i - 1];
-            if change > 0.0 {
-                gains += change;
-            } else {
-                losses += change.abs();
-            }
-        }
-
-        // 计算平均涨幅和跌幅
-        let avg_gain = gains / period as f64;
-        let avg_loss = losses / period as f64;
-
-        // 计算 RSI
-        let rsi_value = if avg_loss == 0.0 {
-            100.0 // 没有跌幅，RSI = 100
+    let mut result = vec![None; data.len()];
+    let mut gains = RollingSma::new(period);
+    let mut losses = RollingSma::new(period);
+    for (i, pair) in data.windows(2).enumerate() {
+        let change = pair[1] - pair[0];
+        let gain = if change.is_finite() {
+            change.max(0.0)
         } else {
-            let rs = avg_gain / avg_loss;
-            100.0 - (100.0 / (1.0 + rs))
+            f64::NAN
         };
-
-        result.push(Some(rsi_value));
+        let loss = if change.is_finite() {
+            (-change).max(0.0)
+        } else {
+            f64::NAN
+        };
+        if let (Some(gain), Some(loss)) = (gains.update(gain), losses.update(loss)) {
+            result[i + 1] = Some(if loss <= f64::EPSILON {
+                if gain <= f64::EPSILON { 50.0 } else { 100.0 }
+            } else {
+                (100.0 * gain / (gain + loss)).clamp(0.0, 100.0)
+            });
+        }
     }
 
     result
@@ -529,7 +543,8 @@ pub fn kdj(
         };
     }
 
-    if len != high.len() || len != low.len() {
+    if len != high.len() || len != low.len() || k_period == 0 || d_period == 0 || j_multiplier == 0
+    {
         return KdjResult {
             k: vec![None; len],
             d: vec![None; len],
@@ -540,12 +555,22 @@ pub fn kdj(
     // 计算 RSV (Raw Stochastic Value)
     let mut rsv_values = Vec::new();
     for i in 0..len {
-        if k_period < 2 || i + 1 < k_period {
+        if i + 1 < k_period {
             rsv_values.push(None);
         } else {
             let start = i + 1 - k_period;
             let window_high = &high[start..=i];
             let window_low = &low[start..=i];
+            if !window_high
+                .iter()
+                .chain(window_low)
+                .chain(std::iter::once(&close[i]))
+                .all(|v| v.is_finite())
+                || (start..=i).any(|j| high[j] < low[j])
+            {
+                rsv_values.push(None);
+                continue;
+            }
 
             let highest_high = window_high.iter().fold(f64::NAN, |a, &b| a.max(b));
             let lowest_low = window_low.iter().fold(f64::NAN, |a, &b| a.min(b));
@@ -559,28 +584,22 @@ pub fn kdj(
         }
     }
 
-    // 计算 K 值（RSV 的移动平均）
-    let k_values: Vec<f64> = rsv_values.iter().filter_map(|&v| v).collect();
-
-    let k_ema = if k_values.is_empty() {
-        vec![0.0; len]
-    } else {
-        ema(&k_values, d_period)
-    };
-
-    let mut k_line = vec![None; rsv_values.len().saturating_sub(k_ema.len())];
-    k_line.extend(k_ema.iter().map(|&v| Some(v)));
-
-    // 计算 D 值（K 的移动平均）
-    let d_values: Vec<f64> = k_line.iter().filter_map(|&v| v).collect();
-    let d_ema = if d_values.is_empty() {
-        vec![0.0]
-    } else {
-        ema(&d_values, d_period)
-    };
-
-    let mut d_line = vec![None; k_line.len().saturating_sub(d_ema.len())];
-    d_line.extend(d_ema.iter().map(|&v| Some(v)));
+    let mut k_line = vec![None; len];
+    let mut d_line = vec![None; len];
+    let mut state = None;
+    let alpha = 2.0 / (d_period as f64 + 1.0);
+    for (i, rsv) in rsv_values.into_iter().enumerate() {
+        if let Some(rsv) = rsv {
+            let (k, d) = state.unwrap_or((rsv, rsv));
+            let k = k + alpha * (rsv - k);
+            let d = d + alpha * (k - d);
+            state = Some((k, d));
+            k_line[i] = Some(k);
+            d_line[i] = Some(d);
+        } else {
+            state = None;
+        }
+    }
 
     // 计算 J 值
     let mut j_line = Vec::new();
@@ -610,6 +629,26 @@ pub fn kdj(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn rolling_values_match_reference_and_recover_after_gaps() {
+        let data: Vec<_> = (0..100).map(|i| 10.0 + (i as f64 * 0.3).sin()).collect();
+        for period in [1, 5, 20] {
+            let result = sma(&data, period);
+            for (i, window) in data.windows(period).enumerate() {
+                let reference = window.iter().sum::<f64>() / period as f64;
+                assert!((result[i + period - 1].unwrap() - reference).abs() < 1e-12);
+            }
+        }
+        assert_eq!(rsi(&[10.0; 20], 14)[14], Some(50.0));
+        assert!(rsi(&data, usize::MAX).iter().all(Option::is_none));
+        assert!(rsi(&data, 0).iter().all(Option::is_none));
+        let result = sma(&[1.0, f64::NAN, 3.0, 4.0], 2);
+        assert_eq!(result, vec![None, None, None, Some(3.5)]);
+        let kdj = kdj(&[11.0; 3], &[9.0; 3], &[10.0; 3], 9, 3, 3);
+        assert_eq!(kdj.k, vec![None; 3]);
+        assert_eq!(kdj.d, vec![None; 3]);
+    }
 
     #[test]
     fn test_sma() {

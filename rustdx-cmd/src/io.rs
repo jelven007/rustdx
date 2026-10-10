@@ -33,6 +33,9 @@ where
     T: serde::Serialize + QualityRow + Send,
 {
     let start = Instant::now();
+    if cmd.workers.is_some_and(|n| !(1..=64).contains(&n)) {
+        eyre::bail!("workers必须在1–64之间");
+    }
     let hm = cmd.stocklist()?;
     let mut total_files = 0usize;
     let mut total_rows = 0usize;
@@ -42,16 +45,13 @@ where
         // 收集 (完整代码, 文件路径)，代码含市场前缀（如 `sz000001`、`sz200b07`）
         let work: Vec<(String, std::path::PathBuf)> = filter_file(dir)?
             .filter_map(|f| {
-                let s = f.to_str().unwrap();
-                let (b, code) = cmd.filter_ec(s);
+                let s = f.to_string_lossy();
+                let (b, code) = cmd.filter_ec(&s);
                 filter(b, f.as_path(), hm.as_ref(), dir)
                     .unwrap_or(false)
                     .then_some((code, f))
             })
-            .take(
-                cmd.amount
-                    .unwrap_or_else(|| filter_file(dir).map(|it| it.count()).unwrap_or(0)),
-            )
+            .take(cmd.amount.unwrap_or(usize::MAX))
             .collect();
         let n = work.len();
         info!("dir: {dir:?} day 文件数量：{n}");
@@ -59,9 +59,14 @@ where
 
         let count = AtomicUsize::new(0); // 成功解析的文件数
         let next = AtomicUsize::new(0); // 任务队列：原子取下一个文件
-        let workers = thread::available_parallelism()
-            .map(|n| n.get())
-            .unwrap_or(4);
+        let workers = cmd
+            .workers
+            .unwrap_or_else(|| {
+                thread::available_parallelism()
+                    .map(|n| n.get().min(8))
+                    .unwrap_or(4)
+            })
+            .min(n.max(1));
         let (tx, rx) = mpsc::sync_channel::<(String, eyre::Result<Vec<T>>)>(workers.max(1) * 2);
 
         // 所有 worker 共享的引用：原子计数器与任务列表
@@ -80,7 +85,15 @@ where
                             break;
                         }
                         let (code, src) = &work[i];
-                        let result = parse(code, src);
+                        let result =
+                            fs::metadata(src)
+                                .map_err(eyre::Report::from)
+                                .and_then(|metadata| {
+                                    if metadata.len() > 32 * 1024 * 1024 {
+                                        eyre::bail!("单个day文件超出32MiB限制");
+                                    }
+                                    parse(code, src)
+                                });
                         if result.is_ok() {
                             count.fetch_add(1, Ordering::Relaxed);
                         }
@@ -144,6 +157,7 @@ where
         print(dir, count.load(Ordering::Relaxed), take);
     }
     wtr.flush()?;
+    report.files.sort_by(|a, b| a.source.cmp(&b.source));
     if let Some(path) = &cmd.report {
         report.write(path, failures.is_empty() && total_files > 0)?;
     }
@@ -238,11 +252,14 @@ pub fn run_csv_fq_previous(cmd: &DayCmd) -> Result<()> {
 }
 
 /// 筛选 day 文件
-#[rustfmt::skip]
-fn filter_file(dir: &Path) -> Result<impl Iterator<Item = std::path:: PathBuf>> {
-    Ok(dir.read_dir()?
-          .filter_map(|e| e.map(|f| f.path()).ok())
-          .filter(|p| p.extension().map(|s| s == "day").unwrap_or_default()))
+fn filter_file(dir: &Path) -> Result<impl Iterator<Item = std::path::PathBuf>> {
+    let mut files = dir
+        .read_dir()?
+        .map(|e| e.map(|f| f.path()))
+        .collect::<io::Result<Vec<_>>>()?;
+    files.retain(|p| p.is_file() && p.extension().is_some_and(|s| s == "day"));
+    files.sort();
+    Ok(files.into_iter())
 }
 
 /// 筛选存在于股票列表的股票

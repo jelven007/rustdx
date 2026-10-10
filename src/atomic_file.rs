@@ -40,7 +40,7 @@ impl AtomicFile {
     }
 
     pub fn commit(self) -> io::Result<()> {
-        File::open(&self.temporary)?.sync_all()?;
+        OpenOptions::new().write(true).open(&self.temporary)?.sync_all()?;
         fs::rename(&self.temporary, &self.destination)?;
         Ok(())
     }

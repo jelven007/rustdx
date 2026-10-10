@@ -9,8 +9,7 @@
 //!    下载与解压，二次运行接近秒开；
 //! 5. 解压后收集 `sh/lday`、`sz/lday`、`bj/lday` 等目录，返回给解析流程。
 
-use std::hash::{Hash, Hasher};
-use std::io::{Read, Write};
+use std::io::{IsTerminal, Read, Write};
 use std::path::{Component, Path, PathBuf};
 use std::time::Duration;
 
@@ -39,6 +38,27 @@ struct HeadInfo {
     size: Option<u64>,
 }
 
+struct CacheLock(std::fs::File);
+
+impl CacheLock {
+    fn acquire(dir: &Path) -> Result<Self> {
+        let file = std::fs::OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(false)
+            .open(dir.join("cache.lock"))?;
+        file.try_lock()
+            .map_err(|e| eyre!("该下载缓存已被其他进程使用: {e}"))?;
+        Ok(Self(file))
+    }
+}
+
+impl Drop for CacheLock {
+    fn drop(&mut self) {
+        let _ = self.0.unlock();
+    }
+}
+
 /// 自动从默认地址下载并解压，返回解压出的 `lday` 目录列表。
 pub fn prepare_hsjday_dirs() -> Result<Vec<PathBuf>> {
     prepare_hsjday_dirs_from(DEFAULT_HSJDAY_URL)
@@ -48,6 +68,7 @@ pub fn prepare_hsjday_dirs() -> Result<Vec<PathBuf>> {
 pub fn prepare_hsjday_dirs_from(url: &str) -> Result<Vec<PathBuf>> {
     let workdir = cache_dir_for(url);
     std::fs::create_dir_all(&workdir)?;
+    let _lock = CacheLock::acquire(&workdir)?;
     let zip_path = workdir.join("hsjday.zip");
     let extract_dir = workdir.join("extracted");
     let meta_path = workdir.join("meta.json");
@@ -61,12 +82,12 @@ pub fn prepare_hsjday_dirs_from(url: &str) -> Result<Vec<PathBuf>> {
             zip_path.display()
         );
     } else {
-        download_with_fallback(url, &zip_path)?;
+        let (actual_source, actual_head) = download_with_fallback(url, &zip_path)?;
         let zip_len = std::fs::metadata(&zip_path)?.len();
         meta = Meta {
-            url: url.to_string(),
-            etag: head.as_ref().and_then(|h| h.etag.clone()),
-            last_modified: head.as_ref().and_then(|h| h.last_modified.clone()),
+            url: actual_source,
+            etag: actual_head.etag,
+            last_modified: actual_head.last_modified,
             size: zip_len,
             downloaded_ok: true,
             extracted_ok: false,
@@ -79,11 +100,7 @@ pub fn prepare_hsjday_dirs_from(url: &str) -> Result<Vec<PathBuf>> {
     if meta.extracted_ok && extract_dir.is_dir() && !find_lday_dirs(&extract_dir).is_empty() {
         log::info!("解压缓存命中：{}", extract_dir.display());
     } else {
-        if extract_dir.exists() {
-            std::fs::remove_dir_all(&extract_dir)?;
-        }
-        std::fs::create_dir_all(&extract_dir)?;
-        extract_zip(&zip_path, &extract_dir)?;
+        extract_and_discover(&zip_path, &extract_dir, url)?;
         meta.extracted_ok = true;
         write_meta(&meta_path, &meta)?;
     }
@@ -104,21 +121,42 @@ pub fn prepare_hsjday_dirs_from(url: &str) -> Result<Vec<PathBuf>> {
 
 /// 直接解压本地 zip 文件，返回解压出的 `lday` 目录列表。
 pub fn prepare_hsjday_dirs_from_zip(zip_path: &Path) -> Result<Vec<PathBuf>> {
-    let workdir = std::env::temp_dir().join("rustdx_hsjday");
+    let canonical = zip_path.canonicalize()?;
+    let metadata = canonical.metadata()?;
+    let identity = format!(
+        "local:{}:{}:{:?}",
+        canonical.display(),
+        metadata.len(),
+        metadata.modified()?
+    );
+    let workdir = cache_dir_for(&identity);
     std::fs::create_dir_all(&workdir)?;
-    extract_and_discover(
-        zip_path,
-        &workdir.join("extracted"),
-        &zip_path.display().to_string(),
-    )
+    let _lock = CacheLock::acquire(&workdir)?;
+    let meta_path = workdir.join("meta.json");
+    let extract_dir = workdir.join("extracted");
+    let meta = read_meta(&meta_path)?;
+    if meta.url == identity && meta.extracted_ok && !find_lday_dirs(&extract_dir).is_empty() {
+        return Ok(find_lday_dirs(&extract_dir));
+    }
+    let dirs = extract_and_discover(zip_path, &extract_dir, &zip_path.display().to_string())?;
+    write_meta(
+        &meta_path,
+        &Meta {
+            url: identity,
+            size: metadata.len(),
+            extracted_ok: true,
+            ..Default::default()
+        },
+    )?;
+    Ok(dirs)
 }
 
 /// 下载（首次失败自动重试 2 次；仍失败 → 交互提供备选 URL / 本地 zip 路径）。
-fn download_with_fallback(initial_url: &str, zip_path: &Path) -> Result<()> {
+fn download_with_fallback(initial_url: &str, zip_path: &Path) -> Result<(String, HeadInfo)> {
     let mut last_err: Option<eyre::Report> = None;
     for attempt in 1..=3 {
         match download(initial_url, zip_path) {
-            Ok(()) => return Ok(()),
+            Ok(info) => return Ok((initial_url.to_owned(), info)),
             Err(e) => {
                 log::warn!("下载失败（第 {attempt}/3 次）: {e:#}");
                 last_err = Some(e);
@@ -138,22 +176,77 @@ fn download_with_fallback(initial_url: &str, zip_path: &Path) -> Result<()> {
 
     let fallback = prompt_fallback()?;
     if fallback.starts_with("http://") || fallback.starts_with("https://") {
-        download(&fallback, zip_path).map_err(|e2| eyre!("备选地址下载失败: {e2:#}"))?;
+        let info = download(&fallback, zip_path).map_err(|e2| eyre!("备选地址下载失败: {e2:#}"))?;
+        Ok((fallback, info))
     } else {
         let p = PathBuf::from(&fallback);
         if !p.is_file() {
             bail!("提供的文件不存在: {}", p.display());
         }
         log::info!("使用本地 zip: {}", p.display());
-        std::fs::copy(&p, zip_path)?;
+        let (atomic, mut file) = rustdx_complete::atomic_file::AtomicFile::create(zip_path)?;
+        std::io::copy(&mut std::fs::File::open(&p)?, &mut file)?;
+        drop(file);
+        atomic.commit()?;
+        Ok((
+            fallback,
+            HeadInfo {
+                etag: None,
+                last_modified: None,
+                size: Some(std::fs::metadata(zip_path)?.len()),
+            },
+        ))
     }
-    Ok(())
+}
+
+#[derive(Serialize, Deserialize)]
+struct PartialMeta {
+    url: String,
+    validator: Option<String>,
+}
+
+fn response_header(headers: &ureq::http::HeaderMap, name: &str) -> Option<String> {
+    headers
+        .get(name)
+        .and_then(|v| v.to_str().ok())
+        .map(str::to_owned)
+}
+
+/// 严格验证续传字节边界，返回完整文件的期望大小。
+fn validate_content_range(value: &str, offset: u64, length: Option<u64>) -> Result<u64> {
+    let value = value
+        .strip_prefix("bytes ")
+        .ok_or_else(|| eyre!("非法Content-Range"))?;
+    let (range, total) = value
+        .split_once('/')
+        .ok_or_else(|| eyre!("非法Content-Range"))?;
+    let (start, end) = range
+        .split_once('-')
+        .ok_or_else(|| eyre!("非法Content-Range"))?;
+    let (start, end, total): (u64, u64, u64) = (start.parse()?, end.parse()?, total.parse()?);
+    if start != offset
+        || end < start
+        || end >= total
+        || length.is_some_and(|len| len != end - start + 1)
+    {
+        bail!("Content-Range与续传位置/响应长度不匹配");
+    }
+    Ok(total)
 }
 
 /// 下载 url 到 dest 文件，支持断点续传（服务器返回 206 时从已下载位置追加）。
-fn download(url: &str, dest: &Path) -> Result<()> {
-    let done = if dest.exists() {
-        std::fs::metadata(dest)?.len()
+fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
+    let part = dest.with_extension("zip.part");
+    let part_meta = dest.with_extension("zip.part.json");
+    let previous: Option<PartialMeta> = std::fs::read(&part_meta)
+        .ok()
+        .and_then(|b| serde_json::from_slice(&b).ok());
+    let validator = previous
+        .as_ref()
+        .filter(|p| p.url == url)
+        .and_then(|p| p.validator.as_ref());
+    let done = if validator.is_some() {
+        std::fs::metadata(&part).map(|m| m.len()).unwrap_or(0)
     } else {
         0
     };
@@ -166,29 +259,73 @@ fn download(url: &str, dest: &Path) -> Result<()> {
         log::info!("正在下载 {url} ...");
     }
 
-    let mut req = ureq::get(url);
+    let mut req = ureq::get(url).header("Accept-Encoding", "identity");
     if done > 0 {
-        req = req.header("Range", &format!("bytes={done}-"));
+        req = req
+            .header("Range", &format!("bytes={done}-"))
+            .header("If-Range", validator.unwrap());
     }
-    let mut resp = req.call().map_err(|e| eyre!("{e}"))?;
+    let mut resp = match req.call() {
+        Ok(resp) => resp,
+        Err(ureq::Error::StatusCode(416)) if done > 0 => {
+            let _ = std::fs::remove_file(&part);
+            let _ = std::fs::remove_file(&part_meta);
+            return download(url, dest);
+        }
+        Err(e) => return Err(eyre!("{e}")),
+    };
 
     let mut start = 0u64;
+    let length = response_header(resp.headers(), "content-length").and_then(|s| s.parse().ok());
+    let mut expected = length;
     match resp.status().as_u16() {
         200 if done > 0 => {
             // 服务器不支持 Range（或文件已变）：从头下载
             log::warn!("服务器返回 200（不支持断点续传），从头下载");
         }
-        206 => start = done,
+        206 if done > 0 => {
+            let range = response_header(resp.headers(), "content-range")
+                .ok_or_else(|| eyre!("续传响应缺少Content-Range"))?;
+            expected = Some(match validate_content_range(&range, done, length) {
+                Ok(size) => size,
+                Err(e) => {
+                    let _ = std::fs::remove_file(&part_meta);
+                    return Err(e);
+                }
+            });
+            start = done;
+        }
         200 => {}
         s => {
             bail!("HTTP {s}");
         }
     }
 
+    let etag = response_header(resp.headers(), "etag").filter(|s| !s.starts_with("W/"));
+    let last_modified = response_header(resp.headers(), "last-modified");
+    let response_validator = etag
+        .clone()
+        .or_else(|| response_header(resp.headers(), "last-modified"));
+    if start > 0
+        && response_validator
+            .as_ref()
+            .is_some_and(|value| Some(value) != validator)
+    {
+        let _ = std::fs::remove_file(&part_meta);
+        bail!("续传响应版本已变化");
+    }
+    let metadata = PartialMeta {
+        url: url.to_owned(),
+        validator: response_validator.or_else(|| validator.cloned()),
+    };
+    let (atomic, mut metadata_file) = rustdx_complete::atomic_file::AtomicFile::create(&part_meta)?;
+    serde_json::to_writer(&mut metadata_file, &metadata)?;
+    drop(metadata_file);
+    atomic.commit()?;
     let mut out = if start > 0 {
-        std::fs::OpenOptions::new().append(true).open(dest)?
+        std::fs::OpenOptions::new().append(true).open(&part)?
     } else {
-        std::fs::File::create(dest)?
+        std::fs::File::create(&part)?
     };
 
     let mut reader = resp.body_mut().as_reader();
@@ -209,16 +346,31 @@ fn download(url: &str, dest: &Path) -> Result<()> {
         }
     }
     out.flush()?;
+    out.sync_all()?;
+    drop(out);
+    if expected.is_some_and(|size| total != size) {
+        bail!("下载长度不完整: {total}/{expected:?}");
+    }
+    zip::ZipArchive::new(std::fs::File::open(&part)?).map_err(|e| eyre!("下载ZIP目录损坏: {e}"))?;
+    std::fs::rename(&part, dest)?;
+    let _ = std::fs::remove_file(&part_meta);
     log::info!(
         "下载完成: {} ({:.1} MiB)",
         dest.display(),
         total as f64 / (1024.0 * 1024.0)
     );
-    Ok(())
+    Ok(HeadInfo {
+        etag,
+        last_modified,
+        size: Some(total),
+    })
 }
 
 /// 下载失败后的交互：询问用户提供备选 URL 或本地 zip 文件路径。
 fn prompt_fallback() -> Result<String> {
+    if !std::io::stdin().is_terminal() {
+        bail!("下载重试已耗尽；非交互环境请显式提供可用URL或本地ZIP");
+    }
     eprintln!("下载失败。请提供备选下载地址（URL）或本地 zip 文件路径（直接回车退出）：");
     let mut line = String::new();
     std::io::stdin().read_line(&mut line)?;
@@ -258,11 +410,22 @@ fn extract_zip(zip_path: &Path, dest: &Path) -> Result<()> {
 
 /// 解压 zip 并收集 `lday` 目录。
 fn extract_and_discover(zip_path: &Path, extract_dir: &Path, source: &str) -> Result<Vec<PathBuf>> {
+    let staging = extract_dir.with_extension("staging");
+    if staging.exists() {
+        std::fs::remove_dir_all(&staging)?;
+    }
+    std::fs::create_dir_all(&staging)?;
+    if let Err(e) = extract_zip(zip_path, &staging) {
+        let _ = std::fs::remove_dir_all(&staging);
+        return Err(e);
+    }
+    if find_lday_dirs(&staging).is_empty() {
+        bail!("ZIP中未找到含day文件的lday目录: {source}");
+    }
     if extract_dir.exists() {
         std::fs::remove_dir_all(extract_dir)?;
     }
-    std::fs::create_dir_all(extract_dir)?;
-    extract_zip(zip_path, extract_dir)?;
+    std::fs::rename(&staging, extract_dir)?;
     log::info!("解压完成: {}", extract_dir.display());
 
     let dirs = find_lday_dirs(extract_dir);
@@ -280,6 +443,9 @@ fn extract_and_discover(zip_path: &Path, extract_dir: &Path, source: &str) -> Re
 
 /// 安全拼接：只允许普通目录/文件名组件，拒绝 `..`、绝对路径、前缀等。
 fn safe_join(base: &Path, name: &str) -> Option<PathBuf> {
+    if name.contains(':') || name.is_empty() {
+        return None;
+    }
     let mut out = PathBuf::from(base);
     for comp in Path::new(name).components() {
         match comp {
@@ -298,7 +464,11 @@ fn find_lday_dirs(root: &Path) -> Vec<PathBuf> {
     };
     for e in entries.flatten() {
         let lday = e.path().join("lday");
-        if lday.is_dir() {
+        if lday.is_dir()
+            && std::fs::read_dir(&lday).is_ok_and(|mut files| {
+                files.any(|f| f.is_ok_and(|f| f.path().extension().is_some_and(|s| s == "day")))
+            })
+        {
             dirs.push(lday);
         }
     }
@@ -308,11 +478,9 @@ fn find_lday_dirs(root: &Path) -> Vec<PathBuf> {
 
 /// 按 URL 独立缓存目录（不同来源互不覆盖）。
 fn cache_dir_for(url: &str) -> PathBuf {
-    let mut h = std::collections::hash_map::DefaultHasher::new();
-    url.hash(&mut h);
     std::env::temp_dir()
         .join("rustdx_hsjday")
-        .join(format!("{:016x}", h.finish()))
+        .join(rustdx_complete::cache::stable_key(url))
 }
 
 /// HEAD 探测服务器文件信息（ETag / Last-Modified / Content-Length）。
@@ -333,12 +501,16 @@ fn head_info(url: &str) -> Result<HeadInfo> {
 
 /// 判断本地 zip 缓存是否仍与服务器一致（命中则跳过下载）。
 fn zip_cached(url: &str, zip_path: &Path, meta: &Meta, head: Option<&HeadInfo>) -> bool {
-    if !zip_path.exists() || !meta.downloaded_ok || meta.url != url {
+    if std::fs::metadata(zip_path).is_err()
+        || std::fs::metadata(zip_path).is_ok_and(|m| m.len() != meta.size)
+        || !meta.downloaded_ok
+        || meta.url != url
+    {
         return false;
     }
     let Some(head) = head else {
-        // 网络探测失败：信任已有下载（避免断网时重复下载报错）
-        return true;
+        log::warn!("无法核实远端ZIP新鲜度，本次不能使用下载缓存；可显式指定本地ZIP");
+        return false;
     };
     let size_ok = head.size.map(|s| meta.size == s).unwrap_or(true);
     let id_ok = match (&meta.etag, &head.etag) {
@@ -348,7 +520,7 @@ fn zip_cached(url: &str, zip_path: &Path, meta: &Meta, head: Option<&HeadInfo>) 
             _ => false,
         },
     };
-    size_ok && (id_ok || (head.etag.is_none() && head.last_modified.is_none()))
+    size_ok && id_ok
 }
 
 fn read_meta(path: &Path) -> Result<Meta> {
@@ -360,7 +532,10 @@ fn read_meta(path: &Path) -> Result<Meta> {
 }
 
 fn write_meta(path: &Path, meta: &Meta) -> Result<()> {
-    std::fs::write(path, serde_json::to_string_pretty(meta)?)?;
+    let (atomic, mut file) = rustdx_complete::atomic_file::AtomicFile::create(path)?;
+    serde_json::to_writer_pretty(&mut file, meta)?;
+    drop(file);
+    atomic.commit()?;
     Ok(())
 }
 
@@ -369,12 +544,113 @@ mod tests {
     use super::*;
 
     #[test]
+    fn http_resume_uses_validator_and_publishes_complete_archive() {
+        use std::net::TcpListener;
+        let mut zip = zip::ZipWriter::new(std::io::Cursor::new(Vec::new()));
+        zip.start_file(
+            "sh/lday/sh600000.day",
+            zip::write::SimpleFileOptions::default(),
+        )
+        .unwrap();
+        zip.write_all(&[0; 32]).unwrap();
+        let bytes = zip.finish().unwrap().into_inner();
+        let split = bytes.len() / 2;
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let url = format!("http://{}/hsjday.zip", listener.local_addr().unwrap());
+        let dir = std::env::temp_dir().join(format!("rustdx-resume-test-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let dest = dir.join("hsjday.zip");
+        std::fs::write(dest.with_extension("zip.part"), &bytes[..split]).unwrap();
+        std::fs::write(
+            dest.with_extension("zip.part.json"),
+            serde_json::to_vec(&PartialMeta {
+                url: url.clone(),
+                validator: Some("\"version1\"".into()),
+            })
+            .unwrap(),
+        )
+        .unwrap();
+        let response_bytes = bytes.clone();
+        let server = std::thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            stream
+                .set_read_timeout(Some(Duration::from_secs(3)))
+                .unwrap();
+            let mut request = Vec::new();
+            while !request.ends_with(b"\r\n\r\n") {
+                let mut byte = [0];
+                stream.read_exact(&mut byte).unwrap();
+                request.push(byte[0]);
+            }
+            let request = String::from_utf8(request).unwrap().to_lowercase();
+            assert!(request.contains(&format!("range: bytes={split}-")));
+            assert!(request.contains("if-range: \"version1\""));
+            let header = format!(
+                "HTTP/1.1 206 Partial Content\r\nContent-Length: {}\r\nContent-Range: bytes {}-{}/{}\r\nETag: \"version1\"\r\nConnection: close\r\n\r\n",
+                response_bytes.len() - split,
+                split,
+                response_bytes.len() - 1,
+                response_bytes.len()
+            );
+            stream.write_all(header.as_bytes()).unwrap();
+            stream.write_all(&response_bytes[split..]).unwrap();
+        });
+        download(&url, &dest).unwrap();
+        server.join().unwrap();
+        assert_eq!(std::fs::read(&dest).unwrap(), bytes);
+        assert!(!dest.with_extension("zip.part").exists());
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
     fn safe_join_rejects_traversal() {
         let base = Path::new("/tmp/base");
         assert!(safe_join(base, "sh/lday/sh000001.day").is_some());
         assert!(safe_join(base, "../evil").is_none());
         assert!(safe_join(base, "/abs").is_none());
         assert!(safe_join(base, "a/../../b").is_none());
+        assert!(safe_join(base, "C:/evil").is_none());
+    }
+
+    #[test]
+    fn content_range_requires_exact_offset_and_length() {
+        assert_eq!(
+            validate_content_range("bytes 10-19/20", 10, Some(10)).unwrap(),
+            20
+        );
+        for range in [
+            "bytes 0-19/20",
+            "bytes 10-20/20",
+            "bytes 10-19/*",
+            "10-19/20",
+        ] {
+            assert!(validate_content_range(range, 10, Some(10)).is_err());
+        }
+    }
+
+    #[test]
+    fn local_archives_have_isolated_cache_and_failure_preserves_extraction() {
+        let dir = std::env::temp_dir().join(format!("rustdx-zip-test-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("sample.zip");
+        let mut zip = zip::ZipWriter::new(std::fs::File::create(&path).unwrap());
+        zip.start_file(
+            "sh\\lday\\sh600000.day",
+            zip::write::SimpleFileOptions::default(),
+        )
+        .unwrap();
+        zip.write_all(&[0; 32]).unwrap();
+        zip.finish().unwrap();
+        let extracted = dir.join("extracted");
+        let dirs = extract_and_discover(&path, &extracted, "fixture").unwrap();
+        assert_eq!(dirs.len(), 1);
+        std::fs::write(&path, b"invalid zip").unwrap();
+        assert!(extract_and_discover(&path, &extracted, "fixture").is_err());
+        assert!(dirs[0].join("sh600000.day").exists());
+        let _lock = CacheLock::acquire(&dir).unwrap();
+        assert!(CacheLock::acquire(&dir).is_err());
+        assert_ne!(cache_dir_for("local:a"), cache_dir_for("local:b"));
+        std::fs::remove_dir_all(dir).unwrap();
     }
 
     #[test]
