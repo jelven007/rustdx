@@ -1,5 +1,5 @@
 [package]
-name        = "rustdx-cli"
+name        = "jelven-rustdx-cli"
 version     = "1.8.1"
 edition     = "2024"
 rust-version = "1.89"
@@ -13,6 +13,10 @@ exclude     = [
                 "assets", "examples", "benches", "tests", "rustdx.log", "*.csv",
                 "rustfmt.toml"
               ]
+
+[lib]
+name = "rustdx_cli"
+path = "src/lib.rs"
 
 [dependencies]
 eyre = "0.6"
