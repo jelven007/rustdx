@@ -1,6 +1,6 @@
 # 数据语义与迁移
 
-## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，待发布）
+## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，已发布 crates.io）
 
 以下为相对1.12.1 / 1.8.1的行为变化；核心库导入名仍为 `rustdx_complete`，CLI二进制名仍为 `rustdx`。
 

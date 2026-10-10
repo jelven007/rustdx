@@ -1,6 +1,6 @@
 # rustdx
 
-Rust 行情库与数据导入工具。当前版本：jelven-rustdx-complete 1.12.2、jelven-rustdx-cli 1.8.2，最低 Rust 1.89，二进制名为 `rustdx`。本版包含复权、涨跌停舍入、指标、证券列表完整性及文件保护修复，详见[变更记录](CHANGELOG.md)。
+Rust 行情库与数据导入工具。最新发布版本：jelven-rustdx-complete 1.12.2、jelven-rustdx-cli 1.8.2，最低 Rust 1.89，二进制名为 `rustdx`。本版包含复权、涨跌停舍入、指标、证券列表完整性及文件保护修复，详见[变更记录](CHANGELOG.md)。
 
 核心库实现通达信 TCP 行情协议、本地 day/lc/gbbq 文件解析、价格复权、技术指标、交易日历、连接池和缓存。CLI 提供日线下载/解析、东方财富收盘快照、CSV/JSON 输出及数据库导入。采用同步 I/O 和有界线程并发。
 

@@ -1,6 +1,6 @@
 # 变更记录
 
-## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，待发布）
+## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，已发布 crates.io）
 
 - 修复行情前后复权：可用历史首日不重复应用旧事件，停牌期间连续事件逐次承接参考价；非法价格、事件或因子返回错误。
 - 涨跌停使用整数分及整数百分比舍入，修正半分误差与主板代码范围；昨收要求有效分单位报价。
@@ -13,7 +13,7 @@
 - 移除无来源的行业/省份映射，旧函数弃用并返回未知，财务接口继续保留原始编码。
 - 删除6个仅测试pytdx的脚本、过期请求脚本、未采用快照；简化网络诊断，清理死代码、错误导入名和无依据的一致性声明。保留许可证与必要协议来源。
 
-本版基于源码提交2fbbda6，按核心库1.12.2、CLI1.8.2的顺序发布到crates.io。行为变化见[MIGRATION.md](docs/MIGRATION.md)。
+本版基于源码提交2fbbda6，发布提交9dfc024；已按核心库1.12.2、CLI1.8.2的顺序发布到crates.io，并核验版本、依赖和源码包校验和。行为变化见[MIGRATION.md](docs/MIGRATION.md)。
 
 ## jelven-rustdx-complete 1.12.1 / jelven-rustdx-cli 1.8.1（2026-10-10，已发布 crates.io）
 
