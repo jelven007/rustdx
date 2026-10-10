@@ -4,7 +4,11 @@ use std::mem::size_of;
 #[test]
 fn tcp() {
     use rustdx_complete::tcp;
-    assert_debug_snapshot!(size_of::<tcp::Tcp>(),              @"144");
+    let tcp_size = size_of::<tcp::Tcp>();
+    assert!(
+        (128..=160).contains(&tcp_size),
+        "Tcp包含平台相关的TcpStream，结构体大小超出预期：{tcp_size}"
+    );
     assert_debug_snapshot!(size_of::<tcp::SecurityCount>(),    @"24");
     assert_debug_snapshot!(size_of::<tcp::SecurityList>(),     @"72");
     assert_debug_snapshot!(size_of::<tcp::SecurityListData>(), @"48");
