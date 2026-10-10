@@ -39,11 +39,12 @@ pub struct Gbbq<'a> {
     ///
     /// ```ignore
     /// use itertools::Itertools;
-    /// use rustdx::file::gbbq::{Gbbq, Gbbqs};
+    /// use rustdx_complete::file::gbbq::{Gbbq, Gbbqs};
     ///
     /// fn main() {
-    ///     let gbbqs = Gbbqs::from_file("assets/gbbq");
-    ///     let v: Vec<_> = gbbqs.unique_by(|Gbbq { category, .. }| *category).collect();
+    ///     let mut gbbqs = Gbbqs::from_file("assets/gbbq").unwrap();
+    ///     let v: Vec<_> = gbbqs.to_vec().into_iter()
+    ///         .unique_by(|Gbbq { category, .. }| *category).collect();
     ///     println!("len: {}\n{:#?}", v.len(), v);
     /// }
     /// ```

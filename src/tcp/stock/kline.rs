@@ -1,18 +1,5 @@
 use crate::tcp::{Tdx, helper::DateTime};
 
-// ['获取股票行情', '参数：市场代码， 股票代码， 如： 0,000001 或 1,  600300',
-// get_security_quotes, '0,000001']),          (2, ['获取k线', '''category-> K线种类  0
-// 5分钟K线 1 15分钟K线 2 30分钟K线 3 1小时K线 4 日K线  5 周K线   6 月K线
-//   7 1分钟
-//   8 1分钟K线 9 日K线
-//   10 季K线
-//   11 年K线
-//   market -> 市场代码 0:深圳，1:上海
-//   stockcode -> 证券代码;
-//   start -> 指定的范围开始位置;
-//   count -> 用户要请求的 K 线数目，最大值为 800
-//
-//   如： 9,0,000001,0,100''', get_security_bars, '9,0,000001,0,100']),
 /// 查询股票日线。对应于 pytdx 中的 hq.get_security_bars、GetSecurityBarsCmd。
 /// ## 注意
 /// 只修改字段并不会更改待发送字节的内容。
@@ -195,33 +182,6 @@ pub struct KlineData<'d> {
     /// 成交额，单位：元
     pub amount: f64,
 }
-
-// impl<'d> KlineData<'d> {
-//     pub fn parse(v: &'d [u8], mut pos: usize, mut base: i32, code: &'d str, category: u16)
-//                  -> (usize, i32, KlineData<'d>) {
-//         use crate::{
-//             bytes_helper::u32_from_le_bytes,
-//             tcp::helper::{datetime, price, vol_amount},
-//         };
-//         let dt = datetime(&v[pos..pos + 4], category);
-//         pos += 4;
-//         let open = price(&v, &mut pos);
-//         let close = price(&v, &mut pos);
-//
-//         #[rustfmt::skip]
-//         let kline = Self { dt, code,
-//                            open: { base += open; base as f64 / 1000.  },
-//                            close: real_price(close, base),
-//                            high: real_price(price(&v, &mut pos), base),
-//                            low: real_price(price(&v, &mut pos), base),
-//                            vol: { pos += 4; vol_amount(u32_from_le_bytes(&v, pos - 4) as
-// i32) },                            amount: { pos += 4; vol_amount(u32_from_le_bytes(&v, pos
-// - 4) as i32) } };
-//
-//         base += close;
-//         (pos, base, kline)
-//     }
-// }
 
 #[test]
 fn day_new_modify() {

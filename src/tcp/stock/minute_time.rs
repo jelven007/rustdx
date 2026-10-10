@@ -10,8 +10,8 @@ use crate::tcp::Tdx;
 ///
 /// ## 示例
 /// ```ignore
-/// use rustdx::tcp::{Tcp, Tdx};
-/// use rustdx::tcp::stock::MinuteTime;
+/// use rustdx_complete::tcp::{Tcp, Tdx};
+/// use rustdx_complete::tcp::stock::MinuteTime;
 ///
 /// let mut tcp = Tcp::new()?;
 /// let mut minute = MinuteTime::new(0, "000001");

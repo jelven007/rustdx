@@ -10,8 +10,8 @@ use crate::tcp::{Tdx, reader::Reader};
 ///
 /// ## 示例
 /// ```ignore
-/// use rustdx::tcp::{Tcp, Tdx};
-/// use rustdx::tcp::stock::Transaction;
+/// use rustdx_complete::tcp::{Tcp, Tdx};
+/// use rustdx_complete::tcp::stock::Transaction;
 ///
 /// let mut tcp = Tcp::new()?;
 /// let mut transaction = Transaction::new(0, "000001", 0, 20);

@@ -82,11 +82,13 @@ pub fn sma(data: &[f64], period: usize) -> Vec<Option<f64>> {
     data.iter().map(|&value| state.update(value)).collect()
 }
 
-/// O(1)更新的移动均值；非有限值返回None，离开窗口后恢复。
+/// 通常 O(1) 更新的移动均值；非有限值返回None，离开窗口后恢复。
+/// 累加溢出时重算当前窗口，避免后续永久失效。
 pub struct RollingSma {
     period: usize,
     window: std::collections::VecDeque<f64>,
     sum: f64,
+    correction: f64,
     invalid: usize,
 }
 
@@ -96,6 +98,7 @@ impl RollingSma {
             period,
             window: std::collections::VecDeque::new(),
             sum: 0.0,
+            correction: 0.0,
             invalid: 0,
         }
     }
@@ -103,22 +106,45 @@ impl RollingSma {
         if self.period == 0 {
             return None;
         }
-        self.window.push_back(value);
-        if value.is_finite() {
-            self.sum += value;
-        } else {
-            self.invalid += 1;
-        }
-        if self.window.len() > self.period {
+        if self.window.len() == self.period {
             let old = self.window.pop_front().unwrap();
             if old.is_finite() {
-                self.sum -= old;
+                Self::add(&mut self.sum, &mut self.correction, -old);
             } else {
                 self.invalid -= 1;
             }
         }
-        (self.window.len() == self.period && self.invalid == 0 && self.sum.is_finite())
-            .then_some(self.sum / self.period as f64)
+        self.window.push_back(value);
+        if value.is_finite() {
+            Self::add(&mut self.sum, &mut self.correction, value);
+        } else {
+            self.invalid += 1;
+        }
+        if !(self.sum + self.correction).is_finite() {
+            self.sum = 0.0;
+            self.correction = 0.0;
+            for &value in self.window.iter().filter(|v| v.is_finite()) {
+                Self::add(&mut self.sum, &mut self.correction, value);
+            }
+        }
+        let sum = self.sum + self.correction;
+        (self.window.len() == self.period && self.invalid == 0 && sum.is_finite())
+            .then_some(sum / self.period as f64)
+    }
+
+    // Neumaier补偿求和，保留大数进出窗口时丢失的小数项。
+    fn add(sum: &mut f64, correction: &mut f64, value: f64) {
+        let next = *sum + value;
+        if next.is_finite() {
+            *correction += if sum.abs() >= value.abs() {
+                (*sum - next) + value
+            } else {
+                (value - next) + *sum
+            };
+        } else {
+            *correction = 0.0;
+        }
+        *sum = next;
     }
 }
 
@@ -131,7 +157,8 @@ impl RollingSma {
 ///
 /// # 返回
 ///
-/// 返回一个向量，第一个元素为初始值，后续为计算出的 EMA 值
+/// 首个有效价格作为初值；非有限输入返回 NaN 并重置，下一有效价格重新起算。
+/// 周期为0时返回全NaN。返回长度始终与输入一致。
 ///
 /// # 示例
 ///
@@ -150,7 +177,7 @@ impl RollingSma {
 /// 其中：
 /// - k = 2 / (n + 1) 是平滑系数
 /// - n 是周期数
-/// - 第一个 EMA 值通常使用 SMA 作为初始值
+/// - 本实现使用每段首个有效价格作为初始值
 /// ```
 pub fn ema(data: &[f64], period: usize) -> Vec<f64> {
     if data.is_empty() {
@@ -158,21 +185,21 @@ pub fn ema(data: &[f64], period: usize) -> Vec<f64> {
     }
 
     if period < 1 {
-        return vec![0.0; data.len()];
+        return vec![f64::NAN; data.len()];
     }
 
     let multiplier = 2.0 / (period as f64 + 1.0);
     let mut emas = Vec::with_capacity(data.len());
 
-    // 第一个 EMA 值使用第一个价格
-    let mut prev_ema = data[0];
-    emas.push(prev_ema);
-
-    // 后续 EMA 值使用递推公式
-    for &price in &data[1..] {
-        let ema = (price - prev_ema) * multiplier + prev_ema;
-        emas.push(ema);
-        prev_ema = ema;
+    let mut previous = None;
+    for &price in data {
+        let value = if price.is_finite() {
+            previous.map_or(price, |prev| price * multiplier + prev * (1.0 - multiplier))
+        } else {
+            f64::NAN
+        };
+        previous = value.is_finite().then_some(value);
+        emas.push(value);
     }
 
     emas
@@ -204,7 +231,8 @@ pub struct MacdResult {
 ///
 /// # 返回
 ///
-/// 返回包含 MACD 线、信号线和柱状图的结构体
+/// 返回包含 MACD 线、信号线和柱状图的结构体。
+/// 非法周期返回全None；缺口返回None并重置平滑状态，保留原始位置。
 ///
 /// # 示例
 ///
@@ -244,6 +272,13 @@ pub fn macd(
     slow_period: usize,
     signal_period: usize,
 ) -> MacdResult {
+    if fast_period == 0 || slow_period == 0 || signal_period == 0 {
+        return MacdResult {
+            macd: vec![None; data.len()],
+            signal: vec![None; data.len()],
+            histogram: vec![None; data.len()],
+        };
+    }
     // 计算 EMA
     let ema_fast = ema(data, fast_period);
     let ema_slow = ema(data, slow_period);
@@ -252,23 +287,27 @@ pub fn macd(
     let macd_line: Vec<Option<f64>> = ema_fast
         .iter()
         .zip(ema_slow.iter())
-        .map(|(f, s)| Some(f - s))
+        .map(|(f, s)| (f - s).is_finite().then_some(f - s))
         .collect();
 
     // 信号线 = MACD 线的 EMA
-    let macd_values: Vec<f64> = macd_line.iter().filter_map(|&v| v).collect();
+    let macd_values: Vec<f64> = macd_line.iter().map(|v| v.unwrap_or(f64::NAN)).collect();
     let signal_ema = ema(&macd_values, signal_period);
 
-    // 构造信号线（前面数据不足的部分为 None）
-    let mut signal_line = vec![None; macd_line.len().saturating_sub(signal_ema.len())];
-    signal_line.extend(signal_ema.iter().map(|&v| Some(v)));
+    let signal_line: Vec<_> = signal_ema
+        .iter()
+        .map(|&v| v.is_finite().then_some(v))
+        .collect();
 
     // 柱状图 = MACD - Signal
     let histogram: Vec<Option<f64>> = macd_line
         .iter()
         .zip(signal_line.iter())
         .map(|(m, s)| match (m, s) {
-            (Some(macd_val), Some(signal_val)) => Some(macd_val - signal_val),
+            (Some(macd_val), Some(signal_val)) => {
+                let value = macd_val - signal_val;
+                value.is_finite().then_some(value)
+            }
             _ => None,
         })
         .collect();
@@ -377,7 +416,8 @@ pub struct BollingerBandsResult {
 ///
 /// # 返回
 ///
-/// 返回包含上轨、中轨、下轨的结构体
+/// 返回包含上轨、中轨、下轨的结构体。
+/// 周期小于2或倍数非有限/负数时全None；窗口缺口或溢出时相应轨道为None。
 ///
 /// # 示例
 ///
@@ -414,11 +454,11 @@ pub fn bollinger_bands(
     period: usize,
     std_dev_multiplier: f64,
 ) -> BollingerBandsResult {
-    if data.is_empty() {
+    if period < 2 || !std_dev_multiplier.is_finite() || std_dev_multiplier < 0.0 {
         return BollingerBandsResult {
-            upper: vec![],
-            middle: vec![],
-            lower: vec![],
+            upper: vec![None; data.len()],
+            middle: vec![None; data.len()],
+            lower: vec![None; data.len()],
         };
     }
 
@@ -446,8 +486,10 @@ pub fn bollinger_bands(
             // 下轨 = 中轨 - k × 标准差
             if i < sma_values.len() {
                 if let Some(middle_val) = sma_values[i] {
-                    upper_band.push(Some(middle_val + std_dev_multiplier * std));
-                    lower_band.push(Some(middle_val - std_dev_multiplier * std));
+                    let upper = middle_val + std_dev_multiplier * std;
+                    let lower = middle_val - std_dev_multiplier * std;
+                    upper_band.push(upper.is_finite().then_some(upper));
+                    lower_band.push(lower.is_finite().then_some(lower));
                 } else {
                     upper_band.push(None);
                     lower_band.push(None);
@@ -488,9 +530,9 @@ pub struct KdjResult {
 /// - `high`: 最高价序列
 /// - `low`: 最低价序列
 /// - `close`: 收盘价序列
-/// - `k_period`: K 线周期（默认 9）
-/// - `d_period`: D 线周期（默认 3）
-/// - `j_period`: J 线倍数（默认 3）
+/// - `k_period`: RSV 最高/最低价窗口（通常 9）
+/// - `d_period`: K 和 D 共用的 EMA 平滑周期（通常 3）
+/// - `j_multiplier`: J 线倍数（通常 3）
 ///
 /// # 返回
 ///
@@ -512,10 +554,14 @@ pub struct KdjResult {
 ///
 /// ```text
 /// RSV = (收盘价 − 最低价) / (最高价 − 最低价) × 100
-/// K = SMA(RSV, k_period)  // 通常为 3 日 SMA
-/// D = SMA(K, d_period)    // 通常为 3 日 SMA
-/// J = 3 × K − 2 × D
+/// alpha = 2 / (d_period + 1)
+/// K = K_prev + alpha × (RSV − K_prev)
+/// D = D_prev + alpha × (K − D_prev)
+/// J = j_multiplier × K − (j_multiplier − 1) × D
 /// ```
+///
+/// 每段首个有效RSV初始化K和D；缺口重置状态。此口径不同于部分软件
+/// 使用 alpha=1/3、初值50的默认KDJ，回测时须保持一致。
 ///
 /// # 交易信号
 ///
@@ -564,9 +610,9 @@ pub fn kdj(
             if !window_high
                 .iter()
                 .chain(window_low)
-                .chain(std::iter::once(&close[i]))
+                .chain(&close[start..=i])
                 .all(|v| v.is_finite())
-                || (start..=i).any(|j| high[j] < low[j])
+                || (start..=i).any(|j| high[j] < low[j] || close[j] < low[j] || close[j] > high[j])
             {
                 rsv_values.push(None);
                 continue;
@@ -577,7 +623,7 @@ pub fn kdj(
 
             if highest_high - lowest_low > 0.0 {
                 let rsv = (close[i] - lowest_low) / (highest_high - lowest_low) * 100.0;
-                rsv_values.push(Some(rsv));
+                rsv_values.push(rsv.is_finite().then_some(rsv));
             } else {
                 rsv_values.push(Some(50.0)); // 最高价 = 最低价时，RSV = 50
             }
@@ -607,7 +653,7 @@ pub fn kdj(
         match (k_val, d_val) {
             (Some(k), Some(d)) => {
                 let j = j_multiplier as f64 * k - (j_multiplier as f64 - 1.0) * d;
-                j_line.push(Some(j));
+                j_line.push(j.is_finite().then_some(j));
             }
             _ => {
                 j_line.push(None);
@@ -629,6 +675,47 @@ pub fn kdj(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn indicator_gaps_preserve_alignment_and_recover() {
+        let data = [10.0, 12.0, f64::NAN, 20.0, 22.0];
+        let values = ema(&data, 3);
+        assert_eq!(&values[..2], &[10.0, 11.0]);
+        assert!(values[2].is_nan());
+        assert_eq!(&values[3..], &[20.0, 21.0]);
+        assert!(ema(&data, 0).iter().all(|v| v.is_nan()));
+        let values = macd(&data, 2, 3, 2);
+        assert_eq!(values.macd[2], None);
+        assert_eq!(values.signal[2], None);
+        assert_eq!(values.histogram[2], None);
+        assert_eq!(values.macd[3], Some(0.0));
+        assert_eq!(values.signal[3], Some(0.0));
+        assert!(macd(&data, 0, 3, 2).macd.iter().all(Option::is_none));
+        for multiplier in [f64::NAN, f64::INFINITY, -1.0] {
+            let bands = bollinger_bands(&data, 2, multiplier);
+            assert!(
+                bands
+                    .upper
+                    .iter()
+                    .chain(&bands.middle)
+                    .chain(&bands.lower)
+                    .all(Option::is_none)
+            );
+        }
+        let values = sma(&[f64::MAX, f64::MAX, 1.0, 2.0, 3.0], 2);
+        assert_eq!(values[1], None);
+        assert_eq!(values[4], Some(2.5));
+        let values = kdj(
+            &[11.0; 5],
+            &[9.0; 5],
+            &[10.0, 12.0, 10.0, 10.0, 10.0],
+            2,
+            3,
+            3,
+        );
+        assert_eq!(values.k[..3], [None, None, None]);
+        assert_eq!(values.k[3], Some(50.0));
+    }
 
     #[test]
     fn rolling_values_match_reference_and_recover_after_gaps() {

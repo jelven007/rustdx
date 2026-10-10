@@ -49,13 +49,17 @@ impl EastCmd {
         if !self.ignore.is_empty() {
             eyre::bail!("ignore参数已停用，不能绕过行情质量校验");
         }
-        if self
-            .report
-            .as_ref()
-            .is_some_and(|p| p == std::path::Path::new(self.output_path()))
+        let mut outputs = vec![std::path::PathBuf::from(self.output_path())];
+        outputs.extend(self.report.iter().cloned());
+        if self.keep_factor && self.previous.as_deref() == Some(std::path::Path::new("clickhouse"))
         {
-            eyre::bail!("report不能与行情输出相同");
+            outputs.push("factor.csv".into());
         }
+        let inputs = crate::paths::previous_input(self.previous.as_deref())
+            .into_iter()
+            .collect::<Vec<_>>();
+        crate::paths::validate(&outputs, &inputs)?;
+        let _outputs = crate::paths::OutputLocks::acquire(&outputs)?;
         let mut report = crate::quality::CollectionReport::new(self.output_path());
         let result = fetch(self.max)
             .and_then(|data| self.process(data, &mut report))

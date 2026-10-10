@@ -1,6 +1,7 @@
 mod cmd;
 mod download;
 mod io;
+mod paths;
 mod quality;
 
 #[macro_use]

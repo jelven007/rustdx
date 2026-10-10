@@ -10,8 +10,8 @@ use crate::tcp::{Tdx, helper};
 ///
 /// ## 示例
 /// ```ignore
-/// use rustdx::tcp::{Tcp, Tdx};
-/// use rustdx::tcp::stock::SecurityList;
+/// use rustdx_complete::tcp::{Tcp, Tdx};
+/// use rustdx_complete::tcp::stock::SecurityList;
 ///
 /// let mut tcp = Tcp::new()?;
 /// let mut list = SecurityList::new(0, 0); // 深市，从0开始

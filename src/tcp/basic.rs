@@ -50,12 +50,13 @@ impl Tdx for SecurityCount {
     }
 
     fn parse(&mut self, response: Vec<u8>) {
-        self.count = u16_from_le_bytes(&response, 0);
+        let _ = self.try_parse(response);
     }
 
     fn try_parse(&mut self, response: Vec<u8>) -> Result<()> {
+        self.count = 0;
         super::reader::require_len(&response, 2)?;
-        self.parse(response);
+        self.count = u16_from_le_bytes(&response, 0);
         Ok(())
     }
 
@@ -143,6 +144,7 @@ impl Tdx for SecurityList {
     fn try_parse(&mut self, v: Vec<u8>) -> Result<()> {
         self.data = [].into();
         self.count = 0;
+        self.response.clear();
         super::reader::require_len(&v, 2)?;
         let count = u16_from_le_bytes(&v, 0) as usize;
         super::reader::require_len(&v, 2 + count * 29)?;
@@ -185,7 +187,7 @@ fn connection() -> Result<()> {
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct SecurityListData {
     pub code: String,
-    /// `\u0000` 字符表示空格
+    /// GBK名称，去掉首个空字节之后的填充。
     pub name: String,
 }
 
@@ -203,16 +205,28 @@ impl SecurityListData {
     /// ) = struct.unpack("<6sH8s4sBI4s", bytes) # python 表示方式
     /// ```
     pub fn parse(bytes: &[u8]) -> Self {
-        let code = std::str::from_utf8(&bytes[0..6]).unwrap_or("").into();
-        let (name, encoding_used, had_errors) = encoding_rs::GBK.decode(&bytes[8..16]);
-        debug_assert_eq!(encoding_used, encoding_rs::GBK);
-        debug_assert!(!had_errors);
-        // let preclose = crate::tcp::helper::vol_amount(u32_from_le_bytes(b, 21) as i32);
-        Self {
-            code,
-            name: name.into(),
-        }
+        let code = std::str::from_utf8(bytes.get(..6).unwrap_or_default())
+            .unwrap_or("")
+            .into();
+        let name = super::helper::gbk_to_string_trim_null(bytes.get(8..16).unwrap_or_default());
+        Self { code, name }
     }
+}
+
+#[test]
+fn malformed_count_clears_previous_result_without_panicking() {
+    let mut count = SecurityCount::new(0);
+    count.try_parse(vec![42, 0]).unwrap();
+    assert_eq!(*count.result(), 42);
+    assert!(count.try_parse(vec![1]).is_err());
+    assert_eq!(*count.result(), 0);
+    count.parse(vec![]);
+    assert_eq!(*count.result(), 0);
+    assert_eq!(SecurityListData::parse(&[]).name, "");
+    let mut record = [0; 29];
+    record[..6].copy_from_slice(b"000001");
+    record[8] = 0x81;
+    assert!(SecurityListData::parse(&record).name.contains('\u{fffd}'));
 }
 
 pub const PACK1: &[u8] = &[

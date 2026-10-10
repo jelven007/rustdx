@@ -114,3 +114,35 @@ cargo publish -p jelven-rustdx-cli --locked
 ```
 
 CLI 依赖同时写注册表版本与 path，单独发布依赖已发布的核心库 1.12.1。本轮保留原MIT版权声明和技术协议对照，删除与当前维护无关的旧归档及错误概念样例。后续仍需2027日历、历史规则、进程连接预算/总时限和MongoDB验收，见[架构评估](PROJECT_ANALYSIS.md)。
+
+## 追加源码复查（2026-10-11，未发布）
+
+基线6065885，macOS/aarch64。本轮使用本地文件和TCP/HTTP模拟服务，未重新执行外部行情、2981万行全量导入或MongoDB验证。现有crates.io版本仍为核心库1.12.1 / CLI1.8.1。
+
+| 验证项 | 结果 |
+| --- | --- |
+| 离线workspace | 通过；核心143单测、CLI库3单测、CLI二进制18单测、CLI端到端4例、可靠性6例及既有回归 |
+| 文档测试 | 核心51通过、18忽略；移除了一例依赖错误行业映射的旧断言 |
+| 复权及涨跌停 | 首日锚点、停牌连续派息、非法事件、半分向上舍入、主板代码范围通过 |
+| 证券完整性与恢复 | 空页、重复、超总量失败；完整分页成功；短心跳清空旧结果；请求和重连握手相继失败后按预算恢复 |
+| 指标 | EMA/MACD缺口位置与恢复、非法参数、SMA溢出恢复、KDJ窗口收盘越界用例通过 |
+| 输出/输入保护 | 相对与绝对路径、`..`、符号链接、重复写锁、day/east报告及保留文件冲突用例通过；原输入内容保持 |
+| 缓存/前因子 | 来源对象存活期间缓存拒绝再次获取，释放后可用；空/重复/非法因子拒绝；原HTTP续传及ZIP失败保护回归通过 |
+| macOS端到端稳定性 | 修正本地测试服务accept后继承非阻塞状态，明确切换为阻塞读取 |
+| 构建检查 | Clippy `-D warnings`、格式和Rust1.89 workspace/all-targets通过 |
+| 文档/脚本 | 本地Markdown链接及shell语法通过；在仓库外目录调用诊断脚本，本地模拟心跳123/0分别退出0/1 |
+
+指标release基准：10万行SMA+RSI，10轮，周期20/200/2000分别约39.8/33.6/33.4ms。增加补偿求和后仍保持常规窗口O(n)整体计算；这里只记录本机合成数据耗时，不作为生产延迟或提升比例承诺。
+
+复现命令：
+
+```sh
+RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo test --workspace --locked
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo fmt --all -- --check
+cargo +1.89.0 check --workspace --all-targets --locked
+cargo bench --bench indicators
+bash -n scripts/diagnose_network.sh scripts/run_comprehensive_test.sh scripts/publish.sh
+```
+
+外部测试使用环境变量跳过，不计为本轮在线验收。当前Rust仍提示依赖proc-macro-error2的未来兼容性警告，现有检查通过；后续升级依赖时复核。未发布行为变化见[迁移说明](MIGRATION.md)。

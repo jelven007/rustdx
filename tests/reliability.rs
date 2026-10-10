@@ -52,6 +52,48 @@ fn reconnects_once_after_truncated_body() {
 }
 
 #[test]
+fn reconnect_handshake_failure_consumes_one_attempt_and_can_recover() {
+    for explicit_retry in [false, true] {
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let config = TcpConfig {
+            ip: Some(listener.local_addr().unwrap()),
+            timeout: Duration::from_secs(2),
+            auto_reconnect: if explicit_retry { 0 } else { 2 },
+            retry_delay_ms: 0,
+            ..Default::default()
+        };
+        let server = std::thread::spawn(move || {
+            for attempt in 0..3 {
+                let (mut stream, _) = listener.accept().unwrap();
+                stream
+                    .set_read_timeout(Some(Duration::from_secs(2)))
+                    .unwrap();
+                let mut bytes = vec![0; PACK1.len()];
+                stream.read_exact(&mut bytes).unwrap();
+                if attempt == 1 {
+                    continue; // 第一次重连的握手中断。
+                }
+                frame(&mut stream, &[0, 0]);
+                let mut request = [0; 18];
+                stream.read_exact(&mut request).unwrap();
+                if attempt == 2 {
+                    frame(&mut stream, &123u16.to_le_bytes());
+                } // 首次请求中断，第二次重连成功。
+            }
+        });
+        let mut tcp = Tcp::with_config(&config).unwrap();
+        let result = if explicit_retry {
+            tcp.retry(Tcp::heartbeat, 3)
+        } else {
+            tcp.heartbeat()
+        };
+        assert_eq!(result.unwrap(), 123);
+        assert!(tcp.is_reusable());
+        server.join().unwrap();
+    }
+}
+
+#[test]
 fn rejects_every_truncated_quote_prefix_without_panic() {
     let hex = "0114010000303030303031fe08a61242440a45bb9fe30ae612a9853d0d31160e4e91981e98ed1e00bfaf0700019f12074102a724ab3b4203911295164304a8288a234405a33296457501000000000000fe08";
     let bytes: Vec<_> = (0..hex.len())

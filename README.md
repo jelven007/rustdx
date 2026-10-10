@@ -1,6 +1,6 @@
 # rustdx
 
-Rust 行情库与数据导入工具。当前版本：jelven-rustdx-complete 1.12.1、jelven-rustdx-cli 1.8.1，最低 Rust 1.89，均已发布到 crates.io（crates.io 上的 `rustdx-cli` 归属其他所有者，CLI 使用自有命名空间 `jelven-rustdx-cli`，二进制名仍为 `rustdx`）。
+Rust 行情库与数据导入工具。最新发布版本：jelven-rustdx-complete 1.12.1、jelven-rustdx-cli 1.8.1，最低 Rust 1.89，二进制名为 `rustdx`。当前仓库另含2026-10-11的未发布修复，详见[变更记录](CHANGELOG.md)；下文描述当前源码行为。
 
 核心库实现通达信 TCP 行情协议、本地 day/lc/gbbq 文件解析、价格复权、技术指标、交易日历、连接池和缓存。CLI 提供日线下载/解析、东方财富收盘快照、CSV/JSON 输出及数据库导入。采用同步 I/O 和有界线程并发。
 
@@ -72,13 +72,17 @@ TCP 市场参数为0深圳、1上海。请显式指定市场；指数代码与�
 
 概念成分使用 `Client::block("block_gn.dat")` 获取通达信源板块，并记录采集日期。旧 `get_concept_stocks/get_concept_names/get_concept_info` 的错误静态样例已移除，函数已弃用并返回无数据；不同来源的同名板块不保证一致。
 
-空数据无法证明停牌或无交易，调用方应核实交易时间和证券状态。服务器地址、协议响应和限流策略可能变化；本轮已完成真实行情验收，部署到目标机器后仍须运行 `production_smoke`。
+行业、省份保留财务接口原始编码；无来源的静态名称表已移除，旧名称查询返回未知并弃用。名称解析需要同源、带版本字典。
+
+空数据无法证明停牌或无交易，调用方应核实交易时间和证券状态。证券列表提前空页、重复或超出预期数量会返回错误。服务器地址、协议响应和限流策略可能变化；历史在线验收及本轮本地回归分别记录于[验收报告](docs/PRODUCTION_ACCEPTANCE.md)，目标机器仍须运行 `production_smoke`。
 
 ## 数据单位与日期
 
 `data::Bar` 的价格/金额为元，成交量为股，时间为 UTC+8 本地时间。通达信股票 `KlineData.vol` 为手（100股）；`Bar::from_kline` 转为股，指数及其他品种需另行确认单位。day文件内部成交量为股，现有 day/东财 CSV 的 vol 保留手的格式。
 
 文件/东财 `factor` 是累计收益指数，原始 OHLC 保持原价；`k_adjusted` 的价格缩放乘数是另一种口径。增量输入需要正确的前因子和日期衔接，详见[迁移说明](docs/MIGRATION.md)。
+
+`k_adjusted` 以后端可用历史首/末日锚定后/前复权，先计算完整可用历史再筛选区间；停牌期间连续事件逐次应用。后端历史可能不包含上市首日。涨跌停计算要求未复权的分单位昨收，使用整数舍入；历史涨跌幅和新股特殊阶段未内置。
 
 内置休市数据仅覆盖2024–2026。严格日历接口 `try_is_trading_day`、`trading_days_between` 对范围外日期返回错误。旧接口保留工作日估算。交易时间包含9:30–11:30和13:00–15:00，排除午休。
 
@@ -116,7 +120,9 @@ rustdx day -h output
 
 非法数值、坏文件、重复或逆序日期返回非零状态；成功后原子替换输出。全空文件集合失败并保留上次输出；混合集合中的空文件仍记为警告。质量报告在文件输出及数据库导入结束后写入最终状态，解析或导入失败记录运行错误。缺口标记原因待核实，不会填补伪日线。默认最多8个解析线程，`--workers` 支持1–64，单个day文件上限32MiB。
 
-下载缓存位于系统临时目录，按来源隔离并用文件锁保护。`.part` 续传必须通过版本/字节边界校验，远端缓存需 ETag 或 Last-Modified 确认；无法核实远端时可显式传本地ZIP。非交互环境下载重试耗尽后直接失败。
+输出、报告及保留文件会检查路径别名和输入覆盖；同一输出的并发任务立即失败。报告路径冲突在采集前拒绝，不写入失败报告。文件与数据库前因子统一验证，空集、重复代码及非法因子拒绝接续。
+
+下载缓存位于系统临时目录，按来源隔离，文件锁持续到解析完成。`.part` 续传必须通过版本/字节边界校验，远端缓存需 ETag 或 Last-Modified 确认；无法核实远端时可显式传本地ZIP。HEAD最多30秒，单次下载最多2小时；非交互环境下载重试耗尽后直接失败。
 
 东财输出日期来自源时间戳并确认已收盘，已成交证券必须属于当前行情日；无收盘数据的证券状态记为未知。增量前因子须来自上一交易日，漏跑时需先补历史；单日快照无法恢复跨日累计收益。`factor=0` 表示未计算，旧 `-i` 忽略校验参数已停用。
 
@@ -144,7 +150,8 @@ MongoDB 路径需要系统 `mongoimport`，以(date,code)执行upsert，日期�
 - `cache::MemoryCache::with_capacity` 限制条数/字节数；默认4096条/64MiB。
 - `FileCache::try_new/try_get/try_set` 返回明确I/O错误，原子写入并校验文件键；旧缓存视为未命中。
 - `Cache::get_or_fetch` 合并同键并发请求，64个固定锁碰撞时可能串行；fetch闭包不能递归调用同一缓存。
-- SMA/RSI 为简单窗口口径，SMA支持 `RollingSma` 流式更新；横盘RSI为50，预热/非有限窗口为None。KDJ采用EMA平滑，缺口重置状态。
+- SMA/RSI 为简单窗口口径，SMA支持补偿求和的 `RollingSma` 流式更新；横盘RSI为50，预热/非有限窗口为None。
+- EMA遇非有限值输出NaN并重置；MACD在对应位置输出None，下一有效段重新起算。KDJ采用 `alpha=2/(d_period+1)` 的EMA平滑，以首个有效RSV初始化；缺口重置，不能直接等同于其他软件的默认口径。
 - 缓存是可选模块，Client不会自动缓存请求。调用方的键应包含市场、代码、周期、起止范围及版本。
 
 ```sh
@@ -152,6 +159,8 @@ MongoDB 路径需要系统 `mongoimport`，以(date,code)执行upsert，日期�
 cargo run --example local_data -- assets/sz000001.day sz000001
 # 需要通达信网络的例子
 cargo run --example reliable_client
+# 快速检查本项目握手和心跳，失败返回非零状态
+bash scripts/diagnose_network.sh
 # 部署前完整在线验收
 cargo run --release --example production_smoke
 ```

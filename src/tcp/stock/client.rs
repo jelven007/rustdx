@@ -1,6 +1,6 @@
-//! 高层客户端（对标 mootdx 的 `StdQuotes`）。
+//! 通达信行情高层客户端。
 //!
-//! 封装连接管理与各协议请求，方法与 mootdx 的 API 一一对应，
+//! 封装连接管理与各协议请求，
 //! 全部返回 owned 数据，开箱即用：
 //!
 //! ```ignore
@@ -25,7 +25,7 @@ use chrono::Datelike;
 use std::collections::VecDeque;
 use std::sync::{Arc, Mutex};
 
-/// 高层客户端：持有连接，提供与 mootdx 对齐的语义化 API。
+/// 高层客户端：持有连接，提供行情查询与复权计算 API。
 #[derive(Debug)]
 pub struct Client {
     /// 底层连接（需要更细粒度控制时可直接使用）。
@@ -73,7 +73,7 @@ impl Client {
         self.tcp.retry(f, attempts)
     }
 
-    /// 实时行情快照（mootdx `quotes`）。返回 owned 数据。
+    /// 实时行情快照。返回 owned 数据。
     ///
     /// [`TcpConfig::recheck_empty`](crate::tcp::TcpConfig::recheck_empty)
     /// 开启时空结果二次确认（等 300ms → 重连 → 重拉一次）——盘中高频轮询
@@ -107,7 +107,7 @@ impl Client {
         result.map_err(|e| ctx_err(e, format_args!("Client::quotes(n={})", stocks.len())))
     }
 
-    /// 股票K线（mootdx `bars`）。
+    /// 股票K线。
     ///
     /// 单页请求（最多 `count` 根）；解析层保证按时间**升序**返回。
     /// 区间回补请用 [`Client::bars_range`]（自动翻页 + 窗口过滤）。
@@ -167,7 +167,7 @@ impl Client {
             .map_err(|e| ctx_err(e, ctx))
     }
 
-    /// 指数K线（mootdx `index`/`index_bars`），含涨跌家数。
+    /// 指数K线，含涨跌家数。
     ///
     /// 股票和指数使用相同命令0x052d，但指数响应包含涨跌家数，
     /// 需使用指数解析器；区间语义请用 [`Client::index_bars_range`]。
@@ -221,7 +221,7 @@ impl Client {
             .map_err(|e| ctx_err(e, ctx))
     }
 
-    /// 按日期区间拉取日K线（mootdx `k`）。
+    /// 按日期区间拉取日K线。
     ///
     /// 自动翻页直到覆盖 `begin`，并过滤出 `[begin, end]`（格式 YYYYMMDD）的数据。
     /// `begin`/`end` 传 `None` 表示不设下/上限。
@@ -450,8 +450,8 @@ impl Client {
     ///
     /// 通达信服务器返回的 K 线均为不复权数据（实测请求中的复权字段实为
     /// 「取样步长」，见 `tests/adj_field_probe.rs`），因此本方法在本地用
-    /// 除权除息事件（[`Client::xdxr`]）计算复权价：算法与通达信/akshare
-    /// 一致，除权参考价 `(preclose*10 - fh + pg*pgj) / (10 + pg + sg)`，
+    /// 除权除息事件（[`Client::xdxr`]）计算复权价：
+    /// 除权参考价 `(preclose*10 - fh + pg*pgj) / (10 + pg + sg)`，
     /// 除权日价格按 `preclose_adj / preclose` 缩放，逐日累积。
     ///
     /// 复权只调整 OHLC 价格；`vol`/`amount` 保持原始值。
@@ -459,7 +459,7 @@ impl Client {
     /// # 参数
     ///
     /// - `adj`: 前复权（[`Adj::Qfq`]，最新价 = 实际价）或后复权
-    ///   （[`Adj::Hfq`]，上市首日价 = 实际价）；
+    ///   （[`Adj::Hfq`]，服务器可用历史的首日价 = 实际价）；
     /// - `begin`/`end`: 日期区间（YYYYMMDD），`None` 不设限。
     pub fn k_adjusted<'a>(
         &mut self,
@@ -471,7 +471,7 @@ impl Client {
     ) -> std::io::Result<Vec<super::KlineData<'a>>> {
         validate_request(market, code, 9)?;
         validate_range(begin, end)?;
-        // 复权因子需从上市日起连续累积，先全量拉取再在本地过滤区间
+        // 从服务器可用历史首日连续累积，再在本地过滤区间。
         let all = fetch_k_checked(&mut self.tcp, market, code, None, None).map_err(|e| {
             ctx_err(
                 e,
@@ -482,10 +482,9 @@ impl Client {
             return Ok(all);
         }
         let xdxrs = self.xdxr(market, code)?;
-        let multipliers = adjusted_multipliers(&all, &xdxrs, adj);
+        let multipliers = adjusted_multipliers(&all, &xdxrs, adj)?;
 
-        let out: Vec<super::KlineData<'a>> = all
-            .into_iter()
+        all.into_iter()
             .zip(multipliers)
             .filter(|(bar, _)| {
                 let d = DateTime::to_u32(bar.dt);
@@ -496,13 +495,21 @@ impl Client {
                 bar.high *= m;
                 bar.low *= m;
                 bar.close *= m;
-                bar
+                if [bar.open, bar.high, bar.low, bar.close]
+                    .iter()
+                    .any(|p| !p.is_finite() || *p <= 0.0)
+                {
+                    return Err(std::io::Error::new(
+                        std::io::ErrorKind::InvalidData,
+                        "复权价格溢出或非法",
+                    ));
+                }
+                Ok(bar)
             })
-            .collect();
-        Ok(out)
+            .collect()
     }
 
-    /// 当日分时（mootdx `minute`）。
+    /// 当日分时。
     ///
     /// 2026 新协议已直接支持（响应含 market+code 头与盘口快照，数据块定位
     /// 见 [`super::MinuteTime`] 文档）。若某台服务器解析仍为空（异常响应），
@@ -534,7 +541,7 @@ impl Client {
         Ok(hmt.result().to_vec())
     }
 
-    /// 历史分时（mootdx `minutes`）。
+    /// 历史分时。
     pub fn history_minute(
         &mut self,
         market: u16,
@@ -552,7 +559,7 @@ impl Client {
         Ok(mt.result().to_vec())
     }
 
-    /// 当日逐笔成交（mootdx `transaction`）。
+    /// 当日逐笔成交。
     pub fn transaction(
         &mut self,
         market: u16,
@@ -571,7 +578,7 @@ impl Client {
         Ok(tx.result().to_vec())
     }
 
-    /// 历史逐笔成交（mootdx `transactions`）。
+    /// 历史逐笔成交。
     pub fn history_transaction(
         &mut self,
         market: u16,
@@ -591,7 +598,7 @@ impl Client {
         Ok(tx.result().to_vec())
     }
 
-    /// 财务信息（mootdx `finance`）。
+    /// 财务信息。
     pub fn finance(&mut self, market: u16, code: &str) -> std::io::Result<FinanceInfoData> {
         validate_request(market, code, 9)?;
         let mut fin = super::FinanceInfo::new(market as u8, code);
@@ -609,7 +616,7 @@ impl Client {
         })
     }
 
-    /// 除权除息信息（mootdx `xdxr`）。
+    /// 除权除息信息。
     pub fn xdxr(&mut self, market: u16, code: &str) -> std::io::Result<Vec<super::XdxrData>> {
         validate_request(market, code, 9)?;
         let mut xdxr = Xdxr::new(market, code);
@@ -622,7 +629,7 @@ impl Client {
         Ok(xdxr.result().to_vec())
     }
 
-    /// 板块文件（mootdx `block`），如 `"block_gn.dat"` 概念板块。
+    /// 板块文件，如 `"block_gn.dat"` 概念板块。
     pub fn block(&mut self, block_file: &str) -> crate::Result<Vec<BlockRecord>> {
         super::get_block_info(&mut self.tcp, block_file).map_err(|e| {
             crate::Error::Io(std::io::Error::other(format!(
@@ -631,7 +638,7 @@ impl Client {
         })
     }
 
-    /// 证券数量（mootdx `stock_count`）。
+    /// 证券数量。
     pub fn stock_count(&mut self, market: u16) -> std::io::Result<u16> {
         validate_request(market, "000001", 9)?;
         let mut sc = super::super::basic::SecurityCount::new(market);
@@ -641,7 +648,7 @@ impl Client {
         Ok(*c)
     }
 
-    /// 全部证券列表（mootdx `stocks`），自动分页聚合。
+    /// 全部证券列表，自动分页聚合。
     pub fn stocks(&mut self, market: u16) -> crate::Result<Vec<SecurityListData>> {
         validate_request(market, "000001", 9)?;
         super::stocks(&mut self.tcp, market).map_err(|e| {
@@ -651,7 +658,7 @@ impl Client {
         })
     }
 
-    /// F10 公司资料全部栏目（mootdx `F10`），返回 `(栏目名, 内容)`。
+    /// F10 公司资料全部栏目，返回 `(栏目名, 内容)`。
     pub fn f10(&mut self, market: u16, code: &str) -> std::io::Result<Vec<(String, String)>> {
         validate_request(market, code, 9)?;
         let ctx = format_args!("Client::f10(market={market}, code={code})");
@@ -670,7 +677,7 @@ impl Client {
         Ok(result)
     }
 
-    /// F10 公司资料栏目目录（mootdx `F10C`）。
+    /// F10 公司资料栏目目录。
     pub fn f10_categories(
         &mut self,
         market: u16,
@@ -761,7 +768,9 @@ fn fetch_k_checked<'a>(
 
 /// 今日日期，格式 YYYYMMDD（用于当日分时回退到今日历史分时）。
 fn today_yyyymmdd() -> u32 {
-    let today = chrono::Local::now().date_naive();
+    let today = chrono::Utc::now()
+        .with_timezone(&chrono::FixedOffset::east_opt(8 * 3600).unwrap())
+        .date_naive();
     (today.year() * 10000 + today.month() as i32 * 100 + today.day() as i32) as u32
 }
 
@@ -789,7 +798,7 @@ fn recheck_empty<T>(
     fetch(tcp)
 }
 
-/// 区间翻页页大小（单页上限，与 pytdx/mootdx 约定一致）。
+/// 区间翻页页大小（协议单页上限）。
 const BARS_PAGE: u16 = 800;
 /// 区间翻页页数上限：分钟线历史深度有限（约近年），超深分页服务器会返回
 /// 乱码日期；最多82页，下一页偏移不可超出协议的u16范围。
@@ -950,19 +959,33 @@ fn fetch_index_bars_range<'a>(
 /// `(前收盘 × 10 − 每10股派现 + 配股价 × 每10股配股) ÷ (10 + 每10股送转 + 每10股配股)`，
 /// **四舍五入到分**（与交易所/行情软件的除权日昨收一致）。
 ///
-/// 分母为 0（无任何变动）或结果非法时原样返回 `preclose`。
+/// 输入或计算结果非法时原样返回 `preclose`（兼容接口）；
+/// [`Client::k_adjusted`] 会将这类错误返回给调用方。
 /// 除权日 `prev_close` 应传本函数结果，随后即可做涨跌停判定
 /// （见 [`crate::limit`]）与日线 `prev_close` 链构建。
 pub fn ex_right_reference(preclose: f64, ev: &XdxrData) -> f64 {
+    checked_ex_right_reference(preclose, ev).unwrap_or(preclose)
+}
+
+fn checked_ex_right_reference(preclose: f64, ev: &XdxrData) -> Option<f64> {
+    if !preclose.is_finite()
+        || preclose <= 0.0
+        || [ev.fh_qltp, ev.pgj_qzgb, ev.sg_hltp, ev.pg_hzgb]
+            .iter()
+            .any(|v| !v.is_finite() || *v < 0.0)
+    {
+        return None;
+    }
     let numer = preclose * 10.0 - ev.fh_qltp as f64 + ev.pgj_qzgb as f64 * ev.pg_hzgb as f64;
     let denom = 10.0 + ev.sg_hltp as f64 + ev.pg_hzgb as f64;
     if denom > 0.0 {
         let adj = numer / denom;
         if adj.is_finite() && adj > 0.0 {
-            return (adj * 100.0).round() / 100.0;
+            let rounded = (adj * 100.0).round() / 100.0;
+            return (rounded.is_finite() && rounded > 0.0).then_some(rounded);
         }
     }
-    preclose
+    None
 }
 
 /// 从给定连接拉取单只股票日K：自动翻页、日期区间过滤、按日期升序排序。
@@ -1027,55 +1050,67 @@ pub struct BatchBars<'a> {
 pub enum Adj {
     /// 前复权：以最新价为基准，历史价按比例缩放（最新价 = 实际价）。
     Qfq,
-    /// 后复权：以上市首日为基准，后续价格按比例放大（首日价 = 实际价）。
+    /// 后复权：以服务器可用历史首日为基准（首日价 = 实际价）。
     Hfq,
 }
 
 /// 计算每根 K 线的复权乘数（基于收盘价序列与除权除息事件）。
 ///
-/// 算法（与通达信/akshare 一致）：
+/// 算法：
 /// - 除权参考价 `preclose_adj = (preclose*10 - fh + pg*pgj) / (10 + pg + sg)`
 ///   （`fh`=每 10 股派现、`sg`=每 10 股送转、`pg`=每 10 股配股、`pgj`=配股价）；
 /// - 除权日价格缩放乘数 `scale *= preclose_adj / preclose`，逐日累积；
-///   `preclose` 始终为**除权日前一交易日实际收盘**（停牌顺延到下一交易日处理）；
+///   停牌期间连续事件以前一次事件的除权参考价继续计算；
 /// - 后复权乘数 `= 1/scale`（除权后价格放大回除权前量纲，首日价不变）；
 /// - 前复权乘数 `= scale[last]/scale`（以最新价为基准，最新价不变）。
 ///
 /// 只使用 `category == 1`（除权除息）事件；增发/回购/转配等不改变价格基准。
-fn adjusted_multipliers(days: &[KlineData<'_>], xdxrs: &[XdxrData], adj: Adj) -> Vec<f64> {
-    let mut events: Vec<(u32, f32, f32, f32, f32)> = xdxrs
+fn adjusted_multipliers(
+    days: &[KlineData<'_>],
+    xdxrs: &[XdxrData],
+    adj: Adj,
+) -> std::io::Result<Vec<f64>> {
+    let Some(first) = days.first() else {
+        return Ok(Vec::new());
+    };
+    let invalid = || {
+        std::io::Error::new(
+            std::io::ErrorKind::InvalidData,
+            "复权价格、事件或累计因子非法",
+        )
+    };
+    let first_date = DateTime::to_u32(first.dt);
+    let mut events: Vec<&XdxrData> = xdxrs
         .iter()
-        .filter(|x| x.category == 1)
-        .map(|x| (x.date, x.fh_qltp, x.sg_hltp, x.pg_hzgb, x.pgj_qzgb))
+        // 首日收盘已包含此前事件，缺少更早价格时不能重复应用。
+        .filter(|x| x.category == 1 && x.date > first_date)
         .collect();
-    events.sort_by_key(|e| e.0);
+    events.sort_by_key(|e| e.date);
     let mut ev = events.iter().peekable();
 
     let mut scales: Vec<f64> = Vec::with_capacity(days.len());
     let mut scale = 1.0f64;
-    let mut preclose = days.first().map(|d| d.close).unwrap_or(0.0);
+    let mut preclose = first.close;
     for d in days {
+        if [d.open, d.high, d.low, d.close]
+            .iter()
+            .any(|p| !p.is_finite() || *p <= 0.0)
+        {
+            return Err(invalid());
+        }
         let date = DateTime::to_u32(d.dt);
         // 应用所有日期 ≤ 当前交易日且尚未应用的除权事件（含停牌场景：
         // 除权日无 K 线时顺延到下一个交易日）
-        while let Some(&&(edate, fh, sg, pg, pgj)) = ev.peek() {
-            if edate > date {
+        while let Some(&event) = ev.peek() {
+            if event.date > date {
                 break;
             }
-            let event = XdxrData {
-                market: 0,
-                code: String::new(),
-                date: edate,
-                category: 1,
-                fh_qltp: fh,
-                pgj_qzgb: pgj,
-                sg_hltp: sg,
-                pg_hzgb: pg,
-            };
-            let preclose_adj = ex_right_reference(preclose, &event);
-            if preclose > 0.0 {
-                scale *= preclose_adj / preclose;
+            let preclose_adj = checked_ex_right_reference(preclose, event).ok_or_else(invalid)?;
+            scale *= preclose_adj / preclose;
+            if !scale.is_finite() || scale <= 0.0 {
+                return Err(invalid());
             }
+            preclose = preclose_adj;
             ev.next();
         }
         scales.push(scale);
@@ -1089,7 +1124,13 @@ fn adjusted_multipliers(days: &[KlineData<'_>], xdxrs: &[XdxrData], adj: Adj) ->
             Adj::Hfq => 1.0 / s,
             Adj::Qfq => last / s,
         })
-        .map(|m| if m.is_finite() { m } else { 1.0 })
+        .map(|m| {
+            if m.is_finite() && m > 0.0 {
+                Ok(m)
+            } else {
+                Err(invalid())
+            }
+        })
         .collect()
 }
 
@@ -1179,11 +1220,11 @@ mod tests {
         // 无除权：scale 恒 1 → 前/后复权乘数均为 1
         let days = vec![kd(20260101, 10.0), kd(20260102, 11.0), kd(20260105, 12.0)];
         assert_eq!(
-            adjusted_multipliers(&days, &[], Adj::Qfq),
+            adjusted_multipliers(&days, &[], Adj::Qfq).unwrap(),
             vec![1.0, 1.0, 1.0]
         );
         assert_eq!(
-            adjusted_multipliers(&days, &[], Adj::Hfq),
+            adjusted_multipliers(&days, &[], Adj::Hfq).unwrap(),
             vec![1.0, 1.0, 1.0]
         );
     }
@@ -1200,12 +1241,12 @@ mod tests {
         ];
         let xdxrs = vec![xdxr(20260106, 0.0, 10.0, 0.0, 0.0)]; // 每 10 股送 10
         // 后复权：除权后价格放大回除权前量纲
-        let m = adjusted_multipliers(&days, &xdxrs, Adj::Hfq);
+        let m = adjusted_multipliers(&days, &xdxrs, Adj::Hfq).unwrap();
         assert!((m[0] - 1.0).abs() < 1e-9);
         assert!((m[1] - 2.0).abs() < 1e-9, "除权日乘数应为 2，实际 {m:?}");
         assert!((m[2] - 2.0).abs() < 1e-9);
         // 前复权：最新价不变，历史价按比例缩小
-        let m = adjusted_multipliers(&days, &xdxrs, Adj::Qfq);
+        let m = adjusted_multipliers(&days, &xdxrs, Adj::Qfq).unwrap();
         assert!((m[2] - 1.0).abs() < 1e-9);
         assert!((m[0] - 0.5).abs() < 1e-9, "除权前乘数应为 0.5，实际 {m:?}");
     }
@@ -1218,7 +1259,7 @@ mod tests {
         // 参考价 = (20*10 - 5 + 3*2) / (10 + 3) = 201/13 ≈ 15.4615 → 四舍五入 15.46
         let days = vec![kd(20260105, 20.0), kd(20260106, 15.0), kd(20260107, 15.5)];
         let xdxrs = vec![xdxr(20260106, 5.0, 0.0, 3.0, 2.0)];
-        let m = adjusted_multipliers(&days, &xdxrs, Adj::Hfq);
+        let m = adjusted_multipliers(&days, &xdxrs, Adj::Hfq).unwrap();
         assert!((m[1] - (20.0 / 15.46)).abs() < 1e-9, "实际 {m:?}");
     }
 
@@ -1229,7 +1270,7 @@ mod tests {
         // (20*10 - 5 + 3*2) / 13 = 201/13 = 15.4615… → 15.46
         let ev = xdxr(20260106, 5.0, 0.0, 3.0, 2.0);
         assert_eq!(ex_right_reference(20.0, &ev), 15.46);
-        // 无变动（分母为 0）→ 原样返回
+        // 无变动 → 原样返回
         let none = xdxr(20260106, 0.0, 0.0, 0.0, 0.0);
         assert_eq!(ex_right_reference(20.0, &none), 20.0);
     }
@@ -1242,12 +1283,38 @@ mod tests {
         // 仍用除权前最后一个交易日收盘作为 preclose
         let days = vec![kd(20260102, 20.0), kd(20260106, 10.0)];
         let xdxrs = vec![xdxr(20260105, 0.0, 10.0, 0.0, 0.0)]; // 01-05 除权，01-06 才恢复交易
-        let m = adjusted_multipliers(&days, &xdxrs, Adj::Hfq);
+        let m = adjusted_multipliers(&days, &xdxrs, Adj::Hfq).unwrap();
         assert!((m[0] - 1.0).abs() < 1e-9);
         assert!(
             (m[1] - 2.0).abs() < 1e-9,
             "停牌顺延后乘数应为 2，实际 {m:?}"
         );
+    }
+
+    #[test]
+    fn adjustment_anchors_first_bar_and_chains_suspension_events() {
+        use super::{Adj, adjusted_multipliers};
+        let days = [kd(20260102, 10.0), kd(20260106, 8.0)];
+        let events = [
+            xdxr(20260101, 0.0, 10.0, 0.0, 0.0),
+            xdxr(20260102, 0.0, 10.0, 0.0, 0.0),
+            xdxr(20260103, 10.0, 0.0, 0.0, 0.0),
+            xdxr(20260105, 10.0, 0.0, 0.0, 0.0),
+        ];
+        assert_eq!(
+            adjusted_multipliers(&days, &events, Adj::Hfq).unwrap(),
+            [1.0, 1.25]
+        );
+        let qfq = adjusted_multipliers(&days, &events, Adj::Qfq).unwrap();
+        assert!((qfq[0] - 0.8).abs() < 1e-12);
+        assert_eq!(qfq[1], 1.0);
+        for cash in [f32::NAN, -1.0, 1000.0] {
+            assert!(
+                adjusted_multipliers(&days, &[xdxr(20260105, cash, 0.0, 0.0, 0.0)], Adj::Qfq)
+                    .is_err()
+            );
+        }
+        assert!(adjusted_multipliers(&[kd(20260102, f64::NAN)], &[], Adj::Hfq).is_err());
     }
 
     fn kd(date: u32, close: f64) -> super::KlineData<'static> {
@@ -1283,13 +1350,15 @@ mod tests {
         }
     }
 
-    /// 回退辅助函数：今日日期必须为合法 8 位 YYYYMMDD，且与 chrono 本地日期一致。
+    /// 回退日期使用上海时区，不受部署机器本地时区影响。
     #[test]
     fn today_yyyymmdd_format() {
         use super::today_yyyymmdd;
         let v = today_yyyymmdd();
         assert!((20000101..=20991231).contains(&v), "非法日期: {v}");
-        let today = chrono::Local::now().date_naive();
+        let today = chrono::Utc::now()
+            .with_timezone(&chrono::FixedOffset::east_opt(8 * 3600).unwrap())
+            .date_naive();
         let expected = {
             use chrono::Datelike;
             (today.year() * 10000 + today.month() as i32 * 100 + today.day() as i32) as u32

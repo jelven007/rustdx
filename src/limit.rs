@@ -22,7 +22,7 @@
 /// 个股所属板块（按代码前缀判定，决定涨跌幅）。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Board {
-    /// 沪深主板（60x / 000·001·002·003）±10%
+    /// 沪深主板（600·601·603·605 / 000·001·002·003）±10%
     Main,
     /// 创业板（300·301·302）±20%
     ChiNext,
@@ -65,12 +65,12 @@ pub fn board_of(code: &str) -> Option<Board> {
         return None;
     }
     match b {
-        // 沪市主板 60x（含 601/603/605）
-        [b'6', b'0', ..] => Some(Board::Main),
+        // 沪市主板 600/601/603/605
+        [b'6', b'0', b'0' | b'1' | b'3' | b'5', ..] => Some(Board::Main),
         // 科创板 688/689
         [b'6', b'8', b'8' | b'9', ..] => Some(Board::Star),
         // 深市主板 000/001/002/003（002 中小板已并入主板）
-        [b'0', b'0'..=b'3', ..] => Some(Board::Main),
+        [b'0', b'0', b'0'..=b'3', ..] => Some(Board::Main),
         // 创业板 300/301/302
         [b'3', b'0', b'0'..=b'2', ..] => Some(Board::ChiNext),
         // 北交所 43/82/83/87/88/92
@@ -87,9 +87,19 @@ pub fn is_st_name(name: &str) -> bool {
     name.contains("ST")
 }
 
-/// 四舍五入到分。
-fn round_fen(price: f64) -> f64 {
-    (price * 100.0).round() / 100.0
+/// 昨收以分为单位，使用整数百分比计算，避免二进制浮点在半分处向下偏移。
+fn limit_price(prev_close: f64, percent: u64) -> Option<f64> {
+    let cents = (prev_close * 100.0).round();
+    // 限制到整数可被 f64 精确表示的范围，并排除非分单位报价。
+    if !cents.is_finite()
+        || cents < 1.0
+        || cents > (1u64 << 53) as f64 / 130.0
+        || (prev_close * 100.0 - cents).abs() > 1e-6
+    {
+        return None;
+    }
+    let result = ((cents as u64) * percent + 50) / 100;
+    Some(result as f64 / 100.0)
 }
 
 /// 按分比较价格相等（涨跌停判定必须免疫浮点误差）。
@@ -99,25 +109,16 @@ fn same_fen(a: f64, b: f64) -> bool {
 
 /// 涨停价（正常交易日）。
 ///
-/// `prev_close` 非正或非有限时返回 `None`（除权日昨收应传除权参考价，
+/// `prev_close` 非正、非有限、不是分单位报价或超出精确计算范围时返回 `None`
+/// （除权日昨收应传除权参考价，
 /// 见 [`crate::tcp::stock::ex_right_reference`]）。
 pub fn limit_up_price(prev_close: f64, board: Board, st: bool) -> Option<f64> {
-    if !prev_close.is_finite() || prev_close <= 0.0 {
-        return None;
-    }
-    Some(round_fen(
-        prev_close * (1.0 + board.limit_pct_for(st) / 100.0),
-    ))
+    limit_price(prev_close, 100 + board.limit_pct_for(st) as u64)
 }
 
 /// 跌停价（正常交易日）。非法输入同 [`limit_up_price`]。
 pub fn limit_down_price(prev_close: f64, board: Board, st: bool) -> Option<f64> {
-    if !prev_close.is_finite() || prev_close <= 0.0 {
-        return None;
-    }
-    Some(round_fen(
-        prev_close * (1.0 - board.limit_pct_for(st) / 100.0),
-    ))
+    limit_price(prev_close, 100 - board.limit_pct_for(st) as u64)
 }
 
 /// 个股当日相对涨停价的状态。
@@ -203,6 +204,24 @@ mod tests {
         assert_eq!(board_of("60005"), None); // 位数不足
         assert_eq!(board_of("000001."), None); // 含非数字
         assert_eq!(board_of(""), None);
+        for code in ["010001", "020001", "030001", "009001", "604001", "609001"] {
+            assert_eq!(board_of(code), None);
+        }
+        assert_eq!(board_of("003001"), Some(Board::Main));
+    }
+
+    #[test]
+    fn half_cent_prices_round_up_for_both_directions() {
+        assert_eq!(limit_up_price(1.15, Board::Main, false), Some(1.27));
+        assert_eq!(limit_down_price(1.15, Board::Main, false), Some(1.04));
+        assert_eq!(limit_up_price(4.30, Board::Main, true), Some(4.52));
+        assert_eq!(limit_down_price(4.30, Board::Main, true), Some(4.09));
+        assert_eq!(limit_up_price(0.35, Board::Beijing, false), Some(0.46));
+        assert_eq!(limit_down_price(0.35, Board::Beijing, false), Some(0.25));
+        for price in [f64::MAX, f64::INFINITY, 1.001, 0.001] {
+            assert_eq!(limit_up_price(price, Board::Main, false), None);
+            assert_eq!(limit_down_price(price, Board::Main, false), None);
+        }
     }
 
     #[test]

@@ -1,6 +1,5 @@
 use rustdx_complete::tcp::stock::{
     Client, FinanceInfo, Kline, MinuteTime, SecurityList, SecurityQuotes, Transaction,
-    get_industry_name, get_province_name,
 };
 /**
  * RustDX 开盘日全面测试套件
@@ -725,49 +724,31 @@ fn test_09_five_level_quotes() {
 // ============================================================================
 
 #[test]
-fn test_10_industry_mapping() {
+fn test_10_finance_classification_codes() {
     if !should_run_live_tests() {
         return;
     }
 
-    println!("\n[测试 3.1] 行业分类映射功能");
+    println!("\n[测试 3.1] 财务分类原始编码");
     let mut results = TestResults::default();
 
     match Tcp::new() {
         Ok(mut tcp) => {
-            let test_cases = vec![
-                (1, "600519", "酒类", "贵州"), // 贵州茅台
-                (1, "600036", "银行", "浙江"), // 招商银行
-                (0, "000858", "银行", "四川"), // 五粮液
-            ];
+            let test_cases = [(1, "600519"), (1, "600036"), (0, "000858")];
 
-            for (market, code, expected_industry, expected_province) in test_cases {
+            for (market, code) in test_cases {
                 println!("  📊 测试股票: {}", code);
                 let mut finance = FinanceInfo::new(market, code);
                 match finance.recv_parsed(&mut tcp) {
                     Ok(_) => {
                         if let Some(info) = finance.result().first() {
-                            let industry = get_industry_name(info.industry);
-                            let province = get_province_name(info.province);
-
-                            println!("    行业: {} (期望: {})", industry, expected_industry);
-                            println!("    省份: {} (期望: {})", province, expected_province);
-
-                            if industry.contains(expected_industry) {
-                                println!("    ✅ 行业映射正确");
-                                results.record_pass();
-                            } else {
-                                println!("    ⚠️  行业映射不匹配");
-                                results.record_warning();
-                            }
-
-                            if province.contains(expected_province) {
-                                println!("    ✅ 省份映射正确");
-                                results.record_pass();
-                            } else {
-                                println!("    ⚠️  省份映射不匹配");
-                                results.record_warning();
-                            }
+                            println!(
+                                "    行业编码: {}, 省份编码: {}",
+                                info.industry, info.province
+                            );
+                            results.record_pass();
+                        } else {
+                            results.record_fail(format!("{code}未返回财务信息"));
                         }
                     }
                     Err(e) => {

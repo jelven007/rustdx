@@ -19,6 +19,85 @@ fn help_and_invalid_output_finish_without_network() {
 }
 
 #[test]
+fn conflicting_outputs_fail_before_network_or_input_changes() {
+    let dir = std::env::temp_dir().join(format!("rustdx-cli-paths-{}", std::process::id()));
+    fs::create_dir_all(dir.join("sub")).unwrap();
+    let input = dir.join("sh600000.day");
+    fs::write(&input, b"original source").unwrap();
+    fs::write(dir.join("gbbq"), b"original events").unwrap();
+    fs::write(dir.join("previous.csv"), b"original factor").unwrap();
+    let absolute = dir.join("bars.csv");
+    let cases = [
+        vec![
+            "day",
+            ".",
+            "-o",
+            "bars.csv",
+            "--report",
+            absolute.to_str().unwrap(),
+        ],
+        vec!["day", ".", "--report", "sub/../sh600000.day"],
+        vec!["day", ".", "-g", "gbbq", "--report", "sub/../gbbq"],
+        vec![
+            "day",
+            ".",
+            "-g",
+            "gbbq",
+            "-p",
+            "previous.csv",
+            "-o",
+            "previous.csv",
+        ],
+        vec![
+            "day",
+            ".",
+            "-o",
+            "clickhouse",
+            "--keep-csv",
+            "--report",
+            "./clickhouse.csv",
+        ],
+        vec![
+            "east",
+            "-o",
+            "./bars.csv",
+            "--report",
+            absolute.to_str().unwrap(),
+        ],
+        vec!["east", "-p", "previous.csv", "--report", "./previous.csv"],
+        vec![
+            "east",
+            "-p",
+            "clickhouse",
+            "--keep-factor",
+            "-o",
+            "factor.csv",
+        ],
+    ];
+    for args in cases {
+        let result = Command::new(env!("CARGO_BIN_EXE_rustdx"))
+            .current_dir(&dir)
+            .args(&args)
+            .output()
+            .unwrap();
+        assert!(!result.status.success(), "{args:?}");
+        let error = String::from_utf8_lossy(&result.stderr);
+        assert!(
+            error.contains("输出路径冲突") || error.contains("输出不能覆盖输入"),
+            "{args:?}: {error}"
+        );
+    }
+    assert_eq!(fs::read(input).unwrap(), b"original source");
+    assert_eq!(fs::read(dir.join("gbbq")).unwrap(), b"original events");
+    assert_eq!(
+        fs::read(dir.join("previous.csv")).unwrap(),
+        b"original factor"
+    );
+    assert!(!absolute.exists());
+    fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
 fn csv_collection_and_strict_gap_protect_previous_output() {
     let dir = std::env::temp_dir().join(format!("rustdx-cli-smoke-{}", std::process::id()));
     fs::create_dir_all(&dir).unwrap();
@@ -126,6 +205,7 @@ fn failed_database_import_keeps_csv_and_marks_report_failed() {
                     Err(e) => panic!("{e}"),
                 }
             };
+            socket.set_nonblocking(false).unwrap();
             socket
                 .set_read_timeout(Some(Duration::from_secs(2)))
                 .unwrap();

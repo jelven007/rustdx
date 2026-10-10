@@ -627,12 +627,14 @@ pub fn previous_csv_table(
 /// 注意：`code` 列需为**含市场前缀的完整代码**（如 `sh600000`），
 /// 与 day 命令输出的 code 格式一致，否则无法匹配。
 pub fn previous_csv(p: impl AsRef<Path>, _keep_factor: bool) -> Previous {
-    let path = p.as_ref();
-    let rows: Vec<Factor> = csv::Reader::from_reader(File::open(path)?)
-        .deserialize::<Factor>()
-        .collect::<std::result::Result<_, _>>()?;
+    parse_previous(File::open(p)?)
+}
+
+/// CSV 文件与数据库查询结果执行同一套校验，逐行构建索引。
+fn parse_previous(reader: impl io::Read) -> Previous {
     let mut prev = std::collections::HashMap::new();
-    for f in rows {
+    for row in csv::Reader::from_reader(reader).deserialize::<Factor>() {
+        let f = row?;
         f.code.parse::<rustdx_complete::data::Symbol>()?;
         chrono::NaiveDate::parse_from_str(&f.date, "%Y-%m-%d")?;
         if !f.factor.is_finite() || f.factor <= 0.0 || !f.preclose.is_finite() || f.preclose <= 0.0
@@ -642,6 +644,9 @@ pub fn previous_csv(p: impl AsRef<Path>, _keep_factor: bool) -> Previous {
         if prev.insert(f.code.clone(), f).is_some() {
             eyre::bail!("前因子文件包含重复代码");
         }
+    }
+    if prev.is_empty() {
+        eyre::bail!("前因子数据为空");
     }
     Ok(prev)
 }
@@ -655,13 +660,14 @@ fn clickhouse_factor_csv(table: &str, keep_factor: bool) -> Previous {
         FORMAT CSVWithNames"
     );
     let text = ClickHouseConfig::from_env().exec(&query)?;
-    let rows: Vec<Factor> = csv::Reader::from_reader(text.as_bytes())
-        .deserialize()
-        .collect::<std::result::Result<_, _>>()?;
+    let rows = parse_previous(text.as_bytes())?;
     if keep_factor {
-        fs::write("factor.csv", text)?;
+        let (atomic, mut file) = rustdx_complete::atomic_file::AtomicFile::create("factor.csv")?;
+        file.write_all(text.as_bytes())?;
+        drop(file);
+        atomic.commit()?;
     }
-    Ok(rows.into_iter().map(|f| (f.code.clone(), f)).collect())
+    Ok(rows)
 }
 
 pub fn run_mongodb(cmd: &DayCmd) -> Result<()> {
@@ -1017,6 +1023,14 @@ mod tests {
         .unwrap();
         assert!(previous_csv(&path, false).is_err());
         assert!(path.exists());
+        for text in [
+            "",
+            "date,code,close,factor\n",
+            "date,code,close,factor\n2026-09-01,sh600000,10,NaN\n",
+            "date,code,close,factor\n2026-09-01,sh600000,10,2\n2026-09-02,sh600000,11,2\n",
+        ] {
+            assert!(parse_previous(text.as_bytes()).is_err());
+        }
         fs::remove_dir_all(dir).unwrap();
     }
 }

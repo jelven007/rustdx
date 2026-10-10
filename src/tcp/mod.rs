@@ -165,11 +165,12 @@ impl Tcp {
     /// tcp.reconnect()?; // 断线后重新连接
     /// ```
     pub fn reconnect(&mut self) -> Result<()> {
+        self.reusable = false;
         *self = Self::with_config(&self.config)?;
         Ok(())
     }
 
-    /// 发送心跳包保持连接活跃（对应 mootdx 的 `heartbeat`）。
+    /// 发送心跳包保持连接活跃。
     ///
     /// 通达信服务器会关闭长时间空闲的连接；在空闲场景下定期调用即可。
     /// 返回心跳响应中的深市证券数量。
@@ -178,7 +179,8 @@ impl Tcp {
         Ok(*hb.recv_parsed(self)?)
     }
 
-    /// 执行请求，失败时自动重连并重试（对应 mootdx 的 `auto_retry`）。
+    /// 执行请求，失败时自动重连并重试。重连失败也占用一次尝试，
+    /// 仍有预算时继续；`attempts` 包含首试。
     ///
     /// ## 示例
     /// ```ignore
@@ -197,12 +199,17 @@ impl Tcp {
         }
         let mut last_err = None;
         for attempt in 0..attempts {
-            match f(self) {
+            let ready = if attempt > 0 || !self.reusable {
+                self.reconnect()
+            } else {
+                Ok(())
+            };
+            match ready.and_then(|_| f(self)) {
                 Ok(v) => return Ok(v),
                 Err(e) => {
+                    self.reusable = false;
                     if attempt + 1 < attempts {
                         self.backoff(attempt as u64 + 1);
-                        self.reconnect()?;
                     }
                     last_err = Some(e);
                 }
@@ -281,12 +288,13 @@ impl Tcp {
 
     fn request_frame(&mut self, send: &[u8], decompress: bool) -> Result<(Vec<u8>, u16, u16)> {
         for attempt in 0..=self.config.auto_reconnect {
-            if !self.reusable {
-                self.reconnect()?;
-            }
-            let result = self
-                .read_frame_once(send)
-                .and_then(|(body, deflate, inflate)| {
+            let ready = if !self.reusable {
+                self.reconnect()
+            } else {
+                Ok(())
+            };
+            let result = ready.and_then(|_| self.read_frame_once(send)).and_then(
+                |(body, deflate, inflate)| {
                     let body = if decompress && deflate != inflate {
                         let decoded = miniz_oxide::inflate::decompress_to_vec_zlib_with_limit(
                             &body,
@@ -309,7 +317,8 @@ impl Tcp {
                         body
                     };
                     Ok((body, deflate, inflate))
-                });
+                },
+            );
             match result {
                 Ok(frame) => return Ok(frame),
                 Err(err) => {

@@ -32,7 +32,7 @@ impl Day {
             .map(|b| super::Day::from_bytes(&code, b));
         let fq = gbbqs
             .map(|g| Fq::new(days.clone(), g))
-            .unwrap_or(Fq::no_gbbq(days.clone()))
+            .unwrap_or_else(|| Fq::no_gbbq(days.clone()))
             .ok_or(Custom("复权失败"))?
             .into_iter()
             .filter(|d| d.trading);

@@ -99,13 +99,6 @@ impl DayCmd {
             eyre::bail!("previous需要搭配gbbq使用");
         }
         if self
-            .report
-            .as_ref()
-            .is_some_and(|p| p == std::path::Path::new(&self.output))
-        {
-            eyre::bail!("report不能与行情输出文件相同");
-        }
-        if self
             .exchange
             .as_deref()
             .is_some_and(|s| !matches!(s, "sh" | "sz" | "bj" | "auto"))
@@ -114,14 +107,22 @@ impl DayCmd {
         }
         // 无参数模式：自动下载官网日线完整包 → 解压 → 用 lday 目录继续解析。
         // 若传入的是 URL 或本地 zip 路径，也走同一套下载/解压流程。
-        if let Some(dirs) = self.resolve_source_dirs()? {
+        let outputs = self.validate_paths()?;
+        let _outputs = crate::paths::OutputLocks::acquire(&outputs)?;
+        if let Some(source) = self.resolve_source_dirs()? {
             let cmd = DayCmd {
-                path: dirs,
+                path: source.dirs.clone(),
                 ..self.clone()
             };
-            return cmd.run();
+            cmd.validate_paths()?;
+            // source 持有下载缓存锁，直到解析、写入和报告全部完成。
+            return cmd.run_output();
         }
 
+        self.run_output()
+    }
+
+    fn run_output(&self) -> Result<()> {
         match self.output.as_str() {
             "clickhouse" => self.run_clickhouse(),
             x if x.ends_with("csv") => self.run_csv(),
@@ -138,8 +139,8 @@ impl DayCmd {
     /// - 单个 path 是 `.zip` 文件 → 解压本地 zip；
     /// - 否则（目录列表）→ 返回 None，走原有解析逻辑。
     ///
-    /// 返回 `Some(dirs)` 表示需要换成这些 lday 目录继续；`None` 表示直接用原 path。
-    fn resolve_source_dirs(&self) -> Result<Option<Vec<std::path::PathBuf>>> {
+    /// 返回的来源持有缓存锁；`None` 表示直接用原 path。
+    fn resolve_source_dirs(&self) -> Result<Option<crate::download::PreparedSource>> {
         use crate::download;
         if self.path.is_empty() {
             log::info!(
@@ -164,6 +165,39 @@ impl DayCmd {
             }
         }
         Ok(None)
+    }
+
+    fn validate_paths(&self) -> Result<Vec<std::path::PathBuf>> {
+        use std::path::{Path, PathBuf};
+        let mut outputs = vec![PathBuf::from(&self.output)];
+        outputs.extend(self.report.iter().cloned());
+        if self.keep_csv && matches!(self.output.as_str(), "clickhouse" | "mongodb") {
+            outputs.push(Path::new(&self.output).with_extension("csv"));
+        }
+        if self.keep_factor && self.previous.as_deref() == Some(Path::new("clickhouse")) {
+            outputs.push(PathBuf::from("factor.csv"));
+        }
+        let mut inputs: Vec<_> = self.gbbq.iter().cloned().collect();
+        inputs.extend(crate::paths::previous_input(self.previous.as_deref()));
+        if let Some(list) = &self.stocklist
+            && (list.ends_with(".xls") || list.ends_with(".xlsx"))
+        {
+            inputs.push(PathBuf::from(list));
+        }
+        for path in &self.path {
+            if path.is_dir() {
+                for entry in std::fs::read_dir(path)? {
+                    let path = entry?.path();
+                    if path.extension().is_some_and(|ext| ext == "day") {
+                        inputs.push(path);
+                    }
+                }
+            } else if path.is_file() {
+                inputs.push(path.clone());
+            }
+        }
+        crate::paths::validate(&outputs, &inputs)?;
+        Ok(outputs)
     }
 
     pub fn run_csv(&self) -> Result<()> {

@@ -10,8 +10,8 @@ use crate::tcp::Tdx;
 ///
 /// ## 示例
 /// ```ignore
-/// use rustdx::tcp::{Tcp, Tdx};
-/// use rustdx::tcp::stock::FinanceInfo;
+/// use rustdx_complete::tcp::{Tcp, Tdx};
+/// use rustdx_complete::tcp::stock::FinanceInfo;
 ///
 /// let mut tcp = Tcp::new()?;
 /// let mut finance = FinanceInfo::new(0, "000001");

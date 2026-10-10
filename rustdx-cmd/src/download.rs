@@ -9,7 +9,7 @@
 //!    下载与解压，二次运行接近秒开；
 //! 5. 解压后收集 `sh/lday`、`sz/lday`、`bj/lday` 等目录，返回给解析流程。
 
-use std::io::{IsTerminal, Read, Write};
+use std::io::{IsTerminal, Read, Seek, Write};
 use std::path::{Component, Path, PathBuf};
 use std::time::Duration;
 
@@ -40,6 +40,12 @@ struct HeadInfo {
 
 struct CacheLock(std::fs::File);
 
+/// 缓存锁覆盖整个来源消费周期，防止其他进程在解析时替换解压目录。
+pub struct PreparedSource {
+    pub dirs: Vec<PathBuf>,
+    _lock: CacheLock,
+}
+
 impl CacheLock {
     fn acquire(dir: &Path) -> Result<Self> {
         let file = std::fs::OpenOptions::new()
@@ -60,15 +66,15 @@ impl Drop for CacheLock {
 }
 
 /// 自动从默认地址下载并解压，返回解压出的 `lday` 目录列表。
-pub fn prepare_hsjday_dirs() -> Result<Vec<PathBuf>> {
+pub fn prepare_hsjday_dirs() -> Result<PreparedSource> {
     prepare_hsjday_dirs_from(DEFAULT_HSJDAY_URL)
 }
 
 /// 从指定 URL 下载并解压（带缓存跳过 / 断点续传 / 自动重试 / 失败交互）。
-pub fn prepare_hsjday_dirs_from(url: &str) -> Result<Vec<PathBuf>> {
+pub fn prepare_hsjday_dirs_from(url: &str) -> Result<PreparedSource> {
     let workdir = cache_dir_for(url);
     std::fs::create_dir_all(&workdir)?;
-    let _lock = CacheLock::acquire(&workdir)?;
+    let lock = CacheLock::acquire(&workdir)?;
     let zip_path = workdir.join("hsjday.zip");
     let extract_dir = workdir.join("extracted");
     let meta_path = workdir.join("meta.json");
@@ -116,11 +122,11 @@ pub fn prepare_hsjday_dirs_from(url: &str) -> Result<Vec<PathBuf>> {
     for d in &dirs {
         log::info!("发现解析目录: {}", d.display());
     }
-    Ok(dirs)
+    Ok(PreparedSource { dirs, _lock: lock })
 }
 
 /// 直接解压本地 zip 文件，返回解压出的 `lday` 目录列表。
-pub fn prepare_hsjday_dirs_from_zip(zip_path: &Path) -> Result<Vec<PathBuf>> {
+pub fn prepare_hsjday_dirs_from_zip(zip_path: &Path) -> Result<PreparedSource> {
     let canonical = zip_path.canonicalize()?;
     let metadata = canonical.metadata()?;
     let identity = format!(
@@ -131,12 +137,15 @@ pub fn prepare_hsjday_dirs_from_zip(zip_path: &Path) -> Result<Vec<PathBuf>> {
     );
     let workdir = cache_dir_for(&identity);
     std::fs::create_dir_all(&workdir)?;
-    let _lock = CacheLock::acquire(&workdir)?;
+    let lock = CacheLock::acquire(&workdir)?;
     let meta_path = workdir.join("meta.json");
     let extract_dir = workdir.join("extracted");
     let meta = read_meta(&meta_path)?;
     if meta.url == identity && meta.extracted_ok && !find_lday_dirs(&extract_dir).is_empty() {
-        return Ok(find_lday_dirs(&extract_dir));
+        return Ok(PreparedSource {
+            dirs: find_lday_dirs(&extract_dir),
+            _lock: lock,
+        });
     }
     let dirs = extract_and_discover(zip_path, &extract_dir, &zip_path.display().to_string())?;
     write_meta(
@@ -148,7 +157,7 @@ pub fn prepare_hsjday_dirs_from_zip(zip_path: &Path) -> Result<Vec<PathBuf>> {
             ..Default::default()
         },
     )?;
-    Ok(dirs)
+    Ok(PreparedSource { dirs, _lock: lock })
 }
 
 /// 下载（首次失败自动重试 2 次；仍失败 → 交互提供备选 URL / 本地 zip 路径）。
@@ -184,8 +193,11 @@ fn download_with_fallback(initial_url: &str, zip_path: &Path) -> Result<(String,
             bail!("提供的文件不存在: {}", p.display());
         }
         log::info!("使用本地 zip: {}", p.display());
+        // 先校验本地 ZIP 目录，使用同一文件句柄复制，失败保留旧缓存。
+        let mut source = zip::ZipArchive::new(std::fs::File::open(&p)?)?.into_inner();
+        source.rewind()?;
         let (atomic, mut file) = rustdx_complete::atomic_file::AtomicFile::create(zip_path)?;
-        std::io::copy(&mut std::fs::File::open(&p)?, &mut file)?;
+        std::io::copy(&mut source, &mut file)?;
         drop(file);
         atomic.commit()?;
         Ok((
@@ -259,7 +271,13 @@ fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
         log::info!("正在下载 {url} ...");
     }
 
-    let mut req = ureq::get(url).header("Accept-Encoding", "identity");
+    let mut req = ureq::get(url)
+        .config()
+        .timeout_connect(Some(Duration::from_secs(15)))
+        .timeout_recv_response(Some(Duration::from_secs(30)))
+        .timeout_global(Some(Duration::from_secs(2 * 60 * 60)))
+        .build()
+        .header("Accept-Encoding", "identity");
     if done > 0 {
         req = req
             .header("Range", &format!("bytes={done}-"))
@@ -485,7 +503,12 @@ fn cache_dir_for(url: &str) -> PathBuf {
 
 /// HEAD 探测服务器文件信息（ETag / Last-Modified / Content-Length）。
 fn head_info(url: &str) -> Result<HeadInfo> {
-    let resp = ureq::head(url).call().map_err(|e| eyre!("{e}"))?;
+    let resp = ureq::head(url)
+        .config()
+        .timeout_global(Some(Duration::from_secs(30)))
+        .build()
+        .call()
+        .map_err(|e| eyre!("{e}"))?;
     let header = |name: &str| {
         resp.headers()
             .get(name)
@@ -641,6 +664,11 @@ mod tests {
         .unwrap();
         zip.write_all(&[0; 32]).unwrap();
         zip.finish().unwrap();
+        let source = prepare_hsjday_dirs_from_zip(&path).unwrap();
+        assert!(prepare_hsjday_dirs_from_zip(&path).is_err());
+        assert!(source.dirs[0].join("sh600000.day").exists());
+        drop(source);
+        drop(prepare_hsjday_dirs_from_zip(&path).unwrap());
         let extracted = dir.join("extracted");
         let dirs = extract_and_discover(&path, &extracted, "fixture").unwrap();
         assert_eq!(dirs.len(), 1);
