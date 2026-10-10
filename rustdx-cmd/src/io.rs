@@ -1,4 +1,5 @@
 use crate::cmd::DayCmd;
+use crate::quality::{CollectionReport, QualityRow};
 use eyre::{Result, anyhow, eyre};
 use rustdx_cli::fetch_code::StockList;
 use rustdx_complete::file::{
@@ -29,13 +30,14 @@ const BUFFER_SIZE: usize = 32 * (1 << 20); // 32M
 fn run_par<F, T>(cmd: &DayCmd, wtr: &mut csv::Writer<File>, parse: F) -> Result<()>
 where
     F: Fn(&str, &Path) -> eyre::Result<Vec<T>> + Send + Sync,
-    T: serde::Serialize + Send,
+    T: serde::Serialize + QualityRow + Send,
 {
     let start = Instant::now();
     let hm = cmd.stocklist()?;
     let mut total_files = 0usize;
     let mut total_rows = 0usize;
     let mut failures = Vec::new();
+    let mut report = CollectionReport::new(&cmd.output);
     for dir in &cmd.path {
         // 收集 (完整代码, 文件路径)，代码含市场前缀（如 `sz000001`、`sz200b07`）
         let work: Vec<(String, std::path::PathBuf)> = filter_file(dir)?
@@ -94,9 +96,42 @@ where
                     Ok(v) => v,
                     Err(e) => {
                         failures.push(format!("{path}: {e:#}"));
+                        report.files.push(crate::quality::FileReport {
+                            source: path,
+                            code: String::new(),
+                            rows: 0,
+                            first_date: None,
+                            last_date: None,
+                            errors: vec![e.to_string()],
+                            warnings: vec![],
+                        });
                         continue;
                     }
                 };
+                let code = Path::new(&path)
+                    .file_stem()
+                    .and_then(|s| s.to_str())
+                    .unwrap_or("")
+                    .to_owned();
+                let quality = crate::quality::inspect(path.clone(), code, &v);
+                let invalid =
+                    !quality.errors.is_empty() || (cmd.strict && !quality.warnings.is_empty());
+                if invalid {
+                    failures.push(format!(
+                        "{path}: {}",
+                        quality
+                            .errors
+                            .iter()
+                            .chain(&quality.warnings)
+                            .cloned()
+                            .collect::<Vec<_>>()
+                            .join("; ")
+                    ));
+                }
+                report.files.push(quality);
+                if invalid {
+                    continue;
+                }
                 total_rows += v.len();
                 for t in v {
                     wtr.serialize(t)?;
@@ -109,6 +144,9 @@ where
         print(dir, count.load(Ordering::Relaxed), take);
     }
     wtr.flush()?;
+    if let Some(path) = &cmd.report {
+        report.write(path, failures.is_empty() && total_files > 0)?;
+    }
     if !failures.is_empty() {
         eyre::bail!(
             "{}个文件解析失败：\n{}",
@@ -137,7 +175,7 @@ where
 
 /// 并发解析并输出 CSV（无复权）。
 pub fn run_csv(cmd: &DayCmd) -> Result<()> {
-    let file = File::create(&cmd.output)?;
+    let (atomic, file) = rustdx_complete::atomic_file::AtomicFile::create(&cmd.output)?;
     let mut wtr = csv::WriterBuilder::new()
         .buffer_capacity(BUFFER_SIZE)
         .from_writer(file);
@@ -145,46 +183,58 @@ pub fn run_csv(cmd: &DayCmd) -> Result<()> {
         Ok(rustdx_complete::file::day::Day::from_file_into_vec(
             code, src,
         )?)
-    })
+    })?;
+    drop(wtr);
+    atomic.commit()?;
+    Ok(())
 }
 
 /// 并发解析并输出 CSV（复权，基于上市日）。
 pub fn run_csv_fq(cmd: &DayCmd) -> Result<()> {
     // 股本变迁
-    let mut bytes = fs::read(cmd.gbbq.as_ref().unwrap())?;
-    let gbbq = Gbbq::filter_hashmap(Gbbq::iter(&mut bytes[4..]));
+    let mut source = rustdx_complete::file::gbbq::Gbbqs::from_file(cmd.gbbq.as_ref().unwrap())?;
+    let gbbq = Gbbq::filter_hashmap(source.to_vec().into_iter());
 
-    let file = File::create(&cmd.output)?;
+    let (atomic, file) = rustdx_complete::atomic_file::AtomicFile::create(&cmd.output)?;
     let mut wtr = csv::WriterBuilder::new()
         .buffer_capacity(BUFFER_SIZE)
         .from_writer(file);
     run_par(cmd, &mut wtr, |code, src| {
         Ok(Day::new(code, src, gbbq.get(code).map(Vec::as_slice))?)
-    })
+    })?;
+    drop(wtr);
+    atomic.commit()?;
+    Ok(())
 }
 
 /// 并发解析并输出 CSV（复权，基于前一日的因子）。
 pub fn run_csv_fq_previous(cmd: &DayCmd) -> Result<()> {
     // 股本变迁
-    let mut bytes = fs::read(cmd.gbbq.as_ref().unwrap())?;
-    let gbbq = Gbbq::filter_hashmap(Gbbq::iter(&mut bytes[4..]));
+    let mut source = rustdx_complete::file::gbbq::Gbbqs::from_file(cmd.gbbq.as_ref().unwrap())?;
+    let gbbq = Gbbq::filter_hashmap(source.to_vec().into_iter());
 
     // 前收
     let previous = previous_csv_table(&cmd.previous, &cmd.table, cmd.keep_factor)?;
 
-    let file = File::create(&cmd.output)?;
+    let (atomic, file) = rustdx_complete::atomic_file::AtomicFile::create(&cmd.output)?;
     let mut wtr = csv::WriterBuilder::new()
         .buffer_capacity(BUFFER_SIZE)
         .from_writer(file);
     run_par(cmd, &mut wtr, |code, src| {
+        let factor = previous
+            .get(code)
+            .ok_or_else(|| eyre!("{}缺少前因子", code))?;
         Ok(Day::concat(
             code,
             src,
             // 无分红数据并不意味着无复权数据
             gbbq.get(code).map(Vec::as_slice),
-            previous.get(code),
+            Some(factor),
         )?)
-    })
+    })?;
+    drop(wtr);
+    atomic.commit()?;
+    Ok(())
 }
 
 /// 筛选 day 文件
@@ -212,9 +262,20 @@ fn print(dir: &Path, count: usize, take: usize) {
     }
 }
 
-fn database_table(table: &str) -> (&str, &str) {
-    let pos = table.find('.').unwrap();
-    table.split_at(pos) // (database_name, table_name)
+fn database_table(table: &str) -> Result<(&str, &str)> {
+    let (database, name) = table
+        .split_once('.')
+        .ok_or_else(|| eyre!("表名必须为 database.table"))?;
+    let valid = |s: &str| {
+        !s.is_empty()
+            && s.bytes()
+                .enumerate()
+                .all(|(i, b)| b.is_ascii_alphabetic() || b == b'_' || (i > 0 && b.is_ascii_digit()))
+    };
+    if !valid(database) || !valid(name) {
+        eyre::bail!("数据库及表名只允许字母、数字和下划线，不能以数字开头");
+    }
+    Ok((database, name))
 }
 
 /// ClickHouse HTTP 连接配置（环境变量，约定与生态一致）。
@@ -264,9 +325,12 @@ impl ClickHouseConfig {
 
     /// 数据流导入（CSV 文件 → `INSERT INTO <table> FORMAT CSVWithNames`）。
     fn insert_csv(&self, table: &str, csv: &std::path::Path) -> Result<()> {
+        database_table(table)?;
         let file = std::fs::File::open(csv)?;
         let len = file.metadata()?.len();
-        let sql = urlencode(&format!("INSERT INTO {table} FORMAT CSVWithNames"));
+        let sql = urlencode(&format!(
+            "INSERT INTO {table} SETTINGS input_format_defaults_for_omitted_fields=1 FORMAT CSVWithNames"
+        ));
         let mut req = ureq::post(&format!("{}/?query={sql}", self.url));
         if self.user != "default" || !self.password.is_empty() {
             req = req.header("X-ClickHouse-User", &self.user);
@@ -316,13 +380,19 @@ fn ch_execute(cfg: &ClickHouseConfig, sql: &str) -> Result<()> {
     cfg.exec(sql).map(|_| ())
 }
 
-pub fn setup_clickhouse(fq: bool, table: &str) -> Result<()> {
+pub fn setup_clickhouse(_fq: bool, table: &str) -> Result<()> {
+    let (database, name) = database_table(table)?;
     let cfg = ClickHouseConfig::from_env();
-    let create_database = format!("CREATE DATABASE IF NOT EXISTS {}", database_table(table).0);
+    let create_database = format!("CREATE DATABASE IF NOT EXISTS {database}");
     ch_execute(&cfg, &create_database)?;
+    let engine = cfg.exec(&format!("SELECT engine_full FROM system.tables WHERE database='{database}' AND name='{name}' FORMAT TabSeparated"))?;
+    if !engine.trim().is_empty() && !engine.contains("ReplacingMergeTree(version)") {
+        eyre::bail!(
+            "{table}使用旧或不兼容的表引擎；请按 docs/MIGRATION.md 创建带version的新表后迁移，不会自动修改原表"
+        );
+    }
     #[rustfmt::skip]
-    let create_table = if fq {
-        format!("
+    let create_table = format!("
             CREATE TABLE IF NOT EXISTS {table}
             (
                 `date` Date CODEC(DoubleDelta),
@@ -333,29 +403,13 @@ pub fn setup_clickhouse(fq: bool, table: &str) -> Result<()> {
                 `close` Float64,
                 `amount` Float64,
                 `vol` Float64,
-                `preclose` Float64,
-                `factor` Float64
+                `preclose` Float64 DEFAULT 0,
+                `factor` Float64 DEFAULT 0,
+                `version` UInt64 DEFAULT toUnixTimestamp64Nano(now64(9))
             )
-            ENGINE = ReplacingMergeTree()
+            ENGINE = ReplacingMergeTree(version)
             ORDER BY (date, code)
-        ")
-    } else {
-        format!("
-            CREATE TABLE IF NOT EXISTS {table}
-            (
-                `date` Date CODEC(DoubleDelta),
-                `code` String,
-                `open` Float64,
-                `high` Float64,
-                `low` Float64,
-                `close` Float64,
-                `amount` Float64,
-                `vol` Float64
-            )
-            ENGINE = ReplacingMergeTree()
-            ORDER BY (date, code)
-        ")
-    }; // PARTITION BY 部分可能需要去掉
+        ");
     ch_execute(&cfg, &create_table)
 }
 
@@ -428,6 +482,7 @@ pub fn previous_csv(p: impl AsRef<Path>, _keep_factor: bool) -> Previous {
 
 /// 获取当前最新 factor
 fn clickhouse_factor_csv(table: &str, keep_factor: bool) -> Previous {
+    database_table(table)?;
     let query = format!(
         "SELECT code, t.1 AS date, t.2 AS close, t.3 AS factor FROM \
         (SELECT code, argMax(tuple(date, close, factor), date) AS t FROM {table} FINAL GROUP BY code) \
@@ -447,7 +502,7 @@ fn clickhouse_factor_csv(table: &str, keep_factor: bool) -> Previous {
 pub fn run_mongodb(cmd: &DayCmd) -> Result<()> {
     cmd.run_csv()?;
     // TODO:排查为什么 date 列无法变成 date 类型 date.date(2006-01-02)
-    let (database_name, table_name) = database_table(&cmd.table);
+    let (database_name, table_name) = database_table(&cmd.table)?;
     let args = [
         "--db",
         database_name,
@@ -506,6 +561,47 @@ pub fn read_xlsx(path: &str, col: usize, prefix: &str) -> Option<StockList> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn invalid_collection_preserves_last_success_and_records_failure() {
+        use argh::FromArgs;
+        let dir = std::env::temp_dir().join(format!("rustdx-quality-test-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        let source = dir.join("sh600000.day");
+        fs::write(source, [0; 31]).unwrap();
+        let output = dir.join("output.csv");
+        let report = dir.join("report.json");
+        fs::write(&output, b"previous success").unwrap();
+        let args = [
+            dir.to_str().unwrap(),
+            "-o",
+            output.to_str().unwrap(),
+            "--report",
+            report.to_str().unwrap(),
+        ];
+        let cmd = DayCmd::from_args(&["rustdx", "day"], &args).unwrap();
+        assert!(run_csv(&cmd).is_err());
+        assert_eq!(fs::read(&output).unwrap(), b"previous success");
+        let result: serde_json::Value = serde_json::from_slice(&fs::read(report).unwrap()).unwrap();
+        assert_eq!(result["status"], "failed");
+        assert!(!result["files"][0]["errors"].as_array().unwrap().is_empty());
+        fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn table_names_cannot_be_sql() {
+        assert_eq!(database_table("rustdx.tmp").unwrap(), ("rustdx", "tmp"));
+        for s in [
+            "tmp",
+            ".tmp",
+            "db.",
+            "db.t;DROP TABLE x",
+            "db.t.extra",
+            "db.1table",
+        ] {
+            assert!(database_table(s).is_err());
+        }
+    }
+
     #[test]
     fn previous_inputs_are_preserved_and_invalid_rows_fail() {
         let dir = std::env::temp_dir().join(format!("rustdx-factor-test-{}", std::process::id()));

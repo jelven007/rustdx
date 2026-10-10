@@ -714,15 +714,14 @@ mod tests {
         let temp_dir = std::env::temp_dir().join("rustdx_test_cache_expiry");
         let cache = FileCache::new(&temp_dir);
 
-        // 设置缓存（10ms TTL）
-        cache.set("key1", b"data1", Duration::from_millis(10));
+        // 使用长期TTL验证写入，再用零TTL验证过期，避免依赖线程调度。
+        cache.set("key1", b"data1", Duration::from_secs(60));
 
         // 立即获取应该成功
         let result = cache.get("key1");
         assert_eq!(result, Some(b"data1".to_vec()));
 
-        // 等待过期
-        thread::sleep(Duration::from_millis(20));
+        cache.set("key1", b"data1", Duration::ZERO);
 
         // 过期后应该返回 None
         let result = cache.get("key1");

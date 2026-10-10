@@ -41,6 +41,13 @@ impl Default for DateTime {
 }
 
 impl DateTime {
+    /// 将协议日期转为UTC+8本地时间，拒绝非法年月日和时分。
+    pub fn try_into_naive(self) -> crate::Result<chrono::NaiveDateTime> {
+        crate::data::date_from_u32(self.to_u32())?
+            .and_hms_opt(self.hour as u32, self.minute as u32, 0)
+            .ok_or(crate::Error::Custom("非法行情时分"))
+    }
+
     pub fn into_string(self, category: u16) -> String {
         match category {
             0..=3 | 7 | 8 => format!(

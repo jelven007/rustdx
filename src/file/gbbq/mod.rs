@@ -63,7 +63,7 @@ impl<'a> Gbbq<'a> {
     pub fn from_chunk(chunk: &'a [u8]) -> Gbbq<'a> {
         Self {
             market: u8_from_le_bytes(chunk, 0),
-            code: unsafe { std::str::from_utf8_unchecked(chunk.get_unchecked(1..7)) },
+            code: std::str::from_utf8(&chunk[1..7]).unwrap_or(""),
             date: u32_from_le_bytes(chunk, 8),
             category: u8_from_le_bytes(chunk, 12),
             fh_qltp: f32_from_le_bytes(chunk, 13),
@@ -110,37 +110,21 @@ impl<'a> Gbbq<'a> {
     /// 说明：gbbq 中 `market` 字段 0 = 深圳、1 = 上海（与通达信一致），
     /// 拼前缀后可直接与 day 文件的完整代码匹配，不再经过 `u32` 转换。
     pub fn filter_hashmap(gbbq: impl Iterator<Item = Self>) -> StockGbbq<'a> {
-        // TODO: 128 和 5000 变成常量
-        let mut key = String::new();
-        let mut vec = Vec::with_capacity(128); // 目前最多变更纪录的股票才不到 100 条记录
-        let mut hm = HashMap::with_capacity(5000); // 目前 4000 多只 A 股
-        gbbq.filter(|g| {
-            g.code
-                .chars()
-                .take(1)
-                .map(|c| c == '6' || c == '0' || c == '3') // gbbq 包含非 A 股代码的数据
-                .next()
-                .unwrap_or(false)
-                && g.category == 1 // 只需要 A 股股票和分红等信息
-        })
-        .map(|g| {
-            let c = if g.market == 1 {
-                format!("sh{}", g.code)
-            } else {
-                format!("sz{}", g.code)
+        let mut hm: StockGbbq<'a> = HashMap::with_capacity(6000);
+        for g in gbbq.filter(|g| {
+            g.category == 1 && g.code.len() == 6 && g.code.bytes().all(|b| b.is_ascii_digit())
+        }) {
+            let prefix = match g.market {
+                0 => "sz",
+                1 => "sh",
+                2 => "bj",
+                _ => continue,
             };
-            if c != key {
-                hm.insert(key.clone(), vec.clone()); // TODO: 优化这里的 clone
-                key = c;
-                vec.clear();
-                vec.push(g);
-            } else {
-                vec.push(g);
-            }
-        })
-        .last();
-        hm.insert(key.clone(), vec); // 插入最后一个股票
-        hm.remove("");
+            hm.entry(format!("{prefix}{}", g.code)).or_default().push(g);
+        }
+        for events in hm.values_mut() {
+            events.sort_by_key(|g| g.date);
+        }
         hm
     }
 }
@@ -159,7 +143,13 @@ pub struct Gbbqs {
 impl Gbbqs {
     pub fn from_file(p: impl AsRef<std::path::Path>) -> Result<Self> {
         let vec = std::fs::read(p)?;
-        let count = u32_from_le_bytes(&vec[..4], 0) as usize;
+        if vec.len() < 4 || !(vec.len() - 4).is_multiple_of(29) {
+            return Err(crate::Error::Custom("gbbq文件头或记录截断"));
+        }
+        let count = u32_from_le_bytes(&vec, 0) as usize;
+        if count != (vec.len() - 4) / 29 {
+            return Err(crate::Error::Custom("gbbq记录数与文件长度不符"));
+        }
         Ok(Self {
             data: vec,
             count,

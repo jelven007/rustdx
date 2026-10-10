@@ -5,7 +5,7 @@
 //! # 特性
 //!
 //! - ✅ 无需联网，所有数据内置
-//! - ✅ 支持中国所有法定节假日和调休
+//! - 内置休市日覆盖2024–2026；范围外兼容接口仅按工作日估计
 //! - ✅ 数据定期更新（使用 trade_date_a crate）
 //! - ✅ 简单易用的 API
 //!
@@ -38,6 +38,36 @@ use trade_date_a;
 pub struct TradingCalendar;
 
 impl TradingCalendar {
+    /// 内置休市数据覆盖范围；未知年份不能用工作日推断完整性。
+    pub fn supported_range() -> (NaiveDate, NaiveDate) {
+        (
+            NaiveDate::from_ymd_opt(2024, 1, 1).unwrap(),
+            NaiveDate::from_ymd_opt(2026, 12, 31).unwrap(),
+        )
+    }
+
+    pub fn try_is_trading_day(date: &NaiveDate) -> crate::Result<bool> {
+        let (start, end) = Self::supported_range();
+        if *date < start || *date > end {
+            return Err(crate::Error::Custom("交易日历超出内置2024–2026范围"));
+        }
+        Ok(Self::is_trading_day(date))
+    }
+
+    /// 返回闭区间内的交易日；范围外返回错误，不猜测历史休市日。
+    pub fn trading_days_between(start: NaiveDate, end: NaiveDate) -> crate::Result<Vec<NaiveDate>> {
+        if start > end {
+            return Err(crate::Error::Custom("交易日历起止日期颠倒"));
+        }
+        Self::try_is_trading_day(&start)?;
+        Self::try_is_trading_day(&end)?;
+        Ok(start
+            .iter_days()
+            .take_while(|d| *d <= end)
+            .filter(Self::is_trading_day)
+            .collect())
+    }
+
     /// 判断指定日期是否是交易日
     ///
     /// # 参数
@@ -77,7 +107,7 @@ impl TradingCalendar {
     ///
     /// # 说明
     ///
-    /// A股交易时间：周一至周五 9:30-15:00（不包括节假日）
+    /// UTC+8本地时间：9:30–11:30、13:00–15:00（包含收盘端点，不含午休）
     ///
     /// # 示例
     ///
@@ -94,12 +124,8 @@ impl TradingCalendar {
             return false;
         }
 
-        // 判断是否在交易时间内（9:30-15:00）
-        // 9:30:00 = 9*3600 + 30*60 = 34200 秒
-        // 15:00:00 = 15*3600 = 54000 秒
-        // 使用 NaiveDateTime 自带的时间部分（即调用方传入的本地时间），避免时区换算偏差
         let seconds = datetime.time().num_seconds_from_midnight();
-        (34200..54000).contains(&seconds)
+        (34200..=41400).contains(&seconds) || (46800..=54000).contains(&seconds)
     }
 
     /// 获取指定日期的前一个交易日
@@ -310,7 +336,9 @@ impl TradingCalendar {
     /// let today = TradingCalendar::current_trading_day();
     /// ```
     pub fn current_trading_day() -> NaiveDate {
-        let today = chrono::Local::now().naive_local().date();
+        let today = chrono::Utc::now()
+            .with_timezone(&crate::data::exchange_timezone())
+            .date_naive();
 
         if Self::is_trading_day(&today) {
             today
@@ -337,16 +365,20 @@ impl TradingCalendar {
     /// let market_day = TradingCalendar::market_trading_day();
     /// ```
     pub fn market_trading_day() -> NaiveDate {
-        // 使用 trade_date_a 的 get_market_day 函数
-        // 参数是交易开始时间 (hour, minute)
-        let date_i64 = trade_date_a::get_market_day((9, 30)); // 9:30 开始交易
+        Self::market_trading_day_at(
+            chrono::Utc::now()
+                .with_timezone(&crate::data::exchange_timezone())
+                .naive_local(),
+        )
+    }
 
-        // 将 i64 转换为 NaiveDate
-        let year = (date_i64 / 10000) as i32;
-        let month = ((date_i64 % 10000) / 100) as u32;
-        let day = (date_i64 % 100) as u32;
-
-        NaiveDate::from_ymd_opt(year, month, day).unwrap()
+    pub fn market_trading_day_at(datetime: NaiveDateTime) -> NaiveDate {
+        let date = datetime.date();
+        if Self::is_trading_day(&date) && datetime.time().num_seconds_from_midnight() >= 34200 {
+            date
+        } else {
+            Self::previous_trading_day(&date)
+        }
     }
 
     // ========== 辅助方法 ==========
@@ -410,6 +442,23 @@ mod tests {
 
     #[test]
     fn test_is_trading_time() {
+        for (time, expected) in [
+            ("11:30:00", true),
+            ("11:30:01", false),
+            ("12:00:00", false),
+            ("13:00:00", true),
+            ("15:00:00", true),
+            ("15:00:01", false),
+        ] {
+            let dt =
+                NaiveDateTime::parse_from_str(&format!("2025-01-06 {time}"), "%Y-%m-%d %H:%M:%S")
+                    .unwrap();
+            assert_eq!(TradingCalendar::is_trading_time(&dt), expected);
+        }
+        assert!(
+            TradingCalendar::try_is_trading_day(&NaiveDate::from_ymd_opt(2027, 1, 1).unwrap())
+                .is_err()
+        );
         // 交易时间内（周一 10:00）
         let dt1 =
             NaiveDateTime::parse_from_str("2025-01-06 10:00:00", "%Y-%m-%d %H:%M:%S").unwrap();

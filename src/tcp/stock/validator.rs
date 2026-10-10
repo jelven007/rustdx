@@ -147,7 +147,7 @@ impl ValidationResult {
 ///     println!("发现缺失日期: {:?}", result.details);
 /// }
 /// ```
-pub fn validate_kline_continuity(data: &[KlineData], _code: &str) -> ValidationResult {
+pub fn validate_kline_continuity(data: &[KlineData], code: &str) -> ValidationResult {
     if data.is_empty() {
         return ValidationResult::error(
             "数据为空",
@@ -156,37 +156,41 @@ pub fn validate_kline_continuity(data: &[KlineData], _code: &str) -> ValidationR
         );
     }
 
-    if data.len() == 1 {
-        // 只有一条数据，无法判断连续性
-        return ValidationResult::ok("只有一条数据，跳过连续性检查");
-    }
-
     let mut issues = Vec::new();
-    let mut prev_dt = None;
-
+    let mut prev_dt: Option<chrono::NaiveDateTime> = None;
     for bar in data {
+        let dt = match bar.dt.try_into_naive() {
+            Ok(dt) => dt,
+            Err(e) => return ValidationResult::error("非法日期", vec![e.to_string()], vec![]),
+        };
         if let Some(prev) = prev_dt {
-            // 计算日期间隔
-            let days_diff = calculate_date_diff(&prev, &bar.dt);
-
-            // 简化的检查：
-            // - 间隔 1 天：正常（连续交易日）
-            // - 间隔 2-3 天：可能包含周末
-            // - 间隔 > 3 天：可能缺失数据
-            if days_diff > 3 {
-                issues.push(format!(
-                    "日期跳变: {:04}-{:02}-{:02} 到 {:04}-{:02}-{:02} (间隔 {} 天，可能缺失交易日)",
-                    prev.year,
-                    prev.month,
-                    prev.day,
-                    bar.dt.year,
-                    bar.dt.month,
-                    bar.dt.day,
-                    days_diff
-                ));
+            if dt <= prev {
+                return ValidationResult::error(
+                    "日期重复或未升序",
+                    vec![format!("{code}: {prev} -> {dt}")],
+                    vec![],
+                );
+            }
+            if dt.date() != prev.date() {
+                match crate::calendar::TradingCalendar::trading_days_between(prev.date(), dt.date())
+                {
+                    Ok(days) => {
+                        for day in days
+                            .into_iter()
+                            .filter(|d| *d > prev.date() && *d < dt.date())
+                        {
+                            issues.push(format!("{code}: 缺少交易日 {day}（原因待核实）"));
+                        }
+                    }
+                    Err(e) => {
+                        if !issues.iter().any(|i| i.contains("日历")) {
+                            issues.push(e.to_string());
+                        }
+                    }
+                }
             }
         }
-        prev_dt = Some(bar.dt);
+        prev_dt = Some(dt);
     }
 
     if issues.is_empty() {
@@ -197,21 +201,10 @@ pub fn validate_kline_continuity(data: &[KlineData], _code: &str) -> ValidationR
             issues,
             vec![
                 "使用增量更新补全缺失数据".to_string(),
-                "或检查是否为节假日/停牌期".to_string(),
+                "核实上市/停牌状态后解释缺口，日历覆盖外需提供准确休市数据".to_string(),
             ],
         )
     }
-}
-
-/// 计算两个日期之间的天数差
-///
-/// 简化实现，假设每月30天（主要用于检查）
-fn calculate_date_diff(dt1: &DateTime, dt2: &DateTime) -> i32 {
-    // DateTime 是结构体，包含 year, month, day 字段
-    let days1 = dt1.year as i32 * 360 + dt1.month as i32 * 30 + dt1.day as i32;
-    let days2 = dt2.year as i32 * 360 + dt2.month as i32 * 30 + dt2.day as i32;
-
-    (days2 - days1).abs()
 }
 
 /// 验证财务数据内部的逻辑一致性
@@ -319,6 +312,9 @@ pub fn validate_finance_consistency(data: &FinanceInfoData) -> ValidationResult 
 /// }
 /// ```
 pub fn detect_anomalies(data: &[KlineData], threshold: f64) -> ValidationResult {
+    if !threshold.is_finite() || threshold <= 0.0 {
+        return ValidationResult::error("异常阈值必须为有限正数", vec![], vec![]);
+    }
     if data.is_empty() {
         return ValidationResult::error(
             "数据为空",
@@ -327,6 +323,20 @@ pub fn detect_anomalies(data: &[KlineData], threshold: f64) -> ValidationResult 
         );
     }
 
+    let invalid: Vec<_> = data
+        .iter()
+        .flat_map(|bar| {
+            let result = bar.validate();
+            if result.is_valid() {
+                vec![]
+            } else {
+                result.details
+            }
+        })
+        .collect();
+    if !invalid.is_empty() {
+        return ValidationResult::error("行情数值非法", invalid, vec!["请检查数据源".into()]);
+    }
     if data.len() < 10 {
         return ValidationResult::warning(
             "数据量不足".to_string(),
@@ -455,6 +465,19 @@ impl<'a> Validatable for KlineData<'a> {
     fn validate(&self) -> ValidationResult {
         let mut issues = Vec::new();
 
+        if let Err(e) = crate::data::validate_ohlcv(
+            self.open,
+            self.high,
+            self.low,
+            self.close,
+            self.vol,
+            self.amount,
+        ) {
+            issues.push(e.to_string());
+        }
+        if let Err(e) = self.dt.try_into_naive() {
+            issues.push(e.to_string());
+        }
         // 基础价格检查
         if self.open <= 0.0 {
             issues.push("开盘价必须大于0".to_string());
@@ -504,6 +527,40 @@ impl Validatable for FinanceInfoData {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn continuity_checks_single_missing_day_duplicates_and_holidays() {
+        let data = create_test_kline_data(
+            vec![
+                create_test_datetime(2025, 1, 6),
+                create_test_datetime(2025, 1, 8),
+            ],
+            vec![10.0, 10.0],
+        );
+        assert!(
+            validate_kline_continuity(&data, "600000")
+                .details
+                .iter()
+                .any(|d| d.contains("2025-01-07"))
+        );
+        let mut duplicates = data.clone();
+        duplicates[1].dt = duplicates[0].dt;
+        assert!(matches!(
+            validate_kline_continuity(&duplicates, "600000").level,
+            ValidationLevel::Error(_)
+        ));
+        let holidays = create_test_kline_data(
+            vec![
+                create_test_datetime(2025, 9, 30),
+                create_test_datetime(2025, 10, 9),
+            ],
+            vec![10.0, 10.0],
+        );
+        assert!(validate_kline_continuity(&holidays, "600000").is_valid());
+        let mut bad = data[0].clone();
+        bad.open = f64::NAN;
+        assert!(!bad.is_valid());
+    }
 
     fn create_test_datetime(y: u16, m: u16, d: u16) -> DateTime {
         DateTime {
@@ -677,7 +734,12 @@ mod tests {
 
         let result = detect_anomalies(&data, 3.0);
         assert!(!result.is_valid());
-        assert!(result.details.iter().any(|s| s.contains("最高价")));
+        assert!(
+            result
+                .details
+                .iter()
+                .any(|s| s.contains("最高价") || s.contains("OHLC"))
+        );
     }
 
     #[test]

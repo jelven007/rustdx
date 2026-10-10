@@ -80,9 +80,13 @@ impl Day {
         let (preclose, factor) = f
             .map(|f| (f.preclose, f.factor))
             .unwrap_or((first.close, 1.0));
-        let fq = gbbqs
-            .map(|g| Fq::concat(days.clone(), g, preclose, factor))
-            .unwrap_or_else(|| Fq::no_gbbq_with_previous(days.clone(), preclose, factor))
+        let events: Vec<_> = gbbqs
+            .unwrap_or(&[])
+            .iter()
+            .filter(|g| f.is_none_or(|f| crate::bytes_helper::date_string(g.date) > f.date))
+            .cloned()
+            .collect();
+        let fq = Fq::concat(days.clone(), &events, preclose, factor)
             .ok_or(Custom("复权失败"))?
             .into_iter()
             .filter(|d| d.trading);

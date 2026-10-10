@@ -7,11 +7,11 @@ pub struct Factor {
     pub code: String,
     #[serde(rename(deserialize = "close"))]
     pub preclose: f64,
+    /// 从上市日起累计的收益指数，包含现金/送配股事件；不是价格乘数。
     pub factor: f64,
 }
 
 impl Factor {
-    /// 根据前收、收盘价（最新价）和前一日的因子计算当日的复权因子。
     #[inline]
     pub fn compute_factor(&self, close: f64) -> f64 {
         self.factor * (close / self.preclose)
@@ -20,9 +20,7 @@ impl Factor {
 
 #[derive(Debug, Clone)]
 pub struct Fq {
-    /// 含市场前缀的股票代码（如 `sh600000`）
     pub code: String,
-    /// 年月日
     pub date: u32,
     pub factor: f64,
     pub close: f64,
@@ -32,192 +30,120 @@ pub struct Fq {
 }
 
 impl Fq {
-    /// 从上市日开始计算复权。
-    ///
-    /// ## 注意
-    /// 1. 上市日因子为 1。所以如果存在除权日先于上市日，直接舍弃先于上市日的除权日，
-    ///    比如 #000001#、#601975#。
-    /// 2. 解析后的交易日天数、除权日天数会在 debug build 下校验。
-    pub fn new(days: impl ExactSizeIterator<Item = Day> + Clone, g1: &[Gbbq]) -> Option<Vec<Fq>> {
-        if g1.is_empty() {
-            return Self::no_gbbq(days);
-        }
-        let count = days.len();
-        let mut fqs: Vec<Fq> = Vec::with_capacity(count + 128);
-        let mut preclose = days.clone().next()?.close;
-        let mut factor = 1.;
-        let mut gbbq = g1.iter();
-        let mut xdxr = gbbq.next()?;
-        let mut last = false;
-        let mut first = 0usize;
-
-        for (i, d) in days.enumerate() {
-            while !last && d.date > xdxr.date {
-                // 因为停牌或某种原因导致下个交易日晚于除权日
-                if i == 0 {
-                    // 为了让上市日因子为 1
-                    first += 1;
-                } else {
-                    fqs.push(Self::_0(&d, xdxr, preclose, &mut factor, false, true));
-                }
-                if let Some(x) = gbbq.next() {
-                    xdxr = x;
-                } else if !last {
-                    last = true;
-                }
-            }
-            if d.date == xdxr.date {
-                // 除权日且交易日
-                fqs.push(Self::_0(&d, xdxr, preclose, &mut factor, true, true));
-                if let Some(x) = gbbq.next() {
-                    xdxr = x;
-                } else if !last {
-                    last = true;
-                }
-            } else if d.date < xdxr.date || last {
-                // 下个除权日之前的交易日，或者最后一个除权日的交易日
-                fqs.push(Self::_0(&d, xdxr, preclose, &mut factor, true, false));
-            }
-            preclose = d.close;
-        }
-
-        // 确保所有数据都被正确解析：必须满足两个条件
-        debug_assert_eq!(
-            count,
-            fqs.iter().filter(|f| f.trading).count(),
-            "{} 交易日天数不正确",
-            g1[0].code
-        );
-        debug_assert_eq!(
-            if g1.last().unwrap().date <= fqs.last().unwrap().date {
-                g1.len()
-            } else {
-                // gbbq 最新日期大于 day 文件最新日期
-                g1.iter()
-                    .take_while(|g| g.date <= fqs.last().unwrap().date)
-                    .count()
-            },
-            fqs.iter().filter(|f| f.xdxr).count() + first,
-            "{} 除权除息日天数不正确：\nleft: {:?}\nright: {:?}",
-            g1[0].code,
-            g1,
-            fqs.iter().filter(|f| f.xdxr).collect::<Vec<_>>()
-        );
-
-        Some(fqs)
+    /// 首个交易日为基期（因子1），不应用基期及其之前的事件。
+    pub fn new(
+        days: impl ExactSizeIterator<Item = Day> + Clone,
+        events: &[Gbbq],
+    ) -> Option<Vec<Self>> {
+        let first = days.clone().next()?;
+        Self::build(days, events, first.close, 1.0, true)
     }
 
+    /// 增量 events 必须限定为上次基准日期之后；停牌期间事件依次作用于理论前收。
     pub fn concat(
         days: impl ExactSizeIterator<Item = Day> + Clone,
-        g1: &[Gbbq],
-        mut preclose: f64,
-        mut factor: f64,
-    ) -> Option<Vec<Fq>> {
-        if g1.is_empty() {
-            return Self::no_gbbq_with_previous(days, preclose, factor);
-        }
-        let count = days.len();
-        let mut fqs: Vec<Fq> = Vec::with_capacity(count + 128);
-        let mut gbbq = g1.iter();
-        let mut xdxr = gbbq.next()?;
-        let mut last = false;
-
-        for d in days {
-            while !last && d.date > xdxr.date {
-                // 因为停牌或某种原因导致下个交易日晚于除权日
-                // fqs.push(Self::_0(&d, xdxr, preclose, &mut factor, false, true));
-                if let Some(x) = gbbq.next() {
-                    xdxr = x;
-                } else if !last {
-                    last = true;
-                }
-            }
-            if d.date == xdxr.date {
-                // 除权日且交易日
-                fqs.push(Self::_0(&d, xdxr, preclose, &mut factor, true, true));
-                if let Some(x) = gbbq.next() {
-                    xdxr = x;
-                } else if !last {
-                    last = true;
-                }
-            } else if d.date < xdxr.date || last {
-                // 下个除权日之前的交易日，或者最后一个除权日的交易日
-                fqs.push(Self::_0(&d, xdxr, preclose, &mut factor, true, false));
-            }
-            preclose = d.close;
-        }
-
-        // 确保所有数据都被正确解析：必须满足两个条件
-        debug_assert_eq!(
-            count,
-            fqs.iter().filter(|f| f.trading).count(),
-            "{} 交易日天数不正确",
-            g1[0].code
-        );
-        debug_assert_eq!(
-            g1.iter()
-                .filter(
-                    |g| g.date >= fqs.first().unwrap().date && g.date <= fqs.last().unwrap().date
-                )
-                .count(),
-            fqs.iter().filter(|f| f.xdxr).count(),
-            "{} 除权除息日天数不正确：\nleft: {:?}\nright: {:?}",
-            g1[0].code,
-            g1,
-            fqs.iter().filter(|f| f.xdxr).collect::<Vec<_>>()
-        );
-
-        Some(fqs)
+        events: &[Gbbq],
+        preclose: f64,
+        factor: f64,
+    ) -> Option<Vec<Self>> {
+        Self::build(days, events, preclose, factor, false)
     }
 
-    pub fn no_gbbq(days: impl ExactSizeIterator<Item = Day> + Clone) -> Option<Vec<Fq>> {
-        let preclose = days.clone().next()?.close;
-        Self::no_gbbq_with_previous(days, preclose, 1.0)
-    }
-
-    /// 无除权事件的增量序列仍须继承上一条的收盘和累计收益因子。
-    pub fn no_gbbq_with_previous(
-        days: impl ExactSizeIterator<Item = Day> + Clone,
+    fn build(
+        days: impl ExactSizeIterator<Item = Day>,
+        events: &[Gbbq],
         mut preclose: f64,
         mut factor: f64,
-    ) -> Option<Vec<Fq>> {
+        initial: bool,
+    ) -> Option<Vec<Self>> {
         if !preclose.is_finite() || preclose <= 0.0 || !factor.is_finite() || factor <= 0.0 {
             return None;
         }
-        Some(
-            days.map(|d| {
-                let close = d.close;
-                factor *= close / preclose;
-                let fq = Self {
-                    close,
-                    factor,
-                    preclose,
-                    trading: true,
-                    xdxr: false,
-                    code: d.code,
-                    date: d.date,
-                };
-                preclose = close;
-                fq
-            })
-            .collect(),
-        )
+        let mut events: Vec<_> = events.iter().filter(|g| g.category == 1).collect();
+        events.sort_by_key(|g| g.date);
+        let mut events = events.into_iter().peekable();
+        let mut result = Vec::with_capacity(days.len());
+        let mut previous_date = None;
+        for (i, day) in days.enumerate() {
+            if !day.close.is_finite()
+                || day.close <= 0.0
+                || previous_date.is_some_and(|date| day.date <= date)
+            {
+                return None;
+            }
+            let mut applied = false;
+            while let Some(event) = events.peek().filter(|g| g.date <= day.date) {
+                if !initial || i != 0 {
+                    preclose = event.compute_pre_pct(preclose, preclose, true)[0];
+                    if !preclose.is_finite() || preclose <= 0.0 {
+                        return None;
+                    }
+                    applied = true;
+                }
+                events.next();
+            }
+            factor *= day.close / preclose;
+            if !factor.is_finite() {
+                return None;
+            }
+            result.push(Self {
+                code: day.code,
+                date: day.date,
+                factor,
+                close: day.close,
+                preclose,
+                trading: true,
+                xdxr: applied,
+            });
+            preclose = day.close;
+            previous_date = Some(day.date);
+        }
+        Some(result)
     }
 
-    #[inline]
-    fn _0(d: &Day, g: &Gbbq, preclose: f64, factor: &mut f64, trading: bool, xdxr: bool) -> Self {
-        let [preclose, close, pct] = g.compute_pre_pct(d.close, preclose, xdxr);
-        *factor *= pct;
-        // println!("d.date: {},factor: {},d.close: {}preclose: {},pct: {}trading: {},xdxr: {}",
-        //          d.date, factor, d.close, preclose, pct, trading, xdxr);
-        Self {
+    pub fn no_gbbq(days: impl ExactSizeIterator<Item = Day> + Clone) -> Option<Vec<Self>> {
+        Self::new(days, &[])
+    }
+
+    pub fn no_gbbq_with_previous(
+        days: impl ExactSizeIterator<Item = Day> + Clone,
+        preclose: f64,
+        factor: f64,
+    ) -> Option<Vec<Self>> {
+        Self::concat(days, &[], preclose, factor)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn suspended_events_match_full_and_incremental_series() {
+        let make_day = |date, close| Day {
+            code: "sz000001".into(),
+            date,
+            open: close,
+            high: close,
+            low: close,
             close,
-            preclose,
-            trading,
-            xdxr,
-            code: d.code.clone(),
-            date: d.date,
-            factor: *factor,
-        }
+            amount: 100.0,
+            vol: 100,
+        };
+        let days = vec![make_day(20250106, 10.0), make_day(20250110, 9.0)];
+        let event = Gbbq {
+            market: 0,
+            code: "000001",
+            date: 20250108,
+            category: 1,
+            fh_qltp: 10.0,
+            pgj_qzgb: 0.0,
+            sg_hltp: 0.0,
+            pg_hzgb: 0.0,
+        };
+        let full = Fq::new(days.clone().into_iter(), std::slice::from_ref(&event)).unwrap();
+        let incremental = Fq::concat(days[1..].iter().cloned(), &[event], 10.0, 1.0).unwrap();
+        assert_eq!(full[1].preclose, 9.0);
+        assert_eq!(full[1].factor, incremental[0].factor);
+        assert_eq!(full[1].factor, 1.0);
     }
 }

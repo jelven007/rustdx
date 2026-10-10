@@ -101,6 +101,7 @@ impl EastCmd {
 
     fn insert_clickhouse(&self) -> Result<()> {
         if self.output.eq("clickhouse") {
+            crate::io::setup_clickhouse(true, &self.table)?;
             // 插入 clickhouse 时，不保存解析结果。
             // 如果需要保存结果，则使用 `rustdx east -o output.csv` 指定 csv 文件。
             crate::io::insert_clickhouse(&self.output, &self.table, false)

@@ -190,7 +190,7 @@ pub struct KlineData<'d> {
     pub close: f64,
     pub high: f64,
     pub low: f64,
-    /// 成交量，单位：股
+    /// 通达信股票K线成交量，单位：手（100股）；指数/其他品种需确认源口径。
     pub vol: f64,
     /// 成交额，单位：元
     pub amount: f64,

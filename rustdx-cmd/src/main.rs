@@ -1,6 +1,7 @@
 mod cmd;
 mod download;
 mod io;
+mod quality;
 
 #[macro_use]
 extern crate log;

@@ -61,6 +61,14 @@ pub struct DayCmd {
     #[argh(option, short = 'n')]
     pub amount: Option<usize>,
 
+    /// 可选。将采集来源、日期边界及质量结果写入 JSON 文件。
+    #[argh(option)]
+    pub report: Option<std::path::PathBuf>,
+
+    /// 可选。交易日缺口或日历覆盖不足时也拒绝发布输出。
+    #[argh(switch)]
+    pub strict: bool,
+
     /// 可选。显示详细的使用说明。
     #[argh(option, short = 'h')]
     description: Vec<String>,
@@ -86,7 +94,9 @@ impl DayCmd {
             "clickhouse" => self.run_clickhouse(),
             x if x.ends_with("csv") => self.run_csv(),
             "mongodb" => crate::io::run_mongodb(self),
-            _ => todo!(),
+            _ => {
+                eyre::bail!("不支持的输出方式：{}", self.output);
+            }
         }
     }
 
