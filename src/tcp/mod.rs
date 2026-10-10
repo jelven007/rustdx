@@ -86,7 +86,7 @@ pub struct Tcp {
 }
 
 impl Tcp {
-    /// 连接到行情服务器并完成握手（已发送三个测试包）。
+    /// 连接到行情服务器并完成标准握手。
     ///
     /// 按 [`ip::STOCK_IP`] 列表顺序依次尝试（故障转移），直到某台连接成功；
     /// 全部失败时返回最后一个错误。
@@ -96,7 +96,7 @@ impl Tcp {
         Self::with_config(&TcpConfig::default())
     }
 
-    /// 以指定配置连接服务器并完成握手（已发送三个测试包）。
+    /// 以指定配置连接服务器并完成标准握手。
     ///
     /// - `config.ip` 为 `Some(addr)` 时只连接该地址；
     /// - 为 `None` 时按 [`ip::STOCK_IP`] 列表顺序故障转移——TCP 连接与协议握手
@@ -136,9 +136,7 @@ impl Tcp {
             reusable: true,
         };
         // 握手失败由服务器选择处理，禁止在握手内部递归重连。
-        for pack in [PACK1, PACK2, PACK3] {
-            tcp.read_frame_once(pack)?;
-        }
+        tcp.read_frame_once(PACK1)?;
         Ok(tcp)
     }
 

@@ -1,33 +1,125 @@
 use eyre::{Result, WrapErr};
 use serde::{Deserialize, Deserializer, Serialize};
+use std::{
+    net::{IpAddr, SocketAddr},
+    sync::OnceLock,
+    time::Duration,
+};
+use ureq::{
+    Agent, Error,
+    config::Config,
+    unversioned::{
+        resolver::{DefaultResolver, ResolvedSocketAddrs, Resolver},
+        transport::DefaultConnector,
+    },
+};
+
+#[derive(Debug)]
+struct EastmoneyResolver {
+    offset: usize,
+}
+
+impl Resolver for EastmoneyResolver {
+    fn resolve(
+        &self,
+        uri: &ureq::http::Uri,
+        config: &Config,
+        timeout: ureq::unversioned::transport::NextTimeout,
+    ) -> std::result::Result<ResolvedSocketAddrs, Error> {
+        let system = DefaultResolver::default()
+            .resolve(uri, config, timeout)
+            .unwrap_or_else(|_| self.empty());
+        let mut addresses = self.empty();
+        let port = uri.port_u16().unwrap_or(443);
+        let configured = std::env::var("RUSTDX_EASTMONEY_IPS").unwrap_or_default();
+        let mut fallbacks: Vec<_> = configured
+            .split(',')
+            .filter(|value| !value.trim().is_empty())
+            .chain([
+                "120.79.191.232",
+                "119.3.232.150",
+                "120.76.218.228",
+                "14.103.191.91",
+                "47.112.165.11",
+            ])
+            .filter_map(|value| value.trim().parse::<IpAddr>().ok())
+            .collect();
+        if !fallbacks.is_empty() {
+            let len = fallbacks.len();
+            fallbacks.rotate_left(self.offset % len);
+        }
+        for ip in fallbacks {
+            let address = SocketAddr::new(ip, port);
+            if addresses.len() < 16 && !addresses.contains(&address) {
+                addresses.push(address);
+            }
+        }
+        for address in system.iter().copied() {
+            if addresses.len() < 16 && !addresses.contains(&address) {
+                addresses.push(address);
+            }
+        }
+        if addresses.is_empty() {
+            Err(Error::HostNotFound)
+        } else {
+            Ok(addresses)
+        }
+    }
+}
+
+fn eastmoney_agents() -> &'static [Agent; 5] {
+    static AGENTS: OnceLock<[Agent; 5]> = OnceLock::new();
+    AGENTS.get_or_init(|| {
+        std::array::from_fn(|offset| {
+            let config = Agent::config_builder()
+                .timeout_global(Some(Duration::from_secs(15)))
+                .build();
+            Agent::with_parts(
+                config,
+                DefaultConnector::default(),
+                EastmoneyResolver { offset },
+            )
+        })
+    })
+}
 
 /// 获取股票数据
 ///
-/// 东财接口偶发网络抖动（Unexpected EOF 等），自动重试 3 次。
+/// 东财接口偶发网络抖动（Unexpected EOF 等），依次尝试多个 HTTPS 节点。
 pub fn get(page_size: u16, page_number: u16) -> Result<String> {
-    // 如果需要升序，使用 `order=code%2Case` 或者 `order=`
-    // ashare => A 股，bshare => B 股，kshare => 科创板，equity => 前三种
-    let url = format!(
-        "http://56.push2.eastmoney.com/api/qt/clist/get?cb=jQuery112407375845698232317_1631693257414&\
-        pn={page_number}&pz={page_size}&po=0&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&\
-        invt=2&fid=f12&fs=m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23&fields=f18,f16,f12,f13,f124,f17,f15,f2,f6,f5&_=1631693257534"
-    );
-    info!("Get: {url}");
-
-    const MAX_RETRIES: usize = 3;
+    const HOST: &str = "push2.eastmoney.com";
+    const MAX_RETRIES: usize = 1;
     let mut last_err = None;
-    for attempt in 1..=MAX_RETRIES {
-        match ureq::get(&url).call() {
-            Ok(mut resp) => return Ok(resp.body_mut().read_to_string()?),
-            Err(e) => {
-                warn!("东财请求失败（第 {attempt}/{MAX_RETRIES} 次）：{e}");
-                last_err = Some(e);
-                std::thread::sleep(std::time::Duration::from_millis(500 * attempt as u64));
+    for node_offset in 0..eastmoney_agents().len() {
+        let node = (page_number as usize - 1 + node_offset) % eastmoney_agents().len();
+        let url = format!(
+            "https://{HOST}/api/qt/clist/get?cb=jQuery112407375845698232317_1631693257414&\
+            pn={page_number}&pz={page_size}&po=0&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&\
+            invt=2&fid=f12&fs=m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23&fields=f18,f16,f12,f13,f124,f17,f15,f2,f6,f5&_=1631693257534"
+        );
+        for attempt in 1..=MAX_RETRIES {
+            info!("Get: {url}");
+            match eastmoney_agents()[node]
+                .get(&url)
+                .header("Accept", "application/json,text/plain,*/*")
+                .header("Referer", "https://quote.eastmoney.com/")
+                .header("User-Agent", "Mozilla/5.0 rustdx-cli")
+                .call()
+            {
+                Ok(mut resp) => return Ok(resp.body_mut().read_to_string()?),
+                Err(e) => {
+                    warn!("东财节点#{node}请求失败（第 {attempt}/{MAX_RETRIES} 次）：{e}");
+                    last_err = Some(e);
+                    std::thread::sleep(std::time::Duration::from_millis(500 * attempt as u64));
+                }
             }
         }
     }
     Err(eyre::eyre!(last_err.unwrap())).wrap_err_with(|| {
-        format!("获取东财股票数据失败（已重试 {MAX_RETRIES} 次），网址为\n`{url:?}`")
+        format!(
+            "获取东财股票数据失败（{}个HTTPS节点各重试{MAX_RETRIES}次）",
+            eastmoney_agents().len()
+        )
     })
 }
 
@@ -50,18 +142,17 @@ pub fn parse(text: &str) -> Result<EastMarket> {
 
 /// 获取并解析股票数据
 pub fn fetch(max: Option<u16>) -> Result<EastMarket> {
-    // NOTE: 最多只能获取 100 条数据；page size 从第一页开始
-    const N: u16 = 100;
-
     if max == Some(0) {
         eyre::bail!("max必须大于0");
     }
+    // 正常全市场可在一页返回；若上游限制页大小，下面仍会按实际返回长度翻页。
+    let page_size = max.unwrap_or(6000).min(6000);
     let mut done = 0usize;
     let mut page_number = 1u16;
     let mut total;
     let mut v = Vec::with_capacity(6000);
     loop {
-        let txt = get(N, page_number)?;
+        let txt = get(page_size, page_number)?;
         let data = parse(&txt)?;
         total = data.data.total;
         let len = data.data.diff.len();
@@ -74,6 +165,7 @@ pub fn fetch(max: Option<u16>) -> Result<EastMarket> {
         if done >= max.unwrap_or(total) as usize {
             break;
         }
+        std::thread::sleep(std::time::Duration::from_millis(150));
         page_number = page_number
             .checked_add(1)
             .ok_or_else(|| eyre::eyre!("东财分页溢出"))?;

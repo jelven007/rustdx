@@ -204,7 +204,7 @@ main() {
     echo ""
 
     print_info "详细文档: NETWORK_CONNECTION_GUIDE.md"
-    print_info "报告问题: https://github.com/jackluo2012/rustdx/issues"
+    print_info "报告问题: https://github.com/jelven007/rustdx/issues"
     echo ""
 }
 

@@ -62,7 +62,7 @@ TCP 市场参数为0深圳、1上海。请显式指定市场；指数代码与�
 
 单连接上的请求顺序执行，批量连接池沿用客户端配置并复用连接。协议正文截断、解压失败、非法分页进展返回错误。`Tdx::try_parse` 是返回错误的解码入口，旧 `parse` 保留兼容；旧低层构造函数可能因非法代码 panic，优先使用经过验证的 Client 或 KlineBuilder。
 
-空数据无法证明停牌或无交易，调用方应核实交易时间和证券状态。服务器地址、协议响应和限流策略可能变化；本轮验证使用本地模拟服务与存量抓包，未访问真实行情服务器。
+空数据无法证明停牌或无交易，调用方应核实交易时间和证券状态。服务器地址、协议响应和限流策略可能变化；本轮已完成真实行情验收，部署到目标机器后仍须运行 `production_smoke`。
 
 ## 数据单位与日期
 
@@ -113,16 +113,21 @@ rustdx day -h output
 ## 数据库导入
 
 ```sh
+cp deploy/clickhouse/.env.example deploy/clickhouse/.env
+# 修改.env中的密码后启动；端口仅绑定本机回环地址
+docker compose --env-file deploy/clickhouse/.env \
+  -f deploy/clickhouse/compose.yml up -d
+
 export CLICKHOUSE_URL=http://127.0.0.1:8123
-export CLICKHOUSE_USER=default
-# 如需认证，在环境变量中设置CLICKHOUSE_PASSWORD
+export CLICKHOUSE_USER=rustdx
+export CLICKHOUSE_PASSWORD='与deploy/clickhouse/.env一致'
 rustdx day ./lday -o clickhouse -t rustdx.bars_v2 -k
 rustdx east -p clickhouse -o clickhouse -t rustdx.bars_v2
 ```
 
 ClickHouse 统一使用HTTP配置。新表是 `ReplacingMergeTree(version)`，以(date,code)为逻辑键；查询即时去重结果须加 `FINAL`。旧表需按[迁移说明](docs/MIGRATION.md)建立新表并核验后切换。本地 factor 输入只读，辅助边界查询失败不会把已成功导入报告为写入失败。
 
-MongoDB 路径需要系统 `mongoimport`，以(date,code)执行upsert，日期以字符串保存；批次失败可能已写入部分行。两种外部数据库本轮均未做真实服务验收。
+MongoDB 路径需要系统 `mongoimport`，以(date,code)执行upsert，日期以字符串保存；批次失败可能已写入部分行。ClickHouse 25.8 已完成2981万行本地验收；MongoDB 未做真实服务验收。
 
 ## 缓存、计算与示例
 
@@ -137,6 +142,8 @@ MongoDB 路径需要系统 `mongoimport`，以(date,code)执行upsert，日期�
 cargo run --example local_data -- assets/sz000001.day sz000001
 # 需要通达信网络的例子
 cargo run --example reliable_client
+# 部署前完整在线验收
+cargo run --release --example production_smoke
 ```
 
 ## 验证与发布
@@ -151,6 +158,9 @@ cargo bench --bench indicators
 
 默认CI在Linux/macOS/Windows上跳过外部网络案例，另有最低版本检查；本地TCP/HTTP模拟和文件回归正常执行。移除跳过变量会启用网络案例，需要可用行情/HTTP/数据库环境。tag `v*` 构建三平台CLI并生成带SHA256的release草稿，仍需人工发布。
 
-[分阶段交付记录](docs/ITERATION.md) · [架构评估](docs/PROJECT_ANALYSIS.md) · [变更记录](CHANGELOG.md)
+东财公共接口会按出口和节点限流。CLI 使用 HTTPS、多节点、15秒单请求总超时和低频分页，并可通过
+`RUSTDX_EASTMONEY_IPS=ip1,ip2` 覆盖备用节点；生产调度仍应限制为收盘后单任务运行。
+
+[生产验收报告](docs/PRODUCTION_ACCEPTANCE.md) · [分阶段交付记录](docs/ITERATION.md) · [架构评估](docs/PROJECT_ANALYSIS.md) · [变更记录](CHANGELOG.md)
 
 MIT许可证，见[LICENSE](LICENSE)。

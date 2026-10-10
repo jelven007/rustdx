@@ -126,7 +126,7 @@ where
                     .and_then(|s| s.to_str())
                     .unwrap_or("")
                     .to_owned();
-                let quality = crate::quality::inspect(path.clone(), code, &v);
+                let mut quality = crate::quality::inspect(path.clone(), code, &v);
                 let invalid =
                     !quality.errors.is_empty() || (cmd.strict && !quality.warnings.is_empty());
                 if invalid {
@@ -141,10 +141,20 @@ where
                             .join("; ")
                     ));
                 }
-                report.files.push(quality);
                 if invalid {
+                    report.files.push(quality);
                     continue;
                 }
+                let source_rows = v.len();
+                let v = normalize_rows(v)?;
+                if v.len() != source_rows {
+                    quality.warnings.push(format!(
+                        "输出前按日期去重，保留源文件最后一条：{}条 -> {}条",
+                        source_rows,
+                        v.len()
+                    ));
+                }
+                report.files.push(quality);
                 total_rows += v.len();
                 for t in v {
                     wtr.serialize(t)?;
@@ -174,7 +184,9 @@ where
 
     // 解析后校验报告
     let elapsed = start.elapsed();
-    let out_size = fs::metadata(&cmd.output)
+    let out_size = wtr
+        .get_ref()
+        .metadata()
         .map(|m| m.len() as f64 / (1024.0 * 1024.0))
         .unwrap_or(0.0);
     info!(
@@ -185,6 +197,25 @@ where
         elapsed.as_secs_f64()
     );
     Ok(())
+}
+
+fn normalize_rows<T: QualityRow>(rows: Vec<T>) -> Result<Vec<T>> {
+    let mut dated = rows
+        .into_iter()
+        .enumerate()
+        .map(|(index, row)| Ok((row.date()?, index, row)))
+        .collect::<Result<Vec<_>>>()?;
+    dated.sort_by_key(|(date, index, _)| (*date, *index));
+
+    let mut seen = std::collections::HashSet::with_capacity(dated.len());
+    let mut normalized = Vec::with_capacity(dated.len());
+    for (date, _, row) in dated.into_iter().rev() {
+        if seen.insert(date) {
+            normalized.push(row);
+        }
+    }
+    normalized.reverse();
+    Ok(normalized)
 }
 
 /// 并发解析并输出 CSV（无复权）。
@@ -438,23 +469,46 @@ pub fn insert_clickhouse(output: &impl AsRef<Path>, table: &str, keep: bool) -> 
     Ok(())
 }
 
-/// 需要日线 clickhouse csv 文件
+/// 需要可用的 ClickHouse HTTP 服务；CI 通过跳过变量禁用外部服务测试。
 #[test]
 fn test_insert_clickhouse() -> Result<()> {
     if std::env::var_os("RUSTDX_SKIP_INTEGRATION_TESTS").is_some() {
         return Ok(());
     }
-    // 本地未安装 clickhouse-client 时跳过（该测试依赖本机 ClickHouse 服务）
-    if std::process::Command::new("clickhouse-client")
-        .arg("--version")
-        .output()
-        .is_err()
-    {
-        eprintln!("⚠️  跳过：未安装 clickhouse-client");
-        return Ok(());
-    }
-    setup_clickhouse(true, "rustdx.tmp")?;
-    insert_clickhouse(&"clickhouse", "rustdx.tmp", true)
+    let table = format!("rustdx_test.acceptance_{}", std::process::id());
+    let path = std::env::temp_dir().join(format!("rustdx-clickhouse-{}.input", std::process::id()));
+    let csv_path = path.with_extension("csv");
+    fs::write(
+        &path,
+        "date,code,open,high,low,close,amount,vol\n\
+         2026-10-08,sh600000,10,11,9,10.5,1000,100\n\
+         2026-10-09,sh600000,10.5,11,10,10.8,1200,120\n",
+    )?;
+    let config = ClickHouseConfig::from_env();
+    let result = (|| -> Result<()> {
+        setup_clickhouse(false, &table)?;
+        insert_clickhouse(&path, &table, true)?;
+        insert_clickhouse(&csv_path, &table, false)?;
+        let logical_count = config
+            .exec(&format!("SELECT count() FROM {table} FINAL"))?
+            .trim()
+            .parse::<usize>()?;
+        config.exec(&format!("OPTIMIZE TABLE {table} FINAL"))?;
+        let merged_count = config
+            .exec(&format!("SELECT count() FROM {table}"))?
+            .trim()
+            .parse::<usize>()?;
+        if logical_count != 2 || merged_count != 2 {
+            eyre::bail!("ClickHouse重复写入去重错误：FINAL={logical_count}，合并后={merged_count}");
+        }
+        Ok(())
+    })();
+    let cleanup = config.exec(&format!("DROP TABLE IF EXISTS {table}"));
+    let _ = fs::remove_file(&path);
+    let _ = fs::remove_file(&csv_path);
+    result?;
+    cleanup?;
+    Ok(())
 }
 
 type Previous = Result<std::collections::HashMap<String, Factor>>;
@@ -607,6 +661,29 @@ pub fn read_xlsx(path: &str, col: usize, prefix: &str) -> Result<StockList> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn output_rows_are_sorted_and_duplicate_dates_keep_last_source_row() {
+        let row = |date, close| rustdx_complete::file::day::Day {
+            date,
+            code: "sh000001".into(),
+            open: close,
+            high: close,
+            low: close,
+            close,
+            amount: 1.0,
+            vol: 1,
+        };
+        let rows = normalize_rows(vec![
+            row(20250107, 7.0),
+            row(20250106, 6.0),
+            row(20250107, 70.0),
+        ])
+        .unwrap();
+        assert_eq!(rows.len(), 2);
+        assert_eq!((rows[0].date, rows[0].close), (20250106, 6.0));
+        assert_eq!((rows[1].date, rows[1].close), (20250107, 70.0));
+    }
+
     #[test]
     fn excel_codes_keep_leading_zero_and_invalid_columns_fail() {
         let dir = std::env::temp_dir().join(format!("rustdx-excel-test-{}", std::process::id()));

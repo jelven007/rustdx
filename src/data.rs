@@ -49,6 +49,23 @@ impl Symbol {
     pub fn code(&self) -> &str {
         &self.code
     }
+
+    /// 按交易所代码段判断是否为沪深京 A 股；指数、基金、债券等返回 false。
+    pub fn is_a_share(&self) -> bool {
+        match self.market {
+            Market::Shanghai => ["600", "601", "603", "605", "688", "689"]
+                .iter()
+                .any(|prefix| self.code.starts_with(prefix)),
+            Market::Shenzhen => ["000", "001", "002", "003", "300", "301", "302"]
+                .iter()
+                .any(|prefix| self.code.starts_with(prefix)),
+            Market::Beijing => {
+                self.code.starts_with('4')
+                    || self.code.starts_with('8')
+                    || self.code.starts_with("92")
+            }
+        }
+    }
 }
 
 impl FromStr for Symbol {
@@ -163,14 +180,36 @@ pub fn validate_ohlcv(
     volume: f64,
     amount: f64,
 ) -> Result<()> {
+    validate_bar_values(open, high, low, close, volume, amount)?;
+    if [open, high, low, close].iter().any(|price| *price <= 0.0)
+        || high < low
+        || open < low
+        || open > high
+        || close < low
+        || close > high
+    {
+        return Err(Error::Custom("OHLC价格范围非法"));
+    }
+    Ok(())
+}
+
+/// 校验所有品种通用的数值约束，不假定非股票品种的历史 OHLC 区间严格一致。
+pub fn validate_bar_values(
+    open: f64,
+    high: f64,
+    low: f64,
+    close: f64,
+    volume: f64,
+    amount: f64,
+) -> Result<()> {
     if ![open, high, low, close, volume, amount]
         .iter()
         .all(|n| n.is_finite())
     {
         return Err(Error::Custom("行情包含NaN或无限值"));
     }
-    if low <= 0.0 || high < low || open < low || open > high || close < low || close > high {
-        return Err(Error::Custom("OHLC价格范围非法"));
+    if [open, high, low, close].iter().any(|price| *price < 0.0) {
+        return Err(Error::Custom("价格不能为负"));
     }
     if volume < 0.0 || amount < 0.0 {
         return Err(Error::Custom("成交量或成交额为负"));
@@ -183,7 +222,11 @@ mod tests {
     use super::*;
     #[test]
     fn symbols_and_units_are_explicit() {
-        assert_eq!("sz000001".parse::<Symbol>().unwrap().code(), "000001");
+        let stock = "sz000001".parse::<Symbol>().unwrap();
+        assert_eq!(stock.code(), "000001");
+        assert!(stock.is_a_share());
+        assert!(!"sh000001".parse::<Symbol>().unwrap().is_a_share());
+        assert!("bj920001".parse::<Symbol>().unwrap().is_a_share());
         assert!("sz200b07".parse::<Symbol>().is_ok());
         for s in ["000001", "xx600000", "sh中文", "sh../abc"] {
             assert!(s.parse::<Symbol>().is_err());

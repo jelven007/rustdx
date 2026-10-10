@@ -1,6 +1,6 @@
 //! 使用本地协议服务验证断线恢复与安全解码。
 use rustdx_complete::tcp::stock::{Client, Kline, SecurityQuotes};
-use rustdx_complete::tcp::{PACK1, PACK2, PACK3, Tcp, TcpConfig, Tdx};
+use rustdx_complete::tcp::{PACK1, Tcp, TcpConfig, Tdx};
 use std::io::{Read, Write};
 use std::net::TcpListener;
 use std::time::Duration;
@@ -28,12 +28,10 @@ fn reconnects_once_after_truncated_body() {
             stream
                 .set_read_timeout(Some(Duration::from_secs(2)))
                 .unwrap();
-            for pack in [PACK1, PACK2, PACK3] {
-                let mut bytes = vec![0; pack.len()];
-                stream.read_exact(&mut bytes).unwrap();
-                assert_eq!(bytes, pack);
-                frame(&mut stream, &[0, 0]);
-            }
+            let mut bytes = vec![0; PACK1.len()];
+            stream.read_exact(&mut bytes).unwrap();
+            assert_eq!(bytes, PACK1);
+            frame(&mut stream, &[0, 0]);
             let mut request = [0; 18];
             stream.read_exact(&mut request).unwrap();
             if attempt == 0 {
@@ -94,11 +92,9 @@ fn invalid_client_inputs_return_errors() {
     };
     let server = std::thread::spawn(move || {
         let (mut stream, _) = listener.accept().unwrap();
-        for pack in [PACK1, PACK2, PACK3] {
-            let mut bytes = vec![0; pack.len()];
-            stream.read_exact(&mut bytes).unwrap();
-            frame(&mut stream, &[0, 0]);
-        }
+        let mut bytes = vec![0; PACK1.len()];
+        stream.read_exact(&mut bytes).unwrap();
+        frame(&mut stream, &[0, 0]);
     });
     let mut client = Client::with_config(&config).unwrap();
     assert!(client.quotes(&[]).unwrap().is_empty());

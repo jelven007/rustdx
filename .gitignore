@@ -19,6 +19,8 @@ eastmoney.csv
 # 编辑器和IDE
 .vscode/
 .idea/
+.env
+deploy/clickhouse/.env
 *.swp
 *.swo
 *~

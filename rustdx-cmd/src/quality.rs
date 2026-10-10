@@ -2,7 +2,7 @@ use eyre::Result;
 use rustdx_complete::{
     atomic_file::AtomicFile,
     calendar::TradingCalendar,
-    data::{Bar, Symbol, validate_ohlcv},
+    data::{Symbol, validate_bar_values, validate_ohlcv},
     file::day,
 };
 use serde::Serialize;
@@ -22,6 +22,10 @@ pub struct FileReport {
 pub trait QualityRow {
     fn date(&self) -> Result<chrono::NaiveDate>;
     fn validate(&self) -> Result<()>;
+    fn is_a_share(&self) -> bool;
+    fn warnings(&self) -> Vec<String> {
+        Vec::new()
+    }
 }
 
 impl QualityRow for day::Day {
@@ -29,8 +33,42 @@ impl QualityRow for day::Day {
         Ok(rustdx_complete::data::date_from_u32(self.date)?)
     }
     fn validate(&self) -> Result<()> {
-        Bar::from_day(self)?;
+        let symbol = self.code.parse::<Symbol>()?;
+        validate_bar_values(
+            self.open,
+            self.high,
+            self.low,
+            self.close,
+            self.vol as f64 / 100.0,
+            self.amount,
+        )?;
+        if symbol.is_a_share() {
+            validate_ohlcv(
+                self.open,
+                self.high,
+                self.low,
+                self.close,
+                self.vol as f64 / 100.0,
+                self.amount,
+            )?;
+        }
         Ok(())
+    }
+    fn is_a_share(&self) -> bool {
+        self.code
+            .parse::<Symbol>()
+            .is_ok_and(|symbol| symbol.is_a_share())
+    }
+    fn warnings(&self) -> Vec<String> {
+        relaxed_ohlc_warning(
+            &self.code,
+            self.open,
+            self.high,
+            self.low,
+            self.close,
+            self.vol as f64 / 100.0,
+            self.amount,
+        )
     }
 }
 
@@ -39,8 +77,8 @@ impl QualityRow for day::fq::Day {
         Ok(chrono::NaiveDate::parse_from_str(&self.date, "%Y-%m-%d")?)
     }
     fn validate(&self) -> Result<()> {
-        self.code.parse::<Symbol>()?;
-        validate_ohlcv(
+        let symbol = self.code.parse::<Symbol>()?;
+        validate_bar_values(
             self.open,
             self.high,
             self.low,
@@ -48,6 +86,16 @@ impl QualityRow for day::fq::Day {
             self.vol,
             self.amount,
         )?;
+        if symbol.is_a_share() {
+            validate_ohlcv(
+                self.open,
+                self.high,
+                self.low,
+                self.close,
+                self.vol,
+                self.amount,
+            )?;
+        }
         if !self.factor.is_finite()
             || self.factor <= 0.0
             || !self.preclose.is_finite()
@@ -56,6 +104,41 @@ impl QualityRow for day::fq::Day {
             eyre::bail!("前收或累计收益因子非法");
         }
         Ok(())
+    }
+    fn is_a_share(&self) -> bool {
+        self.code
+            .parse::<Symbol>()
+            .is_ok_and(|symbol| symbol.is_a_share())
+    }
+    fn warnings(&self) -> Vec<String> {
+        relaxed_ohlc_warning(
+            &self.code,
+            self.open,
+            self.high,
+            self.low,
+            self.close,
+            self.vol,
+            self.amount,
+        )
+    }
+}
+
+fn relaxed_ohlc_warning(
+    code: &str,
+    open: f64,
+    high: f64,
+    low: f64,
+    close: f64,
+    volume: f64,
+    amount: f64,
+) -> Vec<String> {
+    let Ok(symbol) = code.parse::<Symbol>() else {
+        return Vec::new();
+    };
+    if !symbol.is_a_share() && validate_ohlcv(open, high, low, close, volume, amount).is_err() {
+        vec!["非A股品种的源OHLC区间异常，已保留原始记录".into()]
+    } else {
+        Vec::new()
     }
 }
 
@@ -70,12 +153,19 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
         warnings: vec![],
     };
     if rows.is_empty() {
-        report.errors.push("文件无日线记录".into());
+        report.warnings.push("文件无日线记录".into());
     }
     let mut previous = None;
+    let mut first_date = None;
+    let mut last_date = None;
     for (index, row) in rows.iter().enumerate() {
         if let Err(e) = row.validate() {
             report.errors.push(format!("第{}行: {e}", index + 1));
+        }
+        for warning in row.warnings() {
+            report
+                .warnings
+                .push(format!("第{}行: {warning}", index + 1));
         }
         let date = match row.date() {
             Ok(date) => date,
@@ -84,10 +174,8 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
                 continue;
             }
         };
-        if report.first_date.is_none() {
-            report.first_date = Some(date.to_string());
-        }
-        report.last_date = Some(date.to_string());
+        first_date = Some(first_date.map_or(date, |first: chrono::NaiveDate| first.min(date)));
+        last_date = Some(last_date.map_or(date, |last: chrono::NaiveDate| last.max(date)));
         match TradingCalendar::try_is_trading_day(&date) {
             Ok(false) => report
                 .warnings
@@ -99,9 +187,12 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
         }
         if let Some(prev) = previous {
             if date <= prev {
-                report
-                    .errors
-                    .push(format!("日期重复或未升序: {prev} -> {date}"));
+                let issue = format!("日期重复或未升序: {prev} -> {date}");
+                if row.is_a_share() {
+                    report.errors.push(issue);
+                } else {
+                    report.warnings.push(format!("{issue}，输出将按日期规范化"));
+                }
             } else {
                 match TradingCalendar::trading_days_between(prev, date) {
                     Ok(days) => {
@@ -124,6 +215,8 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
         }
         previous = Some(date);
     }
+    report.first_date = first_date.map(|date| date.to_string());
+    report.last_date = last_date.map(|date| date.to_string());
     report
 }
 
@@ -164,5 +257,58 @@ impl CollectionReport {
         drop(file);
         atomic.commit()?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn row(code: &str) -> day::Day {
+        day::Day {
+            date: 20250106,
+            code: code.into(),
+            open: 10.0,
+            high: 10.5,
+            low: 9.5,
+            close: 10.6,
+            amount: 1000.0,
+            vol: 100,
+        }
+    }
+
+    #[test]
+    fn equities_are_strict_and_indexes_keep_source_anomalies_as_warnings() {
+        let stock = inspect("stock.day".into(), "sz000001".into(), &[row("sz000001")]);
+        assert!(!stock.errors.is_empty());
+        let index = inspect("index.day".into(), "sh000001".into(), &[row("sh000001")]);
+        assert!(index.errors.is_empty());
+        assert!(
+            index
+                .warnings
+                .iter()
+                .any(|warning| warning.contains("OHLC"))
+        );
+        let mut first = row("sh000001");
+        first.date = 20250107;
+        let mut second = row("sh000001");
+        second.date = 20250106;
+        second.open = 0.0;
+        second.high = 0.0;
+        second.low = 0.0;
+        second.close = 0.0;
+        let index = inspect("index.day".into(), "sh000001".into(), &[first, second]);
+        assert!(index.errors.is_empty());
+        assert_eq!(index.first_date.as_deref(), Some("2025-01-06"));
+        assert_eq!(index.last_date.as_deref(), Some("2025-01-07"));
+        assert!(
+            index
+                .warnings
+                .iter()
+                .any(|warning| warning.contains("规范化"))
+        );
+        let empty: FileReport = inspect::<day::Day>("empty.day".into(), "sz131804".into(), &[]);
+        assert!(empty.errors.is_empty());
+        assert_eq!(empty.warnings, vec!["文件无日线记录"]);
     }
 }
