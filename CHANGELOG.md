@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased — rustdx-complete 1.12.0 / rustdx-cli 1.8.0 (2026-10-10)
+## Unreleased — jelven-rustdx-complete 1.12.0 / rustdx-cli 1.8.0 (2026-10-10)
 
 - 修复连接池借用身份、完整帧重试/解压、安全解码与可复用Kline。
 - 单只/批量复用配置及分页逻辑，非法日期和无进展明确报错。
@@ -13,7 +13,7 @@
 - ZIP .part续传及版本边界检查、来源隔离/文件锁/解压失败保护。
 - SMA/RSI线性滚动与RollingSma；KDJ缺数据为None，横盘RSI为50。
 - `east --json`、收盘及当前日期校验，上一交易日基准衔接；Excel输入保留前导零。
-- Rust1.89最低版本实测，三平台CI、tag发布正确CLI包名及SHA256草稿。
+- Rust1.89最低版本实测，Linux/macOS/Windows CI覆盖构建、测试和Clippy。
 - 可运行本地/网络示例，README、迁移文档和架构评估更新。
 - 当前行情服务器改用单个标准握手包，修复旧登录包导致K线返回`0x0320`。
 - 全量day输出按代码内日期排序并去重；A股严格校验，非A股历史源异常保留并告警。

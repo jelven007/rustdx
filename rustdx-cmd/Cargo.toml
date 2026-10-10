@@ -28,6 +28,7 @@ chrono = { workspace = true }
 thiserror = { workspace = true }
 
 [dependencies.rustdx-complete]
+package = "jelven-rustdx-complete"
 version  = "1.12.0"
 path = "../"
 

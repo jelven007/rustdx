@@ -1,6 +1,6 @@
 # rustdx
 
-Rust 行情库与数据导入工具。当前源码版本：rustdx-complete 1.12.0、rustdx-cli 1.8.0，最低 Rust 1.89。
+Rust 行情库与数据导入工具。当前源码版本：jelven-rustdx-complete 1.12.0、rustdx-cli 1.8.0，最低 Rust 1.89。
 
 核心库实现通达信 TCP 行情协议、本地 day/lc/gbbq 文件解析、价格复权、技术指标、交易日历、连接池和缓存。CLI 提供日线下载/解析、东方财富收盘快照、CSV/JSON 输出及数据库导入。采用同步 I/O 和有界线程并发。
 
@@ -16,10 +16,16 @@ rustdx show -v
 
 ```toml
 [dependencies]
-rustdx-complete = { path = "/path/to/rustdx" }
+rustdx-complete = { package = "jelven-rustdx-complete", path = "/path/to/rustdx" }
 ```
 
-仓库源码版本不表示已发布到 crates.io。已有发布包可通过 `cargo add rustdx-complete` 或 `cargo install rustdx-cli` 安装，使用前核对版本。
+crates.io 安装核心库，同时保留代码中的 `rustdx_complete` 导入名：
+
+```sh
+cargo add jelven-rustdx-complete --rename rustdx-complete
+```
+
+CLI 当前从仓库源码安装：`cargo install --git https://github.com/jelven007/rustdx rustdx-cli --locked`。
 
 ## 行情 API
 

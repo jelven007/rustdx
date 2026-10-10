@@ -7,7 +7,6 @@ publish = false
 [dependencies]
 tabled = "0.21"
 insta = "1"
-rustdx-complete = { path = "../" }
+rustdx-complete = { package = "jelven-rustdx-complete", path = "../" }
 rustdx-cli = { path = "../rustdx-cmd" }
 chrono = { workspace = true }
-
