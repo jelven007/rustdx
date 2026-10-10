@@ -115,9 +115,9 @@ cargo publish -p jelven-rustdx-cli --locked
 
 CLI 依赖同时写注册表版本与 path，单独发布依赖已发布的核心库 1.12.1。本轮保留原MIT版权声明和技术协议对照，删除与当前维护无关的旧归档及错误概念样例。后续仍需2027日历、历史规则、进程连接预算/总时限和MongoDB验收，见[架构评估](PROJECT_ANALYSIS.md)。
 
-## 追加源码复查（2026-10-11，未发布）
+## 追加源码复查（2026-10-11，核心库1.12.2 / CLI1.8.2）
 
-基线6065885，macOS/aarch64。本轮使用本地文件和TCP/HTTP模拟服务，未重新执行外部行情、2981万行全量导入或MongoDB验证。现有crates.io版本仍为核心库1.12.1 / CLI1.8.1。
+复查基线6065885、修复提交2fbbda6，macOS/aarch64。本轮使用本地文件和TCP/HTTP模拟服务，未重新执行外部行情、2981万行全量导入或MongoDB验证。本轮版本核心库1.12.2 / CLI1.8.2待发布。
 
 | 验证项 | 结果 |
 | --- | --- |
@@ -145,4 +145,4 @@ cargo bench --bench indicators
 bash -n scripts/diagnose_network.sh scripts/run_comprehensive_test.sh scripts/publish.sh
 ```
 
-外部测试使用环境变量跳过，不计为本轮在线验收。当前Rust仍提示依赖proc-macro-error2的未来兼容性警告，现有检查通过；后续升级依赖时复核。未发布行为变化见[迁移说明](MIGRATION.md)。
+外部测试使用环境变量跳过，不计为本轮在线验收。当前Rust仍提示依赖proc-macro-error2的未来兼容性警告，现有检查通过；后续升级依赖时复核。行为变化见[迁移说明](MIGRATION.md)。

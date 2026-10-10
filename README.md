@@ -1,6 +1,6 @@
 # rustdx
 
-Rust 行情库与数据导入工具。最新发布版本：jelven-rustdx-complete 1.12.1、jelven-rustdx-cli 1.8.1，最低 Rust 1.89，二进制名为 `rustdx`。当前仓库另含2026-10-11的未发布修复，详见[变更记录](CHANGELOG.md)；下文描述当前源码行为。
+Rust 行情库与数据导入工具。当前版本：jelven-rustdx-complete 1.12.2、jelven-rustdx-cli 1.8.2，最低 Rust 1.89，二进制名为 `rustdx`。本版包含复权、涨跌停舍入、指标、证券列表完整性及文件保护修复，详见[变更记录](CHANGELOG.md)。
 
 核心库实现通达信 TCP 行情协议、本地 day/lc/gbbq 文件解析、价格复权、技术指标、交易日历、连接池和缓存。CLI 提供日线下载/解析、东方财富收盘快照、CSV/JSON 输出及数据库导入。采用同步 I/O 和有界线程并发。
 
@@ -179,7 +179,7 @@ bash scripts/run_comprehensive_test.sh report
 
 默认CI在Linux/macOS/Windows上跳过外部网络案例，另有最低版本检查；本地TCP/HTTP模拟和文件回归正常执行。移除跳过变量会启用网络案例，需要可用行情/HTTP/数据库环境。`Tcp` 包含平台相关的 `TcpStream`，结构尺寸测试使用受控范围，协议数据结构仍保留精确快照。
 
-核心库通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、测试、Clippy 和发布预检，经人工确认后发布。1.12.1 / 1.8.1 已发布：先发核心库 `jelven-rustdx-complete`，待索引可见后再发 CLI `jelven-rustdx-cli`（CLI 的 `rustdx-complete` 依赖同时写了注册表版本与 path）。仓库不再通过 tag 自动构建 CLI 二进制或创建 GitHub Release。发布前可用下面的联合打包在临时注册表核验：
+两个 crate 通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、测试、Clippy 和发布预检，经人工确认后发布。先发核心库 `jelven-rustdx-complete 1.12.2`，待索引可见后再发 CLI `jelven-rustdx-cli 1.8.2`（CLI 的 `rustdx-complete` 依赖同时写了注册表版本与 path）。仓库不再通过 tag 自动构建 CLI 二进制或创建 GitHub Release。发布前可用下面的联合打包在临时注册表核验：
 
 ```sh
 cargo package -p jelven-rustdx-complete -p jelven-rustdx-cli --offline
