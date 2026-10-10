@@ -180,9 +180,7 @@ impl DayCmd {
 
     /// clickhouse-client --query "INSERT INTO table FORMAT CSVWithNames" < clickhouse[.csv]
     pub fn run_clickhouse(&self) -> Result<()> {
-        crate::io::setup_clickhouse(self.gbbq.is_some(), &self.table)?;
-        self.run_csv()?;
-        crate::io::insert_clickhouse(&self.output, &self.table, self.keep_csv)
+        self.run_csv()
     }
 
     pub fn help_info(&self) -> &Self {

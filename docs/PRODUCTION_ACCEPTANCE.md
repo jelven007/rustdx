@@ -75,3 +75,34 @@ A股继续严格校验OHLC、非负成交数据和日期顺序。指数、基金
 4. 内置精确休市表仅覆盖2024–2026；进入2027年前升级日历数据，否则严格连续性检查会拒绝范围外日期。
 5. MongoDB和目标生产操作系统尚未做本轮真实验收；使用前独立验证。
 6. 公共行情接口没有官方SLA，生产系统必须监控空帧率、失败率、数据日期及行数。
+
+## 源码复查追加验收（1.12.1 / CLI1.8.1）
+
+2026-10-10，复查基线00df6f4。本轮未重新执行2981万行全量导入，上述全量数据仍属1.12.0时期验收；新增行为在同一macOS/ClickHouse环境验证。
+
+| 验证项 | 结果 |
+| --- | --- |
+| 离线workspace完整测试及文档测试 | 通过；核心140单测、CLI库3单测、CLI二进制17单测、CLI端到端3例、核心52文档测试；外部案例按变量跳过 |
+| 批量池并发 | 本地协议服务器验证同Client重叠批次排队，1/2并行数变化均保留所有结果 |
+| 空采集/坏文件 | 返回失败、保留旧CSV、报告failed及错误记录 |
+| 入库失败端到端 | 模拟HTTP入库异常，CLI非零退出、中间CSV保留、报告failed；源文件仍记已解析行数 |
+| ClickHouse响应 | HTTP500、200正文异常、异常header及截断正文均失败，保留URL已有参数 |
+| ClickHouse真实小表 | 认证、DDL、完整元数据、流式写入及重复去重通过，FINAL/合并后均2行；错误排序键被拒绝 |
+| 东财分页 | 0参数、重复证券及total变化拒绝，上限超过实际total正常结束；未重新请求限流中的公共接口 |
+| Clippy / 格式 / Rust1.89 | workspace/all-targets检查通过，Clippy -D warnings |
+| 两个源码包联合打包 | 离线临时注册表解包编译通过，CLI包包含LICENSE-MIT；未发布注册表 |
+| 测试脚本/文档 | report模式真实保存完整日志并通过；shell语法及维护文档本地链接检查通过 |
+
+复现命令：
+
+```sh
+bash scripts/run_comprehensive_test.sh report
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo fmt --all -- --check
+cargo +1.89.0 check --workspace --all-targets --locked
+cargo package -p jelven-rustdx-complete -p rustdx-cli --offline
+# 先加载部署目录的CLICKHOUSE_*环境配置，移除外部测试跳过变量
+cargo test -p rustdx-cli --bin rustdx io::test_insert_clickhouse --locked -- --nocapture
+```
+
+CLI打包单独执行时尚需已发布的核心依赖；联合打包使用本地临时注册表。源码版本与已发布核心库1.12.0明确区分。本轮保留原MIT版权声明和技术协议对照，删除与当前维护无关的旧归档及错误概念样例。后续仍需2027日历、历史规则、进程连接预算/总时限和MongoDB验收，见[架构评估](PROJECT_ANALYSIS.md)。

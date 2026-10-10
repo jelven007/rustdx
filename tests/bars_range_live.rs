@@ -137,8 +137,7 @@ fn bars_batch_matches_single() -> std::io::Result<()> {
     Ok(())
 }
 
-/// `Client::index_bars_range` 指数日线区间契约（0x052d 专用命令；
-/// 股票 `k`/`bars_range` 对指数代码返回空——shortmind-os 实测踩坑）。
+/// `Client::index_bars_range` 指数日线区间契约，使用指数响应解析器。
 #[test]
 fn index_bars_range_day_contract() -> std::io::Result<()> {
     if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {

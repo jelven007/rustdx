@@ -1,6 +1,6 @@
 # rustdx
 
-Rust 行情库与数据导入工具。当前源码版本：jelven-rustdx-complete 1.12.0、rustdx-cli 1.8.0，最低 Rust 1.89。
+Rust 行情库与数据导入工具。当前源码版本：jelven-rustdx-complete 1.12.1、rustdx-cli 1.8.1，最低 Rust 1.89。crates.io 已发布核心库仍为1.12.0，本轮源码改动尚未发布。
 
 核心库实现通达信 TCP 行情协议、本地 day/lc/gbbq 文件解析、价格复权、技术指标、交易日历、连接池和缓存。CLI 提供日线下载/解析、东方财富收盘快照、CSV/JSON 输出及数据库导入。采用同步 I/O 和有界线程并发。
 
@@ -66,7 +66,11 @@ TCP 市场参数为0深圳、1上海。请显式指定市场；指数代码与�
 | 财务、除权、证券列表 | `finance`、`xdxr`、`stocks` |
 | F10、板块文件 | `f10`、`f10_categories`、`block` |
 
-单连接上的请求顺序执行，批量连接池沿用客户端配置并复用连接。协议正文截断、解压失败、非法分页进展返回错误。`Tdx::try_parse` 是返回错误的解码入口，旧 `parse` 保留兼容；旧低层构造函数可能因非法代码 panic，优先使用经过验证的 Client 或 KlineBuilder。
+单连接上的请求顺序执行，批量连接池沿用客户端配置并复用连接。同一 Client 的 `k_batch` / `bars_batch` 排队执行，每个批次内部并行；调整并行数不会关闭其他在用批次的池。多个 Client 的连接数仍需调用方统一限制：建议从进程总计4–8条行情连接开始观测，包含每个 Client 的主连接和批量池。`max_parallel=0` 按CPU核心数自动，不是进程限流器；实时行情合并到1–2条长连接、每次不超过60只，是保守起点，须按出口和服务端观测调整。
+
+协议正文截断、解压失败、非法分页进展返回错误。股票和指数使用相同请求命令，但响应结构不同，指数须使用指数解析器。`Tdx::try_parse` 是返回错误的解码入口，旧 `parse` 保留兼容；旧低层构造函数可能因非法代码 panic，优先使用经过验证的 Client 或 KlineBuilder。
+
+概念成分使用 `Client::block("block_gn.dat")` 获取通达信源板块，并记录采集日期。旧 `get_concept_stocks/get_concept_names/get_concept_info` 的错误静态样例已移除，函数已弃用并返回无数据；不同来源的同名板块不保证一致。
 
 空数据无法证明停牌或无交易，调用方应核实交易时间和证券状态。服务器地址、协议响应和限流策略可能变化；本轮已完成真实行情验收，部署到目标机器后仍须运行 `production_smoke`。
 
@@ -110,7 +114,7 @@ rustdx day --help
 rustdx day -h output
 ```
 
-非法数值、坏文件、重复或逆序日期返回非零状态；成功后原子替换输出。缺口标记原因待核实，不会填补伪日线。默认最多8个解析线程，`--workers` 支持1–64，单个day文件上限32MiB。
+非法数值、坏文件、重复或逆序日期返回非零状态；成功后原子替换输出。全空文件集合失败并保留上次输出；混合集合中的空文件仍记为警告。质量报告在文件输出及数据库导入结束后写入最终状态，解析或导入失败记录运行错误。缺口标记原因待核实，不会填补伪日线。默认最多8个解析线程，`--workers` 支持1–64，单个day文件上限32MiB。
 
 下载缓存位于系统临时目录，按来源隔离并用文件锁保护。`.part` 续传必须通过版本/字节边界校验，远端缓存需 ETag 或 Last-Modified 确认；无法核实远端时可显式传本地ZIP。非交互环境下载重试耗尽后直接失败。
 
@@ -131,7 +135,7 @@ rustdx day ./lday -o clickhouse -t rustdx.bars_v2 -k
 rustdx east -p clickhouse -o clickhouse -t rustdx.bars_v2
 ```
 
-ClickHouse 统一使用HTTP配置。新表是 `ReplacingMergeTree(version)`，以(date,code)为逻辑键；查询即时去重结果须加 `FINAL`。旧表需按[迁移说明](docs/MIGRATION.md)建立新表并核验后切换。本地 factor 输入只读，辅助边界查询失败不会把已成功导入报告为写入失败。
+ClickHouse 统一使用HTTP配置。新表是 `ReplacingMergeTree(version)`，以(date,code)为逻辑键；查询即时去重结果须加 `FINAL`。已有表必须通过字段、精度、排序键、分区键和版本默认值检查；不兼容表需按[迁移说明](docs/MIGRATION.md)建立新表并核验后切换。HTTP请求设置 `wait_end_of_query=1`，完整读取响应并传播错误正文或截断，连接超时10秒；全量上传没有15秒总时限。本地 factor 输入只读，辅助边界查询失败不会把已成功导入报告为写入失败。数据库批次可能部分落库，失败时保留中间CSV供核验。
 
 MongoDB 路径需要系统 `mongoimport`，以(date,code)执行upsert，日期以字符串保存；批次失败可能已写入部分行。ClickHouse 25.8 已完成2981万行本地验收；MongoDB 未做真实服务验收。
 
@@ -160,11 +164,17 @@ cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo fmt --all -- --check
 cargo +1.89.0 check --workspace --all-targets --locked
 cargo bench --bench indicators
+# 测试脚本：默认离线，report保存真实日志，live显式启用外部行情
+bash scripts/run_comprehensive_test.sh report
 ```
 
 默认CI在Linux/macOS/Windows上跳过外部网络案例，另有最低版本检查；本地TCP/HTTP模拟和文件回归正常执行。移除跳过变量会启用网络案例，需要可用行情/HTTP/数据库环境。`Tcp` 包含平台相关的 `TcpStream`，结构尺寸测试使用受控范围，协议数据结构仍保留精确快照。
 
-核心库通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、测试、Clippy 和发布预检，经人工确认后发布。仓库不再通过 tag 自动构建 CLI 二进制或创建 GitHub Release，CLI 按上文方式从源码安装。
+核心库通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、测试、Clippy 和发布预检，经人工确认后发布。核心库1.12.1尚未发布，单独打包CLI时依赖仍需注册表版本；两个包可通过下面的联合打包在临时注册表验证，开发和安装使用workspace路径或Git源码。仓库不再通过 tag 自动构建 CLI 二进制或创建 GitHub Release，CLI 按上文方式从源码安装。
+
+```sh
+cargo package -p jelven-rustdx-complete -p rustdx-cli --offline
+```
 
 东财公共接口会按出口和节点限流。CLI 使用 HTTPS、多节点、15秒单请求总超时和低频分页，并可通过
 `RUSTDX_EASTMONEY_IPS=ip1,ip2` 覆盖备用节点；生产调度仍应限制为收盘后单任务运行。

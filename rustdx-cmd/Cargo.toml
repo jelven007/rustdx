@@ -1,17 +1,17 @@
 [package]
 name        = "rustdx-cli"
-version     = "1.8.0"
+version     = "1.8.1"
 edition     = "2024"
 rust-version = "1.89"
 license     = "MIT"
 build       = "build.rs"
 readme      = "../README.md"
-description = "受 pytdx 启发的 A 股数据获取命令行工具：解析通达信 day 文件、东方财富日线增量、ClickHouse 写入"
+description = "A 股数据获取命令行工具：通达信 day 文件、东方财富收盘快照、ClickHouse 写入"
 repository  = "https://github.com/jelven007/rustdx"
-authors     = ["zjp <jiping_zhou@foxmail.com>"]
+authors     = ["张路 <jelven@126.com>", "zjp <jiping_zhou@foxmail.com>"]
 exclude     = [
                 "assets", "examples", "benches", "tests", "rustdx.log", "*.csv",
-                "LICENSE-MIT", "rustfmt.toml"
+                "rustfmt.toml"
               ]
 
 [dependencies]
@@ -29,7 +29,7 @@ thiserror = { workspace = true }
 
 [dependencies.rustdx-complete]
 package = "jelven-rustdx-complete"
-version  = "1.12.0"
+version  = "1.12.1"
 path = "../"
 
 [dependencies.ureq]

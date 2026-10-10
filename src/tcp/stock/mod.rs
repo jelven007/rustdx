@@ -98,6 +98,7 @@ mod industry_mapping;
 pub use industry_mapping::{get_industry_info, get_industry_name, get_province_name};
 
 mod concept_mapping;
+#[allow(deprecated)]
 pub use concept_mapping::{ConceptStock, get_concept_info, get_concept_names, get_concept_stocks};
 
 // 数据验证模块

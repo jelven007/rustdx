@@ -1,5 +1,5 @@
 use rustdx_complete::tcp::stock::{
-    FinanceInfo, Kline, MinuteTime, SecurityList, SecurityQuotes, Transaction, get_concept_stocks,
+    Client, FinanceInfo, Kline, MinuteTime, SecurityList, SecurityQuotes, Transaction,
     get_industry_name, get_province_name,
 };
 /**
@@ -793,28 +793,18 @@ fn test_11_concept_stocks() {
     println!("\n[测试 3.2] 概念板块成分股查询");
     let mut results = TestResults::default();
 
-    let test_concepts = vec!["新能源汽车", "锂电池", "芯片", "人工智能"];
-
-    for concept in test_concepts {
-        println!("  🔍 查询概念: {}", concept);
-        match get_concept_stocks(concept) {
-            Some(stocks) => {
-                println!("    ✅ 找到 {} 只成分股", stocks.len());
-                if !stocks.is_empty() {
-                    println!("    📊 前5只成分股:");
-                    for stock in stocks.iter().take(5) {
-                        println!("       {} {}", stock.code, stock.name);
-                    }
-                    results.record_pass();
-                } else {
-                    println!("    ⚠️  成分股为空");
-                    results.record_warning();
-                }
-            }
-            None => {
-                println!("    ⚠️  未找到该概念板块");
-                results.record_warning();
-            }
+    let records = Client::new().unwrap().block("block_gn.dat").unwrap();
+    assert!(!records.is_empty(), "源概念板块文件不能为空");
+    for concept in ["新能源汽车", "锂电池", "芯片", "人工智能"] {
+        let count = records
+            .iter()
+            .filter(|row| row.blockname == concept)
+            .count();
+        println!("  源板块 {concept}: {count} 只成分股");
+        if count > 0 {
+            results.record_pass();
+        } else {
+            results.record_warning();
         }
     }
 

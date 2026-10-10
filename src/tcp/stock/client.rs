@@ -30,6 +30,7 @@ use std::sync::{Arc, Mutex};
 pub struct Client {
     /// 底层连接（需要更细粒度控制时可直接使用）。
     pub tcp: Tcp,
+    batch_lock: Mutex<()>,
     batch_pool: Mutex<Option<(usize, TcpConfig, ConnectionPool)>>,
 }
 
@@ -48,6 +49,7 @@ impl Client {
     pub fn with_config(config: &TcpConfig) -> std::io::Result<Self> {
         Ok(Self {
             tcp: Tcp::with_config(config)?,
+            batch_lock: Mutex::new(()),
             batch_pool: Mutex::new(None),
         })
     }
@@ -167,8 +169,8 @@ impl Client {
 
     /// 指数K线（mootdx `index`/`index_bars`），含涨跌家数。
     ///
-    /// 注意：股票K线命令（0x052c）对指数代码返回**空**结果，指数必须走本方法
-    /// （0x052d 指数专用命令）；区间语义请用 [`Client::index_bars_range`]。
+    /// 股票和指数使用相同命令0x052d，但指数响应包含涨跌家数，
+    /// 需使用指数解析器；区间语义请用 [`Client::index_bars_range`]。
     pub fn index_bars<'a>(
         &mut self,
         market: u16,
@@ -195,7 +197,7 @@ impl Client {
     }
 
     /// 指数K线区间回补：[`Client::index_bars`] 的自动翻页版，
-    /// 与 [`Client::bars_range`](Self::bars_range) 完全对称（0x052d 指数专用命令）。
+    /// 与 [`Client::bars_range`](Self::bars_range) 对称，使用指数响应解析器。
     ///
     /// - 自动翻页直至覆盖 `begin` 或历史尽头（页序无关，末端统一升序）；
     /// - 翻页偏移可能重叠 → 按时间戳去重；
@@ -249,7 +251,8 @@ impl Client {
     /// - `stocks`: `(market, code)` 列表（market: 0=深市、1=沪市）；
     /// - `begin`/`end`: 日期区间（YYYYMMDD），`None` 不设限；
     /// - `max_parallel`: 并行连接数上限；传 `0` 按 CPU 核数自动。
-    ///   建议 4~16——服务器有连接数限制，过大会触发拒连。
+    ///   建议从 4–8 开始；多个 Client 仍需调用方限制进程总连接数。
+    ///   同一 Client 的批次排队执行，批次内并行，避免相互耗尽或关闭连接池。
     ///
     /// # 返回
     ///
@@ -287,6 +290,10 @@ impl Client {
         .min(stocks.len())
         .max(1);
 
+        let _batch = self
+            .batch_lock
+            .lock()
+            .map_err(|_| std::io::Error::other("批量查询锁已损坏"))?;
         let pool = self.batch_pool(workers)?;
         let queue: BatchQueue<'a> = Arc::new(Mutex::new(
             stocks
@@ -352,7 +359,8 @@ impl Client {
     /// - `category`: K 线种类（0=5m、1=15m、…、9=日线）；
     /// - `begin`/`end`: 日期区间（YYYYMMDD，闭区间），`None` 不设限；
     /// - `max_parallel`: 并行连接数上限；传 `0` 按 CPU 核数自动。
-    ///   建议 4~16——服务器有连接数限制，过大会触发拒连。
+    ///   建议从 4–8 开始；多个 Client 仍需调用方限制进程总连接数。
+    ///   与同一 Client 的其他批次排队执行，批次内并行。
     ///
     /// 按输入顺序返回；单只失败不影响其他（失败信息在对应 [`BatchBars::result`] 中）。
     pub fn bars_batch<'a>(
@@ -375,6 +383,10 @@ impl Client {
         .min(stocks.len())
         .max(1);
 
+        let _batch = self
+            .batch_lock
+            .lock()
+            .map_err(|_| std::io::Error::other("批量查询锁已损坏"))?;
         let pool = self.batch_pool(workers)?;
         let queue: BatchQueue<'a> = Arc::new(Mutex::new(
             stocks
@@ -457,6 +469,8 @@ impl Client {
         begin: Option<u32>,
         end: Option<u32>,
     ) -> std::io::Result<Vec<super::KlineData<'a>>> {
+        validate_request(market, code, 9)?;
+        validate_range(begin, end)?;
         // 复权因子需从上市日起连续累积，先全量拉取再在本地过滤区间
         let all = fetch_k_checked(&mut self.tcp, market, code, None, None).map_err(|e| {
             ctx_err(
@@ -778,7 +792,7 @@ fn recheck_empty<T>(
 /// 区间翻页页大小（单页上限，与 pytdx/mootdx 约定一致）。
 const BARS_PAGE: u16 = 800;
 /// 区间翻页页数上限：分钟线历史深度有限（约近年），超深分页服务器会返回
-/// 乱码日期，封顶兜底（800 × 40 = 3.2 万根，约 660 个交易日的 5 分钟线）。
+/// 乱码日期；最多82页，下一页偏移不可超出协议的u16范围。
 const MAX_BARS_PAGES: usize = 82;
 
 /// 从给定连接按日期区间拉取任意周期 K 线：自动翻页、去重、窗口过滤、升序。
@@ -858,7 +872,7 @@ fn fetch_bars_range<'a>(
 
 /// 从给定连接按日期区间拉取指数K线：自动翻页、去重、窗口过滤、升序。
 ///
-/// 与 [`fetch_bars_range`]（股票 0x052c）对称，命令为 0x052d 指数专用；
+/// 与 [`fetch_bars_range`] 对称，使用指数响应解析器；
 /// 翻页判停/去重/乱码年份终止/窗口过滤同一套约定。
 fn fetch_index_bars_range<'a>(
     tcp: &mut Tcp,
@@ -1081,6 +1095,68 @@ fn adjusted_multipliers(days: &[KlineData<'_>], xdxrs: &[XdxrData], adj: Adj) ->
 
 #[cfg(test)]
 mod tests {
+
+    #[test]
+    fn overlapping_batches_wait_and_preserve_results_when_pool_size_changes() {
+        use super::Client;
+        use std::sync::{
+            Mutex,
+            atomic::{AtomicBool, Ordering},
+            mpsc,
+        };
+        use std::time::Duration;
+
+        for second_workers in [1, 2] {
+            let (started_tx, started_rx) = mpsc::channel();
+            let (release_tx, release_rx) = mpsc::channel();
+            let release_rx = Mutex::new(release_rx);
+            let first = AtomicBool::new(true);
+            let (config, server) = crate::tcp::tests::mock_server(
+                if second_workers == 1 { 2 } else { 4 },
+                move |request| {
+                    if request.get(14..20) == Some(b"600000".as_slice())
+                        && first.swap(false, Ordering::SeqCst)
+                    {
+                        started_tx.send(()).unwrap();
+                        release_rx.lock().unwrap().recv().unwrap();
+                    }
+                    vec![0, 0]
+                },
+            );
+            let client = Client::with_config(&config).unwrap();
+            std::thread::scope(|scope| {
+                let first = scope.spawn(|| client.k_batch(&[(1, "600000")], None, None, 1));
+                started_rx.recv_timeout(Duration::from_secs(2)).unwrap();
+                let (done_tx, done_rx) = mpsc::channel();
+                let client = &client;
+                let second = scope.spawn(move || {
+                    let result = client.bars_batch(
+                        &[(0, "000001"), (1, "600519")],
+                        9,
+                        None,
+                        None,
+                        second_workers,
+                    );
+                    done_tx.send(()).unwrap();
+                    result
+                });
+                let pending = done_rx.recv_timeout(Duration::from_millis(100));
+                release_tx.send(()).unwrap();
+                assert!(first.join().unwrap().unwrap()[0].result.is_ok());
+                assert!(
+                    second
+                        .join()
+                        .unwrap()
+                        .unwrap()
+                        .iter()
+                        .all(|row| row.result.is_ok())
+                );
+                assert!(matches!(pending, Err(mpsc::RecvTimeoutError::Timeout)));
+            });
+            drop(client);
+            server.join().unwrap();
+        }
+    }
 
     #[test]
     fn k_range_retain_logic() {

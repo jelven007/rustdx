@@ -14,7 +14,7 @@
 //! let board = limit::board_of("000428").unwrap();
 //! let up = limit::limit_up_price(4.26, board, false).unwrap(); // 4.69
 //! assert_eq!(
-//!     limit::limit_status(4.69, 4.69, up),
+//!     limit::limit_status(4.69, 4.69, 4.26, board, false),
 //!     Some(LimitStatus::Sealed)
 //! );
 //! ```
@@ -148,6 +148,7 @@ impl LimitStatus {
 /// - 最高价达涨停价但收盘未封住 → [`LimitStatus::Blown`]；
 /// - 否则 → [`LimitStatus::Untouched`]。
 ///
+/// 价格非有限、非正或最高价低于收盘价时返回 `None`。
 /// `prev_close` 非法时返回 `None`（调用方应跳过该日，如上市首日）。
 pub fn limit_status(
     close: f64,
@@ -156,6 +157,9 @@ pub fn limit_status(
     board: Board,
     st: bool,
 ) -> Option<LimitStatus> {
+    if !close.is_finite() || !high.is_finite() || close <= 0.0 || high <= 0.0 || high < close {
+        return None;
+    }
     let up = limit_up_price(prev_close, board, st)?;
     if same_fen(close, up) {
         Some(LimitStatus::Sealed)
@@ -248,6 +252,14 @@ mod tests {
         );
         // 首日 prev_close = 0 → None
         assert_eq!(limit_status(4.69, 4.69, 0.0, Board::Main, false), None);
+        for (close, high) in [
+            (f64::NAN, 4.69),
+            (4.6, f64::INFINITY),
+            (0.0, 4.69),
+            (4.69, 4.0),
+        ] {
+            assert_eq!(limit_status(close, high, 4.26, Board::Main, false), None);
+        }
     }
 
     #[test]

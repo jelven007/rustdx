@@ -27,7 +27,12 @@ const BUFFER_SIZE: usize = 32 * (1 << 20); // 32M
 /// - 写入阶段：主线程从 channel 顺序接收解析结果并写入 CSV，避免并发写文件。
 ///
 /// `parse` 负责把单个文件解析成 `Vec<T>`，`T` 为可序列化的日线类型。
-fn run_par<F, T>(cmd: &DayCmd, wtr: &mut csv::Writer<File>, parse: F) -> Result<()>
+fn run_par<F, T>(
+    cmd: &DayCmd,
+    wtr: &mut csv::Writer<File>,
+    parse: F,
+    report: &mut CollectionReport,
+) -> Result<()>
 where
     F: Fn(&str, &Path) -> eyre::Result<Vec<T>> + Send + Sync,
     T: serde::Serialize + QualityRow + Send,
@@ -40,7 +45,6 @@ where
     let mut total_files = 0usize;
     let mut total_rows = 0usize;
     let mut failures = Vec::new();
-    let mut report = CollectionReport::new(&cmd.output);
     for dir in &cmd.path {
         // 收集 (完整代码, 文件路径)，代码含市场前缀（如 `sz000001`、`sz200b07`）
         let work: Vec<(String, std::path::PathBuf)> = filter_file(dir)?
@@ -168,9 +172,6 @@ where
     }
     wtr.flush()?;
     report.files.sort_by(|a, b| a.source.cmp(&b.source));
-    if let Some(path) = &cmd.report {
-        report.write(path, failures.is_empty() && total_files > 0)?;
-    }
     if !failures.is_empty() {
         eyre::bail!(
             "{}个文件解析失败：\n{}",
@@ -180,6 +181,9 @@ where
     }
     if total_files == 0 {
         eyre::bail!("没有符合条件的day文件");
+    }
+    if total_rows == 0 {
+        eyre::bail!("没有可发布的日线记录");
     }
 
     // 解析后校验报告
@@ -220,66 +224,88 @@ fn normalize_rows<T: QualityRow>(rows: Vec<T>) -> Result<Vec<T>> {
 
 /// 并发解析并输出 CSV（无复权）。
 pub fn run_csv(cmd: &DayCmd) -> Result<()> {
+    with_report(cmd, |report| {
+        export_csv(cmd, report, |code, src| {
+            Ok(rustdx_complete::file::day::Day::from_file_into_vec(
+                code, src,
+            )?)
+        })
+    })
+}
+
+/// 报告在输出提交及数据库导入之后定案；任何一步失败均记录失败状态。
+fn with_report(cmd: &DayCmd, run: impl FnOnce(&mut CollectionReport) -> Result<()>) -> Result<()> {
+    let mut report = CollectionReport::new(&cmd.output);
+    let result = run(&mut report);
+    if let Err(e) = &result {
+        report.errors.push(format!("{e:#}"));
+    }
+    if let Some(path) = &cmd.report {
+        report.write(path, result.is_ok())?;
+    }
+    result
+}
+
+fn export_csv<F, T>(cmd: &DayCmd, report: &mut CollectionReport, parse: F) -> Result<()>
+where
+    F: Fn(&str, &Path) -> eyre::Result<Vec<T>> + Send + Sync,
+    T: serde::Serialize + QualityRow + Send,
+{
+    if cmd.output == "clickhouse" {
+        setup_clickhouse(cmd.gbbq.is_some(), &cmd.table)?;
+    } else if cmd.output == "mongodb" {
+        database_table(&cmd.table)?;
+    }
     let (atomic, file) = rustdx_complete::atomic_file::AtomicFile::create(&cmd.output)?;
     let mut wtr = csv::WriterBuilder::new()
         .buffer_capacity(BUFFER_SIZE)
         .from_writer(file);
-    run_par(cmd, &mut wtr, |code, src| {
-        Ok(rustdx_complete::file::day::Day::from_file_into_vec(
-            code, src,
-        )?)
-    })?;
+    run_par(cmd, &mut wtr, parse, report)?;
     drop(wtr);
     atomic.commit()?;
-    Ok(())
+    match cmd.output.as_str() {
+        "clickhouse" => insert_clickhouse(&cmd.output, &cmd.table, cmd.keep_csv),
+        "mongodb" => import_mongodb(cmd),
+        _ => Ok(()),
+    }
 }
 
 /// 并发解析并输出 CSV（复权，基于上市日）。
 pub fn run_csv_fq(cmd: &DayCmd) -> Result<()> {
-    // 股本变迁
-    let mut source = rustdx_complete::file::gbbq::Gbbqs::from_file(cmd.gbbq.as_ref().unwrap())?;
-    let gbbq = Gbbq::filter_hashmap(source.to_vec().into_iter());
+    with_report(cmd, |report| {
+        // 股本变迁
+        let mut source = rustdx_complete::file::gbbq::Gbbqs::from_file(cmd.gbbq.as_ref().unwrap())?;
+        let gbbq = Gbbq::filter_hashmap(source.to_vec().into_iter());
 
-    let (atomic, file) = rustdx_complete::atomic_file::AtomicFile::create(&cmd.output)?;
-    let mut wtr = csv::WriterBuilder::new()
-        .buffer_capacity(BUFFER_SIZE)
-        .from_writer(file);
-    run_par(cmd, &mut wtr, |code, src| {
-        Ok(Day::new(code, src, gbbq.get(code).map(Vec::as_slice))?)
-    })?;
-    drop(wtr);
-    atomic.commit()?;
-    Ok(())
+        export_csv(cmd, report, |code, src| {
+            Ok(Day::new(code, src, gbbq.get(code).map(Vec::as_slice))?)
+        })
+    })
 }
 
 /// 并发解析并输出 CSV（复权，基于前一日的因子）。
 pub fn run_csv_fq_previous(cmd: &DayCmd) -> Result<()> {
-    // 股本变迁
-    let mut source = rustdx_complete::file::gbbq::Gbbqs::from_file(cmd.gbbq.as_ref().unwrap())?;
-    let gbbq = Gbbq::filter_hashmap(source.to_vec().into_iter());
+    with_report(cmd, |report| {
+        // 股本变迁
+        let mut source = rustdx_complete::file::gbbq::Gbbqs::from_file(cmd.gbbq.as_ref().unwrap())?;
+        let gbbq = Gbbq::filter_hashmap(source.to_vec().into_iter());
 
-    // 前收
-    let previous = previous_csv_table(&cmd.previous, &cmd.table, cmd.keep_factor)?;
+        // 前收
+        let previous = previous_csv_table(&cmd.previous, &cmd.table, cmd.keep_factor)?;
 
-    let (atomic, file) = rustdx_complete::atomic_file::AtomicFile::create(&cmd.output)?;
-    let mut wtr = csv::WriterBuilder::new()
-        .buffer_capacity(BUFFER_SIZE)
-        .from_writer(file);
-    run_par(cmd, &mut wtr, |code, src| {
-        let factor = previous
-            .get(code)
-            .ok_or_else(|| eyre!("{}缺少前因子", code))?;
-        Ok(Day::concat(
-            code,
-            src,
-            // 无分红数据并不意味着无复权数据
-            gbbq.get(code).map(Vec::as_slice),
-            Some(factor),
-        )?)
-    })?;
-    drop(wtr);
-    atomic.commit()?;
-    Ok(())
+        export_csv(cmd, report, |code, src| {
+            let factor = previous
+                .get(code)
+                .ok_or_else(|| eyre!("{}缺少前因子", code))?;
+            Ok(Day::concat(
+                code,
+                src,
+                // 无分红数据并不意味着无复权数据
+                gbbq.get(code).map(Vec::as_slice),
+                Some(factor),
+            )?)
+        })
+    })
 }
 
 /// 筛选 day 文件
@@ -345,7 +371,13 @@ impl ClickHouseConfig {
 
     /// 执行 SQL（DDL/DML，body 即语句）。
     fn exec(&self, sql: &str) -> Result<String> {
-        let mut req = ureq::post(&self.url).header("Content-Type", "text/plain; charset=utf-8");
+        let mut req = ureq::post(&self.url)
+            .query("wait_end_of_query", "1")
+            .config()
+            .http_status_as_error(false)
+            .timeout_connect(Some(std::time::Duration::from_secs(10)))
+            .build()
+            .header("Content-Type", "text/plain; charset=utf-8");
         // 认证 header（ClickHouse 原生 X-ClickHouse-User/Key）
         if self.user != "default" || !self.password.is_empty() {
             req = req.header("X-ClickHouse-User", &self.user);
@@ -353,19 +385,16 @@ impl ClickHouseConfig {
         if !self.password.is_empty() {
             req = req.header("X-ClickHouse-Key", &self.password);
         }
-        let mut resp = req.send(sql.as_bytes()).map_err(|e| match e {
-            // 401/403 等鉴权类失败在 send 阶段即返回 StatusCode（ureq 3 不携带
-            // body）——实测多因 cwd 不在部署目录、CLICKHOUSE_* env 缺失
-            ureq::Error::StatusCode(code) => eyre!(
-                "ClickHouse HTTP {code}\
-                （鉴权/权限失败常见：CLICKHOUSE_URL/CLICKHOUSE_USER/\
-                 CLICKHOUSE_PASSWORD 环境变量须与部署 .env 一致，在部署目录下执行）"
-            ),
-            other => eyre!("{other}"),
-        })?;
+        let resp = req.send(sql.as_bytes())?;
+        Self::response_body(resp)
+    }
+
+    fn response_body(mut resp: ureq::http::Response<ureq::Body>) -> Result<String> {
         let status = resp.status().as_u16();
-        let body = resp.body_mut().read_to_string().unwrap_or_default();
-        if !(200..300).contains(&status) {
+        let exception = resp.headers().get("X-ClickHouse-Exception-Code").cloned();
+        // 必须读到完整正文；200响应仍可能在正文末尾携带ClickHouse异常。
+        let body = resp.body_mut().read_to_string()?;
+        if !(200..300).contains(&status) || exception.is_some() || body.contains("DB::Exception:") {
             eyre::bail!("ClickHouse HTTP {status}: {body}");
         }
         Ok(body)
@@ -376,10 +405,16 @@ impl ClickHouseConfig {
         database_table(table)?;
         let file = std::fs::File::open(csv)?;
         let len = file.metadata()?.len();
-        let sql = urlencode(&format!(
+        let sql = format!(
             "INSERT INTO {table} SETTINGS input_format_defaults_for_omitted_fields=1 FORMAT CSVWithNames"
-        ));
-        let mut req = ureq::post(&format!("{}/?query={sql}", self.url));
+        );
+        let mut req = ureq::post(&self.url)
+            .query("query", sql)
+            .query("wait_end_of_query", "1")
+            .config()
+            .http_status_as_error(false)
+            .timeout_connect(Some(std::time::Duration::from_secs(10)))
+            .build();
         if self.user != "default" || !self.password.is_empty() {
             req = req.header("X-ClickHouse-User", &self.user);
         }
@@ -387,14 +422,10 @@ impl ClickHouseConfig {
             req = req.header("X-ClickHouse-Key", &self.password);
         }
         let mut file = file;
-        let resp = req
-            .send(ureq::SendBody::from_reader(&mut file))
-            .map_err(|e| eyre!("{e}"))?;
-        let status = resp.status().as_u16();
-        if !(200..300).contains(&status) {
-            let mut resp = resp;
-            let msg = resp.body_mut().read_to_string().unwrap_or_default();
-            eyre::bail!("ClickHouse HTTP {status}: {msg}");
+        let resp = req.send(ureq::SendBody::from_reader(&mut file))?;
+        let body = Self::response_body(resp)?;
+        if !body.trim().is_empty() {
+            eyre::bail!("ClickHouse INSERT 返回非空响应，写入状态需核实：{body}");
         }
         debug!("clickhouse 导入完成：{table}（{len} 字节 CSV）");
         // 输出数据边界：缓存解压目录可能滞后于最新交易日（实测 09-10 命中
@@ -409,20 +440,6 @@ impl ClickHouseConfig {
     }
 }
 
-/// URL 查询参数转义（导入 SQL 仅含表名/FORMAT 关键字，字符集有限）。
-fn urlencode(s: &str) -> String {
-    let mut out = String::with_capacity(s.len());
-    for b in s.bytes() {
-        match b {
-            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' | b'~' => {
-                out.push(b as char)
-            }
-            other => out.push_str(&format!("%{other:02X}")),
-        }
-    }
-    out
-}
-
 /// ClickHouse HTTP 执行 SQL（建库建表等 DDL）。
 fn ch_execute(cfg: &ClickHouseConfig, sql: &str) -> Result<()> {
     cfg.exec(sql).map(|_| ())
@@ -433,12 +450,6 @@ pub fn setup_clickhouse(_fq: bool, table: &str) -> Result<()> {
     let cfg = ClickHouseConfig::from_env();
     let create_database = format!("CREATE DATABASE IF NOT EXISTS {database}");
     ch_execute(&cfg, &create_database)?;
-    let engine = cfg.exec(&format!("SELECT engine_full FROM system.tables WHERE database='{database}' AND name='{name}' FORMAT TabSeparated"))?;
-    if !engine.trim().is_empty() && !engine.contains("ReplacingMergeTree(version)") {
-        eyre::bail!(
-            "{table}使用旧或不兼容的表引擎；请按 docs/MIGRATION.md 创建带version的新表后迁移，不会自动修改原表"
-        );
-    }
     #[rustfmt::skip]
     let create_table = format!("
             CREATE TABLE IF NOT EXISTS {table}
@@ -458,7 +469,80 @@ pub fn setup_clickhouse(_fq: bool, table: &str) -> Result<()> {
             ENGINE = ReplacingMergeTree(version)
             ORDER BY (date, code)
         ");
-    ch_execute(&cfg, &create_table)
+    ch_execute(&cfg, &create_table)?;
+    let metadata = cfg.exec(&format!(
+        "SELECT engine_full, sorting_key, partition_key FROM system.tables \
+         WHERE database='{database}' AND name='{name}' FORMAT TabSeparated"
+    ))?;
+    let columns = cfg.exec(&format!(
+        "SELECT name, type, default_kind, default_expression FROM system.columns \
+         WHERE database='{database}' AND table='{name}' FORMAT TabSeparated"
+    ))?;
+    validate_clickhouse_schema(&metadata, &columns).map_err(|e| {
+        eyre!("{table}表结构不兼容：{e}；请按 docs/MIGRATION.md 迁移，不会自动修改原表")
+    })
+}
+
+fn validate_clickhouse_schema(metadata: &str, columns: &str) -> Result<()> {
+    let fields: Vec<_> = metadata.trim_end_matches('\n').split('\t').collect();
+    let compact = |value: &str| {
+        value
+            .chars()
+            .filter(|c| !c.is_whitespace() && *c != '`')
+            .collect::<String>()
+    };
+    // engine_full包含ORDER BY / PARTITION BY / SETTINGS，不能当作纯引擎名比较。
+    let engine = fields.first().map(|s| compact(s)).unwrap_or_default();
+    let engine_suffix = engine.strip_prefix("ReplacingMergeTree(version)");
+    if fields.len() != 3
+        || engine_suffix.is_none_or(|suffix| {
+            !suffix.is_empty()
+                && !suffix.starts_with("ORDERBY")
+                && !suffix.starts_with("PARTITIONBY")
+                && !suffix.starts_with("SETTINGS")
+        })
+        || compact(fields[1]) != "date,code"
+        || !matches!(
+            compact(fields[2]).as_str(),
+            "" | "tuple()" | "toYYYYMM(date)" | "toYear(date)" | "date"
+        )
+    {
+        eyre::bail!("要求ReplacingMergeTree(version)、ORDER BY(date,code)，分区只能由date确定");
+    }
+    let columns: std::collections::HashMap<_, _> = columns
+        .lines()
+        .map(|line| {
+            let fields: Vec<_> = line.split('\t').collect();
+            (fields.first().copied().unwrap_or(""), fields)
+        })
+        .collect();
+    for (name, expected_type) in [
+        ("date", "Date"),
+        ("code", "String"),
+        ("open", "Float64"),
+        ("high", "Float64"),
+        ("low", "Float64"),
+        ("close", "Float64"),
+        ("amount", "Float64"),
+        ("vol", "Float64"),
+        ("preclose", "Float64"),
+        ("factor", "Float64"),
+        ("version", "UInt64"),
+    ] {
+        let fields = columns.get(name).ok_or_else(|| eyre!("缺少字段{name}"))?;
+        if fields.get(1) != Some(&expected_type) {
+            eyre::bail!("{name}类型应为{expected_type}");
+        }
+        if matches!(name, "preclose" | "factor" | "version")
+            && (fields.get(2) != Some(&"DEFAULT") || fields.get(3).is_none_or(|s| s.is_empty()))
+        {
+            eyre::bail!("{name}缺少默认值");
+        }
+        if name == "version" && compact(fields[3]) != "toUnixTimestamp64Nano(now64(9))" {
+            eyre::bail!("version必须为每次导入自动生成纳秒版本");
+        }
+    }
+    Ok(())
 }
 
 pub fn insert_clickhouse(output: &impl AsRef<Path>, table: &str, keep: bool) -> Result<()> {
@@ -476,6 +560,7 @@ fn test_insert_clickhouse() -> Result<()> {
         return Ok(());
     }
     let table = format!("rustdx_test.acceptance_{}", std::process::id());
+    let incompatible = format!("{table}_bad_key");
     let path = std::env::temp_dir().join(format!("rustdx-clickhouse-{}.input", std::process::id()));
     let csv_path = path.with_extension("csv");
     fs::write(
@@ -487,6 +572,12 @@ fn test_insert_clickhouse() -> Result<()> {
     let config = ClickHouseConfig::from_env();
     let result = (|| -> Result<()> {
         setup_clickhouse(false, &table)?;
+        config.exec(&format!(
+            "CREATE TABLE {incompatible} AS {table} ENGINE=ReplacingMergeTree(version) ORDER BY (date, code, close)"
+        ))?;
+        if setup_clickhouse(false, &incompatible).is_ok() {
+            eyre::bail!("错误排序键的ClickHouse表未被拒绝");
+        }
         insert_clickhouse(&path, &table, true)?;
         insert_clickhouse(&csv_path, &table, false)?;
         let logical_count = config
@@ -504,10 +595,12 @@ fn test_insert_clickhouse() -> Result<()> {
         Ok(())
     })();
     let cleanup = config.exec(&format!("DROP TABLE IF EXISTS {table}"));
+    let cleanup_incompatible = config.exec(&format!("DROP TABLE IF EXISTS {incompatible}"));
     let _ = fs::remove_file(&path);
     let _ = fs::remove_file(&csv_path);
     result?;
     cleanup?;
+    cleanup_incompatible?;
     Ok(())
 }
 
@@ -572,8 +665,11 @@ fn clickhouse_factor_csv(table: &str, keep_factor: bool) -> Previous {
 }
 
 pub fn run_mongodb(cmd: &DayCmd) -> Result<()> {
+    cmd.run_csv()
+}
+
+fn import_mongodb(cmd: &DayCmd) -> Result<()> {
     let (database_name, table_name) = database_table(&cmd.table)?;
-    cmd.run_csv()?;
     let args = [
         "--db",
         database_name,
@@ -750,6 +846,145 @@ mod tests {
         assert_eq!(result["status"], "failed");
         assert!(!result["files"][0]["errors"].as_array().unwrap().is_empty());
         fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn all_empty_collection_preserves_output_and_fails_report() {
+        use argh::FromArgs;
+        let dir = std::env::temp_dir().join(format!("rustdx-empty-test-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        fs::write(dir.join("sh600000.day"), []).unwrap();
+        let output = dir.join("output.csv");
+        let report = dir.join("report.json");
+        fs::write(&output, b"previous success").unwrap();
+        let cmd = DayCmd::from_args(
+            &["rustdx", "day"],
+            &[
+                dir.to_str().unwrap(),
+                "-o",
+                output.to_str().unwrap(),
+                "--report",
+                report.to_str().unwrap(),
+            ],
+        )
+        .unwrap();
+        assert!(run_csv(&cmd).is_err());
+        assert_eq!(fs::read(&output).unwrap(), b"previous success");
+        let result: serde_json::Value = serde_json::from_slice(&fs::read(report).unwrap()).unwrap();
+        assert_eq!(result["status"], "failed");
+        assert!(!result["errors"].as_array().unwrap().is_empty());
+        fs::remove_dir_all(dir).unwrap();
+    }
+
+    fn mock_http(response: &'static str) -> (ClickHouseConfig, std::thread::JoinHandle<String>) {
+        use std::io::Read;
+        let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+        let cfg = ClickHouseConfig {
+            url: format!(
+                "http://{}/?database=default",
+                listener.local_addr().unwrap()
+            ),
+            user: "default".into(),
+            password: String::new(),
+        };
+        let server = std::thread::spawn(move || {
+            let (mut socket, _) = listener.accept().unwrap();
+            socket
+                .set_read_timeout(Some(std::time::Duration::from_secs(2)))
+                .unwrap();
+            let mut header = Vec::new();
+            while !header.ends_with(b"\r\n\r\n") {
+                let mut byte = [0];
+                socket.read_exact(&mut byte).unwrap();
+                header.push(byte[0]);
+            }
+            socket.write_all(response.as_bytes()).unwrap();
+            String::from_utf8(header).unwrap()
+        });
+        (cfg, server)
+    }
+
+    #[test]
+    fn clickhouse_rejects_error_status_late_exception_and_truncated_body() {
+        for response in [
+            "HTTP/1.1 500 Internal Server Error\r\nContent-Length: 4\r\nConnection: close\r\n\r\nfail",
+            "HTTP/1.1 200 OK\r\nContent-Length: 19\r\nConnection: close\r\n\r\nDB::Exception: fail",
+            "HTTP/1.1 200 OK\r\nContent-Length: 100\r\nConnection: close\r\n\r\npartial",
+            "HTTP/1.1 200 OK\r\nX-ClickHouse-Exception-Code: 60\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+        ] {
+            let (cfg, server) = mock_http(response);
+            assert!(cfg.exec("SELECT 1").is_err());
+            let request = server.join().unwrap();
+            assert!(request.contains("wait_end_of_query=1"));
+            assert!(request.contains("database=default"));
+        }
+        let path =
+            std::env::temp_dir().join(format!("rustdx-http-insert-{}.csv", std::process::id()));
+        fs::write(&path, "date,code\n2026-10-09,sh600000\n").unwrap();
+        let (cfg, server) = mock_http(
+            "HTTP/1.1 200 OK\r\nContent-Length: 19\r\nConnection: close\r\n\r\nDB::Exception: fail",
+        );
+        assert!(cfg.insert_csv("rustdx.bars", &path).is_err());
+        let request = server.join().unwrap();
+        assert!(request.contains("wait_end_of_query=1"));
+        assert!(request.contains("query=INSERT"));
+        assert!(path.exists());
+        fs::remove_file(path).unwrap();
+    }
+
+    #[test]
+    fn clickhouse_schema_must_preserve_key_precision_and_import_versions() {
+        let columns = [
+            ("date", "Date"),
+            ("code", "String"),
+            ("open", "Float64"),
+            ("high", "Float64"),
+            ("low", "Float64"),
+            ("close", "Float64"),
+            ("amount", "Float64"),
+            ("vol", "Float64"),
+            ("preclose", "Float64"),
+            ("factor", "Float64"),
+            ("version", "UInt64"),
+        ]
+        .into_iter()
+        .map(|(name, kind)| {
+            let default = match name {
+                "version" => "\tDEFAULT\ttoUnixTimestamp64Nano(now64(9))",
+                "factor" | "preclose" => "\tDEFAULT\t0",
+                _ => "\t\t",
+            };
+            format!("{name}\t{kind}{default}\n")
+        })
+        .collect::<String>();
+        let metadata = "ReplacingMergeTree(version)\tdate, code\t\n";
+        validate_clickhouse_schema(metadata, &columns).unwrap();
+        validate_clickhouse_schema(
+            "ReplacingMergeTree(version) ORDER BY (date, code) SETTINGS index_granularity = 8192\tdate, code\t\n",
+            &columns,
+        ).unwrap();
+        validate_clickhouse_schema(
+            "ReplacingMergeTree(version)\tdate, code\ttoYYYYMM(date)\n",
+            &columns,
+        )
+        .unwrap();
+        for invalid in [
+            "ReplacingMergeTree()\tdate, code\t\n",
+            "ReplacingMergeTree(version)\tdate, code, close\t\n",
+            "ReplacingMergeTree(version)\tdate, code\tversion\n",
+        ] {
+            assert!(validate_clickhouse_schema(invalid, &columns).is_err());
+        }
+        assert!(
+            validate_clickhouse_schema(metadata, &columns.replace("Float64", "Float32")).is_err()
+        );
+        assert!(
+            validate_clickhouse_schema(
+                metadata,
+                &columns.replace("toUnixTimestamp64Nano(now64(9))", "0")
+            )
+            .is_err()
+        );
     }
 
     #[test]

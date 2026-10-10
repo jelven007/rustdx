@@ -87,6 +87,9 @@ fn eastmoney_agents() -> &'static [Agent; 5] {
 ///
 /// 东财接口偶发网络抖动（Unexpected EOF 等），依次尝试多个 HTTPS 节点。
 pub fn get(page_size: u16, page_number: u16) -> Result<String> {
+    if page_size == 0 || page_number == 0 {
+        eyre::bail!("page_size和page_number必须大于0");
+    }
     const HOST: &str = "push2.eastmoney.com";
     const MAX_RETRIES: usize = 1;
     let mut last_err = None;
@@ -142,27 +145,48 @@ pub fn parse(text: &str) -> Result<EastMarket> {
 
 /// 获取并解析股票数据
 pub fn fetch(max: Option<u16>) -> Result<EastMarket> {
+    fetch_pages(max, get)
+}
+
+fn fetch_pages(
+    max: Option<u16>,
+    mut get_page: impl FnMut(u16, u16) -> Result<String>,
+) -> Result<EastMarket> {
     if max == Some(0) {
         eyre::bail!("max必须大于0");
     }
     // 正常全市场可在一页返回；若上游限制页大小，下面仍会按实际返回长度翻页。
     let page_size = max.unwrap_or(6000).min(6000);
-    let mut done = 0usize;
     let mut page_number = 1u16;
-    let mut total;
-    let mut v = Vec::with_capacity(6000);
+    let mut total = None;
+    let mut diff = Vec::with_capacity(6000);
+    let mut seen = std::collections::HashSet::new();
     loop {
-        let txt = get(page_size, page_number)?;
+        let txt = get_page(page_size, page_number)?;
         let data = parse(&txt)?;
-        total = data.data.total;
+        let expected_total = *total.get_or_insert(data.data.total);
+        ensure!(data.data.total == expected_total, "东财分页total发生变化");
         let len = data.data.diff.len();
-        if len == 0 && done < total as usize {
+        let target = max.unwrap_or(expected_total).min(expected_total) as usize;
+        if len == 0 && diff.len() < target {
             eyre::bail!("东财分页返回空页，尚未覆盖全部证券");
         }
-        done += len;
-        v.push(data);
-        info!("page_number={page_number} len={len} done={done} max={max:?} total={total}");
-        if done >= max.unwrap_or(total) as usize {
+        for mut row in data.data.diff {
+            row.normalize()?;
+            if !seen.insert(row.code.clone()) {
+                eyre::bail!("东财分页包含重复证券：{}", row.code);
+            }
+            diff.push(row);
+        }
+        ensure!(
+            diff.len() <= expected_total as usize,
+            "东财返回数量超过total"
+        );
+        info!(
+            "page_number={page_number} len={len} done={} max={max:?} total={expected_total}",
+            diff.len()
+        );
+        if diff.len() >= target {
             break;
         }
         std::thread::sleep(std::time::Duration::from_millis(150));
@@ -170,38 +194,14 @@ pub fn fetch(max: Option<u16>) -> Result<EastMarket> {
             .checked_add(1)
             .ok_or_else(|| eyre::eyre!("东财分页溢出"))?;
     }
-    let mut diff = Vec::with_capacity(total as usize);
-    for each in v {
-        let dtotal = each.data.total;
-        // 保证所有响应的 total 一致
-        ensure!(
-            dtotal == total,
-            "data.total {dtotal} should equal to {total}"
-        );
-        diff.extend(each.data.diff);
-    }
-
-    // 这里的数据保留了无效值（退市）的股票，因此严格检查数量
-    if max.is_none() {
-        ensure!(
-            diff.len() as u16 == total,
-            "Aggregated res.len() {} should equal to {total}",
-            diff.len()
-        );
-    }
-
-    let mut seen = std::collections::HashSet::new();
-    for row in &mut diff {
-        row.normalize()?;
-        if !seen.insert(row.code.clone()) {
-            eyre::bail!("东财分页包含重复证券：{}", row.code);
-        }
-    }
     if let Some(max) = max {
         diff.truncate(max as usize);
     }
     Ok(EastMarket {
-        data: EastData { diff, total },
+        data: EastData {
+            diff,
+            total: total.unwrap_or(0),
+        },
     })
 }
 
@@ -322,6 +322,39 @@ pub struct EastData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn pagination_rejects_zero_and_stops_at_available_total() {
+        assert!(get(1, 0).is_err());
+        assert!(get(0, 1).is_err());
+        let page = |total, code: &str| {
+            format!(
+                r#"{{"data":{{"total":{total},"diff":[{{"f12":"{code}","f13":1,"f17":null,"f15":null,"f16":null,"f2":null,"f6":null,"f5":null,"f18":null}}]}}}}"#
+            )
+        };
+        let data = fetch_pages(Some(100), |_, number| {
+            assert_eq!(number, 1);
+            Ok(page(1, "600000"))
+        })
+        .unwrap();
+        assert_eq!(data.data.diff.len(), 1);
+        let mut calls = 0;
+        assert!(
+            fetch_pages(None, |_, _| {
+                calls += 1;
+                Ok(page(3, "600000"))
+            })
+            .is_err()
+        );
+        assert_eq!(calls, 2);
+        assert!(
+            fetch_pages(None, |_, number| Ok(page(
+                number + 1,
+                if number == 1 { "600000" } else { "600519" }
+            )))
+            .is_err()
+        );
+    }
+
     #[test]
     fn jsonp_boundaries_and_source_date() {
         let ts = chrono::DateTime::parse_from_rfc3339("2026-09-01T15:01:00+08:00")

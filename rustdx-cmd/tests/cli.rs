@@ -59,3 +59,108 @@ fn csv_collection_and_strict_gap_protect_previous_output() {
     assert_eq!(status["status"], "failed");
     fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn failed_database_import_keeps_csv_and_marks_report_failed() {
+    use std::io::{Read, Write};
+    use std::time::{Duration, Instant};
+
+    let dir = std::env::temp_dir().join(format!("rustdx-db-report-{}", std::process::id()));
+    fs::create_dir_all(&dir).unwrap();
+    let mut bytes = Vec::new();
+    for n in [20250106u32, 1000, 1100, 900, 1000] {
+        bytes.extend(n.to_le_bytes());
+    }
+    bytes.extend(1000f32.to_le_bytes());
+    bytes.extend(1000u32.to_le_bytes());
+    bytes.extend(0u32.to_le_bytes());
+    fs::write(dir.join("sz000001.day"), bytes).unwrap();
+    let columns = [
+        ("date", "Date"),
+        ("code", "String"),
+        ("open", "Float64"),
+        ("high", "Float64"),
+        ("low", "Float64"),
+        ("close", "Float64"),
+        ("amount", "Float64"),
+        ("vol", "Float64"),
+        ("preclose", "Float64"),
+        ("factor", "Float64"),
+        ("version", "UInt64"),
+    ]
+    .into_iter()
+    .map(|(name, kind)| {
+        let default = match name {
+            "version" => "\tDEFAULT\ttoUnixTimestamp64Nano(now64(9))",
+            "factor" | "preclose" => "\tDEFAULT\t0",
+            _ => "\t\t",
+        };
+        format!("{name}\t{kind}{default}\n")
+    })
+    .collect::<String>();
+    let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
+    let url = format!("http://{}", listener.local_addr().unwrap());
+    listener.set_nonblocking(true).unwrap();
+    let server = std::thread::spawn(move || {
+        for (status, body) in [
+            ("200 OK", String::new()),
+            ("200 OK", String::new()),
+            (
+                "200 OK",
+                "ReplacingMergeTree(version) ORDER BY (date, code)\tdate, code\t\n".into(),
+            ),
+            ("200 OK", columns),
+            (
+                "500 Internal Server Error",
+                "DB::Exception: injected insert failure".into(),
+            ),
+        ] {
+            let deadline = Instant::now() + Duration::from_secs(10);
+            let mut socket = loop {
+                match listener.accept() {
+                    Ok((socket, _)) => break socket,
+                    Err(e) if e.kind() == std::io::ErrorKind::WouldBlock => {
+                        assert!(Instant::now() < deadline, "CLI没有发出预期的HTTP请求");
+                        std::thread::sleep(Duration::from_millis(10));
+                    }
+                    Err(e) => panic!("{e}"),
+                }
+            };
+            socket
+                .set_read_timeout(Some(Duration::from_secs(2)))
+                .unwrap();
+            let mut header = Vec::new();
+            while !header.ends_with(b"\r\n\r\n") {
+                let mut byte = [0];
+                socket.read_exact(&mut byte).unwrap();
+                header.push(byte[0]);
+            }
+            socket.write_all(format!(
+                "HTTP/1.1 {status}\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
+                body.len(),
+            ).as_bytes()).unwrap();
+        }
+    });
+    let output = Command::new(env!("CARGO_BIN_EXE_rustdx"))
+        .current_dir(&dir)
+        .args(["day", ".", "-o", "clickhouse", "--report", "run.json"])
+        .env("CLICKHOUSE_URL", url)
+        .env("CLICKHOUSE_USER", "default")
+        .env("CLICKHOUSE_PASSWORD", "")
+        .output()
+        .unwrap();
+    server.join().unwrap();
+    assert!(!output.status.success());
+    assert!(String::from_utf8_lossy(&output.stderr).contains("injected insert failure"));
+    assert!(
+        fs::read_to_string(dir.join("clickhouse"))
+            .unwrap()
+            .contains("sz000001")
+    );
+    let report: serde_json::Value =
+        serde_json::from_slice(&fs::read(dir.join("run.json")).unwrap()).unwrap();
+    assert_eq!(report["status"], "failed");
+    assert!(!report["errors"].as_array().unwrap().is_empty());
+    assert_eq!(report["files"][0]["rows"], 1);
+    fs::remove_dir_all(dir).unwrap();
+}

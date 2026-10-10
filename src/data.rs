@@ -52,6 +52,9 @@ impl Symbol {
 
     /// 按交易所代码段判断是否为沪深京 A 股；指数、基金、债券等返回 false。
     pub fn is_a_share(&self) -> bool {
+        if !self.code.bytes().all(|b| b.is_ascii_digit()) {
+            return false;
+        }
         match self.market {
             Market::Shanghai => ["600", "601", "603", "605", "688", "689"]
                 .iter()
@@ -228,6 +231,9 @@ mod tests {
         assert!(!"sh000001".parse::<Symbol>().unwrap().is_a_share());
         assert!("bj920001".parse::<Symbol>().unwrap().is_a_share());
         assert!("sz200b07".parse::<Symbol>().is_ok());
+        assert!(!"sz000abc".parse::<Symbol>().unwrap().is_a_share());
+        assert!(!"sh600abc".parse::<Symbol>().unwrap().is_a_share());
+        assert!(!"bj920abc".parse::<Symbol>().unwrap().is_a_share());
         for s in ["000001", "xx600000", "sh中文", "sh../abc"] {
             assert!(s.parse::<Symbol>().is_err());
         }
