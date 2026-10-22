@@ -21,9 +21,11 @@
 
 mod rules;
 pub use rules::*;
+mod history;
+pub use history::*;
 
 /// 个股所属板块（按代码前缀判定，决定涨跌幅）。
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde::Serialize, serde::Deserialize)]
 pub enum Board {
     /// 沪深主板（600·601·603·605 / 000·001·002·003）±10%
     Main,

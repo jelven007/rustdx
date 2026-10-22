@@ -4,7 +4,7 @@ use thiserror::Error;
 
 use super::{Board, LimitStatus, limit_price, same_fen};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum ListingStage {
     /// 已结束上市初期的普通交易日。
     Seasoned,
@@ -46,6 +46,8 @@ pub enum LimitRuleError {
 
 /// 已核实的规则版本；来源及例外见 docs/LIMIT_RULES.md。
 pub const RULE_VERSION: &str = "exchange-rules/2026-07-06";
+/// 维护规则时必须同时复核各交易所的实施公告；不能仅移动此日期。
+pub const RULE_CHECKED_THROUGH: &str = "2026-10-22";
 
 pub fn rule_at(ctx: RuleContext) -> Result<LimitRule, LimitRuleError> {
     let ymd =
@@ -60,7 +62,7 @@ pub fn rule_at(ctx: RuleContext) -> Result<LimitRule, LimitRuleError> {
         Board::Star => ymd(2019, 7, 22),
         Board::Beijing => ymd(2021, 11, 15),
     };
-    if ctx.date < start || ctx.date > ymd(2026, 10, 22) {
+    if ctx.date < start || ctx.date > RULE_CHECKED_THROUGH.parse().expect("固定核实日期") {
         return Err(LimitRuleError::UnsupportedDate);
     }
     match ctx.stage {

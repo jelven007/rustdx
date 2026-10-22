@@ -1,6 +1,7 @@
 use argh::FromArgs;
 use eyre::Result;
 
+mod data_check;
 mod day;
 mod east;
 
@@ -23,6 +24,7 @@ pub struct TopLevel {
 enum SubCommand {
     Day(DayCmd),
     EastMoney(EastCmd),
+    DataCheck(data_check::DataCheckCmd),
     Help(Show),
 }
 
@@ -45,6 +47,7 @@ impl TopLevel {
         match &self.sub {
             Day(cmd) => cmd.run(),
             EastMoney(cmd) => cmd.run(),
+            DataCheck(cmd) => cmd.run(),
             Help(help) => {
                 if help.version {
                     println!("当前版本号：{VERSION}");

@@ -22,6 +22,8 @@
 - [NETWORK.md](NETWORK.md)：受管TCP预算、时限、配置和观测。
 - [LIMIT_RULES.md](LIMIT_RULES.md)：日期化涨跌幅、上市阶段及原始依据。
 - [IMPORTS.md](IMPORTS.md)：运行清单字段、状态、摘要范围及数据库确认边界。
+- [DATA_MAINTENANCE.md](DATA_MAINTENANCE.md)：日历交叉核验、原子更新与有公告证据的证券状态区间。
+- [NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)：2026-10-23后续六步优化及本轮交叉验证证据。
 
 ## 本轮变更覆盖
 
