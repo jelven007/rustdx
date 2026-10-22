@@ -30,11 +30,15 @@ day先用128KiB缓冲复制并计算SHA-256，随后只解析私有磁盘快照�
 | artifact.cleanup_pending | 数据库回读通过，CSV删除/更名结果需要核查 |
 | complete / failed | 流程已结束；具体失败阶段和已确认动作仍在清单中 |
 
-数据库失败保留已发布CSV。回读通过后默认删除CSV，`day -k` 更名保留为 `<output>.csv`；清单保留摘要及确认的文件状态。ClickHouse读取完整响应并检测HTTP错误、异常头、HTTP200末尾异常和截断正文，带query_id发送INSERT；单次HTTP操作上限300秒。MongoDB子进程上限300秒，超时终止并回收。导入前再次检查CSV字节摘要，拒绝清单记录后被修改的文件。
+数据库失败保留已发布CSV。回读通过后默认删除CSV，`day -k` 更名保留为 `<output>.csv`；清单保留摘要及确认的文件状态。ClickHouse读取完整响应并检测HTTP错误、异常头、HTTP200末尾异常和截断正文，带query_id发送INSERT；单次HTTP操作上限300秒。MongoDB导入子进程、回读每批请求及最终退出各最多300秒，且都受整任务绝对deadline与取消约束；超时终止并回收。导入前再次检查CSV字节摘要，拒绝清单记录后被修改的文件。
 
-每批最多512个CSV键，ClickHouse用独立`SELECT ... FINAL`，MongoDB用独立`mongoexport`查询。逐键对比open/high/low/close/amount/vol；输出含preclose/factor时也逐值核对。数值按Float64精确相等比较，JSON开启float_roundtrip，不用宽容差掩盖漂移。缺键、重复键、字段类型错误、任何数值变化或查询失败均拒绝verified。回读只针对本次导出键，不代表库内全部历史数据或全部应有证券已经验收。验收内存与总行数无关；单批回读文本上限16MiB。清单包含回读行数、逻辑键数、批次数、边界、字段列表及规范化回读值的SHA-256；该摘要不同于CSV字节摘要。
+默认每批4096个CSV键，`RUSTDX_VERIFY_BATCH_ROWS=1..16384`可调整。ClickHouse用独立`SELECT ... FINAL`（查询解析上限1MiB），MongoDB每次导入启动一个长驻`mongosh`逐批查询，单请求/响应、管道缓冲和工作线程均有界。逐键对比open/high/low/close/amount/vol；输出含preclose/factor时也逐值核对。数值按Float64精确相等比较，JSON开启float_roundtrip，不用宽容差掩盖漂移。缺键、重复键、字段类型错误、任何数值变化或查询失败均拒绝verified。回读只针对本次导出键，不代表库内全部历史数据或全部应有证券已经验收。验收内存与总行数无关；单批回读文本上限16MiB。MongoDB还需确认最后一批后的stdout结束与进程退出码，迟到错误不能清理CSV。
 
-MongoDB需要PATH中的`mongosh`、`mongoimport`和`mongoexport`；`MONGODB_URI`默认`mongodb://127.0.0.1:27017`。写入前要求完整非稀疏、非部分的`(date,code)`唯一索引与simple排序规则；缺少时创建索引，已有重复数据或冲突索引会在发布新CSV前失败。键为CSV日期字符串与含市场前缀代码，数值列必须回读为JSON数值。集合不存在时先创建索引，不把空集合当查询失败。
+schema5清单包含回读行数、逻辑键数、批次数、配置批量、日期边界、字段列表及规范化回读值的SHA-256；`sha256_order=csv_row_order`让摘要独立于批量大小。schema3/4按批内键排序，旧新摘要不一定可直接比较；CSV字节摘要不受影响。`fetch_elapsed_ms`是各批获取与解码的串行墙钟耗时之和，`elapsed_ms`覆盖CSV读取、比对和摘要；长驻进程的首次响应包括启动等待，最终退出确认在这两个字段之外。
+
+MongoDB需要PATH中的`mongosh`和`mongoimport`，不再依赖`mongoexport`；`MONGODB_URI`默认`mongodb://127.0.0.1:27017`。写入前要求完整非稀疏、非部分的`(date,code)`唯一索引与simple排序规则；缺少时创建索引，已有重复数据或冲突索引会在发布新CSV前失败。键为CSV日期字符串与含市场前缀代码，数值列必须回读为JSON数值。集合不存在时先创建索引，不把空集合当查询失败。
+
+长驻mongosh默认使用`NODE_OPTIONS=--max-old-space-size=128`促进批间垃圾回收；已有NODE_OPTIONS由部署方控制，不会被覆盖。128MiB只限制V8老年代，原生内存和其他堆区域不在其中；实测进程最大RSS与资源取舍见[第三轮记录](OPTIMIZATION_ROUND3.md)，部署须给完整进程树预留内存。
 
 同机、同数据库地址与表的受管day/east任务使用持久锁文件，在采集/前因子读取至验收结束期间互斥，跨工作目录有效，进程退出自动释放。锁标识排除凭据，统一localhost与默认端口；任意DNS别名、不同副本集种子集合、多主机和外部写入者仍需共享调度或数据库侧协调。回读是该时刻的快照，不保证外部写入者随后不会改动数据。
 

@@ -19,6 +19,35 @@ fn help_and_invalid_output_finish_without_network() {
 }
 
 #[test]
+fn invalid_readback_batch_preserves_output_before_database_access() {
+    let dir = std::env::temp_dir().join(format!("rustdx-batch-config-{}", std::process::id()));
+    fs::create_dir_all(&dir).unwrap();
+    for backend in ["clickhouse", "mongodb"] {
+        fs::write(dir.join(backend), "previous success").unwrap();
+        for batch in ["0", "16385", "invalid"] {
+            let result = Command::new(env!("CARGO_BIN_EXE_rustdx"))
+                .current_dir(&dir)
+                .env("RUSTDX_VERIFY_BATCH_ROWS", batch)
+                .env("CLICKHOUSE_URL", "http://127.0.0.1:1")
+                .env("MONGODB_URI", "mongodb://127.0.0.1:1")
+                .args(["day", ".", "-o", backend, "--report", "run.json"])
+                .output()
+                .unwrap();
+            assert!(!result.status.success());
+            assert_eq!(
+                fs::read_to_string(dir.join(backend)).unwrap(),
+                "previous success"
+            );
+            let report: serde_json::Value =
+                serde_json::from_slice(&fs::read(dir.join("run.json")).unwrap()).unwrap();
+            assert_eq!(report["database_status"], "not_started");
+            assert!(report["artifact"].is_null());
+        }
+    }
+    fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
 fn conflicting_outputs_fail_before_network_or_input_changes() {
     let dir = std::env::temp_dir().join(format!("rustdx-cli-paths-{}", std::process::id()));
     fs::create_dir_all(dir.join("sub")).unwrap();

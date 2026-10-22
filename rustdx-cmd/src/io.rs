@@ -18,6 +18,7 @@ use std::{
 };
 
 const BUFFER_SIZE: usize = 128 * 1024;
+mod mongo_readback;
 mod schema;
 pub(crate) mod sinks;
 mod streaming;
@@ -225,6 +226,9 @@ where
     F: Fn(&str, &[u8], Option<&Factor>) -> eyre::Result<Vec<T>> + Send + Sync,
     T: serde::Serialize + QualityRow + Send,
 {
+    if matches!(cmd.output.as_str(), "clickhouse" | "mongodb") {
+        verify::BatchRows::from_env()?;
+    }
     if cmd.output == "clickhouse" {
         setup_clickhouse(cmd.gbbq.is_some(), &cmd.table)?;
     } else if cmd.output == "mongodb" {
@@ -362,6 +366,8 @@ impl ClickHouseConfig {
         let mut operation = HttpOperation::new(std::time::Duration::from_secs(300))?;
         let mut req = http::post(&self.url)
             .query("wait_end_of_query", "1")
+            // A maximum-size readback includes up to 16,384 validated keys.
+            .query("max_query_size", "1048576")
             .config()
             .http_status_as_error(false)
             .timeout_global(Some(operation.timeout()))

@@ -389,6 +389,10 @@ pub struct DatabaseEvidence {
     pub rows: usize,
     pub logical_keys: usize,
     pub batches: usize,
+    pub batch_rows: usize,
+    pub fetch_elapsed_ms: f64,
+    pub elapsed_ms: f64,
+    pub sha256_order: &'static str,
     pub first_date: Option<String>,
     pub last_date: Option<String>,
     pub numeric_fields: Vec<String>,
@@ -438,7 +442,7 @@ impl CollectionReport {
             .unwrap_or_default()
             .max(0) as u64;
         Self {
-            schema_version: 4,
+            schema_version: 5,
             project_version: env!("CARGO_PKG_VERSION"),
             started_at: chrono::Utc::now().to_rfc3339(),
             finished_at: String::new(),

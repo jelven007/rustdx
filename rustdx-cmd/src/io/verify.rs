@@ -2,9 +2,31 @@
 use crate::quality::DatabaseEvidence;
 use eyre::{Result, eyre};
 use sha2::{Digest, Sha256};
-use std::{collections::BTreeMap, path::Path};
+use std::{collections::BTreeMap, path::Path, time::Instant};
 
-pub(super) const BATCH_ROWS: usize = 512;
+const DEFAULT_BATCH_ROWS: usize = 4096;
+pub(super) const MAX_BATCH_ROWS: usize = 16384;
+
+#[derive(Clone, Copy)]
+pub(super) struct BatchRows(usize);
+
+impl BatchRows {
+    fn new(rows: usize) -> Result<Self> {
+        if !(1..=MAX_BATCH_ROWS).contains(&rows) {
+            eyre::bail!("RUSTDX_VERIFY_BATCH_ROWS必须在1–{MAX_BATCH_ROWS}之间");
+        }
+        Ok(Self(rows))
+    }
+
+    pub(super) fn from_env() -> Result<Self> {
+        let rows = match std::env::var("RUSTDX_VERIFY_BATCH_ROWS") {
+            Ok(value) => value.parse()?,
+            Err(std::env::VarError::NotPresent) => DEFAULT_BATCH_ROWS,
+            Err(error) => return Err(error.into()),
+        };
+        Self::new(rows)
+    }
+}
 const NUMERIC_FIELDS: [&str; 8] = [
     "open", "high", "low", "close", "amount", "vol", "preclose", "factor",
 ];
@@ -74,13 +96,24 @@ pub(super) fn csv_rows(fields: &[String], text: &str) -> Result<Vec<Row>> {
     reader.records().map(|r| csv_row(fields, &r?)).collect()
 }
 
-pub(super) fn json_rows(fields: &[String], text: &str) -> Result<Vec<Row>> {
+pub(super) fn json_rows(
+    fields: &[String],
+    text: &str,
+    limit: usize,
+    sequence: u64,
+) -> Result<Vec<Row>> {
+    let response: serde_json::Value = serde_json::from_str(text)?;
+    if response["id"].as_u64() != Some(sequence) {
+        eyre::bail!("MongoDB回读响应序号不匹配");
+    }
+    let values = response["rows"]
+        .as_array()
+        .ok_or_else(|| eyre!("MongoDB回读缺少rows数组"))?;
+    if values.len() > limit {
+        eyre::bail!("MongoDB返回过多记录");
+    }
     let mut rows = Vec::new();
-    for line in text.lines().filter(|l| !l.trim().is_empty()) {
-        if rows.len() > BATCH_ROWS {
-            eyre::bail!("MongoDB返回过多记录");
-        }
-        let value: serde_json::Value = serde_json::from_str(line)?;
+    for value in values {
         let string = |name: &str| {
             value[name]
                 .as_str()
@@ -108,13 +141,15 @@ pub(super) fn json_rows(fields: &[String], text: &str) -> Result<Vec<Row>> {
     Ok(rows)
 }
 
-/// Memory is O(BATCH_ROWS), independently of total CSV size. Existing unrelated
+/// Memory is O(batch_rows), independently of total CSV size. Existing unrelated
 /// database keys are deliberately outside the scope of this import's acceptance.
 pub(super) fn verify(
     path: &Path,
     target: &str,
+    batch: BatchRows,
     mut fetch: impl FnMut(&[String], &[Key]) -> Result<Vec<Row>>,
 ) -> Result<DatabaseEvidence> {
+    let start = Instant::now();
     let mut reader = csv::Reader::from_path(path)?;
     let fields = columns(reader.headers()?)?;
     let numeric_fields = fields
@@ -129,6 +164,10 @@ pub(super) fn verify(
         rows: 0,
         logical_keys: 0,
         batches: 0,
+        batch_rows: batch.0,
+        fetch_elapsed_ms: 0.0,
+        elapsed_ms: 0.0,
+        sha256_order: "csv_row_order",
         first_date: None,
         last_date: None,
         numeric_fields,
@@ -138,18 +177,25 @@ pub(super) fn verify(
     let mut records = reader.records();
     loop {
         rustdx_complete::operation::check()?;
-        let mut expected = BTreeMap::new();
-        for record in records.by_ref().take(BATCH_ROWS) {
+        let mut expected = Vec::with_capacity(batch.0);
+        let mut unique = std::collections::HashSet::with_capacity(batch.0);
+        for record in records.by_ref().take(batch.0) {
             let row = csv_row(&fields, &record?)?;
-            if expected.insert(row.key.clone(), row).is_some() {
+            if !unique.insert(row.key.clone()) {
                 eyre::bail!("验收批次包含重复CSV键");
             }
+            expected.push(row);
         }
         if expected.is_empty() {
             break;
         }
-        let keys = expected.keys().cloned().collect::<Vec<_>>();
+        let keys = expected
+            .iter()
+            .map(|row| row.key.clone())
+            .collect::<Vec<_>>();
+        let fetch_start = Instant::now();
         let actual = fetch(&fields, &keys)?;
+        evidence.fetch_elapsed_ms += fetch_start.elapsed().as_secs_f64() * 1000.0;
         if actual.len() != expected.len() {
             eyre::bail!(
                 "数据库回读行数不一致: 期望{}，实际{}；CSV保留待核实",
@@ -163,16 +209,18 @@ pub(super) fn verify(
                 eyre::bail!("数据库包含重复(date,code)，CSV保留待核实");
             }
         }
-        for (key, row) in expected {
+        for row in expected {
+            let key = &row.key;
             let actual = received
-                .remove(&key)
+                .remove(key)
                 .ok_or_else(|| eyre!("数据库缺少键{key:?}"))?;
             if actual != row {
                 eyre::bail!("数据库数值与CSV不一致: {key:?}；CSV保留待核实");
             }
             // Digest describes independently read back, canonicalized values,
             // not the original CSV bytes. Both input and readback use f64.
-            digest.update(serde_json::to_vec(&(&key, &actual.values))?);
+            // CSV row order makes the digest independent of batch size.
+            digest.update(serde_json::to_vec(&(key, &actual.values))?);
             digest.update(b"\n");
             if evidence.first_date.as_ref().is_none_or(|d| &key.0 < d) {
                 evidence.first_date = Some(key.0.clone());
@@ -189,6 +237,7 @@ pub(super) fn verify(
     }
     evidence.logical_keys = evidence.rows;
     evidence.sha256 = format!("{:x}", digest.finalize());
+    evidence.elapsed_ms = start.elapsed().as_secs_f64() * 1000.0;
     Ok(evidence)
 }
 
@@ -205,11 +254,11 @@ mod tests {
                 "date", "code", "open", "high", "low", "close", "amount", "vol",
             ])
             .unwrap();
-        for i in 0..BATCH_ROWS + 1 {
+        for i in 0..513 {
             writer
                 .write_record([
                     "2026-10-09",
-                    &format!("sh{:06}", 600000 + i),
+                    &format!("sh{:06}", 600512 - i),
                     "10",
                     "11",
                     "9",
@@ -230,31 +279,60 @@ mod tests {
                 })
                 .collect())
         };
-        let evidence = verify(&path, "test", fetch).unwrap();
+        let evidence = verify(&path, "test", BatchRows::new(512).unwrap(), fetch).unwrap();
         assert_eq!((evidence.rows, evidence.batches), (513, 2));
+        for batch in [1, 11, DEFAULT_BATCH_ROWS, MAX_BATCH_ROWS] {
+            let other = verify(&path, "test", BatchRows::new(batch).unwrap(), fetch).unwrap();
+            assert_eq!(other.sha256, evidence.sha256);
+            assert_eq!(other.batches, 513usize.div_ceil(batch));
+        }
         for mutation in 0..4 {
             assert!(
-                verify(&path, "test", |fields, keys| {
-                    let mut rows = fetch(fields, keys)?;
-                    match mutation {
-                        0 => {
-                            rows[0].values[4] += 1.;
+                verify(
+                    &path,
+                    "test",
+                    BatchRows::new(512).unwrap(),
+                    |fields, keys| {
+                        let mut rows = fetch(fields, keys)?;
+                        match mutation {
+                            0 => {
+                                rows[0].values[4] += 1.;
+                            }
+                            1 => {
+                                rows.pop();
+                            }
+                            2 => {
+                                rows[0].key.1 = "sh699999".into();
+                            }
+                            _ => {
+                                rows[0].key = rows[1].key.clone();
+                            }
                         }
-                        1 => {
-                            rows.pop();
-                        }
-                        2 => {
-                            rows[0].key.1 = "sh699999".into();
-                        }
-                        _ => {
-                            rows[0].key = rows[1].key.clone();
-                        }
+                        Ok(rows)
                     }
-                    Ok(rows)
-                })
+                )
                 .is_err()
             );
         }
         std::fs::remove_file(path).unwrap();
+    }
+
+    #[test]
+    fn batch_and_mongo_response_limits_reject_invalid_input() {
+        assert!(BatchRows::new(0).is_err());
+        assert!(BatchRows::new(MAX_BATCH_ROWS + 1).is_err());
+        let fields = vec!["date".into(), "code".into(), "open".into()];
+        let valid = r#"{"id":1,"rows":[{"date":"2026-10-09","code":"sh600000","open":10}]}"#;
+        assert_eq!(json_rows(&fields, valid, 1, 1).unwrap().len(), 1);
+        assert!(json_rows(&fields, valid, 1, 2).is_err());
+        assert!(json_rows(&fields, valid, 0, 1).is_err());
+        for text in [
+            r#"{"id":1}"#,
+            r#"{"id":1,"rows":[{}]}"#,
+            r#"{"id":1,"rows":[{"date":3,"code":"sh600000","open":10}]}"#,
+            r#"{"id":1,"rows":[{"date":"2026-10-09","code":"sh600000","open":"10"}]}"#,
+        ] {
+            assert!(json_rows(&fields, text, 1, 1).is_err());
+        }
     }
 }

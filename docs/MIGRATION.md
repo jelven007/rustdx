@@ -4,7 +4,7 @@
 
 10月22日源码提交7cd02e7、5fb5b70、401265c、1f9f739已进入main；10月23日六步本地优化见[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)。核心库/CLI的Cargo版本保持1.12.2/1.8.2，crates.io上的同版本仍是10月11日发布内容；使用本节新行为须从源码构建。完整文档见[索引](README.md)，此前分支交付与两个历史快照见[RELEASES.md](RELEASES.md)。
 
-`day/east` 默认写运行清单和run_id归档，`--report`可更改路径；schema_version升级为3，增加database_verification及verified状态。数据库回执后每批512键独立精确核对全部导出数值，verified才允许清理CSV；同机同目标写入锁覆盖前因子读取至验收结束。Mongo需mongosh/mongoimport/mongoexport并支持MONGODB_URI，写入前核实唯一索引。数据库操作最多300秒并受整任务deadline约束，失败保留CSV；详见[IMPORTS.md](IMPORTS.md)。文件构造器拒绝非法日期及数值，新 `try_from_bytes/try_from_chunk/try_parse/try_to_vec` 面向不可信数据；旧单条解析入口继续保留。
+`day/east` 默认写运行清单和run_id归档，`--report`可更改路径；schema_version现为5，保留database_verification及verified状态，增加覆盖告警、原始响应证据、回读批量/耗时和摘要行序。默认4096键一批，`RUSTDX_VERIFY_BATCH_ROWS=1..16384`可调，仍精确核对全部导出数值；verified才允许清理CSV。规范化字段摘要改为CSV行序，schema3/4旧摘要可能不同，原始CSV字节摘要不变。同机同目标写入锁覆盖前因子读取至验收结束。Mongo需mongosh/mongoimport并支持MONGODB_URI，写入前核实唯一索引，长驻mongosh独立回读替代逐批mongoexport。数据库单次操作最多300秒并受整任务deadline约束，失败保留CSV；详见[IMPORTS.md](IMPORTS.md)。文件构造器拒绝非法日期及数值，新 `try_from_bytes/try_from_chunk/try_parse/try_to_vec` 面向不可信数据；旧单条解析入口继续保留。
 
 布林带使用双栈聚合的中心化总体方差，KDJ使用单调队列；正常序列总耗时O(n)，预热及缺口恢复口径不变。方差舍入误差可能带来末位变化，避免通过逐位浮点相等评判布林带回归。
 
@@ -32,7 +32,7 @@ KlineRequest::new返回Result并提供私有参数的不可变请求，支持enc
 
 受管TCP/HTTP共享默认8条进程预算；CLI默认启用同机OS锁许可，首次使用或读取policy/stats前通过configure_network配置。CLI全命令新增--timeout（默认10800秒）、--cancel-file及Ctrl-C/SIGTERM协作取消；重试不能延长绝对deadline。批次完成释放连接，服务器轮换和冷却保留。不同许可目录、跨主机及裸socket不在该上限内，Mongo工具内部socket也不逐个计数；详见[NETWORK.md](NETWORK.md)。
 
-同一证券多个day来源的日期区间重叠现在拒绝发布，即使区间内实际缺口互补；需先整理源文件。day记录以4096条分块，质量与收益状态跨块承接；输出固定目录参数、文件名及日期顺序，改变线程数不改变CSV字节。非A股仍对同日保留源最后一条，质量详情有上限并记录省略数量。CSV发布前回读检查行数、来源区间和日期边界，东财JSON由验证后的记录直接序列化。schema2消费者须兼容schema3新增字段和中间状态；project_version仍是Cargo版本，应另存Git提交区分源码。run_version不替代ClickHouse服务端行version。
+同一证券多个day来源的日期区间重叠现在拒绝发布，即使区间内实际缺口互补；需先整理源文件。day记录以4096条分块，质量与收益状态跨块承接；输出固定目录参数、文件名及日期顺序，改变线程数不改变CSV字节。非A股仍对同日保留源最后一条，质量详情有上限并记录省略数量。CSV发布前回读检查行数、来源区间和日期边界，东财JSON由验证后的记录直接序列化。旧清单消费者须兼容schema5新增字段和中间状态；project_version仍是Cargo版本，应另存Git提交区分源码。run_version不替代ClickHouse服务端行version。
 
 ## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，已发布 crates.io）
 

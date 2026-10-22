@@ -27,18 +27,21 @@ fn mongo(script: &str) -> String {
 
 fn run(dir: &Path, backend: &str, table: &str, keep: bool) -> std::process::Output {
     let mut command = Command::new(env!("CARGO_BIN_EXE_rustdx"));
-    command.current_dir(dir).args([
-        "day",
-        ".",
-        "-o",
-        backend,
-        "-t",
-        table,
-        "--workers",
-        "4",
-        "--report",
-        "run.json",
-    ]);
+    command
+        .env("RUSTDX_VERIFY_BATCH_ROWS", "512")
+        .current_dir(dir)
+        .args([
+            "day",
+            ".",
+            "-o",
+            backend,
+            "-t",
+            table,
+            "--workers",
+            "4",
+            "--report",
+            "run.json",
+        ]);
     if keep {
         command.arg("--keep-csv");
     }
@@ -84,12 +87,17 @@ fn real_databases_verify_all_keys_updates_and_constraints() {
             );
             let report: serde_json::Value =
                 serde_json::from_slice(&fs::read(dir.join("run.json")).unwrap()).unwrap();
-            assert_eq!(report["schema_version"], 4);
+            assert_eq!(report["schema_version"], 5);
             assert_eq!(report["status"], "complete");
             assert_eq!(report["database_status"], "verified");
             assert_eq!(report["database_verification"]["rows"], 1040);
             assert_eq!(report["database_verification"]["logical_keys"], 1040);
             assert_eq!(report["database_verification"]["batches"], 3);
+            assert_eq!(report["database_verification"]["batch_rows"], 512);
+            assert_eq!(
+                report["database_verification"]["sha256_order"],
+                "csv_row_order"
+            );
             assert_eq!(report["database_verification"]["first_date"], "2026-10-08");
             assert_eq!(report["database_verification"]["last_date"], "2026-10-09");
             assert_eq!(

@@ -7,7 +7,7 @@
 | 包 | 职责 | 实现 |
 | --- | --- | --- |
 | jelven-rustdx-complete | 行情及计算核心 | 阻塞TCP、任务上下文、TCP/HTTP共享许可、不可变K线请求/独立解码、checked文件解析、复权、标准数据类型、线性指标、严格日历、日期规则、连接池、缓存 |
-| jelven-rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、4096条分块/磁盘归并、有界线程/确定性输出、东财标准适配、schema3运行清单、CSV/JSON、数据库逐键精确回读及同机写入锁 |
+| jelven-rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、4096条分块/磁盘归并、有界线程/确定性输出、东财标准适配与原始响应重放、schema5运行清单、覆盖告警、CSV/JSON、数据库可配批量精确回读及同机写入锁 |
 | tests-integration | 外部接口样本与检查 | 不发布；外部测试通过变量跳过 |
 
 保留Rust edition 2024及同步模块化workspace，最低Rust1.89。标准库线程足以承担当前批量采集，不引入异步运行时或额外服务。
@@ -25,13 +25,14 @@ flowchart TB
     FILE --> MODEL
     RULE["CalendarProvider / 日期化涨跌幅"] --> MODEL
     ZIP["官网ZIP / 本地ZIP"] --> CLI["CLI day：快照/分块/磁盘归并/固定输出顺序"]
-    EAST["东财收盘快照"] --> ADAPTER["EastCanonicalBar：源时间/股单位/原价/收益类型"]
+    EAST["东财收盘快照"] --> RAW["RawPage：请求/正文/时间/摘要/离线重放"]
+    RAW --> ADAPTER["EastCanonicalBar：源时间/股单位/原价/收益类型"]
     ADAPTER --> MODEL
     ADAPTER --> EXPORT["校验/CSV回读/原子输出"]
     CLI --> EXPORT
     EXPORT --> STORE["CSV/JSON / 数据库sink"]
-    EXPORT --> MANIFEST["schema3清单：来源/输出/资源/写入及独立验收证据"]
-    STORE --> VERIFY["512键一批独立回读：字段精确比对"]
+    EXPORT --> MANIFEST["schema5清单：来源/覆盖/输出/资源/写入及独立验收证据"]
+    STORE --> VERIFY["默认4096键一批：CH FINAL / 长驻mongosh，字段精确比对"]
     VERIFY --> MANIFEST
 ```
 

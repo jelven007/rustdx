@@ -65,7 +65,7 @@ cargo run --example local_data -- assets/sz000001.day sz000001
 
 `CollectionReport::start`在采集前持久化，`stage_artifact/published/begin_database/finish`保存关键检查点。每次先更新run_id归档，再更新最新清单，两文件不是一个事务。CSV先回读再记录摘要并原子提交；东财JSON直接序列化已经验证的行，不执行CSV回读。
 
-ClickHouse通过HTTP完整响应确认，INSERT附带query_id，单次操作300秒；版本由表默认服务端纳秒生成。MongoDB通过mongosh建立/核实唯一索引，mongoimport退出码确认，mongoexport独立回读，MONGODB_URI配置连接。子进程上限300秒并受整任务deadline约束，超时终止并回收。回执后每批512键精确比较全部导出字段，verified才允许清理CSV；同机同目标锁覆盖前基准读取至验收完成。不要将unknown自动改成not_started，也不要删除待核对CSV。字段和恢复语义以[IMPORTS.md](IMPORTS.md)为准。
+ClickHouse通过HTTP完整响应确认，INSERT附带query_id，单次操作300秒；版本由表默认服务端纳秒生成。MongoDB通过mongosh建立/核实唯一索引，mongoimport退出码确认，长驻mongosh逐批独立回读，MONGODB_URI配置连接。导入、回读单批及退出确认各最多300秒并受整任务deadline约束，超时终止并回收。管道工作线程使用容量1通道，主线程检查取消，响应不超过16MiB。回执后默认4096键一批（可配1–16384），精确比较全部导出字段，最后响应、EOF及进程退出码通过后才允许清理CSV。同机同目标锁覆盖前基准读取至验收完成。不要将unknown自动改成not_started，也不要删除待核对CSV。字段和恢复语义以[IMPORTS.md](IMPORTS.md)为准。
 
 ### 指标与缓存
 

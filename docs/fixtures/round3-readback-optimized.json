@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-23",
+  "scope": "synthetic_no_factors_end_to_end_wall_time",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "versions": {"clickhouse": "26.11.1.548 macOS experimental", "mongodb": "8.0.16"},
+  "rows": 65536,
+  "symbols": 128,
+  "workers": 4,
+  "process_wrappers": false,
+  "baseline": "round3-readback-baseline.json",
+  "binary_sha256": "0764570b1221a004102e0a08bf53d96c4148530f158f7a7e0f495e4983d2e7a5",
+  "input_sha256": "8a2e2b7a5463c08b4ed7b6befdd6b6a9ae486664f0d6f0946ee907e87a144d28",
+  "all_runs_csv_sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+  "all_runs_readback_sha256": "f130a229535d57dd64ccb2719a1bb430873324556bc4dff559fd712d77cc5435",
+  "sha256_order": "csv_row_order",
+  "numeric_fields": ["open", "high", "low", "close", "amount", "vol"],
+  "first_date": "2024-01-02",
+  "last_date": "2025-12-17",
+  "batch_rows": 4096,
+  "mongosh_default_node_options": "--max-old-space-size=128",
+  "rss_scope": "/usr/bin/time resource-usage maximum; not simultaneous process-tree RSS sum; heap cap excludes native allocations",
+  "runs": [
+    {
+      "backend": "clickhouse", "run": 0, "exit": 0,
+      "seconds": 8.707731292, "max_rss_bytes": 15056896,
+      "rows": 65536, "logical_keys": 65536, "batches": 16,
+      "fetch_elapsed_ms": 676.0947929999999, "elapsed_ms": 764.456833
+    },
+    {
+      "backend": "clickhouse", "run": 1, "exit": 0,
+      "seconds": 8.335054624999998, "max_rss_bytes": 15040512,
+      "rows": 65536, "logical_keys": 65536, "batches": 16,
+      "fetch_elapsed_ms": 721.532001, "elapsed_ms": 809.254625
+    },
+    {
+      "backend": "mongodb", "run": 0, "exit": 0,
+      "seconds": 11.746151874999999, "max_rss_bytes": 336510976,
+      "rows": 65536, "logical_keys": 65536, "batches": 16,
+      "fetch_elapsed_ms": 2478.8372930000005, "elapsed_ms": 2565.931459
+    },
+    {
+      "backend": "mongodb", "run": 1, "exit": 0,
+      "seconds": 12.276490833, "max_rss_bytes": 341000192,
+      "rows": 65536, "logical_keys": 65536, "batches": 16,
+      "fetch_elapsed_ms": 2691.338084, "elapsed_ms": 2782.8919170000004
+    }
+  ],
+  "mean_end_to_end_reduction_percent": {"clickhouse": 16.579785934987058, "mongodb": 53.364427569622904},
+  "maximum_batch_checks": [
+    {
+      "backend": "clickhouse", "batch_rows": 16384, "batches": 4, "rows": 65536,
+      "exit": 0, "seconds": 9.245946084, "max_rss_bytes": 27607040,
+      "binary_sha256": "f554e25dbe64299f8f624a6ef374daed46a7ff8ef256d4f15d5319b1dead8bc2",
+      "note": "before Mongo-only heap cap and JSON single-parse changes; ClickHouse code unchanged"
+    },
+    {
+      "backend": "mongodb", "batch_rows": 16384, "batches": 4, "rows": 65536,
+      "exit": 0, "seconds": 14.148535416, "max_rss_bytes": 350289920,
+      "binary_sha256": "0764570b1221a004102e0a08bf53d96c4148530f158f7a7e0f495e4983d2e7a5"
+    }
+  ],
+  "pre_heap_cap_mongodb_rss_bytes": [451444736, 448299008],
+  "raw_local_results": [
+    "/tmp/rustdx-round3-readback-final.json",
+    "/tmp/rustdx-round3-readback-final-max.json",
+    "/tmp/rustdx-round3-readback-optimized.json",
+    "/tmp/rustdx-round3-readback-max.json"
+  ],
+  "cross_validation": {
+    "all_recorded_csv_hashes_equal_baseline": true,
+    "all_recorded_readback_hashes_equal_baseline": true,
+    "every_exported_key_and_numeric_field_verified": true,
+    "real_1040_key_updates_factors_and_constraints_acceptance": "passed before Mongo-only heap cap and JSON single-parse changes",
+    "production_deployment_validated": false
+  }
+}

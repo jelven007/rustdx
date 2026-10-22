@@ -53,6 +53,8 @@ def main():
         for name in ["mongoimport", "mongoexport", "mongosh"]:
             real = shutil.which(name)
             if not real:
+                if name == "mongoexport":
+                    continue  # Needed only by the pre-optimization binary.
                 parser.error(f"{name} missing")
             tools[name] = real
             wrapper = shim / name
@@ -104,6 +106,7 @@ def main():
         "process_wrappers": args.instrument_processes,
         "scratch": str(scratch), "database": database, "versions": {}, "runs": [],
         "scope": "synthetic_no_factors_end_to_end_and_child_process_wall_time",
+        "rss_scope": "/usr/bin/time resource-usage maximum; not simultaneous process-tree RSS sum",
     }
     for backend in backends:
         result["versions"][backend] = ch("SELECT version()") if backend == "clickhouse" else mongo("print(db.version())")
@@ -137,10 +140,16 @@ def main():
                 manifest = json.loads((work / "run.json").read_text())
                 processes = [json.loads(line) for line in (work / "processes.jsonl").read_text().splitlines()] \
                     if (work / "processes.jsonl").exists() else []
-                rss_match = re.search(r"(\d+)\s+maximum resident set size", (work / "cli.log").read_text())
+                log_text = (work / "cli.log").read_text()
+                if platform.system() == "Darwin":
+                    rss_match = re.search(r"(\d+)\s+maximum resident set size", log_text)
+                    rss_scale = 1
+                else:
+                    rss_match = re.search(r"Maximum resident set size \(kbytes\):\s*(\d+)", log_text)
+                    rss_scale = 1024
                 entry = {
                     "backend": backend, "run": run, "seconds": elapsed, "exit": completed.returncode,
-                    "max_rss_bytes": int(rss_match[1]) if rss_match else None,
+                    "max_rss_bytes": int(rss_match[1]) * rss_scale if rss_match else None,
                     "processes": processes, "manifest": manifest,
                     "csv_sha256": hashlib.sha256((work / f"{backend}.csv").read_bytes()).hexdigest()
                     if (work / f"{backend}.csv").exists() else None,

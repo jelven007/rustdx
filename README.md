@@ -147,9 +147,9 @@ rustdx day ./lday -o clickhouse -t rustdx.bars_v2 -k
 rustdx east -p clickhouse -o clickhouse -t rustdx.bars_v2
 ```
 
-ClickHouse 统一使用HTTP配置。新表是 `ReplacingMergeTree(version)`，以(date,code)为逻辑键；查询即时去重结果须加 `FINAL`。已有表必须通过字段、精度、排序键、分区键和版本默认值检查；不兼容表需按[迁移说明](docs/MIGRATION.md)建立新表并核验后切换。HTTP请求设置 `wait_end_of_query=1`，完整读取响应并传播错误正文或截断；单操作最多300秒并受整任务时限限制，INSERT带query_id。回执后每批最多512键独立精确比较本次所有导出字段，verified才允许清理CSV。schema3清单单独记录database_verification；同机同目标写入锁覆盖前因子读取至验收完成。失败时保留CSV，客户端run_version不替代服务端行version，也不提供跨数据库事务。
+ClickHouse 统一使用HTTP配置。新表是 `ReplacingMergeTree(version)`，以(date,code)为逻辑键；查询即时去重结果须加 `FINAL`。已有表必须通过字段、精度、排序键、分区键和版本默认值检查；不兼容表需按[迁移说明](docs/MIGRATION.md)建立新表并核验后切换。HTTP请求设置 `wait_end_of_query=1`，完整读取响应并传播错误正文或截断；单操作最多300秒并受整任务时限限制，INSERT带query_id。回执后默认4096键一批独立精确比较本次所有导出字段，`RUSTDX_VERIFY_BATCH_ROWS=1..16384`可调，verified才允许清理CSV。schema5清单记录database_verification、批量及耗时，字段摘要按CSV行序计算；同机同目标写入锁覆盖前因子读取至验收完成。失败时保留CSV，客户端run_version不替代服务端行version，也不提供跨数据库事务。
 
-MongoDB需要系统mongosh/mongoimport/mongoexport，MONGODB_URI默认mongodb://127.0.0.1:27017；写入前建立/核实(date,code)唯一索引，upsert后独立精确回读，日期以字符串保存。工具超时终止并回收，失败可能已写入部分行。本轮已验收隔离ClickHouse/MongoDB的1040键小表、重复/覆盖及错误恢复；历史ClickHouse25.8的2981万行验收未在本轮重跑，不能替代目标生产配置验收。部署、监控和恢复见[运维手册](docs/RUNBOOK.md)。
+MongoDB需要系统mongosh/mongoimport，MONGODB_URI默认mongodb://127.0.0.1:27017；写入前建立/核实(date,code)唯一索引，upsert后用一个长驻mongosh独立精确回读，日期以字符串保存。工具超时终止并回收，失败可能已写入部分行。本轮已验收隔离ClickHouse/MongoDB的1040键小表、重复/覆盖及错误恢复；历史ClickHouse25.8的2981万行验收未在本轮重跑，不能替代目标生产配置验收。回读测量及范围见[第三轮记录](docs/OPTIMIZATION_ROUND3.md)，部署、监控和恢复见[运维手册](docs/RUNBOOK.md)。
 
 ## 缓存、计算与示例
 
