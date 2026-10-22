@@ -8,10 +8,7 @@ use std::{
 use ureq::{
     Agent, Error,
     config::Config,
-    unversioned::{
-        resolver::{DefaultResolver, ResolvedSocketAddrs, Resolver},
-        transport::DefaultConnector,
-    },
+    unversioned::resolver::{DefaultResolver, ResolvedSocketAddrs, Resolver},
 };
 
 #[derive(Debug)]
@@ -70,16 +67,7 @@ impl Resolver for EastmoneyResolver {
 fn eastmoney_agents() -> &'static [Agent; 5] {
     static AGENTS: OnceLock<[Agent; 5]> = OnceLock::new();
     AGENTS.get_or_init(|| {
-        std::array::from_fn(|offset| {
-            let config = Agent::config_builder()
-                .timeout_global(Some(Duration::from_secs(15)))
-                .build();
-            Agent::with_parts(
-                config,
-                DefaultConnector::default(),
-                EastmoneyResolver { offset },
-            )
-        })
+        std::array::from_fn(|offset| crate::http::agent(EastmoneyResolver { offset }))
     })
 }
 
@@ -101,19 +89,27 @@ pub fn get(page_size: u16, page_number: u16) -> Result<String> {
             invt=2&fid=f12&fs=m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23&fields=f18,f16,f12,f13,f124,f17,f15,f2,f6,f5&_=1631693257534"
         );
         for attempt in 1..=MAX_RETRIES {
+            let mut operation = crate::http::HttpOperation::new(Duration::from_secs(15))?;
             info!("Get: {url}");
             match eastmoney_agents()[node]
                 .get(&url)
+                .config()
+                .timeout_global(Some(operation.timeout()))
+                .build()
                 .header("Accept", "application/json,text/plain,*/*")
                 .header("Referer", "https://quote.eastmoney.com/")
                 .header("User-Agent", "Mozilla/5.0 rustdx-cli")
                 .call()
             {
-                Ok(mut resp) => return Ok(resp.body_mut().read_to_string()?),
+                Ok(mut resp) => {
+                    let text = crate::http::text(resp.body_mut(), 16 * 1024 * 1024)?;
+                    operation.complete(text.trim().is_empty())?;
+                    return Ok(text);
+                }
                 Err(e) => {
                     warn!("东财节点#{node}请求失败（第 {attempt}/{MAX_RETRIES} 次）：{e}");
                     last_err = Some(e);
-                    std::thread::sleep(std::time::Duration::from_millis(500 * attempt as u64));
+                    rustdx_complete::operation::sleep(Duration::from_millis(500 * attempt as u64))?;
                 }
             }
         }
@@ -182,6 +178,7 @@ fn fetch_pages_with_calendar(
     let mut diff = Vec::with_capacity(6000);
     let mut seen = std::collections::HashSet::new();
     loop {
+        rustdx_complete::operation::check()?;
         let txt = get_page(page_size, page_number)?;
         let data = parse(&txt)?;
         let expected_total = *total.get_or_insert(data.data.total);
@@ -189,6 +186,7 @@ fn fetch_pages_with_calendar(
         let len = data.data.diff.len();
         let target = max.unwrap_or(expected_total).min(expected_total) as usize;
         if len == 0 && diff.len() < target {
+            rustdx_complete::tcp::observe_empty_response();
             eyre::bail!("东财分页返回空页，尚未覆盖全部证券");
         }
         for mut row in data.data.diff {
@@ -209,7 +207,7 @@ fn fetch_pages_with_calendar(
         if diff.len() >= target {
             break;
         }
-        std::thread::sleep(std::time::Duration::from_millis(150));
+        rustdx_complete::operation::sleep(Duration::from_millis(150))?;
         page_number = page_number
             .checked_add(1)
             .ok_or_else(|| eyre::eyre!("东财分页溢出"))?;

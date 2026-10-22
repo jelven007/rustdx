@@ -26,7 +26,9 @@ pub fn sha256(bytes: &[u8]) -> String {
 /// Read and hash exactly the snapshot subsequently passed to the parser.
 pub fn source_snapshot(path: &Path, limit: u64) -> Result<(SourceEvidence, Vec<u8>)> {
     let mut bytes = Vec::new();
-    File::open(path)?.take(limit + 1).read_to_end(&mut bytes)?;
+    rustdx_complete::operation::CheckedIo(File::open(path)?)
+        .take(limit + 1)
+        .read_to_end(&mut bytes)?;
     if bytes.len() as u64 > limit {
         eyre::bail!("来源文件超出{limit}字节限制: {}", path.display());
     }
@@ -235,6 +237,10 @@ pub fn inspect_with_calendar<T: QualityRow>(
     let mut first_date = None;
     let mut last_date = None;
     for (index, row) in rows.iter().enumerate() {
+        if let Err(error) = rustdx_complete::operation::check() {
+            report.errors.push(error.to_string());
+            break;
+        }
         if let Err(e) = row.validate() {
             report.errors.push(format!("第{}行: {e}", index + 1));
         }
@@ -333,6 +339,7 @@ pub struct CollectionReport {
     pub query_id: Option<String>,
     pub run_version: u64,
     pub database_version_policy: &'static str,
+    pub resources: serde_json::Value,
     #[serde(skip)]
     path: PathBuf,
     #[serde(skip)]
@@ -380,6 +387,7 @@ impl CollectionReport {
             query_id: None,
             run_version: version,
             database_version_policy: "clickhouse_server_nanoseconds_per_row; mongodb_upsert",
+            resources: serde_json::Value::Null,
             path: manifest_path(output, None),
             ranges: Default::default(),
             output_rows: 0,
@@ -415,6 +423,7 @@ impl CollectionReport {
         let mut buffer = [0u8; 64 * 1024];
         let mut bytes = 0;
         loop {
+            rustdx_complete::operation::check()?;
             let n = reader.read(&mut buffer)?;
             if n == 0 {
                 break;
@@ -463,6 +472,7 @@ impl CollectionReport {
         let mut first: Option<String> = None;
         let mut last: Option<String> = None;
         for record in reader.records() {
+            rustdx_complete::operation::check()?;
             let record = record?;
             let date = record.get(date).ok_or_else(|| eyre::eyre!("CSV日期缺失"))?;
             let code = record.get(code).ok_or_else(|| eyre::eyre!("CSV代码缺失"))?;
@@ -521,6 +531,7 @@ impl CollectionReport {
         let mut buffer = [0; 64 * 1024];
         let mut bytes = 0;
         loop {
+            rustdx_complete::operation::check()?;
             let n = reader.read(&mut buffer)?;
             if n == 0 {
                 break;
@@ -561,6 +572,20 @@ impl CollectionReport {
     }
 
     pub fn finish(&mut self, result: Result<()>) -> Result<()> {
+        let stats = rustdx_complete::tcp::network_stats();
+        self.resources = serde_json::json!({
+            "network_active": stats.active, "network_peak": stats.peak,
+            "network_limit": stats.max_connections,
+            "shared_network_limit": stats.shared_max_connections,
+            "queue_wait_micros": stats.queue_wait_micros,
+            "acquisition_timeouts": stats.acquisition_timeouts,
+            "requests": stats.requests, "request_failures": stats.request_failures,
+            "request_p95_micros": stats.request_p95_micros,
+            "latency_samples": stats.latency_samples,
+            "latency_window_limit": 1024,
+            "empty_responses": stats.empty_responses,
+            "scope": "process_managed_network"
+        });
         self.files
             .sort_by(|a, b| (&a.source, &a.code).cmp(&(&b.source, &b.code)));
         self.sources.sort_by(|a, b| a.source.cmp(&b.source));

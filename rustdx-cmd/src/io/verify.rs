@@ -137,6 +137,7 @@ pub(super) fn verify(
     let mut digest = Sha256::new();
     let mut records = reader.records();
     loop {
+        rustdx_complete::operation::check()?;
         let mut expected = BTreeMap::new();
         for record in records.by_ref().take(BATCH_ROWS) {
             let row = csv_row(&fields, &record?)?;

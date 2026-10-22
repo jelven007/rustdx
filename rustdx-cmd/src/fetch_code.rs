@@ -1,4 +1,6 @@
+use crate::http::{self, HttpOperation};
 use eyre::{Result, anyhow};
+use rustdx_complete::operation::{self, CheckedIo};
 use std::collections::HashSet;
 use std::io::Read;
 use std::time::{Duration, Instant};
@@ -8,7 +10,9 @@ const LIST_TIMEOUT: Duration = Duration::from_secs(120);
 
 fn read_bounded(reader: impl Read, limit: usize) -> Result<Vec<u8>> {
     let mut bytes = Vec::new();
-    reader.take(limit as u64 + 1).read_to_end(&mut bytes)?;
+    CheckedIo(reader)
+        .take(limit as u64 + 1)
+        .read_to_end(&mut bytes)?;
     if bytes.len() > limit {
         eyre::bail!("股票名单响应超出{}字节限制", limit);
     }
@@ -72,18 +76,20 @@ pub fn get_sz_stocks(set: &mut StockList) -> Result<usize> {
         SHOWTYPE=xlsx&CATALOGID=1110&TABKEY=tab1",
         "sz",
     );
-    let mut resp = ureq::get(url)
+    let mut operation = HttpOperation::new(LIST_TIMEOUT)?;
+    let mut resp = http::get(url)
         .config()
-        .timeout_connect(Some(Duration::from_secs(10)))
-        .timeout_global(Some(LIST_TIMEOUT))
+        .timeout_global(Some(operation.timeout()))
         .build()
         .call()?;
     let bytes = read_bounded(resp.body_mut().as_reader(), MAX_RESPONSE_BYTES)?;
+    operation.complete(bytes.is_empty())?;
     let mut workbook = Xlsx::new(std::io::Cursor::new(bytes))?;
     // 每个单元格被解析的类型可能会不一样，所以把股票代码统一转化成字符型
     if let Some(Ok(range)) = workbook.worksheet_range_at(0) {
         let mut codes = StockList::new();
         for (i, row) in range.rows().enumerate().skip(1) {
+            operation::check()?;
             let code = match row.get(4) {
                 None | Some(Data::Empty) => continue,
                 Some(Data::Int(x)) if (0..=999999).contains(x) => format!("{x:06}"),
@@ -133,6 +139,7 @@ pub fn get_sh_stocks(set: &mut StockList, stocktype: &str, pagesize: &str) -> Re
     let mut expected = None;
     let deadline = Instant::now() + LIST_TIMEOUT;
     loop {
+        operation::check()?;
         let remaining = deadline.saturating_duration_since(Instant::now());
         if remaining.is_zero() {
             eyre::bail!("上交所股票名单分页超过总时限");
@@ -145,10 +152,10 @@ pub fn get_sh_stocks(set: &mut StockList, stocktype: &str, pagesize: &str) -> Re
         &pageHelp.cacheSize=1&pageHelp.beginPage={page}&pageHelp.pageSize={pagesize}\
         &pageHelp.pageNo={page}&pageHelp.endPage={page}"
         );
-        let mut resp = ureq::get(&url)
+        let mut operation = HttpOperation::new(remaining)?;
+        let mut resp = http::get(&url)
             .config()
-            .timeout_connect(Some(Duration::from_secs(10).min(remaining)))
-            .timeout_global(Some(remaining))
+            .timeout_global(Some(operation.timeout()))
             .build()
             .header("ACCEPT", "*/*")
             .header("ACCEPT_LANGUAGE", ACCEPT_LANGUAGE)
@@ -162,6 +169,7 @@ pub fn get_sh_stocks(set: &mut StockList, stocktype: &str, pagesize: &str) -> Re
             MAX_RESPONSE_BYTES,
         )?)?;
         let (rows, total) = parse_sh_page(&text)?;
+        operation.complete(rows.is_empty())?;
         if expected.is_some_and(|n| n != total) {
             eyre::bail!("上交所分页total发生变化");
         }

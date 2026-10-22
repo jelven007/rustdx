@@ -2,10 +2,12 @@ use crate::cmd::DayCmd;
 use crate::quality::{CollectionReport, QualityRow};
 use eyre::{Result, eyre};
 use rustdx_cli::fetch_code::StockList;
+use rustdx_cli::http::{self, HttpOperation};
 use rustdx_complete::file::{
     day::fq::Day,
     gbbq::{Factor, Gbbq},
 };
+use rustdx_complete::operation::{self, CheckedIo, OperationContext};
 use std::{
     fs::{self, File},
     io::{self, Write},
@@ -83,12 +85,18 @@ where
         let next = &next;
         let work = &work;
         let parse = &parse;
+        let context = OperationContext::current();
 
         thread::scope(|s| {
             for _ in 0..workers {
                 let tx = tx.clone();
+                let context = context.clone();
                 s.spawn(move || {
+                    let _guard = context.as_ref().map(OperationContext::enter);
                     loop {
+                        if operation::check().is_err() {
+                            break;
+                        }
                         let i = next.fetch_add(1, Ordering::Relaxed);
                         if i >= work.len() {
                             break;
@@ -113,6 +121,7 @@ where
             }
             drop(tx); // 关闭发送端，主线程的迭代才能结束
             for (path, evidence, result) in rx {
+                operation::check()?;
                 report.sources.extend(evidence);
                 let v = match result {
                     Ok(v) => v,
@@ -179,12 +188,14 @@ where
                 report.files.push(quality);
                 total_rows += v.len();
                 for t in v {
+                    operation::check()?;
                     wtr.serialize(t)?;
                 }
             }
             Ok::<(), eyre::Report>(())
         })?;
 
+        operation::check()?;
         total_files += count.load(Ordering::Relaxed);
         print(dir, count.load(Ordering::Relaxed), take);
     }
@@ -397,12 +408,12 @@ impl ClickHouseConfig {
 
     /// 执行 SQL（DDL/DML，body 即语句）。
     fn exec(&self, sql: &str) -> Result<String> {
-        let mut req = ureq::post(&self.url)
+        let mut operation = HttpOperation::new(std::time::Duration::from_secs(300))?;
+        let mut req = http::post(&self.url)
             .query("wait_end_of_query", "1")
             .config()
             .http_status_as_error(false)
-            .timeout_connect(Some(std::time::Duration::from_secs(10)))
-            .timeout_global(Some(std::time::Duration::from_secs(300)))
+            .timeout_global(Some(operation.timeout()))
             .build()
             .header("Content-Type", "text/plain; charset=utf-8");
         // 认证 header（ClickHouse 原生 X-ClickHouse-User/Key）
@@ -413,14 +424,17 @@ impl ClickHouseConfig {
             req = req.header("X-ClickHouse-Key", &self.password);
         }
         let resp = req.send(sql.as_bytes())?;
-        Self::response_body(resp)
+        let body = Self::response_body(resp)?;
+        // Empty acknowledgments for DDL/INSERT are expected, not empty bars.
+        operation.complete(false)?;
+        Ok(body)
     }
 
     fn response_body(mut resp: ureq::http::Response<ureq::Body>) -> Result<String> {
         let status = resp.status().as_u16();
         let exception = resp.headers().get("X-ClickHouse-Exception-Code").cloned();
         // 必须读到完整正文；200响应仍可能在正文末尾携带ClickHouse异常。
-        let body = resp.body_mut().read_to_string()?;
+        let body = http::text(resp.body_mut(), 16 * 1024 * 1024)?;
         if !(200..300).contains(&status) || exception.is_some() || body.contains("DB::Exception:") {
             eyre::bail!("ClickHouse HTTP {status}: {body}");
         }
@@ -435,12 +449,13 @@ impl ClickHouseConfig {
 
     fn insert_csv_tracked(&self, table: &str, csv: &Path, query_id: Option<&str>) -> Result<()> {
         database_table(table)?;
+        let mut operation = HttpOperation::new(std::time::Duration::from_secs(300))?;
         let file = std::fs::File::open(csv)?;
         let len = file.metadata()?.len();
         let sql = format!(
             "INSERT INTO {table} SETTINGS input_format_defaults_for_omitted_fields=1 FORMAT CSVWithNames"
         );
-        let mut request = ureq::post(&self.url)
+        let mut request = http::post(&self.url)
             .query("query", sql)
             .query("wait_end_of_query", "1");
         if let Some(query_id) = query_id {
@@ -449,8 +464,7 @@ impl ClickHouseConfig {
         let mut req = request
             .config()
             .http_status_as_error(false)
-            .timeout_connect(Some(std::time::Duration::from_secs(10)))
-            .timeout_global(Some(std::time::Duration::from_secs(300)))
+            .timeout_global(Some(operation.timeout()))
             .build();
         if self.user != "default" || !self.password.is_empty() {
             req = req.header("X-ClickHouse-User", &self.user);
@@ -458,12 +472,13 @@ impl ClickHouseConfig {
         if !self.password.is_empty() {
             req = req.header("X-ClickHouse-Key", &self.password);
         }
-        let mut file = file;
+        let mut file = CheckedIo(file);
         let resp = req.send(ureq::SendBody::from_reader(&mut file))?;
         let body = Self::response_body(resp)?;
         if !body.trim().is_empty() {
             eyre::bail!("ClickHouse INSERT 返回非空响应，写入状态需核实：{body}");
         }
+        operation.complete(false)?;
         debug!("clickhouse 导入完成：{table}（{len} 字节 CSV）");
         Ok(())
     }
@@ -608,6 +623,7 @@ pub fn previous_csv(p: impl AsRef<Path>, _keep_factor: bool) -> Previous {
 fn parse_previous(reader: impl io::Read) -> Previous {
     let mut prev = std::collections::HashMap::new();
     for row in csv::Reader::from_reader(reader).deserialize::<Factor>() {
+        operation::check()?;
         let f = row?;
         f.code.parse::<rustdx_complete::data::Symbol>()?;
         chrono::NaiveDate::parse_from_str(&f.date, "%Y-%m-%d")?;
@@ -671,6 +687,7 @@ pub fn read_xlsx(path: &str, col: usize, prefix: &str) -> Result<StockList> {
     }
     let mut result = StockList::new();
     for (index, row) in range.rows().enumerate().skip(1) {
+        operation::check()?;
         let code = match row.get(col) {
             None | Some(Data::Empty) => continue,
             Some(Data::Int(x)) if (0..=999999).contains(x) => format!("{x:06}"),

@@ -126,6 +126,7 @@ impl Day {
         validate_records(bytes)?;
         code.parse::<crate::data::Symbol>()?;
         for chunk in bytes.as_chunks::<32>().0 {
+            crate::operation::check()?;
             validate_record(chunk)?;
         }
         Ok(bytes

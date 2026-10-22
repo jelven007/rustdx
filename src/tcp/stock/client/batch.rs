@@ -28,7 +28,7 @@ impl BatchGate {
             }
             busy = self
                 .ready
-                .wait_timeout(busy, wait)
+                .wait_timeout(busy, wait.min(std::time::Duration::from_millis(20)))
                 .map_err(|_| io::Error::other("批量查询锁已损坏"))?
                 .0;
         }
@@ -74,12 +74,17 @@ pub(super) fn fetch<'a>(
             .map(|_| None)
             .collect::<Vec<Option<RowResult<'a>>>>(),
     );
+    let context = crate::operation::OperationContext::current();
     std::thread::scope(|scope| {
         for _ in 0..workers {
             let pool = &pool;
             let queue = &queue;
             let results = &results;
+            let context = context.clone();
             scope.spawn(move || {
+                let _guard = context
+                    .as_ref()
+                    .map(crate::operation::OperationContext::enter);
                 let mut connection =
                     remaining(deadline).and_then(|timeout| pool.get_connection_timeout(timeout));
                 while let Some((index, (market, code))) = { queue.lock().unwrap().pop_front() } {

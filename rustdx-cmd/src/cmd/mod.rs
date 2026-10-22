@@ -15,6 +15,18 @@ const VERSION: &str = env!("RUSTDX_VERSION");
 #[derive(FromArgs, PartialEq, Debug)]
 /// rustdx
 pub struct TopLevel {
+    /// 整命令总时限（秒），默认10800，覆盖下载到数据库验收。
+    #[argh(option, default = "10800")]
+    pub timeout: u64,
+    /// 此路径出现时协作取消；Ctrl-C/SIGTERM也取消当前任务。
+    #[argh(option)]
+    pub cancel_file: Option<std::path::PathBuf>,
+    /// 同机TCP/HTTP共享连接上限，默认8；同目录须使用一致的上限。
+    #[argh(option, default = "8")]
+    pub network_limit: usize,
+    /// 共享连接许可目录，默认系统临时目录/rustdx_network_permits。
+    #[argh(option)]
+    pub network_dir: Option<std::path::PathBuf>,
     #[argh(subcommand)]
     sub: SubCommand,
 }

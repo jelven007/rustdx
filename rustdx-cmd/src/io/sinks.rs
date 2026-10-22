@@ -219,9 +219,17 @@ impl Drop for Scratch {
 }
 
 fn wait_bounded(command: &mut Command, timeout: Duration) -> Result<()> {
+    let timeout = rustdx_complete::operation::timeout(timeout)?;
+    let _permit = rustdx_complete::tcp::acquire_network(timeout)?;
+    rustdx_complete::operation::check()?;
     let mut child = command.spawn()?;
     let start = Instant::now();
     loop {
+        if let Err(error) = rustdx_complete::operation::check() {
+            let _ = child.kill();
+            let _ = child.wait();
+            return Err(error.into());
+        }
         match child.try_wait() {
             Ok(Some(status)) => {
                 if !status.success() {
@@ -258,6 +266,13 @@ mod tests {
         );
         let start = Instant::now();
         assert!(run_bounded(Command::new("sleep").arg("5"), Duration::from_millis(50)).is_err());
+        assert!(start.elapsed() < Duration::from_secs(1));
+        let task =
+            rustdx_complete::operation::OperationContext::new(Duration::from_millis(50), None)
+                .unwrap();
+        let _guard = task.enter();
+        let start = Instant::now();
+        assert!(run_bounded(Command::new("sleep").arg("5"), Duration::from_secs(300)).is_err());
         assert!(start.elapsed() < Duration::from_secs(1));
     }
 

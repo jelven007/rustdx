@@ -14,7 +14,9 @@ mod basic;
 pub use basic::*;
 pub(crate) mod governance;
 pub use governance::{
-    EndpointStats, NetworkPolicy, NetworkStats, configure_network, network_policy, network_stats,
+    EndpointStats, NetworkPolicy, NetworkStats, Permit as NetworkPermit, SharedNetworkPolicy,
+    acquire_network, configure_network, network_policy, network_stats, observe_empty_response,
+    observe_request,
 };
 use governance::{deadline_after, global, remaining};
 
@@ -139,8 +141,13 @@ impl Tcp {
         for address in addresses {
             let attempt_deadline = deadline.min(deadline_after(config.timeout)?);
             let result = (|| {
-                let (stream, buffer, recv) =
-                    tcpstream_ip_with_timeout(&address, remaining(attempt_deadline)?)?;
+                let timeout = remaining(attempt_deadline)?;
+                let timeout = if crate::operation::OperationContext::current().is_some() {
+                    timeout.min(Duration::from_secs(1))
+                } else {
+                    timeout
+                };
+                let (stream, buffer, recv) = tcpstream_ip_with_timeout(&address, timeout)?;
                 let mut tcp = Self {
                     stream,
                     buffer,
@@ -199,10 +206,28 @@ impl Tcp {
         })
     }
 
+    fn poll_timeout(&self) -> Result<Duration> {
+        let timeout = self.io_timeout()?;
+        Ok(if crate::operation::OperationContext::current().is_some() {
+            timeout.min(Duration::from_millis(200))
+        } else {
+            timeout
+        })
+    }
+
+    fn retry_poll(&self, error: &std::io::Error) -> bool {
+        crate::operation::OperationContext::current().is_some()
+            && matches!(
+                error.kind(),
+                std::io::ErrorKind::TimedOut | std::io::ErrorKind::WouldBlock
+            )
+            && self.io_timeout().is_ok()
+    }
+
     fn read_exact_deadline(&mut self, body: &mut [u8]) -> Result<()> {
         let mut offset = 0;
         while offset < body.len() {
-            self.stream.set_read_timeout(Some(self.io_timeout()?))?;
+            self.stream.set_read_timeout(Some(self.poll_timeout()?))?;
             match self.buffer.read(&mut body[offset..]) {
                 Ok(0) => {
                     return Err(std::io::Error::new(
@@ -212,6 +237,7 @@ impl Tcp {
                 }
                 Ok(n) => offset += n,
                 Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+                Err(error) if self.retry_poll(&error) => continue,
                 Err(error) => return Err(error),
             }
         }
@@ -329,7 +355,7 @@ impl Tcp {
         } else {
             duration
         };
-        std::thread::sleep(duration);
+        crate::operation::sleep(duration)?;
         if let Some(deadline) = self.deadline {
             remaining(deadline)?;
         }
@@ -385,11 +411,12 @@ impl Tcp {
         self.reusable = false;
         let mut offset = 0;
         while offset < send.len() {
-            self.stream.set_write_timeout(Some(self.io_timeout()?))?;
+            self.stream.set_write_timeout(Some(self.poll_timeout()?))?;
             match self.stream.write(&send[offset..]) {
                 Ok(0) => return Err(std::io::ErrorKind::WriteZero.into()),
                 Ok(n) => offset += n,
                 Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+                Err(error) if self.retry_poll(&error) => continue,
                 Err(error) => return Err(error),
             }
         }
@@ -413,10 +440,15 @@ impl Tcp {
     }
 
     fn request_frame(&mut self, send: &[u8], decompress: bool) -> Result<(Vec<u8>, u16, u16)> {
+        let start = Instant::now();
         let result = self.with_timeout(network_policy().request_timeout, |tcp| {
             tcp.request_frame_until(send, decompress)
         });
         global().request_result(result.is_ok());
+        global().observation(
+            start.elapsed(),
+            result.as_ref().is_ok_and(|(body, _, _)| body == &[0, 0]),
+        );
         if let Ok(address) = self.stream.peer_addr() {
             global().endpoint_result(address, result.is_ok());
         }

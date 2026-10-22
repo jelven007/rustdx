@@ -14,6 +14,8 @@ use std::path::{Component, Path, PathBuf};
 use std::time::Duration;
 
 use eyre::{Result, bail, eyre};
+use rustdx_cli::http::{self, HttpOperation};
+use rustdx_complete::operation::{self, CheckedIo};
 use serde::{Deserialize, Serialize};
 
 /// 通达信官网日线完整包默认地址。
@@ -72,6 +74,7 @@ pub fn prepare_hsjday_dirs() -> Result<PreparedSource> {
 
 /// 从指定 URL 下载并解压（带缓存跳过 / 断点续传 / 自动重试 / 失败交互）。
 pub fn prepare_hsjday_dirs_from(url: &str) -> Result<PreparedSource> {
+    operation::check()?;
     let workdir = cache_dir_for(url);
     std::fs::create_dir_all(&workdir)?;
     let lock = CacheLock::acquire(&workdir)?;
@@ -82,6 +85,7 @@ pub fn prepare_hsjday_dirs_from(url: &str) -> Result<PreparedSource> {
 
     // 1. 下载（服务器文件未变化 → 跳过下载）
     let head = head_info(url).ok(); // 探测失败不阻塞，见下方判断
+    operation::check()?;
     if zip_cached(url, &zip_path, &meta, head.as_ref()) {
         log::info!(
             "缓存命中：服务器文件未变化，跳过下载 {}",
@@ -167,10 +171,11 @@ fn download_with_fallback(initial_url: &str, zip_path: &Path) -> Result<(String,
         match download(initial_url, zip_path) {
             Ok(info) => return Ok((initial_url.to_owned(), info)),
             Err(e) => {
+                operation::check()?;
                 log::warn!("下载失败（第 {attempt}/3 次）: {e:#}");
                 last_err = Some(e);
                 if attempt < 3 {
-                    std::thread::sleep(Duration::from_secs(attempt as u64));
+                    operation::sleep(Duration::from_secs(attempt as u64))?;
                 }
             }
         }
@@ -197,7 +202,7 @@ fn download_with_fallback(initial_url: &str, zip_path: &Path) -> Result<(String,
         let mut source = zip::ZipArchive::new(std::fs::File::open(&p)?)?.into_inner();
         source.rewind()?;
         let (atomic, mut file) = rustdx_complete::atomic_file::AtomicFile::create(zip_path)?;
-        std::io::copy(&mut source, &mut file)?;
+        std::io::copy(&mut CheckedIo(&mut source), &mut CheckedIo(&mut file))?;
         drop(file);
         atomic.commit()?;
         Ok((
@@ -248,6 +253,7 @@ fn validate_content_range(value: &str, offset: u64, length: Option<u64>) -> Resu
 
 /// 下载 url 到 dest 文件，支持断点续传（服务器返回 206 时从已下载位置追加）。
 fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
+    let mut operation = HttpOperation::new(Duration::from_secs(2 * 60 * 60))?;
     let part = dest.with_extension("zip.part");
     let part_meta = dest.with_extension("zip.part.json");
     let previous: Option<PartialMeta> = std::fs::read(&part_meta)
@@ -271,11 +277,9 @@ fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
         log::info!("正在下载 {url} ...");
     }
 
-    let mut req = ureq::get(url)
+    let mut req = http::get(url)
         .config()
-        .timeout_connect(Some(Duration::from_secs(15)))
-        .timeout_recv_response(Some(Duration::from_secs(30)))
-        .timeout_global(Some(Duration::from_secs(2 * 60 * 60)))
+        .timeout_global(Some(operation.timeout()))
         .build()
         .header("Accept-Encoding", "identity");
     if done > 0 {
@@ -288,6 +292,7 @@ fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
         Err(ureq::Error::StatusCode(416)) if done > 0 => {
             let _ = std::fs::remove_file(&part);
             let _ = std::fs::remove_file(&part_meta);
+            drop(operation);
             return download(url, dest);
         }
         Err(e) => return Err(eyre!("{e}")),
@@ -351,6 +356,7 @@ fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
     let mut total = start;
     let mut last_mark = start / (32 * 1024 * 1024);
     loop {
+        operation::check()?;
         let n = reader.read(&mut buf)?;
         if n == 0 {
             break;
@@ -370,7 +376,9 @@ fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
         bail!("下载长度不完整: {total}/{expected:?}");
     }
     zip::ZipArchive::new(std::fs::File::open(&part)?).map_err(|e| eyre!("下载ZIP目录损坏: {e}"))?;
+    operation::check()?;
     std::fs::rename(&part, dest)?;
+    operation.complete(false)?;
     let _ = std::fs::remove_file(&part_meta);
     log::info!(
         "下载完成: {} ({:.1} MiB)",
@@ -386,6 +394,12 @@ fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
 
 /// 下载失败后的交互：询问用户提供备选 URL 或本地 zip 文件路径。
 fn prompt_fallback() -> Result<String> {
+    operation::check()?;
+    // A terminal read cannot be safely interrupted with portable synchronous I/O.
+    // Task-governed commands require an explicit fallback on the next invocation.
+    if rustdx_complete::operation::OperationContext::current().is_some() {
+        bail!("下载重试已耗尽；请重新运行并显式提供备选URL或本地ZIP");
+    }
     if !std::io::stdin().is_terminal() {
         bail!("下载重试已耗尽；非交互环境请显式提供可用URL或本地ZIP");
     }
@@ -409,6 +423,7 @@ fn extract_zip(zip_path: &Path, dest: &Path) -> Result<()> {
     log::info!("解压 {} 个文件 ...", archive.len());
 
     for i in 0..archive.len() {
+        operation::check()?;
         let mut entry = archive.by_index(i)?;
         if entry.is_dir() {
             continue;
@@ -420,7 +435,7 @@ fn extract_zip(zip_path: &Path, dest: &Path) -> Result<()> {
             std::fs::create_dir_all(parent)?;
         }
         let mut out = std::io::BufWriter::new(std::fs::File::create(&out_path)?);
-        std::io::copy(&mut entry, &mut out)?;
+        std::io::copy(&mut CheckedIo(&mut entry), &mut CheckedIo(&mut out))?;
         out.flush()?;
     }
     Ok(())
@@ -441,6 +456,7 @@ fn extract_and_discover(zip_path: &Path, extract_dir: &Path, source: &str) -> Re
         bail!("ZIP中未找到含day文件的lday目录: {source}");
     }
     if extract_dir.exists() {
+        operation::check()?;
         std::fs::remove_dir_all(extract_dir)?;
     }
     std::fs::rename(&staging, extract_dir)?;
@@ -503,9 +519,10 @@ fn cache_dir_for(url: &str) -> PathBuf {
 
 /// HEAD 探测服务器文件信息（ETag / Last-Modified / Content-Length）。
 fn head_info(url: &str) -> Result<HeadInfo> {
-    let resp = ureq::head(url)
+    let mut operation = HttpOperation::new(Duration::from_secs(30))?;
+    let resp = http::head(url)
         .config()
-        .timeout_global(Some(Duration::from_secs(30)))
+        .timeout_global(Some(operation.timeout()))
         .build()
         .call()
         .map_err(|e| eyre!("{e}"))?;
@@ -515,11 +532,13 @@ fn head_info(url: &str) -> Result<HeadInfo> {
             .and_then(|v| v.to_str().ok())
             .map(|s| s.to_string())
     };
-    Ok(HeadInfo {
+    let info = HeadInfo {
         etag: header("etag"),
         last_modified: header("last-modified"),
         size: header("content-length").and_then(|s| s.parse::<u64>().ok()),
-    })
+    };
+    operation.complete(false)?;
+    Ok(info)
 }
 
 /// 判断本地 zip 缓存是否仍与服务器一致（命中则跳过下载）。

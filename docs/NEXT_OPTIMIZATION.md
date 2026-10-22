@@ -36,9 +36,18 @@ cargo run -p jelven-rustdx-cli --example source_crosscheck -- rustdx-cmd/tests/f
 
 本次临时日志：`/tmp/rustdx-next-production-smoke-current.log`、`/tmp/rustdx-next-source-crosscheck.log`、`/tmp/rustdx-next-database-acceptance.log`、`/tmp/rustdx-next-step3-workspace.log`、`/tmp/rustdx-next-step3-checks.log`。日志不是长期备份，本文件和仓库样本是持久验证记录。
 
+## 第四步：任务时限、取消与共享连接资源
+
+新增OperationContext绝对截止时间/取消令牌，CLI顶层`--timeout`默认10800秒，`--cancel-file`和Ctrl-C/SIGTERM协作取消。覆盖下载/解压/名单/因子/解析/CSV回读/数据库导入与独立验收；重试不能延长。终端备选输入在任务模式改为要求下次显式提供。失败清单仍持久化，未知或未验收数据库写入仍保留CSV。TCP批次及解析线程显式继承上下文，HTTP读取每200ms检查，健康长正文不会因轮询被截断。
+
+TCP/HTTP共用进程许可，可配置同机共享OS文件锁，CLI默认共享8个槽位。独立进程、不同工作目录的饱和回归通过，强制终止后许可释放，锁文件保留；配置容量不一致拒绝。Mongo子进程预约一个任务许可，其驱动内部socket数不在逐连接预算承诺内。保留同步I/O与有界线程，不引入异步运行时。
+
+清单resources增加峰值连接、等待总量、请求/失败/空响应、最近最多1024样本的最近秩P95及样本数。慢HTTP正文、静默正文取消、完整CLI下载截止/取消及旧CSV保留、TCP静默响应取消、数据库子进程任务deadline、嵌套上下文、P95窗口与配置冲突回归通过。Rust1.89 workspace/all-features通过（核心160、CLI库4、命令26、52项文档及其余集成/属性用例）；Clippy全目标拒绝警告、格式检查通过。外部测试跳过不计作在线验收。
+
+再次实测东财HTTPS两只股票，日期2026-10-22，CSV摘要与第二步保留样本完全一致，清单complete；资源观测active=0、peak=1、requests=1、failures=0，单样本耗时455533微秒。一个样本不能代表生产P95。详细边界及配置见[NETWORK.md](NETWORK.md)。临时日志：`/tmp/rustdx-next-step4-validation.log`、`/tmp/rustdx-next-step4-final.log`。
+
 ## 剩余步骤
 
-4. 整命令deadline/取消、跨进程协调和资源观测。
 5. 有界分块写入、跨线程确定性输出及内存观测。
 6. 东财标准行情适配与低层不可变请求/独立解码兼容入口。
 

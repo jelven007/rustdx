@@ -18,6 +18,8 @@ pub mod data;
 
 pub mod atomic_file;
 
+pub mod operation;
+
 /// A 股涨跌停规则：板块判定、涨跌停价、封板/炸板判型、连板高度。
 pub mod limit;
 

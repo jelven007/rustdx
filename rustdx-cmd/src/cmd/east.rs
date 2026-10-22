@@ -125,6 +125,7 @@ impl EastCmd {
         )?;
         let mut rows = Vec::new();
         for mut row in data.data.diff.drain(..) {
+            rustdx_complete::operation::check()?;
             if row.close.is_none() {
                 report.files.push(crate::quality::FileReport {
                     source: "eastmoney".into(),
@@ -206,6 +207,7 @@ impl EastCmd {
         } else {
             let mut writer = csv::Writer::from_writer(file);
             for row in &rows {
+                rustdx_complete::operation::check()?;
                 writer.serialize(row)?;
             }
             writer.flush()?;
@@ -214,6 +216,7 @@ impl EastCmd {
             report.verify_csv(atomic.temporary_path())?;
         }
         report.stage_artifact(atomic.temporary_path())?;
+        rustdx_complete::operation::check()?;
         atomic.commit()?;
         report.published()?;
         Ok(())
