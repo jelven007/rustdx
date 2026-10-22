@@ -65,15 +65,25 @@ pub fn tracked_calendar(
     path: Option<&Path>,
     report: &mut CollectionReport,
 ) -> Result<Box<dyn CalendarProvider>> {
-    let Some(path) = path else {
-        return Ok(Box::new(BuiltinCalendar));
+    let calendar: Box<dyn CalendarProvider> = if let Some(path) = path {
+        let (evidence, bytes) = source_snapshot(path, 1024 * 1024)?;
+        report.sources.push(evidence);
+        let dataset: rustdx_complete::calendar::CalendarDataset = serde_json::from_slice(&bytes)?;
+        Box::new(rustdx_complete::calendar::HolidayCalendar::try_from(
+            dataset,
+        )?)
+    } else {
+        Box::new(BuiltinCalendar)
     };
-    let (evidence, bytes) = source_snapshot(path, 1024 * 1024)?;
-    report.sources.push(evidence);
-    let dataset: rustdx_complete::calendar::CalendarDataset = serde_json::from_slice(&bytes)?;
-    Ok(Box::new(
-        rustdx_complete::calendar::HolidayCalendar::try_from(dataset)?,
-    ))
+    report.data_coverage = rustdx_cli::maintenance::coverage(
+        calendar.as_ref(),
+        None,
+        chrono::Utc::now()
+            .with_timezone(&rustdx_complete::data::exchange_timezone())
+            .date_naive(),
+        90,
+    );
+    Ok(calendar)
 }
 
 #[derive(Debug, Serialize)]
@@ -401,6 +411,8 @@ pub struct CollectionReport {
     pub run_id: String,
     pub stage: &'static str,
     pub sources: Vec<SourceEvidence>,
+    pub raw_pages: Vec<SourceEvidence>,
+    pub data_coverage: Vec<rustdx_cli::maintenance::Coverage>,
     pub artifact: Option<OutputEvidence>,
     pub database_status: &'static str,
     pub database_verification: Option<DatabaseEvidence>,
@@ -426,7 +438,7 @@ impl CollectionReport {
             .unwrap_or_default()
             .max(0) as u64;
         Self {
-            schema_version: 3,
+            schema_version: 4,
             project_version: env!("CARGO_PKG_VERSION"),
             started_at: chrono::Utc::now().to_rfc3339(),
             finished_at: String::new(),
@@ -449,6 +461,15 @@ impl CollectionReport {
             ),
             stage: "parsing",
             sources: vec![],
+            raw_pages: vec![],
+            data_coverage: rustdx_cli::maintenance::coverage(
+                &BuiltinCalendar,
+                None,
+                chrono::Utc::now()
+                    .with_timezone(&rustdx_complete::data::exchange_timezone())
+                    .date_naive(),
+                90,
+            ),
             artifact: None,
             database_status: "not_started",
             database_verification: None,
@@ -467,6 +488,25 @@ impl CollectionReport {
         report.path = manifest_path(output, requested);
         report.checkpoint()?;
         Ok(report)
+    }
+
+    /// Immutable per-run raw evidence is checkpointed before parsing.
+    pub fn capture_east(&mut self, page: &rustdx_cli::eastmoney::RawPage) -> Result<()> {
+        let directory =
+            PathBuf::from(format!("{}.evidence", self.path.display())).join(&self.run_id);
+        std::fs::create_dir_all(&directory)?;
+        let path = directory.join(format!("east-{:05}.json", page.page_number));
+        let bytes = serde_json::to_vec(page)?;
+        let (atomic, mut file) = AtomicFile::create(&path)?;
+        std::io::Write::write_all(&mut file, &bytes)?;
+        drop(file);
+        atomic.commit()?;
+        self.raw_pages.push(SourceEvidence {
+            source: std::fs::canonicalize(path)?.display().to_string(),
+            sha256: sha256(&bytes),
+            bytes: bytes.len() as u64,
+        });
+        self.checkpoint()
     }
 
     /// Reject possibly overlapping inputs with O(source files) memory.
@@ -690,6 +730,32 @@ impl CollectionReport {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn malformed_raw_response_remains_replayable_evidence_after_failure() {
+        let dir = std::env::temp_dir().join(format!("rustdx-raw-failure-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let output = dir.join("old.csv");
+        std::fs::write(&output, "previous success").unwrap();
+        let mut report = CollectionReport::start(output.to_str().unwrap(), None).unwrap();
+        let mut page: rustdx_cli::eastmoney::RawPage =
+            serde_json::from_str(include_str!("../tests/fixtures/east-raw-20261023.json")).unwrap();
+        page.body = "cb({\"data\":".into();
+        page.body_sha256 = sha256(page.body.as_bytes());
+        report.capture_east(&page).unwrap();
+        let parse = rustdx_cli::eastmoney::parse(&page.body).map(|_| ());
+        assert!(report.finish(parse).is_err());
+        let saved: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(&report.path).unwrap()).unwrap();
+        assert_eq!(saved["status"], "failed");
+        let raw = std::fs::read(saved["raw_pages"][0]["source"].as_str().unwrap()).unwrap();
+        assert_eq!(saved["raw_pages"][0]["sha256"], sha256(&raw));
+        let restored: rustdx_cli::eastmoney::RawPage = serde_json::from_slice(&raw).unwrap();
+        restored.validate().unwrap();
+        assert_eq!(restored.body, page.body);
+        assert_eq!(std::fs::read_to_string(output).unwrap(), "previous success");
+        std::fs::remove_dir_all(dir).unwrap();
+    }
 
     #[test]
     fn manifests_preserve_each_run_and_verify_published_evidence() {

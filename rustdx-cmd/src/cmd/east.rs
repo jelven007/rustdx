@@ -75,7 +75,9 @@ impl EastCmd {
                 crate::io::setup_clickhouse(true, &self.table)?;
             }
             let calendar = crate::quality::tracked_calendar(self.calendar.as_deref(), &mut report)?;
-            let data = fetch_with_calendar(self.max, calendar.as_ref())?;
+            let data = fetch_with_evidence(self.max, calendar.as_ref(), |page| {
+                report.capture_east(page)
+            })?;
             self.process_with_calendar(data, &mut report, calendar.as_ref())?;
             if self.output == "clickhouse" {
                 crate::io::sinks::import_clickhouse(&self.output, &self.table, false, &mut report)?;
@@ -100,7 +102,7 @@ impl EastCmd {
         report: &mut crate::quality::CollectionReport,
         calendar: &dyn rustdx_complete::calendar::CalendarProvider,
     ) -> Result<()> {
-        // Evidence describes the normalized fetched payload, not unavailable raw HTTP bytes.
+        // Keep the prior normalized fingerprint as a separate compatibility aid.
         let snapshot = serde_json::to_vec(&data)?;
         report.sources.push(crate::quality::SourceEvidence {
             source: "eastmoney:normalized_payload".into(),

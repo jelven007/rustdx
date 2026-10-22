@@ -84,7 +84,7 @@ fn real_databases_verify_all_keys_updates_and_constraints() {
             );
             let report: serde_json::Value =
                 serde_json::from_slice(&fs::read(dir.join("run.json")).unwrap()).unwrap();
-            assert_eq!(report["schema_version"], 3);
+            assert_eq!(report["schema_version"], 4);
             assert_eq!(report["status"], "complete");
             assert_eq!(report["database_status"], "verified");
             assert_eq!(report["database_verification"]["rows"], 1040);

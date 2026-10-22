@@ -2,6 +2,7 @@ use argh::FromArgs;
 use eyre::Result;
 
 mod data_check;
+mod data_status;
 mod day;
 mod east;
 
@@ -37,6 +38,7 @@ enum SubCommand {
     Day(DayCmd),
     EastMoney(EastCmd),
     DataCheck(data_check::DataCheckCmd),
+    DataStatus(data_status::DataStatusCmd),
     Help(Show),
 }
 
@@ -60,6 +62,7 @@ impl TopLevel {
             Day(cmd) => cmd.run(),
             EastMoney(cmd) => cmd.run(),
             DataCheck(cmd) => cmd.run(),
+            DataStatus(cmd) => cmd.run(),
             Help(help) => {
                 if help.version {
                     println!("当前版本号：{VERSION}");

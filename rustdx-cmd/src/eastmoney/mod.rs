@@ -78,16 +78,11 @@ pub fn get(page_size: u16, page_number: u16) -> Result<String> {
     if page_size == 0 || page_number == 0 {
         eyre::bail!("page_size和page_number必须大于0");
     }
-    const HOST: &str = "push2.eastmoney.com";
     const MAX_RETRIES: usize = 1;
     let mut last_err = None;
     for node_offset in 0..eastmoney_agents().len() {
         let node = (page_number as usize - 1 + node_offset) % eastmoney_agents().len();
-        let url = format!(
-            "https://{HOST}/api/qt/clist/get?cb=jQuery112407375845698232317_1631693257414&\
-            pn={page_number}&pz={page_size}&po=0&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&\
-            invt=2&fid=f12&fs=m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23&fields=f18,f16,f12,f13,f124,f17,f15,f2,f6,f5&_=1631693257534"
-        );
+        let url = request_url(page_size, page_number);
         for attempt in 1..=MAX_RETRIES {
             let mut operation = crate::http::HttpOperation::new(Duration::from_secs(15))?;
             info!("Get: {url}");
@@ -114,12 +109,83 @@ pub fn get(page_size: u16, page_number: u16) -> Result<String> {
             }
         }
     }
-    Err(eyre::eyre!(last_err.unwrap())).wrap_err_with(|| {
+    Err(eyre::eyre!(
+        last_err.ok_or_else(|| eyre::eyre!("没有可用东财节点"))?
+    ))
+    .wrap_err_with(|| {
         format!(
             "获取东财股票数据失败（{}个HTTPS节点各重试{MAX_RETRIES}次）",
             eastmoney_agents().len()
         )
     })
+}
+
+pub const PARSER_VERSION: &str = "eastmoney-clist/2";
+pub const MAX_PAGE_BYTES: usize = 16 * 1024 * 1024;
+pub const MAX_CAPTURE_BYTES: usize = 64 * 1024 * 1024;
+
+fn request_url(page_size: u16, page_number: u16) -> String {
+    format!(
+        "https://push2.eastmoney.com/api/qt/clist/get?cb=jQuery112407375845698232317_1631693257414&\
+        pn={page_number}&pz={page_size}&po=0&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&\
+        invt=2&fid=f12&fs=m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23&fields=f18,f16,f12,f13,f124,f17,f15,f2,f6,f5&_=1631693257534"
+    )
+}
+
+/// Exact UTF-8 HTTP response body before JSONP parsing or normalization.
+/// Transport/TLS bytes are not captured; f13/f124 and unknown source fields remain intact.
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RawPage {
+    pub parser_version: String,
+    pub request_url: String,
+    pub page_size: u16,
+    pub page_number: u16,
+    pub max: Option<u16>,
+    pub fetched_at: chrono::DateTime<chrono::Utc>,
+    pub body_sha256: String,
+    pub body: String,
+}
+
+impl RawPage {
+    fn new(page_size: u16, page_number: u16, max: Option<u16>, body: String) -> Self {
+        use sha2::{Digest, Sha256};
+        Self {
+            parser_version: PARSER_VERSION.into(),
+            request_url: request_url(page_size, page_number),
+            page_size,
+            page_number,
+            max,
+            fetched_at: chrono::Utc::now(),
+            body_sha256: format!("{:x}", Sha256::digest(body.as_bytes())),
+            body,
+        }
+    }
+
+    pub fn validate(&self) -> Result<()> {
+        use sha2::{Digest, Sha256};
+        ensure!(
+            self.parser_version == PARSER_VERSION,
+            "不支持的东财解析器版本"
+        );
+        ensure!(
+            self.max != Some(0)
+                && self.page_size > 0
+                && self.page_size <= 6000
+                && self.page_number > 0,
+            "东财证据请求参数非法"
+        );
+        ensure!(
+            self.request_url == request_url(self.page_size, self.page_number),
+            "东财证据URL与参数不符"
+        );
+        ensure!(self.body.len() <= MAX_PAGE_BYTES, "东财证据页超过限制");
+        ensure!(
+            format!("{:x}", Sha256::digest(self.body.as_bytes())) == self.body_sha256,
+            "东财原始响应摘要不一致"
+        );
+        Ok(())
+    }
 }
 
 pub fn parse(text: &str) -> Result<EastMarket> {
@@ -151,6 +217,56 @@ pub fn fetch_with_calendar(
     fetch_pages_with_calendar(max, get, calendar)
 }
 
+/// Observer receives each bounded raw page before parsing, including malformed responses.
+pub fn fetch_with_evidence(
+    max: Option<u16>,
+    calendar: &dyn rustdx_complete::calendar::CalendarProvider,
+    mut observer: impl FnMut(&RawPage) -> Result<()>,
+) -> Result<EastMarket> {
+    let mut bytes = 0usize;
+    fetch_pages_with_calendar(
+        max,
+        |size, number| {
+            let page = RawPage::new(size, number, max, get(size, number)?);
+            bytes = bytes
+                .checked_add(page.body.len())
+                .ok_or_else(|| eyre::eyre!("东财证据长度溢出"))?;
+            ensure!(
+                page.body.len() <= MAX_PAGE_BYTES && bytes <= MAX_CAPTURE_BYTES,
+                "东财原始响应超过留存限制"
+            );
+            observer(&page)?;
+            Ok(page.body)
+        },
+        calendar,
+    )
+}
+
+/// Offline replay validates page order, request parameters, parser version and body hashes.
+/// The iterator can load one evidence file at a time, without retaining all raw pages.
+pub fn replay(
+    max: Option<u16>,
+    pages: impl IntoIterator<Item = Result<RawPage>>,
+    calendar: &dyn rustdx_complete::calendar::CalendarProvider,
+) -> Result<EastMarket> {
+    let mut pages = pages.into_iter();
+    let market = fetch_pages_with_calendar(
+        max,
+        |size, number| {
+            let page = pages.next().ok_or_else(|| eyre::eyre!("东财重放缺页"))??;
+            page.validate()?;
+            ensure!(
+                page.page_size == size && page.page_number == number && page.max == max,
+                "东财重放页序或请求参数不符"
+            );
+            Ok(page.body)
+        },
+        calendar,
+    )?;
+    ensure!(pages.next().is_none(), "东财重放包含额外页");
+    Ok(market)
+}
+
 #[cfg(test)]
 fn fetch_pages(
     max: Option<u16>,
@@ -177,9 +293,18 @@ fn fetch_pages_with_calendar(
     let mut total = None;
     let mut diff = Vec::with_capacity(6000);
     let mut seen = std::collections::HashSet::new();
+    let mut captured_bytes = 0usize;
     loop {
         rustdx_complete::operation::check()?;
         let txt = get_page(page_size, page_number)?;
+        ensure!(txt.len() <= MAX_PAGE_BYTES, "东财单页超过16MiB限制");
+        captured_bytes = captured_bytes
+            .checked_add(txt.len())
+            .ok_or_else(|| eyre::eyre!("东财响应长度溢出"))?;
+        ensure!(
+            captured_bytes <= MAX_CAPTURE_BYTES,
+            "东财响应合计超过64MiB限制"
+        );
         let data = parse(&txt)?;
         let expected_total = *total.get_or_insert(data.data.total);
         ensure!(data.data.total == expected_total, "东财分页total发生变化");
@@ -439,6 +564,62 @@ pub struct EastData {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn offline_replay_preserves_source_fields_and_rejects_tampering_and_page_errors() {
+        let body = r#"cb({"data":{"total":1,"diff":[{"f12":"000001","f13":0,"f124":1792652460,"f17":11.41,"f15":11.42,"f16":11.26,"f2":11.3,"f6":1468424722.09,"f5":1297649,"f18":11.41,"future_source_field":7}]}});"#;
+        let make = || RawPage::new(2, 1, Some(2), body.into());
+        let market = replay(
+            Some(2),
+            [Ok(make())],
+            &rustdx_complete::calendar::BuiltinCalendar,
+        )
+        .unwrap();
+        assert_eq!(market.data.diff[0].market, Some(0));
+        assert_eq!(market.data.diff[0].timestamp, Some(1792652460));
+        let mut csv = csv::Writer::from_writer(Vec::new());
+        csv.serialize(&market.data.diff[0]).unwrap();
+        assert_eq!(
+            String::from_utf8(csv.into_inner().unwrap())
+                .unwrap()
+                .lines()
+                .collect::<Vec<_>>(),
+            include_str!("../../tests/fixtures/east-20261022.csv")
+                .lines()
+                .take(2)
+                .collect::<Vec<_>>()
+        );
+        let saved = serde_json::to_vec(&make()).unwrap();
+        let restored: RawPage = serde_json::from_slice(&saved).unwrap();
+        assert_eq!(restored.body, body);
+        for mutate in [
+            |p: &mut RawPage| p.body.push(' '),
+            |p: &mut RawPage| p.page_number = 2,
+            |p: &mut RawPage| p.parser_version = "future".into(),
+            |p: &mut RawPage| p.max = None,
+            |p: &mut RawPage| p.request_url.push_str("&altered=1"),
+        ] {
+            let mut page = make();
+            mutate(&mut page);
+            assert!(
+                replay(
+                    Some(2),
+                    [Ok(page)],
+                    &rustdx_complete::calendar::BuiltinCalendar
+                )
+                .is_err()
+            );
+        }
+        assert!(replay(Some(2), [], &rustdx_complete::calendar::BuiltinCalendar).is_err());
+        assert!(
+            replay(
+                Some(2),
+                [Ok(make()), Ok(make())],
+                &rustdx_complete::calendar::BuiltinCalendar
+            )
+            .is_err()
+        );
+    }
+
     #[test]
     fn pagination_rejects_zero_and_stops_at_available_total() {
         assert!(get(1, 0).is_err());

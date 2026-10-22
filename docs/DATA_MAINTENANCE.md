@@ -6,6 +6,17 @@
 
 上述页面当前提供2026安排。未取得2027完整交易所安排，内置覆盖仍截至2026-12-31，不能仅扩展覆盖日期。
 
+覆盖巡检入口：
+
+```sh
+rustdx data-status --warn-days 90 --report data-coverage.json
+rustdx data-status --as-of 2026-10-23 --calendar data/calendars/sse-2026.json --strict
+```
+
+默认使用UTC+8今日，按自然日提前90天告警。`covered`表示核对日在声明范围内且离截止大于阈值；`due`表示到达提前告警窗口，含截止日；`unverified`表示超出证据范围，规则项不表示法律规则已经失效。未提供`--security`时为`missing`，提供后还逐证券检查核对日是否有状态，空表或缺口为`incomplete`；统计只涵盖文件中的证券，不声称覆盖全市场。`--strict`遇到任一告警返回非零，但仍打印并原子保存JSON，供CI/运维读取。
+
+2026-10-23的内置日历剩69天（due），规则核实截止落后1天（unverified），证券历史未提供（missing）。采集清单schema4自动附加同口径`data_coverage`。`.github/workflows/data-coverage.yml`提供每周一及手动巡检，严格失败并保留报告，更新仍走下述人工核实流程；只提交在本地时不会启动远端定时任务。该工作流会持续告警，直至所需证据补齐；不会自动续期。
+
 更新过程：
 
 1. 分别从交易所完整年度公告整理主数据与独立参考数据，保存公告原始字节、URL和核实日期。
