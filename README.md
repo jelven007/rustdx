@@ -4,7 +4,9 @@ Rust 行情库与数据导入工具。最新发布版本：jelven-rustdx-complet
 
 核心库实现通达信 TCP 行情协议、本地 day/lc/gbbq 文件解析、价格复权、技术指标、交易日历、连接池和缓存。CLI 提供日线下载/解析、东方财富收盘快照、CSV/JSON 输出及数据库导入。采用同步 I/O 和有界线程并发。
 
-本地未发布优化已加入严格日历和历史规则、进程网络预算、导入运行清单、安全解析与线性滚动指标，见[优化记录](docs/OPTIMIZATION.md)。`day/east` 默认生成 `<output>.manifest.json` 及每次运行归档；故障恢复与数据库确认边界见[导入说明](docs/IMPORTS.md)。
+2026-10-22仓库源码已加入严格日历和历史规则、进程网络预算、导入运行清单、安全解析与线性滚动指标，见[优化记录](docs/OPTIMIZATION.md)。四个优化提交已推送main，Cargo版本仍为1.12.2/1.8.2，crates.io上的同版本尚不包含这些新增行为；需要本轮功能请从源码构建。`day/east` 默认生成 `<output>.manifest.json` 及每次运行归档；故障恢复与数据库确认边界见[导入说明](docs/IMPORTS.md)。
+
+[文档索引](docs/README.md)覆盖需求、方案、开发、测试、运营及运维；源码合并和两个历史回退版本见[版本交付](docs/RELEASES.md)。
 
 ## 本地构建
 
@@ -143,9 +145,9 @@ rustdx day ./lday -o clickhouse -t rustdx.bars_v2 -k
 rustdx east -p clickhouse -o clickhouse -t rustdx.bars_v2
 ```
 
-ClickHouse 统一使用HTTP配置。新表是 `ReplacingMergeTree(version)`，以(date,code)为逻辑键；查询即时去重结果须加 `FINAL`。已有表必须通过字段、精度、排序键、分区键和版本默认值检查；不兼容表需按[迁移说明](docs/MIGRATION.md)建立新表并核验后切换。HTTP请求设置 `wait_end_of_query=1`，完整读取响应并传播错误正文或截断，连接超时10秒；全量上传没有15秒总时限。本地 factor 输入只读，辅助边界查询失败不会把已成功导入报告为写入失败。数据库批次可能部分落库，失败时保留中间CSV供核验。
+ClickHouse 统一使用HTTP配置。新表是 `ReplacingMergeTree(version)`，以(date,code)为逻辑键；查询即时去重结果须加 `FINAL`。已有表必须通过字段、精度、排序键、分区键和版本默认值检查；不兼容表需按[迁移说明](docs/MIGRATION.md)建立新表并核验后切换。HTTP请求设置 `wait_end_of_query=1`，完整读取响应并传播错误正文或截断，连接超时10秒；本轮源码每次HTTP操作最多300秒，INSERT带query_id。本地 factor 输入只读，辅助边界查询失败不会把已成功导入报告为写入失败。数据库批次可能部分落库，失败时保留中间CSV供核验；客户端run_version与服务端行version不同，清单不提供跨文件事务或独立逐行数据库核验。
 
-MongoDB 路径需要系统 `mongoimport`，以(date,code)执行upsert，日期以字符串保存；批次失败可能已写入部分行。ClickHouse 25.8 已完成2981万行本地验收；MongoDB 未做真实服务验收。
+MongoDB 路径需要系统 `mongoimport`，以(date,code)执行upsert，日期以字符串保存；当前命令使用工具默认本机连接，未提供URI/鉴权配置。本轮源码子进程最多300秒，超时终止并回收，批次失败可能已写入部分行。ClickHouse 25.8曾在10月10日完成2981万行本地验收；本轮外部服务未重验，MongoDB仍未做真实服务验收。部署、监控和恢复见[运维手册](docs/RUNBOOK.md)。
 
 ## 缓存、计算与示例
 
@@ -170,8 +172,8 @@ cargo run --release --example production_smoke
 ## 验证与发布
 
 ```sh
-RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo test --workspace --locked
-cargo clippy --workspace --all-targets --locked -- -D warnings
+RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo test --workspace --all-features --locked
+cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 cargo fmt --all -- --check
 cargo +1.89.0 check --workspace --all-targets --locked
 cargo bench --bench indicators
@@ -179,9 +181,9 @@ cargo bench --bench indicators
 bash scripts/run_comprehensive_test.sh report
 ```
 
-默认CI在Linux/macOS/Windows上跳过外部网络案例，另有最低版本检查；本地TCP/HTTP模拟和文件回归正常执行。移除跳过变量会启用网络案例，需要可用行情/HTTP/数据库环境。`Tcp` 包含平台相关的 `TcpStream`，结构尺寸测试使用受控范围，协议数据结构仍保留精确快照。
+默认CI在Linux/macOS/Windows上运行all-features构建/测试/Clippy，跳过外部网络案例，另有Rust1.89测试、nightly checked解析fuzz及性能观测产物；本地TCP/HTTP模拟和文件回归正常执行。移除跳过变量会启用网络案例，需要可用行情/HTTP/数据库环境。`Tcp` 包含平台相关的 `TcpStream`，结构尺寸测试使用受控范围，协议数据结构仍保留精确快照。本轮本机测试、fuzz及性能结果见[验证方法](docs/VALIDATION.md)。
 
-两个 crate 通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、测试、Clippy 和发布预检，经人工确认后发布。先发核心库 `jelven-rustdx-complete 1.12.2`，待索引可见后再发 CLI `jelven-rustdx-cli 1.8.2`（CLI 的 `rustdx-complete` 依赖同时写了注册表版本与 path）。仓库不再通过 tag 自动构建 CLI 二进制或创建 GitHub Release。发布前可用下面的联合打包在临时注册表核验：
+两个 crate 通过 `scripts/publish.sh` 发布到 crates.io；脚本依次执行格式、离线workspace测试、Clippy 和核心库发布预检，经脚本确认后发布，完整all-features/MSRV等检查另按[开发说明](docs/DEVELOPMENT.md)执行。1.12.2/1.8.2已发布，本轮后续发包须提升版本和CLI依赖；先发核心库，待索引可见后再发CLI（CLI依赖同时写注册表版本与path）。本次推送仅交付源码与文档，仓库不通过tag自动构建CLI二进制或创建GitHub Release。发布前可用下面的联合打包在临时注册表核验：
 
 ```sh
 cargo package -p jelven-rustdx-complete -p jelven-rustdx-cli --offline
@@ -190,6 +192,8 @@ cargo package -p jelven-rustdx-complete -p jelven-rustdx-cli --offline
 东财公共接口会按出口和节点限流。CLI 使用 HTTPS、多节点、15秒单请求总超时和低频分页，并可通过
 `RUSTDX_EASTMONEY_IPS=ip1,ip2` 覆盖备用节点；生产调度仍应限制为收盘后单任务运行。
 
-[生产验收报告](docs/PRODUCTION_ACCEPTANCE.md) · [分阶段交付记录](docs/ITERATION.md) · [架构评估](docs/PROJECT_ANALYSIS.md) · [变更记录](CHANGELOG.md)
+[需求说明](docs/REQUIREMENTS.md) · [架构评估](docs/PROJECT_ANALYSIS.md) · [开发说明](docs/DEVELOPMENT.md) · [验证方法](docs/VALIDATION.md) · [运营说明](docs/OPERATIONS.md) · [运维手册](docs/RUNBOOK.md) · [版本交付](docs/RELEASES.md)
+
+[生产验收报告](docs/PRODUCTION_ACCEPTANCE.md) · [分阶段交付记录](docs/ITERATION.md) · [变更记录](CHANGELOG.md)
 
 MIT许可证，见[LICENSE](LICENSE)。
