@@ -135,6 +135,8 @@ impl EastCmd {
                     last_date: Some(row.date),
                     errors: vec![],
                     warnings: vec!["源无收盘数据，证券状态未知，未输出".into()],
+                    errors_omitted: 0,
+                    warnings_omitted: 0,
                 });
                 continue;
             }
@@ -191,6 +193,8 @@ impl EastCmd {
                     .map(|e| vec![e.to_string()])
                     .unwrap_or_default(),
                 warnings: vec![],
+                errors_omitted: 0,
+                warnings_omitted: 0,
             };
             report.files.push(issue);
             validation?;

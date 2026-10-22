@@ -1,6 +1,6 @@
 # rustdx 开发说明
 
-更新日期：2026-10-22；源码优化基线 `1f9f739`。需求与变更追踪见[需求说明](REQUIREMENTS.md)、[文档索引](README.md)，模块关系见[架构评估](PROJECT_ANALYSIS.md)。
+更新日期：2026-10-23；本轮分步结果见[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)。需求与变更追踪见[需求说明](REQUIREMENTS.md)、[文档索引](README.md)，模块关系见[架构评估](PROJECT_ANALYSIS.md)。
 
 ## 构建与验证
 
@@ -34,6 +34,7 @@ cargo run --example local_data -- assets/sz000001.day sz000001
 | `src/indicators.rs`、`cache.rs`、`atomic_file.rs` | 指标、可选缓存及同目录原子发布 |
 | `rustdx-cmd/src/cmd/day.rs`、`cmd/east.rs` | 参数、路径保护、来源获取和任务入口 |
 | `rustdx-cmd/src/io.rs`、`io/sinks.rs`、`io/schema.rs` | 有界解析管道、前因子、数据库写入/清理、ClickHouse表校验 |
+| `rustdx-cmd/src/io/streaming.rs`、`tests/day_streaming.rs` | 4096条分块、私有磁盘快照、日期归并、确定性及取消回归 |
 | `rustdx-cmd/src/quality.rs`、`paths.rs` | 质量报告、来源/输出证据、清单检查点及文件锁 |
 | `rustdx-cmd/src/download.rs`、`fetch_code.rs`、`eastmoney/mod.rs` | ZIP续传/缓存、交易所名单及快照分页 |
 | `tests/network_budget.rs`、`properties.rs`、`reliability.rs` | 预算/时限、属性及协议可靠性回归 |
@@ -59,7 +60,7 @@ cargo run --example local_data -- assets/sz000001.day sz000001
 
 新不可信输入使用day/lc的 `try_from_bytes`、gbbq的 `Gbbq::try_from_chunk`及读取器 `try_to_vec`、协议 `Tdx::try_parse`。旧单条入口保留兼容，部分低层构造仍可能panic；checked边界不能因新增解析路径而绕过。
 
-读取与摘要必须基于同一字节快照。单day32MiB、gbbq/前因子64MiB、日历1MiB；名单HTTP响应16MiB。day线程默认最多8、可选1–64，结果通道有界。先质量检查：A股重复/逆序拒绝，非A股告警在允许保留时再排序去重；同证券跨输入区间重叠拒绝发布。跨文件输出行序可能随worker完成顺序变化。
+读取与摘要必须基于同一字节快照。单day32MiB、gbbq/前因子64MiB、日历1MiB；名单HTTP响应16MiB。day线程默认最多8、可选1–64，每线程结果通道容量1，只传磁盘CSV和元数据。day以4096条分块，质量检查及复权因子跨块连续；A股重复/逆序拒绝，非A股最多8路磁盘归并排序去重；同证券跨输入区间重叠拒绝发布。输出固定为目录参数顺序、文件名升序、文件内日期升序；切换线程数不改变CSV字节。质量详情每类64条，省略计数不改变校验结果。临时空间及元数据边界见[IMPORTS.md](IMPORTS.md)。
 
 `CollectionReport::start`在采集前持久化，`stage_artifact/published/begin_database/finish`保存关键检查点。每次先更新run_id归档，再更新最新清单，两文件不是一个事务。CSV先回读再记录摘要并原子提交；东财JSON直接序列化已经验证的行，不执行CSV回读。
 

@@ -85,12 +85,17 @@ pub struct FileReport {
     pub last_date: Option<String>,
     pub errors: Vec<String>,
     pub warnings: Vec<String>,
+    pub errors_omitted: usize,
+    pub warnings_omitted: usize,
 }
 
 pub trait QualityRow {
     fn date(&self) -> Result<chrono::NaiveDate>;
     fn validate(&self) -> Result<()>;
     fn is_a_share(&self) -> bool;
+    fn carry_factor(&self) -> Option<rustdx_complete::file::gbbq::Factor> {
+        None
+    }
     fn warnings(&self) -> Vec<String> {
         Vec::new()
     }
@@ -143,6 +148,14 @@ impl QualityRow for day::Day {
 impl QualityRow for day::fq::Day {
     fn date(&self) -> Result<chrono::NaiveDate> {
         Ok(chrono::NaiveDate::parse_from_str(&self.date, "%Y-%m-%d")?)
+    }
+    fn carry_factor(&self) -> Option<rustdx_complete::file::gbbq::Factor> {
+        Some(rustdx_complete::file::gbbq::Factor {
+            date: self.date.clone(),
+            code: self.code.clone(),
+            preclose: self.close,
+            factor: self.factor,
+        })
     }
     fn validate(&self) -> Result<()> {
         let symbol = self.code.parse::<Symbol>()?;
@@ -215,91 +228,147 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
     inspect_with_calendar(source, code, rows, &BuiltinCalendar)
 }
 
+#[cfg(test)]
 pub fn inspect_with_calendar<T: QualityRow>(
     source: String,
     code: String,
     rows: &[T],
     calendar: &dyn CalendarProvider,
 ) -> FileReport {
-    let mut report = FileReport {
-        source,
-        code,
-        rows: rows.len(),
-        first_date: None,
-        last_date: None,
-        errors: vec![],
-        warnings: vec![],
-    };
-    if rows.is_empty() {
-        report.warnings.push("文件无日线记录".into());
+    let mut quality = QualityAccumulator::new(source, code);
+    if let Err(error) = quality.extend(rows, calendar) {
+        quality.error(error.to_string());
     }
-    let mut previous = None;
-    let mut first_date = None;
-    let mut last_date = None;
-    for (index, row) in rows.iter().enumerate() {
-        if let Err(error) = rustdx_complete::operation::check() {
-            report.errors.push(error.to_string());
-            break;
+    quality.finish()
+}
+
+/// Retains continuity across chunks and at most 64 details per diagnostic class.
+pub struct QualityAccumulator {
+    report: FileReport,
+    previous: Option<chrono::NaiveDate>,
+    first: Option<chrono::NaiveDate>,
+    last: Option<chrono::NaiveDate>,
+    calendar_warned: bool,
+}
+
+impl QualityAccumulator {
+    pub fn new(source: String, code: String) -> Self {
+        Self {
+            report: FileReport {
+                source,
+                code,
+                rows: 0,
+                first_date: None,
+                last_date: None,
+                errors: vec![],
+                warnings: vec![],
+                errors_omitted: 0,
+                warnings_omitted: 0,
+            },
+            previous: None,
+            first: None,
+            last: None,
+            calendar_warned: false,
         }
-        if let Err(e) = row.validate() {
-            report.errors.push(format!("第{}行: {e}", index + 1));
+    }
+
+    pub fn error(&mut self, detail: String) {
+        if self.report.errors.len() < 64 {
+            self.report.errors.push(detail);
+        } else {
+            self.report.errors_omitted += 1;
         }
-        for warning in row.warnings() {
-            report
-                .warnings
-                .push(format!("第{}行: {warning}", index + 1));
+    }
+
+    pub fn warning(&mut self, detail: String) {
+        if self.report.warnings.len() < 64 {
+            self.report.warnings.push(detail);
+        } else {
+            self.report.warnings_omitted += 1;
         }
-        let date = match row.date() {
-            Ok(date) => date,
-            Err(e) => {
-                report.errors.push(format!("第{}行: {e}", index + 1));
-                continue;
+    }
+
+    fn calendar_warning(&mut self, error: impl std::fmt::Display) {
+        if !self.calendar_warned {
+            self.calendar_warned = true;
+            self.warning(format!("日历覆盖不足，部分日期未检查连续性: {error}"));
+        }
+    }
+
+    pub fn extend<T: QualityRow>(
+        &mut self,
+        rows: &[T],
+        calendar: &dyn CalendarProvider,
+    ) -> Result<()> {
+        for row in rows {
+            rustdx_complete::operation::check()?;
+            self.report.rows += 1;
+            let index = self.report.rows;
+            if let Err(e) = row.validate() {
+                self.error(format!("第{index}行: {e}"));
             }
-        };
-        first_date = Some(first_date.map_or(date, |first: chrono::NaiveDate| first.min(date)));
-        last_date = Some(last_date.map_or(date, |last: chrono::NaiveDate| last.max(date)));
-        match calendar.is_trading_day(date) {
-            Ok(false) => report
-                .warnings
-                .push(format!("{date}: 记录落在非交易日，源口径待核实")),
-            Err(error) if !report.warnings.iter().any(|w| w.contains("日历")) => report
-                .warnings
-                .push(format!("日历覆盖不足，部分日期未检查连续性: {error}")),
-            _ => {}
-        }
-        if let Some(prev) = previous {
-            if date <= prev {
-                let issue = format!("日期重复或未升序: {prev} -> {date}");
-                if row.is_a_share() {
-                    report.errors.push(issue);
+            for warning in row.warnings() {
+                self.warning(format!("第{index}行: {warning}"));
+            }
+            let date = match row.date() {
+                Ok(date) => date,
+                Err(e) => {
+                    self.error(format!("第{index}行: {e}"));
+                    continue;
+                }
+            };
+            self.first = Some(self.first.map_or(date, |first| first.min(date)));
+            self.last = Some(self.last.map_or(date, |last| last.max(date)));
+            match calendar.is_trading_day(date) {
+                Ok(false) => self.warning(format!("{date}: 记录落在非交易日，源口径待核实")),
+                Err(e) => self.calendar_warning(e),
+                _ => {}
+            }
+            if let Some(prev) = self.previous {
+                if date <= prev {
+                    let issue = format!("日期重复或未升序: {prev} -> {date}");
+                    if row.is_a_share() {
+                        self.error(issue);
+                    } else {
+                        self.warning(format!("{issue}，输出将按日期规范化"));
+                    }
                 } else {
-                    report.warnings.push(format!("{issue}，输出将按日期规范化"));
-                }
-            } else {
-                match calendar.trading_days_between(prev, date) {
-                    Ok(days) => {
-                        let missing = days.into_iter().filter(|d| *d > prev && *d < date).count();
-                        if missing > 0 {
-                            report.warnings.push(format!(
-                                "{prev} -> {date}: 缺少{missing}个交易日，原因待核实"
-                            ));
-                        }
-                    }
-                    Err(error) => {
-                        if !report.warnings.iter().any(|w| w.contains("日历")) {
-                            report
-                                .warnings
-                                .push(format!("日历覆盖不足，部分日期未检查连续性: {error}"));
+                    // Count directly without allocating a date vector for a long gap.
+                    match calendar
+                        .check_range(prev)
+                        .and_then(|()| calendar.check_range(date))
+                    {
+                        Err(e) => self.calendar_warning(e),
+                        Ok(()) => {
+                            let mut cursor = prev;
+                            let mut missing = 0;
+                            while let Some(next) = cursor.succ_opt().filter(|d| *d < date) {
+                                rustdx_complete::operation::check()?;
+                                missing += usize::from(calendar.is_trading_day(next)?);
+                                cursor = next;
+                            }
+                            if missing > 0 {
+                                self.warning(format!(
+                                    "{prev} -> {date}: 缺少{missing}个交易日，原因待核实"
+                                ));
+                            }
                         }
                     }
                 }
             }
+            self.previous = Some(date);
         }
-        previous = Some(date);
+        Ok(())
     }
-    report.first_date = first_date.map(|date| date.to_string());
-    report.last_date = last_date.map(|date| date.to_string());
-    report
+
+    pub fn finish(mut self) -> FileReport {
+        if self.report.rows == 0 && self.report.errors.is_empty() {
+            self.warning("文件无日线记录".into());
+        }
+        self.report.first_date = self.first.map(|d| d.to_string());
+        self.report.last_date = self.last.map(|d| d.to_string());
+        self.report
+    }
 }
 
 #[derive(Serialize)]

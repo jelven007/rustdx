@@ -1,0 +1,147 @@
+{
+  "environment": "macOS arm64; Rust 1.89; release opt-level=3, lto=true",
+  "scope": "synthetic ascending day files; OHLC/volume fixed; no gbbq/previous/database",
+  "baseline_commit": "0892427",
+  "binary_sha256": {
+    "baseline": "8ef62c9129d24863e6d5d283151d692bf0e467f05f341c24fda524cf50e9f085",
+    "current": "7070eb1e88a370591e717ef944187eedc8515ca6d5b1da2b1aa225d204e50102"
+  },
+  "samples": [
+    {
+      "version": "baseline",
+      "workers": 1,
+      "source_rows_per_file": 20000,
+      "source_files": 4,
+      "source_bytes": 2560000,
+      "output_rows": 80000,
+      "peak_rss_bytes": 20512768,
+      "wall_seconds": 0.267,
+      "output_sha256": "da76e70af65e88eb7abe992a9d448acf599ea9f12007368813c5e2e5d97d7334",
+      "per_code_sha256": {
+        "sz000001": "b9c5ce3a0460ad3f103409ac81382b981d282f07307080d5c64f2d6be2f06f68",
+        "sz000002": "85c25e75302bd6c05cf61ef9946d672296715c64b7c662b98d1ef1b2ba3d90cf",
+        "sz000003": "aab034bbff76b212eebf71856c0404ce0224f69754b6f29bce379d398ba7c633",
+        "sz000004": "0e2bb1ce728002cd95c0037079aea3c39bc56fb32f0319ecb6b95fddea396c2a"
+      }
+    },
+    {
+      "version": "baseline",
+      "workers": 4,
+      "source_rows_per_file": 20000,
+      "source_files": 4,
+      "source_bytes": 2560000,
+      "output_rows": 80000,
+      "peak_rss_bytes": 27131904,
+      "wall_seconds": 0.266,
+      "output_sha256": "4d5af18975400ccaaa56fab79b9d642d7a4fd842ee61554e5f7970a0f1db3ed2",
+      "per_code_sha256": {
+        "sz000003": "aab034bbff76b212eebf71856c0404ce0224f69754b6f29bce379d398ba7c633",
+        "sz000004": "0e2bb1ce728002cd95c0037079aea3c39bc56fb32f0319ecb6b95fddea396c2a",
+        "sz000002": "85c25e75302bd6c05cf61ef9946d672296715c64b7c662b98d1ef1b2ba3d90cf",
+        "sz000001": "b9c5ce3a0460ad3f103409ac81382b981d282f07307080d5c64f2d6be2f06f68"
+      }
+    },
+    {
+      "version": "current",
+      "workers": 1,
+      "source_rows_per_file": 20000,
+      "source_files": 4,
+      "source_bytes": 2560000,
+      "output_rows": 80000,
+      "peak_rss_bytes": 8601600,
+      "wall_seconds": 0.739,
+      "output_sha256": "da76e70af65e88eb7abe992a9d448acf599ea9f12007368813c5e2e5d97d7334",
+      "per_code_sha256": {
+        "sz000001": "b9c5ce3a0460ad3f103409ac81382b981d282f07307080d5c64f2d6be2f06f68",
+        "sz000002": "85c25e75302bd6c05cf61ef9946d672296715c64b7c662b98d1ef1b2ba3d90cf",
+        "sz000003": "aab034bbff76b212eebf71856c0404ce0224f69754b6f29bce379d398ba7c633",
+        "sz000004": "0e2bb1ce728002cd95c0037079aea3c39bc56fb32f0319ecb6b95fddea396c2a"
+      }
+    },
+    {
+      "version": "current",
+      "workers": 4,
+      "source_rows_per_file": 20000,
+      "source_files": 4,
+      "source_bytes": 2560000,
+      "output_rows": 80000,
+      "peak_rss_bytes": 10911744,
+      "wall_seconds": 0.24,
+      "output_sha256": "da76e70af65e88eb7abe992a9d448acf599ea9f12007368813c5e2e5d97d7334",
+      "per_code_sha256": {
+        "sz000001": "b9c5ce3a0460ad3f103409ac81382b981d282f07307080d5c64f2d6be2f06f68",
+        "sz000002": "85c25e75302bd6c05cf61ef9946d672296715c64b7c662b98d1ef1b2ba3d90cf",
+        "sz000003": "aab034bbff76b212eebf71856c0404ce0224f69754b6f29bce379d398ba7c633",
+        "sz000004": "0e2bb1ce728002cd95c0037079aea3c39bc56fb32f0319ecb6b95fddea396c2a"
+      }
+    },
+    {
+      "version": "baseline",
+      "workers": 1,
+      "source_rows_per_file": 200000,
+      "source_files": 4,
+      "source_bytes": 25600000,
+      "output_rows": 800000,
+      "peak_rss_bytes": 202031104,
+      "wall_seconds": 1.501,
+      "output_sha256": "adc87170ed94a2902c721fda67a0f9d11c56174c2ac18986ef574de679ca63c2",
+      "per_code_sha256": {
+        "sz000001": "573a83ce62e57809b691163e69ee9e705b9d98d5298851b454ed25f434604282",
+        "sz000002": "4afb8385c8b73874cd7022b897aac1fb892e2f3648fd186fb24c283baa55e1dd",
+        "sz000003": "fea1c6bb565ddc538efae0d4fa86007c28e6a1b000c468d3ab649fec60fc2890",
+        "sz000004": "b5d5047edea99bb39d45ad23af5bbe58a4161a167c6bde994b6466a8d2558802"
+      }
+    },
+    {
+      "version": "baseline",
+      "workers": 4,
+      "source_rows_per_file": 200000,
+      "source_files": 4,
+      "source_bytes": 25600000,
+      "output_rows": 800000,
+      "peak_rss_bytes": 230195200,
+      "wall_seconds": 1.469,
+      "output_sha256": "730c8dc943a84d1605b7c3e1d5881ca1186425e2b73014af31f620f1c87968d5",
+      "per_code_sha256": {
+        "sz000003": "fea1c6bb565ddc538efae0d4fa86007c28e6a1b000c468d3ab649fec60fc2890",
+        "sz000002": "4afb8385c8b73874cd7022b897aac1fb892e2f3648fd186fb24c283baa55e1dd",
+        "sz000001": "573a83ce62e57809b691163e69ee9e705b9d98d5298851b454ed25f434604282",
+        "sz000004": "b5d5047edea99bb39d45ad23af5bbe58a4161a167c6bde994b6466a8d2558802"
+      }
+    },
+    {
+      "version": "current",
+      "workers": 1,
+      "source_rows_per_file": 200000,
+      "source_files": 4,
+      "source_bytes": 25600000,
+      "output_rows": 800000,
+      "peak_rss_bytes": 9027584,
+      "wall_seconds": 1.297,
+      "output_sha256": "adc87170ed94a2902c721fda67a0f9d11c56174c2ac18986ef574de679ca63c2",
+      "per_code_sha256": {
+        "sz000001": "573a83ce62e57809b691163e69ee9e705b9d98d5298851b454ed25f434604282",
+        "sz000002": "4afb8385c8b73874cd7022b897aac1fb892e2f3648fd186fb24c283baa55e1dd",
+        "sz000003": "fea1c6bb565ddc538efae0d4fa86007c28e6a1b000c468d3ab649fec60fc2890",
+        "sz000004": "b5d5047edea99bb39d45ad23af5bbe58a4161a167c6bde994b6466a8d2558802"
+      }
+    },
+    {
+      "version": "current",
+      "workers": 4,
+      "source_rows_per_file": 200000,
+      "source_files": 4,
+      "source_bytes": 25600000,
+      "output_rows": 800000,
+      "peak_rss_bytes": 11436032,
+      "wall_seconds": 0.9,
+      "output_sha256": "adc87170ed94a2902c721fda67a0f9d11c56174c2ac18986ef574de679ca63c2",
+      "per_code_sha256": {
+        "sz000001": "573a83ce62e57809b691163e69ee9e705b9d98d5298851b454ed25f434604282",
+        "sz000002": "4afb8385c8b73874cd7022b897aac1fb892e2f3648fd186fb24c283baa55e1dd",
+        "sz000003": "fea1c6bb565ddc538efae0d4fa86007c28e6a1b000c468d3ab649fec60fc2890",
+        "sz000004": "b5d5047edea99bb39d45ad23af5bbe58a4161a167c6bde994b6466a8d2558802"
+      }
+    }
+  ]
+}

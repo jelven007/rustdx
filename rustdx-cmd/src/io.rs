@@ -12,26 +12,19 @@ use std::{
     fs::{self, File},
     io::{self, Write},
     path::Path,
-    sync::{
-        atomic::{AtomicUsize, Ordering},
-        mpsc,
-    },
+    sync::mpsc,
     thread,
     time::Instant,
 };
 
-const BUFFER_SIZE: usize = 32 * (1 << 20); // 32M
+const BUFFER_SIZE: usize = 128 * 1024;
 mod schema;
 pub(crate) mod sinks;
+mod streaming;
 mod verify;
 use schema::validate_clickhouse_schema;
 
-/// 并发解析目录下的 day 文件并写入 CSV（利用多核优势）。
-///
-/// - 解析阶段：多个工作线程（默认逻辑核心数）并行读取并解析 `.day` 文件；
-/// - 写入阶段：主线程从 channel 顺序接收解析结果并写入 CSV，避免并发写文件。
-///
-/// `parse` 负责把单个文件解析成 `Vec<T>`，`T` 为可序列化的日线类型。
+/// Fixed striped workers spool bounded chunks; consume in directory/file order.
 fn run_par<F, T>(
     cmd: &DayCmd,
     wtr: &mut csv::Writer<File>,
@@ -39,7 +32,7 @@ fn run_par<F, T>(
     report: &mut CollectionReport,
 ) -> Result<()>
 where
-    F: Fn(&str, &[u8]) -> eyre::Result<Vec<T>> + Send + Sync,
+    F: Fn(&str, &[u8], Option<&Factor>) -> eyre::Result<Vec<T>> + Send + Sync,
     T: serde::Serialize + QualityRow + Send,
 {
     let start = Instant::now();
@@ -52,6 +45,7 @@ where
     let mut total_files = 0usize;
     let mut total_rows = 0usize;
     let mut failures = Vec::new();
+    let mut header = None;
     for dir in &cmd.path {
         // 收集 (完整代码, 文件路径)，代码含市场前缀（如 `sz000001`、`sz200b07`）
         let work: Vec<(String, std::path::PathBuf)> = filter_file(dir)?
@@ -68,8 +62,7 @@ where
         info!("dir: {dir:?} day 文件数量：{n}");
         let take = cmd.amount.unwrap_or(n);
 
-        let count = AtomicUsize::new(0); // 成功解析的文件数
-        let next = AtomicUsize::new(0); // 任务队列：原子取下一个文件
+        let mut count = 0;
         let workers = cmd
             .workers
             .unwrap_or_else(|| {
@@ -78,83 +71,56 @@ where
                     .unwrap_or(4)
             })
             .min(n.max(1));
-        let (tx, rx) = mpsc::sync_channel(workers.max(1) * 2);
-
-        // 所有 worker 共享的引用：原子计数器与任务列表
-        let count = &count;
-        let next = &next;
         let work = &work;
         let parse = &parse;
+        let calendar = calendar.as_ref();
         let context = OperationContext::current();
 
         thread::scope(|s| {
-            for _ in 0..workers {
-                let tx = tx.clone();
+            // Receivers belong to the scope closure: an early error drops them
+            // before scope joins workers blocked in send, preventing deadlock.
+            let mut receivers = Vec::with_capacity(workers);
+            for worker in 0..workers {
+                let (tx, rx) = mpsc::sync_channel(1);
+                receivers.push(rx);
                 let context = context.clone();
                 s.spawn(move || {
                     let _guard = context.as_ref().map(OperationContext::enter);
-                    loop {
+                    for i in (worker..work.len()).step_by(workers) {
                         if operation::check().is_err() {
                             break;
                         }
-                        let i = next.fetch_add(1, Ordering::Relaxed);
-                        if i >= work.len() {
-                            break;
-                        }
                         let (code, src) = &work[i];
-                        let snapshot = crate::quality::source_snapshot(src, 32 * 1024 * 1024);
-                        let (evidence, result) = match snapshot {
-                            Ok((evidence, bytes)) => (Some(evidence), parse(code, &bytes)),
-                            Err(e) => (None, Err(e)),
-                        };
-                        if result.is_ok() {
-                            count.fetch_add(1, Ordering::Relaxed);
-                        }
-                        if tx
-                            .send((src.display().to_string(), evidence, result))
-                            .is_err()
-                        {
+                        let parsed = streaming::parse_source(
+                            code,
+                            src,
+                            &cmd.output,
+                            cmd.strict,
+                            calendar,
+                            parse,
+                        );
+                        if tx.send(parsed).is_err() {
                             break;
                         }
                     }
                 });
             }
-            drop(tx); // 关闭发送端，主线程的迭代才能结束
-            for (path, evidence, result) in rx {
+            for index in 0..work.len() {
                 operation::check()?;
-                report.sources.extend(evidence);
-                let v = match result {
-                    Ok(v) => v,
-                    Err(e) => {
-                        failures.push(format!("{path}: {e:#}"));
-                        report.files.push(crate::quality::FileReport {
-                            source: path,
-                            code: String::new(),
-                            rows: 0,
-                            first_date: None,
-                            last_date: None,
-                            errors: vec![e.to_string()],
-                            warnings: vec![],
-                        });
-                        continue;
-                    }
-                };
-                let code = Path::new(&path)
-                    .file_stem()
-                    .and_then(|s| s.to_str())
-                    .unwrap_or("")
-                    .to_owned();
-                let mut quality = crate::quality::inspect_with_calendar(
-                    path.clone(),
-                    code,
-                    &v,
-                    calendar.as_ref(),
-                );
+                let parsed = receivers[index % workers].recv().map_err(|e| {
+                    operation::check()
+                        .err()
+                        .map(eyre::Report::from)
+                        .unwrap_or_else(|| eyre!("解析线程提前结束: {e}"))
+                })?;
+                report.sources.extend(parsed.evidence);
+                let mut quality = parsed.quality;
                 let invalid =
                     !quality.errors.is_empty() || (cmd.strict && !quality.warnings.is_empty());
                 if invalid {
                     failures.push(format!(
-                        "{path}: {}",
+                        "{}: {}",
+                        quality.source,
                         quality
                             .errors
                             .iter()
@@ -163,41 +129,44 @@ where
                             .collect::<Vec<_>>()
                             .join("; ")
                     ));
-                }
-                if invalid {
                     report.files.push(quality);
                     continue;
                 }
-                let source_rows = v.len();
-                let v = normalize_rows(v)?;
-                if v.len() != source_rows {
-                    quality.warnings.push(format!(
-                        "输出前按日期去重，保留源文件最后一条：{}条 -> {}条",
-                        source_rows,
-                        v.len()
-                    ));
-                }
                 if let (Some(first), Some(last)) = (&quality.first_date, &quality.last_date)
-                    && let Err(e) = report.record_rows(&quality.code, v.len(), first, last)
+                    && let Err(e) = report.record_rows(&quality.code, parsed.rows, first, last)
                 {
                     quality.errors.push(e.to_string());
-                    failures.push(format!("{path}: {e}"));
+                    failures.push(format!("{}: {e}", quality.source));
                     report.files.push(quality);
                     continue;
                 }
                 report.files.push(quality);
-                total_rows += v.len();
-                for t in v {
-                    operation::check()?;
-                    wtr.serialize(t)?;
+                count += 1;
+                total_rows += parsed.rows;
+                if let Some(spool) = parsed.spool {
+                    let mut reader = csv::Reader::from_path(spool.temporary_path())?;
+                    if let Some(header) = &header {
+                        if reader.headers()? != header {
+                            eyre::bail!("来源CSV列定义不一致");
+                        }
+                    } else {
+                        let columns = reader.headers()?.clone();
+                        wtr.write_record(&columns)?;
+                        header = Some(columns);
+                    }
+                    let mut record = csv::StringRecord::new();
+                    while reader.read_record(&mut record)? {
+                        operation::check()?;
+                        wtr.write_record(&record)?;
+                    }
                 }
             }
             Ok::<(), eyre::Report>(())
         })?;
 
         operation::check()?;
-        total_files += count.load(Ordering::Relaxed);
-        print(dir, count.load(Ordering::Relaxed), take);
+        total_files += count;
+        print(dir, count, take);
     }
     wtr.flush()?;
     report.files.sort_by(|a, b| a.source.cmp(&b.source));
@@ -232,29 +201,10 @@ where
     Ok(())
 }
 
-fn normalize_rows<T: QualityRow>(rows: Vec<T>) -> Result<Vec<T>> {
-    let mut dated = rows
-        .into_iter()
-        .enumerate()
-        .map(|(index, row)| Ok((row.date()?, index, row)))
-        .collect::<Result<Vec<_>>>()?;
-    dated.sort_by_key(|(date, index, _)| (*date, *index));
-
-    let mut seen = std::collections::HashSet::with_capacity(dated.len());
-    let mut normalized = Vec::with_capacity(dated.len());
-    for (date, _, row) in dated.into_iter().rev() {
-        if seen.insert(date) {
-            normalized.push(row);
-        }
-    }
-    normalized.reverse();
-    Ok(normalized)
-}
-
 /// 并发解析并输出 CSV（无复权）。
 pub fn run_csv(cmd: &DayCmd) -> Result<()> {
     with_report(cmd, |report| {
-        export_csv(cmd, report, |code, src| {
+        export_csv(cmd, report, |code, src, _| {
             Ok(rustdx_complete::file::day::Day::from_bytes_into_vec(
                 code, src,
             )?)
@@ -272,7 +222,7 @@ fn with_report(cmd: &DayCmd, run: impl FnOnce(&mut CollectionReport) -> Result<(
 
 fn export_csv<F, T>(cmd: &DayCmd, report: &mut CollectionReport, parse: F) -> Result<()>
 where
-    F: Fn(&str, &[u8]) -> eyre::Result<Vec<T>> + Send + Sync,
+    F: Fn(&str, &[u8], Option<&Factor>) -> eyre::Result<Vec<T>> + Send + Sync,
     T: serde::Serialize + QualityRow + Send,
 {
     if cmd.output == "clickhouse" {
@@ -307,12 +257,13 @@ pub fn run_csv_fq(cmd: &DayCmd) -> Result<()> {
         let mut source = rustdx_complete::file::gbbq::Gbbqs::from_bytes(bytes)?;
         let gbbq = Gbbq::filter_hashmap(source.try_to_vec()?.into_iter());
 
-        export_csv(cmd, report, |code, src| {
-            Ok(Day::from_bytes(
-                code,
-                src,
-                gbbq.get(code).map(Vec::as_slice),
-            )?)
+        export_csv(cmd, report, |code, src, carry| {
+            let events = gbbq.get(code).map(Vec::as_slice);
+            Ok(if let Some(carry) = carry {
+                Day::concat_bytes(code, src, events, Some(carry))?
+            } else {
+                Day::from_bytes(code, src, events)?
+            })
         })
     })
 }
@@ -330,9 +281,9 @@ pub fn run_csv_fq_previous(cmd: &DayCmd) -> Result<()> {
         // 前收
         let previous = tracked_previous(&cmd.previous, &cmd.table, cmd.keep_factor, report)?;
 
-        export_csv(cmd, report, |code, src| {
-            let factor = previous
-                .get(code)
+        export_csv(cmd, report, |code, src, carry| {
+            let factor = carry
+                .or_else(|| previous.get(code))
                 .ok_or_else(|| eyre!("{}缺少前因子", code))?;
             Ok(Day::concat_bytes(
                 code,
@@ -728,29 +679,6 @@ pub fn read_xlsx(path: &str, col: usize, prefix: &str) -> Result<StockList> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
-    fn output_rows_are_sorted_and_duplicate_dates_keep_last_source_row() {
-        let row = |date, close| rustdx_complete::file::day::Day {
-            date,
-            code: "sh000001".into(),
-            open: close,
-            high: close,
-            low: close,
-            close,
-            amount: 1.0,
-            vol: 1,
-        };
-        let rows = normalize_rows(vec![
-            row(20250107, 7.0),
-            row(20250106, 6.0),
-            row(20250107, 70.0),
-        ])
-        .unwrap();
-        assert_eq!(rows.len(), 2);
-        assert_eq!((rows[0].date, rows[0].close), (20250106, 6.0));
-        assert_eq!((rows[1].date, rows[1].close), (20250107, 70.0));
-    }
-
     #[test]
     fn excel_codes_keep_leading_zero_and_invalid_columns_fail() {
         let dir = std::env::temp_dir().join(format!("rustdx-excel-test-{}", std::process::id()));
