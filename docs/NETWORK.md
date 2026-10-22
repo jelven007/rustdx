@@ -1,5 +1,7 @@
 # 受管 TCP 的进程预算
 
+更新日期：2026-10-22；对应源码5fb5b70及后续优化，尚未发布新crate版本。开发调用见[DEVELOPMENT.md](DEVELOPMENT.md)，网络排障与部署限制见[RUNBOOK.md](RUNBOOK.md)。
+
 `Tcp::new/with_config`、Client 主连接和 ConnectionPool 都使用同一进程预算，默认最多8条，包含正在建立、借出、空闲和重连的连接。重连先 shutdown 旧 socket，在原许可内握手；失败连接及丢弃的池槽位释放许可。同一 Client 的批次通过有界等待串行化，批次内固定 worker 并行，批次完成不保留连接，防止空闲批量池占住其他 Client 的配额。
 
 在首次创建 Tcp 或读取 network_policy/network_stats 之前配置一次：
@@ -26,3 +28,5 @@ println!("{:?}", network_stats());
 预算边界是受管 Tcp：旧 `tcpstream_*` 返回裸 socket，`into_inner` 提取句柄会释放许可，`get_ref` 后自行克隆/发请求也需调用方管理。这些兼容接口不承诺进程连接限制。普通自定义连接池若长期保留空闲连接会占用全局预算；可关闭池或设置 `max_idle=0`。上限1只能容纳单 Client 主连接，批量查询需要额外可用配额。
 
 本地 `tests/network_budget.rs` 独立进程验收主连接与池共用预算、饱和等待、重连不增加峰值、重复批次释放配额、握手及缓慢正文的总体时限。内置 governor 回归另测轮换和冷却，不需要外部行情服务器。
+
+这些时限适用于受管TCP及对应分页/批次，不是day下载/解析/数据库完整流水线的任务总时限，也不约束独立进程或其他HTTP客户端。CLI下载与数据库时限分别见[开发说明](DEVELOPMENT.md)和[导入说明](IMPORTS.md)；真实P95、出口并发和跨主机任务由部署环境观测与协调。

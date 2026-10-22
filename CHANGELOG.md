@@ -1,6 +1,6 @@
 # 变更记录
 
-## 未发布（2026-10-22，本地Rust审查优化）
+## 未发布新crate版本（2026-10-22，仓库源码优化与文档交付）
 
 - 日历提供版本、来源与覆盖范围，严格导航支持外部休市数据；历史涨跌幅及主板ST制度切换按日期处理。
 - 进程共享连接预算、端点轮换/冷却、连接/请求/分页/批次总体时限及网络统计。
@@ -9,6 +9,10 @@
 - 布林带双栈滚动方差及KDJ单调队列，正常数据O(n)；保留预热、缺口及平滑口径。
 - Client分页/复权与CLI数据库sink/schema拆分；新增checked day/lc/gbbq入口，移除解密unsafe及偏移加法溢出。
 - 属性测试、模糊测试目标、窗口性能观测和all-features/MSRV CI。行为边界见[优化记录](docs/OPTIMIZATION.md)及[导入说明](docs/IMPORTS.md)。
+- 补齐需求、方案、开发、测试、运营、运维和版本交付文档，更新旧架构/迁移/验收描述并建立变更对应表，见[文档索引](docs/README.md)。
+- 文档分支合入main，保留两个历史快照：`history/source-20261022`（1f9f739）和 `history/release-1.12.2-1.8.2`（904b33e）；完整提交链继续保留，见[版本交付](docs/RELEASES.md)。
+
+源码实现提交为7cd02e7、5fb5b70、401265c、1f9f739，四个提交已推送main。Cargo版本仍为1.12.2/1.8.2，crates.io同版本不含本轮新增行为。Rust1.89离线workspace/all-features、Clippy、格式通过；ASan/覆盖率fuzz544,705次无崩溃，未重跑外部行情或数据库验收，见[验证方法](docs/VALIDATION.md)。
 
 ## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，已发布 crates.io）
 

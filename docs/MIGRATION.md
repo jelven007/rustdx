@@ -1,6 +1,8 @@
 # 数据语义与迁移
 
-## 本地优化（2026-10-22，尚未发布）
+## 仓库源码优化（2026-10-22，尚未发布新crate版本）
+
+源码提交7cd02e7、5fb5b70、401265c、1f9f739已进入main。核心库/CLI的Cargo版本保持1.12.2/1.8.2，crates.io上的同版本仍是10月11日发布内容；使用本节新行为须从源码构建。完整文档见[索引](README.md)，分支交付与两个历史快照见[RELEASES.md](RELEASES.md)。
 
 `day/east` 默认写运行清单和run_id归档，`--report`可更改路径；schema_version升级为2，增加摘要、输出验证和数据库确认状态。数据库HTTP及mongoimport现在有300秒上限，失败保留CSV；详见[IMPORTS.md](IMPORTS.md)。文件构造器拒绝非法日期及数值，新 `try_from_bytes/try_from_chunk/try_parse/try_to_vec` 面向不可信数据；旧单条解析入口继续保留。
 
@@ -26,6 +28,10 @@
 
 交易所股票名单请求使用HTTPS、总时限和16MiB响应限制；上交所不再发送历史硬编码会话Cookie。接口鉴权或反爬变化会显式返回错误。`docsrs` feature可在稳定Rust下开启；自动文档标记由docs.rs的 `cfg(docsrs)` 单独启用。
 
+所有受管Tcp共享默认8条进程预算（含主连接、建连及空闲池），首次使用或读取policy/stats前通过 `configure_network` 配置一次。批次完成释放连接；批次有界排队，全局配额不足时有界等待。连接、完整帧、分页及批次增加总体时限；服务器自动选择使用轮换起点和故障冷却。原先可能无限等待的调用现在会提前返回超时/WouldBlock；默认值、统计及裸socket兼容边界见[NETWORK.md](NETWORK.md)。day整条命令仍没有统一总deadline。
+
+同一证券多个day来源的日期区间重叠现在拒绝发布，即使区间内实际缺口互补；需先整理源文件。CSV发布前回读并检查行数、来源区间和日期边界，东财JSON由验证后的记录直接序列化。运行清单schema2消费者需兼容新增字段和中间状态；project_version仍是Cargo版本，应另存Git提交区分本轮源码。run_version为客户端运行标识，不替代ClickHouse服务端行version。
+
 ## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，已发布 crates.io）
 
 以下为相对1.12.1 / 1.8.1的行为变化；核心库导入名仍为 `rustdx_complete`，CLI二进制名仍为 `rustdx`。
@@ -48,7 +54,7 @@ EMA周期0返回NaN，非有限输入返回NaN并重置，下一有效价格重�
 
 均已发布到 crates.io。核心库安装 `cargo add jelven-rustdx-complete --rename rustdx-complete`；CLI 安装 `cargo install jelven-rustdx-cli --locked`（二进制 `rustdx`）。CLI 更名因 crates.io 上 `rustdx-cli` 归属他人，Rust 导入名仍为 `rustdx_cli`。
 
-同一 Client 的批量调用有界排队，批次内并行。所有受管Tcp共享默认8条进程预算（含主连接和空闲池），首次使用前可通过 `configure_network` 调整一次。批次完成释放连接许可；并行数也受进程预算约束。连接池 `get_connection` 在本池饱和时仍返回WouldBlock，全局配额不足会有界等待；`get_connection_timeout` 的时限现在包含建连和探活。连接、完整帧、分页及批次均有总体时限；自动选服改为轮换起点及故障冷却。配置、统计与裸socket兼容边界见[NETWORK.md](NETWORK.md)。
+该已发布版本加入同一Client批量调用有界排队、批次内并行。进程总配额、端点冷却及连接/帧/分页/批次总体时限是2026-10-22源码新增行为，见本文首节；不将其视为已发布1.12.1/1.8.1的能力。
 
 旧静态概念查询已弃用：`get_concept_stocks/get_concept_info` 返回None，`get_concept_names` 返回空列表，表示本库不再提供未核实样例。迁移到 `Client::block("block_gn.dat")`，按源板块名筛选并保存采集时间。该接口返回代码而非证券名称，名称可从证券列表匹配；不同来源板块不能直接等同。
 
@@ -81,7 +87,7 @@ gbbq输入是通达信二进制文件。`Fq::new/concat` 现在仅返回交易�
 
 CLI1.8.1同时检查已有表：date Date、code String、OHLC/amount/vol/preclose/factor Float64、version UInt64；preclose/factor须有DEFAULT，version使用上述纳秒表达式；排序键必须严格为date,code。允许不分区或按date/toYYYYMM(date)/toYear(date)分区，其他分区表达式需另行核实后迁移，避免重复键跨分区。引擎或键即使包含version也不能绕过检查。
 
-HTTP导入及SQL启用wait_end_of_query=1并读完整响应，HTTP错误、正文异常和截断都返回失败；10秒限制仅用于建连，全量导入不使用东财15秒总时限。辅助边界查询失败仍仅告警。
+HTTP导入及SQL启用wait_end_of_query=1并读完整响应，HTTP错误、正文异常和截断都返回失败；10秒限制用于建连，全量导入不使用东财15秒总时限。本轮源码为单次HTTP操作另加300秒总体上限和INSERT query_id。辅助边界查询失败仍仅告警。
 
 旧 `ReplacingMergeTree()` 表不会被自动改写。先备份，创建新表（例如 `rustdx.bars_v2`，CLI 指定 `-t rustdx.bars_v2` 会建表），再按列迁移：
 
