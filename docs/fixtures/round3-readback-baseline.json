@@ -1,0 +1,170 @@
+{
+  "binary_sha256": "e6c5241b2a480361a2f422768a0fa55019a951a25b11a4c578d52e5c1adf498f",
+  "input_sha256": "8a2e2b7a5463c08b4ed7b6befdd6b6a9ae486664f0d6f0946ee907e87a144d28",
+  "rows": 65536,
+  "symbols": 128,
+  "batch_rows_env": null,
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "process_wrappers": false,
+  "scratch": "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-readback-bench-sqyh56rj",
+  "database": "rustdx_readback_bench_54eb32cf953f49ca80e8ace34eec59da",
+  "versions": {
+    "clickhouse": "26.11.1.548",
+    "mongodb": "8.0.16"
+  },
+  "runs": [
+    {
+      "backend": "clickhouse",
+      "run": 0,
+      "seconds": 11.213808125,
+      "exit": 0,
+      "max_rss_bytes": 12091392,
+      "processes": [],
+      "csv_sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+      "database_verification": {
+        "target": "rustdx_readback_bench_54eb32cf953f49ca80e8ace34eec59da.bars",
+        "method": "all_exported_keys_and_numeric_fields",
+        "scope": "exported_keys",
+        "rows": 65536,
+        "logical_keys": 65536,
+        "batches": 128,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "numeric_fields": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "amount",
+          "vol"
+        ],
+        "sha256": "f130a229535d57dd64ccb2719a1bb430873324556bc4dff559fd712d77cc5435"
+      },
+      "artifact": {
+        "path": "clickhouse.csv",
+        "sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+        "bytes": 3473449,
+        "rows": 65536,
+        "logical_keys": 65536,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "state": "retained"
+      }
+    },
+    {
+      "backend": "clickhouse",
+      "run": 1,
+      "seconds": 9.21623525,
+      "exit": 0,
+      "max_rss_bytes": 12337152,
+      "processes": [],
+      "csv_sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+      "database_verification": {
+        "target": "rustdx_readback_bench_54eb32cf953f49ca80e8ace34eec59da.bars",
+        "method": "all_exported_keys_and_numeric_fields",
+        "scope": "exported_keys",
+        "rows": 65536,
+        "logical_keys": 65536,
+        "batches": 128,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "numeric_fields": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "amount",
+          "vol"
+        ],
+        "sha256": "f130a229535d57dd64ccb2719a1bb430873324556bc4dff559fd712d77cc5435"
+      },
+      "artifact": {
+        "path": "clickhouse.csv",
+        "sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+        "bytes": 3473449,
+        "rows": 65536,
+        "logical_keys": 65536,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "state": "retained"
+      }
+    },
+    {
+      "backend": "mongodb",
+      "run": 0,
+      "seconds": 26.188849083,
+      "exit": 0,
+      "max_rss_bytes": 268795904,
+      "processes": [],
+      "csv_sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+      "database_verification": {
+        "target": "rustdx_readback_bench_54eb32cf953f49ca80e8ace34eec59da.bars",
+        "method": "all_exported_keys_and_numeric_fields",
+        "scope": "exported_keys",
+        "rows": 65536,
+        "logical_keys": 65536,
+        "batches": 128,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "numeric_fields": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "amount",
+          "vol"
+        ],
+        "sha256": "f130a229535d57dd64ccb2719a1bb430873324556bc4dff559fd712d77cc5435"
+      },
+      "artifact": {
+        "path": "mongodb.csv",
+        "sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+        "bytes": 3473449,
+        "rows": 65536,
+        "logical_keys": 65536,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "state": "retained"
+      }
+    },
+    {
+      "backend": "mongodb",
+      "run": 1,
+      "seconds": 25.322564749999998,
+      "exit": 0,
+      "max_rss_bytes": 267190272,
+      "processes": [],
+      "csv_sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+      "database_verification": {
+        "target": "rustdx_readback_bench_54eb32cf953f49ca80e8ace34eec59da.bars",
+        "method": "all_exported_keys_and_numeric_fields",
+        "scope": "exported_keys",
+        "rows": 65536,
+        "logical_keys": 65536,
+        "batches": 128,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "numeric_fields": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "amount",
+          "vol"
+        ],
+        "sha256": "f130a229535d57dd64ccb2719a1bb430873324556bc4dff559fd712d77cc5435"
+      },
+      "artifact": {
+        "path": "mongodb.csv",
+        "sha256": "0eb9c8283073fad9489d6a6d64fc688fbf7f11370852c265a1025b18da2589c8",
+        "bytes": 3473449,
+        "rows": 65536,
+        "logical_keys": 65536,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "state": "retained"
+      }
+    }
+  ],
+  "scope": "synthetic_no_factors_end_to_end_and_child_process_wall_time"
+}

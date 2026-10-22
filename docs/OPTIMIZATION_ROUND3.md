@@ -22,3 +22,9 @@
 东财原始正文在解析前有界落盘，留存请求参数、采集时点、市场/源时间戳和版本，并提供逐页摘要校验重放。2026-10-23 UTC+8早间实测total5563中的2股，源日期2026-10-22；在线CSV与无网络重放逐字节相同，SHA-256=`0318b6b583e38a5f16aefb624f6029fe517baa9805847b26a7fa31d87d0cf10c`，与前轮独立保留CSV一致。真实原始正文保存为[回归夹具](../rustdx-cmd/tests/fixtures/east-raw-20261023.json)，详见[重放文档](EAST_REPLAY.md)。该验证只涵盖两只股票，不能代表全市场。
 
 第一批Rust1.89 CLI all-targets测试、Clippy all-targets/all-features拒绝警告通过；离线重放恶意参数/摘要/页序回归通过。最终新增真实夹具及解析失败留证回归、Clippy和fmt复查通过。日志：`/tmp/rustdx-round3-stage1.log`、`/tmp/rustdx-round3-stage1-final.log`、`/tmp/rustdx-round3-stage1-fixtures.log`。
+
+## 回读优化前基准
+
+先保存基线release二进制（SHA与前轮最终验收相同），用[测量脚本](../scripts/measure_database_readback.py)执行实际隔离数据库导入。128个合成A股day文件，共65,536行，4线程，无gbbq/previous；每目标第一次写入、第二次重复写入，逐键全字段回读，各128批。未启用进程计时包装，以免Python启动开销影响两版耗时比较。
+
+ClickHouse26.11.1.548本机实验构建整命令耗时11.214/9.216秒，MongoDB8.0.16为26.189/25.323秒。所有输出CSV摘要与回读字段摘要一致。该耗时包括输入解析、CSV、导入和回读，不单独代表数据库查询时延，也不代表真实生产吞吐。原始指标见[基准JSON](fixtures/round3-readback-baseline.json)；4次均成功，基准私有数据库已删除，输入与日志临时保留用于复测。
