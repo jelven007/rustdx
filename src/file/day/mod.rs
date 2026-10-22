@@ -16,6 +16,19 @@ pub(crate) fn validate_records(bytes: &[u8]) -> crate::Result<()> {
     Ok(())
 }
 
+fn validate_record(chunk: &[u8]) -> crate::Result<()> {
+    if chunk.len() != 32 {
+        return Err(crate::Error::Custom("day记录必须为32字节"));
+    }
+    crate::data::date_from_u32(crate::bytes_helper::u32_from_le_bytes(chunk, 0))?;
+    let amount = crate::bytes_helper::f32_from_le_bytes(chunk, 20);
+    // Prices and volume are unsigned integers on disk; amount is the only float.
+    if !amount.is_finite() || amount < 0.0 {
+        return Err(crate::Error::Custom("day成交额非法"));
+    }
+    Ok(())
+}
+
 /// 解析 `*.day` 文件中的一条日线数据，即其 32 个字节所代表的所有信息。
 ///
 /// 注意：这个类型只对 `*.day` 文件进行了初步解析，
@@ -87,18 +100,39 @@ impl Day {
         }
     }
 
+    /// Checked record parsing for untrusted input; retains non-equity OHLC anomalies.
+    pub fn try_from_bytes(code: &str, arr: &[u8]) -> crate::Result<Self> {
+        validate_record(arr)?;
+        code.parse::<crate::data::Symbol>()?;
+        Ok(Self::from_bytes(code, arr))
+    }
+
     /// 一次性以**同步**方式读取单个 `*.day` 文件所有数据，然后转化成 Vec。
     /// `code` 为含市场前缀的字符串（如 `sh600000`、`sz200b07`）。
     pub fn from_file_into_vec<P: AsRef<Path>>(code: &str, p: P) -> crate::Result<Vec<Day>> {
         let bytes = std::fs::read(p)?;
-        validate_records(&bytes)?;
-        let code = code.to_owned();
+        Self::from_bytes_into_vec(code, &bytes)
+    }
+
+    /// Parse a complete file snapshot, rejecting truncated records.
+    pub fn from_bytes_into_vec(code: &str, bytes: &[u8]) -> crate::Result<Vec<Day>> {
+        Ok(Self::iter_checked(code, bytes)?.collect())
+    }
+
+    pub(crate) fn iter_checked<'a>(
+        code: &'a str,
+        bytes: &'a [u8],
+    ) -> crate::Result<impl ExactSizeIterator<Item = Day> + Clone + 'a> {
+        validate_records(bytes)?;
+        code.parse::<crate::data::Symbol>()?;
+        for chunk in bytes.as_chunks::<32>().0 {
+            validate_record(chunk)?;
+        }
         Ok(bytes
             .as_chunks::<32>()
             .0
             .iter()
-            .map(|b| Self::from_bytes(&code, b))
-            .collect())
+            .map(move |chunk| Self::from_bytes(code, chunk)))
     }
 
     /// `%Y-%m-%d` 格式的日期

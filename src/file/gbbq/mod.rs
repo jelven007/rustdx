@@ -74,6 +74,27 @@ impl<'a> Gbbq<'a> {
         }
     }
 
+    pub fn try_from_chunk(chunk: &'a [u8]) -> Result<Gbbq<'a>> {
+        if chunk.len() != 29 {
+            return Err(crate::Error::Custom("gbbq记录必须为29字节"));
+        }
+        let code = std::str::from_utf8(&chunk[1..7])
+            .map_err(|_| crate::Error::Custom("gbbq代码编码非法"))?;
+        if !code.bytes().all(|b| b.is_ascii_digit()) || chunk[0] > 2 {
+            return Err(crate::Error::Custom("gbbq市场或代码非法"));
+        }
+        let row = Self::from_chunk(chunk);
+        crate::data::date_from_u32(row.date)?;
+        if !(1..=14).contains(&row.category)
+            || ![row.fh_qltp, row.pgj_qzgb, row.sg_hltp, row.pg_hzgb]
+                .iter()
+                .all(|v| v.is_finite())
+        {
+            return Err(crate::Error::Custom("gbbq类别或数值非法"));
+        }
+        Ok(row)
+    }
+
     // 未解密二进制数据转化成 [`Gbbq`]
     pub fn iter(bytes: &mut [u8]) -> impl Iterator<Item = Gbbq<'_>> {
         bytes
@@ -143,7 +164,10 @@ pub struct Gbbqs {
 
 impl Gbbqs {
     pub fn from_file(p: impl AsRef<std::path::Path>) -> Result<Self> {
-        let vec = std::fs::read(p)?;
+        Self::from_bytes(std::fs::read(p)?)
+    }
+
+    pub fn from_bytes(vec: Vec<u8>) -> Result<Self> {
         if vec.len() < 4 || !(vec.len() - 4).is_multiple_of(29) {
             return Err(crate::Error::Custom("gbbq文件头或记录截断"));
         }
@@ -187,6 +211,22 @@ impl Gbbqs {
         }
     }
 
+    /// Decode at most once and validate every borrowed record.
+    pub fn try_to_vec(&mut self) -> Result<Vec<Gbbq<'_>>> {
+        if !self.parsed {
+            for chunk in self.data[4..].as_chunks_mut::<29>().0 {
+                try_parse(chunk)?;
+            }
+            self.parsed = true;
+        }
+        self.data[4..]
+            .as_chunks::<29>()
+            .0
+            .iter()
+            .map(|chunk| Gbbq::try_from_chunk(chunk))
+            .collect()
+    }
+
     /// 获取 `gbbq` 文件的二进制数据的共享引用，注意：
     /// 1. 未调用 [`Gbbqs::to_vec`] 之前，[`Gbbqs::get_data`] 返回的是原始的、未解密的数据；
     /// 2. 调用一次 [`Gbbqs::to_vec`] 之后，[`Gbbqs::get_data`] 返回的是加密后的二进制数据；
@@ -218,6 +258,14 @@ impl Gbbqs {
 ///
 /// TODO: item 改写成 &mut [u8] ，`GbbqRaw` 需要增加 item 字段
 pub fn parse(encrypt: &mut [u8]) -> &[u8] {
+    try_parse(encrypt).expect("gbbq记录必须为29字节")
+}
+
+/// Safe deciphering entrypoint. A rejected length leaves the input untouched.
+pub fn try_parse(encrypt: &mut [u8]) -> Result<&[u8]> {
+    if encrypt.len() != 29 {
+        return Err(crate::Error::Custom("gbbq记录必须为29字节"));
+    }
     let mut pos = 0usize;
     for i in (0usize..24).step_by(8) {
         let mut eax = u32_from_le_bytes(KEY, 0x44);
@@ -243,11 +291,9 @@ pub fn parse(encrypt: &mut [u8]) -> &[u8] {
             numold = ebx;
         }
         numold ^= u32_from_le_bytes(KEY, 0);
-        unsafe { (encrypt.get_unchecked_mut(i..i + 4)).swap_with_slice(&mut numold.to_le_bytes()) };
-        unsafe {
-            (encrypt.get_unchecked_mut(i + 4..i + 8)).swap_with_slice(&mut num.to_le_bytes())
-        };
+        encrypt[i..i + 4].copy_from_slice(&numold.to_le_bytes());
+        encrypt[i + 4..i + 8].copy_from_slice(&num.to_le_bytes());
         pos += 8;
     }
-    encrypt
+    Ok(encrypt)
 }

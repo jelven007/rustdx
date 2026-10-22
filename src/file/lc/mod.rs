@@ -57,16 +57,38 @@ impl Lc {
         }
     }
 
-    /// 一次性以**同步**方式读取单个 `*.lc` 文件所有数据，然后转化成 Vec。
-    pub fn from_file_into_vec<P: AsRef<Path>>(code: u32, p: P) -> crate::Result<Vec<Lc>> {
-        let bytes = std::fs::read(p)?;
-        crate::file::day::validate_records(&bytes)?;
-        Ok(bytes
+    /// Checked record parsing; exchange identity remains the caller's responsibility.
+    pub fn try_from_bytes(code: u32, arr: &[u8]) -> crate::Result<Self> {
+        if arr.len() != 32 || code > 999999 {
+            return Err(crate::Error::Custom("lc记录必须为32字节且代码不超过6位"));
+        }
+        let row = Self::from_bytes(code, arr);
+        row.try_datetime()?;
+        crate::data::validate_bar_values(
+            row.open as f64,
+            row.high as f64,
+            row.low as f64,
+            row.close as f64,
+            row.vol as f64,
+            row.amount as f64,
+        )?;
+        Ok(row)
+    }
+
+    pub fn from_bytes_into_vec(code: u32, bytes: &[u8]) -> crate::Result<Vec<Lc>> {
+        crate::file::day::validate_records(bytes)?;
+        bytes
             .as_chunks::<32>()
             .0
             .iter()
-            .map(|b| Self::from_bytes(code, b))
-            .collect())
+            .map(|b| Self::try_from_bytes(code, b))
+            .collect()
+    }
+
+    /// 一次性以**同步**方式读取单个 `*.lc` 文件所有数据，然后转化成 Vec。
+    pub fn from_file_into_vec<P: AsRef<Path>>(code: u32, p: P) -> crate::Result<Vec<Lc>> {
+        let bytes = std::fs::read(p)?;
+        Self::from_bytes_into_vec(code, &bytes)
     }
 
     /// 转化成用于（反）序列化的数据类型：

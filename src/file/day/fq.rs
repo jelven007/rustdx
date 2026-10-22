@@ -23,13 +23,11 @@ pub struct Day {
 impl Day {
     pub fn new(code: &str, p: impl AsRef<Path>, gbbqs: Option<&[Gbbq]>) -> Result<Vec<Self>> {
         let raw = std::fs::read(p)?;
-        super::validate_records(&raw)?;
-        let code = code.to_owned();
-        let days = raw
-            .as_chunks::<32>()
-            .0
-            .iter()
-            .map(|b| super::Day::from_bytes(&code, b));
+        Self::from_bytes(code, &raw, gbbqs)
+    }
+
+    pub fn from_bytes(code: &str, raw: &[u8], gbbqs: Option<&[Gbbq]>) -> Result<Vec<Self>> {
+        let days = super::Day::iter_checked(code, raw)?;
         let fq = gbbqs
             .map(|g| Fq::new(days.clone(), g))
             .unwrap_or_else(|| Fq::no_gbbq(days.clone()))
@@ -60,13 +58,16 @@ impl Day {
         f: Option<&Factor>,
     ) -> Result<Vec<Self>> {
         let raw = std::fs::read(p)?;
-        super::validate_records(&raw)?;
-        let code = code.to_owned();
-        let days = raw
-            .as_chunks::<32>()
-            .0
-            .iter()
-            .map(|b| super::Day::from_bytes(&code, b));
+        Self::concat_bytes(code, &raw, gbbqs, f)
+    }
+
+    pub fn concat_bytes(
+        code: &str,
+        raw: &[u8],
+        gbbqs: Option<&[Gbbq]>,
+        f: Option<&Factor>,
+    ) -> Result<Vec<Self>> {
+        let days = super::Day::iter_checked(code, raw)?;
         let first = days.clone().next().ok_or(Custom("初始化前收盘价失败"))?;
         if let Some(previous) = f {
             let date = chrono::NaiveDate::parse_from_str(&previous.date, "%Y-%m-%d")

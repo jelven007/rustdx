@@ -3,8 +3,8 @@
 #[inline]
 pub fn into_arr4(slice: &[u8], pos: usize) -> [u8; 4] {
     let mut arr = [0; 4];
-    if pos + 4 <= slice.len() {
-        arr.copy_from_slice(&slice[pos..pos + 4]);
+    if let Some(bytes) = pos.checked_add(4).and_then(|end| slice.get(pos..end)) {
+        arr.copy_from_slice(bytes);
     }
     arr
 }
@@ -23,8 +23,8 @@ pub fn f32_from_le_bytes(slice: &[u8], pos: usize) -> f32 {
 #[inline]
 pub fn into_arr2(slice: &[u8], pos: usize) -> [u8; 2] {
     let mut arr = [0; 2];
-    if pos + 2 <= slice.len() {
-        arr.copy_from_slice(&slice[pos..pos + 2]);
+    if let Some(bytes) = pos.checked_add(2).and_then(|end| slice.get(pos..end)) {
+        arr.copy_from_slice(bytes);
     }
     arr
 }
@@ -60,4 +60,17 @@ where
     S: serde::Serializer,
 {
     serializer.serialize_str(code)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn overflowing_and_truncated_offsets_keep_legacy_zero_fallback() {
+        for pos in [0, 1, usize::MAX - 3, usize::MAX - 1, usize::MAX] {
+            assert_eq!(into_arr4(&[1], pos), [0; 4]);
+            assert_eq!(into_arr2(&[1], pos), [0; 2]);
+        }
+        assert_eq!(into_arr4(&[1, 2, 3, 4], 0), [1, 2, 3, 4]);
+    }
 }

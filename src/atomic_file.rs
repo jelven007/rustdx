@@ -39,12 +39,25 @@ impl AtomicFile {
         ))
     }
 
+    /// Read the staged bytes for verification before publication.
+    pub fn temporary_path(&self) -> &Path {
+        &self.temporary
+    }
+
     pub fn commit(self) -> io::Result<()> {
         OpenOptions::new()
             .write(true)
             .open(&self.temporary)?
             .sync_all()?;
         fs::rename(&self.temporary, &self.destination)?;
+        #[cfg(unix)]
+        File::open(
+            self.destination
+                .parent()
+                .filter(|p| !p.as_os_str().is_empty())
+                .unwrap_or(Path::new(".")),
+        )?
+        .sync_all()?;
         Ok(())
     }
 }

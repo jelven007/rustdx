@@ -33,6 +33,7 @@ features = ["fast-gb-hanzi-encode"]
 [dev-dependencies]
 insta = "1"
 csv = "1"
+proptest = { version = "=1.8.0", default-features = false, features = ["std"] }
 
 [[bench]]
 name = "indicators"

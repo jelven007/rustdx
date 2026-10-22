@@ -6,18 +6,72 @@ use rustdx_complete::{
     file::day,
 };
 use serde::Serialize;
-use std::{fs::File, path::Path};
+use sha2::{Digest, Sha256};
+use std::{
+    fs::File,
+    io::Read,
+    path::{Path, PathBuf},
+};
 
-pub fn load_calendar(path: Option<&Path>) -> Result<Box<dyn CalendarProvider>> {
-    use rustdx_complete::calendar::{CalendarDataset, HolidayCalendar};
+pub fn manifest_path(output: &str, requested: Option<&Path>) -> PathBuf {
+    requested
+        .map(Path::to_owned)
+        .unwrap_or_else(|| PathBuf::from(format!("{output}.manifest.json")))
+}
+
+pub fn sha256(bytes: &[u8]) -> String {
+    format!("{:x}", Sha256::digest(bytes))
+}
+
+/// Read and hash exactly the snapshot subsequently passed to the parser.
+pub fn source_snapshot(path: &Path, limit: u64) -> Result<(SourceEvidence, Vec<u8>)> {
+    let mut bytes = Vec::new();
+    File::open(path)?.take(limit + 1).read_to_end(&mut bytes)?;
+    if bytes.len() as u64 > limit {
+        eyre::bail!("来源文件超出{limit}字节限制: {}", path.display());
+    }
+    Ok((
+        SourceEvidence {
+            source: path.display().to_string(),
+            sha256: sha256(&bytes),
+            bytes: bytes.len() as u64,
+        },
+        bytes,
+    ))
+}
+
+#[derive(Debug, Serialize)]
+pub struct SourceEvidence {
+    pub source: String,
+    pub sha256: String,
+    pub bytes: u64,
+}
+
+#[derive(Debug, Serialize)]
+pub struct OutputEvidence {
+    pub path: String,
+    pub sha256: String,
+    pub bytes: u64,
+    pub rows: usize,
+    pub logical_keys: usize,
+    pub first_date: Option<String>,
+    pub last_date: Option<String>,
+    pub state: &'static str,
+}
+
+pub fn tracked_calendar(
+    path: Option<&Path>,
+    report: &mut CollectionReport,
+) -> Result<Box<dyn CalendarProvider>> {
     let Some(path) = path else {
         return Ok(Box::new(BuiltinCalendar));
     };
-    if std::fs::metadata(path)?.len() > 1024 * 1024 {
-        eyre::bail!("日历JSON超出1MiB限制");
-    }
-    let dataset: CalendarDataset = serde_json::from_reader(File::open(path)?)?;
-    Ok(Box::new(HolidayCalendar::try_from(dataset)?))
+    let (evidence, bytes) = source_snapshot(path, 1024 * 1024)?;
+    report.sources.push(evidence);
+    let dataset: rustdx_complete::calendar::CalendarDataset = serde_json::from_slice(&bytes)?;
+    Ok(Box::new(
+        rustdx_complete::calendar::HolidayCalendar::try_from(dataset)?,
+    ))
 }
 
 #[derive(Debug, Serialize)]
@@ -255,12 +309,33 @@ pub struct CollectionReport {
     pub status: &'static str,
     pub errors: Vec<String>,
     pub files: Vec<FileReport>,
+    pub run_id: String,
+    pub stage: &'static str,
+    pub sources: Vec<SourceEvidence>,
+    pub artifact: Option<OutputEvidence>,
+    pub database_status: &'static str,
+    pub database_table: Option<String>,
+    pub query_id: Option<String>,
+    pub run_version: u64,
+    pub database_version_policy: &'static str,
+    #[serde(skip)]
+    path: PathBuf,
+    #[serde(skip)]
+    ranges: std::collections::HashMap<String, Vec<(String, String)>>,
+    #[serde(skip)]
+    output_rows: usize,
 }
 
 impl CollectionReport {
     pub fn new(output: &str) -> Self {
+        use std::sync::atomic::{AtomicU64, Ordering};
+        static SEQUENCE: AtomicU64 = AtomicU64::new(0);
+        let version = chrono::Utc::now()
+            .timestamp_nanos_opt()
+            .unwrap_or_default()
+            .max(0) as u64;
         Self {
-            schema_version: 1,
+            schema_version: 2,
             project_version: env!("CARGO_PKG_VERSION"),
             started_at: chrono::Utc::now().to_rfc3339(),
             finished_at: String::new(),
@@ -276,12 +351,184 @@ impl CollectionReport {
             status: "running",
             errors: vec![],
             files: vec![],
+            run_id: format!(
+                "{version}-{}-{}",
+                std::process::id(),
+                SEQUENCE.fetch_add(1, Ordering::Relaxed)
+            ),
+            stage: "parsing",
+            sources: vec![],
+            artifact: None,
+            database_status: "not_started",
+            database_table: None,
+            query_id: None,
+            run_version: version,
+            database_version_policy: "clickhouse_server_nanoseconds_per_row; mongodb_upsert",
+            path: manifest_path(output, None),
+            ranges: Default::default(),
+            output_rows: 0,
         }
     }
-    pub fn write(&mut self, path: &Path, success: bool) -> Result<()> {
-        self.status = if success { "complete" } else { "failed" };
+    pub fn start(output: &str, requested: Option<&Path>) -> Result<Self> {
+        let mut report = Self::new(output);
+        report.path = manifest_path(output, requested);
+        report.checkpoint()?;
+        Ok(report)
+    }
+
+    /// Reject possibly overlapping inputs with O(source files) memory.
+    pub fn record_rows(&mut self, code: &str, rows: usize, first: &str, last: &str) -> Result<()> {
+        let ranges = self.ranges.entry(code.to_owned()).or_default();
+        if ranges
+            .iter()
+            .any(|(start, end)| first <= end.as_str() && last >= start.as_str())
+        {
+            eyre::bail!("{code}多个来源日期区间重叠，无法确认(date,code)唯一性");
+        }
+        ranges.push((first.to_owned(), last.to_owned()));
+        self.output_rows = self
+            .output_rows
+            .checked_add(rows)
+            .ok_or_else(|| eyre::eyre!("输出行数溢出"))?;
+        Ok(())
+    }
+
+    pub fn stage_artifact(&mut self, path: &Path) -> Result<()> {
+        let mut reader = File::open(path)?;
+        let mut hash = Sha256::new();
+        let mut buffer = [0u8; 64 * 1024];
+        let mut bytes = 0;
+        loop {
+            let n = reader.read(&mut buffer)?;
+            if n == 0 {
+                break;
+            }
+            hash.update(&buffer[..n]);
+            bytes += n as u64;
+        }
+        self.artifact = Some(OutputEvidence {
+            path: self.output.clone(),
+            sha256: format!("{:x}", hash.finalize()),
+            bytes,
+            rows: self.output_rows,
+            logical_keys: self.output_rows,
+            first_date: self
+                .ranges
+                .values()
+                .flatten()
+                .map(|(a, _)| a)
+                .min()
+                .cloned(),
+            last_date: self
+                .ranges
+                .values()
+                .flatten()
+                .map(|(_, b)| b)
+                .max()
+                .cloned(),
+            state: "publication_pending",
+        });
+        self.stage = "publishing";
+        self.checkpoint()
+    }
+
+    pub fn verify_csv(&self, path: &Path) -> Result<()> {
+        let mut reader = csv::Reader::from_path(path)?;
+        let headers = reader.headers()?;
+        let date = headers
+            .iter()
+            .position(|h| h == "date")
+            .ok_or_else(|| eyre::eyre!("CSV缺少date"))?;
+        let code = headers
+            .iter()
+            .position(|h| h == "code")
+            .ok_or_else(|| eyre::eyre!("CSV缺少code"))?;
+        let mut count = 0usize;
+        let mut first: Option<String> = None;
+        let mut last: Option<String> = None;
+        for record in reader.records() {
+            let record = record?;
+            let date = record.get(date).ok_or_else(|| eyre::eyre!("CSV日期缺失"))?;
+            let code = record.get(code).ok_or_else(|| eyre::eyre!("CSV代码缺失"))?;
+            chrono::NaiveDate::parse_from_str(date, "%Y-%m-%d")?;
+            if !self.ranges.get(code).is_some_and(|ranges| {
+                ranges
+                    .iter()
+                    .any(|(a, b)| date >= a.as_str() && date <= b.as_str())
+            }) {
+                eyre::bail!("CSV键超出已验证来源区间: {date},{code}");
+            }
+            if first.as_deref().is_none_or(|d| date < d) {
+                first = Some(date.to_owned());
+            }
+            if last.as_deref().is_none_or(|d| date > d) {
+                last = Some(date.to_owned());
+            }
+            count += 1;
+        }
+        let expected_first = self
+            .ranges
+            .values()
+            .flatten()
+            .map(|(a, _)| a.as_str())
+            .min();
+        let expected_last = self
+            .ranges
+            .values()
+            .flatten()
+            .map(|(_, b)| b.as_str())
+            .max();
+        if count != self.output_rows
+            || first.as_deref() != expected_first
+            || last.as_deref() != expected_last
+        {
+            eyre::bail!("CSV回读行数或日期边界与来源不一致");
+        }
+        Ok(())
+    }
+
+    pub fn published(&mut self) -> Result<()> {
+        if let Some(artifact) = &mut self.artifact {
+            artifact.state = "published";
+        }
+        self.checkpoint()
+    }
+
+    pub fn begin_database(&mut self, table: &str) -> Result<()> {
+        self.stage = "database";
+        self.database_table = Some(table.to_owned());
+        self.query_id = Some(format!("rustdx-{}", self.run_id));
+        // Set before sending: termination or network errors cannot prove absence of writes.
+        self.database_status = "unknown";
+        self.checkpoint()
+    }
+
+    pub fn finish(&mut self, result: Result<()>) -> Result<()> {
+        self.files
+            .sort_by(|a, b| (&a.source, &a.code).cmp(&(&b.source, &b.code)));
+        self.sources.sort_by(|a, b| a.source.cmp(&b.source));
+        if let Err(e) = &result {
+            self.errors.push(format!("{e:#}"));
+        }
+        self.status = if result.is_ok() { "complete" } else { "failed" };
         self.finished_at = chrono::Utc::now().to_rfc3339();
-        let (atomic, mut file): (_, File) = AtomicFile::create(path)?;
+        self.checkpoint().map_err(|e| {
+            eyre::eyre!(
+                "运行结果={:?}；状态持久化失败: {e:#}",
+                result.as_ref().err()
+            )
+        })?;
+        result
+    }
+
+    pub fn checkpoint(&self) -> Result<()> {
+        let archive = PathBuf::from(format!("{}.{}.json", self.path.display(), self.run_id));
+        self.save(&archive)?;
+        self.save(&self.path)
+    }
+
+    fn save(&self, path: &Path) -> Result<()> {
+        let (atomic, mut file) = AtomicFile::create(path)?;
         serde_json::to_writer_pretty(&mut file, self)?;
         drop(file);
         atomic.commit()?;
@@ -292,6 +539,61 @@ impl CollectionReport {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn manifests_preserve_each_run_and_verify_published_evidence() {
+        let dir = std::env::temp_dir().join(format!("rustdx-evidence-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let source = dir.join("source.day");
+        std::fs::write(&source, b"abc").unwrap();
+        let (evidence, snapshot) = source_snapshot(&source, 3).unwrap();
+        assert_eq!(snapshot, b"abc");
+        assert_eq!(
+            evidence.sha256,
+            "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+        );
+        assert!(source_snapshot(&source, 2).is_err());
+        let output = dir.join("bars.csv");
+        let mut report = CollectionReport::start(output.to_str().unwrap(), None).unwrap();
+        let id = report.run_id.clone();
+        report.sources.push(evidence);
+        report
+            .record_rows("sh600000", 1, "2026-10-09", "2026-10-09")
+            .unwrap();
+        assert!(
+            report
+                .record_rows("sh600000", 1, "2026-10-09", "2026-10-10")
+                .is_err()
+        );
+        std::fs::write(&output, "date,code\n2026-10-09,sh600000\n").unwrap();
+        report.verify_csv(&output).unwrap();
+        report.stage_artifact(&output).unwrap();
+        report.published().unwrap();
+        report.finish(Ok(())).unwrap();
+        let saved: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(&report.path).unwrap()).unwrap();
+        assert_eq!(
+            saved["artifact"]["sha256"],
+            sha256(&std::fs::read(&output).unwrap())
+        );
+        assert_eq!(saved["artifact"]["rows"], 1);
+        std::fs::write(
+            &output,
+            "date,code\n2026-10-09,sh600000\n2026-10-09,sh600000\n",
+        )
+        .unwrap();
+        assert!(report.verify_csv(&output).is_err());
+        let next = CollectionReport::start(output.to_str().unwrap(), None).unwrap();
+        assert_ne!(next.run_id, id);
+        let archive = PathBuf::from(format!("{}.{}.json", report.path.display(), id));
+        let prior: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(archive).unwrap()).unwrap();
+        assert_eq!(prior["status"], "complete");
+        let latest: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(next.path).unwrap()).unwrap();
+        assert_eq!(latest["status"], "running");
+        std::fs::remove_dir_all(dir).unwrap();
+    }
 
     fn row(code: &str) -> day::Day {
         day::Day {

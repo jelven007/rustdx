@@ -53,7 +53,10 @@ impl EastCmd {
             eyre::bail!("ignore参数已停用，不能绕过行情质量校验");
         }
         let mut outputs = vec![std::path::PathBuf::from(self.output_path())];
-        outputs.extend(self.report.iter().cloned());
+        outputs.push(crate::quality::manifest_path(
+            self.output_path(),
+            self.report.as_deref(),
+        ));
         if self.keep_factor && self.previous.as_deref() == Some(std::path::Path::new("clickhouse"))
         {
             outputs.push("factor.csv".into());
@@ -64,27 +67,19 @@ impl EastCmd {
         inputs.extend(self.calendar.iter().cloned());
         crate::paths::validate(&outputs, &inputs)?;
         let _outputs = crate::paths::OutputLocks::acquire(&outputs)?;
-        let mut report = crate::quality::CollectionReport::new(self.output_path());
-        let result = crate::quality::load_calendar(self.calendar.as_deref())
-            .and_then(|calendar| {
-                fetch_with_calendar(self.max, calendar.as_ref()).and_then(|data| {
-                    self.process_with_calendar(data, &mut report, calendar.as_ref())
-                })
-            })
-            .and_then(|_| {
-                if self.output == "clickhouse" {
-                    crate::io::setup_clickhouse(true, &self.table)?;
-                    crate::io::insert_clickhouse(&self.output, &self.table, false)?;
-                }
-                Ok(())
-            });
-        if let Err(e) = &result {
-            report.errors.push(e.to_string());
-        }
-        if let Some(path) = &self.report {
-            report.write(path, result.is_ok())?;
-        }
-        result
+        let mut report =
+            crate::quality::CollectionReport::start(self.output_path(), self.report.as_deref())?;
+        let result = (|| {
+            let calendar = crate::quality::tracked_calendar(self.calendar.as_deref(), &mut report)?;
+            let data = fetch_with_calendar(self.max, calendar.as_ref())?;
+            self.process_with_calendar(data, &mut report, calendar.as_ref())?;
+            if self.output == "clickhouse" {
+                crate::io::setup_clickhouse(true, &self.table)?;
+                crate::io::sinks::import_clickhouse(&self.output, &self.table, false, &mut report)?;
+            }
+            Ok(())
+        })();
+        report.finish(result)
     }
 
     #[cfg(test)]
@@ -102,11 +97,19 @@ impl EastCmd {
         report: &mut crate::quality::CollectionReport,
         calendar: &dyn rustdx_complete::calendar::CalendarProvider,
     ) -> Result<()> {
+        // Evidence describes the normalized fetched payload, not unavailable raw HTTP bytes.
+        let snapshot = serde_json::to_vec(&data)?;
+        report.sources.push(crate::quality::SourceEvidence {
+            source: "eastmoney:normalized_payload".into(),
+            sha256: crate::quality::sha256(&snapshot),
+            bytes: snapshot.len() as u64,
+        });
         let previous = if self.previous.is_some() {
-            Some(crate::io::previous_csv_table(
+            Some(crate::io::tracked_previous(
                 &self.previous,
                 &self.table,
                 self.keep_factor,
+                report,
             )?)
         } else {
             None
@@ -187,6 +190,8 @@ impl EastCmd {
             };
             report.files.push(issue);
             validation?;
+            row.code.parse::<rustdx_complete::data::Symbol>()?;
+            report.record_rows(&row.code, 1, &row.date, &row.date)?;
             rows.push(row);
         }
         if rows.is_empty() {
@@ -202,7 +207,12 @@ impl EastCmd {
             }
             writer.flush()?;
         }
+        if !self.json {
+            report.verify_csv(atomic.temporary_path())?;
+        }
+        report.stage_artifact(atomic.temporary_path())?;
         atomic.commit()?;
+        report.published()?;
         Ok(())
     }
 }

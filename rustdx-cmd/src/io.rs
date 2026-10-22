@@ -1,6 +1,6 @@
 use crate::cmd::DayCmd;
 use crate::quality::{CollectionReport, QualityRow};
-use eyre::{Result, anyhow, eyre};
+use eyre::{Result, eyre};
 use rustdx_cli::fetch_code::StockList;
 use rustdx_complete::file::{
     day::fq::Day,
@@ -10,7 +10,6 @@ use std::{
     fs::{self, File},
     io::{self, Write},
     path::Path,
-    process::Command,
     sync::{
         atomic::{AtomicUsize, Ordering},
         mpsc,
@@ -20,6 +19,9 @@ use std::{
 };
 
 const BUFFER_SIZE: usize = 32 * (1 << 20); // 32M
+mod schema;
+pub(crate) mod sinks;
+use schema::validate_clickhouse_schema;
 
 /// 并发解析目录下的 day 文件并写入 CSV（利用多核优势）。
 ///
@@ -34,11 +36,11 @@ fn run_par<F, T>(
     report: &mut CollectionReport,
 ) -> Result<()>
 where
-    F: Fn(&str, &Path) -> eyre::Result<Vec<T>> + Send + Sync,
+    F: Fn(&str, &[u8]) -> eyre::Result<Vec<T>> + Send + Sync,
     T: serde::Serialize + QualityRow + Send,
 {
     let start = Instant::now();
-    let calendar = crate::quality::load_calendar(cmd.calendar.as_deref())?;
+    let calendar = crate::quality::tracked_calendar(cmd.calendar.as_deref(), report)?;
     report.calendar = serde_json::to_value(calendar.metadata())?;
     if cmd.workers.is_some_and(|n| !(1..=64).contains(&n)) {
         eyre::bail!("workers必须在1–64之间");
@@ -73,7 +75,7 @@ where
                     .unwrap_or(4)
             })
             .min(n.max(1));
-        let (tx, rx) = mpsc::sync_channel::<(String, eyre::Result<Vec<T>>)>(workers.max(1) * 2);
+        let (tx, rx) = mpsc::sync_channel(workers.max(1) * 2);
 
         // 所有 worker 共享的引用：原子计数器与任务列表
         let count = &count;
@@ -91,26 +93,26 @@ where
                             break;
                         }
                         let (code, src) = &work[i];
-                        let result =
-                            fs::metadata(src)
-                                .map_err(eyre::Report::from)
-                                .and_then(|metadata| {
-                                    if metadata.len() > 32 * 1024 * 1024 {
-                                        eyre::bail!("单个day文件超出32MiB限制");
-                                    }
-                                    parse(code, src)
-                                });
+                        let snapshot = crate::quality::source_snapshot(src, 32 * 1024 * 1024);
+                        let (evidence, result) = match snapshot {
+                            Ok((evidence, bytes)) => (Some(evidence), parse(code, &bytes)),
+                            Err(e) => (None, Err(e)),
+                        };
                         if result.is_ok() {
                             count.fetch_add(1, Ordering::Relaxed);
                         }
-                        if tx.send((src.display().to_string(), result)).is_err() {
+                        if tx
+                            .send((src.display().to_string(), evidence, result))
+                            .is_err()
+                        {
                             break;
                         }
                     }
                 });
             }
             drop(tx); // 关闭发送端，主线程的迭代才能结束
-            for (path, result) in rx {
+            for (path, evidence, result) in rx {
+                report.sources.extend(evidence);
                 let v = match result {
                     Ok(v) => v,
                     Err(e) => {
@@ -164,6 +166,14 @@ where
                         source_rows,
                         v.len()
                     ));
+                }
+                if let (Some(first), Some(last)) = (&quality.first_date, &quality.last_date)
+                    && let Err(e) = report.record_rows(&quality.code, v.len(), first, last)
+                {
+                    quality.errors.push(e.to_string());
+                    failures.push(format!("{path}: {e}"));
+                    report.files.push(quality);
+                    continue;
                 }
                 report.files.push(quality);
                 total_rows += v.len();
@@ -233,7 +243,7 @@ fn normalize_rows<T: QualityRow>(rows: Vec<T>) -> Result<Vec<T>> {
 pub fn run_csv(cmd: &DayCmd) -> Result<()> {
     with_report(cmd, |report| {
         export_csv(cmd, report, |code, src| {
-            Ok(rustdx_complete::file::day::Day::from_file_into_vec(
+            Ok(rustdx_complete::file::day::Day::from_bytes_into_vec(
                 code, src,
             )?)
         })
@@ -242,20 +252,14 @@ pub fn run_csv(cmd: &DayCmd) -> Result<()> {
 
 /// 报告在输出提交及数据库导入之后定案；任何一步失败均记录失败状态。
 fn with_report(cmd: &DayCmd, run: impl FnOnce(&mut CollectionReport) -> Result<()>) -> Result<()> {
-    let mut report = CollectionReport::new(&cmd.output);
+    let mut report = CollectionReport::start(&cmd.output, cmd.report.as_deref())?;
     let result = run(&mut report);
-    if let Err(e) = &result {
-        report.errors.push(format!("{e:#}"));
-    }
-    if let Some(path) = &cmd.report {
-        report.write(path, result.is_ok())?;
-    }
-    result
+    report.finish(result)
 }
 
 fn export_csv<F, T>(cmd: &DayCmd, report: &mut CollectionReport, parse: F) -> Result<()>
 where
-    F: Fn(&str, &Path) -> eyre::Result<Vec<T>> + Send + Sync,
+    F: Fn(&str, &[u8]) -> eyre::Result<Vec<T>> + Send + Sync,
     T: serde::Serialize + QualityRow + Send,
 {
     if cmd.output == "clickhouse" {
@@ -269,10 +273,13 @@ where
         .from_writer(file);
     run_par(cmd, &mut wtr, parse, report)?;
     drop(wtr);
+    report.verify_csv(atomic.temporary_path())?;
+    report.stage_artifact(atomic.temporary_path())?;
     atomic.commit()?;
+    report.published()?;
     match cmd.output.as_str() {
-        "clickhouse" => insert_clickhouse(&cmd.output, &cmd.table, cmd.keep_csv),
-        "mongodb" => import_mongodb(cmd),
+        "clickhouse" => sinks::import_clickhouse(&cmd.output, &cmd.table, cmd.keep_csv, report),
+        "mongodb" => sinks::import_mongodb(cmd, report),
         _ => Ok(()),
     }
 }
@@ -281,11 +288,18 @@ where
 pub fn run_csv_fq(cmd: &DayCmd) -> Result<()> {
     with_report(cmd, |report| {
         // 股本变迁
-        let mut source = rustdx_complete::file::gbbq::Gbbqs::from_file(cmd.gbbq.as_ref().unwrap())?;
-        let gbbq = Gbbq::filter_hashmap(source.to_vec().into_iter());
+        let (evidence, bytes) =
+            crate::quality::source_snapshot(cmd.gbbq.as_ref().unwrap(), 64 * 1024 * 1024)?;
+        report.sources.push(evidence);
+        let mut source = rustdx_complete::file::gbbq::Gbbqs::from_bytes(bytes)?;
+        let gbbq = Gbbq::filter_hashmap(source.try_to_vec()?.into_iter());
 
         export_csv(cmd, report, |code, src| {
-            Ok(Day::new(code, src, gbbq.get(code).map(Vec::as_slice))?)
+            Ok(Day::from_bytes(
+                code,
+                src,
+                gbbq.get(code).map(Vec::as_slice),
+            )?)
         })
     })
 }
@@ -294,17 +308,20 @@ pub fn run_csv_fq(cmd: &DayCmd) -> Result<()> {
 pub fn run_csv_fq_previous(cmd: &DayCmd) -> Result<()> {
     with_report(cmd, |report| {
         // 股本变迁
-        let mut source = rustdx_complete::file::gbbq::Gbbqs::from_file(cmd.gbbq.as_ref().unwrap())?;
-        let gbbq = Gbbq::filter_hashmap(source.to_vec().into_iter());
+        let (evidence, bytes) =
+            crate::quality::source_snapshot(cmd.gbbq.as_ref().unwrap(), 64 * 1024 * 1024)?;
+        report.sources.push(evidence);
+        let mut source = rustdx_complete::file::gbbq::Gbbqs::from_bytes(bytes)?;
+        let gbbq = Gbbq::filter_hashmap(source.try_to_vec()?.into_iter());
 
         // 前收
-        let previous = previous_csv_table(&cmd.previous, &cmd.table, cmd.keep_factor)?;
+        let previous = tracked_previous(&cmd.previous, &cmd.table, cmd.keep_factor, report)?;
 
         export_csv(cmd, report, |code, src| {
             let factor = previous
                 .get(code)
                 .ok_or_else(|| eyre!("{}缺少前因子", code))?;
-            Ok(Day::concat(
+            Ok(Day::concat_bytes(
                 code,
                 src,
                 // 无分红数据并不意味着无复权数据
@@ -383,6 +400,7 @@ impl ClickHouseConfig {
             .config()
             .http_status_as_error(false)
             .timeout_connect(Some(std::time::Duration::from_secs(10)))
+            .timeout_global(Some(std::time::Duration::from_secs(300)))
             .build()
             .header("Content-Type", "text/plain; charset=utf-8");
         // 认证 header（ClickHouse 原生 X-ClickHouse-User/Key）
@@ -408,19 +426,29 @@ impl ClickHouseConfig {
     }
 
     /// 数据流导入（CSV 文件 → `INSERT INTO <table> FORMAT CSVWithNames`）。
+    #[cfg(test)]
     fn insert_csv(&self, table: &str, csv: &std::path::Path) -> Result<()> {
+        self.insert_csv_tracked(table, csv, None)
+    }
+
+    fn insert_csv_tracked(&self, table: &str, csv: &Path, query_id: Option<&str>) -> Result<()> {
         database_table(table)?;
         let file = std::fs::File::open(csv)?;
         let len = file.metadata()?.len();
         let sql = format!(
             "INSERT INTO {table} SETTINGS input_format_defaults_for_omitted_fields=1 FORMAT CSVWithNames"
         );
-        let mut req = ureq::post(&self.url)
+        let mut request = ureq::post(&self.url)
             .query("query", sql)
-            .query("wait_end_of_query", "1")
+            .query("wait_end_of_query", "1");
+        if let Some(query_id) = query_id {
+            request = request.query("query_id", query_id);
+        }
+        let mut req = request
             .config()
             .http_status_as_error(false)
             .timeout_connect(Some(std::time::Duration::from_secs(10)))
+            .timeout_global(Some(std::time::Duration::from_secs(300)))
             .build();
         if self.user != "default" || !self.password.is_empty() {
             req = req.header("X-ClickHouse-User", &self.user);
@@ -490,68 +518,7 @@ pub fn setup_clickhouse(_fq: bool, table: &str) -> Result<()> {
     })
 }
 
-fn validate_clickhouse_schema(metadata: &str, columns: &str) -> Result<()> {
-    let fields: Vec<_> = metadata.trim_end_matches('\n').split('\t').collect();
-    let compact = |value: &str| {
-        value
-            .chars()
-            .filter(|c| !c.is_whitespace() && *c != '`')
-            .collect::<String>()
-    };
-    // engine_full包含ORDER BY / PARTITION BY / SETTINGS，不能当作纯引擎名比较。
-    let engine = fields.first().map(|s| compact(s)).unwrap_or_default();
-    let engine_suffix = engine.strip_prefix("ReplacingMergeTree(version)");
-    if fields.len() != 3
-        || engine_suffix.is_none_or(|suffix| {
-            !suffix.is_empty()
-                && !suffix.starts_with("ORDERBY")
-                && !suffix.starts_with("PARTITIONBY")
-                && !suffix.starts_with("SETTINGS")
-        })
-        || compact(fields[1]) != "date,code"
-        || !matches!(
-            compact(fields[2]).as_str(),
-            "" | "tuple()" | "toYYYYMM(date)" | "toYear(date)" | "date"
-        )
-    {
-        eyre::bail!("要求ReplacingMergeTree(version)、ORDER BY(date,code)，分区只能由date确定");
-    }
-    let columns: std::collections::HashMap<_, _> = columns
-        .lines()
-        .map(|line| {
-            let fields: Vec<_> = line.split('\t').collect();
-            (fields.first().copied().unwrap_or(""), fields)
-        })
-        .collect();
-    for (name, expected_type) in [
-        ("date", "Date"),
-        ("code", "String"),
-        ("open", "Float64"),
-        ("high", "Float64"),
-        ("low", "Float64"),
-        ("close", "Float64"),
-        ("amount", "Float64"),
-        ("vol", "Float64"),
-        ("preclose", "Float64"),
-        ("factor", "Float64"),
-        ("version", "UInt64"),
-    ] {
-        let fields = columns.get(name).ok_or_else(|| eyre!("缺少字段{name}"))?;
-        if fields.get(1) != Some(&expected_type) {
-            eyre::bail!("{name}类型应为{expected_type}");
-        }
-        if matches!(name, "preclose" | "factor" | "version")
-            && (fields.get(2) != Some(&"DEFAULT") || fields.get(3).is_none_or(|s| s.is_empty()))
-        {
-            eyre::bail!("{name}缺少默认值");
-        }
-        if name == "version" && compact(fields[3]) != "toUnixTimestamp64Nano(now64(9))" {
-            eyre::bail!("version必须为每次导入自动生成纳秒版本");
-        }
-    }
-    Ok(())
-}
-
+#[cfg(test)]
 pub fn insert_clickhouse(output: &impl AsRef<Path>, table: &str, keep: bool) -> Result<()> {
     let cfg = ClickHouseConfig::from_env();
     cfg.insert_csv(table, output.as_ref())?;
@@ -613,19 +580,24 @@ fn test_insert_clickhouse() -> Result<()> {
 
 type Previous = Result<std::collections::HashMap<String, Factor>>;
 
-pub fn previous_csv_table(
+pub fn tracked_previous(
     path: &Option<std::path::PathBuf>,
     table: &str,
     keep_factor: bool,
+    report: &mut CollectionReport,
 ) -> Previous {
-    if let Some(Some(path)) = path.as_ref().map(|p| p.to_str()) {
-        if path == "clickhouse" {
-            clickhouse_factor_csv(table, keep_factor)
-        } else {
-            previous_csv(path, keep_factor)
-        }
+    if let Some(path) = crate::paths::previous_input(path.as_deref()) {
+        let (evidence, bytes) = crate::quality::source_snapshot(&path, 64 * 1024 * 1024)?;
+        report.sources.push(evidence);
+        parse_previous(bytes.as_slice())
     } else {
-        Err(anyhow!("请检查 gbbq 路径"))
+        let text = clickhouse_factor_text(table)?;
+        report.sources.push(crate::quality::SourceEvidence {
+            source: format!("clickhouse:{table}:previous"),
+            sha256: crate::quality::sha256(text.as_bytes()),
+            bytes: text.len() as u64,
+        });
+        save_factor_and_parse(&text, keep_factor)
     }
 }
 
@@ -633,6 +605,7 @@ pub fn previous_csv_table(
 ///
 /// 注意：`code` 列需为**含市场前缀的完整代码**（如 `sh600000`），
 /// 与 day 命令输出的 code 格式一致，否则无法匹配。
+#[cfg(test)]
 pub fn previous_csv(p: impl AsRef<Path>, _keep_factor: bool) -> Previous {
     parse_previous(File::open(p)?)
 }
@@ -659,14 +632,17 @@ fn parse_previous(reader: impl io::Read) -> Previous {
 }
 
 /// 获取当前最新 factor
-fn clickhouse_factor_csv(table: &str, keep_factor: bool) -> Previous {
+fn clickhouse_factor_text(table: &str) -> Result<String> {
     database_table(table)?;
     let query = format!(
         "SELECT code, t.1 AS date, t.2 AS close, t.3 AS factor FROM \
         (SELECT code, argMax(tuple(date, close, factor), date) AS t FROM {table} FINAL GROUP BY code) \
         FORMAT CSVWithNames"
     );
-    let text = ClickHouseConfig::from_env().exec(&query)?;
+    ClickHouseConfig::from_env().exec(&query)
+}
+
+fn save_factor_and_parse(text: &str, keep_factor: bool) -> Previous {
     let rows = parse_previous(text.as_bytes())?;
     if keep_factor {
         let (atomic, mut file) = rustdx_complete::atomic_file::AtomicFile::create("factor.csv")?;
@@ -679,35 +655,6 @@ fn clickhouse_factor_csv(table: &str, keep_factor: bool) -> Previous {
 
 pub fn run_mongodb(cmd: &DayCmd) -> Result<()> {
     cmd.run_csv()
-}
-
-fn import_mongodb(cmd: &DayCmd) -> Result<()> {
-    let (database_name, table_name) = database_table(&cmd.table)?;
-    let args = [
-        "--db",
-        database_name,
-        "--collection",
-        table_name,
-        "--type=csv",
-        "--file",
-        &cmd.output,
-        "--headerline",
-        "--mode=upsert",
-        "--upsertFields=date,code",
-    ];
-    let output = Command::new("mongoimport").args(args).output()?;
-    check_output(output)?;
-    keep_csv(&cmd.output, cmd.keep_csv)?;
-    Ok(())
-}
-
-fn check_output(output: std::process::Output) -> Result<()> {
-    io::stdout().write_all(&output.stdout)?;
-    io::stderr().write_all(&output.stderr)?;
-    if !output.status.success() {
-        eyre::bail!("数据库导入失败: {}", output.status);
-    }
-    Ok(())
 }
 
 fn keep_csv(fname: &impl AsRef<Path>, keep: bool) -> io::Result<()> {
@@ -941,7 +888,9 @@ mod tests {
         fs::remove_dir_all(dir).unwrap();
     }
 
-    fn mock_http(response: &'static str) -> (ClickHouseConfig, std::thread::JoinHandle<String>) {
+    pub(super) fn mock_http(
+        response: &'static str,
+    ) -> (ClickHouseConfig, std::thread::JoinHandle<String>) {
         use std::io::Read;
         let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
         let cfg = ClickHouseConfig {

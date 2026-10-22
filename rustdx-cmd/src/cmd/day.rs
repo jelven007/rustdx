@@ -174,7 +174,10 @@ impl DayCmd {
     fn validate_paths(&self) -> Result<Vec<std::path::PathBuf>> {
         use std::path::{Path, PathBuf};
         let mut outputs = vec![PathBuf::from(&self.output)];
-        outputs.extend(self.report.iter().cloned());
+        outputs.push(crate::quality::manifest_path(
+            &self.output,
+            self.report.as_deref(),
+        ));
         if self.keep_csv && matches!(self.output.as_str(), "clickhouse" | "mongodb") {
             outputs.push(Path::new(&self.output).with_extension("csv"));
         }
