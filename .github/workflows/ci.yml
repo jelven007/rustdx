@@ -31,13 +31,13 @@ jobs:
         uses: swatinem/rust-cache@v2
 
       - name: Build (all targets)
-        run: cargo build --workspace --all-targets --locked
+        run: cargo build --workspace --all-targets --all-features --locked
 
       - name: Test
-        run: cargo test --workspace --locked
+        run: cargo test --workspace --all-features --locked
 
       - name: Clippy (deny warnings)
-        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+        run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
 
       - name: Format check
         run: cargo fmt --all -- --check
@@ -50,4 +50,29 @@ jobs:
         with:
           toolchain: "1.89.0"
       - uses: swatinem/rust-cache@v2
-      - run: cargo check --workspace --all-targets --locked
+      - run: cargo test --workspace --all-features --locked
+
+  fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: fuzz
+      - run: cargo install cargo-fuzz --locked
+      - name: Checked parser smoke fuzzing
+        run: cargo fuzz run checked_parsers -- -max_total_time=30 -max_len=4096
+
+  performance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: swatinem/rust-cache@v2
+      - name: Indicator benchmark observation
+        run: cargo bench --bench indicators --locked > indicator-benchmark.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: indicator-benchmark
+          path: indicator-benchmark.txt

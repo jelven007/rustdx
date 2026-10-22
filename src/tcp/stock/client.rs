@@ -24,7 +24,10 @@ use crate::tcp::{Tcp, TcpConfig, Tdx};
 use chrono::Datelike;
 use std::sync::Mutex;
 
+mod adjustment;
 mod batch;
+mod pagination;
+use adjustment::{adjusted_multipliers, checked_ex_right_reference};
 
 /// 高层客户端：持有连接，提供行情查询与复权计算 API。
 #[derive(Debug)]
@@ -703,12 +706,6 @@ fn recheck_empty<T>(
     })
 }
 
-/// 区间翻页页大小（协议单页上限）。
-const BARS_PAGE: u16 = 800;
-/// 区间翻页页数上限：分钟线历史深度有限（约近年），超深分页服务器会返回
-/// 乱码日期；最多82页，下一页偏移不可超出协议的u16范围。
-const MAX_BARS_PAGES: usize = 82;
-
 /// 从给定连接按日期区间拉取任意周期 K 线：自动翻页、去重、窗口过滤、升序。
 ///
 /// 与 `Client::bars_range` 共用逻辑（`Client::k` 的日K专用版见 [`fetch_k`]）。
@@ -723,66 +720,24 @@ fn fetch_bars_range<'a>(
     tcp.with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
         validate_request(market, code, category)?;
         validate_range(begin, end)?;
-        let mut all: Vec<KlineData<'a>> = Vec::new();
-        let mut start = 0u16;
-        let mut pages = 0usize;
-        let mut previous_oldest = None;
-        loop {
-            let kline = Kline::new(market, code, category, start, BARS_PAGE);
-            let run = |tcp: &mut Tcp| {
-                let mut kline = kline.clone();
-                kline.recv_parsed(tcp)?;
-                Ok(kline.result().to_vec())
-            };
-            let bars = if tcp.config().recheck_empty {
-                recheck_empty(tcp, run)?
-            } else {
-                run(tcp)?
-            };
-            validate_bar_dates(bars.iter().map(|b| b.dt))?;
-            let n = bars.len();
-            // 页内最旧一根（顺序无关；乱码日期页由下方年份校验拦截）
-            let oldest = bars.iter().map(|b| b.dt).min();
-            if n > 0 && previous_oldest.is_some_and(|prev| oldest >= Some(prev)) {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::InvalidData,
-                    "K线分页未向历史方向推进",
-                ));
-            }
-            previous_oldest = oldest;
-            all.extend(bars);
-            pages += 1;
-            if n < BARS_PAGE as usize {
-                break; // 历史尽头
-            }
-            let Some(oldest) = oldest else {
-                break;
-            };
-            if let Some(begin) = begin {
-                // 页内最旧数据已早于 begin，停止翻页（min 判停，顺序无关）
-                if DateTime::to_u32(oldest) < begin {
-                    break;
+        pagination::collect(
+            begin,
+            end,
+            |start, count| {
+                let kline = Kline::new(market, code, category, start, count);
+                let run = |tcp: &mut Tcp| {
+                    let mut kline = kline.clone();
+                    kline.recv_parsed(tcp)?;
+                    Ok(kline.result().to_vec())
+                };
+                if tcp.config().recheck_empty {
+                    recheck_empty(tcp, run)
+                } else {
+                    run(tcp)
                 }
-            }
-            if pages >= MAX_BARS_PAGES {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::InvalidData,
-                    "K线分页超过协议偏移上限",
-                ));
-            }
-            start = start.checked_add(BARS_PAGE).ok_or_else(|| {
-                std::io::Error::new(std::io::ErrorKind::InvalidData, "K线分页偏移溢出")
-            })?;
-        }
-
-        // 升序 + 翻页偏移重叠去重（排序后重复时间戳相邻）+ 窗口过滤（丢弃乱码日期页残留）
-        all.sort_by_key(|b| b.dt);
-        all.dedup_by_key(|b| b.dt);
-        all.retain(|bar| {
-            let d = DateTime::to_u32(bar.dt);
-            begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
-        });
-        Ok(all)
+            },
+            |bar| bar.dt,
+        )
     })
 }
 
@@ -801,66 +756,24 @@ fn fetch_index_bars_range<'a>(
     tcp.with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
         validate_request(market, code, category)?;
         validate_range(begin, end)?;
-        let mut all: Vec<IndexKlineData<'a>> = Vec::new();
-        let mut start = 0u16;
-        let mut pages = 0usize;
-        let mut previous_oldest = None;
-        loop {
-            let kline = IndexKline::new(market, code, category, start, BARS_PAGE);
-            let run = |tcp: &mut Tcp| {
-                let mut kline = kline.clone();
-                kline.recv_parsed(tcp)?;
-                Ok(kline.result().to_vec())
-            };
-            let bars = if tcp.config().recheck_empty {
-                recheck_empty(tcp, run)?
-            } else {
-                run(tcp)?
-            };
-            validate_bar_dates(bars.iter().map(|b| b.dt))?;
-            let n = bars.len();
-            // 页内最旧一根（顺序无关；乱码日期页由下方年份校验拦截）
-            let oldest = bars.iter().map(|b| b.dt).min();
-            if n > 0 && previous_oldest.is_some_and(|prev| oldest >= Some(prev)) {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::InvalidData,
-                    "指数K线分页未推进",
-                ));
-            }
-            previous_oldest = oldest;
-            all.extend(bars);
-            pages += 1;
-            if n < BARS_PAGE as usize {
-                break; // 历史尽头
-            }
-            let Some(oldest) = oldest else {
-                break;
-            };
-            if let Some(begin) = begin {
-                // 页内最旧数据已早于 begin，停止翻页（min 判停，顺序无关）
-                if DateTime::to_u32(oldest) < begin {
-                    break;
+        pagination::collect(
+            begin,
+            end,
+            |start, count| {
+                let kline = IndexKline::new(market, code, category, start, count);
+                let run = |tcp: &mut Tcp| {
+                    let mut kline = kline.clone();
+                    kline.recv_parsed(tcp)?;
+                    Ok(kline.result().to_vec())
+                };
+                if tcp.config().recheck_empty {
+                    recheck_empty(tcp, run)
+                } else {
+                    run(tcp)
                 }
-            }
-            if pages >= MAX_BARS_PAGES {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::InvalidData,
-                    "指数K线分页超过偏移上限",
-                ));
-            }
-            start = start.checked_add(BARS_PAGE).ok_or_else(|| {
-                std::io::Error::new(std::io::ErrorKind::InvalidData, "指数K线分页偏移溢出")
-            })?;
-        }
-
-        // 升序 + 翻页偏移重叠去重 + 窗口过滤
-        all.sort_by_key(|b| b.dt);
-        all.dedup_by_key(|b| b.dt);
-        all.retain(|bar| {
-            let d = DateTime::to_u32(bar.dt);
-            begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
-        });
-        Ok(all)
+            },
+            |bar| bar.dt,
+        )
     })
 }
 
@@ -874,27 +787,6 @@ fn fetch_index_bars_range<'a>(
 /// （见 [`crate::limit`]）与日线 `prev_close` 链构建。
 pub fn ex_right_reference(preclose: f64, ev: &XdxrData) -> f64 {
     checked_ex_right_reference(preclose, ev).unwrap_or(preclose)
-}
-
-fn checked_ex_right_reference(preclose: f64, ev: &XdxrData) -> Option<f64> {
-    if !preclose.is_finite()
-        || preclose <= 0.0
-        || [ev.fh_qltp, ev.pgj_qzgb, ev.sg_hltp, ev.pg_hzgb]
-            .iter()
-            .any(|v| !v.is_finite() || *v < 0.0)
-    {
-        return None;
-    }
-    let numer = preclose * 10.0 - ev.fh_qltp as f64 + ev.pgj_qzgb as f64 * ev.pg_hzgb as f64;
-    let denom = 10.0 + ev.sg_hltp as f64 + ev.pg_hzgb as f64;
-    if denom > 0.0 {
-        let adj = numer / denom;
-        if adj.is_finite() && adj > 0.0 {
-            let rounded = (adj * 100.0).round() / 100.0;
-            return (rounded.is_finite() && rounded > 0.0).then_some(rounded);
-        }
-    }
-    None
 }
 
 /// 从给定连接拉取单只股票日K：自动翻页、日期区间过滤、按日期升序排序。
@@ -961,86 +853,6 @@ pub enum Adj {
     Qfq,
     /// 后复权：以服务器可用历史首日为基准（首日价 = 实际价）。
     Hfq,
-}
-
-/// 计算每根 K 线的复权乘数（基于收盘价序列与除权除息事件）。
-///
-/// 算法：
-/// - 除权参考价 `preclose_adj = (preclose*10 - fh + pg*pgj) / (10 + pg + sg)`
-///   （`fh`=每 10 股派现、`sg`=每 10 股送转、`pg`=每 10 股配股、`pgj`=配股价）；
-/// - 除权日价格缩放乘数 `scale *= preclose_adj / preclose`，逐日累积；
-///   停牌期间连续事件以前一次事件的除权参考价继续计算；
-/// - 后复权乘数 `= 1/scale`（除权后价格放大回除权前量纲，首日价不变）；
-/// - 前复权乘数 `= scale[last]/scale`（以最新价为基准，最新价不变）。
-///
-/// 只使用 `category == 1`（除权除息）事件；增发/回购/转配等不改变价格基准。
-fn adjusted_multipliers(
-    days: &[KlineData<'_>],
-    xdxrs: &[XdxrData],
-    adj: Adj,
-) -> std::io::Result<Vec<f64>> {
-    let Some(first) = days.first() else {
-        return Ok(Vec::new());
-    };
-    let invalid = || {
-        std::io::Error::new(
-            std::io::ErrorKind::InvalidData,
-            "复权价格、事件或累计因子非法",
-        )
-    };
-    let first_date = DateTime::to_u32(first.dt);
-    let mut events: Vec<&XdxrData> = xdxrs
-        .iter()
-        // 首日收盘已包含此前事件，缺少更早价格时不能重复应用。
-        .filter(|x| x.category == 1 && x.date > first_date)
-        .collect();
-    events.sort_by_key(|e| e.date);
-    let mut ev = events.iter().peekable();
-
-    let mut scales: Vec<f64> = Vec::with_capacity(days.len());
-    let mut scale = 1.0f64;
-    let mut preclose = first.close;
-    for d in days {
-        if [d.open, d.high, d.low, d.close]
-            .iter()
-            .any(|p| !p.is_finite() || *p <= 0.0)
-        {
-            return Err(invalid());
-        }
-        let date = DateTime::to_u32(d.dt);
-        // 应用所有日期 ≤ 当前交易日且尚未应用的除权事件（含停牌场景：
-        // 除权日无 K 线时顺延到下一个交易日）
-        while let Some(&event) = ev.peek() {
-            if event.date > date {
-                break;
-            }
-            let preclose_adj = checked_ex_right_reference(preclose, event).ok_or_else(invalid)?;
-            scale *= preclose_adj / preclose;
-            if !scale.is_finite() || scale <= 0.0 {
-                return Err(invalid());
-            }
-            preclose = preclose_adj;
-            ev.next();
-        }
-        scales.push(scale);
-        preclose = d.close;
-    }
-
-    let last = *scales.last().unwrap_or(&1.0);
-    scales
-        .into_iter()
-        .map(|s| match adj {
-            Adj::Hfq => 1.0 / s,
-            Adj::Qfq => last / s,
-        })
-        .map(|m| {
-            if m.is_finite() && m > 0.0 {
-                Ok(m)
-            } else {
-                Err(invalid())
-            }
-        })
-        .collect()
 }
 
 #[cfg(test)]

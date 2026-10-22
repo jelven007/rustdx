@@ -4,6 +4,8 @@ Rust 行情库与数据导入工具。最新发布版本：jelven-rustdx-complet
 
 核心库实现通达信 TCP 行情协议、本地 day/lc/gbbq 文件解析、价格复权、技术指标、交易日历、连接池和缓存。CLI 提供日线下载/解析、东方财富收盘快照、CSV/JSON 输出及数据库导入。采用同步 I/O 和有界线程并发。
 
+本地未发布优化已加入严格日历和历史规则、进程网络预算、导入运行清单、安全解析与线性滚动指标，见[优化记录](docs/OPTIMIZATION.md)。`day/east` 默认生成 `<output>.manifest.json` 及每次运行归档；故障恢复与数据库确认边界见[导入说明](docs/IMPORTS.md)。
+
 ## 本地构建
 
 ```sh

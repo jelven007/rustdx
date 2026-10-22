@@ -49,3 +49,8 @@ __pycache__/
 # 通达信全量数据（测试用，体积大）
 hsjday.zip
 hsjday/
+*.manifest.json
+*.manifest.json.*.json
+fuzz/target/
+fuzz/corpus/
+fuzz/artifacts/

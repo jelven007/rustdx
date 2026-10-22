@@ -406,6 +406,98 @@ pub struct BollingerBandsResult {
     pub lower: Vec<Option<f64>>,
 }
 
+// Two aggregate stacks form a queue: each value is pushed/transferred/popped once.
+// Shifted Chan moments avoid subtracting two large squared sums. Removing a value
+// restores a stored aggregate rather than accumulating subtraction error.
+#[derive(Clone, Copy, Default)]
+struct Moments {
+    count: usize,
+    invalid: usize,
+    origin: f64,
+    mean: f64,
+    m2: f64,
+}
+
+impl Moments {
+    fn value(value: f64) -> Self {
+        if value.is_finite() {
+            Self {
+                count: 1,
+                origin: value,
+                ..Self::default()
+            }
+        } else {
+            Self {
+                invalid: 1,
+                ..Self::default()
+            }
+        }
+    }
+
+    fn merge(self, other: Self) -> Self {
+        let invalid = self.invalid + other.invalid;
+        if self.count == 0 {
+            return Self { invalid, ..other };
+        }
+        if other.count == 0 {
+            return Self { invalid, ..self };
+        }
+        let count = self.count + other.count;
+        let delta = (other.origin - self.origin) + (other.mean - self.mean);
+        let weight = other.count as f64 / count as f64;
+        Self {
+            count,
+            invalid,
+            origin: self.origin,
+            mean: self.mean + delta * weight,
+            m2: self.m2 + other.m2 + delta * (delta * weight) * self.count as f64,
+        }
+    }
+}
+
+struct RollingVariance {
+    front: Vec<(f64, Moments)>,
+    back: Vec<(f64, Moments)>,
+    period: usize,
+}
+
+impl RollingVariance {
+    fn new(period: usize) -> Self {
+        Self {
+            front: vec![],
+            back: vec![],
+            period,
+        }
+    }
+
+    fn aggregate(stack: &[(f64, Moments)]) -> Moments {
+        stack
+            .last()
+            .map(|(_, moments)| *moments)
+            .unwrap_or_default()
+    }
+
+    fn push(stack: &mut Vec<(f64, Moments)>, value: f64) {
+        stack.push((value, Self::aggregate(stack).merge(Moments::value(value))));
+    }
+
+    fn update(&mut self, value: f64) -> Option<f64> {
+        if self.front.len() + self.back.len() == self.period {
+            if self.front.is_empty() {
+                while let Some((value, _)) = self.back.pop() {
+                    Self::push(&mut self.front, value);
+                }
+            }
+            self.front.pop();
+        }
+        Self::push(&mut self.back, value);
+        let moments = Self::aggregate(&self.front).merge(Self::aggregate(&self.back));
+        let variance = moments.m2 / self.period as f64;
+        (moments.count == self.period && moments.invalid == 0 && variance.is_finite())
+            .then_some(variance.max(0.0))
+    }
+}
+
 /// 计算布林带 (Bollinger Bands)
 ///
 /// # 参数
@@ -465,40 +557,20 @@ pub fn bollinger_bands(
     // 计算中轨（SMA）
     let sma_values = sma(data, period);
 
-    // 计算上下轨
-    let mut upper_band = Vec::new();
-    let mut lower_band = Vec::new();
-
-    for (i, _) in data.iter().enumerate() {
-        if period < 2 || i + 1 < period {
-            // 数据不足或周期无效
-            upper_band.push(None);
-            lower_band.push(None);
-        } else {
-            // 计算窗口内的标准差（使用 windows 方法更安全）
-            let start = i + 1 - period;
-            let window = &data[start..=i];
-            let mean: f64 = window.iter().sum::<f64>() / period as f64;
-            let variance = window.iter().map(|&x| (x - mean).powi(2)).sum::<f64>() / period as f64;
-            let std = variance.sqrt();
-
-            // 上轨 = 中轨 + k × 标准差
-            // 下轨 = 中轨 - k × 标准差
-            if i < sma_values.len() {
-                if let Some(middle_val) = sma_values[i] {
-                    let upper = middle_val + std_dev_multiplier * std;
-                    let lower = middle_val - std_dev_multiplier * std;
-                    upper_band.push(upper.is_finite().then_some(upper));
-                    lower_band.push(lower.is_finite().then_some(lower));
-                } else {
-                    upper_band.push(None);
-                    lower_band.push(None);
-                }
-            } else {
-                upper_band.push(None);
-                lower_band.push(None);
-            }
-        }
+    let mut variance = RollingVariance::new(period);
+    let mut upper_band = Vec::with_capacity(data.len());
+    let mut lower_band = Vec::with_capacity(data.len());
+    for (&value, &middle) in data.iter().zip(&sma_values) {
+        let spread = variance
+            .update(value)
+            .map(|v| std_dev_multiplier * v.sqrt());
+        let bands = middle.zip(spread);
+        upper_band.push(
+            bands.and_then(|(mean, spread)| (mean + spread).is_finite().then_some(mean + spread)),
+        );
+        lower_band.push(
+            bands.and_then(|(mean, spread)| (mean - spread).is_finite().then_some(mean - spread)),
+        );
     }
 
     BollingerBandsResult {
@@ -599,27 +671,46 @@ pub fn kdj(
     }
 
     // 计算 RSV (Raw Stochastic Value)
-    let mut rsv_values = Vec::new();
+    let mut rsv_values = Vec::with_capacity(len);
+    let mut maxima = std::collections::VecDeque::<usize>::new();
+    let mut minima = std::collections::VecDeque::<usize>::new();
+    let mut last_invalid = None;
     for i in 0..len {
+        let start = (i + 1).saturating_sub(k_period);
+        while maxima.front().is_some_and(|&index| index < start) {
+            maxima.pop_front();
+        }
+        while minima.front().is_some_and(|&index| index < start) {
+            minima.pop_front();
+        }
+        if !high[i].is_finite()
+            || !low[i].is_finite()
+            || !close[i].is_finite()
+            || high[i] < low[i]
+            || close[i] < low[i]
+            || close[i] > high[i]
+        {
+            last_invalid = Some(i);
+        } else {
+            while maxima.back().is_some_and(|&index| high[index] <= high[i]) {
+                maxima.pop_back();
+            }
+            while minima.back().is_some_and(|&index| low[index] >= low[i]) {
+                minima.pop_back();
+            }
+            maxima.push_back(i);
+            minima.push_back(i);
+        }
         if i + 1 < k_period {
             rsv_values.push(None);
         } else {
-            let start = i + 1 - k_period;
-            let window_high = &high[start..=i];
-            let window_low = &low[start..=i];
-            if !window_high
-                .iter()
-                .chain(window_low)
-                .chain(&close[start..=i])
-                .all(|v| v.is_finite())
-                || (start..=i).any(|j| high[j] < low[j] || close[j] < low[j] || close[j] > high[j])
-            {
+            if last_invalid.is_some_and(|index| index >= start) {
                 rsv_values.push(None);
                 continue;
             }
 
-            let highest_high = window_high.iter().fold(f64::NAN, |a, &b| a.max(b));
-            let lowest_low = window_low.iter().fold(f64::NAN, |a, &b| a.min(b));
+            let highest_high = high[*maxima.front().unwrap()];
+            let lowest_low = low[*minima.front().unwrap()];
 
             if highest_high - lowest_low > 0.0 {
                 let rsv = (close[i] - lowest_low) / (highest_high - lowest_low) * 100.0;
@@ -675,6 +766,76 @@ pub fn kdj(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn rolling_bands_match_centered_reference_and_recover_from_overflow() {
+        let data: Vec<_> = (0..10_000)
+            .map(|i| 1e12 + ((i * 17 % 127) as f64 - 63.0) * 0.125)
+            .collect();
+        for period in [2, 9, 200, 2000] {
+            let result = bollinger_bands(&data, period, 2.0);
+            for (i, window) in data.windows(period).enumerate().step_by(17) {
+                let origin = window[0];
+                let mean = window.iter().map(|v| v - origin).sum::<f64>() / period as f64;
+                let variance = window
+                    .iter()
+                    .map(|v| (v - origin - mean).powi(2))
+                    .sum::<f64>()
+                    / period as f64;
+                let index = i + period - 1;
+                let expected = origin + mean + 2.0 * variance.sqrt();
+                assert!((result.upper[index].unwrap() - expected).abs() <= 0.0005);
+            }
+        }
+        let bands = bollinger_bands(&[f64::MAX, -f64::MAX, f64::NAN, 1.0, 2.0, 3.0], 2, 2.0);
+        assert!(bands.upper[1..4].iter().all(Option::is_none));
+        assert_eq!(bands.upper[5], Some(3.5));
+        assert_eq!(bollinger_bands(&[42.0; 100], 20, 2.0).upper[99], Some(42.0));
+    }
+
+    #[test]
+    fn monotonic_kdj_matches_scanned_windows_including_invalid_bars() {
+        let mut close: Vec<_> = (0..1000).map(|i| 10.0 + (i as f64 * 0.3).sin()).collect();
+        let high: Vec<_> = close.iter().map(|v| v + 1.0).collect();
+        let low: Vec<_> = close.iter().map(|v| v - 1.0).collect();
+        close[37] = f64::NAN;
+        close[500] = 1000.0;
+        for period in [1, 9, 200, 2000] {
+            let result = kdj(&high, &low, &close, period, 3, 3);
+            let mut state = None;
+            for i in 0..close.len() {
+                let rsv = if i + 1 < period {
+                    None
+                } else {
+                    let start = i + 1 - period;
+                    if (start..=i)
+                        .any(|j| !close[j].is_finite() || close[j] < low[j] || close[j] > high[j])
+                    {
+                        None
+                    } else {
+                        let hi = high[start..=i]
+                            .iter()
+                            .copied()
+                            .fold(f64::NEG_INFINITY, f64::max);
+                        let lo = low[start..=i].iter().copied().fold(f64::INFINITY, f64::min);
+                        Some((close[i] - lo) / (hi - lo) * 100.0)
+                    }
+                };
+                if let Some(rsv) = rsv {
+                    let (k, d) = state.unwrap_or((rsv, rsv));
+                    let k = k + 0.5 * (rsv - k);
+                    let d = d + 0.5 * (k - d);
+                    assert_eq!(result.k[i], Some(k));
+                    assert_eq!(result.d[i], Some(d));
+                    assert_eq!(result.j[i], Some(3.0 * k - 2.0 * d));
+                    state = Some((k, d));
+                } else {
+                    assert_eq!(result.k[i], None);
+                    state = None;
+                }
+            }
+        }
+    }
 
     #[test]
     fn indicator_gaps_preserve_alignment_and_recover() {

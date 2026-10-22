@@ -2,6 +2,10 @@
 
 ## 本地优化（2026-10-22，尚未发布）
 
+`day/east` 默认写运行清单和run_id归档，`--report`可更改路径；schema_version升级为2，增加摘要、输出验证和数据库确认状态。数据库HTTP及mongoimport现在有300秒上限，失败保留CSV；详见[IMPORTS.md](IMPORTS.md)。文件构造器拒绝非法日期及数值，新 `try_from_bytes/try_from_chunk/try_parse/try_to_vec` 面向不可信数据；旧单条解析入口继续保留。
+
+布林带使用双栈聚合的中心化总体方差，KDJ使用单调队列；正常序列总耗时O(n)，预热及缺口恢复口径不变。方差舍入误差可能带来末位变化，避免通过逐位浮点相等评判布林带回归。
+
 历史涨跌幅现在由 `RuleContext` 的日期、板块、当日ST状态及上市阶段决定。`rule_at/prices_at/status_at` 能区分无幅度限制和非法输入；详细范围、IPO及例外见 [LIMIT_RULES.md](LIMIT_RULES.md)。静态涨跌停接口仍保留，但主板ST幅度按2026-07-06生效的规则改为10%；历史5%必须使用日期接口。
 
 `CalendarProvider` 返回版本、来源和覆盖范围。严格前后交易日、最近N日和市场交易日接口在搜索越界时返回错误。`day/east --calendar calendar.json` 接受完整休市日列表（周末自动休市），报告记录使用的日历。输入格式为：
