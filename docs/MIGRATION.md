@@ -44,7 +44,7 @@ EMA周期0返回NaN，非有限输入返回NaN并重置，下一有效价格重�
 
 均已发布到 crates.io。核心库安装 `cargo add jelven-rustdx-complete --rename rustdx-complete`；CLI 安装 `cargo install jelven-rustdx-cli --locked`（二进制 `rustdx`）。CLI 更名因 crates.io 上 `rustdx-cli` 归属他人，Rust 导入名仍为 `rustdx_cli`。
 
-同一 Client 的批量调用现在排队，单个批次内部仍并行，可能增加重叠调用的等待时间；避免30个任务分别创建Client并开独立池。每个Client含1条主连接及最多max_parallel条批量连接，进程总预算应由上层统一管理，建议从4–8条开始观测。连接池 `get_connection` 仍在饱和时返回WouldBlock；需要有界等待时使用 `get_connection_timeout`，其等待时限不包含建连。
+同一 Client 的批量调用有界排队，批次内并行。所有受管Tcp共享默认8条进程预算（含主连接和空闲池），首次使用前可通过 `configure_network` 调整一次。批次完成释放连接许可；并行数也受进程预算约束。连接池 `get_connection` 在本池饱和时仍返回WouldBlock，全局配额不足会有界等待；`get_connection_timeout` 的时限现在包含建连和探活。连接、完整帧、分页及批次均有总体时限；自动选服改为轮换起点及故障冷却。配置、统计与裸socket兼容边界见[NETWORK.md](NETWORK.md)。
 
 旧静态概念查询已弃用：`get_concept_stocks/get_concept_info` 返回None，`get_concept_names` 返回空列表，表示本库不再提供未核实样例。迁移到 `Client::block("block_gn.dat")`，按源板块名筛选并保存采集时间。该接口返回代码而非证券名称，名称可从证券列表匹配；不同来源板块不能直接等同。
 

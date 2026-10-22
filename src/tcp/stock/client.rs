@@ -22,22 +22,18 @@ use crate::pool::{ConnectionPool, PoolConfig};
 use crate::tcp::helper::DateTime;
 use crate::tcp::{Tcp, TcpConfig, Tdx};
 use chrono::Datelike;
-use std::collections::VecDeque;
-use std::sync::{Arc, Mutex};
+use std::sync::Mutex;
+
+mod batch;
 
 /// 高层客户端：持有连接，提供行情查询与复权计算 API。
 #[derive(Debug)]
 pub struct Client {
     /// 底层连接（需要更细粒度控制时可直接使用）。
     pub tcp: Tcp,
-    batch_lock: Mutex<()>,
+    batch_lock: batch::BatchGate,
     batch_pool: Mutex<Option<(usize, TcpConfig, ConnectionPool)>>,
 }
-
-/// `k_batch` 的任务队列：`(输入序号, market, code)`。
-type BatchQueue<'a> = Arc<Mutex<VecDeque<(usize, u16, &'a str)>>>;
-/// `k_batch` 的结果槽：按输入序号存放各股票的拉取结果。
-type BatchResults<'a> = Arc<Mutex<Vec<Option<std::io::Result<Vec<KlineData<'a>>>>>>>;
 
 impl Client {
     /// 连接服务器（内置故障转移），等价于 `Tcp::new()`。
@@ -49,7 +45,7 @@ impl Client {
     pub fn with_config(config: &TcpConfig) -> std::io::Result<Self> {
         Ok(Self {
             tcp: Tcp::with_config(config)?,
-            batch_lock: Mutex::new(()),
+            batch_lock: batch::BatchGate::default(),
             batch_pool: Mutex::new(None),
         })
     }
@@ -251,7 +247,7 @@ impl Client {
     /// - `stocks`: `(market, code)` 列表（market: 0=深市、1=沪市）；
     /// - `begin`/`end`: 日期区间（YYYYMMDD），`None` 不设限；
     /// - `max_parallel`: 并行连接数上限；传 `0` 按 CPU 核数自动。
-    ///   建议从 4–8 开始；多个 Client 仍需调用方限制进程总连接数。
+    ///   受进程共享的 [`crate::tcp::NetworkPolicy`] 连接预算约束。
     ///   同一 Client 的批次排队执行，批次内并行，避免相互耗尽或关闭连接池。
     ///
     /// # 返回
@@ -278,74 +274,15 @@ impl Client {
         end: Option<u32>,
         max_parallel: usize,
     ) -> std::io::Result<Vec<BatchKline<'a>>> {
-        if stocks.is_empty() {
-            return Ok(Vec::new());
-        }
-        let workers = match max_parallel {
-            0 => std::thread::available_parallelism()
-                .map(|n| n.get())
-                .unwrap_or(4),
-            n => n,
-        }
-        .min(stocks.len())
-        .max(1);
-
-        let _batch = self
-            .batch_lock
-            .lock()
-            .map_err(|_| std::io::Error::other("批量查询锁已损坏"))?;
-        let pool = self.batch_pool(workers)?;
-        let queue: BatchQueue<'a> = Arc::new(Mutex::new(
-            stocks
-                .iter()
-                .enumerate()
-                .map(|(i, &(m, c))| (i, m, c))
-                .collect(),
-        ));
-        let results: BatchResults<'a> =
-            Arc::new(Mutex::new((0..stocks.len()).map(|_| None).collect()));
-
-        // 固定 worker 数 = 连接池大小：每个 worker 持一条连接处理队列，
-        // 避免反复建连/归还的锁竞争，也不会触发连接池饱和错误。
-        std::thread::scope(|s| {
-            for _ in 0..workers {
-                let queue = Arc::clone(&queue);
-                let results = Arc::clone(&results);
-                let pool = pool.clone();
-                s.spawn(move || {
-                    let Ok(mut conn) = pool.get_connection() else {
-                        return;
-                    };
-                    loop {
-                        let item = queue.lock().unwrap().pop_front();
-                        let Some((idx, market, code)) = item else {
-                            break;
-                        };
-                        let r = conn.execute(|tcp| {
-                            fetch_k_checked(tcp, market, code, begin, end).map_err(|e| {
-                                ctx_err(e, format_args!("k_batch(market={market}, code={code})"))
-                            })
-                        });
-                        results.lock().unwrap()[idx] = Some(r);
-                    }
-                });
-            }
-        });
-
-        let mut out = Vec::with_capacity(stocks.len());
-        for (i, &(market, code)) in stocks.iter().enumerate() {
-            let result = results.lock().unwrap()[i].take().unwrap_or_else(|| {
-                Err(std::io::Error::other(
-                    "worker 未能处理该股票（连接建立失败）",
-                ))
-            });
-            out.push(BatchKline {
+        Ok(stocks
+            .iter()
+            .zip(batch::fetch(self, stocks, None, begin, end, max_parallel)?)
+            .map(|(&(market, code), result)| BatchKline {
                 market,
                 code,
                 result,
-            });
-        }
-        Ok(out)
+            })
+            .collect())
     }
 
     /// 批量拉取多只股票任意周期 K 线区间（内部连接池并行，不占用当前连接）。
@@ -359,7 +296,7 @@ impl Client {
     /// - `category`: K 线种类（0=5m、1=15m、…、9=日线）；
     /// - `begin`/`end`: 日期区间（YYYYMMDD，闭区间），`None` 不设限；
     /// - `max_parallel`: 并行连接数上限；传 `0` 按 CPU 核数自动。
-    ///   建议从 4–8 开始；多个 Client 仍需调用方限制进程总连接数。
+    ///   受进程共享的 [`crate::tcp::NetworkPolicy`] 连接预算约束。
     ///   与同一 Client 的其他批次排队执行，批次内并行。
     ///
     /// 按输入顺序返回；单只失败不影响其他（失败信息在对应 [`BatchBars::result`] 中）。
@@ -371,79 +308,22 @@ impl Client {
         end: Option<u32>,
         max_parallel: usize,
     ) -> std::io::Result<Vec<BatchBars<'a>>> {
-        if stocks.is_empty() {
-            return Ok(Vec::new());
-        }
-        let workers = match max_parallel {
-            0 => std::thread::available_parallelism()
-                .map(|n| n.get())
-                .unwrap_or(4),
-            n => n,
-        }
-        .min(stocks.len())
-        .max(1);
-
-        let _batch = self
-            .batch_lock
-            .lock()
-            .map_err(|_| std::io::Error::other("批量查询锁已损坏"))?;
-        let pool = self.batch_pool(workers)?;
-        let queue: BatchQueue<'a> = Arc::new(Mutex::new(
-            stocks
-                .iter()
-                .enumerate()
-                .map(|(i, &(m, c))| (i, m, c))
-                .collect(),
-        ));
-        let results: BatchResults<'a> =
-            Arc::new(Mutex::new((0..stocks.len()).map(|_| None).collect()));
-
-        // 固定 worker 数 = 连接池大小：每个 worker 持一条连接处理队列
-        std::thread::scope(|s| {
-            for _ in 0..workers {
-                let queue = Arc::clone(&queue);
-                let results = Arc::clone(&results);
-                let pool = pool.clone();
-                s.spawn(move || {
-                    let Ok(mut conn) = pool.get_connection() else {
-                        return;
-                    };
-                    loop {
-                        let item = queue.lock().unwrap().pop_front();
-                        let Some((idx, market, code)) = item else {
-                            break;
-                        };
-                        let r = conn.execute(|tcp| {
-                            fetch_bars_range(tcp, market, code, category, begin, end).map_err(|e| {
-                                ctx_err(
-                                    e,
-                                    format_args!(
-                                        "bars_batch(market={market}, code={code}, \
-                                             category={category})"
-                                    ),
-                                )
-                            })
-                        });
-                        results.lock().unwrap()[idx] = Some(r);
-                    }
-                });
-            }
-        });
-
-        let mut out = Vec::with_capacity(stocks.len());
-        for (i, &(market, code)) in stocks.iter().enumerate() {
-            let result = results.lock().unwrap()[i].take().unwrap_or_else(|| {
-                Err(std::io::Error::other(
-                    "worker 未能处理该股票（连接建立失败）",
-                ))
-            });
-            out.push(BatchBars {
+        Ok(stocks
+            .iter()
+            .zip(batch::fetch(
+                self,
+                stocks,
+                Some(category),
+                begin,
+                end,
+                max_parallel,
+            )?)
+            .map(|(&(market, code), result)| BatchBars {
                 market,
                 code,
                 result,
-            });
-        }
-        Ok(out)
+            })
+            .collect())
     }
 
     /// 按日期区间拉取**复权**日K线（前复权/后复权，本地计算）。
@@ -469,44 +349,53 @@ impl Client {
         begin: Option<u32>,
         end: Option<u32>,
     ) -> std::io::Result<Vec<super::KlineData<'a>>> {
-        validate_request(market, code, 9)?;
-        validate_range(begin, end)?;
-        // 从服务器可用历史首日连续累积，再在本地过滤区间。
-        let all = fetch_k_checked(&mut self.tcp, market, code, None, None).map_err(|e| {
-            ctx_err(
-                e,
-                format_args!("Client::k_adjusted(market={market}, code={code})"),
-            )
-        })?;
-        if all.is_empty() {
-            return Ok(all);
-        }
-        let xdxrs = self.xdxr(market, code)?;
-        let multipliers = adjusted_multipliers(&all, &xdxrs, adj)?;
-
-        all.into_iter()
-            .zip(multipliers)
-            .filter(|(bar, _)| {
-                let d = DateTime::to_u32(bar.dt);
-                begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
-            })
-            .map(|(mut bar, m)| {
-                bar.open *= m;
-                bar.high *= m;
-                bar.low *= m;
-                bar.close *= m;
-                if [bar.open, bar.high, bar.low, bar.close]
-                    .iter()
-                    .any(|p| !p.is_finite() || *p <= 0.0)
-                {
-                    return Err(std::io::Error::new(
-                        std::io::ErrorKind::InvalidData,
-                        "复权价格溢出或非法",
-                    ));
+        self.tcp
+            .with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
+                validate_request(market, code, 9)?;
+                validate_range(begin, end)?;
+                // 从服务器可用历史首日连续累积，再在本地过滤区间。
+                let all = fetch_k_checked(tcp, market, code, None, None).map_err(|e| {
+                    ctx_err(
+                        e,
+                        format_args!("Client::k_adjusted(market={market}, code={code})"),
+                    )
+                })?;
+                if all.is_empty() {
+                    return Ok(all);
                 }
-                Ok(bar)
+                let mut xdxrs = Xdxr::new(market, code);
+                xdxrs.recv_parsed(tcp).map_err(|e| {
+                    ctx_err(
+                        e,
+                        format_args!("Client::k_adjusted(xdxr, market={market}, code={code})"),
+                    )
+                })?;
+                let multipliers = adjusted_multipliers(&all, xdxrs.result(), adj)?;
+
+                all.into_iter()
+                    .zip(multipliers)
+                    .filter(|(bar, _)| {
+                        let d = DateTime::to_u32(bar.dt);
+                        begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
+                    })
+                    .map(|(mut bar, m)| {
+                        bar.open *= m;
+                        bar.high *= m;
+                        bar.low *= m;
+                        bar.close *= m;
+                        if [bar.open, bar.high, bar.low, bar.close]
+                            .iter()
+                            .any(|p| !p.is_finite() || *p <= 0.0)
+                        {
+                            return Err(std::io::Error::new(
+                                std::io::ErrorKind::InvalidData,
+                                "复权价格溢出或非法",
+                            ));
+                        }
+                        Ok(bar)
+                    })
+                    .collect()
             })
-            .collect()
     }
 
     /// 当日分时。
@@ -651,30 +540,42 @@ impl Client {
     /// 全部证券列表，自动分页聚合。
     pub fn stocks(&mut self, market: u16) -> crate::Result<Vec<SecurityListData>> {
         validate_request(market, "000001", 9)?;
-        super::stocks(&mut self.tcp, market).map_err(|e| {
-            crate::Error::Io(std::io::Error::other(format!(
-                "Client::stocks(market={market}): {e}"
-            )))
+        super::stocks(&mut self.tcp, market).map_err(|e| match e {
+            crate::Error::Io(error) => crate::Error::Io(ctx_err(
+                error,
+                format_args!("Client::stocks(market={market})"),
+            )),
+            other => crate::Error::Context {
+                context: format!("Client::stocks(market={market})"),
+                source: Box::new(other),
+            },
         })
     }
 
     /// F10 公司资料全部栏目，返回 `(栏目名, 内容)`。
     pub fn f10(&mut self, market: u16, code: &str) -> std::io::Result<Vec<(String, String)>> {
-        validate_request(market, code, 9)?;
-        let ctx = format_args!("Client::f10(market={market}, code={code})");
-        let mut cat = CompanyInfoCategory::new(market, code);
-        cat.recv_parsed(&mut self.tcp)
-            .map_err(|e| ctx_err(e, ctx))?;
-        let mut result = Vec::with_capacity(cat.result().len());
-        for item in cat.result() {
-            let mut content =
-                CompanyInfoContent::new(market, code, &item.filename, item.start, item.length);
-            content
-                .recv_parsed(&mut self.tcp)
-                .map_err(|e| ctx_err(e, format_args!("{ctx}（栏目 {}）", item.name)))?;
-            result.push((item.name.clone(), std::mem::take(&mut content.data)));
-        }
-        Ok(result)
+        self.tcp
+            .with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
+                validate_request(market, code, 9)?;
+                let ctx = format_args!("Client::f10(market={market}, code={code})");
+                let mut cat = CompanyInfoCategory::new(market, code);
+                cat.recv_parsed(tcp).map_err(|e| ctx_err(e, ctx))?;
+                let mut result = Vec::with_capacity(cat.result().len());
+                for item in cat.result() {
+                    let mut content = CompanyInfoContent::new(
+                        market,
+                        code,
+                        &item.filename,
+                        item.start,
+                        item.length,
+                    );
+                    content
+                        .recv_parsed(tcp)
+                        .map_err(|e| ctx_err(e, format_args!("{ctx}（栏目 {}）", item.name)))?;
+                    result.push((item.name.clone(), std::mem::take(&mut content.data)));
+                }
+                Ok(result)
+            })
     }
 
     /// F10 公司资料栏目目录。
@@ -709,6 +610,8 @@ impl Client {
         let pool = ConnectionPool::with_tcp_config(
             PoolConfig {
                 max_size: workers,
+                // 批次完成释放全局许可，避免多个 Client 的空闲池相互饿死。
+                max_idle: 0,
                 ..Default::default()
             },
             config.clone(),
@@ -789,13 +692,15 @@ fn recheck_empty<T>(
     tcp: &mut Tcp,
     mut fetch: impl FnMut(&mut Tcp) -> std::io::Result<Vec<T>>,
 ) -> std::io::Result<Vec<T>> {
-    let first = fetch(tcp)?;
-    if !first.is_empty() {
-        return Ok(first);
-    }
-    std::thread::sleep(std::time::Duration::from_millis(300));
-    tcp.reconnect()?;
-    fetch(tcp)
+    tcp.with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
+        let first = fetch(tcp)?;
+        if !first.is_empty() {
+            return Ok(first);
+        }
+        tcp.delay(std::time::Duration::from_millis(300))?;
+        tcp.reconnect()?;
+        fetch(tcp)
+    })
 }
 
 /// 区间翻页页大小（协议单页上限）。
@@ -815,68 +720,70 @@ fn fetch_bars_range<'a>(
     begin: Option<u32>,
     end: Option<u32>,
 ) -> std::io::Result<Vec<KlineData<'a>>> {
-    validate_request(market, code, category)?;
-    validate_range(begin, end)?;
-    let mut all: Vec<KlineData<'a>> = Vec::new();
-    let mut start = 0u16;
-    let mut pages = 0usize;
-    let mut previous_oldest = None;
-    loop {
-        let kline = Kline::new(market, code, category, start, BARS_PAGE);
-        let run = |tcp: &mut Tcp| {
-            let mut kline = kline.clone();
-            kline.recv_parsed(tcp)?;
-            Ok(kline.result().to_vec())
-        };
-        let bars = if tcp.config().recheck_empty {
-            recheck_empty(tcp, run)?
-        } else {
-            run(tcp)?
-        };
-        validate_bar_dates(bars.iter().map(|b| b.dt))?;
-        let n = bars.len();
-        // 页内最旧一根（顺序无关；乱码日期页由下方年份校验拦截）
-        let oldest = bars.iter().map(|b| b.dt).min();
-        if n > 0 && previous_oldest.is_some_and(|prev| oldest >= Some(prev)) {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "K线分页未向历史方向推进",
-            ));
-        }
-        previous_oldest = oldest;
-        all.extend(bars);
-        pages += 1;
-        if n < BARS_PAGE as usize {
-            break; // 历史尽头
-        }
-        let Some(oldest) = oldest else {
-            break;
-        };
-        if let Some(begin) = begin {
-            // 页内最旧数据已早于 begin，停止翻页（min 判停，顺序无关）
-            if DateTime::to_u32(oldest) < begin {
-                break;
+    tcp.with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
+        validate_request(market, code, category)?;
+        validate_range(begin, end)?;
+        let mut all: Vec<KlineData<'a>> = Vec::new();
+        let mut start = 0u16;
+        let mut pages = 0usize;
+        let mut previous_oldest = None;
+        loop {
+            let kline = Kline::new(market, code, category, start, BARS_PAGE);
+            let run = |tcp: &mut Tcp| {
+                let mut kline = kline.clone();
+                kline.recv_parsed(tcp)?;
+                Ok(kline.result().to_vec())
+            };
+            let bars = if tcp.config().recheck_empty {
+                recheck_empty(tcp, run)?
+            } else {
+                run(tcp)?
+            };
+            validate_bar_dates(bars.iter().map(|b| b.dt))?;
+            let n = bars.len();
+            // 页内最旧一根（顺序无关；乱码日期页由下方年份校验拦截）
+            let oldest = bars.iter().map(|b| b.dt).min();
+            if n > 0 && previous_oldest.is_some_and(|prev| oldest >= Some(prev)) {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "K线分页未向历史方向推进",
+                ));
             }
+            previous_oldest = oldest;
+            all.extend(bars);
+            pages += 1;
+            if n < BARS_PAGE as usize {
+                break; // 历史尽头
+            }
+            let Some(oldest) = oldest else {
+                break;
+            };
+            if let Some(begin) = begin {
+                // 页内最旧数据已早于 begin，停止翻页（min 判停，顺序无关）
+                if DateTime::to_u32(oldest) < begin {
+                    break;
+                }
+            }
+            if pages >= MAX_BARS_PAGES {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "K线分页超过协议偏移上限",
+                ));
+            }
+            start = start.checked_add(BARS_PAGE).ok_or_else(|| {
+                std::io::Error::new(std::io::ErrorKind::InvalidData, "K线分页偏移溢出")
+            })?;
         }
-        if pages >= MAX_BARS_PAGES {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "K线分页超过协议偏移上限",
-            ));
-        }
-        start = start.checked_add(BARS_PAGE).ok_or_else(|| {
-            std::io::Error::new(std::io::ErrorKind::InvalidData, "K线分页偏移溢出")
-        })?;
-    }
 
-    // 升序 + 翻页偏移重叠去重（排序后重复时间戳相邻）+ 窗口过滤（丢弃乱码日期页残留）
-    all.sort_by_key(|b| b.dt);
-    all.dedup_by_key(|b| b.dt);
-    all.retain(|bar| {
-        let d = DateTime::to_u32(bar.dt);
-        begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
-    });
-    Ok(all)
+        // 升序 + 翻页偏移重叠去重（排序后重复时间戳相邻）+ 窗口过滤（丢弃乱码日期页残留）
+        all.sort_by_key(|b| b.dt);
+        all.dedup_by_key(|b| b.dt);
+        all.retain(|bar| {
+            let d = DateTime::to_u32(bar.dt);
+            begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
+        });
+        Ok(all)
+    })
 }
 
 /// 从给定连接按日期区间拉取指数K线：自动翻页、去重、窗口过滤、升序。
@@ -891,68 +798,70 @@ fn fetch_index_bars_range<'a>(
     begin: Option<u32>,
     end: Option<u32>,
 ) -> std::io::Result<Vec<IndexKlineData<'a>>> {
-    validate_request(market, code, category)?;
-    validate_range(begin, end)?;
-    let mut all: Vec<IndexKlineData<'a>> = Vec::new();
-    let mut start = 0u16;
-    let mut pages = 0usize;
-    let mut previous_oldest = None;
-    loop {
-        let kline = IndexKline::new(market, code, category, start, BARS_PAGE);
-        let run = |tcp: &mut Tcp| {
-            let mut kline = kline.clone();
-            kline.recv_parsed(tcp)?;
-            Ok(kline.result().to_vec())
-        };
-        let bars = if tcp.config().recheck_empty {
-            recheck_empty(tcp, run)?
-        } else {
-            run(tcp)?
-        };
-        validate_bar_dates(bars.iter().map(|b| b.dt))?;
-        let n = bars.len();
-        // 页内最旧一根（顺序无关；乱码日期页由下方年份校验拦截）
-        let oldest = bars.iter().map(|b| b.dt).min();
-        if n > 0 && previous_oldest.is_some_and(|prev| oldest >= Some(prev)) {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "指数K线分页未推进",
-            ));
-        }
-        previous_oldest = oldest;
-        all.extend(bars);
-        pages += 1;
-        if n < BARS_PAGE as usize {
-            break; // 历史尽头
-        }
-        let Some(oldest) = oldest else {
-            break;
-        };
-        if let Some(begin) = begin {
-            // 页内最旧数据已早于 begin，停止翻页（min 判停，顺序无关）
-            if DateTime::to_u32(oldest) < begin {
-                break;
+    tcp.with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
+        validate_request(market, code, category)?;
+        validate_range(begin, end)?;
+        let mut all: Vec<IndexKlineData<'a>> = Vec::new();
+        let mut start = 0u16;
+        let mut pages = 0usize;
+        let mut previous_oldest = None;
+        loop {
+            let kline = IndexKline::new(market, code, category, start, BARS_PAGE);
+            let run = |tcp: &mut Tcp| {
+                let mut kline = kline.clone();
+                kline.recv_parsed(tcp)?;
+                Ok(kline.result().to_vec())
+            };
+            let bars = if tcp.config().recheck_empty {
+                recheck_empty(tcp, run)?
+            } else {
+                run(tcp)?
+            };
+            validate_bar_dates(bars.iter().map(|b| b.dt))?;
+            let n = bars.len();
+            // 页内最旧一根（顺序无关；乱码日期页由下方年份校验拦截）
+            let oldest = bars.iter().map(|b| b.dt).min();
+            if n > 0 && previous_oldest.is_some_and(|prev| oldest >= Some(prev)) {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "指数K线分页未推进",
+                ));
             }
+            previous_oldest = oldest;
+            all.extend(bars);
+            pages += 1;
+            if n < BARS_PAGE as usize {
+                break; // 历史尽头
+            }
+            let Some(oldest) = oldest else {
+                break;
+            };
+            if let Some(begin) = begin {
+                // 页内最旧数据已早于 begin，停止翻页（min 判停，顺序无关）
+                if DateTime::to_u32(oldest) < begin {
+                    break;
+                }
+            }
+            if pages >= MAX_BARS_PAGES {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "指数K线分页超过偏移上限",
+                ));
+            }
+            start = start.checked_add(BARS_PAGE).ok_or_else(|| {
+                std::io::Error::new(std::io::ErrorKind::InvalidData, "指数K线分页偏移溢出")
+            })?;
         }
-        if pages >= MAX_BARS_PAGES {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "指数K线分页超过偏移上限",
-            ));
-        }
-        start = start.checked_add(BARS_PAGE).ok_or_else(|| {
-            std::io::Error::new(std::io::ErrorKind::InvalidData, "指数K线分页偏移溢出")
-        })?;
-    }
 
-    // 升序 + 翻页偏移重叠去重 + 窗口过滤
-    all.sort_by_key(|b| b.dt);
-    all.dedup_by_key(|b| b.dt);
-    all.retain(|bar| {
-        let d = DateTime::to_u32(bar.dt);
-        begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
-    });
-    Ok(all)
+        // 升序 + 翻页偏移重叠去重 + 窗口过滤
+        all.sort_by_key(|b| b.dt);
+        all.dedup_by_key(|b| b.dt);
+        all.retain(|bar| {
+            let d = DateTime::to_u32(bar.dt);
+            begin.is_none_or(|b| d >= b) && end.is_none_or(|e| d <= e)
+        });
+        Ok(all)
+    })
 }
 
 /// 除权参考价（`category == 1` 除权除息事件）：
@@ -1153,7 +1062,7 @@ mod tests {
             let release_rx = Mutex::new(release_rx);
             let first = AtomicBool::new(true);
             let (config, server) = crate::tcp::tests::mock_server(
-                if second_workers == 1 { 2 } else { 4 },
+                if second_workers == 1 { 3 } else { 4 },
                 move |request| {
                     if request.get(14..20) == Some(b"600000".as_slice())
                         && first.swap(false, Ordering::SeqCst)

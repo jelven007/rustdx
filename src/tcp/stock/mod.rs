@@ -77,10 +77,18 @@ pub fn market_of(code: &str) -> Option<u16> {
 /// println!("深市共 {} 只证券", all.len());
 /// ```
 pub fn stocks(tcp: &mut crate::tcp::Tcp, market: u16) -> crate::Result<Vec<SecurityListData>> {
+    Ok(
+        tcp.with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
+            stocks_until(tcp, market)
+        })?,
+    )
+}
+
+fn stocks_until(tcp: &mut crate::tcp::Tcp, market: u16) -> std::io::Result<Vec<SecurityListData>> {
     use crate::tcp::Tdx;
     use std::io::{Error, ErrorKind};
     if market > 1 {
-        return Err(Error::new(ErrorKind::InvalidInput, "market必须为0或1").into());
+        return Err(Error::new(ErrorKind::InvalidInput, "market必须为0或1"));
     }
     let count = {
         let mut sc = crate::tcp::basic::SecurityCount::new(market);
@@ -96,21 +104,20 @@ pub fn stocks(tcp: &mut crate::tcp::Tcp, market: u16) -> crate::Result<Vec<Secur
             return Err(Error::new(
                 ErrorKind::UnexpectedEof,
                 format!("证券列表未完成: 已获取{}，预期{count}", all.len()),
-            )
-            .into());
+            ));
         }
         if n > 1000 || all.len() + n > count as usize {
-            return Err(
-                Error::new(ErrorKind::InvalidData, "证券列表数量超出预期，请重新获取").into(),
-            );
+            return Err(Error::new(
+                ErrorKind::InvalidData,
+                "证券列表数量超出预期，请重新获取",
+            ));
         }
         for stock in list.result() {
             if !codes.insert(stock.code.clone()) {
                 return Err(Error::new(
                     ErrorKind::InvalidData,
                     format!("证券列表代码重复: {}", stock.code),
-                )
-                .into());
+                ));
             }
         }
         all.extend(list.result().iter().cloned());

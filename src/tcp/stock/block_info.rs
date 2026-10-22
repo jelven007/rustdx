@@ -161,6 +161,17 @@ pub fn get_block_info(
     tcp: &mut crate::tcp::Tcp,
     block_file: &str,
 ) -> crate::Result<Vec<BlockRecord>> {
+    Ok(
+        tcp.with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
+            get_block_info_until(tcp, block_file)
+        })?,
+    )
+}
+
+fn get_block_info_until(
+    tcp: &mut crate::tcp::Tcp,
+    block_file: &str,
+) -> std::io::Result<Vec<BlockRecord>> {
     // 1. 文件大小
     let mut meta = BlockInfoMeta::new(block_file);
     meta.recv_parsed(tcp)?;
@@ -169,9 +180,10 @@ pub fn get_block_info(
         return Ok(Vec::new());
     }
     if size > 64 * 1024 * 1024 {
-        return Err(
-            std::io::Error::new(std::io::ErrorKind::InvalidData, "板块文件超过64MiB限制").into(),
-        );
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::InvalidData,
+            "板块文件超过64MiB限制",
+        ));
     }
 
     // 2. 分块下载（pytdx：单块 0x7530 字节）
@@ -187,8 +199,7 @@ pub fn get_block_info(
             return Err(std::io::Error::new(
                 std::io::ErrorKind::UnexpectedEof,
                 "板块文件块长度不完整",
-            )
-            .into());
+            ));
         }
         content.extend_from_slice(chunk.result());
     }

@@ -3,7 +3,7 @@ use log::trace;
 use std::{
     io::{BufReader, Read, Result, Write},
     net::{SocketAddr, TcpStream},
-    time::Duration,
+    time::{Duration, Instant},
 };
 
 #[macro_use]
@@ -12,6 +12,11 @@ pub(crate) mod tests;
 
 mod basic;
 pub use basic::*;
+pub(crate) mod governance;
+pub use governance::{
+    EndpointStats, NetworkPolicy, NetworkStats, configure_network, network_policy, network_stats,
+};
+use governance::{deadline_after, global, remaining};
 
 pub mod helper;
 pub mod ip;
@@ -83,13 +88,16 @@ pub struct Tcp {
     /// 创建本连接所用的配置，[`Tcp::reconnect`] 时使用。
     config: TcpConfig,
     reusable: bool,
+    deadline: Option<Instant>,
+    // 字段析构顺序：先释放流，再归还进程连接许可。
+    permit: Option<governance::Permit>,
 }
 
 impl Tcp {
     /// 连接到行情服务器并完成标准握手。
     ///
-    /// 按 [`ip::STOCK_IP`] 列表顺序依次尝试（故障转移），直到某台连接成功；
-    /// 全部失败时返回最后一个错误。
+    /// 在共享预算内轮换 [`ip::STOCK_IP`] 列表起点，跳过冷却端点并故障转移。
+    /// 全部失败时返回最后一个错误；全部冷却时返回 WouldBlock。
     ///
     /// 超时默认 5 秒，可用 [`Tcp::with_config`] 自定义。
     pub fn new() -> Result<Self> {
@@ -99,45 +107,115 @@ impl Tcp {
     /// 以指定配置连接服务器并完成标准握手。
     ///
     /// - `config.ip` 为 `Some(addr)` 时只连接该地址；
-    /// - 为 `None` 时按 [`ip::STOCK_IP`] 列表顺序故障转移——TCP 连接与协议握手
+    /// - 为 `None` 时按 [`ip::STOCK_IP`] 轮换及冷却后故障转移——TCP 连接与协议握手
     ///   都成功才算可用（部分服务器 TCP 可连但不响应行情协议）。
     pub fn with_config(config: &TcpConfig) -> Result<Self> {
+        Self::with_config_until(config, deadline_after(network_policy().connect_timeout)?)
+    }
+
+    pub(crate) fn with_config_until(config: &TcpConfig, deadline: Instant) -> Result<Self> {
         if config.timeout.is_zero() {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::InvalidInput,
                 "超时必须大于0",
             ));
         }
-        match config.ip {
-            Some(addr) => Self::connect_addr(&addr, config),
-            None => {
-                let mut last_err = None;
-                for addr in ip::STOCK_IP.iter() {
-                    match Self::connect_addr(addr, config) {
-                        Ok(tcp) => return Ok(tcp),
-                        Err(e) => last_err = Some((addr, e)),
-                    }
-                }
-                let (addr, err) = last_err.expect("服务器列表不能为空");
-                log::warn!("所有行情服务器连接/握手失败，最后尝试: {addr}");
-                Err(err)
-            }
-        }
+        let deadline = deadline.min(deadline_after(network_policy().connect_timeout)?);
+        let permit = global().acquire(deadline)?;
+        Self::connect_selected(config, deadline, Some(permit))
     }
 
-    /// 连接指定地址并完成握手。
-    fn connect_addr(addr: &SocketAddr, config: &TcpConfig) -> Result<Self> {
-        let (stream, buffer, recv) = tcpstream_ip_with_timeout(addr, config.timeout)?;
-        let mut tcp = Self {
-            stream,
-            buffer,
-            recv,
-            config: config.clone(),
-            reusable: true,
-        };
-        // 握手失败由服务器选择处理，禁止在握手内部递归重连。
-        tcp.read_frame_once(PACK1)?;
-        Ok(tcp)
+    fn connect_selected(
+        config: &TcpConfig,
+        deadline: Instant,
+        mut permit: Option<governance::Permit>,
+    ) -> Result<Self> {
+        let addresses = config.ip.map_or_else(
+            || global().candidates(&ip::STOCK_IP),
+            |address| vec![address],
+        );
+        let mut last_error =
+            std::io::Error::new(std::io::ErrorKind::WouldBlock, "行情服务器均在冷却期");
+        for address in addresses {
+            let attempt_deadline = deadline.min(deadline_after(config.timeout)?);
+            let result = (|| {
+                let (stream, buffer, recv) =
+                    tcpstream_ip_with_timeout(&address, remaining(attempt_deadline)?)?;
+                let mut tcp = Self {
+                    stream,
+                    buffer,
+                    recv,
+                    config: config.clone(),
+                    reusable: false,
+                    deadline: Some(attempt_deadline),
+                    permit: None,
+                };
+                // 握手失败由服务器选择处理，禁止在握手内部递归重连。
+                tcp.read_frame_once(PACK1)?;
+                tcp.deadline = None;
+                Ok(tcp)
+            })();
+            global().endpoint_result(address, result.is_ok());
+            match result {
+                Ok(mut tcp) => {
+                    tcp.permit = permit.take();
+                    return Ok(tcp);
+                }
+                Err(error) => last_error = error,
+            }
+            remaining(deadline)?;
+        }
+        Err(last_error)
+    }
+
+    /// 为一组请求设置总体时限。嵌套调用仅能收紧外层截止时间。
+    /// 同步闭包中的用户计算本身不能被抢占；所有受管网络 I/O 会检查截止时间。
+    pub fn with_timeout<T>(
+        &mut self,
+        timeout: Duration,
+        run: impl FnOnce(&mut Self) -> Result<T>,
+    ) -> Result<T> {
+        self.with_deadline(deadline_after(timeout)?, run)
+    }
+
+    pub(crate) fn with_deadline<T>(
+        &mut self,
+        deadline: Instant,
+        run: impl FnOnce(&mut Self) -> Result<T>,
+    ) -> Result<T> {
+        let previous = self.deadline;
+        self.deadline = Some(previous.map_or(deadline, |old| old.min(deadline)));
+        let deadline = self.deadline.unwrap();
+        let result = remaining(deadline)
+            .and_then(|_| run(self))
+            .and_then(|value| remaining(deadline).map(|_| value));
+        self.deadline = previous;
+        result
+    }
+
+    fn io_timeout(&self) -> Result<Duration> {
+        self.deadline.map_or(Ok(self.config.timeout), |deadline| {
+            remaining(deadline).map(|remaining| remaining.min(self.config.timeout))
+        })
+    }
+
+    fn read_exact_deadline(&mut self, body: &mut [u8]) -> Result<()> {
+        let mut offset = 0;
+        while offset < body.len() {
+            self.stream.set_read_timeout(Some(self.io_timeout()?))?;
+            match self.buffer.read(&mut body[offset..]) {
+                Ok(0) => {
+                    return Err(std::io::Error::new(
+                        std::io::ErrorKind::UnexpectedEof,
+                        "响应提前结束",
+                    ));
+                }
+                Ok(n) => offset += n,
+                Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+                Err(error) => return Err(error),
+            }
+        }
+        Ok(())
     }
 
     /// 当前连接配置（[`TcpConfig::recheck_empty`] 等高级选项由此读取）。
@@ -150,12 +228,7 @@ impl Tcp {
     }
 
     pub(crate) fn check_health(&mut self, timeout: Duration) -> Result<()> {
-        self.stream.set_read_timeout(Some(timeout))?;
-        self.stream.set_write_timeout(Some(timeout))?;
-        let result = self.heartbeat().map(|_| ());
-        self.stream.set_read_timeout(Some(self.config.timeout))?;
-        self.stream.set_write_timeout(Some(self.config.timeout))?;
-        result
+        self.with_timeout(timeout, |tcp| tcp.heartbeat().map(|_| ()))
     }
 
     /// 重新建立连接（按创建时的配置），并重发握手包。原连接被丢弃。
@@ -166,7 +239,16 @@ impl Tcp {
     /// ```
     pub fn reconnect(&mut self) -> Result<()> {
         self.reusable = false;
-        *self = Self::with_config(&self.config)?;
+        // 两个句柄引用同一 socket；shutdown 使旧连接立即停止占用服务器资源。
+        let _ = self.stream.shutdown(std::net::Shutdown::Both);
+        let deadline = self
+            .deadline
+            .unwrap_or(deadline_after(network_policy().connect_timeout)?);
+        // 许可留在 self 中；不再申请第二个槽位，也不会在饱和时自锁。
+        let mut replacement = Self::connect_selected(&self.config, deadline, None)?;
+        replacement.permit = self.permit.take();
+        replacement.deadline = self.deadline;
+        *self = replacement;
         Ok(())
     }
 
@@ -191,6 +273,16 @@ impl Tcp {
         mut f: impl FnMut(&mut Tcp) -> Result<T>,
         attempts: usize,
     ) -> Result<T> {
+        self.with_timeout(network_policy().request_timeout, |tcp| {
+            tcp.retry_until(&mut f, attempts)
+        })
+    }
+
+    fn retry_until<T>(
+        &mut self,
+        mut f: impl FnMut(&mut Tcp) -> Result<T>,
+        attempts: usize,
+    ) -> Result<T> {
         if attempts == 0 {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::InvalidInput,
@@ -199,6 +291,9 @@ impl Tcp {
         }
         let mut last_err = None;
         for attempt in 0..attempts {
+            if let Some(deadline) = self.deadline {
+                remaining(deadline)?;
+            }
             let ready = if attempt > 0 || !self.reusable {
                 self.reconnect()
             } else {
@@ -209,7 +304,7 @@ impl Tcp {
                 Err(e) => {
                     self.reusable = false;
                     if attempt + 1 < attempts {
-                        self.backoff(attempt as u64 + 1);
+                        self.backoff(attempt as u64 + 1)?;
                     }
                     last_err = Some(e);
                 }
@@ -219,12 +314,26 @@ impl Tcp {
     }
 
     /// 重试退避：第 `n` 次失败后按 `retry_delay_ms × n` 等待（配置为 0 时不等待）。
-    fn backoff(&self, failed: u64) {
+    fn backoff(&self, failed: u64) -> Result<()> {
         if self.config.retry_delay_ms > 0 {
-            std::thread::sleep(Duration::from_millis(
+            self.delay(Duration::from_millis(
                 self.config.retry_delay_ms.saturating_mul(failed),
-            ));
+            ))?;
         }
+        Ok(())
+    }
+
+    pub(crate) fn delay(&self, duration: Duration) -> Result<()> {
+        let duration = if let Some(deadline) = self.deadline {
+            duration.min(remaining(deadline)?)
+        } else {
+            duration
+        };
+        std::thread::sleep(duration);
+        if let Some(deadline) = self.deadline {
+            remaining(deadline)?;
+        }
+        Ok(())
     }
 
     /// 发送并接收字节。需要对接收的字节进行解析（参考 [`Tdx::parse`] 的实现）。
@@ -237,6 +346,12 @@ impl Tcp {
     /// 配置了 [`TcpConfig::auto_reconnect`] 时，请求失败会自动重连并按原请求
     /// 字节重发（行情查询请求幂等，可安全重试）。
     pub fn send_recv(&mut self, send: &[u8]) -> Result<(usize, usize)> {
+        self.with_timeout(network_policy().request_timeout, |tcp| {
+            tcp.send_recv_until(send)
+        })
+    }
+
+    fn send_recv_until(&mut self, send: &[u8]) -> Result<(usize, usize)> {
         let attempts = self.config.auto_reconnect.saturating_add(1);
         let mut last_err: Option<std::io::Error> = None;
         for attempt in 0..attempts {
@@ -250,7 +365,7 @@ impl Tcp {
                             attempt + 1,
                             last_err.as_ref().unwrap().kind()
                         );
-                        self.backoff(attempt as u64 + 1);
+                        self.backoff(attempt as u64 + 1)?;
                         match self.reconnect() {
                             Ok(()) => continue,
                             Err(re) => {
@@ -268,10 +383,21 @@ impl Tcp {
     /// 单次发送并接收（不重试）。
     fn send_recv_once(&mut self, send: &[u8]) -> Result<(usize, usize)> {
         self.reusable = false;
-        self.stream.write_all(send)?;
+        let mut offset = 0;
+        while offset < send.len() {
+            self.stream.set_write_timeout(Some(self.io_timeout()?))?;
+            match self.stream.write(&send[offset..]) {
+                Ok(0) => return Err(std::io::ErrorKind::WriteZero.into()),
+                Ok(n) => offset += n,
+                Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+                Err(error) => return Err(error),
+            }
+        }
         // 一次性读满 16 字节响应头：单次 read 在 TCP 分段时可能只返回部分字节，
         // 导致后续从错误偏移解析响应长度。
-        self.buffer.read_exact(&mut self.recv)?;
+        let mut header = [0; RECV_SIZE];
+        self.read_exact_deadline(&mut header)?;
+        self.recv = header;
         trace!("send: {:?}\nrecv[16B]: {:?}", send, self);
         Ok((send.len(), RECV_SIZE))
     }
@@ -281,12 +407,27 @@ impl Tcp {
         let deflate = u16_from_le_bytes(&self.recv, 12);
         let inflate = u16_from_le_bytes(&self.recv, 14);
         let mut body = vec![0; deflate as usize];
-        self.buffer.read_exact(&mut body)?;
+        self.read_exact_deadline(&mut body)?;
         self.reusable = true;
         Ok((body, deflate, inflate))
     }
 
     fn request_frame(&mut self, send: &[u8], decompress: bool) -> Result<(Vec<u8>, u16, u16)> {
+        let result = self.with_timeout(network_policy().request_timeout, |tcp| {
+            tcp.request_frame_until(send, decompress)
+        });
+        global().request_result(result.is_ok());
+        if let Ok(address) = self.stream.peer_addr() {
+            global().endpoint_result(address, result.is_ok());
+        }
+        result
+    }
+
+    fn request_frame_until(
+        &mut self,
+        send: &[u8],
+        decompress: bool,
+    ) -> Result<(Vec<u8>, u16, u16)> {
         for attempt in 0..=self.config.auto_reconnect {
             let ready = if !self.reusable {
                 self.reconnect()
@@ -326,13 +467,15 @@ impl Tcp {
                     if attempt == self.config.auto_reconnect {
                         return Err(err);
                     }
-                    self.backoff(attempt as u64 + 1);
+                    self.backoff(attempt as u64 + 1)?;
                 }
             }
         }
         unreachable!()
     }
 
+    /// 取出裸 socket 后退出受管预算。裸 tcpstream_* 和 get_ref().try_clone()
+    /// 也由调用方自行负责连接计数及总体时限。
     pub fn into_inner(self) -> (TcpStream, BufTcp, [u8; RECV_SIZE]) {
         (self.stream, self.buffer, self.recv)
     }

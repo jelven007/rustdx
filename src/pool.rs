@@ -88,7 +88,7 @@ impl ConnectionPool {
         self.acquire(None)
     }
 
-    /// 池饱和时有界等待；该时间只限制等待槽位，不包含建连时间。
+    /// 等待槽位、建连及探活共享该总体时限。
     pub fn get_connection_timeout(&self, timeout: Duration) -> io::Result<PooledConn> {
         let deadline = Instant::now()
             .checked_add(timeout)
@@ -97,11 +97,15 @@ impl ConnectionPool {
     }
 
     fn acquire(&self, deadline: Option<Instant>) -> io::Result<PooledConn> {
+        let connection_deadline = deadline.unwrap_or(crate::tcp::governance::deadline_after(
+            crate::tcp::network_policy().connect_timeout,
+        )?);
         {
             let candidate;
             {
                 let mut state = self.inner.state.lock().unwrap();
                 loop {
+                    crate::tcp::governance::remaining(connection_deadline)?;
                     if state.closed {
                         return Err(io::Error::new(io::ErrorKind::NotConnected, "连接池已关闭"));
                     }
@@ -145,13 +149,17 @@ impl ConnectionPool {
                 Some(mut conn) => {
                     if self.config.health_check_timeout > 0 {
                         conn.tcp
-                            .check_health(Duration::from_secs(self.config.health_check_timeout))
+                            .with_deadline(connection_deadline, |tcp| {
+                                tcp.check_health(Duration::from_secs(
+                                    self.config.health_check_timeout,
+                                ))
+                            })
                             .map(|()| conn.tcp)
                     } else {
                         Ok(conn.tcp)
                     }
                 }
-                None => Tcp::with_config(&self.tcp_config),
+                None => Tcp::with_config_until(&self.tcp_config, connection_deadline),
             };
             match connection {
                 Ok(tcp) => {
