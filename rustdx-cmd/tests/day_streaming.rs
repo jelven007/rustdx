@@ -100,6 +100,25 @@ fn worker_counts_are_byte_identical_and_late_errors_preserve_output() {
             String::from_utf8_lossy(&result.stderr)
         );
         assert_eq!(fs::read(dir.join("bars.csv")).unwrap(), baseline);
+        let report: serde_json::Value =
+            serde_json::from_slice(&fs::read(dir.join("run.json")).unwrap()).unwrap();
+        assert_eq!(report["schema_version"], 6);
+        assert_eq!(report["observations"]["temporary_current_bytes"], 0);
+        assert!(
+            report["observations"]["temporary_peak_bytes"]
+                .as_u64()
+                .unwrap()
+                >= baseline.len() as u64
+        );
+        assert_eq!(report["observations"]["stages"]["snapshot"]["calls"], 8);
+        assert_eq!(report["observations"]["stages"]["parse"]["failures"], 0);
+        assert!(
+            report["observations"]["stages"]["readback"]["calls"]
+                .as_u64()
+                .unwrap()
+                >= 2
+        );
+        assert_eq!(report["freshness"]["quality_errors"], 0);
     }
     let mut reader = csv::Reader::from_reader(baseline.as_slice());
     let codes: Vec<_> = reader
@@ -137,6 +156,13 @@ fn worker_counts_are_byte_identical_and_late_errors_preserve_output() {
             .iter()
             .any(|w| w.as_str().unwrap().contains("缺少"))
     }));
+    assert_eq!(report["observations"]["temporary_current_bytes"], 0);
+    assert!(
+        report["observations"]["stages"]["parse"]["failures"]
+            .as_u64()
+            .unwrap()
+            > 0
+    );
     assert_eq!(fs::read(dir.join("bars.csv")).unwrap(), baseline);
 
     let mut malformed = bytes;
@@ -223,5 +249,41 @@ fn cancellation_unblocks_ordered_workers_and_cleans_spools() {
     let report: serde_json::Value =
         serde_json::from_slice(&fs::read(dir.join("run.json")).unwrap()).unwrap();
     assert_eq!(report["status"], "failed");
+    assert_eq!(report["observations"]["temporary_current_bytes"], 0);
+    fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn local_zip_source_observations_survive_report_creation_after_extraction() {
+    use std::io::Write;
+    let dir = std::env::temp_dir().join(format!("rustdx-observe-zip-{}", std::process::id()));
+    fs::create_dir_all(&dir).unwrap();
+    let zip_path = dir.join("input.zip");
+    let mut zip = zip::ZipWriter::new(fs::File::create(&zip_path).unwrap());
+    zip.start_file(
+        "sh/lday/sh600000.day",
+        zip::write::SimpleFileOptions::default(),
+    )
+    .unwrap();
+    zip.write_all(&raw("2026-10-22".parse().unwrap(), 1000))
+        .unwrap();
+    zip.finish().unwrap();
+    let result = Command::new(env!("CARGO_BIN_EXE_rustdx"))
+        .current_dir(&dir)
+        .args(["day", "input.zip", "-o", "bars.csv", "--report", "run.json"])
+        .output()
+        .unwrap();
+    assert!(
+        result.status.success(),
+        "{}",
+        String::from_utf8_lossy(&result.stderr)
+    );
+    let report: serde_json::Value =
+        serde_json::from_slice(&fs::read(dir.join("run.json")).unwrap()).unwrap();
+    assert_eq!(report["observations"]["stages"]["source"]["calls"], 1);
+    assert_eq!(report["observations"]["stages"]["extract"]["calls"], 1);
+    assert_eq!(report["observations"]["stages"]["download"]["calls"], 0);
+    assert_eq!(report["observations"]["temporary_current_bytes"], 0);
+    assert_eq!(report["freshness"]["newest_source_last_date"], "2026-10-22");
     fs::remove_dir_all(dir).unwrap();
 }

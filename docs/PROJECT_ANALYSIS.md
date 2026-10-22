@@ -7,7 +7,7 @@
 | 包 | 职责 | 实现 |
 | --- | --- | --- |
 | jelven-rustdx-complete | 行情及计算核心 | 阻塞TCP、任务上下文、TCP/HTTP共享许可、不可变K线/快照/财务/逐笔请求及独立解码、checked文件解析、复权、标准数据类型、线性指标、严格日历、日期规则、连接池、缓存 |
-| jelven-rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、4096条分块/磁盘归并、有界线程/确定性输出、东财标准适配与原始响应重放、schema5运行清单、覆盖告警、CSV/JSON、数据库可配批量精确回读及同机写入锁 |
+| jelven-rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、4096条分块/磁盘归并、有界线程/确定性输出、东财标准适配与原始响应重放、schema6运行清单、任务阶段/临时文件观测、覆盖告警、CSV/JSON、数据库可配批量精确回读及同机写入锁 |
 | tests-integration | 外部接口样本与检查 | 不发布；外部测试通过变量跳过 |
 
 保留Rust edition 2024及同步模块化workspace，最低Rust1.89。标准库线程足以承担当前批量采集，不引入异步运行时或额外服务。
@@ -31,9 +31,12 @@ flowchart TB
     ADAPTER --> EXPORT["校验/CSV回读/原子输出"]
     CLI --> EXPORT
     EXPORT --> STORE["CSV/JSON / 数据库sink"]
-    EXPORT --> MANIFEST["schema5清单：来源/覆盖/输出/资源/写入及独立验收证据"]
+    EXPORT --> MANIFEST["schema6清单：来源/覆盖/输出/资源/写入及独立验收证据"]
     STORE --> VERIFY["默认4096键一批：CH FINAL / 长驻mongosh，字段精确比对"]
     VERIFY --> MANIFEST
+    CLI --> OBS["每任务RAII观测：耗时并集/累计/私有临时字节峰值"]
+    STORE --> OBS
+    OBS --> MANIFEST
 ```
 
 ## 原基线风险与结果
@@ -125,6 +128,8 @@ K线新增私有字段的不可变KlineRequest、独立decode_stock_bars/decode_
 整条CLI任务使用默认10800秒绝对deadline、取消文件及Ctrl-C/SIGTERM协作取消；TCP/HTTP共用进程许可，可通过同目录OS锁约束同机进程，CLI默认8槽位。同步计算/系统调用不能被抢占，裸socket、不同许可目录与跨主机仍需外部治理。Mongo工具按每子进程预约一个任务许可，内部socket不逐个计数。清单记录实际耗时窗口P95等资源值，本轮小样本不能代表生产网络负载。
 
 day源记录以4096条分块，因子和质量状态跨块承接；非A股以最多8路磁盘归并处理排序和末源重复，CSV固定为目录参数、文件名、日期顺序。每线程结果通道容量1，只传磁盘产物和元数据。记录相关内存有界，文件列表/报告仍O(文件数)，gbbq/前因子仍各64MiB上限；暂存增加磁盘I/O和空间需求。
+
+schema6记录每任务下载/解压/快照/解析/排序/写入/回读阶段，分别给出累计调用耗时与该阶段活跃墙钟时间并集；临时文件字节随路径跨线程持有和释放。自然日数据年龄与质量错误/告警汇总不冒充交易日完整性结论，详细覆盖范围见[阶段观测](OBSERVABILITY.md)。
 
 CanonicalBar覆盖TCP/day/lc及东财；东财适配保留源时间戳，标准日线时点为UTC+8的15:00，标准量为股，旧CSV仍为手。TCP源单位须按品种和周期显式核实，旧Bar::from_kline仅兼容A股日线手单位。累计收益ReturnIndex与价格调整PriceMultiplier分别使用；东财factor=0适配为None。东财只提供当前快照，跨日缺失必须先补历史。
 

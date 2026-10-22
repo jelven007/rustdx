@@ -3,13 +3,16 @@ use crate::quality::{CollectionReport, QualityRow};
 use eyre::{Result, eyre};
 use rustdx_cli::fetch_code::StockList;
 use rustdx_cli::http::{self, HttpOperation};
+use rustdx_cli::observation::{Observations, Stage, TemporaryFile, TrackedWriter, measure};
 use rustdx_complete::file::{
     day::fq::Day,
     gbbq::{Factor, Gbbq},
 };
 use rustdx_complete::operation::{self, CheckedIo, OperationContext};
+#[cfg(test)]
+use std::fs::File;
 use std::{
-    fs::{self, File},
+    fs,
     io::{self, Write},
     path::Path,
     sync::mpsc,
@@ -28,7 +31,7 @@ use schema::validate_clickhouse_schema;
 /// Fixed striped workers spool bounded chunks; consume in directory/file order.
 fn run_par<F, T>(
     cmd: &DayCmd,
-    wtr: &mut csv::Writer<File>,
+    wtr: &mut csv::Writer<TrackedWriter>,
     parse: F,
     report: &mut CollectionReport,
 ) -> Result<()>
@@ -76,6 +79,7 @@ where
         let parse = &parse;
         let calendar = calendar.as_ref();
         let context = OperationContext::current();
+        let observations = report.observations.clone();
 
         thread::scope(|s| {
             // Receivers belong to the scope closure: an early error drops them
@@ -85,8 +89,10 @@ where
                 let (tx, rx) = mpsc::sync_channel(1);
                 receivers.push(rx);
                 let context = context.clone();
+                let observations = observations.clone();
                 s.spawn(move || {
                     let _guard = context.as_ref().map(OperationContext::enter);
+                    let _observations = observations.enter();
                     for i in (worker..work.len()).step_by(workers) {
                         if operation::check().is_err() {
                             break;
@@ -145,21 +151,24 @@ where
                 count += 1;
                 total_rows += parsed.rows;
                 if let Some(spool) = parsed.spool {
-                    let mut reader = csv::Reader::from_path(spool.temporary_path())?;
-                    if let Some(header) = &header {
-                        if reader.headers()? != header {
-                            eyre::bail!("来源CSV列定义不一致");
+                    measure(Stage::Write, || -> Result<()> {
+                        let mut reader = csv::Reader::from_path(spool.temporary_path())?;
+                        if let Some(header) = &header {
+                            if reader.headers()? != header {
+                                eyre::bail!("来源CSV列定义不一致");
+                            }
+                        } else {
+                            let columns = reader.headers()?.clone();
+                            wtr.write_record(&columns)?;
+                            header = Some(columns);
                         }
-                    } else {
-                        let columns = reader.headers()?.clone();
-                        wtr.write_record(&columns)?;
-                        header = Some(columns);
-                    }
-                    let mut record = csv::StringRecord::new();
-                    while reader.read_record(&mut record)? {
-                        operation::check()?;
-                        wtr.write_record(&record)?;
-                    }
+                        let mut record = csv::StringRecord::new();
+                        while reader.read_record(&mut record)? {
+                            operation::check()?;
+                            wtr.write_record(&record)?;
+                        }
+                        Ok(())
+                    })?;
                 }
             }
             Ok::<(), eyre::Report>(())
@@ -169,7 +178,7 @@ where
         total_files += count;
         print(dir, count, take);
     }
-    wtr.flush()?;
+    measure(Stage::Write, || wtr.flush())?;
     report.files.sort_by(|a, b| a.source.cmp(&b.source));
     if !failures.is_empty() {
         eyre::bail!(
@@ -217,6 +226,8 @@ pub fn run_csv(cmd: &DayCmd) -> Result<()> {
 fn with_report(cmd: &DayCmd, run: impl FnOnce(&mut CollectionReport) -> Result<()>) -> Result<()> {
     let _target = sinks::target_lock(&cmd.output, &cmd.table)?;
     let mut report = CollectionReport::start(&cmd.output, cmd.report.as_deref())?;
+    let observations = Observations::current().unwrap_or_else(|| report.observations.clone());
+    let _observations = observations.enter();
     let result = run(&mut report);
     report.finish(result)
 }
@@ -230,19 +241,25 @@ where
         verify::BatchRows::from_env()?;
     }
     if cmd.output == "clickhouse" {
-        setup_clickhouse(cmd.gbbq.is_some(), &cmd.table)?;
+        measure(Stage::Write, || {
+            setup_clickhouse(cmd.gbbq.is_some(), &cmd.table)
+        })?;
     } else if cmd.output == "mongodb" {
-        sinks::prepare_mongodb(&cmd.table)?;
+        measure(Stage::Write, || sinks::prepare_mongodb(&cmd.table))?;
     }
-    let (atomic, file) = rustdx_complete::atomic_file::AtomicFile::create(&cmd.output)?;
+    let (atomic, file) = TemporaryFile::create(&cmd.output)?;
     let mut wtr = csv::WriterBuilder::new()
         .buffer_capacity(BUFFER_SIZE)
         .from_writer(file);
     run_par(cmd, &mut wtr, parse, report)?;
     drop(wtr);
-    report.verify_csv(atomic.temporary_path())?;
-    report.stage_artifact(atomic.temporary_path())?;
-    atomic.commit()?;
+    measure(Stage::Readback, || {
+        report.verify_csv(atomic.temporary_path())
+    })?;
+    measure(Stage::Readback, || {
+        report.stage_artifact(atomic.temporary_path())
+    })?;
+    measure(Stage::Write, || atomic.commit())?;
     report.published()?;
     match cmd.output.as_str() {
         "clickhouse" => sinks::import_clickhouse(&cmd.output, &cmd.table, cmd.keep_csv, report),

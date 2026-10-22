@@ -425,6 +425,8 @@ pub struct CollectionReport {
     pub run_version: u64,
     pub database_version_policy: &'static str,
     pub resources: serde_json::Value,
+    pub observations: rustdx_cli::observation::Observations,
+    pub freshness: serde_json::Value,
     #[serde(skip)]
     path: PathBuf,
     #[serde(skip)]
@@ -441,10 +443,11 @@ impl CollectionReport {
             .timestamp_nanos_opt()
             .unwrap_or_default()
             .max(0) as u64;
+        let observations = rustdx_cli::observation::Observations::current().unwrap_or_default();
         Self {
-            schema_version: 5,
+            schema_version: 6,
             project_version: env!("CARGO_PKG_VERSION"),
-            started_at: chrono::Utc::now().to_rfc3339(),
+            started_at: observations.started_at(),
             finished_at: String::new(),
             output: output.to_owned(),
             volume_unit: "lots_100_shares",
@@ -482,6 +485,8 @@ impl CollectionReport {
             run_version: version,
             database_version_policy: "clickhouse_server_nanoseconds_per_row; mongodb_upsert",
             resources: serde_json::Value::Null,
+            observations,
+            freshness: serde_json::Value::Null,
             path: manifest_path(output, None),
             ranges: Default::default(),
             output_rows: 0,
@@ -705,6 +710,26 @@ impl CollectionReport {
         if let Err(e) = &result {
             self.errors.push(format!("{e:#}"));
         }
+        let today = chrono::Utc::now()
+            .with_timezone(&rustdx_complete::data::exchange_timezone())
+            .date_naive();
+        let valid_dates: Vec<_> = self
+            .files
+            .iter()
+            .filter(|file| file.rows > 0 && file.errors.is_empty())
+            .filter_map(|file| file.last_date.as_deref()?.parse::<chrono::NaiveDate>().ok())
+            .collect();
+        self.freshness = serde_json::json!({
+            "as_of_exchange_date": today,
+            "oldest_source_last_date": valid_dates.iter().min(),
+            "newest_source_last_date": valid_dates.iter().max(),
+            "oldest_source_calendar_age_days": valid_dates.iter().min().map(|date| (today - *date).num_days()),
+            "sources_with_future_date": valid_dates.iter().filter(|date| **date > today).count(),
+            "scope": "last_dates_of_nonempty_sources_without_quality_errors; calendar_day_age_not_missing_trading_days_or_staleness_verdict; security_status_may_be_unknown",
+            "quality_errors": self.files.iter().map(|f| f.errors.len() + f.errors_omitted).sum::<usize>(),
+            "quality_warnings": self.files.iter().map(|f| f.warnings.len() + f.warnings_omitted).sum::<usize>(),
+            "task_errors": self.errors.len(),
+        });
         self.status = if result.is_ok() { "complete" } else { "failed" };
         self.finished_at = chrono::Utc::now().to_rfc3339();
         self.checkpoint().map_err(|e| {

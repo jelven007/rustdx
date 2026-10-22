@@ -36,6 +36,8 @@ day先用128KiB缓冲复制并计算SHA-256，随后只解析私有磁盘快照�
 
 schema5清单包含回读行数、逻辑键数、批次数、配置批量、日期边界、字段列表及规范化回读值的SHA-256；`sha256_order=csv_row_order`让摘要独立于批量大小。schema3/4按批内键排序，旧新摘要不一定可直接比较；CSV字节摘要不受影响。`fetch_elapsed_ms`是各批获取与解码的串行墙钟耗时之和，`elapsed_ms`覆盖CSV读取、比对和摘要；长驻进程的首次响应包括启动等待，最终退出确认在这两个字段之外。
 
+当前schema6继续保留上述字段，新增每任务`observations`和`freshness`；阶段累计耗时/活跃时间并集、临时文件逻辑字节范围及来源自然日年龄的准确口径见[OBSERVABILITY.md](OBSERVABILITY.md)。阶段耗时不可相加为CPU时间或整命令耗时。
+
 MongoDB需要PATH中的`mongosh`和`mongoimport`，不再依赖`mongoexport`；`MONGODB_URI`默认`mongodb://127.0.0.1:27017`。写入前要求完整非稀疏、非部分的`(date,code)`唯一索引与simple排序规则；缺少时创建索引，已有重复数据或冲突索引会在发布新CSV前失败。键为CSV日期字符串与含市场前缀代码，数值列必须回读为JSON数值。集合不存在时先创建索引，不把空集合当查询失败。
 
 长驻mongosh默认使用`NODE_OPTIONS=--max-old-space-size=128`促进批间垃圾回收；已有NODE_OPTIONS由部署方控制，不会被覆盖。128MiB只限制V8老年代，原生内存和其他堆区域不在其中；实测进程最大RSS与资源取舍见[第三轮记录](OPTIMIZATION_ROUND3.md)，部署须给完整进程树预留内存。

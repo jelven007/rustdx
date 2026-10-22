@@ -53,3 +53,11 @@ Rust1.89 CLI all-targets离线测试、Clippy all-targets/all-features拒绝警�
 真实协议来源为2026-10-23 UTC+8早间115.238.56.198:7709；两证券快照、一条财务、当日/历史逐笔各三条，全部公开字段及请求字节与固定pytdx提交逐一一致。原有股票/指数/分钟九条真实K线夹具继续一致。独立参考源码执行前验证摘要；[证据清单](../tests/fixtures/protocol/manifest.json)及[重解脚本](../scripts/verify_protocol_pytdx.py)可复现。恶意输入、旧状态清空、Client实际发包和标准单位/周期回归通过；详情见[协议接口](PROTOCOL_REQUESTS.md)。该小样本不代表全市场。
 
 Rust1.89核心库all-targets/all-features离线回归通过：160单测、6项新增协议回归、4项K线回归及其余属性/本地服务/示例目标；文档55项及2项compile_fail通过，18项网络示例保持ignored。Clippy同范围拒绝警告、fmt/diff检查通过。真实响应作为初始语料，新增路径ASan/覆盖率fuzz执行526,218次、31秒，无崩溃；有界短测不代表穷尽。日志为`/tmp/rustdx-round3-protocol-final.log`、`/tmp/rustdx-round3-protocol-fuzz.log`；均退出0。整workspace及数据库最终检查留待第6步。
+
+## 阶段观测
+
+schema6增加可跨有界工作线程共享的每任务RAII阶段计数、累计耗时、阶段活跃墙钟时间并集，以及受跟踪临时路径逻辑字节峰值。day来源准备发生在最终报告创建之前，仍承接同一任务时钟；东财原始请求、解析与导出分别记录。数据库准备、写入、独立回读和Mongo退出确认都纳入观测。正常/错误/取消/panic展开释放计时和临时字节，不以累计耗时冒充CPU或相加为总耗时。
+
+源快照、排序run/归并spool、待发布CSV/JSON计入临时空间；ZIP/解压缓存、清单证据及子进程scratch不在此口径。新鲜度使用无质量错误的非空来源末日和自然日年龄，错误/告警总数包含省略详情；不推测证券状态。完整定义见[OBSERVABILITY.md](OBSERVABILITY.md)。
+
+并发/嵌套时间并集、独立任务隔离、失败展开、临时文件跨线程持有/发布释放，以及1/4/8线程CSV字节一致、跨块质量错误、协作取消和ZIP解压观测承接回归通过。Rust1.89整workspace all-targets/all-features离线测试、文档测试、Clippy拒绝警告、fmt及release构建通过；日志`/tmp/rustdx-round3-final.log`，退出0。真实大规模观测及故障验收在第6步单独保存，避免把离线测试当实际数据库结果。

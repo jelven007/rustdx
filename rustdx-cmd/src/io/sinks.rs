@@ -2,6 +2,7 @@
 use super::{ClickHouseConfig, database_table, keep_csv};
 use crate::{cmd::DayCmd, quality::CollectionReport};
 use eyre::Result;
+use rustdx_cli::observation::{Stage, measure};
 use std::{
     fs::{self, File},
     io::Read,
@@ -18,27 +19,33 @@ pub fn import_clickhouse(
 ) -> Result<()> {
     let batch = super::verify::BatchRows::from_env()?;
     let cfg = ClickHouseConfig::from_env();
-    report.verify_artifact(Path::new(output))?;
+    measure(Stage::Readback, || {
+        report.verify_artifact(Path::new(output))
+    })?;
     report.begin_database(table)?;
-    cfg.insert_csv_tracked(table, Path::new(output), report.query_id.as_deref())?;
+    measure(Stage::Write, || {
+        cfg.insert_csv_tracked(table, Path::new(output), report.query_id.as_deref())
+    })?;
     report.database_status = "acknowledged";
     report.checkpoint()?;
-    let evidence = super::verify::verify(Path::new(output), table, batch, |fields, keys| {
-        // Identifiers are selected from a fixed allowlist; dates and symbols have
-        // been parsed before constructing this independent SELECT.
-        let limit = keys.len() + 1;
-        let keys = keys
-            .iter()
-            .map(|(date, code)| format!("('{date}','{code}')"))
-            .collect::<Vec<_>>()
-            .join(",");
-        let text = cfg.exec(&format!(
-            "SELECT {} FROM {table} FINAL WHERE (date,code) IN ({keys}) \
+    let evidence = measure(Stage::Readback, || {
+        super::verify::verify(Path::new(output), table, batch, |fields, keys| {
+            // Identifiers are selected from a fixed allowlist; dates and symbols have
+            // been parsed before constructing this independent SELECT.
+            let limit = keys.len() + 1;
+            let keys = keys
+                .iter()
+                .map(|(date, code)| format!("('{date}','{code}')"))
+                .collect::<Vec<_>>()
+                .join(",");
+            let text = cfg.exec(&format!(
+                "SELECT {} FROM {table} FINAL WHERE (date,code) IN ({keys}) \
              LIMIT {} FORMAT CSVWithNames",
-            fields.join(","),
-            limit
-        ))?;
-        super::verify::csv_rows(fields, &text)
+                fields.join(","),
+                limit
+            ))?;
+            super::verify::csv_rows(fields, &text)
+        })
     })?;
     report.database_verified(evidence)?;
     retain_or_remove(output, keep, report)
@@ -89,8 +96,10 @@ pub fn import_mongodb(cmd: &DayCmd, report: &mut CollectionReport) -> Result<()>
     let batch = super::verify::BatchRows::from_env()?;
     let (database, collection) = database_table(&cmd.table)?;
     let uri = mongodb_uri();
-    report.verify_artifact(Path::new(&cmd.output))?;
-    prepare_mongodb(&cmd.table)?;
+    measure(Stage::Readback, || {
+        report.verify_artifact(Path::new(&cmd.output))
+    })?;
+    measure(Stage::Write, || prepare_mongodb(&cmd.table))?;
     report.begin_database(&cmd.table)?;
     let mut command = Command::new("mongoimport");
     command.args([
@@ -108,15 +117,20 @@ pub fn import_mongodb(cmd: &DayCmd, report: &mut CollectionReport) -> Result<()>
         "--upsertFields=date,code",
         "--stopOnError",
     ]);
-    run_bounded(&mut command, Duration::from_secs(300))?;
+    measure(Stage::Write, || {
+        run_bounded(&mut command, Duration::from_secs(300))
+    })?;
     report.database_status = "acknowledged";
     report.checkpoint()?;
-    let mut reader = super::mongo_readback::MongoReadback::new(&uri, database, collection)?;
-    let evidence =
-        super::verify::verify(Path::new(&cmd.output), &cmd.table, batch, |fields, keys| {
-            reader.fetch(fields, keys)
-        })?;
-    reader.finish()?;
+    let evidence = measure(Stage::Readback, || -> Result<_> {
+        let mut reader = super::mongo_readback::MongoReadback::new(&uri, database, collection)?;
+        let evidence =
+            super::verify::verify(Path::new(&cmd.output), &cmd.table, batch, |fields, keys| {
+                reader.fetch(fields, keys)
+            })?;
+        reader.finish()?;
+        Ok(evidence)
+    })?;
     report.database_verified(evidence)?;
     retain_or_remove(&cmd.output, cmd.keep_csv, report)
 }

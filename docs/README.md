@@ -26,6 +26,7 @@
 - [NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)：2026-10-23后续六步优化及本轮交叉验证证据。
 - [OPTIMIZATION_ROUND3.md](OPTIMIZATION_ROUND3.md)：覆盖告警、来源重放、回读效率、协议安全、阶段观测及部署故障验收。
 - [PROTOCOL_REQUESTS.md](PROTOCOL_REQUESTS.md)：K线/快照/财务/逐笔checked请求、独立解码与源单位迁移。
+- [OBSERVABILITY.md](OBSERVABILITY.md)：每任务阶段计时、临时文件逻辑字节峰值、新鲜度及并发统计口径。
 
 ## 本轮变更覆盖
 

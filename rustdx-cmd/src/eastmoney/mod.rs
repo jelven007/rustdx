@@ -75,6 +75,12 @@ fn eastmoney_agents() -> &'static [Agent; 5] {
 ///
 /// 东财接口偶发网络抖动（Unexpected EOF 等），依次尝试多个 HTTPS 节点。
 pub fn get(page_size: u16, page_number: u16) -> Result<String> {
+    crate::observation::measure(crate::observation::Stage::Download, || {
+        get_inner(page_size, page_number)
+    })
+}
+
+fn get_inner(page_size: u16, page_number: u16) -> Result<String> {
     if page_size == 0 || page_number == 0 {
         eyre::bail!("page_size和page_number必须大于0");
     }
@@ -305,7 +311,7 @@ fn fetch_pages_with_calendar(
             captured_bytes <= MAX_CAPTURE_BYTES,
             "东财响应合计超过64MiB限制"
         );
-        let data = parse(&txt)?;
+        let data = crate::observation::measure(crate::observation::Stage::Parse, || parse(&txt))?;
         let expected_total = *total.get_or_insert(data.data.total);
         ensure!(data.data.total == expected_total, "东财分页total发生变化");
         let len = data.data.diff.len();
@@ -314,13 +320,16 @@ fn fetch_pages_with_calendar(
             rustdx_complete::tcp::observe_empty_response();
             eyre::bail!("东财分页返回空页，尚未覆盖全部证券");
         }
-        for mut row in data.data.diff {
-            row.normalize_with_calendar(calendar)?;
-            if !seen.insert(row.code.clone()) {
-                eyre::bail!("东财分页包含重复证券：{}", row.code);
+        crate::observation::measure(crate::observation::Stage::Parse, || -> Result<()> {
+            for mut row in data.data.diff {
+                row.normalize_with_calendar(calendar)?;
+                if !seen.insert(row.code.clone()) {
+                    eyre::bail!("东财分页包含重复证券：{}", row.code);
+                }
+                diff.push(row);
             }
-            diff.push(row);
-        }
+            Ok(())
+        })?;
         ensure!(
             diff.len() <= expected_total as usize,
             "东财返回数量超过total"

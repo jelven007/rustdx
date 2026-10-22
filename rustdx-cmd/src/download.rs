@@ -15,6 +15,7 @@ use std::time::Duration;
 
 use eyre::{Result, bail, eyre};
 use rustdx_cli::http::{self, HttpOperation};
+use rustdx_cli::observation::{Stage, measure};
 use rustdx_complete::operation::{self, CheckedIo};
 use serde::{Deserialize, Serialize};
 
@@ -253,6 +254,10 @@ fn validate_content_range(value: &str, offset: u64, length: Option<u64>) -> Resu
 
 /// 下载 url 到 dest 文件，支持断点续传（服务器返回 206 时从已下载位置追加）。
 fn download(url: &str, dest: &Path) -> Result<HeadInfo> {
+    measure(Stage::Download, || download_inner(url, dest))
+}
+
+fn download_inner(url: &str, dest: &Path) -> Result<HeadInfo> {
     let mut operation = HttpOperation::new(Duration::from_secs(2 * 60 * 60))?;
     let part = dest.with_extension("zip.part");
     let part_meta = dest.with_extension("zip.part.json");
@@ -443,6 +448,16 @@ fn extract_zip(zip_path: &Path, dest: &Path) -> Result<()> {
 
 /// 解压 zip 并收集 `lday` 目录。
 fn extract_and_discover(zip_path: &Path, extract_dir: &Path, source: &str) -> Result<Vec<PathBuf>> {
+    measure(Stage::Extract, || {
+        extract_and_discover_inner(zip_path, extract_dir, source)
+    })
+}
+
+fn extract_and_discover_inner(
+    zip_path: &Path,
+    extract_dir: &Path,
+    source: &str,
+) -> Result<Vec<PathBuf>> {
     let staging = extract_dir.with_extension("staging");
     if staging.exists() {
         std::fs::remove_dir_all(&staging)?;
@@ -519,6 +534,10 @@ fn cache_dir_for(url: &str) -> PathBuf {
 
 /// HEAD 探测服务器文件信息（ETag / Last-Modified / Content-Length）。
 fn head_info(url: &str) -> Result<HeadInfo> {
+    measure(Stage::Download, || head_info_inner(url))
+}
+
+fn head_info_inner(url: &str) -> Result<HeadInfo> {
     let mut operation = HttpOperation::new(Duration::from_secs(30))?;
     let resp = http::head(url)
         .config()

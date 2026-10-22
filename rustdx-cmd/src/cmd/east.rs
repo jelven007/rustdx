@@ -1,7 +1,7 @@
 use argh::FromArgs;
 use eyre::Result;
 use rustdx_cli::eastmoney::*;
-use rustdx_complete::atomic_file::AtomicFile;
+use rustdx_cli::observation::{Stage, TemporaryFile, measure};
 
 /// 东方财富收盘快照；增量累计收益因子需要上一交易日基准。
 #[derive(FromArgs, PartialEq, Debug)]
@@ -70,9 +70,13 @@ impl EastCmd {
         let _target = crate::io::sinks::target_lock(&self.output, &self.table)?;
         let mut report =
             crate::quality::CollectionReport::start(self.output_path(), self.report.as_deref())?;
+        let observations = report.observations.clone();
+        let _observations = observations.enter();
         let result = (|| {
             if self.output == "clickhouse" {
-                crate::io::setup_clickhouse(true, &self.table)?;
+                measure(Stage::Write, || {
+                    crate::io::setup_clickhouse(true, &self.table)
+                })?;
             }
             let calendar = crate::quality::tracked_calendar(self.calendar.as_deref(), &mut report)?;
             let data = fetch_with_evidence(self.max, calendar.as_ref(), |page| {
@@ -93,6 +97,8 @@ impl EastCmd {
         data: EastMarket,
         report: &mut crate::quality::CollectionReport,
     ) -> Result<()> {
+        let observations = report.observations.clone();
+        let _observations = observations.enter();
         self.process_with_calendar(data, report, &rustdx_complete::calendar::BuiltinCalendar)
     }
 
@@ -126,88 +132,98 @@ impl EastCmd {
                 .naive_local(),
         )?;
         let mut rows = Vec::new();
-        for mut row in data.data.diff.drain(..) {
-            rustdx_complete::operation::check()?;
-            if row.close.is_none() {
-                report.files.push(crate::quality::FileReport {
+        measure(Stage::Parse, || -> Result<()> {
+            for mut row in data.data.diff.drain(..) {
+                rustdx_complete::operation::check()?;
+                if row.close.is_none() {
+                    report.files.push(crate::quality::FileReport {
+                        source: "eastmoney".into(),
+                        code: row.code,
+                        rows: 0,
+                        first_date: Some(row.date.clone()),
+                        last_date: Some(row.date),
+                        errors: vec![],
+                        warnings: vec!["源无收盘数据，证券状态未知，未输出".into()],
+                        errors_omitted: 0,
+                        warnings_omitted: 0,
+                    });
+                    continue;
+                }
+                let validation: Result<()> = (|| {
+                    let canonical = row.to_canonical_with_calendar(calendar)?;
+                    let date = canonical.candle.bar.datetime.date();
+                    if date != expected_date {
+                        eyre::bail!("{}快照日期{date}不是当前行情日{expected_date}", row.code);
+                    }
+                    if let Some(previous) = &previous {
+                        let factor = previous
+                            .get(&row.code)
+                            .ok_or_else(|| eyre::eyre!("{}缺少前因子", row.code))?;
+                        let prior = chrono::NaiveDate::parse_from_str(&factor.date, "%Y-%m-%d")?;
+                        let expected = calendar.previous_trading_day(date)?;
+                        if prior != expected {
+                            eyre::bail!(
+                                "{}前因子日期{prior}应为{expected}，快照不能跨日补全累计收益",
+                                row.code
+                            );
+                        }
+                        row.factor = canonical
+                            .advance_return_index(rustdx_complete::data::ReturnIndex::new(
+                                factor.factor,
+                            )?)?
+                            .value();
+                    }
+                    Ok(())
+                })();
+                let issue = crate::quality::FileReport {
                     source: "eastmoney".into(),
-                    code: row.code,
-                    rows: 0,
+                    code: row.code.clone(),
+                    rows: usize::from(validation.is_ok()),
                     first_date: Some(row.date.clone()),
-                    last_date: Some(row.date),
-                    errors: vec![],
-                    warnings: vec!["源无收盘数据，证券状态未知，未输出".into()],
+                    last_date: Some(row.date.clone()),
+                    errors: validation
+                        .as_ref()
+                        .err()
+                        .map(|e| vec![e.to_string()])
+                        .unwrap_or_default(),
+                    warnings: vec![],
                     errors_omitted: 0,
                     warnings_omitted: 0,
-                });
-                continue;
+                };
+                report.files.push(issue);
+                validation?;
+                report.record_rows(&row.code, 1, &row.date, &row.date)?;
+                rows.push(row);
             }
-            let validation: Result<()> = (|| {
-                let canonical = row.to_canonical_with_calendar(calendar)?;
-                let date = canonical.candle.bar.datetime.date();
-                if date != expected_date {
-                    eyre::bail!("{}快照日期{date}不是当前行情日{expected_date}", row.code);
-                }
-                if let Some(previous) = &previous {
-                    let factor = previous
-                        .get(&row.code)
-                        .ok_or_else(|| eyre::eyre!("{}缺少前因子", row.code))?;
-                    let prior = chrono::NaiveDate::parse_from_str(&factor.date, "%Y-%m-%d")?;
-                    let expected = calendar.previous_trading_day(date)?;
-                    if prior != expected {
-                        eyre::bail!(
-                            "{}前因子日期{prior}应为{expected}，快照不能跨日补全累计收益",
-                            row.code
-                        );
-                    }
-                    row.factor = canonical
-                        .advance_return_index(rustdx_complete::data::ReturnIndex::new(
-                            factor.factor,
-                        )?)?
-                        .value();
-                }
-                Ok(())
-            })();
-            let issue = crate::quality::FileReport {
-                source: "eastmoney".into(),
-                code: row.code.clone(),
-                rows: usize::from(validation.is_ok()),
-                first_date: Some(row.date.clone()),
-                last_date: Some(row.date.clone()),
-                errors: validation
-                    .as_ref()
-                    .err()
-                    .map(|e| vec![e.to_string()])
-                    .unwrap_or_default(),
-                warnings: vec![],
-                errors_omitted: 0,
-                warnings_omitted: 0,
-            };
-            report.files.push(issue);
-            validation?;
-            report.record_rows(&row.code, 1, &row.date, &row.date)?;
-            rows.push(row);
-        }
+            Ok(())
+        })?;
         if rows.is_empty() {
             eyre::bail!("没有可发布的收盘日线");
         }
-        let (atomic, file) = AtomicFile::create(self.output_path())?;
-        if self.json {
-            serde_json::to_writer_pretty(file, &rows)?;
-        } else {
-            let mut writer = csv::Writer::from_writer(file);
-            for row in &rows {
-                rustdx_complete::operation::check()?;
-                writer.serialize(row)?;
+        let (atomic, file) = TemporaryFile::create(self.output_path())?;
+        measure(Stage::Write, || -> Result<()> {
+            if self.json {
+                serde_json::to_writer_pretty(file, &rows)?;
+            } else {
+                let mut writer = csv::Writer::from_writer(file);
+                for row in &rows {
+                    rustdx_complete::operation::check()?;
+                    writer.serialize(row)?;
+                }
+                writer.flush()?;
             }
-            writer.flush()?;
-        }
+            Ok(())
+        })?;
         if !self.json {
-            report.verify_csv(atomic.temporary_path())?;
+            measure(Stage::Readback, || {
+                report.verify_csv(atomic.temporary_path())
+            })?;
         }
-        report.stage_artifact(atomic.temporary_path())?;
+        measure(Stage::Readback, || {
+            report.stage_artifact(atomic.temporary_path())
+        })?;
         rustdx_complete::operation::check()?;
-        atomic.commit()?;
+        measure(Stage::Write, || atomic.commit())?;
         report.published()?;
         Ok(())
     }

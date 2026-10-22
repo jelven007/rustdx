@@ -2,8 +2,8 @@
 use crate::quality::{FileReport, QualityAccumulator, QualityRow, SourceEvidence};
 use chrono::NaiveDate;
 use eyre::{Result, eyre};
+use rustdx_cli::observation::{Observations, Stage, TemporaryFile, measure};
 use rustdx_complete::{
-    atomic_file::AtomicFile,
     calendar::CalendarProvider,
     file::gbbq::Factor,
     operation::{self, CheckedIo},
@@ -24,13 +24,13 @@ const MERGE_FAN_IN: usize = 8;
 pub(super) struct ParsedSource {
     pub evidence: Option<SourceEvidence>,
     pub quality: FileReport,
-    pub spool: Option<AtomicFile>,
+    pub spool: Option<TemporaryFile>,
     pub rows: usize,
 }
 
-fn snapshot(source: &Path, output: &str) -> Result<(SourceEvidence, AtomicFile)> {
+fn snapshot(source: &Path, output: &str) -> Result<(SourceEvidence, TemporaryFile)> {
     let mut reader = CheckedIo(File::open(source)?).take(SOURCE_LIMIT + 1);
-    let (temporary, mut file) = AtomicFile::create(output)?;
+    let (temporary, mut file) = TemporaryFile::create(output)?;
     let mut hash = Sha256::new();
     let mut bytes = 0u64;
     let mut buffer = [0; 128 * 1024];
@@ -70,45 +70,54 @@ where
 {
     let mut quality = QualityAccumulator::new(source.display().to_string(), code.to_owned());
     let mut evidence = None;
-    let result = (|| -> Result<Option<(AtomicFile, usize)>> {
-        let (proof, temporary) = snapshot(source, output)?;
+    let result = (|| -> Result<Option<(TemporaryFile, usize)>> {
+        let (proof, temporary) = measure(Stage::Snapshot, || snapshot(source, output))?;
         let bytes = proof.bytes;
         evidence = Some(proof);
-        if !bytes.is_multiple_of(32) {
-            eyre::bail!("day文件末尾记录截断");
-        }
+        measure(Stage::Parse, || -> Result<()> {
+            if !bytes.is_multiple_of(32) {
+                eyre::bail!("day文件末尾记录截断");
+            }
+            Ok(())
+        })?;
         let mut reader = CheckedIo(File::open(temporary.temporary_path())?);
         let mut buffer = vec![0; CHUNK_ROWS * 32];
         let mut remaining = bytes;
         let mut carry = None;
         let mut runs = Vec::new();
         let equity = code.parse::<rustdx_complete::data::Symbol>()?.is_a_share();
-        let (direct, file) = AtomicFile::create(output)?;
+        let (direct, file) = TemporaryFile::create(output)?;
         let mut writer = csv::Writer::from_writer(file);
         while remaining > 0 {
             operation::check()?;
             let size = remaining.min(buffer.len() as u64) as usize;
             reader.read_exact(&mut buffer[..size])?;
-            let rows = parse(code, &buffer[..size], carry.as_ref())?;
-            if rows.len() != size / 32 {
-                eyre::bail!("分块解析行数与源记录数不一致");
-            }
-            quality.extend(&rows, calendar)?;
+            let rows = measure(Stage::Parse, || -> Result<Vec<T>> {
+                let rows = parse(code, &buffer[..size], carry.as_ref())?;
+                if rows.len() != size / 32 {
+                    eyre::bail!("分块解析行数与源记录数不一致");
+                }
+                quality.extend(&rows, calendar)?;
+                Ok(rows)
+            })?;
             carry = rows.last().and_then(QualityRow::carry_factor);
             if equity {
                 // Equity quality requires strict ascending dates. Failed
                 // validation discards this private spool before publication.
-                for row in rows {
-                    operation::check()?;
-                    writer.serialize(row)?;
-                }
+                measure(Stage::Write, || -> Result<()> {
+                    for row in rows {
+                        operation::check()?;
+                        writer.serialize(row)?;
+                    }
+                    Ok(())
+                })?;
             } else {
                 runs.push(sorted_run(rows, output)?);
             }
             remaining -= size as u64;
         }
         if equity && bytes > 0 {
-            writer.flush()?;
+            measure(Stage::Write, || writer.flush())?;
             return Ok(Some((direct, (bytes / 32) as usize)));
         }
         if runs.is_empty() {
@@ -150,6 +159,10 @@ where
         }
     }
     let invalid = !quality.errors.is_empty() || (strict && !quality.warnings.is_empty());
+    if invalid && let Some(task) = Observations::current() {
+        // A parser can succeed while quality policy rejects its rows.
+        drop(task.span(Stage::Parse));
+    }
     ParsedSource {
         evidence,
         quality,
@@ -158,87 +171,99 @@ where
     }
 }
 
-fn sorted_run<T: QualityRow + serde::Serialize>(rows: Vec<T>, output: &str) -> Result<AtomicFile> {
-    let mut writer = csv::Writer::from_writer(Vec::new());
-    let mut dates = Vec::with_capacity(rows.len());
-    for row in rows {
-        operation::check()?;
-        dates.push(row.date()?);
-        writer.serialize(row)?;
-    }
-    let bytes = writer.into_inner()?;
-    let mut reader = csv::Reader::from_reader(bytes.as_slice());
-    let header = reader.headers()?.clone();
-    let mut records = reader
-        .records()
-        .zip(dates)
-        .enumerate()
-        .map(|(index, (record, date))| Ok((date, index, record?)))
-        .collect::<Result<Vec<_>>>()?;
-    records.sort_by_key(|(date, index, _)| (*date, *index));
-    let (run, file) = AtomicFile::create(output)?;
-    let mut writer = csv::Writer::from_writer(file);
-    writer.write_record(&header)?;
-    let mut records = records.into_iter().peekable();
-    while let Some((date, _, record)) = records.next() {
-        operation::check()?;
-        if records.peek().is_none_or(|(next, _, _)| *next != date) {
-            writer.write_record(&record)?;
+fn sorted_run<T: QualityRow + serde::Serialize>(
+    rows: Vec<T>,
+    output: &str,
+) -> Result<TemporaryFile> {
+    measure(Stage::Sort, || {
+        let mut writer = csv::Writer::from_writer(Vec::new());
+        let mut dates = Vec::with_capacity(rows.len());
+        for row in rows {
+            operation::check()?;
+            dates.push(row.date()?);
+            writer.serialize(row)?;
         }
-    }
-    writer.flush()?;
-    Ok(run)
+        let bytes = writer.into_inner()?;
+        let mut reader = csv::Reader::from_reader(bytes.as_slice());
+        let header = reader.headers()?.clone();
+        let mut records = reader
+            .records()
+            .zip(dates)
+            .enumerate()
+            .map(|(index, (record, date))| Ok((date, index, record?)))
+            .collect::<Result<Vec<_>>>()?;
+        records.sort_by_key(|(date, index, _)| (*date, *index));
+        let (run, file) = TemporaryFile::create(output)?;
+        measure(Stage::Write, || -> Result<()> {
+            let mut writer = csv::Writer::from_writer(file);
+            writer.write_record(&header)?;
+            let mut records = records.into_iter().peekable();
+            while let Some((date, _, record)) = records.next() {
+                operation::check()?;
+                if records.peek().is_none_or(|(next, _, _)| *next != date) {
+                    writer.write_record(&record)?;
+                }
+            }
+            writer.flush()?;
+            Ok(())
+        })?;
+        Ok(run)
+    })
 }
 
 /// Later runs contain later source positions, including across merge passes.
-fn merge_runs(runs: &[AtomicFile], output: &str) -> Result<(AtomicFile, usize)> {
-    let (spool, file) = AtomicFile::create(output)?;
-    let mut writer = csv::Writer::from_writer(file);
-    let mut readers = runs
-        .iter()
-        .map(|run| csv::Reader::from_path(run.temporary_path()))
-        .collect::<std::result::Result<Vec<_>, _>>()?;
-    let header = readers
-        .first_mut()
-        .ok_or_else(|| eyre!("没有待合并的数据块"))?
-        .headers()?
-        .clone();
-    let date_index = header
-        .iter()
-        .position(|h| h == "date")
-        .ok_or_else(|| eyre!("CSV缺少date"))?;
-    writer.write_record(&header)?;
-    let mut heap = BinaryHeap::new();
-    let mut heads = vec![csv::StringRecord::new(); readers.len()];
-    for (index, reader) in readers.iter_mut().enumerate() {
-        if reader.headers()? != &header {
-            eyre::bail!("分块CSV列定义不一致");
-        }
-        if reader.read_record(&mut heads[index])? {
-            heap.push(Reverse((record_date(&heads[index], date_index)?, index)));
-        }
-    }
-    let mut pending: Option<(NaiveDate, csv::StringRecord)> = None;
-    let mut rows = 0;
-    while let Some(Reverse((date, index))) = heap.pop() {
-        operation::check()?;
-        if let Some((previous, record)) = pending.take()
-            && previous != date
-        {
-            writer.write_record(&record)?;
-            rows += 1;
-        }
-        pending = Some((date, heads[index].clone()));
-        if readers[index].read_record(&mut heads[index])? {
-            heap.push(Reverse((record_date(&heads[index], date_index)?, index)));
-        }
-    }
-    if let Some((_, record)) = pending {
-        writer.write_record(&record)?;
-        rows += 1;
-    }
-    writer.flush()?;
-    Ok((spool, rows))
+fn merge_runs(runs: &[TemporaryFile], output: &str) -> Result<(TemporaryFile, usize)> {
+    measure(Stage::Sort, || {
+        measure(Stage::Write, || {
+            let (spool, file) = TemporaryFile::create(output)?;
+            let mut writer = csv::Writer::from_writer(file);
+            let mut readers = runs
+                .iter()
+                .map(|run| csv::Reader::from_path(run.temporary_path()))
+                .collect::<std::result::Result<Vec<_>, _>>()?;
+            let header = readers
+                .first_mut()
+                .ok_or_else(|| eyre!("没有待合并的数据块"))?
+                .headers()?
+                .clone();
+            let date_index = header
+                .iter()
+                .position(|h| h == "date")
+                .ok_or_else(|| eyre!("CSV缺少date"))?;
+            writer.write_record(&header)?;
+            let mut heap = BinaryHeap::new();
+            let mut heads = vec![csv::StringRecord::new(); readers.len()];
+            for (index, reader) in readers.iter_mut().enumerate() {
+                if reader.headers()? != &header {
+                    eyre::bail!("分块CSV列定义不一致");
+                }
+                if reader.read_record(&mut heads[index])? {
+                    heap.push(Reverse((record_date(&heads[index], date_index)?, index)));
+                }
+            }
+            let mut pending: Option<(NaiveDate, csv::StringRecord)> = None;
+            let mut rows = 0;
+            while let Some(Reverse((date, index))) = heap.pop() {
+                operation::check()?;
+                if let Some((previous, record)) = pending.take()
+                    && previous != date
+                {
+                    writer.write_record(&record)?;
+                    rows += 1;
+                }
+                pending = Some((date, heads[index].clone()));
+                if readers[index].read_record(&mut heads[index])? {
+                    heap.push(Reverse((record_date(&heads[index], date_index)?, index)));
+                }
+            }
+            if let Some((_, record)) = pending {
+                writer.write_record(&record)?;
+                rows += 1;
+            }
+            writer.flush()?;
+            Ok((spool, rows))
+        })
+    })
 }
 
 fn record_date(record: &csv::StringRecord, index: usize) -> Result<NaiveDate> {

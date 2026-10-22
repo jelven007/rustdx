@@ -113,15 +113,22 @@ impl DayCmd {
         // 若传入的是 URL 或本地 zip 路径，也走同一套下载/解压流程。
         let outputs = self.validate_paths()?;
         let _outputs = crate::paths::OutputLocks::acquire(&outputs)?;
-        let source = match self.resolve_source_dirs() {
-            Ok(source) => source,
-            Err(error) => {
-                let mut report =
-                    crate::quality::CollectionReport::start(&self.output, self.report.as_deref())?;
-                report.stage = "source";
-                return report.finish(Err(error));
-            }
-        };
+        let observations = rustdx_cli::observation::Observations::default();
+        let _observations = observations.enter();
+        let source =
+            match rustdx_cli::observation::measure(rustdx_cli::observation::Stage::Source, || {
+                self.resolve_source_dirs()
+            }) {
+                Ok(source) => source,
+                Err(error) => {
+                    let mut report = crate::quality::CollectionReport::start(
+                        &self.output,
+                        self.report.as_deref(),
+                    )?;
+                    report.stage = "source";
+                    return report.finish(Err(error));
+                }
+            };
         if let Some(source) = source {
             let cmd = DayCmd {
                 path: source.dirs.clone(),
