@@ -67,14 +67,17 @@ impl EastCmd {
         inputs.extend(self.calendar.iter().cloned());
         crate::paths::validate(&outputs, &inputs)?;
         let _outputs = crate::paths::OutputLocks::acquire(&outputs)?;
+        let _target = crate::io::sinks::target_lock(&self.output, &self.table)?;
         let mut report =
             crate::quality::CollectionReport::start(self.output_path(), self.report.as_deref())?;
         let result = (|| {
+            if self.output == "clickhouse" {
+                crate::io::setup_clickhouse(true, &self.table)?;
+            }
             let calendar = crate::quality::tracked_calendar(self.calendar.as_deref(), &mut report)?;
             let data = fetch_with_calendar(self.max, calendar.as_ref())?;
             self.process_with_calendar(data, &mut report, calendar.as_ref())?;
             if self.output == "clickhouse" {
-                crate::io::setup_clickhouse(true, &self.table)?;
                 crate::io::sinks::import_clickhouse(&self.output, &self.table, false, &mut report)?;
             }
             Ok(())

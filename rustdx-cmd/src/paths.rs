@@ -91,6 +91,72 @@ impl Drop for OutputLocks {
     }
 }
 
+/// Coordinates a database table across working directories on this machine.
+/// The origin deliberately excludes credentials, URI query options and paths.
+pub struct TargetLock(File);
+
+impl TargetLock {
+    pub fn acquire(backend: &str, origin: &str, table: &str) -> Result<Self> {
+        let authority = origin
+            .split_once("://")
+            .ok_or_else(|| eyre::eyre!("数据库地址缺少协议"))?
+            .1
+            .split(['/', '?', '#'])
+            .next()
+            .unwrap_or("")
+            .rsplit('@')
+            .next()
+            .unwrap_or("")
+            .to_ascii_lowercase();
+        if authority.is_empty() {
+            bail!("数据库地址缺少主机");
+        }
+        let default_port = if backend == "mongodb" {
+            27017
+        } else if origin.starts_with("https://") {
+            443
+        } else {
+            80
+        };
+        let mut hosts = authority
+            .split(',')
+            .map(|host| {
+                let host = if host == "localhost" {
+                    "127.0.0.1".to_owned()
+                } else if let Some(port) = host.strip_prefix("localhost:") {
+                    format!("127.0.0.1:{port}")
+                } else {
+                    host.to_owned()
+                };
+                if host.contains(':') {
+                    host
+                } else {
+                    format!("{host}:{default_port}")
+                }
+            })
+            .collect::<Vec<_>>();
+        hosts.sort();
+        let authority = hosts.join(",");
+        let dir = std::env::temp_dir().join("rustdx_target_locks");
+        fs::create_dir_all(&dir)?;
+        let key = crate::quality::sha256(format!("{backend}:{authority}:{table}").as_bytes());
+        let file = OpenOptions::new()
+            .create(true)
+            .truncate(false)
+            .write(true)
+            .open(dir.join(key))?;
+        file.try_lock()
+            .map_err(|e| eyre::eyre!("数据库目标已被本机任务使用: {backend}:{table}: {e}"))?;
+        Ok(Self(file))
+    }
+}
+
+impl Drop for TargetLock {
+    fn drop(&mut self) {
+        let _ = self.0.unlock();
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -122,5 +188,20 @@ mod tests {
         drop(OutputLocks::acquire(&[output]).unwrap());
         assert_eq!(fs::read(input).unwrap(), b"keep");
         fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn database_targets_coordinate_across_credentials_and_directories() {
+        let table = format!("test.lock_{}", std::process::id());
+        let lock = TargetLock::acquire(
+            "mongodb",
+            "mongodb://user:secret@localhost:27018/?authSource=x",
+            &table,
+        )
+        .unwrap();
+        assert!(TargetLock::acquire("mongodb", "mongodb://127.0.0.1:27018", &table).is_err());
+        drop(TargetLock::acquire("mongodb", "mongodb://127.0.0.1:27019", &table).unwrap());
+        drop(lock);
+        drop(TargetLock::acquire("mongodb", "mongodb://127.0.0.1:27018", &table).unwrap());
     }
 }

@@ -21,6 +21,7 @@ use std::{
 const BUFFER_SIZE: usize = 32 * (1 << 20); // 32M
 mod schema;
 pub(crate) mod sinks;
+mod verify;
 use schema::validate_clickhouse_schema;
 
 /// 并发解析目录下的 day 文件并写入 CSV（利用多核优势）。
@@ -252,6 +253,7 @@ pub fn run_csv(cmd: &DayCmd) -> Result<()> {
 
 /// 报告在输出提交及数据库导入之后定案；任何一步失败均记录失败状态。
 fn with_report(cmd: &DayCmd, run: impl FnOnce(&mut CollectionReport) -> Result<()>) -> Result<()> {
+    let _target = sinks::target_lock(&cmd.output, &cmd.table)?;
     let mut report = CollectionReport::start(&cmd.output, cmd.report.as_deref())?;
     let result = run(&mut report);
     report.finish(result)
@@ -265,7 +267,7 @@ where
     if cmd.output == "clickhouse" {
         setup_clickhouse(cmd.gbbq.is_some(), &cmd.table)?;
     } else if cmd.output == "mongodb" {
-        database_table(&cmd.table)?;
+        sinks::prepare_mongodb(&cmd.table)?;
     }
     let (atomic, file) = rustdx_complete::atomic_file::AtomicFile::create(&cmd.output)?;
     let mut wtr = csv::WriterBuilder::new()
@@ -463,14 +465,6 @@ impl ClickHouseConfig {
             eyre::bail!("ClickHouse INSERT 返回非空响应，写入状态需核实：{body}");
         }
         debug!("clickhouse 导入完成：{table}（{len} 字节 CSV）");
-        // 输出数据边界：缓存解压目录可能滞后于最新交易日（实测 09-10 命中
-        // 09-06 的旧缓存，包行数相近极易误判为新包）——一眼确认新鲜度
-        match self.exec(&format!(
-            "SELECT concat(toString(count()), ' 行，数据截至 ', toString(max(date))) FROM {table} FINAL"
-        )) {
-            Ok(info) => info!("day_file 数据边界: {info}"),
-            Err(e) => warn!("数据已写入，边界查询失败（无需重新导入）：{e}"),
-        }
         Ok(())
     }
 }

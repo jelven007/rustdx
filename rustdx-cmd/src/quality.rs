@@ -297,6 +297,20 @@ pub fn inspect_with_calendar<T: QualityRow>(
 }
 
 #[derive(Serialize)]
+pub struct DatabaseEvidence {
+    pub target: String,
+    pub method: &'static str,
+    pub scope: &'static str,
+    pub rows: usize,
+    pub logical_keys: usize,
+    pub batches: usize,
+    pub first_date: Option<String>,
+    pub last_date: Option<String>,
+    pub numeric_fields: Vec<String>,
+    pub sha256: String,
+}
+
+#[derive(Serialize)]
 pub struct CollectionReport {
     pub schema_version: u32,
     pub project_version: &'static str,
@@ -314,6 +328,7 @@ pub struct CollectionReport {
     pub sources: Vec<SourceEvidence>,
     pub artifact: Option<OutputEvidence>,
     pub database_status: &'static str,
+    pub database_verification: Option<DatabaseEvidence>,
     pub database_table: Option<String>,
     pub query_id: Option<String>,
     pub run_version: u64,
@@ -335,7 +350,7 @@ impl CollectionReport {
             .unwrap_or_default()
             .max(0) as u64;
         Self {
-            schema_version: 2,
+            schema_version: 3,
             project_version: env!("CARGO_PKG_VERSION"),
             started_at: chrono::Utc::now().to_rfc3339(),
             finished_at: String::new(),
@@ -360,6 +375,7 @@ impl CollectionReport {
             sources: vec![],
             artifact: None,
             database_status: "not_started",
+            database_verification: None,
             database_table: None,
             query_id: None,
             run_version: version,
@@ -491,6 +507,47 @@ impl CollectionReport {
         if let Some(artifact) = &mut self.artifact {
             artifact.state = "published";
         }
+        self.checkpoint()
+    }
+
+    /// Refuse to import a published CSV changed after its evidence was recorded.
+    pub fn verify_artifact(&self, path: &Path) -> Result<()> {
+        let expected = self
+            .artifact
+            .as_ref()
+            .ok_or_else(|| eyre::eyre!("缺少输出证据"))?;
+        let mut reader = File::open(path)?;
+        let mut hash = Sha256::new();
+        let mut buffer = [0; 64 * 1024];
+        let mut bytes = 0;
+        loop {
+            let n = reader.read(&mut buffer)?;
+            if n == 0 {
+                break;
+            }
+            hash.update(&buffer[..n]);
+            bytes += n as u64;
+        }
+        if bytes != expected.bytes || format!("{:x}", hash.finalize()) != expected.sha256 {
+            eyre::bail!("已发布CSV与清单摘要不同，拒绝数据库操作");
+        }
+        Ok(())
+    }
+
+    pub fn database_verified(&mut self, evidence: DatabaseEvidence) -> Result<()> {
+        let artifact = self
+            .artifact
+            .as_ref()
+            .ok_or_else(|| eyre::eyre!("缺少输出证据"))?;
+        if evidence.rows != artifact.rows
+            || evidence.logical_keys != artifact.logical_keys
+            || evidence.first_date != artifact.first_date
+            || evidence.last_date != artifact.last_date
+        {
+            eyre::bail!("数据库验收证据与已发布CSV行数或边界不同");
+        }
+        self.database_verification = Some(evidence);
+        self.database_status = "verified";
         self.checkpoint()
     }
 

@@ -1,6 +1,10 @@
-use rustdx_complete::tcp::{
-    TcpConfig,
-    stock::{Adj, Client},
+use chrono::Datelike;
+use rustdx_complete::{
+    calendar::{BuiltinCalendar, CalendarProvider},
+    tcp::{
+        TcpConfig,
+        stock::{Adj, Client},
+    },
 };
 use std::time::Duration;
 
@@ -21,32 +25,65 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ..Default::default()
     };
     let mut client = Client::with_config(&config)?;
+    let now = chrono::Utc::now()
+        .with_timezone(&rustdx_complete::data::exchange_timezone())
+        .naive_local();
+    let market_date = BuiltinCalendar.market_trading_day_at(now)?;
+    let end = if market_date == now.date()
+        && now.time() < chrono::NaiveTime::from_hms_opt(15, 0, 0).unwrap()
+    {
+        BuiltinCalendar.previous_trading_day(market_date)?
+    } else {
+        market_date
+    };
+    let as_u32 =
+        |date: chrono::NaiveDate| date.year() as u32 * 10000 + date.month() * 100 + date.day();
+    let begin = as_u32(end - chrono::Duration::days(60));
+    let end = as_u32(end);
+    println!("latest closed-session acceptance: {begin}..={end}");
 
     println!("heartbeat security count: {}", client.heartbeat()?);
     require(
         "quotes",
         client.quotes(&[(0, "000001"), (1, "600519")])?.len(),
     )?;
-    require(
-        "stock daily bars",
-        client.k(1, "600519", Some(20260901), Some(20261009))?.len(),
-    )?;
+    let daily = client.k(1, "600519", Some(begin), Some(end))?;
+    require("stock daily bars", daily.len())?;
+    if daily.last().is_none_or(|bar| bar.dt.to_u32() != end) {
+        return Err(format!("stock daily bars do not reach latest closed session {end}").into());
+    }
+    for bar in &daily {
+        rustdx_complete::data::validate_ohlcv(
+            bar.open, bar.high, bar.low, bar.close, bar.vol, bar.amount,
+        )?;
+    }
+    println!(
+        "stock daily bounds: {}..={}",
+        daily[0].dt.to_u32(),
+        daily.last().unwrap().dt.to_u32()
+    );
     require(
         "index daily bars",
         client
-            .index_bars_range(1, "000001", 9, Some(20260901), Some(20261009))?
+            .index_bars_range(1, "000001", 9, Some(begin), Some(end))?
             .len(),
     )?;
     require(
         "adjusted daily bars",
         client
-            .k_adjusted(1, "600519", Adj::Qfq, Some(20260101), Some(20261009))?
+            .k_adjusted(
+                1,
+                "600519",
+                Adj::Qfq,
+                Some(end / 10000 * 10000 + 101),
+                Some(end),
+            )?
             .len(),
     )?;
     require("minute", client.minute(0, "000001")?.len())?;
     require(
         "history minute",
-        client.history_minute(0, "000001", 20261009)?.len(),
+        client.history_minute(0, "000001", end)?.len(),
     )?;
     println!(
         "current transaction (may be empty outside a trading session): {}",
@@ -54,9 +91,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     require(
         "history transaction",
-        client
-            .history_transaction(0, "000001", 0, 20, 20261009)?
-            .len(),
+        client.history_transaction(0, "000001", 0, 20, end)?.len(),
     )?;
 
     let finance = client.finance(1, "600519")?;
