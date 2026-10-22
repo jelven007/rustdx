@@ -32,7 +32,7 @@
 //! ```
 
 use crate::data::{Period, Symbol};
-use crate::tcp::stock::Kline;
+use crate::tcp::stock::{Kline, KlineRequest};
 
 // ============================================================================
 // KlineBuilder
@@ -231,6 +231,17 @@ impl<'a> KlineBuilder<'a> {
     ///     .unwrap();
     /// ```
     pub fn build(self) -> Result<Kline<'a>, String> {
+        self.build_request().map(Kline::from_request)
+    }
+
+    /// 构建不可变请求，供独立股票/指数解码器使用。
+    ///
+    /// ```
+    /// use rustdx_complete::KlineBuilder;
+    /// let request = KlineBuilder::new().code("600000").build_request().unwrap();
+    /// assert_eq!(request.market(), 1);
+    /// ```
+    pub fn build_request(self) -> Result<KlineRequest<'a>, String> {
         // 检查必填参数
         let code = self.code.ok_or("缺少必填参数: code（股票代码）")?;
         if code.len() != 6 || !code.bytes().all(|b| b.is_ascii_alphanumeric()) {
@@ -262,7 +273,7 @@ impl<'a> KlineBuilder<'a> {
             return Err("count 参数不能超过 800".to_string());
         }
 
-        Ok(Kline::new(market, code, category, start, count))
+        KlineRequest::new(market, code, category, start, count).map_err(|e| e.to_string())
     }
 }
 

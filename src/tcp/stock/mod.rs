@@ -4,6 +4,9 @@ pub use kline::{Kline, KlineData};
 mod index_kline;
 pub use index_kline::{IndexKline, IndexKlineData};
 
+mod kline_request;
+pub use kline_request::{KlineRequest, decode_index_bars, decode_stock_bars};
+
 mod xdxr;
 pub use xdxr::*;
 

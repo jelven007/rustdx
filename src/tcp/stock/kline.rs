@@ -5,6 +5,7 @@ use crate::tcp::{Tdx, helper::DateTime};
 /// 只修改字段并不会更改待发送字节的内容。
 /// 如果你需要修改查询条件，请使用相应的方法。
 /// 比如修改股票代码调用 [`Kline::code`]，修改查询数量调用 [`Kline::count`]。
+/// 新代码可用 [`super::KlineRequest`] 和 [`super::decode_stock_bars`] 分离请求/解码。
 #[derive(Debug, Clone)]
 pub struct Kline<'d> {
     pub send: Box<[u8]>,
@@ -33,6 +34,20 @@ impl<'d> Default for Kline<'d> {
 }
 
 impl<'d> Kline<'d> {
+    /// 将已校验的不可变请求转换为旧兼容对象。
+    pub fn from_request(request: super::KlineRequest<'d>) -> Self {
+        Self {
+            send: request.encode().into(),
+            market: request.market(),
+            code: request.code(),
+            category: request.category(),
+            start: request.start(),
+            count: request.count(),
+            response: Vec::new(),
+            data: vec![KlineData::default(); request.count() as usize],
+        }
+    }
+
     /// 0 代表深市；1 代表沪市。
     ///
     /// ## panic
@@ -124,43 +139,16 @@ impl<'a> Tdx for Kline<'a> {
     }
 
     fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
-        use crate::tcp::{
-            helper::{datetime, vol_amount},
-            reader::Reader,
-        };
         self.data.clear();
         self.response = v;
-        let mut reader = Reader::new(&self.response);
-        let count = reader.u16()? as usize;
-        if count > self.count as usize {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "K线数量超过请求数量",
-            ));
-        }
-        let mut data = Vec::with_capacity(count);
-        let mut base = 0i64;
-        for _ in 0..count {
-            let dt = datetime(reader.take(4)?, self.category);
-            let open = reader.varint()? as i64;
-            let close = reader.varint()? as i64;
-            let high = reader.varint()? as i64;
-            let low = reader.varint()? as i64;
-            base += open;
-            data.push(KlineData {
-                dt,
-                code: self.code,
-                open: base as f64 / 1000.0,
-                close: (base + close) as f64 / 1000.0,
-                high: (base + high) as f64 / 1000.0,
-                low: (base + low) as f64 / 1000.0,
-                vol: vol_amount(reader.u32()? as i32),
-                amount: vol_amount(reader.u32()? as i32),
-            });
-            base += close;
-        }
-        data.sort_by_key(|b| b.dt);
-        self.data = data;
+        let request = super::KlineRequest::new(
+            self.market,
+            self.code,
+            self.category,
+            self.start,
+            self.count,
+        )?;
+        self.data = super::decode_stock_bars(&request, &self.response)?;
         Ok(())
     }
 
@@ -177,7 +165,8 @@ pub struct KlineData<'d> {
     pub close: f64,
     pub high: f64,
     pub low: f64,
-    /// 通达信股票K线成交量，单位：手（100股）；指数/其他品种需确认源口径。
+    /// 保留源成交量。A股日线为手（100股）；分钟周期、指数/其他品种
+    /// 须按源和周期核实单位，通过CanonicalBar显式转换。
     pub vol: f64,
     /// 成交额，单位：元
     pub amount: f64,

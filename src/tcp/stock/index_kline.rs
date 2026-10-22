@@ -32,6 +32,20 @@ pub struct IndexKline<'d> {
 }
 
 impl<'d> IndexKline<'d> {
+    /// 将已校验的不可变请求转换为旧兼容对象。
+    pub fn from_request(request: super::KlineRequest<'d>) -> Self {
+        Self {
+            send: request.encode().into(),
+            market: request.market(),
+            code: request.code(),
+            category: request.category(),
+            start: request.start(),
+            count: request.count(),
+            response: Vec::new(),
+            data: vec![IndexKlineData::default(); request.count() as usize],
+        }
+    }
+
     /// 创建指数K线请求。参数含义同 [`Kline::new`](super::Kline::new)。
     ///
     /// ## panic
@@ -85,45 +99,16 @@ impl<'a> Tdx for IndexKline<'a> {
     }
 
     fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
-        use crate::tcp::{
-            helper::{datetime, vol_amount},
-            reader::Reader,
-        };
         self.data.clear();
         self.response = v;
-        let mut reader = Reader::new(&self.response);
-        let count = reader.u16()? as usize;
-        if count > self.count as usize {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "指数K线数量超过请求数量",
-            ));
-        }
-        let mut data = Vec::with_capacity(count);
-        let mut base = 0i64;
-        for _ in 0..count {
-            let dt = datetime(reader.take(4)?, self.category);
-            let open = reader.varint()? as i64;
-            let close = reader.varint()? as i64;
-            let high = reader.varint()? as i64;
-            let low = reader.varint()? as i64;
-            base += open;
-            data.push(IndexKlineData {
-                dt,
-                code: self.code,
-                open: base as f64 / 1000.0,
-                close: (base + close) as f64 / 1000.0,
-                high: (base + high) as f64 / 1000.0,
-                low: (base + low) as f64 / 1000.0,
-                vol: vol_amount(reader.u32()? as i32),
-                amount: vol_amount(reader.u32()? as i32),
-                up_count: reader.u16()?,
-                down_count: reader.u16()?,
-            });
-            base += close;
-        }
-        data.sort_by_key(|b| b.dt);
-        self.data = data;
+        let request = super::KlineRequest::new(
+            self.market,
+            self.code,
+            self.category,
+            self.start,
+            self.count,
+        )?;
+        self.data = super::decode_index_bars(&request, &self.response)?;
         Ok(())
     }
 

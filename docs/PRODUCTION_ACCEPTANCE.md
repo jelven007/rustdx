@@ -1,6 +1,6 @@
 # 生产验收报告
 
-文档更新：2026-10-22。下文按阶段保留证据，最新源码离线验证见末节；10月22日优化尚未做新一轮真实服务验收。首次在线验收日期：2026-10-10。环境：macOS 26.5.1 arm64、Rust 1.99.0、Colima、ClickHouse 25.8.33.6。代码基线为 `773c8a5`，并包含当次在线验收修复。
+文档更新：2026-10-23。下文按阶段保留证据；最新六步源码已在macOS arm64/Rust1.89上完成真实通达信、东财及隔离ClickHouse/MongoDB小表验收，见末节和[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)。首次在线验收日期：2026-10-10；当时环境为macOS 26.5.1 arm64、Rust1.99.0、Colima、ClickHouse25.8.33.6，基线773c8a5并包含当次修复。不同轮次及规模分别解释。
 
 ## 2026-10-10在线验收结论
 
@@ -172,3 +172,15 @@ bash -n scripts/diagnose_network.sh scripts/run_comprehensive_test.sh scripts/pu
 当前上线前还需目标机smoke、隔离小表写入/重复去重、目标逻辑键及数值核对、数据库故障恢复演练。清单unknown不证明无写入，acknowledged不证明逐行正确；恢复见[IMPORTS.md](IMPORTS.md)和[RUNBOOK.md](RUNBOOK.md)。日历只有2024–2026，规则核实截至2026-10-22，2027/未来政策需有来源续期。
 
 完整复现命令和CI门禁见[VALIDATION.md](VALIDATION.md)，源码合并与两个历史快照见[RELEASES.md](RELEASES.md)。
+
+## 六步源码当前验收（2026-10-23）
+
+本轮保持Rust2024/MSRV1.89和同步有界架构，未发布新crate。真实production_smoke经不可变请求/独立解码路径通过：股票/指数日线各38根，股票最新边界2026-10-22；前复权192根，分时各240点，逐笔各20，除权45条，F10各16项，证券列表24462/27697及板块41369条。这里只验收所列接口、边界和OHLC约束，未独立审计所有财务和目录字段。
+
+隔离ClickHouse26.11.1.548（官方macOS master实验构建）及MongoDB8.0.16真实验收通过：1040键、3批精确回读、重复导入、更新覆盖、完整字段、唯一索引、FINAL/合并、错误约束及CSV保留/清理。仅监听本机临时端口；验收后停止服务，保留数据目录。未重跑2981万行全量，不替代目标生产版本和配置验收。
+
+东财标准适配后的当前CLI实测两股、行情日2026-10-22、total5563，清单complete，CSV摘要与仓库保留样本一致。独立TDX同日OHLC精确一致；量额差异在明确的32位编码容差内，数据库仍精确比较。另保存股票/指数日线及股票5分钟线各3条真实报文，用固定pytdx参考生成全部字段期望，Rust与独立参考精确一致。
+
+Rust1.89 workspace/all-features、Clippy拒绝警告、格式及release构建通过；新解码纳入ASan/覆盖率fuzz627,152次、31秒无崩溃。第五步实际大样本4线程RSS219.5→10.9MiB，字段摘要一致；不是全场景性能承诺。来源、版本、复现方法、最终原清单及日志摘要见[六步记录](NEXT_OPTIMIZATION.md)和[最终验收JSON](fixtures/final-acceptance-20261023.json)。
+
+2027完整日历、全市场证券状态、全部板块规则续期、长期网络P95及目标生产全量负载仍未取得；本机结果不代表跨平台远端CI或公共接口SLA。未知/已确认但未verified的数据库失败继续保留CSV；恢复见[IMPORTS.md](IMPORTS.md)。

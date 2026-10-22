@@ -141,26 +141,10 @@ impl EastCmd {
                 continue;
             }
             let validation: Result<()> = (|| {
-                row.ensure_closed()?;
-                let date = chrono::NaiveDate::parse_from_str(&row.date, "%Y-%m-%d")?;
+                let canonical = row.to_canonical_with_calendar(calendar)?;
+                let date = canonical.candle.bar.datetime.date();
                 if date != expected_date {
                     eyre::bail!("{}快照日期{date}不是当前行情日{expected_date}", row.code);
-                }
-                let field = |value: Option<f64>| {
-                    value.ok_or_else(|| eyre::eyre!("{}行情字段缺失", row.code))
-                };
-                let (open, high, low, close, volume, amount, preclose) = (
-                    field(row.open)?,
-                    field(row.high)?,
-                    field(row.low)?,
-                    field(row.close)?,
-                    field(row.vol)?,
-                    field(row.amount)?,
-                    field(row.preclose)?,
-                );
-                rustdx_complete::data::validate_ohlcv(open, high, low, close, volume, amount)?;
-                if !preclose.is_finite() || preclose <= 0.0 {
-                    eyre::bail!("前收非法");
                 }
                 if let Some(previous) = &previous {
                     let factor = previous
@@ -174,10 +158,11 @@ impl EastCmd {
                             row.code
                         );
                     }
-                    row.factor = close / preclose * factor.factor;
-                    if !row.factor.is_finite() || row.factor <= 0.0 {
-                        eyre::bail!("累计收益因子非法");
-                    }
+                    row.factor = canonical
+                        .advance_return_index(rustdx_complete::data::ReturnIndex::new(
+                            factor.factor,
+                        )?)?
+                        .value();
                 }
                 Ok(())
             })();
@@ -198,7 +183,6 @@ impl EastCmd {
             };
             report.files.push(issue);
             validation?;
-            row.code.parse::<rustdx_complete::data::Symbol>()?;
             report.record_rows(&row.code, 1, &row.date, &row.date)?;
             rows.push(row);
         }

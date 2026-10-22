@@ -271,7 +271,99 @@ fn deser_opt_f32<'de, D: Deserializer<'de>>(deserializer: D) -> Result<F32, D::E
 /// 排除掉 "-" 无实际数据的股票（完全可以不必考虑这些无效数据）
 pub type F32 = Option<f64>;
 
+/// 东财A股收盘快照的标准适配结果。OHLC/amount为人民币元，
+/// 标准量为股；源量为100股/手，源时间戳与标准15:00日线时点分开保留。
+/// 未计算的旧CSV factor=0对应None，不是有效收益指数或价格乘数。
+#[derive(Debug, Clone, Serialize)]
+pub struct EastCanonicalBar {
+    pub candle: rustdx_complete::data::CanonicalBar,
+    pub source_timestamp: chrono::DateTime<chrono::FixedOffset>,
+    pub source_volume_unit: rustdx_complete::data::VolumeUnit,
+    /// 源前收（除权日为除权参考价），单位人民币元。
+    pub preclose: f64,
+    pub return_index: Option<rustdx_complete::data::ReturnIndex>,
+}
+
+impl EastCanonicalBar {
+    /// 承接已经校验过日期的上一交易日累计收益，保持原始OHLC。
+    pub fn advance_return_index(
+        &self,
+        prior: rustdx_complete::data::ReturnIndex,
+    ) -> Result<rustdx_complete::data::ReturnIndex> {
+        Ok(rustdx_complete::data::ReturnIndex::new(
+            self.candle.bar.close / self.preclose * prior.value(),
+        )?)
+    }
+}
+
 impl Day {
+    pub fn to_canonical(&self) -> Result<EastCanonicalBar> {
+        self.to_canonical_with_calendar(&rustdx_complete::calendar::BuiltinCalendar)
+    }
+
+    /// 接受已normalize的A股记录，独立核对市场、源时间戳及日期。
+    /// 是否为当前行情日由采集任务决定，此入口也支持历史样本验证。
+    pub fn to_canonical_with_calendar(
+        &self,
+        calendar: &dyn rustdx_complete::calendar::CalendarProvider,
+    ) -> Result<EastCanonicalBar> {
+        use rustdx_complete::data::{
+            Bar, BarSource, CanonicalBar, Period, PriceBasis, ReturnIndex, Symbol, VolumeUnit,
+            exchange_timezone,
+        };
+        self.ensure_closed()?;
+        let symbol: Symbol = self.code.parse()?;
+        if !symbol.is_a_share()
+            || !symbol.code().bytes().all(|b| b.is_ascii_digit())
+            || self.market != Some(symbol.market().tdx_market()?)
+        {
+            eyre::bail!("{}东财市场/证券代码不匹配或非已核实A股", self.code);
+        }
+        let source_timestamp = self
+            .timestamp
+            .and_then(|t| chrono::DateTime::from_timestamp(t, 0))
+            .ok_or_else(|| eyre::eyre!("{}缺少合法行情时间戳", self.code))?
+            .with_timezone(&exchange_timezone());
+        let date = chrono::NaiveDate::parse_from_str(&self.date, "%Y-%m-%d")?;
+        if date != source_timestamp.date_naive() || !calendar.is_trading_day(date)? {
+            eyre::bail!("{}日线日期与源时间戳/交易日不一致", self.code);
+        }
+        let field =
+            |value: Option<f64>| value.ok_or_else(|| eyre::eyre!("{}行情字段缺失", self.code));
+        let bar = Bar {
+            symbol,
+            datetime: date.and_hms_opt(15, 0, 0).expect("固定收盘时间15:00"),
+            open: field(self.open)?,
+            high: field(self.high)?,
+            low: field(self.low)?,
+            close: field(self.close)?,
+            volume_shares: VolumeUnit::Lots.to_shares(field(self.vol)?),
+            amount: field(self.amount)?,
+        };
+        bar.validate()?;
+        let preclose = field(self.preclose)?;
+        if !preclose.is_finite() || preclose <= 0.0 {
+            eyre::bail!("{}前收非法", self.code);
+        }
+        let return_index = if self.factor == 0.0 {
+            None
+        } else {
+            Some(ReturnIndex::new(self.factor)?)
+        };
+        Ok(EastCanonicalBar {
+            candle: CanonicalBar {
+                bar,
+                period: Period::Day,
+                source: BarSource::Eastmoney,
+                price_basis: PriceBasis::Raw,
+            },
+            source_timestamp,
+            source_volume_unit: VolumeUnit::Lots,
+            preclose,
+            return_index,
+        })
+    }
+
     pub fn normalize(&mut self) -> Result<()> {
         self.normalize_with_calendar(&rustdx_complete::calendar::BuiltinCalendar)
     }
@@ -397,5 +489,75 @@ mod tests {
         for malformed in ["", "abc", "cb()", "cb({)", "中文"] {
             assert!(parse(malformed).is_err());
         }
+    }
+
+    #[test]
+    fn canonical_adapter_preserves_csv_units_time_and_return_semantics() {
+        use rustdx_complete::data::{BarSource, Period, PriceBasis, ReturnIndex, VolumeUnit};
+        let ts = chrono::DateTime::parse_from_rfc3339("2026-10-22T15:01:00+08:00")
+            .unwrap()
+            .timestamp();
+        // Values from the independently captured closed-session CSV fixture.
+        let text = format!(
+            r#"{{"data":{{"total":1,"diff":[{{"f12":"000001","f13":0,"f124":{ts},"f17":11.41,"f15":11.42,"f16":11.26,"f2":11.3,"f6":1468424722.09,"f5":1297649,"f18":11.41}}]}}}}"#
+        );
+        let mut row = parse(&text).unwrap().data.diff.remove(0);
+        row.normalize().unwrap();
+        let canonical = row.to_canonical().unwrap();
+        assert_eq!(canonical.candle.source, BarSource::Eastmoney);
+        assert_eq!(canonical.candle.period, Period::Day);
+        assert_eq!(canonical.candle.price_basis, PriceBasis::Raw);
+        assert!(matches!(canonical.source_volume_unit, VolumeUnit::Lots));
+        assert_eq!(canonical.candle.bar.symbol.to_string(), "sz000001");
+        assert_eq!(canonical.candle.bar.volume_shares, 129764900.0);
+        assert_eq!(canonical.candle.bar.amount, 1468424722.09);
+        assert_eq!(canonical.source_timestamp.offset().local_minus_utc(), 28800);
+        assert_eq!(
+            canonical.candle.bar.datetime.to_string(),
+            "2026-10-22 15:00:00"
+        );
+        assert_eq!(
+            canonical.source_timestamp.naive_local().to_string(),
+            "2026-10-22 15:01:00"
+        );
+        assert!(canonical.return_index.is_none());
+        assert_eq!(
+            canonical
+                .advance_return_index(ReturnIndex::new(2.0).unwrap())
+                .unwrap()
+                .value(),
+            11.3 / 11.41 * 2.0
+        );
+        let mut csv = csv::Writer::from_writer(Vec::new());
+        csv.serialize(&row).unwrap();
+        let csv = String::from_utf8(csv.into_inner().unwrap()).unwrap();
+        let captured = include_str!("../../tests/fixtures/east-20261022.csv");
+        assert_eq!(
+            csv.lines().collect::<Vec<_>>(),
+            captured.lines().take(2).collect::<Vec<_>>()
+        );
+
+        let valid = row.clone();
+        for mutate in [
+            |row: &mut Day| row.market = Some(1),
+            |row: &mut Day| row.date = "2026-10-21".into(),
+            |row: &mut Day| row.timestamp = row.timestamp.map(|value| value - 3600),
+            |row: &mut Day| row.code = "sh000001".into(),
+            |row: &mut Day| row.open = None,
+            |row: &mut Day| row.vol = Some(f64::MAX),
+            |row: &mut Day| row.preclose = Some(0.0),
+            |row: &mut Day| row.factor = -1.0,
+            |row: &mut Day| row.factor = f64::NAN,
+        ] {
+            row = valid.clone();
+            mutate(&mut row);
+            assert!(row.to_canonical().is_err(), "{row:?}");
+        }
+        row = valid;
+        row.factor = 2.0;
+        assert_eq!(
+            row.to_canonical().unwrap().return_index.unwrap().value(),
+            2.0
+        );
     }
 }

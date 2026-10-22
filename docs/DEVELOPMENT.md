@@ -26,6 +26,7 @@ cargo run --example local_data -- assets/sz000001.day sz000001
 | `src/tcp/governance.rs` | 进程配额、Deadline、端点轮换/冷却及网络统计 |
 | `src/pool.rs` | 连接借还、闲置连接和关闭；与TCP共享配额 |
 | `src/tcp/stock/client.rs` | 高层行情API，组装请求和结果 |
+| `src/tcp/stock/kline_request.rs`、`tests/kline_decoders.rs` | 私有参数的不可变请求、股票/指数独立checked解码、固定pytdx参考样本 |
 | `client/batch.rs`、`pagination.rs`、`adjustment.rs` | 批次调度、通用分页、价格复权 |
 | `src/data.rs`、`data/model.rs` | 市场/代码、单位/时间、CanonicalBar及口径类型 |
 | `src/calendar.rs`、`calendar/provider.rs` | 兼容日历、严格Provider及外部数据集 |
@@ -44,15 +45,15 @@ cargo run --example local_data -- assets/sz000001.day sz000001
 
 ### 行情与网络
 
-优先使用Client或KlineBuilder；TCP市场0为深圳、1为上海。标准Symbol支持北交所不代表普通TCP协议支持北交所，禁止自动映射成深圳。请求参数校验、完整帧错误和分页无进展必须传播，不能用空列表掩盖失败。
+优先使用Client或KlineBuilder::build_request；TCP市场0为深圳、1为上海。KlineRequest私有字段保证编码与参数一致，返回股票/指数不同类型的独立解码函数拒绝截断、尾随字节、超数量和非法日期/时间。Client单页、分页、批次及复权拉取使用新路径，避免请求对象预填结果及响应/结果复制。旧build返回Kline，旧Kline/IndexKline字段和parse保留，try_parse共用新解码；旧公开字段仍可能与发送字节不一致，直接构造仍可能panic。标准Symbol支持北交所不代表普通TCP协议支持北交所，禁止自动映射成深圳。
 
 `configure_network`只允许首次初始化前调用；读取policy/stats也会初始化全局策略。主连接占用配额，批量查询需要额外容量。重连在旧许可内先关闭旧socket；批次结束释放批量池。不得用裸socket绕过预算后声称仍受进程上限保护。参数默认值、同步闭包不可抢占的限制见[NETWORK.md](NETWORK.md)。
 
 ### 行情语义与规则
 
-`CanonicalBar::from_kline`显式要求市场、周期、成交量单位和价格口径；`from_day`为原始日线；`from_lc`要求Symbol且只支持1/5分钟。当前BarSource覆盖通达信TCP/day/lc；东财仍走CLI记录类型，尚未全部收敛到CanonicalBar。既有文件/TCP类型和CSV保持兼容。
+`CanonicalBar::from_kline`显式要求市场、周期、成交量单位和价格口径；`from_day`为原始日线；`from_lc`要求Symbol且只支持1/5分钟。BarSource覆盖通达信TCP/day/lc及Eastmoney；CLI的Day::to_canonical_with_calendar返回EastCanonicalBar，含标准原价日线、源UTC+8时间戳、源手单位、前收和可选收益指数。标准日线时点15:00与实际快照时间分开，市场、日期、已收盘和完整字段独立检查；采集任务另检查当前行情日。既有文件/TCP类型和CSV保持兼容，枚举消费者需处理新增Eastmoney分支。
 
-标准量为股，day/lc文件源量为股，TCP股票与CSV量为手。`Bar::from_kline`仅对A股股票做隐式手→股转换，其他品种用显式单位入口。`ReturnIndex`与`PriceMultiplier`要求正有限值；CSV `factor=0`仍表示未计算，不构造为有效ReturnIndex。
+标准量为股，day/lc文件源量为股，TCP A股日线与CSV量为手。TCP分钟周期、指数和其他品种须核实源单位，不能仅凭股票代码推断；旧Bar::from_kline只兼容A股日线手→股，其余用显式单位入口。`ReturnIndex`与`PriceMultiplier`要求正有限值；CSV `factor=0`适配为None。东财advance_return_index只接受ReturnIndex，CLI校验上一交易日基准后更新旧CSV factor，原始OHLC不改写。
 
 历史回测使用 `RuleContext`及 `rule_at/prices_at/status_at`，输入当日状态和上市交易日序号。日历覆盖与规则覆盖分别检查；填入新日历不自动扩展规则核实范围。静态规则、IPO例外和来源见[LIMIT_RULES.md](LIMIT_RULES.md)。
 
@@ -64,7 +65,7 @@ cargo run --example local_data -- assets/sz000001.day sz000001
 
 `CollectionReport::start`在采集前持久化，`stage_artifact/published/begin_database/finish`保存关键检查点。每次先更新run_id归档，再更新最新清单，两文件不是一个事务。CSV先回读再记录摘要并原子提交；东财JSON直接序列化已经验证的行，不执行CSV回读。
 
-ClickHouse通过HTTP完整响应确认，INSERT附带query_id，单次操作300秒；版本由表默认服务端纳秒生成。MongoDB通过mongoimport的退出码确认，直接子进程超时300秒后终止并回收；当前命令使用系统工具默认连接，未提供URI/鉴权参数配置。不要将unknown自动改成not_started，也不要在失败处理里删除待核对CSV。字段和恢复语义以[IMPORTS.md](IMPORTS.md)为准。
+ClickHouse通过HTTP完整响应确认，INSERT附带query_id，单次操作300秒；版本由表默认服务端纳秒生成。MongoDB通过mongosh建立/核实唯一索引，mongoimport退出码确认，mongoexport独立回读，MONGODB_URI配置连接。子进程上限300秒并受整任务deadline约束，超时终止并回收。回执后每批512键精确比较全部导出字段，verified才允许清理CSV；同机同目标锁覆盖前基准读取至验收完成。不要将unknown自动改成not_started，也不要删除待核对CSV。字段和恢复语义以[IMPORTS.md](IMPORTS.md)为准。
 
 ### 指标与缓存
 

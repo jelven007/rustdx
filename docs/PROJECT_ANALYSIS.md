@@ -1,33 +1,38 @@
 # rustdx 架构评估与迭代结果
 
-最新复查日期：2026-10-22，优化基线904b33e，源码实现截至1f9f739。核心库1.12.2、CLI1.8.2仍是10月11日已发布版本；本轮源码优化尚未发布新crate版本。早期迭代始于2026-10-10的a6deec1。范围为行情协议、文件解析、计算模块、CLI和构建交付。需求、开发、测试、运营、运维和版本文档见[文档索引](README.md)。
+最新复查日期：2026-10-23，六步优化及交叉验证见[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)。核心库1.12.2、CLI1.8.2仍是10月11日已发布版本；本轮源码优化尚未发布新crate版本。早期迭代始于2026-10-10的a6deec1。范围为行情协议、文件解析、计算模块、CLI和构建交付。下方10月22日及更早章节保留各轮历史结果，当前架构和边界以本轮内容为准。需求、开发、测试、运营、运维和版本文档见[文档索引](README.md)。
 
 ## 技术架构
 
 | 包 | 职责 | 实现 |
 | --- | --- | --- |
-| jelven-rustdx-complete | 行情及计算核心 | 阻塞TCP、进程配额/时限、协议解码、checked文件解析、复权、标准数据类型、线性指标、严格日历、日期规则、连接池、缓存 |
-| jelven-rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、有界线程/结果通道、运行清单/摘要、CSV/JSON、数据库sink及schema检查 |
+| jelven-rustdx-complete | 行情及计算核心 | 阻塞TCP、任务上下文、TCP/HTTP共享许可、不可变K线请求/独立解码、checked文件解析、复权、标准数据类型、线性指标、严格日历、日期规则、连接池、缓存 |
+| jelven-rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、4096条分块/磁盘归并、有界线程/确定性输出、东财标准适配、schema3运行清单、CSV/JSON、数据库逐键精确回读及同机写入锁 |
 | tests-integration | 外部接口样本与检查 | 不发布；外部测试通过变量跳过 |
 
 保留Rust edition 2024及同步模块化workspace，最低Rust1.89。标准库线程足以承担当前批量采集，不引入异步运行时或额外服务。
 
 ```mermaid
 flowchart TB
-    POLICY["NetworkPolicy：进程配额/Deadline/端点冷却"] --> FRAME
+    TASK["OperationContext：整任务Deadline/取消"] --> POLICY
+    POLICY["NetworkPolicy：TCP/HTTP许可/同机OS锁/端点冷却"] --> FRAME
     TDX["通达信服务器"] --> FRAME["Tcp：握手/完整帧/重试/解压"]
-    FRAME --> DECODE["Tdx::try_parse / 有界Reader"]
+    REQUEST["KlineRequest：私有参数/checked编码"] --> FRAME
+    FRAME --> DECODE["股票/指数独立decode / 有界Reader / 旧Tdx兼容"]
     DECODE --> CLIENT["Client：通用分页/有界批次/价格复权"]
     LOCAL["day/lc/gbbq文件"] --> FILE["checked解析/累计收益"]
     CLIENT --> MODEL["Symbol/CanonicalBar/单位/线性指标"]
     FILE --> MODEL
     RULE["CalendarProvider / 日期化涨跌幅"] --> MODEL
-    ZIP["官网ZIP / 本地ZIP"] --> CLI["CLI day：缓存/解压/并发解析"]
-    EAST["东财收盘快照"] --> EXPORT["校验/CSV回读/原子输出"]
+    ZIP["官网ZIP / 本地ZIP"] --> CLI["CLI day：快照/分块/磁盘归并/固定输出顺序"]
+    EAST["东财收盘快照"] --> ADAPTER["EastCanonicalBar：源时间/股单位/原价/收益类型"]
+    ADAPTER --> MODEL
+    ADAPTER --> EXPORT["校验/CSV回读/原子输出"]
     CLI --> EXPORT
     EXPORT --> STORE["CSV/JSON / 数据库sink"]
-    EXPORT --> MANIFEST["schema2清单：来源/输出SHA-256/run_id"]
-    STORE --> MANIFEST
+    EXPORT --> MANIFEST["schema3清单：来源/输出/资源/写入及独立验收证据"]
+    STORE --> VERIFY["512键一批独立回读：字段精确比对"]
+    VERIFY --> MANIFEST
 ```
 
 ## 原基线风险与结果
@@ -112,26 +117,27 @@ CLI每个day文件32MiB、gbbq/前因子64MiB、外部日历1MiB；名单HTTPS�
 
 ## 当前设计边界及后续工作
 
-现有低层请求对象仍混合请求、响应和结果；为兼容调用保留可变字段及旧parse。新代码应优先Client/KlineBuilder及try_parse，后续主版本可拆成不可变请求和独立decode。
+K线新增私有字段的不可变KlineRequest、独立decode_stock_bars/decode_index_bars；Client单页、区间、批次及价格复权查询均使用新路径。KlineBuilder::build_request提供checked入口，旧build/Kline/IndexKline及parse保留。旧对象公开字段仍可能与发送字节不一致，直接构造仍可能panic；其他协议尚未全部迁移为不可变请求。未来主版本可在完成下游迁移后淘汰旧入口。
 
-空响应依然不能确定证券状态。缺口标注未知，未引入权威上市/停牌历史库；内置日历2024–2026之外必须提供完整且准确的外部数据。指标为本项目明确口径，不保证与任意第三方默认算法相同。日期规则已覆盖主要板块制度变化及注册制IPO等阶段，但截至2026-10-22；旧核准制IPO首日和未覆盖特别制度返回错误，逐只证券状态仍由调用方提供。
+空响应依然不能确定证券状态。新增SecurityHistory可读取带原始公告摘要的已核实区间，未知区间返回None；未取得全市场生命周期数据。data-check支持独立日历逐日核对，2026沪深两份参考为242个交易日；2027完整数据仍未取得。内置日历2024–2026之外必须提供完整且准确的外部数据。指标为本项目明确口径，不保证与任意第三方默认算法相同。日期规则覆盖截至2026-10-22，单一交易所当前规则复查不替代全部板块续期；旧核准制IPO首日和未覆盖特别制度返回错误。
 
-受管TCP已覆盖许可、全部服务器连接/握手、完整帧、分页及批次总体时限，并提供端点轮换/冷却和统计；裸socket兼容接口不在预算内。整条CLI采集任务、跨进程总连接数及生产P95仍由宿主/部署环境治理。当前输入排序用于稳定选取文件，CSV跨文件行顺序仍可能随worker完成顺序变化，逻辑键和文件内顺序稳定。
+整条CLI任务使用默认10800秒绝对deadline、取消文件及Ctrl-C/SIGTERM协作取消；TCP/HTTP共用进程许可，可通过同目录OS锁约束同机进程，CLI默认8槽位。同步计算/系统调用不能被抢占，裸socket、不同许可目录与跨主机仍需外部治理。Mongo工具按每子进程预约一个任务许可，内部socket不逐个计数。清单记录实际耗时窗口P95等资源值，本轮小样本不能代表生产网络负载。
 
-标准Bar会转换通达信股票成交量单位；非股票品种需明确口径。CanonicalBar适配覆盖TCP/day/lc，东财仍走CLI数据类型，尚未全部统一。累计收益factor与价格调整乘数分别使用，不互换。东财只提供当前快照，跨日缺失必须先补历史，不能直接接续累计收益。
+day源记录以4096条分块，因子和质量状态跨块承接；非A股以最多8路磁盘归并处理排序和末源重复，CSV固定为目录参数、文件名、日期顺序。每线程结果通道容量1，只传磁盘产物和元数据。记录相关内存有界，文件列表/报告仍O(文件数)，gbbq/前因子仍各64MiB上限；暂存增加磁盘I/O和空间需求。
 
-运行清单记录run_id、客户端run_version、摘要和不确定部分写入；它不是跨文件/跨数据库事务。ClickHouse仍由服务端生成行version，通过合并/FINAL去重；客户端run_version不是该行版本。logical_keys是输出证据，不是数据库独立核对。历史曾核验真实行情、官网全量包和ClickHouse25.8，本轮没有重跑外部验收；MongoDB仍未验收，东财有出口限流。
+CanonicalBar覆盖TCP/day/lc及东财；东财适配保留源时间戳，标准日线时点为UTC+8的15:00，标准量为股，旧CSV仍为手。TCP源单位须按品种和周期显式核实，旧Bar::from_kline仅兼容A股日线手单位。累计收益ReturnIndex与价格调整PriceMultiplier分别使用；东财factor=0适配为None。东财只提供当前快照，跨日缺失必须先补历史。
 
-建议按以下顺序继续优化，均需独立数据或运行证据：
+数据库成功回执后逐批独立回读本次全部输出键及全部导出数值，精确一致才verified并允许清理CSV；schema3清单单独记录database_verification。同机同目标写入锁覆盖前因子读取至验收结束。ClickHouse行version仍由服务端生成，客户端run_version不替代它；此机制不是跨数据库事务，也不约束外部写入或跨主机。当前源码已实测通达信、东财、隔离ClickHouse/MongoDB小表；未重跑2981万行全量，也未替代用户目标生产版本验收。
+
+六项建议均已按范围实现并交叉验证；持续运营及后续主版本工作如下：
 
 | 优先级 | 工作 | 验收依据 |
 | --- | --- | --- |
 | 高 | 2027完整休市数据、规则核实日期续期及证券状态历史 | 交易所公告、完整数据来源和生效边界；不能只扩展覆盖日期 |
-| 高 | 当前源码目标机行情/ClickHouse验收、MongoDB在线验收 | 小表写入/重复/错误恢复，目标数据与清单独立核对 |
-| 中 | 全命令/跨进程治理与真实网络负载观测 | 空帧率、失败率、P95、总任务时长及总连接数；不把单进程预算当作跨机限制 |
-| 中 | 数据库逐键核对和部署端备份/并发协调 | query_id、实际目标逻辑键及数值；保留未知写入CSV后确认再恢复 |
-| 中 | 东财等来源CanonicalBar适配与低层请求继续拆分 | 来源/单位/价格口径样本及下游兼容 |
-| 后续主版本 | 不可变请求及独立解码，淘汰旧parse/静态分类兼容入口 | 下游迁移及协议样本回归 |
+| 高 | 目标生产版本、配置及全量负载验收 | 本轮隔离小表证据不能替代生产环境与大规模故障恢复 |
+| 中 | 真实长期网络观测及跨主机协调 | 实际P95、空帧率、失败率、总任务时长、出口连接数 |
+| 中 | 部署备份及外部写入协调 | query_id、保留CSV、目标备份和跨主机写入约定 |
+| 后续主版本 | 其余协议不可变请求、淘汰旧parse/静态分类兼容入口 | 下游迁移、独立协议样本及格式回归 |
 
 ## 验证范围
 

@@ -1,6 +1,6 @@
 # 源码优化验证方法
 
-更新日期：2026-10-22，优化源码截至1f9f739。本轮针对Rust1.89及同步架构，离线检查显式设置 `RUSTDX_SKIP_INTEGRATION_TESTS=1`。该变量跳过外部服务，不能据通过结果声称生产通达信、ClickHouse或MongoDB已验收。需求/开发和逐轮验收见[文档索引](README.md)。
+更新日期：2026-10-23，六步交叉验证见[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)。本轮针对Rust1.89及同步架构，离线检查显式设置 `RUSTDX_SKIP_INTEGRATION_TESTS=1`。该变量跳过外部服务；真实通达信、东财及隔离数据库验收单独执行和记录，不由离线ok推导。需求/开发和逐轮验收见[文档索引](README.md)。
 
 ```sh
 cargo fmt --all -- --check
@@ -16,10 +16,10 @@ cargo bench --bench indicators --locked
 | 要求 | 检查位置/方法 | 不能由本地结果推导的事项 |
 | --- | --- | --- |
 | FR-01/02 日历与规则 | calendar/provider、limit/rules单测，查询及生效边界 | 2027完整休市表、逐证券历史状态及未来政策 |
-| FR-03 标准口径 | data/model、builder单测 | 未适配来源/非股票源单位自动正确 |
-| FR-04 网络治理 | `tests/network_budget.rs`独立进程、governor及本地协议回归 | 公共服务器可用性、跨进程预算及生产P95 |
-| FR-05/06 文件与导入 | quality/sinks单测、CLI端到端、HTTP故障注入 | 真实数据库逐行正确或跨文件事务 |
-| FR-07 安全解析 | checked入口、`tests/properties.rs`、真实gbbq夹具、fuzz | 所有可能报文已穷尽 |
+| FR-03 标准口径 | data/model、builder、EastCanonicalBar单测及东财/TDX同日比较 | 未核实品种/周期的源单位自动正确 |
+| FR-04 网络治理 | network_budget/shared_network独立进程、HTTP/TCP取消及完整CLI时限回归 | 公共服务器长期可用性、跨主机出口及生产P95 |
+| FR-05/06 文件与导入 | 确定性/因子跨块回归、实际RSS；quality/sinks故障注入、opt-in database_acceptance | 目标库其他历史/应有全市场数据、跨数据库事务及生产大规模负载 |
+| FR-07 安全解析 | checked入口、kline_decoders独立pytdx样本、properties、真实gbbq夹具、fuzz | 所有可能报文已穷尽 |
 | FR-08 名单/快照 | fetch_code/eastmoney本地回归及快照校验 | 当前公共接口限流或鉴权可用性 |
 | FR-09/10 指标/工程 | 独立公式与不变量、bench、all-features/MSRV/Clippy | 第三方默认口径一致、旧版倍数加速 |
 | FR-11 文档与交付 | Markdown链接/源码对照、Git合并与远端引用核验 | 源码推送等同crate发布或数据回退 |
@@ -31,7 +31,24 @@ cargo +nightly install cargo-fuzz --locked
 cargo +nightly fuzz run checked_parsers -- -max_total_time=30 -max_len=4096
 ```
 
-目标覆盖day/lc/gbbq、报价及K线的checked入口。CI使用nightly覆盖率插桩及AddressSanitizer。普通 `cargo run --manifest-path fuzz/Cargo.toml --bin checked_parsers -- -runs=1000` 只验证目标可运行，不等同于插桩测试。fuzz独立锁文件提交；语料及异常样本不提交，失败应保存最小复现并补回归。
+目标覆盖day/lc/gbbq、报价、旧K线及新股票/指数独立解码（分钟与日线）的checked入口。CI使用nightly覆盖率插桩及AddressSanitizer。普通 `cargo run --manifest-path fuzz/Cargo.toml --bin checked_parsers -- -runs=1000` 只验证目标可运行，不等同于插桩测试。fuzz独立锁文件提交；语料及异常样本不提交，失败应保存最小复现并补回归。
+
+## 2026-10-23交叉验证
+
+Rust1.89 workspace/all-features、Clippy all-targets/all-features拒绝警告及格式检查通过；核心160单测、CLI库5单测、命令27单测，新增独立解码3项、分块端到端2项、54项普通文档用例及1项compile_fail，其他离线/属性回归通过。外部skip项不计作在线验收。新增解码路径ASan/覆盖率fuzz执行627,152次、31秒，无崩溃；临时日志`/tmp/rustdx-step6-fuzz.log`，短时运行不代表穷尽。
+
+`tests/fixtures/kline`保存实际TDX响应字节、请求字节和独立pytdx期望CSV；股票日线、指数日线、股票5分钟线各3条。参考固定为pytdx提交2857fdad08534533610bd2aeca387f760c4baa42，原始参考源码摘要及每个样本摘要见[manifest](../tests/fixtures/kline/manifest.json)。请求与pytdx struct.pack逐字节比较，日期/时间/OHLC/量额和指数涨跌家数精确比较；不只做新旧Rust实现互比。逐前缀截断、错解码器、超数量、多余字节、非法日期/时间及失败清空旧结果回归通过。生产无pytdx依赖。
+
+复现独立期望（需要单独取得该固定提交及测试用six；脚本先核对参考源码摘要）：
+
+```sh
+python3 scripts/verify_kline_pytdx.py --pytdx-source /path/to/pinned-pytdx --fixtures tests/fixtures/kline
+cargo test --test kline_decoders
+# 重新采集时使用新的目录，避免覆盖既有证据
+cargo run --example protocol_capture -- /path/to/new-fixture-directory
+```
+
+2026日历以两交易所独立参考逐日核对，数据库对本次1040键精确回读，东财/TDX同日同股OHLC精确比较、量额采用声明的源编码容差；它们与数据库精确校验分别执行。实际RSS的版本二进制摘要、参数、数据和CSV字段摘要见[分块内存证据](fixtures/day-memory-20261023.json)及[复现脚本](../scripts/measure_day_memory.py)。外部服务版本、字段及覆盖限制见[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)。
 
 本机优化版测量，输入100,000行、每组10次，Rust1.89 bench优化配置：
 

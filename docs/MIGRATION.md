@@ -1,10 +1,10 @@
 # 数据语义与迁移
 
-## 仓库源码优化（2026-10-22，尚未发布新crate版本）
+## 仓库源码优化（2026-10-23，尚未发布新crate版本）
 
-源码提交7cd02e7、5fb5b70、401265c、1f9f739已进入main。核心库/CLI的Cargo版本保持1.12.2/1.8.2，crates.io上的同版本仍是10月11日发布内容；使用本节新行为须从源码构建。完整文档见[索引](README.md)，分支交付与两个历史快照见[RELEASES.md](RELEASES.md)。
+10月22日源码提交7cd02e7、5fb5b70、401265c、1f9f739已进入main；10月23日六步本地优化见[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)。核心库/CLI的Cargo版本保持1.12.2/1.8.2，crates.io上的同版本仍是10月11日发布内容；使用本节新行为须从源码构建。完整文档见[索引](README.md)，此前分支交付与两个历史快照见[RELEASES.md](RELEASES.md)。
 
-`day/east` 默认写运行清单和run_id归档，`--report`可更改路径；schema_version升级为2，增加摘要、输出验证和数据库确认状态。数据库HTTP及mongoimport现在有300秒上限，失败保留CSV；详见[IMPORTS.md](IMPORTS.md)。文件构造器拒绝非法日期及数值，新 `try_from_bytes/try_from_chunk/try_parse/try_to_vec` 面向不可信数据；旧单条解析入口继续保留。
+`day/east` 默认写运行清单和run_id归档，`--report`可更改路径；schema_version升级为3，增加database_verification及verified状态。数据库回执后每批512键独立精确核对全部导出数值，verified才允许清理CSV；同机同目标写入锁覆盖前因子读取至验收结束。Mongo需mongosh/mongoimport/mongoexport并支持MONGODB_URI，写入前核实唯一索引。数据库操作最多300秒并受整任务deadline约束，失败保留CSV；详见[IMPORTS.md](IMPORTS.md)。文件构造器拒绝非法日期及数值，新 `try_from_bytes/try_from_chunk/try_parse/try_to_vec` 面向不可信数据；旧单条解析入口继续保留。
 
 布林带使用双栈聚合的中心化总体方差，KDJ使用单调队列；正常序列总耗时O(n)，预热及缺口恢复口径不变。方差舍入误差可能带来末位变化，避免通过逐位浮点相等评判布林带回归。
 
@@ -24,13 +24,15 @@
 
 示例只覆盖明确的局部区间。版本及来源不能为空；休市日期不能重复或越界。填入2027等新年份前，应从交易所公告取得**该覆盖区间所有休市日期**，不能通过扩大start/end或仅判断星期一至五来声称完整覆盖。库校验格式，数据真实性与完整性由提供者负责。
 
-`CanonicalBar` 附带 `Period`、`BarSource` 和 `PriceBasis`；lc源记录仍保留旧类型，标准适配器要求提供带市场的Symbol。`PriceMultiplier` 与 `ReturnIndex` 是两个独立类型，防止收益指数误用为价格乘数。`Bar::from_kline` 只隐式转换A股股票的手单位，非A股用 `from_kline_with_unit` 显式传入单位。北交所不会隐式映射到深圳TCP市场。`KlineBuilder::symbol` 是带市场的构建入口，旧code自动推断行为保留。
+`CanonicalBar` 附带 `Period`、`BarSource` 和 `PriceBasis`；lc源记录仍保留旧类型，标准适配器要求提供带市场的Symbol。新增BarSource::Eastmoney，穷尽匹配者须增加分支。Day::to_canonical_with_calendar保留源时间戳、标准15:00时点、原价及股单位，CSV仍为手、factor=0适配为None。`PriceMultiplier` 与 `ReturnIndex` 是两个独立类型。`Bar::from_kline` 只兼容A股日线手单位，分钟周期与非A股用显式单位入口。北交所不会隐式映射到深圳TCP市场。`KlineBuilder::symbol` 是带市场的构建入口，旧code自动推断行为保留。
+
+KlineRequest::new返回Result并提供私有参数的不可变请求，支持encode、recv_stock/recv_index及独立decode_stock_bars/decode_index_bars。KlineBuilder::build_request返回新请求，旧build/Kline/IndexKline及其公开字段保留；Client全部K线路径已迁移。checked解码现在拒绝尾随字节、非法日期/时分及超数量，数量要求1–800；原先可能默默接受的错误响应或零数量参数现在报错。旧parse签名仍无Result，失败会清空data，应使用try_parse或独立decode。
 
 交易所股票名单请求使用HTTPS、总时限和16MiB响应限制；上交所不再发送历史硬编码会话Cookie。接口鉴权或反爬变化会显式返回错误。`docsrs` feature可在稳定Rust下开启；自动文档标记由docs.rs的 `cfg(docsrs)` 单独启用。
 
-所有受管Tcp共享默认8条进程预算（含主连接、建连及空闲池），首次使用或读取policy/stats前通过 `configure_network` 配置一次。批次完成释放连接；批次有界排队，全局配额不足时有界等待。连接、完整帧、分页及批次增加总体时限；服务器自动选择使用轮换起点和故障冷却。原先可能无限等待的调用现在会提前返回超时/WouldBlock；默认值、统计及裸socket兼容边界见[NETWORK.md](NETWORK.md)。day整条命令仍没有统一总deadline。
+受管TCP/HTTP共享默认8条进程预算；CLI默认启用同机OS锁许可，首次使用或读取policy/stats前通过configure_network配置。CLI全命令新增--timeout（默认10800秒）、--cancel-file及Ctrl-C/SIGTERM协作取消；重试不能延长绝对deadline。批次完成释放连接，服务器轮换和冷却保留。不同许可目录、跨主机及裸socket不在该上限内，Mongo工具内部socket也不逐个计数；详见[NETWORK.md](NETWORK.md)。
 
-同一证券多个day来源的日期区间重叠现在拒绝发布，即使区间内实际缺口互补；需先整理源文件。CSV发布前回读并检查行数、来源区间和日期边界，东财JSON由验证后的记录直接序列化。运行清单schema2消费者需兼容新增字段和中间状态；project_version仍是Cargo版本，应另存Git提交区分本轮源码。run_version为客户端运行标识，不替代ClickHouse服务端行version。
+同一证券多个day来源的日期区间重叠现在拒绝发布，即使区间内实际缺口互补；需先整理源文件。day记录以4096条分块，质量与收益状态跨块承接；输出固定目录参数、文件名及日期顺序，改变线程数不改变CSV字节。非A股仍对同日保留源最后一条，质量详情有上限并记录省略数量。CSV发布前回读检查行数、来源区间和日期边界，东财JSON由验证后的记录直接序列化。schema2消费者须兼容schema3新增字段和中间状态；project_version仍是Cargo版本，应另存Git提交区分源码。run_version不替代ClickHouse服务端行version。
 
 ## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，已发布 crates.io）
 

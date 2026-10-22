@@ -145,7 +145,8 @@ pub struct Bar {
 }
 
 impl Bar {
-    /// A股TCP成交量以手计；非A股必须用显式单位适配接口。
+    /// 兼容A股日线的手单位转换。此记录不含周期，分钟线及非A股
+    /// 必须用from_kline_with_unit或CanonicalBar显式指定源单位。
     pub fn from_kline(value: &KlineData<'_>, market: Market) -> Result<Self> {
         if !Symbol::new(market, value.code)?.is_a_share() {
             return Err(Error::Custom("非A股TCP行情须显式指定成交量单位"));

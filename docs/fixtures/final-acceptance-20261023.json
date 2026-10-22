@@ -1,0 +1,174 @@
+{
+  "local_date": "2026-10-23",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "rust": "1.89.0",
+  "release_binary_sha256": "e6c5241b2a480361a2f422768a0fa55019a951a25b11a4c578d52e5c1adf498f",
+  "checks": [
+    {
+      "command": ".cargo/bin/cargo +1.89.0 fmt --all -- --check",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 test --workspace --all-features --locked",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 clippy --workspace --all-targets --all-features --locked -- -D warnings",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 build --release -p jelven-rustdx-cli --locked",
+      "exit": 0
+    }
+  ],
+  "external_commands": [
+    {
+      "command": ".cargo/bin/cargo +1.89.0 run --example production_smoke --locked",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 test -p jelven-rustdx-cli --test database_acceptance --locked -- --nocapture",
+      "exit": 0
+    },
+    {
+      "command": "target/release/rustdx --timeout 120 east --max 2 -o /tmp/rustdx-next-services/step6-final-east/east.csv --report /tmp/rustdx-next-services/step6-final-east/run.json",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 run -p jelven-rustdx-cli --example source_crosscheck --locked -- /tmp/rustdx-next-services/step6-final-east/east.csv",
+      "exit": 0
+    }
+  ],
+  "services": {
+    "clickhouse": "26.11.1.548",
+    "clickhouse_distribution": "official macOS master experimental build",
+    "mongodb": "8.0.16",
+    "scope": "isolated local services; 1040 keys and all exported numeric fields, duplicates, updates, constraints, FINAL/merge and CSV preservation"
+  },
+  "tdx": {
+    "window": "20260823..=20261022",
+    "counts": {
+      "quotes": 2,
+      "stock daily bars": 38,
+      "index daily bars": 38,
+      "adjusted daily bars": 192,
+      "minute": 240,
+      "history minute": 240,
+      "history transaction": 20,
+      "corporate actions": 45,
+      "concept block records": 41369,
+      "F10 categories": 16,
+      "F10 contents": 16
+    },
+    "stock_bounds": "20260824..=20261022",
+    "scope": "interface/ordering/date/OHLC checks; finance and all directory fields not independently audited"
+  },
+  "east_report": {
+    "schema_version": 3,
+    "project_version": "1.8.2",
+    "started_at": "2026-10-22T17:05:18.359960+00:00",
+    "finished_at": "2026-10-22T17:05:18.931451+00:00",
+    "output": "/tmp/rustdx-next-services/step6-final-east/east.csv",
+    "volume_unit": "lots_100_shares",
+    "factor_semantics": "cumulative_return_index",
+    "calendar": {
+      "end": "2026-12-31",
+      "source": "https://crates.io/crates/trade_date_a/2026.0.0",
+      "start": "2024-01-01",
+      "version": "trade_date_a/2026.0"
+    },
+    "status": "complete",
+    "errors": [],
+    "files": [
+      {
+        "source": "eastmoney",
+        "code": "sz000001",
+        "rows": 1,
+        "first_date": "2026-10-22",
+        "last_date": "2026-10-22",
+        "errors": [],
+        "warnings": [],
+        "errors_omitted": 0,
+        "warnings_omitted": 0
+      },
+      {
+        "source": "eastmoney",
+        "code": "sz000002",
+        "rows": 1,
+        "first_date": "2026-10-22",
+        "last_date": "2026-10-22",
+        "errors": [],
+        "warnings": [],
+        "errors_omitted": 0,
+        "warnings_omitted": 0
+      }
+    ],
+    "run_id": "1792688718359940000-38226-0",
+    "stage": "publishing",
+    "sources": [
+      {
+        "source": "eastmoney:normalized_payload",
+        "sha256": "f0feba2a52aeaea1d6cd706ca6f4535652849a3717c032043dda97d504f6179e",
+        "bytes": 347
+      }
+    ],
+    "artifact": {
+      "path": "/tmp/rustdx-next-services/step6-final-east/east.csv",
+      "sha256": "0318b6b583e38a5f16aefb624f6029fe517baa9805847b26a7fa31d87d0cf10c",
+      "bytes": 206,
+      "rows": 2,
+      "logical_keys": 2,
+      "first_date": "2026-10-22",
+      "last_date": "2026-10-22",
+      "state": "published"
+    },
+    "database_status": "not_started",
+    "database_verification": null,
+    "database_table": null,
+    "query_id": null,
+    "run_version": 1792688718359940000,
+    "database_version_policy": "clickhouse_server_nanoseconds_per_row; mongodb_upsert",
+    "resources": {
+      "acquisition_timeouts": 0,
+      "empty_responses": 0,
+      "latency_samples": 1,
+      "latency_window_limit": 1024,
+      "network_active": 0,
+      "network_limit": 8,
+      "network_peak": 1,
+      "queue_wait_micros": 362,
+      "request_failures": 0,
+      "request_p95_micros": 412420,
+      "requests": 1,
+      "scope": "process_managed_network",
+      "shared_network_limit": 8
+    }
+  },
+  "cross_source_output": [
+    "sz000001 20261022: OHLC exact; volume Δ=1 ≤ 1 lots; amount Δ=18.08999991416931 ≤ 350.0997357583046 CNY",
+    "sz000002 20261022: OHLC exact; volume Δ=0 ≤ 1 lots; amount Δ=9.370000004768372 ≤ 185.98480001211166 CNY",
+    "independent source comparison passed: 2 rows"
+  ],
+  "independent_protocol_fixtures": "../../tests/fixtures/kline/manifest.json",
+  "fuzz": {
+    "exit": 0,
+    "runs": 627152,
+    "seconds": 31,
+    "sanitizer": "AddressSanitizer",
+    "coverage_instrumented": true,
+    "scope": "bounded run; not exhaustive"
+  },
+  "logs_sha256": {
+    "rustdx-step6-services.log": "0ccd76ed4d9da9e38f2b3e2fb36558e94fa4a40e0eaa3b6c60ff44a4aacae530",
+    "rustdx-step6-final-checks.log": "8da390a080d7f748d372ce1eb6f0e95edd3a3b8733b0fad580a06b38ed6d153c",
+    "rustdx-step6-fuzz.log": "06184428f014155fbf322a2b00b32d64acd3b634a02297fce799555553623f21"
+  },
+  "limitations": [
+    "No 2027 complete calendar or full-market security lifecycle history",
+    "No new 29.8 million-row production import or target-production-version acceptance",
+    "No long-term network P95 or cross-host connection/writer coordination",
+    "Only nine independently decoded protocol bars and two cross-source stock rows",
+    "No new crate release or remote push"
+  ]
+}

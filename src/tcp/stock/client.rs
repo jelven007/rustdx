@@ -15,8 +15,8 @@
 
 use super::{
     BlockRecord, CompanyInfoCategory, CompanyInfoCategoryItem, CompanyInfoContent, FinanceInfoData,
-    HistoryMinuteTime, HistoryTransaction, IndexKline, IndexKlineData, Kline, KlineData,
-    MinuteTimeData, QuoteData, SecurityListData, TransactionData, Xdxr, XdxrData,
+    HistoryMinuteTime, HistoryTransaction, IndexKlineData, KlineData, KlineRequest, MinuteTimeData,
+    QuoteData, SecurityListData, TransactionData, Xdxr, XdxrData,
 };
 use crate::pool::{ConnectionPool, PoolConfig};
 use crate::tcp::helper::DateTime;
@@ -118,21 +118,13 @@ impl Client {
         start: u16,
         count: u16,
     ) -> std::io::Result<Vec<super::KlineData<'a>>> {
-        validate_request(market, code, category)?;
-        if count > 800 {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidInput,
-                "K线单页上限800",
-            ));
-        }
-        let mut kline = Kline::new(market, code, category, start, count);
-        kline.recv_parsed(&mut self.tcp).map_err(|e| {
+        let request = KlineRequest::new(market, code, category, start, count)?;
+        request.recv_stock(&mut self.tcp).map_err(|e| {
             ctx_err(
                 e,
                 format_args!("Client::bars(market={market}, code={code}, category={category})"),
             )
-        })?;
-        Ok(kline.result().to_vec())
+        })
     }
 
     /// 按日期区间拉取任意周期 K 线（自动翻页，时间升序，去重）。
@@ -178,21 +170,13 @@ impl Client {
         start: u16,
         count: u16,
     ) -> std::io::Result<Vec<super::IndexKlineData<'a>>> {
-        validate_request(market, code, category)?;
-        if count > 800 {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidInput,
-                "K线单页上限800",
-            ));
-        }
-        let mut kline = IndexKline::new(market, code, category, start, count);
-        kline.recv_parsed(&mut self.tcp).map_err(|e| {
+        let request = KlineRequest::new(market, code, category, start, count)?;
+        request.recv_index(&mut self.tcp).map_err(|e| {
             ctx_err(
                 e,
                 format_args!("Client::index_bars(market={market}, code={code})"),
             )
-        })?;
-        Ok(kline.result().to_vec())
+        })
     }
 
     /// 指数K线区间回补：[`Client::index_bars`] 的自动翻页版，
@@ -724,12 +708,8 @@ fn fetch_bars_range<'a>(
             begin,
             end,
             |start, count| {
-                let kline = Kline::new(market, code, category, start, count);
-                let run = |tcp: &mut Tcp| {
-                    let mut kline = kline.clone();
-                    kline.recv_parsed(tcp)?;
-                    Ok(kline.result().to_vec())
-                };
+                let request = KlineRequest::new(market, code, category, start, count)?;
+                let run = |tcp: &mut Tcp| request.recv_stock(tcp);
                 if tcp.config().recheck_empty {
                     recheck_empty(tcp, run)
                 } else {
@@ -760,12 +740,8 @@ fn fetch_index_bars_range<'a>(
             begin,
             end,
             |start, count| {
-                let kline = IndexKline::new(market, code, category, start, count);
-                let run = |tcp: &mut Tcp| {
-                    let mut kline = kline.clone();
-                    kline.recv_parsed(tcp)?;
-                    Ok(kline.result().to_vec())
-                };
+                let request = KlineRequest::new(market, code, category, start, count)?;
+                let run = |tcp: &mut Tcp| request.recv_index(tcp);
                 if tcp.config().recheck_empty {
                     recheck_empty(tcp, run)
                 } else {

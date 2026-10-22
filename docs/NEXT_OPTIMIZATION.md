@@ -65,8 +65,26 @@ day用128KiB缓冲建立并摘要私有磁盘快照，每块4096条。QualityAcc
 
 该测量只验证记录相关内存。源文件列表/清单/区间索引仍O(文件数)，gbbq和前因子仍各64MiB有界内存快照，非A股归并与线程数也影响峰值。磁盘快照/暂存增加I/O和临时空间；强制终止不保证清理，见[IMPORTS.md](IMPORTS.md)。临时日志：`/tmp/rustdx-next-step5-release.log`、`/tmp/rustdx-next-step5-memory-final.log`。
 
-## 剩余步骤
+## 第六步：东财标准适配与不可变K线请求
 
-6. 东财标准行情适配与低层不可变请求/独立解码兼容入口；最终服务与文档验收。
+新增EastCanonicalBar/Day::to_canonical_with_calendar，标准日线携带Eastmoney来源、Day周期、Raw价格口径、UTC+8的15:00时点及股单位；同时保留源快照时间、源手单位、前收和可选ReturnIndex。市场、证券、源日期/交易日、已收盘及完整OHLC量额独立检查，CLI当前行情日验证和前因子日期约束保留。factor=0对应None，advance_return_index只接受有效收益类型，原OHLC不改写。现有CSV字段、手单位和JSON数组兼容；穷尽匹配BarSource的下游须处理新增Eastmoney分支。
 
-此文件随步骤更新，最终证据以实际测试/服务结果为准。
+新增KlineRequest私有参数和checked编码，股票/指数独立decode函数返回不同类型，不把发送字节、响应和结果存在同一对象。Client单页、区间、批次及复权拉取改用新路径，避免预填结果/响应持有/结果复制；KlineBuilder::build_request提供新入口，旧build/Kline/IndexKline/parse和预填data兼容。旧try_parse共用checked解码，拒绝截断、尾随字节、超数量和非法年月日/时分，失败清空旧结果；参数数量要求1–800。其他低层协议仍有旧兼容入口，未声称全部协议已迁移。
+
+实际捕获股票日线、指数日线、股票5分钟线各3根，用独立pytdx提交2857fdad08534533610bd2aeca387f760c4baa42核对请求字节并生成期望CSV。Rust逐字段精确比较时间、OHLC、量额及指数涨跌家数通过；同时验证新旧兼容入口。参考源码摘要、请求/响应/期望摘要和数据保存在[协议夹具](../tests/fixtures/kline/manifest.json)，复现入口为[verify_kline_pytdx.py](../scripts/verify_kline_pytdx.py)及protocol_capture示例。生产无pytdx依赖。TCP量保持源数值，单位须按品种/周期核实；旧Bar::from_kline仅兼容A股日线手单位，分钟周期使用显式单位适配。
+
+## 最终交叉验收
+
+| 验收层 | 实际结果 | 覆盖限制 |
+| --- | --- | --- |
+| Rust1.89离线workspace/all-features | 核心160、CLI库5、命令27、新解码3、分块端到端2、54普通文档及1 compile_fail，其他属性/离线回归通过 | 外部skip项不计在线通过 |
+| Clippy/格式/构建 | 全目标/全部features -D warnings、fmt及release构建通过 | 本机macOS arm64；远端CI需单独核验 |
+| ASan/覆盖率fuzz | 新股票/指数日线及分钟解码纳入目标，627,152次/31秒，无崩溃 | 短时有界运行，非穷尽 |
+| 当前源码通达信 | 股票/指数日线各38，股票边界2026-08-24至2026-10-22；前复权192、分时各240、逐笔各20、除权45、F10各16、板块41369，证券列表24462/27697 | 接口/边界/OHLC约束；未独立审计全部财务和目录字段 |
+| 实际数据库 | ClickHouse26.11.1.548（官方macOS master实验构建）、MongoDB8.0.16；1040键、3批精确回读、重复、更新覆盖、约束及文件保留/清理通过 | 隔离小表，不替代生产版本、全量和跨主机验收 |
+| 当前源码东财及跨源 | 两股、total5563、行情日2026-10-22，complete；CSV SHA与第二步夹具一致。与独立TDX同日OHLC精确一致，量分别差1/0手，额差18.09/9.37元，在声明编码容差内 | 两股不能代表全市场；数据库校验不用该容差 |
+| 实际分块内存 | 大样本4线程219.5→10.9MiB，字段摘要一致；输入10倍新RSS约增5% | 第五步参数/二进制的单次测量，非全部场景性能承诺 |
+
+最终release SHA-256=`e6c5241b2a480361a2f422768a0fa55019a951a25b11a4c578d52e5c1adf498f`。东财本次resources为active0、peak1、requests1、failures0、单样本412420微秒；一个样本不代表生产P95。实际命令/退出码、版本、东财原清单、日志摘要及局限保存在[最终验收JSON](fixtures/final-acceptance-20261023.json)。临时日志为`/tmp/rustdx-step6-final-checks.log`、`/tmp/rustdx-step6-services.log`、`/tmp/rustdx-step6-fuzz.log`。
+
+六步实现及已能取得的交叉验证全部完成，架构、需求、开发、验证、导入、网络、迁移及历史验收文档已对齐。本轮只保存本地提交，未推送或发布新crate。临时数据库在验收结束后停止，数据目录保留。2027完整休市表、全市场证券状态、全部板块规则续期、目标生产配置/全量负载和长期网络P95仍需相应真实数据与环境，未虚构完成。

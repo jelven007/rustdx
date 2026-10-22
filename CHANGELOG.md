@@ -1,5 +1,16 @@
 # 变更记录
 
+## 未发布新crate版本（2026-10-23，六步优化与交叉验证）
+
+- data-check更新前逐日比较独立日历，SecurityHistory保留公告摘要及已核实区间，未知证券状态返回None。
+- 数据库每批512键独立精确回读全部导出字段，schema3记录database_verification，verified才允许清理CSV；同机同目标写入协调和MongoDB唯一索引检查。
+- CLI整任务--timeout（默认10800秒）、--cancel-file及Ctrl-C/SIGTERM协作取消；TCP/HTTP共用进程/同机OS锁许可，清单记录实际资源及窗口P95。
+- day以4096条分块，质量和累计收益跨块承接，非A股磁盘归并，目录/文件/日期输出确定；大样本4线程RSS219.5→10.9MiB，新旧字段摘要一致。
+- EastCanonicalBar校验市场、源时间、单位和原价/收益语义，CSV/JSON格式兼容；KlineRequest私有参数、股票/指数独立checked解码，Client迁移并保留旧类型。
+- 固定pytdx参考真实报文、独立跨源比较、当前TDX/东财与隔离数据库小表验收通过；Rust1.89完整检查及627,152次ASan/覆盖率fuzz通过。
+
+本轮仅本地提交，Cargo版本保持1.12.2/1.8.2，未推送或发布。2027/证券历史、目标生产配置和全量负载及长期P95边界见[六步记录](docs/NEXT_OPTIMIZATION.md)，当前架构见[架构评估](docs/PROJECT_ANALYSIS.md)。
+
 ## 未发布新crate版本（2026-10-22，仓库源码优化与文档交付）
 
 - 日历提供版本、来源与覆盖范围，严格导航支持外部休市数据；历史涨跌幅及主板ST制度切换按日期处理。

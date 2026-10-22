@@ -98,6 +98,7 @@ pub enum BarSource {
     TdxTcp,
     TdxDayFile,
     TdxMinuteFile,
+    Eastmoney,
 }
 
 /// 标准Bar为UTC+8、人民币元及股；附带源与周期以避免跨口径混用。
