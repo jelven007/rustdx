@@ -133,20 +133,8 @@ impl<'a> Tdx for SecurityQuotes<'a> {
     fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
         self.data.clear();
         self.response = v;
-        let mut reader = Reader::new(&self.response);
-        reader.skip(2)?;
-        let count = reader.u16()? as usize;
-        if count > self.stocks.len() {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "行情数量超过请求数量",
-            ));
-        }
-        let mut data = Vec::with_capacity(count);
-        for _ in 0..count {
-            data.push(parse_quote(&mut reader)?);
-        }
-        self.data = data;
+        let request = super::QuotesRequest::new(self.stocks.clone())?;
+        self.data = super::decode_quotes(&request, &self.response)?;
         Ok(())
     }
 
@@ -164,9 +152,9 @@ impl<'a> Tdx for SecurityQuotes<'a> {
 /// rev4(u16), rev5..rev8, rev9(i16, 涨速×100) + active2(u16)。
 ///
 /// 价格还原公式（pytdx `_cal_price`）：`真实价格 = (price_raw + diff) / 100`。
-fn parse_quote(reader: &mut Reader<'_>) -> std::io::Result<QuoteData> {
+pub(super) fn parse_quote(reader: &mut Reader<'_>) -> std::io::Result<(u8, QuoteData)> {
     // market (1字节) + code (6字节) + active1 (2字节)
-    let _market = reader.u8()?;
+    let market = reader.u8()?;
     let code = reader.code()?;
     let _active1 = reader.u16()?;
 
@@ -252,43 +240,46 @@ fn parse_quote(reader: &mut Reader<'_>) -> std::io::Result<QuoteData> {
         0.0
     };
 
-    Ok(QuoteData {
-        code,
-        price,
-        last_close,
-        open,
-        high,
-        low,
-        vol: vol as f64,
-        cur_vol: cur_vol as f64,
-        amount,
-        s_vol: s_vol as f64,
-        b_vol: b_vol as f64,
-        change,
-        change_percent,
-        speed: reversed_bytes9 as f64 / 100.0,
-        servertime: servertime_string(reversed_bytes0),
-        bid1: (base + bid1 as f64) / 100.0,
-        ask1: (base + ask1 as f64) / 100.0,
-        bid1_vol: bid1_vol as f64,
-        ask1_vol: ask1_vol as f64,
-        bid2: (base + bid2 as f64) / 100.0,
-        ask2: (base + ask2 as f64) / 100.0,
-        bid2_vol: bid2_vol as f64,
-        ask2_vol: ask2_vol as f64,
-        bid3: (base + bid3 as f64) / 100.0,
-        ask3: (base + ask3 as f64) / 100.0,
-        bid3_vol: bid3_vol as f64,
-        ask3_vol: ask3_vol as f64,
-        bid4: (base + bid4 as f64) / 100.0,
-        ask4: (base + ask4 as f64) / 100.0,
-        bid4_vol: bid4_vol as f64,
-        ask4_vol: ask4_vol as f64,
-        bid5: (base + bid5 as f64) / 100.0,
-        ask5: (base + ask5 as f64) / 100.0,
-        bid5_vol: bid5_vol as f64,
-        ask5_vol: ask5_vol as f64,
-    })
+    Ok((
+        market,
+        QuoteData {
+            code,
+            price,
+            last_close,
+            open,
+            high,
+            low,
+            vol: vol as f64,
+            cur_vol: cur_vol as f64,
+            amount,
+            s_vol: s_vol as f64,
+            b_vol: b_vol as f64,
+            change,
+            change_percent,
+            speed: reversed_bytes9 as f64 / 100.0,
+            servertime: servertime_string(reversed_bytes0),
+            bid1: (base + bid1 as f64) / 100.0,
+            ask1: (base + ask1 as f64) / 100.0,
+            bid1_vol: bid1_vol as f64,
+            ask1_vol: ask1_vol as f64,
+            bid2: (base + bid2 as f64) / 100.0,
+            ask2: (base + ask2 as f64) / 100.0,
+            bid2_vol: bid2_vol as f64,
+            ask2_vol: ask2_vol as f64,
+            bid3: (base + bid3 as f64) / 100.0,
+            ask3: (base + ask3 as f64) / 100.0,
+            bid3_vol: bid3_vol as f64,
+            ask3_vol: ask3_vol as f64,
+            bid4: (base + bid4 as f64) / 100.0,
+            ask4: (base + ask4 as f64) / 100.0,
+            bid4_vol: bid4_vol as f64,
+            ask4_vol: ask4_vol as f64,
+            bid5: (base + bid5 as f64) / 100.0,
+            ask5: (base + ask5 as f64) / 100.0,
+            bid5_vol: bid5_vol as f64,
+            ask5_vol: ask5_vol as f64,
+        },
+    ))
 }
 
 /// 将 reversed_bytes0 解码为服务器时间字符串。
@@ -391,6 +382,50 @@ pub struct QuoteData {
     pub bid5_vol: f64,
     /// 卖五量（手）
     pub ask5_vol: f64,
+}
+
+impl QuoteData {
+    pub(super) fn validate(&self) -> std::io::Result<()> {
+        let values = [
+            self.price,
+            self.last_close,
+            self.open,
+            self.high,
+            self.low,
+            self.vol,
+            self.cur_vol,
+            self.amount,
+            self.s_vol,
+            self.b_vol,
+            self.bid1,
+            self.ask1,
+            self.bid1_vol,
+            self.ask1_vol,
+            self.bid2,
+            self.ask2,
+            self.bid2_vol,
+            self.ask2_vol,
+            self.bid3,
+            self.ask3,
+            self.bid3_vol,
+            self.ask3_vol,
+            self.bid4,
+            self.ask4,
+            self.bid4_vol,
+            self.ask4_vol,
+            self.bid5,
+            self.ask5,
+            self.bid5_vol,
+            self.ask5_vol,
+        ];
+        if values.iter().any(|v| !v.is_finite() || *v < 0.0) {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidData,
+                "行情价格、成交量或金额非法",
+            ));
+        }
+        Ok(())
+    }
 }
 
 #[cfg(test)]

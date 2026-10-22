@@ -1,4 +1,3 @@
-use crate::bytes_helper::u16_from_le_bytes;
 use crate::tcp::Tdx;
 
 /// 获取历史逐笔成交数据。对应于 pytdx 的 hq.get_history_transaction_data。
@@ -91,70 +90,7 @@ impl<'a> Tdx for HistoryTransaction<'a> {
 
     /// 解析响应：数量(2) + 跳过4 + 每笔 [时间u16 + price/vol/buyorsell/保留 各一个变长编码]。
     fn parse(&mut self, v: Vec<u8>) {
-        self.data = Vec::new();
-
-        if v.len() < 6 {
-            self.response = v;
-            return;
-        }
-
-        let num_ticks = u16_from_le_bytes(&v, 0);
-        let mut pos = 6; // 数量(2) + 跳过4
-
-        let mut last_price = 0i64;
-
-        for _ in 0..num_ticks {
-            if v.len() - pos < 3 {
-                break;
-            }
-            // 时间（2字节：分钟数，如 0x0380 = 896 → 14:56）
-            let time_minutes = u16_from_le_bytes(&v, pos);
-            pos += 2;
-            let hour = time_minutes / 60;
-            let minute = time_minutes % 60;
-
-            let Some(price_raw) = super::minute_time::price_checked(&v, &mut pos) else {
-                self.response = v;
-                return;
-            };
-            let Some(vol) = super::minute_time::price_checked(&v, &mut pos) else {
-                self.response = v;
-                return;
-            };
-            let Some(buyorsell) = super::minute_time::price_checked(&v, &mut pos) else {
-                self.response = v;
-                return;
-            };
-            let Some(_reserved) = super::minute_time::price_checked(&v, &mut pos) else {
-                self.response = v;
-                return;
-            };
-
-            last_price += price_raw as i64;
-            let price = last_price as f64 / 100.0;
-
-            self.data.push(super::transaction::TransactionData {
-                time: format!("{hour:02}:{minute:02}"),
-                price,
-                vol,
-                num: 0, // 历史逐笔协议中无成交编号字段
-                buyorsell,
-            });
-        }
-
-        // 防御性校验：点数完整 + 字节基本耗尽 + 价格合理
-        let ticks_complete = self.data.len() == num_ticks as usize;
-        let bytes_consumed = ticks_complete && pos + 8 >= v.len();
-        let prices_valid = self
-            .data
-            .iter()
-            .all(|t| (0.01..=100000.0).contains(&t.price));
-
-        if !ticks_complete || !bytes_consumed || !prices_valid {
-            self.data = Vec::new();
-        }
-
-        self.response = v;
+        let _ = self.try_parse(v);
     }
 
     fn result(&self) -> &Self::Item {
@@ -163,16 +99,15 @@ impl<'a> Tdx for HistoryTransaction<'a> {
 
     fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
         self.data.clear();
-        crate::tcp::reader::require_len(&v, 6)?;
-        let expected = u16_from_le_bytes(&v, 0) as usize;
-        self.parse(v);
-        if self.data.len() != expected {
-            self.data.clear();
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "历史逐笔响应不完整或价格非法",
-            ));
-        }
+        self.response = v;
+        let request = super::HistoryTransactionRequest::new(
+            self.market,
+            self.code,
+            self.start,
+            self.count,
+            self.date,
+        )?;
+        self.data = super::decode_history_transactions(&request, &self.response)?;
         Ok(())
     }
 }

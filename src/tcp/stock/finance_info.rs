@@ -1,4 +1,3 @@
-use crate::bytes_helper::{u16_from_le_bytes, u32_from_le_bytes};
 use crate::tcp::Tdx;
 
 /// 获取股票财务信息。对应于 pytdx 中的 hq.get_finance_info、GetFinanceInfoCmd。
@@ -85,162 +84,20 @@ impl<'a> Tdx for FinanceInfo<'a> {
     /// - 7字节：market(1) + code(6)
     /// - 之后：32个财务字段
     fn parse(&mut self, v: Vec<u8>) {
-        self.data.clear();
-        // 检查最小长度：2(跳过) + 7(market+code) + 136(1f+2H+2I+30f 字段) = 145
-        if v.len() < 145 {
-            self.response = v;
-            self.data = Vec::new();
-            return;
-        }
-
-        let mut pos = 0;
-
-        // 跳过前2字节
-        pos += 2;
-
-        // 读取market和code
-        let market = v[pos];
-        pos += 1;
-        let code_bytes = &v[pos..pos + 6];
-        pos += 6;
-        let code = std::str::from_utf8(code_bytes).unwrap_or("");
-        let code = String::from(code);
-
-        // 解析32个财务字段（混合浮点数和整数）
-        // 格式: fHHIIffffffffffffffffffffffffffffff
-        // 1个float, 2个u16, 2个u32, 26个float
-
-        let liutongguben = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let province = u16_from_le_bytes(&v, pos);
-        pos += 2;
-        let industry = u16_from_le_bytes(&v, pos);
-        pos += 2;
-        let updated_date = u32_from_le_bytes(&v, pos);
-        pos += 4;
-        let ipo_date = u32_from_le_bytes(&v, pos);
-        pos += 4;
-        let zongguben = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let guojiagu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let faqirenfarengu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let farengu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let bgu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let hgu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let zhigonggu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let zongzichan = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let liudongzichan = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let gudingzichan = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let wuxingzichan = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let gudongrenshu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let liudongfuzhai = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let changqifuzhai = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let zibengongjijin = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let jingzichan = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let zhuyingshouru = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let zhuyinglirun = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let yingshouzhangkuan = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let yingyelirun = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let touzishouyu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let jingyingxianjinliu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let zongxianjinliu = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let cunhuo = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let lirunzonghe = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let shuihoulirun = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let jinglirun = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let weifenpeilirun = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let baoliu1 = f32_from_le_bytes(&v, pos);
-        pos += 4;
-        let baoliu2 = f32_from_le_bytes(&v, pos);
-
-        let info = FinanceInfoData {
-            market,
-            code,
-            liutongguben: (liutongguben * 10000.0) as f64,
-            province,
-            industry,
-            updated_date,
-            ipo_date,
-            zongguben: (zongguben * 10000.0) as f64,
-            guojiagu: (guojiagu * 10000.0) as f64,
-            faqirenfarengu: (faqirenfarengu * 10000.0) as f64,
-            farengu: (farengu * 10000.0) as f64,
-            bgu: (bgu * 10000.0) as f64,
-            hgu: (hgu * 10000.0) as f64,
-            zhigonggu: (zhigonggu * 10000.0) as f64,
-            zongzichan: (zongzichan * 10000.0) as f64,
-            liudongzichan: (liudongzichan * 10000.0) as f64,
-            gudingzichan: (gudingzichan * 10000.0) as f64,
-            wuxingzichan: (wuxingzichan * 10000.0) as f64,
-            gudongrenshu: gudongrenshu as f64,
-            liudongfuzhai: (liudongfuzhai * 10000.0) as f64,
-            changqifuzhai: (changqifuzhai * 10000.0) as f64,
-            zibengongjijin: (zibengongjijin * 10000.0) as f64,
-            jingzichan: (jingzichan * 10000.0) as f64,
-            zhuyingshouru: (zhuyingshouru * 10000.0) as f64,
-            zhuyinglirun: (zhuyinglirun * 10000.0) as f64,
-            yingshouzhangkuan: (yingshouzhangkuan * 10000.0) as f64,
-            yingyelirun: (yingyelirun * 10000.0) as f64,
-            touzishouyu: (touzishouyu * 10000.0) as f64,
-            jingyingxianjinliu: (jingyingxianjinliu * 10000.0) as f64,
-            zongxianjinliu: (zongxianjinliu * 10000.0) as f64,
-            cunhuo: (cunhuo * 10000.0) as f64,
-            lirunzonghe: (lirunzonghe * 10000.0) as f64,
-            shuihoulirun: (shuihoulirun * 10000.0) as f64,
-            jinglirun: (jinglirun * 10000.0) as f64,
-            weifenpeilirun: (weifenpeilirun * 10000.0) as f64,
-            meigujingzichan: baoliu1 as f64,
-            baoliu2: baoliu2 as f64,
-        };
-
-        self.data.push(info);
-        self.response = v;
+        let _ = self.try_parse(v);
     }
 
     fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
         self.data.clear();
-        crate::tcp::reader::require_len(&v, 145)?;
-        crate::tcp::reader::Reader::new(&v[3..]).code()?;
-        self.parse(v);
+        self.response = v;
+        let request = super::FinanceRequest::new(u16::from(self.market), self.code)?;
+        self.data = super::decode_finance(&request, &self.response)?;
         Ok(())
     }
 
     fn result(&self) -> &Self::Item {
         &self.data
     }
-}
-
-/// 从字节数组中读取f32（小端序）
-fn f32_from_le_bytes(data: &[u8], pos: usize) -> f32 {
-    let bytes = [data[pos], data[pos + 1], data[pos + 2], data[pos + 3]];
-    f32::from_le_bytes(bytes)
 }
 
 /// 财务信息数据。

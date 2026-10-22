@@ -80,6 +80,107 @@ impl<'a> KlineRequest<'a> {
         self.count
     }
 
+    /// Explicit market and period; no code inference or source-unit inference.
+    pub fn for_symbol(
+        symbol: &'a crate::data::Symbol,
+        period: crate::data::Period,
+        start: u16,
+        count: u16,
+    ) -> io::Result<Self> {
+        let market = symbol
+            .market()
+            .tdx_market()
+            .map_err(|e| io::Error::new(ErrorKind::InvalidInput, e))?;
+        Self::new(market, symbol.code(), period.tdx_category(), start, count)
+    }
+
+    /// Standard raw stock bars. Period is derived from this request, so callers
+    /// cannot accidentally label minute data as daily data. Volume must be
+    /// supplied explicitly because its source unit depends on the instrument.
+    pub fn decode_canonical_stock(
+        self,
+        bytes: &[u8],
+        unit: crate::data::VolumeUnit,
+    ) -> io::Result<Vec<crate::data::CanonicalBar>> {
+        let market = if self.market == 0 {
+            crate::data::Market::Shenzhen
+        } else {
+            crate::data::Market::Shanghai
+        };
+        let period = crate::data::Period::try_from(self.category)
+            .map_err(|e| io::Error::new(ErrorKind::InvalidInput, e))?;
+        decode_stock_bars(&self, bytes)?
+            .iter()
+            .map(|bar| {
+                crate::data::CanonicalBar::from_kline(
+                    bar,
+                    market,
+                    period,
+                    unit,
+                    crate::data::PriceBasis::Raw,
+                )
+                .map_err(|e| io::Error::new(ErrorKind::InvalidData, e))
+            })
+            .collect()
+    }
+
+    pub fn recv_canonical_stock(
+        self,
+        tcp: &mut Tcp,
+        unit: crate::data::VolumeUnit,
+    ) -> io::Result<Vec<crate::data::CanonicalBar>> {
+        let bytes = crate::tcp::send_recv_decompress(tcp, &self.encode(), "标准股票K线")?;
+        self.decode_canonical_stock(&bytes, unit)
+    }
+
+    /// Standard index OHLCV. Use decode_index_bars when advancing/declining
+    /// security counts are also needed; CanonicalBar has no breadth fields.
+    pub fn decode_canonical_index(
+        self,
+        bytes: &[u8],
+        unit: crate::data::VolumeUnit,
+    ) -> io::Result<Vec<crate::data::CanonicalBar>> {
+        let market = if self.market == 0 {
+            crate::data::Market::Shenzhen
+        } else {
+            crate::data::Market::Shanghai
+        };
+        let period = crate::data::Period::try_from(self.category)
+            .map_err(|e| io::Error::new(ErrorKind::InvalidInput, e))?;
+        decode_index_bars(&self, bytes)?
+            .iter()
+            .map(|bar| {
+                let value = KlineData {
+                    dt: bar.dt,
+                    code: bar.code,
+                    open: bar.open,
+                    close: bar.close,
+                    high: bar.high,
+                    low: bar.low,
+                    vol: bar.vol,
+                    amount: bar.amount,
+                };
+                crate::data::CanonicalBar::from_kline(
+                    &value,
+                    market,
+                    period,
+                    unit,
+                    crate::data::PriceBasis::Raw,
+                )
+                .map_err(|e| io::Error::new(ErrorKind::InvalidData, e))
+            })
+            .collect()
+    }
+
+    pub fn recv_canonical_index(
+        self,
+        tcp: &mut Tcp,
+        unit: crate::data::VolumeUnit,
+    ) -> io::Result<Vec<crate::data::CanonicalBar>> {
+        let bytes = crate::tcp::send_recv_decompress(tcp, &self.encode(), "标准指数K线")?;
+        self.decode_canonical_index(&bytes, unit)
+    }
+
     /// The 38-byte pytdx `<HIHHHH6sHHHHIIH` request.
     pub fn encode(self) -> [u8; 38] {
         let mut bytes = [0; 38];

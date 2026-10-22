@@ -9,7 +9,11 @@ use rustdx_complete::{
     },
     tcp::{
         Tdx,
-        stock::{Kline, KlineRequest, SecurityQuotes, decode_index_bars, decode_stock_bars},
+        stock::{
+            FinanceRequest, HistoryTransactionRequest, Kline, KlineRequest, QuotesRequest,
+            SecurityQuotes, TransactionRequest, decode_finance, decode_history_transactions,
+            decode_index_bars, decode_quotes, decode_stock_bars, decode_transactions,
+        },
     },
 };
 
@@ -31,11 +35,27 @@ fuzz_target!(|data: &[u8]| {
     let _ = into_arr4(data, usize::MAX);
     let mut quotes = SecurityQuotes::default();
     let _ = quotes.try_parse(data.to_vec());
+    let _ = decode_quotes(
+        &QuotesRequest::new(vec![(0, "000001"), (1, "600000")]).expect("constant request"),
+        data,
+    );
+    let _ = decode_finance(
+        &FinanceRequest::new(0, "000001").expect("constant request"),
+        data,
+    );
+    let _ = decode_transactions(
+        &TransactionRequest::new(0, "000001", 0, 2000).expect("constant request"),
+        data,
+    );
+    let _ = decode_history_transactions(
+        &HistoryTransactionRequest::new(0, "000001", 0, 2000, 20261022).expect("constant request"),
+        data,
+    );
     let mut bars = Kline::new(0, "000001", 9, 0, 800);
     let _ = bars.try_parse(data.to_vec());
     for category in [0, 9] {
-        let request = KlineRequest::new(0, "000001", category, 0, 800)
-            .expect("constant checked request");
+        let request =
+            KlineRequest::new(0, "000001", category, 0, 800).expect("constant checked request");
         let _ = decode_stock_bars(&request, data);
         let _ = decode_index_bars(&request, data);
     }

@@ -1,4 +1,4 @@
-use crate::tcp::{Tdx, reader::Reader};
+use crate::tcp::Tdx;
 
 /// 获取股票成交明细。对应于 pytdx 中的 hq.get_transaction_data、GetTransactionDataCmd。
 ///
@@ -103,43 +103,9 @@ impl<'a> Tdx for Transaction<'a> {
     fn try_parse(&mut self, v: Vec<u8>) -> std::io::Result<()> {
         self.data.clear();
         self.response = v;
-        let mut reader = Reader::new(&self.response);
-        let count = reader.u16()? as usize;
-        if count > self.count as usize {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidData,
-                "逐笔数量超过请求数量",
-            ));
-        }
-        let mut data = Vec::with_capacity(count);
-        let mut last_price = 0i64;
-        for _ in 0..count {
-            let time_minutes = reader.u16()?;
-            let hour = time_minutes / 60;
-            let minute = time_minutes % 60;
-            if hour > 23 {
-                return Err(std::io::Error::new(
-                    std::io::ErrorKind::InvalidData,
-                    "逐笔时间非法",
-                ));
-            }
-            let price_raw = reader.varint()?;
-            let vol = reader.varint()?;
-            let num = reader.varint()?;
-            let buyorsell = reader.varint()?;
-            let _reserved = reader.varint()?;
-            last_price += price_raw as i64;
-            let price = last_price as f64 / 100.0;
-            data.push(TransactionData {
-                time: format!("{:02}:{:02}", hour, minute),
-                price,
-                vol,
-                num,
-                buyorsell,
-            });
-        }
-
-        self.data = data;
+        let request =
+            super::TransactionRequest::new(self.market, self.code, self.start, self.count)?;
+        self.data = super::decode_transactions(&request, &self.response)?;
         Ok(())
     }
 

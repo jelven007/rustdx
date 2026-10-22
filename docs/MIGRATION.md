@@ -28,6 +28,8 @@
 
 KlineRequest::new返回Result并提供私有参数的不可变请求，支持encode、recv_stock/recv_index及独立decode_stock_bars/decode_index_bars。KlineBuilder::build_request返回新请求，旧build/Kline/IndexKline及其公开字段保留；Client全部K线路径已迁移。checked解码现在拒绝尾随字节、非法日期/时分及超数量，数量要求1–800；原先可能默默接受的错误响应或零数量参数现在报错。旧parse签名仍无Result，失败会清空data，应使用try_parse或独立decode。
 
+快照、财务及当日/历史逐笔新增`QuotesRequest/FinanceRequest/TransactionRequest/HistoryTransactionRequest`，参数私有、checked构造，独立decode与同步recv分离；Client对应方法全部使用新请求。快照拒绝请求/返回证券重复和错配；财务拒绝非有限字段及非法非零日期；逐笔1–2000条，检查数量、时间、正价格与非负量/编号，未公开方向值原样保留。上述旧对象的try_parse复用新解码，尾随和超量不再静默接受。财务换算先f32→f64再乘10000，纠正旧f32乘法额外舍入，部分字段末位变化。`KlineRequest::for_symbol`显式周期，`decode_canonical_stock/index`及对应recv从请求推导周期，源量单位必须指定。详见[协议迁移](PROTOCOL_REQUESTS.md)。
+
 交易所股票名单请求使用HTTPS、总时限和16MiB响应限制；上交所不再发送历史硬编码会话Cookie。接口鉴权或反爬变化会显式返回错误。`docsrs` feature可在稳定Rust下开启；自动文档标记由docs.rs的 `cfg(docsrs)` 单独启用。
 
 受管TCP/HTTP共享默认8条进程预算；CLI默认启用同机OS锁许可，首次使用或读取policy/stats前通过configure_network配置。CLI全命令新增--timeout（默认10800秒）、--cancel-file及Ctrl-C/SIGTERM协作取消；重试不能延长绝对deadline。批次完成释放连接，服务器轮换和冷却保留。不同许可目录、跨主机及裸socket不在该上限内，Mongo工具内部socket也不逐个计数；详见[NETWORK.md](NETWORK.md)。

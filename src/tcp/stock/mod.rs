@@ -7,6 +7,12 @@ pub use index_kline::{IndexKline, IndexKlineData};
 mod kline_request;
 pub use kline_request::{KlineRequest, decode_index_bars, decode_stock_bars};
 
+mod requests;
+pub use requests::{
+    FinanceRequest, HistoryTransactionRequest, QuotesRequest, TransactionRequest, decode_finance,
+    decode_history_transactions, decode_quotes, decode_transactions,
+};
+
 mod xdxr;
 pub use xdxr::*;
 

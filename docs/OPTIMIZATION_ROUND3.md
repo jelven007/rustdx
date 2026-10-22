@@ -45,3 +45,11 @@ schema5记录批量、回读耗时及`sha256_order=csv_row_order`，字段摘要
 资源取舍：`/usr/bin/time`记录的ClickHouse命令最大RSS从约11.5–11.8MiB增为14.3–14.4MiB；Mongo从约255–256MiB增为321–325MiB。未限制堆的初版长驻Mongo达到约428–431MiB，128MiB老年代上限显著收敛峰值，但仍高于旧方案；它减少进程启动与查询次数，不保证内存下降。该RSS不是整棵进程树同一时刻的内存总和。
 
 Rust1.89 CLI all-targets离线测试、Clippy all-targets/all-features拒绝警告、fmt通过。新测试覆盖批量边界、逆序响应、缺键、错值、重复、摘要跨批量一致、响应序号、截断/超量/多余响应、非零退出、阻塞管道的deadline/取消及回收。隔离两库的1,040键真实验收通过：重复/覆盖、CSV保留/清理、6/8字段与复权、错误表键、Mongo已有重复数据；之后只调整了Mongo堆限制及单次JSON解析，并复测相关单元测试、Clippy和真实65,536行。私有验收库均已删除。日志：`/tmp/rustdx-round3-readback-tests.log`、`/tmp/rustdx-round3-readback-acceptance.log`、`/tmp/rustdx-round3-readback-final.log`。稳定Linux与真实生产配置留待第6步，不将本机实验构建替代该验收。
+
+## 协议安全与标准适配
+
+快照/财务/当日逐笔/历史逐笔新增不可变checked请求和独立解码，Client相应入口迁移。拒绝请求参数非法、返回超量、截断、尾随字节与证券身份错配；财务增加有限值与日期检查，逐笔增加正价格/非负量检查。旧对象try_parse复用新路径，parse仍保留无Result签名及清空失败数据。财务换算改为先f64再乘10000，与pytdx一致，修正旧f32额外舍入。KlineRequest新增显式Symbol/Period入口，标准适配从请求推导周期，必须传源量单位。
+
+真实协议来源为2026-10-23 UTC+8早间115.238.56.198:7709；两证券快照、一条财务、当日/历史逐笔各三条，全部公开字段及请求字节与固定pytdx提交逐一一致。原有股票/指数/分钟九条真实K线夹具继续一致。独立参考源码执行前验证摘要；[证据清单](../tests/fixtures/protocol/manifest.json)及[重解脚本](../scripts/verify_protocol_pytdx.py)可复现。恶意输入、旧状态清空、Client实际发包和标准单位/周期回归通过；详情见[协议接口](PROTOCOL_REQUESTS.md)。该小样本不代表全市场。
+
+Rust1.89核心库all-targets/all-features离线回归通过：160单测、6项新增协议回归、4项K线回归及其余属性/本地服务/示例目标；文档55项及2项compile_fail通过，18项网络示例保持ignored。Clippy同范围拒绝警告、fmt/diff检查通过。真实响应作为初始语料，新增路径ASan/覆盖率fuzz执行526,218次、31秒，无崩溃；有界短测不代表穷尽。日志为`/tmp/rustdx-round3-protocol-final.log`、`/tmp/rustdx-round3-protocol-fuzz.log`；均退出0。整workspace及数据库最终检查留待第6步。

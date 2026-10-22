@@ -15,8 +15,8 @@
 
 use super::{
     BlockRecord, CompanyInfoCategory, CompanyInfoCategoryItem, CompanyInfoContent, FinanceInfoData,
-    HistoryMinuteTime, HistoryTransaction, IndexKlineData, KlineData, KlineRequest, MinuteTimeData,
-    QuoteData, SecurityListData, TransactionData, Xdxr, XdxrData,
+    HistoryMinuteTime, IndexKlineData, KlineData, KlineRequest, MinuteTimeData, QuoteData,
+    SecurityListData, TransactionData, Xdxr, XdxrData,
 };
 use crate::pool::{ConnectionPool, PoolConfig};
 use crate::tcp::helper::DateTime;
@@ -84,20 +84,8 @@ impl Client {
         if stocks.is_empty() {
             return Ok(Vec::new());
         }
-        for &(market, code) in stocks {
-            validate_request(market, code, 9)?;
-        }
-        if stocks.len() > 80 {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::InvalidInput,
-                "单次行情查询最多80只证券",
-            ));
-        }
-        let run = |tcp: &mut Tcp| {
-            let mut quotes = SecurityQuotesRef::new(stocks.to_vec());
-            quotes.recv_parsed(tcp)?;
-            Ok(quotes.result().to_vec())
-        };
+        let request = super::QuotesRequest::new(stocks.to_vec())?;
+        let run = |tcp: &mut Tcp| request.recv(tcp);
         let result = if self.tcp.config().recheck_empty {
             recheck_empty(&mut self.tcp, run)
         } else {
@@ -443,15 +431,14 @@ impl Client {
         start: u16,
         count: u16,
     ) -> std::io::Result<Vec<TransactionData>> {
-        validate_request(market, code, 9)?;
-        let mut tx = super::Transaction::new(market, code, start, count);
-        tx.recv_parsed(&mut self.tcp).map_err(|e| {
-            ctx_err(
-                e,
-                format_args!("Client::transaction(market={market}, code={code})"),
-            )
-        })?;
-        Ok(tx.result().to_vec())
+        super::TransactionRequest::new(market, code, start, count)?
+            .recv(&mut self.tcp)
+            .map_err(|e| {
+                ctx_err(
+                    e,
+                    format_args!("Client::transaction(market={market}, code={code})"),
+                )
+            })
     }
 
     /// 历史逐笔成交。
@@ -463,28 +450,27 @@ impl Client {
         count: u16,
         date: u32,
     ) -> std::io::Result<Vec<TransactionData>> {
-        validate_request(market, code, 9)?;
-        let mut tx = HistoryTransaction::new(market, code, start, count, date);
-        tx.recv_parsed(&mut self.tcp).map_err(|e| {
-            ctx_err(
-                e,
-                format_args!("Client::history_transaction(market={market}, code={code})"),
-            )
-        })?;
-        Ok(tx.result().to_vec())
+        super::HistoryTransactionRequest::new(market, code, start, count, date)?
+            .recv(&mut self.tcp)
+            .map_err(|e| {
+                ctx_err(
+                    e,
+                    format_args!("Client::history_transaction(market={market}, code={code})"),
+                )
+            })
     }
 
     /// 财务信息。
     pub fn finance(&mut self, market: u16, code: &str) -> std::io::Result<FinanceInfoData> {
-        validate_request(market, code, 9)?;
-        let mut fin = super::FinanceInfo::new(market as u8, code);
-        fin.recv_parsed(&mut self.tcp).map_err(|e| {
-            ctx_err(
-                e,
-                format_args!("Client::finance(market={market}, code={code})"),
-            )
-        })?;
-        fin.result().first().cloned().ok_or_else(|| {
+        let rows = super::FinanceRequest::new(market, code)?
+            .recv(&mut self.tcp)
+            .map_err(|e| {
+                ctx_err(
+                    e,
+                    format_args!("Client::finance(market={market}, code={code})"),
+                )
+            })?;
+        rows.into_iter().next().ok_or_else(|| {
             std::io::Error::new(
                 std::io::ErrorKind::NotFound,
                 format!("Client::finance({market}, {code}): 无财务数据"),
@@ -668,9 +654,6 @@ fn today_yyyymmdd() -> u32 {
 fn ctx_err(e: std::io::Error, ctx: std::fmt::Arguments<'_>) -> std::io::Error {
     std::io::Error::new(e.kind(), format!("{ctx}: {e}"))
 }
-
-/// 避免与 facade 文档中的 `SecurityQuotes` 混淆的内部别名。
-use super::SecurityQuotes as SecurityQuotesRef;
 
 /// 空结果二次确认：TDX 服务端在高频请求下会**静默返回空响应**（不报错），
 /// 与停牌/退市股「窗口内本就无 K 线」的真空无法从返回值区分。

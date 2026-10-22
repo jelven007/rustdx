@@ -6,7 +6,7 @@
 
 | 包 | 职责 | 实现 |
 | --- | --- | --- |
-| jelven-rustdx-complete | 行情及计算核心 | 阻塞TCP、任务上下文、TCP/HTTP共享许可、不可变K线请求/独立解码、checked文件解析、复权、标准数据类型、线性指标、严格日历、日期规则、连接池、缓存 |
+| jelven-rustdx-complete | 行情及计算核心 | 阻塞TCP、任务上下文、TCP/HTTP共享许可、不可变K线/快照/财务/逐笔请求及独立解码、checked文件解析、复权、标准数据类型、线性指标、严格日历、日期规则、连接池、缓存 |
 | jelven-rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、4096条分块/磁盘归并、有界线程/确定性输出、东财标准适配与原始响应重放、schema5运行清单、覆盖告警、CSV/JSON、数据库可配批量精确回读及同机写入锁 |
 | tests-integration | 外部接口样本与检查 | 不发布；外部测试通过变量跳过 |
 
@@ -118,7 +118,7 @@ CLI每个day文件32MiB、gbbq/前因子64MiB、外部日历1MiB；名单HTTPS�
 
 ## 当前设计边界及后续工作
 
-K线新增私有字段的不可变KlineRequest、独立decode_stock_bars/decode_index_bars；Client单页、区间、批次及价格复权查询均使用新路径。KlineBuilder::build_request提供checked入口，旧build/Kline/IndexKline及parse保留。旧对象公开字段仍可能与发送字节不一致，直接构造仍可能panic；其他协议尚未全部迁移为不可变请求。未来主版本可在完成下游迁移后淘汰旧入口。
+K线新增私有字段的不可变KlineRequest、独立decode_stock_bars/decode_index_bars；Client单页、区间、批次及价格复权查询均使用新路径。快照、财务及当日/历史逐笔已扩展为QuotesRequest/FinanceRequest/TransactionRequest/HistoryTransactionRequest，Client对应入口迁移，独立解码核对数量、证券身份及数值边界。KlineRequest标准接口从请求推导周期并要求源量单位，详见[协议接口](PROTOCOL_REQUESTS.md)。KlineBuilder::build_request提供checked入口，旧build/Kline/IndexKline及其他旧协议对象/parse保留。旧对象公开字段仍可能与发送字节不一致，直接构造仍可能panic；名单、分时、公司信息等其他协议尚未全部迁移为不可变请求。未来主版本可在完成下游迁移后淘汰旧入口。
 
 空响应依然不能确定证券状态。新增SecurityHistory可读取带原始公告摘要的已核实区间，未知区间返回None；未取得全市场生命周期数据。data-check支持独立日历逐日核对，2026沪深两份参考为242个交易日；2027完整数据仍未取得。内置日历2024–2026之外必须提供完整且准确的外部数据。指标为本项目明确口径，不保证与任意第三方默认算法相同。日期规则覆盖截至2026-10-22，单一交易所当前规则复查不替代全部板块续期；旧核准制IPO首日和未覆盖特别制度返回错误。
 

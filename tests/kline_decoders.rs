@@ -207,3 +207,35 @@ fn checked_request_rejects_inputs_without_panicking() {
     assert!(KlineRequest::new(0, "000001", 12, 0, 3).is_err());
     assert!(KlineRequest::new(0, "200b07", 9, u16::MAX, 800).is_ok());
 }
+
+#[test]
+fn request_preserves_explicit_period_market_and_volume_unit() {
+    use rustdx_complete::data::{Period, PriceBasis, VolumeUnit};
+    let symbol = "sz000001".parse().unwrap();
+    let request = KlineRequest::for_symbol(&symbol, Period::Minute5, 0, 3).unwrap();
+    let bytes = fixture("stock-minute", "response");
+    let shares = request
+        .decode_canonical_stock(&bytes, VolumeUnit::Shares)
+        .unwrap();
+    let lots = request
+        .decode_canonical_stock(&bytes, VolumeUnit::Lots)
+        .unwrap();
+    assert_eq!(shares.len(), 3);
+    for (shares, lots) in shares.iter().zip(lots) {
+        assert_eq!(shares.period, Period::Minute5);
+        assert_eq!(shares.bar.symbol, symbol);
+        assert_eq!(shares.price_basis, PriceBasis::Raw);
+        assert_eq!(lots.bar.volume_shares, shares.bar.volume_shares * 100.0);
+    }
+    let index = "sh000001".parse().unwrap();
+    let request = KlineRequest::for_symbol(&index, Period::Day, 0, 3).unwrap();
+    for bar in request
+        .decode_canonical_index(&fixture("index-day", "response"), VolumeUnit::Shares)
+        .unwrap()
+    {
+        assert_eq!(bar.period, Period::Day);
+        assert_eq!(bar.bar.symbol, index);
+    }
+    let beijing = "bj920001".parse().unwrap();
+    assert!(KlineRequest::for_symbol(&beijing, Period::Day, 0, 3).is_err());
+}

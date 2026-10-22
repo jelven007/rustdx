@@ -1,0 +1,50 @@
+{
+  "reference": "https://github.com/rainx/pytdx/tree/2857fdad08534533610bd2aeca387f760c4baa42",
+  "reference_sources_sha256": {
+    "pytdx/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pytdx/parser/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pytdx/helper.py": "1574270eee7da0313dcc753e2fa50c61fbf6305541967d974944bc28effa2772",
+    "pytdx/parser/get_security_bars.py": "94a763fdc856d09fdcbb75c3498ea0e00fe0ae1ea3994fa8d8875c442713be56",
+    "pytdx/parser/get_index_bars.py": "3dbe7d7ecaf36b0f47f88499b50dc45798d72fe4d3b59be9df78b8a9dbee46d2",
+    "pytdx/parser/base.py": "365821fc502097740987075e06d7d4ae3417f503776d2588af36e85a6b643148",
+    "pytdx/log.py": "c566fe3b9f15406e924c45a4188c3836b3f46e7ada3f4a1e8515117079dbd7d8",
+    "pytdx/parser/get_security_quotes.py": "04af067059ad88f66cab0b712478be3ed5e3eed32c72be5b67059a5b2f2e0c24",
+    "pytdx/parser/get_finance_info.py": "91a881051b9fb4aaadb0c0d2d9581b10b2c8dddc83ead8a056361546a4f9aedf",
+    "pytdx/parser/get_transaction_data.py": "9c66930a2b73b4dc8e5af1ffc49914c00c1c334e2be3cd3facfeb60d19f7d353",
+    "pytdx/parser/get_history_transaction_data.py": "207c496eb1d35e2b90a8665439c0d56303d5b03375b17f4a484b6af0c2c1ff62"
+  },
+  "cases": [
+    {
+      "case": "quotes",
+      "rows": 2,
+      "request_sha256": "80993281f757b8c740f6e385346251b440af09892aef61037dc902be76c3a852",
+      "response_sha256": "a382610b289d69309231940ef2097a8db5e4a91ad341265df6c62ef7d7d16689",
+      "expected_csv_sha256": "cf2d8d4a59681189c8022aede44d0d876709ba99b7c3cfca57af07cc0df8daf0"
+    },
+    {
+      "case": "finance",
+      "rows": 1,
+      "request_sha256": "cbd83721ed9087bc9f3c40aecfd7d448b7fc9108191db500dffd3fc89b424701",
+      "response_sha256": "47575a25e53addcba0930c4ce345381ecc604019646d460ab127915d8252820d",
+      "expected_csv_sha256": "037ea549de707652b5b5fe15dec0c3e77d8e305b957f018f6590b5f1d3d15c63"
+    },
+    {
+      "case": "transaction",
+      "rows": 3,
+      "request_sha256": "731255f7876abe5c03781e6f49ce02deb3c60d32d1c0589d61bfabb616028fa4",
+      "response_sha256": "fc324fecda8e530d48154107e78c008d2610cd6b280931b6da0c0a6219fd99eb",
+      "expected_csv_sha256": "5a5741d285900378712d16c3c9658b7e7b3eea86b0e559e00f9ba11b353a1826"
+    },
+    {
+      "case": "history-transaction",
+      "rows": 3,
+      "request_sha256": "bdf4543b38f4eb6668113425ca968c4b27d59e3bbb58da663f198ff73aa1c312",
+      "response_sha256": "be0ce8121ab08213bcd95473370026aab4fe50e005e4d6375f025b31d8389b89",
+      "expected_csv_sha256": "a8ac0b6da03f7c46a2eeba18aac4d5334b1fd27833d5bb1469765a4391e48c8a"
+    }
+  ],
+  "scope": "Two securities' quotes, one finance record, three current and three historical ticks; all exposed fields, not full market.",
+  "history_date": 20261022,
+  "captured_at": "2026-10-22T23:31:59.813662+00:00",
+  "endpoint": "115.238.56.198:7709"
+}

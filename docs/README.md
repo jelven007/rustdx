@@ -24,6 +24,8 @@
 - [IMPORTS.md](IMPORTS.md)：运行清单字段、状态、摘要范围及数据库确认边界。
 - [DATA_MAINTENANCE.md](DATA_MAINTENANCE.md)：日历交叉核验、原子更新与有公告证据的证券状态区间。
 - [NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)：2026-10-23后续六步优化及本轮交叉验证证据。
+- [OPTIMIZATION_ROUND3.md](OPTIMIZATION_ROUND3.md)：覆盖告警、来源重放、回读效率、协议安全、阶段观测及部署故障验收。
+- [PROTOCOL_REQUESTS.md](PROTOCOL_REQUESTS.md)：K线/快照/财务/逐笔checked请求、独立解码与源单位迁移。
 
 ## 本轮变更覆盖
 
