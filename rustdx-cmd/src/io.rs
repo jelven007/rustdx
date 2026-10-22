@@ -38,6 +38,8 @@ where
     T: serde::Serialize + QualityRow + Send,
 {
     let start = Instant::now();
+    let calendar = crate::quality::load_calendar(cmd.calendar.as_deref())?;
+    report.calendar = serde_json::to_value(calendar.metadata())?;
     if cmd.workers.is_some_and(|n| !(1..=64).contains(&n)) {
         eyre::bail!("workers必须在1–64之间");
     }
@@ -130,7 +132,12 @@ where
                     .and_then(|s| s.to_str())
                     .unwrap_or("")
                     .to_owned();
-                let mut quality = crate::quality::inspect(path.clone(), code, &v);
+                let mut quality = crate::quality::inspect_with_calendar(
+                    path.clone(),
+                    code,
+                    &v,
+                    calendar.as_ref(),
+                );
                 let invalid =
                     !quality.errors.is_empty() || (cmd.strict && !quality.warnings.is_empty());
                 if invalid {
@@ -879,6 +886,58 @@ mod tests {
         let result: serde_json::Value = serde_json::from_slice(&fs::read(report).unwrap()).unwrap();
         assert_eq!(result["status"], "failed");
         assert!(!result["errors"].as_array().unwrap().is_empty());
+        fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn external_calendar_enables_strict_collection_without_guessing_dates() {
+        use argh::FromArgs;
+        let dir = std::env::temp_dir().join(format!("rustdx-calendar-test-{}", std::process::id()));
+        fs::create_dir_all(&dir).unwrap();
+        let mut record = Vec::new();
+        for value in [20230103u32, 1000, 1100, 900, 1050] {
+            record.extend(value.to_le_bytes());
+        }
+        record.extend(1000.0f32.to_le_bytes());
+        record.extend(100u32.to_le_bytes());
+        record.extend(0u32.to_le_bytes());
+        fs::write(dir.join("sh600000.day"), record).unwrap();
+        let output = dir.join("output.csv");
+        let report_path = dir.join("report.json");
+        let calendar_path = dir.join("calendar.json");
+        fs::write(&output, "previous success").unwrap();
+        let mut args = vec![
+            dir.to_str().unwrap(),
+            "-o",
+            output.to_str().unwrap(),
+            "--report",
+            report_path.to_str().unwrap(),
+            "--strict",
+        ];
+        let cmd = DayCmd::from_args(&["rustdx", "day"], &args).unwrap();
+        assert!(run_csv(&cmd).is_err());
+        assert_eq!(fs::read(&output).unwrap(), b"previous success");
+        fs::write(
+            &calendar_path,
+            r#"{"version":"test-local-day","source":"unit-test",
+            "start":"2023-01-03","end":"2023-01-03","holidays":[]}"#,
+        )
+        .unwrap();
+        args.extend(["--calendar", calendar_path.to_str().unwrap()]);
+        let cmd = DayCmd::from_args(&["rustdx", "day"], &args).unwrap();
+        run_csv(&cmd).unwrap();
+        let report: serde_json::Value =
+            serde_json::from_slice(&fs::read(&report_path).unwrap()).unwrap();
+        assert_eq!(report["status"], "complete");
+        assert_eq!(report["calendar"]["version"], "test-local-day");
+        let published = fs::read(&output).unwrap();
+        fs::write(
+            &calendar_path,
+            r#"{"version":"","source":"","start":"2023-01-03","end":"2023-01-03","holidays":[]}"#,
+        )
+        .unwrap();
+        assert!(run_csv(&cmd).is_err());
+        assert_eq!(fs::read(&output).unwrap(), published);
         fs::remove_dir_all(dir).unwrap();
     }
 

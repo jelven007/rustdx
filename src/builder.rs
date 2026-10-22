@@ -31,6 +31,7 @@
 //! let data = kline.result();
 //! ```
 
+use crate::data::{Period, Symbol};
 use crate::tcp::stock::Kline;
 
 // ============================================================================
@@ -101,7 +102,27 @@ impl<'a> KlineBuilder<'a> {
         self
     }
 
-    /// 设置市场代码（可选，默认自动识别）
+    /// 使用带交易所的标准代码，避免sh000001和sz000001被混淆。
+    ///
+    /// ```
+    /// use rustdx_complete::{KlineBuilder, data::Symbol};
+    /// let symbol: Symbol = "sh000001".parse().unwrap();
+    /// let request = KlineBuilder::new().symbol(&symbol).build().unwrap();
+    /// assert_eq!(request.market, 1);
+    /// assert_eq!(request.code, "000001");
+    /// ```
+    pub fn symbol(mut self, symbol: &'a Symbol) -> Self {
+        self.code = Some(symbol.code());
+        // 保留build返回错误的接口，2将被协议市场校验拒绝。
+        self.market = Some(symbol.market().tdx_market().unwrap_or(2));
+        self
+    }
+
+    pub fn period(self, period: Period) -> Self {
+        self.category(period.tdx_category())
+    }
+
+    /// 设置市场代码（可选，默认保留旧的股票代码推断；指数等应使用symbol）
     ///
     /// # 参数
     ///
@@ -407,6 +428,27 @@ mod tests {
         // 创业板（3开头）
         let kline3 = KlineBuilder::new().code("300001").build().unwrap();
         assert_eq!(kline3.market, 0); // 深圳
+    }
+
+    #[test]
+    fn explicit_symbols_preserve_exchange_and_reject_unverified_mapping() {
+        let index: Symbol = "sh000001".parse().unwrap();
+        let stock: Symbol = "sz000001".parse().unwrap();
+        assert_eq!(
+            KlineBuilder::new()
+                .symbol(&index)
+                .period(Period::Day)
+                .build()
+                .unwrap()
+                .market,
+            1
+        );
+        assert_eq!(
+            KlineBuilder::new().symbol(&stock).build().unwrap().market,
+            0
+        );
+        let beijing: Symbol = "bj920001".parse().unwrap();
+        assert!(KlineBuilder::new().symbol(&beijing).build().is_err());
     }
 
     #[test]

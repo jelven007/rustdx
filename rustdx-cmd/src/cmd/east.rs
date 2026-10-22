@@ -31,6 +31,9 @@ pub struct EastCmd {
     /// 采集来源、日期与质量报告JSON。
     #[argh(option)]
     pub report: Option<std::path::PathBuf>,
+    /// 已核实的完整休市日历JSON。
+    #[argh(option)]
+    pub calendar: Option<std::path::PathBuf>,
 }
 
 impl EastCmd {
@@ -55,14 +58,19 @@ impl EastCmd {
         {
             outputs.push("factor.csv".into());
         }
-        let inputs = crate::paths::previous_input(self.previous.as_deref())
+        let mut inputs = crate::paths::previous_input(self.previous.as_deref())
             .into_iter()
             .collect::<Vec<_>>();
+        inputs.extend(self.calendar.iter().cloned());
         crate::paths::validate(&outputs, &inputs)?;
         let _outputs = crate::paths::OutputLocks::acquire(&outputs)?;
         let mut report = crate::quality::CollectionReport::new(self.output_path());
-        let result = fetch(self.max)
-            .and_then(|data| self.process(data, &mut report))
+        let result = crate::quality::load_calendar(self.calendar.as_deref())
+            .and_then(|calendar| {
+                fetch_with_calendar(self.max, calendar.as_ref()).and_then(|data| {
+                    self.process_with_calendar(data, &mut report, calendar.as_ref())
+                })
+            })
             .and_then(|_| {
                 if self.output == "clickhouse" {
                     crate::io::setup_clickhouse(true, &self.table)?;
@@ -79,10 +87,20 @@ impl EastCmd {
         result
     }
 
+    #[cfg(test)]
     fn process(
+        &self,
+        data: EastMarket,
+        report: &mut crate::quality::CollectionReport,
+    ) -> Result<()> {
+        self.process_with_calendar(data, report, &rustdx_complete::calendar::BuiltinCalendar)
+    }
+
+    fn process_with_calendar(
         &self,
         mut data: EastMarket,
         report: &mut crate::quality::CollectionReport,
+        calendar: &dyn rustdx_complete::calendar::CalendarProvider,
     ) -> Result<()> {
         let previous = if self.previous.is_some() {
             Some(crate::io::previous_csv_table(
@@ -93,7 +111,12 @@ impl EastCmd {
         } else {
             None
         };
-        let expected_date = rustdx_complete::calendar::TradingCalendar::market_trading_day();
+        report.calendar = serde_json::to_value(calendar.metadata())?;
+        let expected_date = calendar.market_trading_day_at(
+            chrono::Utc::now()
+                .with_timezone(&rustdx_complete::data::exchange_timezone())
+                .naive_local(),
+        )?;
         let mut rows = Vec::new();
         for mut row in data.data.diff.drain(..) {
             if row.close.is_none() {
@@ -135,8 +158,7 @@ impl EastCmd {
                         .get(&row.code)
                         .ok_or_else(|| eyre::eyre!("{}缺少前因子", row.code))?;
                     let prior = chrono::NaiveDate::parse_from_str(&factor.date, "%Y-%m-%d")?;
-                    let expected =
-                        rustdx_complete::calendar::TradingCalendar::previous_trading_day(&date);
+                    let expected = calendar.previous_trading_day(date)?;
                     if prior != expected {
                         eyre::bail!(
                             "{}前因子日期{prior}应为{expected}，快照不能跨日补全累计收益",

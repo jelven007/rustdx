@@ -145,12 +145,32 @@ pub fn parse(text: &str) -> Result<EastMarket> {
 
 /// 获取并解析股票数据
 pub fn fetch(max: Option<u16>) -> Result<EastMarket> {
-    fetch_pages(max, get)
+    fetch_with_calendar(max, &rustdx_complete::calendar::BuiltinCalendar)
 }
 
+pub fn fetch_with_calendar(
+    max: Option<u16>,
+    calendar: &dyn rustdx_complete::calendar::CalendarProvider,
+) -> Result<EastMarket> {
+    fetch_pages_with_calendar(max, get, calendar)
+}
+
+#[cfg(test)]
 fn fetch_pages(
     max: Option<u16>,
     mut get_page: impl FnMut(u16, u16) -> Result<String>,
+) -> Result<EastMarket> {
+    fetch_pages_with_calendar(
+        max,
+        &mut get_page,
+        &rustdx_complete::calendar::BuiltinCalendar,
+    )
+}
+
+fn fetch_pages_with_calendar(
+    max: Option<u16>,
+    mut get_page: impl FnMut(u16, u16) -> Result<String>,
+    calendar: &dyn rustdx_complete::calendar::CalendarProvider,
 ) -> Result<EastMarket> {
     if max == Some(0) {
         eyre::bail!("max必须大于0");
@@ -172,7 +192,7 @@ fn fetch_pages(
             eyre::bail!("东财分页返回空页，尚未覆盖全部证券");
         }
         for mut row in data.data.diff {
-            row.normalize()?;
+            row.normalize_with_calendar(calendar)?;
             if !seen.insert(row.code.clone()) {
                 eyre::bail!("东财分页包含重复证券：{}", row.code);
             }
@@ -255,6 +275,13 @@ pub type F32 = Option<f64>;
 
 impl Day {
     pub fn normalize(&mut self) -> Result<()> {
+        self.normalize_with_calendar(&rustdx_complete::calendar::BuiltinCalendar)
+    }
+
+    pub fn normalize_with_calendar(
+        &mut self,
+        calendar: &dyn rustdx_complete::calendar::CalendarProvider,
+    ) -> Result<()> {
         let market = self
             .market
             .ok_or_else(|| eyre::eyre!("{}缺少市场字段", self.code))?;
@@ -281,7 +308,7 @@ impl Day {
         let date = ts
             .with_timezone(&chrono::FixedOffset::east_opt(8 * 3600).unwrap())
             .date_naive();
-        if !rustdx_complete::calendar::TradingCalendar::try_is_trading_day(&date)? {
+        if !calendar.is_trading_day(date)? {
             eyre::bail!("{}行情时间戳落在非交易日：{date}", self.code);
         }
         self.code = code;

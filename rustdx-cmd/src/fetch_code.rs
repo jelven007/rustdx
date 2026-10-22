@@ -1,5 +1,19 @@
 use eyre::{Result, anyhow};
 use std::collections::HashSet;
+use std::io::Read;
+use std::time::{Duration, Instant};
+
+const MAX_RESPONSE_BYTES: usize = 16 * 1024 * 1024;
+const LIST_TIMEOUT: Duration = Duration::from_secs(120);
+
+fn read_bounded(reader: impl Read, limit: usize) -> Result<Vec<u8>> {
+    let mut bytes = Vec::new();
+    reader.take(limit as u64 + 1).read_to_end(&mut bytes)?;
+    if bytes.len() > limit {
+        eyre::bail!("股票名单响应超出{}字节限制", limit);
+    }
+    Ok(bytes)
+}
 
 // 股票上限
 const SH8: &str = "800";
@@ -24,9 +38,7 @@ impl SHSZ {
 
 /// 获取上证和深证的股票代码
 ///
-/// 数量如下：SHSZ { sh1: 1646, sh8: 407, sz: 2745, } -> 4798
-///
-/// 见 `tests-integration::fetch_code::offical_stocks` 测试
+/// 实际数量通过返回值SHSZ提供，不能使用历史快照数量判断完整性。
 pub fn offical_stocks(set: &mut StockList) -> Result<SHSZ> {
     let count = SHSZ {
         sh1: get_sh_stocks(set, "1", SH1)?,
@@ -55,15 +67,18 @@ pub fn get_offical_stocks(cond: &str) -> Result<StockList> {
 /// 深交所官网的 A 股和创业板股票信息。
 pub fn get_sz_stocks(set: &mut StockList) -> Result<usize> {
     use calamine::{Data, Reader, Xlsx};
-    use std::io::Read;
     let (url, ex) = (
-        "http://www.szse.cn/api/report/ShowReport?\
-        SHOWTYPE=xlsx&CATALOGID=1110&TABKEY=tab1&random=0.8587844061443386",
+        "https://www.szse.cn/api/report/ShowReport?\
+        SHOWTYPE=xlsx&CATALOGID=1110&TABKEY=tab1",
         "sz",
     );
-    let bytes = &mut Vec::with_capacity(1 << 20);
-    let mut resp = ureq::get(url).call()?;
-    resp.body_mut().as_reader().read_to_end(bytes)?;
+    let mut resp = ureq::get(url)
+        .config()
+        .timeout_connect(Some(Duration::from_secs(10)))
+        .timeout_global(Some(LIST_TIMEOUT))
+        .build()
+        .call()?;
+    let bytes = read_bounded(resp.body_mut().as_reader(), MAX_RESPONSE_BYTES)?;
     let mut workbook = Xlsx::new(std::io::Cursor::new(bytes))?;
     // 每个单元格被解析的类型可能会不一样，所以把股票代码统一转化成字符型
     if let Some(Ok(range)) = workbook.worksheet_range_at(0) {
@@ -103,25 +118,11 @@ pub fn get_sz_stocks(set: &mut StockList) -> Result<usize> {
     }
 }
 
-fn cookie() -> String {
-    "ba17301551dcbaf9_gdp_user_key=; \
-     ba17301551dcbaf9_gdp_session_id=0876b773-38a3-44d0-bb4a-2b5569025b82; \
-     gdp_user_id=gioenc-2g8894g6%2C764a%2C50d8%2C8d6g%2C3bg6194752ce; \
-     ba17301551dcbaf9_gdp_session_id_0876b773-38a3-44d0-bb4a-2b5569025b82=true; \
-     JSESSIONID=0311A5533F5FD798EE9DAFDE6A1D70A7; \
-     ba17301551dcbaf9_gdp_sequence_ids=\
-     {%22globalKey%22:14%2C%22VISIT%22:2%2C%22PAGE%22:5%2C%22VIEW_CHANGE%22:2%2C%22CUSTOM%22:3%2C%22VIEW_CLICK%22:6}"
-        .to_string()
-}
-
 const USER_AGENT: &str = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36";
 const ACCEPT_LANGUAGE: &str =
     "zh-CN,zh;q=0.9,de;q=0.8,ko;q=0.7,ru;q=0.6,it;q=0.5,ga;q=0.4,en;q=0.3";
 
-// 上交所 科创板 68 开头（目前 350 只，只需一次请求） => stockType=8, pagesize=400
-//        A 股 60 开头（目前 1650 只，只需一次请求） => stockType=1, pagesize=1700
-// 上交所 科创板 68 开头（目前 350 只，只需一次请求） => stockType=8, pagesize=400
-//        A 股 60 开头（目前 1650 只，只需一次请求） => stockType=1, pagesize=1700
+// stockType=8为科创板，stockType=1为主板；以响应total驱动翻页。
 pub fn get_sh_stocks(set: &mut StockList, stocktype: &str, pagesize: &str) -> Result<usize> {
     let size: usize = pagesize.parse()?;
     if size == 0 || size > 5000 || !matches!(stocktype, "1" | "8") {
@@ -130,9 +131,14 @@ pub fn get_sh_stocks(set: &mut StockList, stocktype: &str, pagesize: &str) -> Re
     let mut codes = StockList::new();
     let mut page = 1usize;
     let mut expected = None;
+    let deadline = Instant::now() + LIST_TIMEOUT;
     loop {
+        let remaining = deadline.saturating_duration_since(Instant::now());
+        if remaining.is_zero() {
+            eyre::bail!("上交所股票名单分页超过总时限");
+        }
         let url = format!(
-            "http://query.sse.com.cn/sseQuery/commonQuery.do?\
+            "https://query.sse.com.cn/sseQuery/commonQuery.do?\
         jsonCallBack=jsonpCallback37525685&STOCK_TYPE={stocktype}\
         &REG_PROVINCE=&CSRC_CODE=&STOCK_CODE=&sqlId=COMMON_SSE_CP_GPJCTPZ_GPLB_GP_L\
         &COMPANY_STATUS=2%2C4%2C5%2C7%2C8&type=inParams&isPagination=true\
@@ -140,15 +146,21 @@ pub fn get_sh_stocks(set: &mut StockList, stocktype: &str, pagesize: &str) -> Re
         &pageHelp.pageNo={page}&pageHelp.endPage={page}"
         );
         let mut resp = ureq::get(&url)
+            .config()
+            .timeout_connect(Some(Duration::from_secs(10).min(remaining)))
+            .timeout_global(Some(remaining))
+            .build()
             .header("ACCEPT", "*/*")
             .header("ACCEPT_LANGUAGE", ACCEPT_LANGUAGE)
             .header("CACHE_CONTROL", "no-cache")
-            .header("COOKIE", cookie())
             .header("PRAGMA", "no-cache")
-            .header("REFERER", "http://www.sse.com.cn/")
+            .header("REFERER", "https://www.sse.com.cn/")
             .header("USER_AGENT", USER_AGENT)
             .call()?;
-        let text = resp.body_mut().read_to_string()?;
+        let text = String::from_utf8(read_bounded(
+            resp.body_mut().as_reader(),
+            MAX_RESPONSE_BYTES,
+        )?)?;
         let (rows, total) = parse_sh_page(&text)?;
         if expected.is_some_and(|n| n != total) {
             eyre::bail!("上交所分页total发生变化");
@@ -194,7 +206,11 @@ fn parse_sh_page(text: &str) -> Result<(Vec<String>, usize)> {
             v.as_u64()
                 .or_else(|| v.as_str().and_then(|s| s.parse().ok()))
         })
-        .ok_or_else(|| anyhow!("上交所total字段缺失"))? as usize;
+        .ok_or_else(|| anyhow!("上交所total字段缺失"))?;
+    let total = usize::try_from(total)?;
+    if total > 100_000 {
+        eyre::bail!("上交所股票名单total超出100000限制");
+    }
     let rows = value
         .get("result")
         .and_then(|v| v.as_array())
@@ -231,5 +247,21 @@ mod tests {
             assert!(parse_sh_page(text).is_err());
         }
         assert!(get_offical_stocks("unknown").is_err());
+    }
+
+    #[test]
+    fn stocklist_responses_are_bounded_and_read_errors_propagate() {
+        assert_eq!(read_bounded(b"abcd".as_slice(), 4).unwrap(), b"abcd");
+        assert!(read_bounded(b"abcde".as_slice(), 4).is_err());
+        struct Broken;
+        impl Read for Broken {
+            fn read(&mut self, _: &mut [u8]) -> std::io::Result<usize> {
+                Err(std::io::Error::new(
+                    std::io::ErrorKind::UnexpectedEof,
+                    "truncated",
+                ))
+            }
+        }
+        assert!(read_bounded(Broken, 4).is_err());
     }
 }

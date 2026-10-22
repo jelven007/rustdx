@@ -6,6 +6,9 @@ use serde::Serialize;
 
 use crate::{Error, Result, file::day, tcp::stock::KlineData};
 
+mod model;
+pub use model::*;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Market {
@@ -15,6 +18,15 @@ pub enum Market {
 }
 
 impl Market {
+    /// 当前股票行情协议仅核实了深圳0和上海1，北交所不隐式映射。
+    pub fn tdx_market(self) -> Result<u16> {
+        match self {
+            Self::Shenzhen => Ok(0),
+            Self::Shanghai => Ok(1),
+            Self::Beijing => Err(Error::Custom("当前行情协议未核实北交所市场映射")),
+        }
+    }
+
     pub fn prefix(self) -> &'static str {
         match self {
             Self::Shanghai => "sh",
@@ -133,7 +145,20 @@ pub struct Bar {
 }
 
 impl Bar {
+    /// A股TCP成交量以手计；非A股必须用显式单位适配接口。
     pub fn from_kline(value: &KlineData<'_>, market: Market) -> Result<Self> {
+        if !Symbol::new(market, value.code)?.is_a_share() {
+            return Err(Error::Custom("非A股TCP行情须显式指定成交量单位"));
+        }
+        Self::from_kline_with_unit(value, market, VolumeUnit::Lots)
+    }
+
+    pub fn from_kline_with_unit(
+        value: &KlineData<'_>,
+        market: Market,
+        unit: VolumeUnit,
+    ) -> Result<Self> {
+        market.tdx_market()?;
         let bar = Self {
             symbol: Symbol::new(market, value.code)?,
             datetime: value.dt.try_into_naive()?,
@@ -141,7 +166,7 @@ impl Bar {
             high: value.high,
             low: value.low,
             close: value.close,
-            volume_shares: VolumeUnit::Lots.to_shares(value.vol),
+            volume_shares: unit.to_shares(value.vol),
             amount: value.amount,
         };
         bar.validate()?;
@@ -151,7 +176,9 @@ impl Bar {
     pub fn from_day(value: &day::Day) -> Result<Self> {
         let bar = Self {
             symbol: value.code.parse()?,
-            datetime: date_from_u32(value.date)?.and_hms_opt(15, 0, 0).unwrap(),
+            datetime: date_from_u32(value.date)?
+                .and_hms_opt(15, 0, 0)
+                .expect("固定收盘时间15:00"),
             open: value.open,
             high: value.high,
             low: value.low,

@@ -1,12 +1,24 @@
 use eyre::Result;
 use rustdx_complete::{
     atomic_file::AtomicFile,
-    calendar::TradingCalendar,
+    calendar::{BuiltinCalendar, CalendarProvider},
     data::{Symbol, validate_bar_values, validate_ohlcv},
     file::day,
 };
 use serde::Serialize;
 use std::{fs::File, path::Path};
+
+pub fn load_calendar(path: Option<&Path>) -> Result<Box<dyn CalendarProvider>> {
+    use rustdx_complete::calendar::{CalendarDataset, HolidayCalendar};
+    let Some(path) = path else {
+        return Ok(Box::new(BuiltinCalendar));
+    };
+    if std::fs::metadata(path)?.len() > 1024 * 1024 {
+        eyre::bail!("日历JSON超出1MiB限制");
+    }
+    let dataset: CalendarDataset = serde_json::from_reader(File::open(path)?)?;
+    Ok(Box::new(HolidayCalendar::try_from(dataset)?))
+}
 
 #[derive(Debug, Serialize)]
 pub struct FileReport {
@@ -142,7 +154,17 @@ fn relaxed_ohlc_warning(
     }
 }
 
+#[cfg(test)]
 pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileReport {
+    inspect_with_calendar(source, code, rows, &BuiltinCalendar)
+}
+
+pub fn inspect_with_calendar<T: QualityRow>(
+    source: String,
+    code: String,
+    rows: &[T],
+    calendar: &dyn CalendarProvider,
+) -> FileReport {
     let mut report = FileReport {
         source,
         code,
@@ -176,13 +198,13 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
         };
         first_date = Some(first_date.map_or(date, |first: chrono::NaiveDate| first.min(date)));
         last_date = Some(last_date.map_or(date, |last: chrono::NaiveDate| last.max(date)));
-        match TradingCalendar::try_is_trading_day(&date) {
+        match calendar.is_trading_day(date) {
             Ok(false) => report
                 .warnings
                 .push(format!("{date}: 记录落在非交易日，源口径待核实")),
-            Err(_) if !report.warnings.iter().any(|w| w.contains("日历")) => report
+            Err(error) if !report.warnings.iter().any(|w| w.contains("日历")) => report
                 .warnings
-                .push("内置日历仅覆盖2024–2026，部分日期未检查连续性".into()),
+                .push(format!("日历覆盖不足，部分日期未检查连续性: {error}")),
             _ => {}
         }
         if let Some(prev) = previous {
@@ -194,7 +216,7 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
                     report.warnings.push(format!("{issue}，输出将按日期规范化"));
                 }
             } else {
-                match TradingCalendar::trading_days_between(prev, date) {
+                match calendar.trading_days_between(prev, date) {
                     Ok(days) => {
                         let missing = days.into_iter().filter(|d| *d > prev && *d < date).count();
                         if missing > 0 {
@@ -203,11 +225,11 @@ pub fn inspect<T: QualityRow>(source: String, code: String, rows: &[T]) -> FileR
                             ));
                         }
                     }
-                    Err(_) => {
+                    Err(error) => {
                         if !report.warnings.iter().any(|w| w.contains("日历")) {
                             report
                                 .warnings
-                                .push("内置日历仅覆盖2024–2026，部分日期未检查连续性".into());
+                                .push(format!("日历覆盖不足，部分日期未检查连续性: {error}"));
                         }
                     }
                 }
@@ -229,6 +251,7 @@ pub struct CollectionReport {
     pub output: String,
     pub volume_unit: &'static str,
     pub factor_semantics: &'static str,
+    pub calendar: serde_json::Value,
     pub status: &'static str,
     pub errors: Vec<String>,
     pub files: Vec<FileReport>,
@@ -244,6 +267,12 @@ impl CollectionReport {
             output: output.to_owned(),
             volume_unit: "lots_100_shares",
             factor_semantics: "cumulative_return_index",
+            calendar: serde_json::json!({
+                "version": BuiltinCalendar.metadata().version,
+                "source": BuiltinCalendar.metadata().source,
+                "start": BuiltinCalendar.metadata().start,
+                "end": BuiltinCalendar.metadata().end,
+            }),
             status: "running",
             errors: vec![],
             files: vec![],

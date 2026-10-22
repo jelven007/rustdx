@@ -64,6 +64,10 @@ pub struct DayCmd {
     #[argh(option)]
     pub report: Option<std::path::PathBuf>,
 
+    /// 可选。已核实的完整休市日历 JSON，包含version/source/start/end/holidays。
+    #[argh(option)]
+    pub calendar: Option<std::path::PathBuf>,
+
     /// 可选。交易日缺口或日历覆盖不足时也拒绝发布输出。
     #[argh(switch)]
     pub strict: bool,
@@ -178,6 +182,7 @@ impl DayCmd {
             outputs.push(PathBuf::from("factor.csv"));
         }
         let mut inputs: Vec<_> = self.gbbq.iter().cloned().collect();
+        inputs.extend(self.calendar.iter().cloned());
         inputs.extend(crate::paths::previous_input(self.previous.as_deref()));
         if let Some(list) = &self.stocklist
             && (list.ends_with(".xls") || list.ends_with(".xlsx"))

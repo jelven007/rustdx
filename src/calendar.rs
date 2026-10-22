@@ -32,6 +32,9 @@
 use chrono::{Datelike, NaiveDate, NaiveDateTime, Timelike};
 use trade_date_a;
 
+mod provider;
+pub use provider::*;
+
 /// 中国A股交易日历
 ///
 /// 提供交易日判断、前后交易日查询等功能
@@ -41,31 +44,50 @@ impl TradingCalendar {
     /// 内置休市数据覆盖范围；未知年份不能用工作日推断完整性。
     pub fn supported_range() -> (NaiveDate, NaiveDate) {
         (
-            NaiveDate::from_ymd_opt(2024, 1, 1).unwrap(),
-            NaiveDate::from_ymd_opt(2026, 12, 31).unwrap(),
+            NaiveDate::from_ymd_opt(2024, 1, 1).expect("固定覆盖起始日期"),
+            NaiveDate::from_ymd_opt(2026, 12, 31).expect("固定覆盖结束日期"),
         )
     }
 
     pub fn try_is_trading_day(date: &NaiveDate) -> crate::Result<bool> {
-        let (start, end) = Self::supported_range();
-        if *date < start || *date > end {
-            return Err(crate::Error::Custom("交易日历超出内置2024–2026范围"));
+        Ok(BuiltinCalendar.is_trading_day(*date)?)
+    }
+
+    /// 严格查询前一个交易日，搜索跨出覆盖范围时返回错误。
+    pub fn try_previous_trading_day(date: &NaiveDate) -> crate::Result<NaiveDate> {
+        Ok(BuiltinCalendar.previous_trading_day(*date)?)
+    }
+
+    /// 严格查询后一个交易日，搜索跨出覆盖范围时返回错误。
+    pub fn try_next_trading_day(date: &NaiveDate) -> crate::Result<NaiveDate> {
+        Ok(BuiltinCalendar.next_trading_day(*date)?)
+    }
+
+    pub fn try_get_trading_days(date: &NaiveDate, count: usize) -> crate::Result<Vec<NaiveDate>> {
+        Ok(BuiltinCalendar.get_trading_days(*date, count)?)
+    }
+
+    pub fn try_get_trading_days_before(
+        date: &NaiveDate,
+        count: usize,
+    ) -> crate::Result<Vec<NaiveDate>> {
+        Ok(BuiltinCalendar.get_trading_days_before(*date, count)?)
+    }
+
+    /// UTC+8下的市场交易日，9:30之前返回前一个交易日。
+    pub fn try_market_trading_day_at(datetime: NaiveDateTime) -> crate::Result<NaiveDate> {
+        let date = datetime.date();
+        if Self::try_is_trading_day(&date)? && datetime.time().num_seconds_from_midnight() >= 34200
+        {
+            Ok(date)
+        } else {
+            Self::try_previous_trading_day(&date)
         }
-        Ok(Self::is_trading_day(date))
     }
 
     /// 返回闭区间内的交易日；范围外返回错误，不猜测历史休市日。
     pub fn trading_days_between(start: NaiveDate, end: NaiveDate) -> crate::Result<Vec<NaiveDate>> {
-        if start > end {
-            return Err(crate::Error::Custom("交易日历起止日期颠倒"));
-        }
-        Self::try_is_trading_day(&start)?;
-        Self::try_is_trading_day(&end)?;
-        Ok(start
-            .iter_days()
-            .take_while(|d| *d <= end)
-            .filter(Self::is_trading_day)
-            .collect())
+        Ok(BuiltinCalendar.trading_days_between(start, end)?)
     }
 
     /// 判断指定日期是否是交易日

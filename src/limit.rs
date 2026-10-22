@@ -4,8 +4,8 @@
 //! （除权日用 [`ex_right_reference`](crate::tcp::stock::ex_right_reference)）。
 //!
 //! 涨跌停价规则：`前收盘 × (1 ± 幅度)`，**四舍五入到分**（与交易所/行情软件
-//! 一致）。新股上市首日等特殊涨跌幅不在本模块，调用方应跳过首日
-//! （如日线 `prev_close == 0` 的首行）。
+//! 一致）。静态接口使用2026-07-06规则；历史及IPO查询使用 [`rule_at`]、
+//! [`prices_at`]、[`status_at`]，需要当日ST状态及上市阶段。
 //!
 //! ## 示例
 //! ```ignore
@@ -18,6 +18,9 @@
 //!     Some(LimitStatus::Sealed)
 //! );
 //! ```
+
+mod rules;
+pub use rules::*;
 
 /// 个股所属板块（按代码前缀判定，决定涨跌幅）。
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -35,11 +38,10 @@ pub enum Board {
 impl Board {
     /// 含 ST 修正的涨跌停幅度（%）。
     ///
-    /// 主板 ST ±5%；创业板/科创板 ST 仍 ±20%；北交所无 ST ±5% 规则。
-    /// 新股上市首日等特殊规则不在本模块。
-    pub fn limit_pct_for(self, st: bool) -> f64 {
+    /// 2026-07-06起主板（含ST）±10%；创业板/科创板±20%；北交所±30%。
+    /// 历史及上市初期请用 [`rule_at`]。保留 `st` 参数兼容现有调用。
+    pub fn limit_pct_for(self, _st: bool) -> f64 {
         match self {
-            Board::Main if st => 5.0,
             Board::Main => 10.0,
             Board::ChiNext | Board::Star => 20.0,
             Board::Beijing => 30.0,
@@ -98,7 +100,17 @@ fn limit_price(prev_close: f64, percent: u64) -> Option<f64> {
     {
         return None;
     }
-    let result = ((cents as u64) * percent + 50) / 100;
+    let base = cents as u64;
+    let mut result = (base * percent + 50) / 100;
+    // SSE交易规则3.3.17：至少相差一个报价单位，跌停价不低于一分。
+    if result == base && percent != 100 {
+        result = if percent > 100 {
+            base + 1
+        } else {
+            base.saturating_sub(1)
+        };
+    }
+    let result = result.max(1);
     Some(result as f64 / 100.0)
 }
 
@@ -214,8 +226,8 @@ mod tests {
     fn half_cent_prices_round_up_for_both_directions() {
         assert_eq!(limit_up_price(1.15, Board::Main, false), Some(1.27));
         assert_eq!(limit_down_price(1.15, Board::Main, false), Some(1.04));
-        assert_eq!(limit_up_price(4.30, Board::Main, true), Some(4.52));
-        assert_eq!(limit_down_price(4.30, Board::Main, true), Some(4.09));
+        assert_eq!(limit_up_price(4.30, Board::Main, true), Some(4.73));
+        assert_eq!(limit_down_price(4.30, Board::Main, true), Some(3.87));
         assert_eq!(limit_up_price(0.35, Board::Beijing, false), Some(0.46));
         assert_eq!(limit_down_price(0.35, Board::Beijing, false), Some(0.25));
         for price in [f64::MAX, f64::INFINITY, 1.001, 0.001] {
@@ -234,8 +246,8 @@ mod tests {
 
     #[test]
     fn limit_prices_by_board_and_st() {
-        // 主板 ST ±5%：10.03 → 10.53（10.5315 → 10.53）
-        assert_eq!(limit_up_price(10.03, Board::Main, true).unwrap(), 10.53);
+        // 主板ST自2026-07-06起与普通主板同为±10%。
+        assert_eq!(limit_up_price(10.03, Board::Main, true).unwrap(), 11.03);
         // 创业板/科创板 ±20%（ST 同幅度）
         assert_eq!(limit_up_price(10.00, Board::ChiNext, false).unwrap(), 12.0);
         assert_eq!(limit_up_price(10.00, Board::ChiNext, true).unwrap(), 12.0);

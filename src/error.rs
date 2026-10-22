@@ -67,6 +67,10 @@ pub enum Error {
     /// 技术指标错误
     #[error("技术指标错误: {0}")]
     Indicator(#[from] IndicatorError),
+
+    /// 日历覆盖不足或数据格式错误。
+    #[error(transparent)]
+    Calendar(#[from] crate::calendar::CalendarError),
 }
 
 /// 通用的 Result 类型

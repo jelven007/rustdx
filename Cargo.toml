@@ -53,6 +53,9 @@ opt-level = 3
 default = []
 docsrs = []
 
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(docsrs)'] }
+
 [workspace]
 members = ["rustdx-cmd", "tests-integration"]
 
@@ -64,3 +67,4 @@ serde = { version = "1", features = ["derive"] }
 
 [package.metadata.docs.rs]
 all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

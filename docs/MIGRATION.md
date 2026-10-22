@@ -1,5 +1,27 @@
 # 数据语义与迁移
 
+## 本地优化（2026-10-22，尚未发布）
+
+历史涨跌幅现在由 `RuleContext` 的日期、板块、当日ST状态及上市阶段决定。`rule_at/prices_at/status_at` 能区分无幅度限制和非法输入；详细范围、IPO及例外见 [LIMIT_RULES.md](LIMIT_RULES.md)。静态涨跌停接口仍保留，但主板ST幅度按2026-07-06生效的规则改为10%；历史5%必须使用日期接口。
+
+`CalendarProvider` 返回版本、来源和覆盖范围。严格前后交易日、最近N日和市场交易日接口在搜索越界时返回错误。`day/east --calendar calendar.json` 接受完整休市日列表（周末自动休市），报告记录使用的日历。输入格式为：
+
+```json
+{
+  "version": "sse-2025-new-year",
+  "source": "https://www.sse.com.cn/",
+  "start": "2025-01-01",
+  "end": "2025-01-06",
+  "holidays": ["2025-01-01"]
+}
+```
+
+示例只覆盖明确的局部区间。版本及来源不能为空；休市日期不能重复或越界。填入2027等新年份前，应从交易所公告取得**该覆盖区间所有休市日期**，不能通过扩大start/end或仅判断星期一至五来声称完整覆盖。库校验格式，数据真实性与完整性由提供者负责。
+
+`CanonicalBar` 附带 `Period`、`BarSource` 和 `PriceBasis`；lc源记录仍保留旧类型，标准适配器要求提供带市场的Symbol。`PriceMultiplier` 与 `ReturnIndex` 是两个独立类型，防止收益指数误用为价格乘数。`Bar::from_kline` 只隐式转换A股股票的手单位，非A股用 `from_kline_with_unit` 显式传入单位。北交所不会隐式映射到深圳TCP市场。`KlineBuilder::symbol` 是带市场的构建入口，旧code自动推断行为保留。
+
+交易所股票名单请求使用HTTPS、总时限和16MiB响应限制；上交所不再发送历史硬编码会话Cookie。接口鉴权或反爬变化会显式返回错误。`docsrs` feature可在稳定Rust下开启；自动文档标记由docs.rs的 `cfg(docsrs)` 单独启用。
+
 ## jelven-rustdx-complete 1.12.2 / jelven-rustdx-cli 1.8.2（2026-10-11，已发布 crates.io）
 
 以下为相对1.12.1 / 1.8.1的行为变化；核心库导入名仍为 `rustdx_complete`，CLI二进制名仍为 `rustdx`。
