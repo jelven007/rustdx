@@ -95,3 +95,15 @@ Rust1.89整workspace all-targets/all-features、文档测试、Clippy拒绝警�
 完整联合离线打包额外尝试失败：本机crates.io缓存没有`jelven-rustdx-complete`索引，CLI上传包准备不能解析该注册表依赖。为核查目录没有漏掉源码，另按CLI包清单复制源文件，与实际解包的核心组成临时workspace，仅在临时目录补原workspace依赖并重建锁文件（移除了tests-integration成员），共有依赖版本不变后编译通过。仓库Cargo.lock未改；这不能写成CLI上传包或发布dry-run通过。正式发包仍须新版本/依赖及可用注册表环境。
 
 检查日志为`/tmp/rustdx-layout-checks.log`、`/tmp/rustdx-layout-clean-checks.log`、`/tmp/rustdx-layout-package-checks.log`，状态/退出码另保存在同前缀JSON；这些本机日志不作为长期备份。目录映射与需求的持久结果见[项目结构](../architecture/PROJECT_STRUCTURE.md)、[需求主文档](../requirements/REQUIREMENTS.md)。
+
+## 新增生产组件验收（2026-10-23）
+
+实施基线dce1fbd，范围为单机本地A股原价日线runner、WAL账本、应有键、版本隔离数据库、完整目录CAS、固定版本消费、TCP留证及在线备份/隔离恢复。结果及命令持久保存于[组件证据](evidence/runner-implementation-20261023.json)，实现/复现见[实施记录](../development/PRODUCTION_IMPLEMENTATION.md)。
+
+Rust1.89 workspace格式、all-targets/all-features Clippy `-D warnings`及all-features离线test/文档全部退出0；核心160单测、CLI库9/命令31、普通文档55与compile_fail2，其他固定样本/本地协议/CLI端到端通过。runner最后离线12项通过/4忽略，3项wire_archive在最后未压缩帧优化后重新通过。另一次`--include-ignored`全执行16项（1库+12control_plane+3wire_archive），无忽略；不把两次重复结果相加。
+
+真实隔离本机ClickHouse26.11.1.548/MongoDB8.0.16使用600只明确模拟证券/1,200行，两日/两修订跨512行批次；全部目标verified后目录事件失败恢复、原Receipt保留、旧目录读取、CH重复/Mongo额外键拒绝及WAL/数据库证据隔离恢复通过。本地HTTP确认丢失验证recover不重新INSERT；文件测试覆盖缺键/Unknown、全免行情、worker终止和封存后不重采。TCP覆盖握手前限额、完整压缩帧、重连、错误解压、截断、篡改及checked重放。
+
+本次不重跑真实市场源、779,200行历史或全量/长期/fuzz；既有外部测试skip/提前ok不计在线通过。Linux/systemd实际运行、真实全市场事实、硬配额/身份权限、目标规模及数据库服务端备份恢复未验收；组件工程通过不等于G3整体生产门禁通过。
+
+CI矩阵按真实支持范围配置：Linux/macOS检查全workspace；Windows构建/测试/Clippy排除Unix runner，保留核心/CLI检查。Unix新增真实CLI及本地故障步骤，明确过滤真实数据库案例；该命令在本机执行11项通过/1项过滤，退出0，日志`/tmp/rustdx-runner-ci-command.log`。YAML解析通过，远端CI尚未执行；真实数据库16项阶段验收独立保留。

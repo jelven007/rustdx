@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh Rustdx operational metrics
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1min
+Unit=rustdx-metrics.service
+
+[Install]
+WantedBy=timers.target

@@ -1,5 +1,11 @@
 # 数据语义与迁移
 
+## 新增生产控制层（2026-10-23，未发布）
+
+`rustdx-runner 0.1.0`为独立不发布crate，使用本地A股day的`a-share/day/raw/cny/shares/v1`契约。既有CSV/平面表保留原列与手单位；runner规范分区和新CH/Mongo命名空间使用人民币元/股、完整dataset/release/契约/证券键，不直接修改旧表。DBA预建schema后影子发布并精确核验，消费者明确迁至固定catalog_version接口再切换；旧平面查询不能获得目录版本语义。
+
+runner账本schema2从阶段一schema1自动增加目标/请求证据表；新目录保留固定数据库Receipt，恢复核验不改原凭据。备份与恢复包含完整文件和WAL状态，数据库服务端迁移/灾难恢复另验收。TCP新增可选FrameObserver/FrameArchive，不改变未启用留证的调用方式。命令/部署与16项回归见[runner](../../rustdx-runner/README.md)、[实施记录](../development/PRODUCTION_IMPLEMENTATION.md)。
+
 ## 仓库源码优化（2026-10-23，尚未发布新crate版本）
 
 10月22日源码提交7cd02e7、5fb5b70、401265c、1f9f739已进入main；10月23日六步本地优化见[NEXT_OPTIMIZATION.md](../history/NEXT_OPTIMIZATION.md)。核心库/CLI的Cargo版本保持1.12.2/1.8.2，crates.io上的同版本仍是10月11日发布内容；使用本节新行为须从源码构建。完整文档见[索引](../README.md)，此前分支交付与两个历史快照见[RELEASES.md](RELEASES.md)。

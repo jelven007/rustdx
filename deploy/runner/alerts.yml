@@ -1,0 +1,31 @@
+groups:
+  - name: rustdx-runner
+    rules:
+      - alert: RustdxMetricsStale
+        expr: time() - rustdx_metrics_timestamp_seconds > 180
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Rustdx metrics exporter has stopped refreshing
+      - alert: RustdxReconciliationRequired
+        expr: rustdx_jobs{state="reconciliation_required"} > 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: An interrupted or ambiguous publication needs investigation
+      - alert: RustdxInsufficientReservedSpace
+        expr: rustdx_root_free_bytes < 12884901888
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Free space is below the example job workspace plus reserve
+      - alert: RustdxMetricsMissing
+        expr: absent(rustdx_metrics_timestamp_seconds)
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: No Rustdx metrics are available

@@ -8,9 +8,10 @@
 | --- | --- | --- |
 | jelven-rustdx-complete | 行情及计算核心 | 阻塞TCP、任务上下文、TCP/HTTP共享许可、不可变K线/快照/财务/逐笔请求及独立解码、checked文件解析、复权、标准数据类型、线性指标、严格日历、日期规则、连接池、缓存 |
 | jelven-rustdx-cli | 获取、导出和导入 | ureq/rustls HTTP、ZIP缓存、4096条分块/磁盘归并、有界线程/确定性输出、东财标准适配与原始响应重放、schema6运行清单、任务阶段/临时文件观测、覆盖告警、CSV/JSON、数据库可配批量精确回读及同机写入锁 |
+| rustdx-runner | 单机生产控制与固定版本消费 | 独立不发布crate；严格本地day Job、SQLite WAL/FULL、私有worker、事实/应有键、封存release、完整目录CAS、insert-only CH/Mongo、固定版本导出、指标/备份隔离恢复 |
 | tests-integration | 外部接口样本与检查 | 不发布；外部测试通过变量跳过 |
 
-保留Rust edition 2024及同步模块化workspace，最低Rust1.89。标准库线程足以承担当前批量采集，不引入异步运行时或额外服务。
+保留Rust edition2024及同步workspace，最低Rust1.89，不引入异步运行时或Web服务。下图描述兼容CLI链路；新增runner架构与范围见[融合方案](PRODUCTION_FUSION_PLAN.md)，16项回归见[实施记录](../development/PRODUCTION_IMPLEMENTATION.md)。核心新增可选FrameObserver/离线decode_frame，CLI库提供有界FrameArchive；本地day runner尚不执行TCP Job。
 
 ```mermaid
 flowchart TB

@@ -1,0 +1,11 @@
+[Unit]
+Description=Execute the explicitly maintained Rustdx job after market close
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 18:00:00 Asia/Shanghai
+Persistent=true
+RandomizedDelaySec=60
+Unit=rustdx-runner.service
+
+[Install]
+WantedBy=timers.target

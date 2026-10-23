@@ -1,0 +1,16 @@
+[Unit]
+Description=Export Rustdx metrics for the Prometheus node exporter textfile collector
+
+[Service]
+Type=oneshot
+User=rustdx
+Group=rustdx
+UMask=0022
+ExecStart=/opt/rustdx/bin/rustdx-runner metrics --root /var/lib/rustdx --timeout 30 --output /var/lib/node_exporter/textfile_collector/rustdx.prom
+TimeoutStartSec=40
+NoNewPrivileges=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/rustdx /var/lib/node_exporter/textfile_collector
+PrivateTmp=yes
+MemoryMax=128M

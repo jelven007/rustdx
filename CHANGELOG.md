@@ -1,5 +1,15 @@
 # 变更记录
 
+## 未发布新crate版本（2026-10-23，生产组件实施与需求2.1）
+
+- 新增不发布crate `rustdx-runner 0.1.0`：严格本地day Job、SQLite WAL/FULL账本、任务去重、私有worker/deadline、事实/应有键、封存release、完整日期目录CAS及固定版本消费。
+- 新增CH/Mongo独立版本隔离目标，512行批次insert-only、传输前持久请求/intent、完整回执、全字段与release总范围验收；unknown不重写，verified后目录事务中断可恢复，保留原核验凭据身份。
+- 新增TCP从握手起完整帧observer、CLI有界fsync/SHA库存与checked离线重放；未压缩正文保持移动路径。新增状态/Prometheus原子textfile、SQLite在线备份与完整归档/数据库证据隔离恢复。
+- 交付Job/凭据示例、DBA schema、systemd任务/指标/告警及恢复说明；同步需求FR-15至18、架构/目录和实施证据。
+- Rust1.89 workspace fmt、Clippy all-targets/all-features拒绝警告、离线测试/文档通过；runner16项全部执行，包括真实CLI、600只模拟证券/1,200行本机两库、目录失败恢复、确认丢失不重写、WAL恢复和TCP故障。
+
+代码及证据见[实施记录](docs/development/PRODUCTION_IMPLEMENTATION.md)。核心/CLI版本仍为1.12.2/1.8.2，Cargo.lock增加控制层依赖。本次仅本地提交，不推送/发布/部署。目标Linux、全市场事实、权限隔离、全量/长期SLO和G5 HA未验收；本机模拟回归不作为生产上线通过。
+
 ## 未发布新crate版本（2026-10-23，目录治理与需求2.0）
 
 - 文档按需求/架构/开发/验证/运营运维/发布/历史归类；脚本按开发/运维/基准/验收/发布归类，更新全部调用路径。

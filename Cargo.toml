@@ -9,7 +9,7 @@ repository  = "https://github.com/jelven007/rustdx"
 readme      = "README.md"
 authors     = ["张路 <jelven@126.com>", "zjp <jiping_zhou@foxmail.com>"]
 exclude     = [
-                "examples", "benches", "tests", "old", "tests-integration",
+                "examples", "benches", "tests", "old", "tests-integration", "rustdx-runner",
                 "docs", "scripts", "deploy", "/config", "/data", "/fuzz",
                 "/reports", "/acceptance", "CHANGELOG.md", "*.csv", "*.log",
                 ".github", ".gitignore", ".screenshots", "AGENTS.md", "rustfmt.toml"
@@ -59,7 +59,7 @@ docsrs = []
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(docsrs)'] }
 
 [workspace]
-members = ["rustdx-cmd", "tests-integration"]
+members = ["rustdx-cmd", "rustdx-runner", "tests-integration"]
 
 [workspace.dependencies]
 log = "0.4"

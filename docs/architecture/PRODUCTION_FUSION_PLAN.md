@@ -2,7 +2,7 @@
 
 方案日期：2026-10-23。设计基线：本仓库 `5d3f961e78a711014f19b2625a603a909f69bcc7`，Cargo版本为核心1.12.2/CLI1.8.2。原始能力参考 `rustdx-complete 1.11.0` / `rustdx-cli 1.7.2`；版本及风险证据见[发布版评估](UPSTREAM_CRATE_ASSESSMENT.md)。
 
-**状态声明：本文件是技术设计。** 已实现能力以源码及既有验收记录为准；任务runner、持久任务账本、发布目录、发布指针、监控适配和跨主机治理均为拟议能力。本次只交付研究与方案，没有创建这些服务、修改Rust实现或执行生产部署。
+**状态声明：设计及实施范围同步至2026-10-23。** 已实现独立`rustdx-runner`、SQLite WAL账本、私有day任务、事实/应有键校验、封存release、事务CAS目录、版本隔离ClickHouse/MongoDB、固定目录导出、指标及在线备份/隔离恢复；TCP完整帧留证与重放接口也已实现。实施范围是单机本地A股原价日线，详见[实施记录](../development/PRODUCTION_IMPLEMENTATION.md)。目标Linux、真实全市场事实、全量/长期SLO及G5跨机治理尚未验收或实现；没有执行生产部署、推送或crate发布。下文超出该范围的能力继续作为设计。
 
 ## 1. 目标、适用范围与设计选择
 
@@ -15,7 +15,7 @@
 | 设计选择 | 理由 | 代价与约束 |
 | --- | --- | --- |
 | 核心库处理协议与计算，CLI处理一次有界采集 | 复用已验证代码，避免把调度、身份与数据库治理塞入协议层 | 必须限制旧危险接口的生产使用 |
-| runner作为独立适配层 | 增加调度、重试决策和任务账本，尽量保持CLI兼容 | 新组件需独立测试与交付，当前未实现 |
+| runner作为独立适配层 | 接受外部调度事件，管理期限、恢复和任务账本，保持CLI兼容 | 已实现本地day入口；其余来源适配和目标部署另验收 |
 | 原始证据、校验产物、正式发布分开 | 能重放、定位差异、隔离失败候选 | 需要持久磁盘及归档管理 |
 | 数据核验先于业务发布 | 成功回执不能证明字段正确，流程complete不能证明应有覆盖完整 | 增加完整回读与覆盖核对成本 |
 | 单发布者起步 | 当前同机锁与平面表可以形成清晰运维边界 | 不提供发布者高可用，故障由账本恢复 |
@@ -33,33 +33,33 @@
 | 历史文件与导出 | 4096条分块、磁盘归并、确定性CSV、checked解析、原子输出已实现 | 按run_id写私有目录，保留生产证据；不重复实现解析链 | FR-05、FR-12 |
 | 日期与证券事实 | 严格CalendarProvider、日期规则、SecurityHistory入口已实现 | 补完整日历和逐证券事实，构造点时名单；入口存在不等于事实齐全 | FR-01、FR-02 |
 | 运行清单与观测 | schema6、每运行归档、阶段耗时和新鲜度已实现 | 账本读取清单，将CLI完成与数据发布分别记录 | FR-05、FR-14 |
-| 原始响应与重放 | 东财逐页正文留证与离线重放已实现；TCP有测试采样工具 | 拟增加生产TCP有界留证接口，按任务关联请求/响应与摘要 | FR-07、FR-13 |
-| 数据库交付 | day支持CH/Mongo，east支持CH；完整回执与全键/全字段回读已实现 | 保留独立验收；拟增加版本化隔离表和正式发布指针 | FR-06 |
-| 调度、备份、跨机 | 有操作文档/模板，没有内置持久runner与发布服务 | 按本方案新增并独立验收 | 后续需求扩展 |
+| 原始响应与重放 | 东财逐页正文重放、TCP可选同步完整帧留证/重放已实现 | FrameObserver从握手前留证，FrameArchive限额/fsync/库存；TCP runner Job尚未接入 | FR-07、FR-13 |
+| 数据库交付 | 兼容CLI平面表与新增runner版本隔离目标均已实现 | 新目标insert-only、全字段/完整release计数，全部目标verified才提交目录 | FR-06、FR-17 |
+| 调度、备份、跨机 | 单机runner、状态/指标、WAL及产物/证据备份恢复已实现 | systemd等由部署触发；跨机协调/HA继续按G5设计 | FR-15至FR-18 |
 
 现状依据[架构评估](PROJECT_ANALYSIS.md)、[需求主文档](../requirements/REQUIREMENTS.md)、[网络预算](NETWORK.md)、[导入证据](../operations/IMPORTS.md)。后续需求扩展应进入唯一需求主文档，不把本方案的拟议状态改写成已交付功能。
 
 ## 3. 首期架构与责任边界
 
-下图是拟议的组件与数据流视图，采用Mermaid流程图，属于软件架构示意而非正式UML。范围为单机批处理；已有组件以“现有”标注，新增组件以“拟议”标注。各数据库是可选独立目标，不隐含双写或跨库事务。
+下图为已实现单机day发布链路，采用Mermaid流程图，属于软件架构示意而非正式UML。TCP/东财核心能力仍可独立使用，但尚未接入runner Job。各数据库是可选独立目标，多目标配置要求全部verified，不隐含跨库事务。
 
 ```mermaid
 flowchart TB
-    SOURCE["通达信TCP / day、gbbq / 东财HTTP"] --> COLLECT
+    SOURCE["本地A股day"] --> COLLECT
     FACT["版本化日历、点时证券事实"] --> COLLECT
-    SCHED["外部调度器 / systemd timer"] --> RUNNER["拟议 runner：任务、期限、恢复"]
-    RUNNER --> LEDGER["拟议 本地任务账本"]
-    RUNNER --> COLLECT["现有 CLI / 核心库：同步有界采集"]
-    COLLECT --> RAW["拟议 统一原始证据存储；复用东财留证"]
+    SCHED["外部调度器 / systemd模板"] --> RUNNER["runner：任务、期限、恢复"]
+    RUNNER --> LEDGER["SQLite WAL任务账本"]
+    RUNNER --> COLLECT["CLI / 核心库：私有同步有界采集"]
+    COLLECT --> RAW["冻结原day、事实、二进制及产物"]
     COLLECT --> ART["现有 校验产物 + schema6清单"]
-    ART --> GATE["拟议 覆盖、质量与发布门禁"]
-    GATE -->|不合格| QUAR["拟议 隔离候选及错误证据"]
-    GATE -->|合格| PUB["拟议 单发布者"]
+    ART --> GATE["重放、应有键、质量门禁"]
+    GATE -->|不合格| QUAR["隔离候选及错误证据"]
+    GATE -->|合格| PUB["单发布者"]
     PUB --> STORE["不可变文件 / 可选版本隔离CH或Mongo"]
-    STORE --> CHECK["复用独立精确回读 + 拟议分区覆盖核对"]
-    CHECK --> CAT["拟议 发布目录与事务更新指针"]
+    STORE --> CHECK["独立精确回读 + 完整release计数"]
+    CHECK --> CAT["完整分区目录与事务CAS指针"]
     CAT --> READ["消费者固定发布版本读取"]
-    LEDGER --> OPS["拟议 日志、指标与告警适配"]
+    LEDGER --> OPS["状态、指标、备份及告警模板"]
     ART --> OPS
 ```
 
@@ -69,18 +69,18 @@ flowchart TB
 | --- | --- | --- |
 | 核心库 | checked请求/原字节 → 类型化行情或错误 | 协议、单位、日期、纯计算、受管网络 |
 | CLI | 单次采集参数 → 产物、清单、退出码 | 执行一次有界任务、质量检查、文件/数据库验收 |
-| runner（拟议） | 调度事件 → job/attempt及恢复决策 | 去重、资源预约、子进程管理、持久任务账本 |
-| publisher（拟议） | 合格候选 → 可消费发布版本 | 冻结候选、写入/核验、覆盖门禁、正式指针更新 |
+| runner | 明确Job配置 → job/attempt及恢复决策 | 去重、资源预约、子进程管理、持久任务账本 |
+| publisher（runner内模块） | 合格候选 → 可消费发布版本 | 冻结候选、写入/核验、覆盖门禁、正式指针更新 |
 | 数据维护流程 | 公告/独立参考 → 版本化事实 | 日历、上市/停复牌/ST事实、规则生效边界 |
-| 运维适配（拟议） | 清单/账本/实际资源 → 指标和事件 | 告警、容量趋势、备份与恢复记录 |
+| 运维适配 | 清单/账本/实际资源 → 状态、指标和备份 | 已有textfile与模板；告警实际接入、趋势及SLO另部署验证 |
 
-图的阅读顺序是采集、留证与校验、隔离或候选发布、回读、指针更新。Mermaid源直接保留在本文件，支持该格式的Markdown渲染器可显示；纯文本环境使用图前后描述和职责表。图中每条新增关系均是设计关系。
+图的阅读顺序是采集、留证与校验、隔离或候选发布、回读、指针更新。Mermaid源保留在本文件，纯文本环境使用图前后描述和职责表。代码关系已实现不等于目标Linux服务与业务事实已验收。
 
 ## 4. 数据契约与点时覆盖
 
 ### 4.1 行情身份与数值口径
 
-拟议的生产逻辑键包含 `dataset_id + market + code + instrument_class + period + timestamp + price_basis`。dataset_id固定产品口径与源选择策略；同一数据集内不允许股票/指数同码混合，也不把原价与前后复权视为相同数据。日线timestamp保留交易日及UTC+8定义，不能用下载机器日期替代源日期。
+通用设计逻辑键包含 `dataset_id + market + code + instrument_class + period + timestamp + price_basis`。当前实现以`a-share/day/raw/cny/shares/v1`契约固定周期/价格/单位，物理键为`dataset_id + release_id + contract_version + date + market + code + instrument_class`；日线日期对应UTC+8交易日。扩展其他品种、周期/复权须新增明确契约与验收，不能与当前契约混合。
 
 | 字段组 | 必须保存的语义 | 校验 |
 | --- | --- | --- |
@@ -113,9 +113,9 @@ flowchart TB
 
 ## 5. 任务账本、调度与取消
 
-### 5.1 持久任务模型（拟议）
+### 5.1 持久任务模型
 
-单机优先采用本地盘上的SQLite账本，事务保存任务状态与发布指针；启用适合持久性的同步/WAL配置，备份使用数据库备份接口或一致性快照，不孤立复制主文件。需要新增的SQLite依赖仅属于runner，须通过Rust1.89、许可与打包检查；当前workspace没有此依赖。
+单机已采用本地盘SQLite账本，事务保存任务状态与发布指针，启用WAL与持久同步；备份使用SQLite在线接口，不孤立复制主文件。`rusqlite=0.40.2`及bundled SQLite仅属于runner，已通过Rust1.89构建/回归，不加入核心依赖。账本schema2自动迁移阶段一schema1。下表为设计对象，当前输入快照/候选明细以冻结文件与manifest表达，不必全部映射为同名SQL表。
 
 | 对象 | 关键字段与规则 |
 | --- | --- |
@@ -132,14 +132,14 @@ runner在启动前原子登记任务，检查同目标互斥、空间、事实�
 
 ### 5.2 状态与重试
 
-拟议Job主状态为 `queued → running → evaluated → released`，可进入failed/quarantined/reconciliation_required/cancelled；每个Attempt保留CLI自身状态。CLI `complete` 只表示其范围内流程完成，Job `released` 还要求业务覆盖、正式产物和发布指针提交完成。
+Job主流程为 `queued → running → released`，Attempt在封存登记后进入`evaluated`；失败按现场进入failed/quarantined/reconciliation_required/cancelled。CLI `complete`只表示其范围内流程完成，`released`还要求业务覆盖、正式产物、所有配置目标verified与发布指针提交。全部应有键均由事实明确免行情时不启动CLI，manifest记录`collector_executed=false`。
 
 | 失败位置 | 可自动动作 | 发布限制 |
 | --- | --- | --- |
-| 未发生输出/数据库动作的瞬时网络失败 | 剩余预算内有上限重试，端点冷却；建立新的Attempt | 不改变正式版本 |
+| 未发生输出/数据库动作的瞬时网络失败 | CLI受管请求可在剩余预算内有限重试；runner中断隔离后由显式再次执行建立Attempt | 不改变正式版本，不内置自动Job重采 |
 | 解析/单位/事实/覆盖错误 | 隔离原证据与候选，等待修订输入或规则 | 不静默跳过坏数据 |
 | 文件publication_pending | 核对私有文件/输出摘要，确定rename是否发生 | 文件状态不等于数据库状态 |
-| 数据库unknown | 标记reconciliation_required，核查CSV、query_id与目标 | 默认不自动盲重试 |
+| 数据库unknown或某目标未开始 | 标记reconciliation_required，核查请求/响应与服务端在途写入 | recover不INSERT；可明确隔离后创建新release |
 | 数据库acknowledged但未verified | 对固定产物继续核验；失败保留恢复文件 | 未核验不能推进指针 |
 | verified但指针未提交 | 核对封存产物与上一个目录版本，尝试规定的事务提交 | 不必重新采集或重复写库 |
 | 指针已提交但任务结束事件丢失 | 以账本中的Publication复核后补终态 | 不创建第二次相同发布 |
@@ -150,9 +150,9 @@ runner在启动前原子登记任务，检查同目标互斥、空间、事实�
 
 ### 6.1 证据存储
 
-拟议存储采用 `dataset/job/attempt` 私有目录。至少保存实际解析字节的源文件/HTTP正文、请求语义、采集时点、SHA-256、源长度、事实版本、CSV/JSON、schema6最终清单、独立核验结果和发布目录。HTTP认证信息不进入公开日志/文件名；数据源使用与再分发权限作为部署输入核实。
+当前存储采用根目录内`attempts/`、`releases/`、`catalogs/`、`database/`及`ledger.sqlite`。保存实际解析day字节、公告/日历/名单/证券事实、CLI二进制、CSV、schema6清单、规范分区、独立核验及完整目录。数据库请求/响应另留库存与账本关联，凭据值不入JSON、账本和argv；源使用与再分发权限由部署输入核实。
 
-东财复用已有RawPage与重放；TCP新增有界证据写入器，先保存完整帧身份、请求、响应正文和解析器版本。每帧、每任务、总留存均设字节限额，采集子线程通过有界队列或直接私有文件写入，不在内存堆积全任务报文。只保留摘要而删除原字节时必须标记不可重放，不能称为完整输入备份。
+东财复用RawPage重放。TCP已有FrameObserver/FrameArchive，传输前保存请求，从首次握手起保存解压前完整16字节header及有界body，重连保留observer；记录时点/端点、SHA-256库存，重放核对请求并调用checked解析。帧体最大65535字节、归档总字节/记录数由调用方限制，直接同步fsync文件不堆积报文队列。该接口尚未接入本地day以外的runner Job。只保留摘要不保留原字节不构成备份。
 
 生产任务保留规范产物与原证据。现有day数据库导入默认可删除CSV；runner须显式选择保留并核实最终路径，或在独立不可变归档完成后才清理工作副本。只记录SHA-256不能恢复丢失内容。
 
@@ -171,11 +171,11 @@ runner在启动前原子登记任务，检查同目标互斥、空间、事实�
 
 异常值如跨源价格差异首先触发诊断，不凭一般百分比阈值自动认定哪一源正确。门禁参数按数据集契约版本化，规则修订须有依据。
 
-### 6.3 不可变发布目录（拟议）
+### 6.3 不可变发布目录
 
 一个 `release_id` 表示某次候选的固定覆盖分区与内容，唯一绑定摘要、来源/事实/契约版本和核验结果。发行版本号不能只用开始时间决定新旧：重跑旧源可能比新数据更晚执行，取舍应依据源时点、覆盖和已批准的修订顺序。
 
-为避免每日发布复制全部历史，拟议 `ReleaseManifest` 列出完整分区映射：每个日期/证券分区指向一个已经封存的release_id，未变分区可引用上一目录中的封存数据。新目录须验证分区不重叠、无意外遗漏；新候选只能替换声明的范围。`catalog_version` 表示这一完整映射的版本，区别于单次CLI run_version。
+为避免每日发布复制全部历史，`ReleaseManifest`列出候选日期分区，`Catalog`保存整个数据集完整日期映射；每个分区指向封存release与固定文件摘要，未变日期可引用上一目录。新目录验证交易日连续、修订顺序与声明范围，日期内按证券有序且无重复。`catalog_version`表示完整映射版本，区别于单次CLI run_version。
 
 文件与清单先写私有路径、持久化内容及目录项，再登记候选；publisher对封存内容核验后，在账本一个事务中校验旧catalog_version并更新 `published_pointer(dataset_id)` 与发布事件。比较后交换（CAS）失败表示正式目录已变化，必须重新评估修订范围，不能覆盖较新目录。文件持久化与数据库写入不参与这个事务，提前完成的孤立候选可以保留核查。
 
@@ -191,18 +191,20 @@ ClickHouse继续检查目标引擎、键、分区、Float64与版本字段，完
 
 MongoDB继续要求非部分、非稀疏、simple排序规则的完整唯一索引，导入后以长驻mongosh逐批核对。day可以用MongoDB，east目前不能直入MongoDB；新增入口应单独设计与验收。
 
-### 7.2 版本隔离模型（拟议）
+### 7.2 版本隔离模型
 
-| 存储 | 拟议物理身份与约束 | 发布前核验 |
+| 存储 | 已实现物理身份与约束 | 发布前核验 |
 | --- | --- | --- |
 | 文件 | `release_id`私有不可变目录；清单指向固定摘要 | 字节摘要、规范行数/键/字段、分区完整性 |
-| ClickHouse | 新表键含dataset_id、release_id及契约完整逻辑键；重试仅在未封存候选内写相同内容 | 按release范围FINAL回读全部键/字段，核对范围内完整逻辑键数量，拒绝额外键 |
-| MongoDB | 新集合唯一键含dataset_id、release_id及完整逻辑键；封存后禁止upsert | 全键/全字段精确回读与release范围计数 |
+| ClickHouse | DBA预建普通MergeTree，键含dataset_id/release_id/contract_version及全部行键；禁止TTL/异步插入 | 无FINAL的全部键/字段精确回读及release总计数，重复/额外键拒绝 |
+| MongoDB | DBA预建完整唯一索引/simple集合，仅insert，不upsert | 全键/全字段精确回读与release范围计数 |
 | 控制账本 | dataset指针引用目录版本与manifest摘要 | 事务CAS、发布事件、引用的release均封存且verified |
 
 只按导出的键回读不能发现同release的额外键，因此新增发布核验还需限定release的完整计数与范围检查。现有标准化CSV行序摘要可以继续复用，但schema3/4与schema5/6的摘要顺序不同，不能直接比较所有历史摘要。
 
-单发布者拥有目标写入凭据，worker只交付候选文件；消费者使用只读身份。一个release封存后不得继续写入，修订创建新release。必须通过发布服务写入路径及权限隔离落实这一约束，不能只在文件名中增加release_id就声称不可变。
+相较原拟议的ReplacingMergeTree/候选重写，当前选择普通MergeTree及insert-only：不靠合并掩盖重复，确认丢失时保持unknown且不重新INSERT。每批512行，请求/响应各8MiB上限；传输前请求fsync与事务intent，完整成功响应后确认，全部字段及总范围精确核验。verified后目录失败的恢复保存新回读材料但保留原Receipt，使已写孤立目录保持同一身份。
+
+单发布者持目标凭据，worker清空继承环境只交付候选文件；消费者使用只读身份。受管流程不再写已封存release，修订创建新release，但数据库INSERT权限仍能被持有者用于追加任意release，OS同UID也不是恶意程序隔离。部署必须落实身份/ACL/凭据与外部写入治理。固定目录数据库导出重新精确核验，外部篡改会失败并保留旧输出。
 
 多个目标独立验收；默认一个主分析目标即可。确有双目标要求时，目录分别记录各目标的核验与可用版本，只有满足约定的必需目标集合才发布。此流程不构成跨库事务，也不承诺exactly-once执行。
 
@@ -234,7 +236,7 @@ MongoDB继续要求非部分、非稀疏、simple排序规则的完整唯一索�
 
 ## 9. 可观测性、SLO与告警
 
-当前schema6记录阶段累计调用耗时、活跃墙钟并集、任务资源和自然日新鲜度，并提供最近至多1024请求的最近秩P95。它没有内置Prometheus服务。拟议适配器从每运行清单和账本产生结构化日志、指标与告警；跨任务P95应基于原始样本或直方图合并，不能平均已有P95。
+当前schema6记录累计调用耗时、活跃墙钟并集、任务资源/自然日新鲜度及最近至多1024请求的最近秩P95。runner已有结构化状态与原子Prometheus textfile，含Job状态、未结束Attempt、事件、发布时间/刷新时点及磁盘；systemd metrics timer及告警模板已交付，实际接入待验收，没有内置Prometheus服务。下表是完整运维目标，质量/网络/数据库详细观测仍从清单/证据核查；跨任务P95须合并原始样本/直方图，不能平均已有P95。
 
 | 维度 | 指标/事件 | 判定用途 |
 | --- | --- | --- |
@@ -286,7 +288,7 @@ MongoDB继续要求非部分、非稀疏、simple排序规则的完整唯一索�
 4. 事务CAS发布指针同时检查任期、旧目录版本与核验/封存证据；旧publisher恢复后CAS必须失败。
 5. 消费者只读发布目录内的固定release；过期Attempt即使完成隔离staging写入，也不可被自动消费。
 
-上述网关与控制事务当前均未实现。若不能落实任期校验、在途请求清空、封存和消费者目录约束，就维持单publisher，不宣称跨机平面表写入安全。CAS只提交控制状态，不提供ClickHouse/MongoDB/文件之间的事务。
+上述跨机网关、任期与分布式控制事务尚未实现；已有SQLite CAS仅适用本地单publisher。若不能落实跨机任期校验、在途请求清空、封存和消费者目录约束，就维持单publisher。CAS不提供ClickHouse/MongoDB/文件之间的事务。
 
 ## 12. 兼容迁移与工程落位
 
@@ -299,19 +301,19 @@ MongoDB继续要求非部分、非稀疏、simple排序规则的完整唯一索�
 | 现有消费者 | 明确支持目录版本后切换；未迁消费者继续使用单机兼容模式，不获得版本化快照承诺 |
 | 包版本 | 提升核心/CLI版本及依赖，真实注册表环境验证打包；同版本号源码优化不能当作已发布 |
 
-拟议工程落位：
+工程落位：
 
 | 位置 | 内容与状态 |
 | --- | --- |
-| `src/`、`rustdx-cmd/src/` | 保留当前职责；后续增加剩余checked协议、TCP留证和可复用核验接口 |
-| `rustdx-runner/` | 拟新增独立crate：job/attempt、账本、子进程、publisher适配；当前不存在 |
-| `config/` | 后续任务策略、契约、无凭据配置示例；当前CLI不会自动读取这些拟议配置 |
-| `deploy/` | 后续runner/publisher Linux部署与监控模板，独立于验收容器 |
-| `scripts/validation/`、`tests/` | 后续发布故障、恢复、候选隔离与消费者版本回归 |
-| `docs/requirements/`、`docs/validation/evidence/` | 先新增可观察需求，再保存真实验收；运行大文件不入Git |
+| `src/`、`rustdx-cmd/src/` | 已新增TCP evidence与FrameArchive接口；其余checked协议继续扩展 |
+| `rustdx-runner/` | 已新增crate：config/model/ledger/supervisor/pipeline/database/consumer/storage/ops及control_plane/wire_archive回归 |
+| `config/runner/` | 严格Job JSON与publisher环境变量示例；CLI自身仍不自动读取统一配置 |
+| `deploy/runner/` | Linux/systemd、指标timer/告警、新CH表/Mongo索引及运维说明，目标运行待验收 |
+| `rustdx-runner/tests/` | 发布故障、恢复、候选隔离、真实服务跨批次与固定目录回归 |
+| `docs/requirements/`、`docs/validation/evidence/` | FR-15至18及本次组件证据；不把临时大文件入Git |
 | 部署运行存储 | raw、work、quarantine、release、manifest、ledger、backup；按环境创建并管理 |
 
-release服务按需加入workspace，不把新依赖强加给核心库。新SQLite/控制数据库/对象存储/指标库都须说明用途与MSRV影响；当前需求没有引入异步运行时的依据。设计没有规定必须新增Web API，消费者可以通过小型读取库或固定manifest取得版本。
+runner已加入workspace且`publish=false`；SQLite仅新增控制层依赖，核心增加留证接口无新增依赖。没有引入异步运行时或Web API，消费者用PinnedDataset或导出命令固定目录版本。
 
 ## 13. 分阶段执行与验收门禁
 
@@ -338,13 +340,13 @@ G2/G3必须增加以下故障断点验收：
 | 磁盘满、归档丢失、数据库备份恢复 | 不误标complete/released，恢复后摘要与消费范围可核验 |
 | 跨机租约过期与旧进程恢复（仅G5） | 旧任期无法写正式release或推进目录；未封存内容不可消费 |
 
-本仓库已有128文件/779,200行、两库两次精确回读及4项故障恢复，是G2的准备证据，见[第三轮验收](../history/OPTIMIZATION_ROUND3.md)。它们不是上述新发布层门禁已通过；最新约2971万行全量、固定Linux、长期P95、全市场证券事实和备份恢复仍需新增实证。
+本仓库已有128文件/779,200行、两库两次精确回读及4项故障恢复，是G2准备证据，见[第三轮验收](../history/OPTIMIZATION_ROUND3.md)。本次另完成G3组件工程实现及16项回归，包括600只明确模拟证券/1,200行真实本机两库、目录中断恢复、unknown不重写、WAL归档恢复与TCP留证。记录见[组件实施](../development/PRODUCTION_IMPLEMENTATION.md)。G3生产门禁并未因此整体通过：G1完整事实、G2目标Linux/全量、G4长期试运行、业务SLO/RPO/RTO、数据库服务端恢复和权限隔离仍待证据；G5未实施。
 
-上线决策依赖包括目标数据库版本/拓扑、采集频率与源权限、市场/证券范围、全量规模、消费者一致性需求、SLO/RPO/RTO与留存空间。当前可以完成设计，实际部署前必须将这些输入转为配置和真实门禁结果；不把未知值包装成默认生产承诺。
+上线决策依赖包括目标数据库版本/拓扑、采集频率与源权限、市场/证券范围、全量规模、消费者一致性需求、SLO/RPO/RTO与留存空间。组件可构建及回归已完成，实际部署前须将上述输入转为真实配置及门禁；不把未知值作为默认生产承诺。MongoDB当前每请求启动mongosh，吞吐量成本须纳入G2实测。
 
 ## 14. Sources与现状依据
 
-本方案的新增设计是建议，不是来源中的既有产品能力。原包事实见[评估报告](UPSTREAM_CRATE_ASSESSMENT.md)及[本次证据](../validation/evidence/upstream-review-20261023.json)。
+新增组件是本仓库实施结果，不能归入原包既有能力；未实现扩展继续作为建议。原包事实见[评估报告](UPSTREAM_CRATE_ASSESSMENT.md)及[研究证据](../validation/evidence/upstream-review-20261023.json)。
 
 <a id="cite-8"></a>
 [cite:8] 上交所2026交易规则与生效公告：<https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml>。

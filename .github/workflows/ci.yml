@@ -17,7 +17,14 @@ jobs:
     name: Build / Test / Clippy
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            package_args: ""
+          - os: macos-latest
+            package_args: ""
+          - os: windows-latest
+            # The runner requires Unix process groups and persistent local storage.
+            package_args: "--exclude rustdx-runner"
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -31,13 +38,24 @@ jobs:
         uses: swatinem/rust-cache@v2
 
       - name: Build (all targets)
-        run: cargo build --workspace --all-targets --all-features --locked
+        run: cargo build --workspace ${{ matrix.package_args }} --all-targets --all-features --locked
 
       - name: Test
-        run: cargo test --workspace --all-features --locked
+        run: cargo test --workspace ${{ matrix.package_args }} --all-features --locked
+
+      - name: Runner CLI and local fault regressions (Unix)
+        if: runner.os != 'Windows'
+        env:
+          RUSTDX_TEST_CLI: ${{ github.workspace }}/target/debug/rustdx
+          RUSTDX_TEST_CH_USER: default
+          RUSTDX_TEST_CH_PASSWORD: ""
+        run: >-
+          cargo test -p rustdx-runner --test control_plane --locked --
+          --include-ignored
+          --skip real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence
 
       - name: Clippy (deny warnings)
-        run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+        run: cargo clippy --workspace ${{ matrix.package_args }} --all-targets --all-features --locked -- -D warnings
 
       - name: Format check
         run: cargo fmt --all -- --check

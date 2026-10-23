@@ -1,10 +1,10 @@
 # rustdx
 
-Rust行情库与数据采集/导入工具，采用同步I/O和有界线程。核心库提供通达信TCP行情、本地day/lc/gbbq文件解析、价格复权、技术指标、交易日历、日期化涨跌幅、连接池和可选缓存；CLI提供日线历史、东财收盘快照、CSV/JSON和可追溯数据库导入。
+Rust行情库、数据采集/导入工具及单机生产控制层，采用同步I/O和有界线程。核心库提供通达信TCP行情、本地文件解析、复权、指标、日历/日期规则、连接池和缓存；CLI提供日线历史、东财收盘快照、CSV/JSON和数据库导入；`rustdx-runner`提供持久任务、覆盖校验、版本发布和恢复。
 
 最低Rust1.89，edition2024。核心包`jelven-rustdx-complete`、导入名`rustdx_complete`；CLI包`jelven-rustdx-cli`、库名`rustdx_cli`、二进制`rustdx`。Cargo版本仍为1.12.2/1.8.2，crates.io同版本是2026-10-11发布内容；后续源码优化尚未发新包，需要当前功能请从源码构建。
 
-当前源码包括严格日历/日期规则、TCP/HTTP共享预算和整任务取消、4096条分块确定性导出、checked不可变协议请求、东财原始响应重放、schema6清单、阶段观测及数据库全导出键/数值精确回读。最新真实验收为779,200行历史子集两库重复导入及四项故障恢复，环境和边界见[第三轮记录](docs/history/OPTIMIZATION_ROUND3.md)。
+当前源码包括严格日历/日期规则、TCP/HTTP共享预算、整任务取消、4096条分块导出、checked协议请求、东财及TCP留证重放、schema6清单和数据库精确回读。兼容CLI已有779,200行真实历史子集及四项故障证据；新增控制层另通过16项回归，真实本机两库使用600只明确模拟证券/1,200行。范围分别见[第三轮记录](docs/history/OPTIMIZATION_ROUND3.md)、[组件实施](docs/development/PRODUCTION_IMPLEMENTATION.md)。
 
 [完整需求](docs/requirements/REQUIREMENTS.md) · [项目目录](docs/architecture/PROJECT_STRUCTURE.md) · [技术架构](docs/architecture/PROJECT_ANALYSIS.md) · [文档索引](docs/README.md)
 
@@ -136,6 +136,21 @@ unknown表示可能部分写入，acknowledged只是成功回执；失败保留C
 
 本机已验证779,200行真实子集两库首次/重复及四项恢复；实际ClickHouse为macOS实验26.11.1.548，MongoDB8.0.16。固定Linux镜像和数据库CI已配置但未执行，用户生产配置/全量负载/备份恢复仍待验收。
 
+## 单机生产组件
+
+```sh
+cargo +1.89.0 build -p jelven-rustdx-cli -p rustdx-runner --locked
+rustdx-runner run --config /etc/rustdx/job.json
+rustdx-runner status --root /var/lib/rustdx
+rustdx-runner recover --root /var/lib/rustdx
+rustdx-runner export --root /var/lib/rustdx --dataset a-share-day --version 1 \
+  --from 2026-10-22 --through 2026-10-22 --output /srv/exports/bars.csv
+```
+
+runner目前接收本地A股day、版本化日历/点时名单/证券事实及公告原字节，契约固定日线原价、人民币元/股。SQLite WAL保存Job/Attempt；Unknown或缺一个应有键拒绝发布。产物封存后，可选新命名空间CH/Mongo进行insert-only写入、全字段和release总范围回读；全部目标verified才CAS提交完整日期目录。消费者固定版本读取，恢复不重写unknown，在线备份包含控制账本和原字节归档。
+
+根目录使用本地持久Unix盘；单机锁不提供跨机HA。模板及代码通过不能替代目标Linux、真实全市场事实、权限隔离、全量吞吐和长期SLO验收，MongoDB每请求启动mongosh的成本也须实测。命令/配置见[runner](rustdx-runner/README.md)，Linux调度、指标及恢复见[部署说明](deploy/runner/README.md)，设计与交付边界见[融合方案](docs/architecture/PRODUCTION_FUSION_PLAN.md)。
+
 ## 验证、缓存与示例
 
 ```sh
@@ -155,7 +170,7 @@ cargo run --release --example production_smoke
 
 本地模拟与固定夹具回归不因外部skip停止；跨平台CI仅按实际执行结果报告。fuzz/性能/历史验收的环境、规模与未覆盖项见[验证方法](docs/validation/VALIDATION.md)。测试/诊断/测量/发布工具按[脚本目录](scripts/README.md)使用，日志默认存系统临时目录，可指定RUSTDX_REPORT_DIR。
 
-正式发包须提升版本及CLI注册表依赖，先核心再CLI；`scripts/release/publish.sh`执行门禁并请求实际发布确认。本次目录/需求整理只保存本地成果，没有推送或发布。源码快照与数据备份分别管理，见[版本交付](docs/release/RELEASES.md)。
+正式发包须提升版本及CLI注册表依赖，先核心再CLI；`scripts/release/publish.sh`执行门禁并请求实际发布确认。runner为独立不发布crate；本次组件仅本地交付，没有推送、crate发布或生产部署。源码快照与数据备份分别管理，见[版本交付](docs/release/RELEASES.md)。
 
 [需求](docs/requirements/REQUIREMENTS.md) · [架构](docs/architecture/PROJECT_ANALYSIS.md) · [运营](docs/operations/OPERATIONS.md) · [运维](docs/operations/RUNBOOK.md) · [变更记录](CHANGELOG.md)
 

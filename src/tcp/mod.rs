@@ -3,6 +3,7 @@ use log::trace;
 use std::{
     io::{BufReader, Read, Result, Write},
     net::{SocketAddr, TcpStream},
+    sync::Arc,
     time::{Duration, Instant},
 };
 
@@ -20,7 +21,9 @@ pub use governance::{
 };
 use governance::{deadline_after, global, remaining};
 
+pub mod evidence;
 pub mod helper;
+pub use evidence::{FrameEvent, FrameObserver, decode_frame};
 pub mod ip;
 pub(crate) mod reader;
 
@@ -93,6 +96,7 @@ pub struct Tcp {
     deadline: Option<Instant>,
     // 字段析构顺序：先释放流，再归还进程连接许可。
     permit: Option<governance::Permit>,
+    observer: Option<Arc<dyn FrameObserver>>,
 }
 
 impl Tcp {
@@ -116,6 +120,26 @@ impl Tcp {
     }
 
     pub(crate) fn with_config_until(config: &TcpConfig, deadline: Instant) -> Result<Self> {
+        Self::with_observer_until(config, deadline, None)
+    }
+
+    /// Archive requests and complete compressed frames, including the first handshake.
+    pub fn with_config_and_observer(
+        config: &TcpConfig,
+        observer: Arc<dyn FrameObserver>,
+    ) -> Result<Self> {
+        Self::with_observer_until(
+            config,
+            deadline_after(network_policy().connect_timeout)?,
+            Some(observer),
+        )
+    }
+
+    fn with_observer_until(
+        config: &TcpConfig,
+        deadline: Instant,
+        observer: Option<Arc<dyn FrameObserver>>,
+    ) -> Result<Self> {
         if config.timeout.is_zero() {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::InvalidInput,
@@ -124,13 +148,14 @@ impl Tcp {
         }
         let deadline = deadline.min(deadline_after(network_policy().connect_timeout)?);
         let permit = global().acquire(deadline)?;
-        Self::connect_selected(config, deadline, Some(permit))
+        Self::connect_selected(config, deadline, Some(permit), observer)
     }
 
     fn connect_selected(
         config: &TcpConfig,
         deadline: Instant,
         mut permit: Option<governance::Permit>,
+        observer: Option<Arc<dyn FrameObserver>>,
     ) -> Result<Self> {
         let addresses = config.ip.map_or_else(
             || global().candidates(&ip::STOCK_IP),
@@ -156,6 +181,7 @@ impl Tcp {
                     reusable: false,
                     deadline: Some(attempt_deadline),
                     permit: None,
+                    observer: observer.clone(),
                 };
                 // 握手失败由服务器选择处理，禁止在握手内部递归重连。
                 tcp.read_frame_once(PACK1)?;
@@ -271,7 +297,8 @@ impl Tcp {
             .deadline
             .unwrap_or(deadline_after(network_policy().connect_timeout)?);
         // 许可留在 self 中；不再申请第二个槽位，也不会在饱和时自锁。
-        let mut replacement = Self::connect_selected(&self.config, deadline, None)?;
+        let mut replacement =
+            Self::connect_selected(&self.config, deadline, None, self.observer.clone())?;
         replacement.permit = self.permit.take();
         replacement.deadline = self.deadline;
         *self = replacement;
@@ -430,13 +457,47 @@ impl Tcp {
     }
 
     fn read_frame_once(&mut self, send: &[u8]) -> Result<(Vec<u8>, u16, u16)> {
-        self.send_recv_once(send)?;
-        let deflate = u16_from_le_bytes(&self.recv, 12);
-        let inflate = u16_from_le_bytes(&self.recv, 14);
-        let mut body = vec![0; deflate as usize];
-        self.read_exact_deadline(&mut body)?;
-        self.reusable = true;
-        Ok((body, deflate, inflate))
+        let endpoint = self.stream.peer_addr()?;
+        if let Some(observer) = &self.observer {
+            if send.len() > u16::MAX as usize {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "observed request exceeds 65535 bytes",
+                ));
+            }
+            observer.observe(FrameEvent::Request {
+                endpoint,
+                request: send,
+            })?;
+        }
+        let result: Result<(Vec<u8>, u16, u16)> = (|| {
+            self.send_recv_once(send)?;
+            let deflate = u16_from_le_bytes(&self.recv, 12);
+            let inflate = u16_from_le_bytes(&self.recv, 14);
+            let mut body = vec![0; deflate as usize];
+            self.read_exact_deadline(&mut body)?;
+            if let Some(observer) = &self.observer {
+                observer.observe(FrameEvent::Response {
+                    endpoint,
+                    request: send,
+                    header: &self.recv,
+                    body: &body,
+                })?;
+            }
+            self.reusable = true;
+            Ok((body, deflate, inflate))
+        })();
+        if let Err(error) = &result {
+            self.reusable = false;
+            if let Some(observer) = &self.observer {
+                observer.observe(FrameEvent::Failed {
+                    endpoint,
+                    request: send,
+                    kind: error.kind(),
+                })?;
+            }
+        }
+        result
     }
 
     fn request_frame(&mut self, send: &[u8], decompress: bool) -> Result<(Vec<u8>, u16, u16)> {
@@ -469,23 +530,7 @@ impl Tcp {
             let result = ready.and_then(|_| self.read_frame_once(send)).and_then(
                 |(body, deflate, inflate)| {
                     let body = if decompress && deflate != inflate {
-                        let decoded = miniz_oxide::inflate::decompress_to_vec_zlib_with_limit(
-                            &body,
-                            inflate as usize,
-                        )
-                        .map_err(|e| {
-                            std::io::Error::new(
-                                std::io::ErrorKind::InvalidData,
-                                format!("响应解压失败: {e:?}"),
-                            )
-                        })?;
-                        if decoded.len() != inflate as usize {
-                            return Err(std::io::Error::new(
-                                std::io::ErrorKind::InvalidData,
-                                "响应解压长度不匹配",
-                            ));
-                        }
-                        decoded
+                        decode_frame(&self.recv, &body, true)?
                     } else {
                         body
                     };

@@ -2,6 +2,8 @@
 
 更新日期：2026-10-23；适用仓库源码增强版。数据选择与质量判断见[运营说明](OPERATIONS.md)，清单字段和状态以[导入说明](IMPORTS.md)为准，配置入口见[config](../../config/README.md)。
 
+新增单机生产链路使用[runner操作说明](../../rustdx-runner/README.md)及[部署/故障/恢复手册](../../deploy/runner/README.md)：严格Job、应有键、封存release、目录CAS、版本隔离DB、固定版本消费及WAL/文件/证据备份。下文描述兼容CLI平面表；runner使用独立命名空间、insert-only与自身账本，恢复不重写unknown。目标Linux、权限/配额、真实事实/全量及数据库服务端恢复仍待验收，具体证据见[实施记录](../development/PRODUCTION_IMPLEMENTATION.md)。
+
 ## 部署准备
 
 构建机需要Rust1.89及以上，运行已构建CLI不需要编译器。ClickHouse使用HTTP，仓库Compose固定25.8.33.6镜像digest，仅绑定回环端口并持久化数据/日志卷。MongoDB需要PATH中的mongoimport/mongosh，`MONGODB_URI`支持目标地址与认证，默认本机连接；长驻回读的V8老年代默认128MiB，部署须预留完整进程树内存。

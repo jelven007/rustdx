@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "root": "/var/lib/rustdx",
+  "cli": "/opt/rustdx/bin/rustdx",
+  "dataset_id": "a-share-day",
+  "contract_version": "a-share/day/raw/cny/shares/v1",
+  "policy_revision": 1,
+  "source_revision": 1,
+  "source_as_of": "2026-10-22",
+  "planned_date": "2026-10-23",
+  "from": "2026-10-22",
+  "through": "2026-10-22",
+  "day_directories": ["/srv/rustdx/inputs/day"],
+  "calendar": "/srv/rustdx/inputs/calendar.json",
+  "calendar_source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "security_history": "/srv/rustdx/inputs/history.json",
+  "universe": "/srv/rustdx/inputs/universe.json",
+  "facts_directory": "/srv/rustdx/inputs/facts",
+  "timeout_seconds": 3600,
+  "publish_reserve_seconds": 300,
+  "cancel_grace_seconds": 30,
+  "workers": 4,
+  "max_source_bytes": 1073741824,
+  "max_workspace_bytes": 4294967296,
+  "max_rows": 10000000,
+  "min_free_bytes": 8589934592,
+  "database_targets": [
+    {
+      "kind": "clickhouse",
+      "id": "clickhouse",
+      "url": "http://127.0.0.1:8123",
+      "table": "rustdx_versioned.bars",
+      "user_env": "RUSTDX_CH_USER",
+      "password_env": "RUSTDX_CH_PASSWORD"
+    },
+    {
+      "kind": "mongodb",
+      "id": "mongodb",
+      "database": "rustdx_versioned",
+      "collection": "bars",
+      "uri_env": "RUSTDX_MONGO_URI",
+      "mongosh": "/opt/mongosh/bin/mongosh"
+    }
+  ]
+}

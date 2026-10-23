@@ -8,6 +8,8 @@ pub mod http;
 pub mod maintenance;
 /// 每任务阶段耗时与私有临时文件逻辑字节观测。
 pub mod observation;
+/// Bounded TCP request/wire-frame archives and checked offline replay.
+pub mod tcp_evidence;
 
 #[macro_use]
 extern crate log;

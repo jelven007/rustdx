@@ -1,0 +1,31 @@
+[Unit]
+Description=Rustdx single-host immutable publication controller
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=rustdx
+Group=rustdx
+UMask=0077
+WorkingDirectory=/var/lib/rustdx
+EnvironmentFile=-/etc/rustdx/publisher.env
+ExecStartPre=/opt/rustdx/bin/rustdx-runner recover --root /var/lib/rustdx --timeout 300
+ExecStart=/opt/rustdx/bin/rustdx-runner run --config /etc/rustdx/job.json
+TimeoutStartSec=4000
+TimeoutStopSec=45
+KillMode=control-group
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/rustdx
+ReadOnlyPaths=/srv/rustdx/inputs /opt/rustdx/bin
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+MemoryMax=1G
+CPUQuota=200%
+TasksMax=128
+LimitNOFILE=256
+
+[Install]
+WantedBy=multi-user.target

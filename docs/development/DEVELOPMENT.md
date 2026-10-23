@@ -1,10 +1,10 @@
 # rustdx 开发说明
 
-更新日期：2026-10-23；第三轮结果见[优化记录](../history/OPTIMIZATION_ROUND3.md)。需求与变更追踪见[需求说明](../requirements/REQUIREMENTS.md)、[文档索引](../README.md)，模块关系见[架构评估](../architecture/PROJECT_ANALYSIS.md)，目录职责见[项目结构](../architecture/PROJECT_STRUCTURE.md)。
+更新日期：2026-10-23；第三轮结果见[优化记录](../history/OPTIMIZATION_ROUND3.md)，新增控制层见[实施记录](PRODUCTION_IMPLEMENTATION.md)。需求与变更追踪见[需求说明](../requirements/REQUIREMENTS.md)、[文档索引](../README.md)，模块关系见[架构评估](../architecture/PROJECT_ANALYSIS.md)，目录职责见[项目结构](../architecture/PROJECT_STRUCTURE.md)。
 
 ## 构建与验证
 
-使用Rust1.89及以上，edition2024。核心crate为 `jelven-rustdx-complete`，导入名 `rustdx_complete`；CLI crate为 `jelven-rustdx-cli`，库名 `rustdx_cli`，二进制名 `rustdx`。保持阻塞I/O和有界线程，fuzz是独立workspace。
+使用Rust1.89及以上，edition2024。核心crate为 `jelven-rustdx-complete`，导入名 `rustdx_complete`；CLI为 `jelven-rustdx-cli`/`rustdx_cli`/`rustdx`；控制层为不发布crate `rustdx-runner`，库名`rustdx_runner`。保持阻塞I/O和有界线程，fuzz是独立workspace。
 
 ```sh
 cargo build --workspace --all-targets --all-features --locked
@@ -43,6 +43,8 @@ excel示例读取调用方的本地名单，不依赖已不存在的assets/xlsx�
 | `rustdx-cmd/src/download.rs`、`fetch_code.rs`、`eastmoney/mod.rs` | ZIP续传/缓存、交易所名单及快照分页 |
 | `tests/network_budget.rs`、`properties.rs`、`reliability.rs` | 预算/时限、属性及协议可靠性回归 |
 | `rustdx-cmd/tests/cli.rs`、`fuzz/fuzz_targets/checked_parsers.rs` | CLI端到端及不可信解析fuzz |
+| `src/tcp/evidence.rs`、`rustdx-cmd/src/tcp_evidence.rs` | 握手起完整帧observer、有界fsync/库存及checked重放 |
+| `rustdx-runner/src/`、`tests/control_plane.rs`、`tests/wire_archive.rs` | 严格Job、SQLite WAL、应有键、封存/目录CAS、版本隔离目标、固定版本消费和恢复 |
 
 ## 接口与实现约束
 
@@ -77,6 +79,8 @@ ClickHouse通过HTTP完整响应确认，INSERT附带query_id，单次操作300�
 KDJ采用 `alpha=2/(d_period+1)`、首个有效RSV初始化K/D；非有限缺口重置。缓存不由Client自动启用，缓存键应含市场、证券、周期、区间和版本；get_or_fetch闭包不能递归调用同一缓存。
 
 ## 修改与交付
+
+runner使用独立[Job JSON](../../config/runner/job.example.json)，当前采集契约固定本地A股原价日线；worker只产私有文件，publisher处理新命名空间insert-only、全字段/完整release计数，再提交目录。核心TCP留证是可选接口，未自动接入day以外Job。SQLite依赖只位于runner，`env_clear`不构成同UID隔离；目标部署/权限/全量另验收。接口、16项回归和复现环境见[runner](../../rustdx-runner/README.md)、[实施证据](../validation/evidence/runner-implementation-20261023.json)。
 
 新增行为同步更新需求、方案、开发、验证和受影响运营/运维文档；不在多个文件重复完整专项定义。新增日期规则须补原始依据和边界用例，新增数据库写入须记录不确定阶段与恢复证据。
 

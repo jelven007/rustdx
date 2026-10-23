@@ -1,6 +1,6 @@
 # 运行配置与参考数据
 
-本目录保存无凭据配置示例及有版本/来源的参考日历。CLI读取进程环境变量和命令行参数，**不会自动加载runtime.env或其他统一配置文件**。
+本目录保存无凭据示例及版本化参考日历。CLI读取进程环境和命令行，**不会自动加载runtime.env或Job JSON**。新增runner通过`run --config`显式读取严格JSON，配置职责相互独立。
 
 ## 环境变量
 
@@ -45,3 +45,9 @@ rustdx data-status --calendar config/calendars/sse-2026.json --report coverage.j
 ```
 
 2027完整数据未取得，不能复制本年度文件并延长日期；规则核实截止与日历覆盖分别管理。生产当前日历和证券事实由部署存储管理，经data-check验证后显式传入。格式及更新流程见[数据维护](../docs/operations/DATA_MAINTENANCE.md)，资源边界见[网络预算](../docs/architecture/NETWORK.md)。
+
+## 单机生产Job
+
+[runner/job.example.json](runner/job.example.json)是当前本地A股原价日线契约的严格配置，字段包含根目录/CLI、来源与策略修订、日期、完整事实、源/工作空间/行数/期限预算及可选数据库目标。所有路径为绝对路径；全零公告摘要必须替换为实际SHA-256，不能直接作为真实事实执行。`database_targets: []`只发布文件，多目标须全部精确verified。
+
+[runner/publisher.env.example](runner/publisher.env.example)只给出变量名，实际凭据由密钥管理注入。JSON不含凭据值，worker清空继承环境；清空环境不构成同UID权限隔离。Job文件须由维护流程原子更新，定时器反复执行相同身份只去重，不自动制造次日Job/事实。详细格式/命令见[runner](../rustdx-runner/README.md)，DBA、systemd和恢复见[部署说明](../deploy/runner/README.md)。
