@@ -95,6 +95,7 @@ FROM rustdx.bars_v2 FINAL;
 | 日历越界 | 提供完整且已核实外部日历，覆盖查询及前后导航；禁止仅扩大日期范围 |
 | 同证券输入区间重叠 | 整理重复源为可核实输入后重跑，不叠加多个覆盖相同区间的目录 |
 | HTTP200末尾异常、mongoimport超时 | 按unknown写入恢复流程处理，保留CSV和服务端记录 |
+| ClickHouse已确认写入但回读长期等待 | 保留CSV，核查system.processes、GlobalThread/GlobalThreadScheduled及服务器全局池容量；后台/嵌套池可能占满槽位，不能只检查CPU利用率。CLI有界查询关闭并行格式化，容量调整见[固定验收配置](DATABASE_ACCEPTANCE.md) |
 | 清单保存失败 | 即使数据库已回执也可能非零退出；根据旧检查点和现场核实，不能直接重复写库 |
 
 ## 备份、清理与回退

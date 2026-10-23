@@ -34,6 +34,8 @@ day先用128KiB缓冲复制并计算SHA-256，随后只解析私有磁盘快照�
 
 默认每批4096个CSV键，`RUSTDX_VERIFY_BATCH_ROWS=1..16384`可调整。ClickHouse用独立`SELECT ... FINAL`（查询解析上限1MiB），MongoDB每次导入启动一个长驻`mongosh`逐批查询，单请求/响应、管道缓冲和工作线程均有界。逐键对比open/high/low/close/amount/vol；输出含preclose/factor时也逐值核对。数值按Float64精确相等比较，JSON开启float_roundtrip，不用宽容差掩盖漂移。缺键、重复键、字段类型错误、任何数值变化或查询失败均拒绝verified。回读只针对本次导出键，不代表库内全部历史数据或全部应有证券已经验收。验收内存与总行数无关；单批回读文本上限16MiB。MongoDB还需确认最后一批后的stdout结束与进程退出码，迟到错误不能清理CSV。
 
+有界ClickHouse查询设置`output_format_parallel_formatting=0`，减少额外格式化线程池；本机大批量验收也据实际线程耗尽将服务器全局池从128调整为512。两项不同层级的措施及失败/恢复证据见[数据库验收](DATABASE_ACCEPTANCE.md)，不以禁用并行格式化替代服务器容量配置。
+
 schema5清单包含回读行数、逻辑键数、批次数、配置批量、日期边界、字段列表及规范化回读值的SHA-256；`sha256_order=csv_row_order`让摘要独立于批量大小。schema3/4按批内键排序，旧新摘要不一定可直接比较；CSV字节摘要不受影响。`fetch_elapsed_ms`是各批获取与解码的串行墙钟耗时之和，`elapsed_ms`覆盖CSV读取、比对和摘要；长驻进程的首次响应包括启动等待，最终退出确认在这两个字段之外。
 
 当前schema6继续保留上述字段，新增每任务`observations`和`freshness`；阶段累计耗时/活跃时间并集、临时文件逻辑字节范围及来源自然日年龄的准确口径见[OBSERVABILITY.md](OBSERVABILITY.md)。阶段耗时不可相加为CPU时间或整命令耗时。

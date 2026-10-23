@@ -61,3 +61,22 @@ schema6增加可跨有界工作线程共享的每任务RAII阶段计数、累计
 源快照、排序run/归并spool、待发布CSV/JSON计入临时空间；ZIP/解压缓存、清单证据及子进程scratch不在此口径。新鲜度使用无质量错误的非空来源末日和自然日年龄，错误/告警总数包含省略详情；不推测证券状态。完整定义见[OBSERVABILITY.md](OBSERVABILITY.md)。
 
 并发/嵌套时间并集、独立任务隔离、失败展开、临时文件跨线程持有/发布释放，以及1/4/8线程CSV字节一致、跨块质量错误、协作取消和ZIP解压观测承接回归通过。Rust1.89整workspace all-targets/all-features离线测试、文档测试、Clippy拒绝警告、fmt及release构建通过；日志`/tmp/rustdx-round3-final.log`，退出0。真实大规模观测及故障验收在第6步单独保存，避免把离线测试当实际数据库结果。
+
+## 固定配置与真实历史验收
+
+新增固定digest的Linux ClickHouse25.8.33.6 Alpine/MongoDB8.0.16验收配置与Ubuntu24.04/Rust1.89数据库CI，包含小表约束、65,536行重复写入、TCP中断/SIGKILL/恢复，以及可选官方真实历史子集。Docker Hub已核对tag/digest，YAML/XML语法与本地文档链接通过；本机没有Docker，配置尚未推送或在Linux执行，不能声称生产验收通过。操作与精确限制见[DATABASE_ACCEPTANCE.md](DATABASE_ACCEPTANCE.md)。
+
+官方ZIP于2026-10-23早间取得，HTTP大小549,908,719字节、Last-Modified=2026-10-22 07:58:56 GMT，完整包SHA-256=`07aab2f1166a794cebfa380cda058417499c4f74049a5fe36fe029f5c803d400`。12,218条目共950,692,224解压字节；固定选取前128个sh600历史文件，779,200行。Python struct独立逐行核对日期/代码/OHLC/量额，CSV 1/4线程逐字节一致；两库各首次及重复写入全部键/6个数值字段精确回读通过，最终逻辑行数不增加，ClickHouse合并后物理行数也一致。全部CSV SHA-256=`80f1b74671bcc1d8d3aa5bf7693e5dbacdcf04c60f40300255f23694fffa46e5`，输入成员/摘要及原始观测见[真实历史JSON](fixtures/round3-real-day-databases.json)。
+
+| 本机真实历史子集 | 首次秒 | 重复秒 |
+| --- | --- | --- |
+| ClickHouse26.11.1.548实验构建 | 16.207 | 17.677 |
+| MongoDB8.0.16 | 49.236 | 49.912 |
+
+这是完整命令墙钟时间，包含解析、导出、写入及回读，只有两次样本。受跟踪临时逻辑峰值约45.6–46.0MiB，最终均为0；不是全盘临时占用或RSS。150条质量告警如实保留，来源最新末日2026-10-22、最旧末日2006-02-21；不将历史停止更新的数据当当前完整市场。仅验证该779,200行子集，未重跑全包约2971万行。
+
+较大真实数据揭示本机原128槽位全局线程池耗尽：GlobalThread/Active=128、Scheduled=131，查询等待调度；采样首次显示在并行格式化finalize等待，关闭格式化后仍出现查询执行池等待。保留两次失败JSON：[格式化等待](fixtures/round3-real-day-formatting-failure.json)、[全局池耗尽](fixtures/round3-real-day-thread-pool-failure.json)。两次都已完整写入779,200行，但回读未完成；协作取消保存failed/acknowledged与CSV，未被误记verified。自有服务器重启并将全局池调整为512/空闲64后通过上述重复验收；CLI有界查询保留关闭并行输出格式化，减少附加线程需求。失败私有库和最后成功私有库均已删除。
+
+四项真实服务故障/恢复均通过：[故障JSON](fixtures/round3-database-faults.json)。ClickHouse代理中断与SIGKILL时均已写8,192行；Mongo代理中断后已有1,000行，SIGKILL时已写8,192行。网络失败保留failed/unknown；SIGKILL保留最后检查点running/unknown；全部保留已发布CSV。每项在同一表/输出路径重跑后8,192键全字段精确通过、行数不增长、CSV摘要不变，且保留两份run_id归档，证明同机锁随进程死亡释放。Mongo强制终止用真实mongoimport成功后的暂停包装进程阻断退出码确认，随后终止自己的包装进程；不把该方式冒充数据库服务故障。四项私有库均已删除。
+
+最后真实1,040键的小表验收再次通过：6/8字段、复权、更新覆盖、去重、错误ClickHouse键、Mongo重复数据与CSV留存/清理。最后在线东财两股CSV与固定夹具摘要仍相同，快照/财务/逐笔固定pytdx独立重解通过；最终ASan/覆盖率fuzz512,262次、31秒无崩溃。整workspace MSRV测试/文档、Clippy、fmt通过，查询配置修复后CLI全目标/Clippy/fmt/release复查通过。最终二进制SHA-256=`50e7593dd9e9f25207bb1cf8c0f312532a65499c8f0dcb6d6f4267a82cdaad5d`；日志`/tmp/rustdx-round3-databases-512.log`、`/tmp/rustdx-round3-final-external.log`及[验证说明](VALIDATION.md)。六项源码优化和本机可执行验收已完成；稳定Linux CI、用户生产配置/全量、2027完整日历/全市场状态仍依赖相应环境与真实数据。

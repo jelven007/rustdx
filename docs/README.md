@@ -27,6 +27,7 @@
 - [OPTIMIZATION_ROUND3.md](OPTIMIZATION_ROUND3.md)：覆盖告警、来源重放、回读效率、协议安全、阶段观测及部署故障验收。
 - [PROTOCOL_REQUESTS.md](PROTOCOL_REQUESTS.md)：K线/快照/财务/逐笔checked请求、独立解码与源单位迁移。
 - [OBSERVABILITY.md](OBSERVABILITY.md)：每任务阶段计时、临时文件逻辑字节峰值、新鲜度及并发统计口径。
+- [DATABASE_ACCEPTANCE.md](DATABASE_ACCEPTANCE.md)：固定Linux镜像/配置、真实历史子集、隔离故障及恢复验收和CI。
 
 ## 本轮变更覆盖
 

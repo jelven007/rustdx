@@ -2,7 +2,7 @@ name: rustdx
 
 services:
   clickhouse:
-    image: clickhouse/clickhouse-server:25.8-alpine
+    image: clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146
     container_name: rustdx-clickhouse
     restart: unless-stopped
     ports:

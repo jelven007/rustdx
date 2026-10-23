@@ -385,6 +385,9 @@ impl ClickHouseConfig {
             .query("wait_end_of_query", "1")
             // A maximum-size readback includes up to 16,384 validated keys.
             .query("max_query_size", "1048576")
+            // Bounded readbacks do not need a server-side formatter pool.
+            // Also avoids a formatter scheduling stall observed on macOS CH.
+            .query("output_format_parallel_formatting", "0")
             .config()
             .http_status_as_error(false)
             .timeout_global(Some(operation.timeout()))

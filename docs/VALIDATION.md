@@ -67,3 +67,11 @@ GitHub CI配置包括Linux/macOS/Windows的构建/测试/Clippy/格式、Rust1.8
 ## 本轮文档检查
 
 文档交付只修改Markdown，不重跑已验证且未改动的代码。核对所有本地Markdown目标、引用源码路径、四个优化提交的覆盖关系、清单状态/单位/时限及历史验收归属；执行 `git diff --check`。完整覆盖表见[docs/README.md](README.md)，两个回退版本与远端验证方式见[RELEASES.md](RELEASES.md)。
+
+## 第三轮最终验收
+
+Rust1.89整workspace all-targets/all-features、文档测试、Clippy拒绝警告与fmt通过：核心160单测、CLI库9单测、命令31单测及全部离线端到端/属性/示例目标，普通文档55项/compile_fail2项，18项网络文档示例保持ignored。最后ClickHouse查询配置修复后重新执行CLI全目标回归、workspace Clippy/fmt及release构建，均通过；日志`/tmp/rustdx-round3-final.log`与`/tmp/rustdx-round3-formatting-fix.log`。
+
+真实官方ZIP的128个历史文件、779,200行，由独立Python struct解码逐行精确比较，1/4线程CSV一致；两库各两次全键/全字段回读、最终行数与重复去重通过。真实服务TCP断连/确认丢失/SIGKILL四项恢复通过；额外1,040键、6/8字段/复权与错误表/重复索引验收通过。最后东财两股在线CSV与保留夹具SHA相同；固定pytdx快照/财务/逐笔独立重解通过。ASan/覆盖率fuzz最终执行512,262次、31秒，无崩溃；日志`/tmp/rustdx-round3-final-external.log`。全部最终命令退出0，实际数据库日志`/tmp/rustdx-round3-databases-512.log`。
+
+最终release二进制SHA-256=`50e7593dd9e9f25207bb1cf8c0f312532a65499c8f0dcb6d6f4267a82cdaad5d`，与大规模/故障JSON一致。精确指标、两次线程池阻塞失败及成功恢复、平台限制见[第三轮记录](OPTIMIZATION_ROUND3.md)。固定Linux镜像配置及[数据库CI](DATABASE_ACCEPTANCE.md)已生成并做YAML/XML语法核对，尚未推送执行；本机实验ClickHouse不能替代稳定Linux/生产验收。
