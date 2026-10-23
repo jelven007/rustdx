@@ -9,6 +9,8 @@
 | 产品需求 | [requirements/REQUIREMENTS.md](requirements/REQUIREMENTS.md) | 产品范围、角色/对象/状态、FR-01至14、非功能要求、证据及待补事实 |
 | 项目目录 | [architecture/PROJECT_STRUCTURE.md](architecture/PROJECT_STRUCTURE.md) | 实际目录、责任边界、迁移对应及新增文件规则 |
 | 技术架构 | [architecture/PROJECT_ANALYSIS.md](architecture/PROJECT_ANALYSIS.md) | 模块职责、同步有界架构、设计选择、兼容边界 |
+| 原包评估 | [architecture/UPSTREAM_CRATE_ASSESSMENT.md](architecture/UPSTREAM_CRATE_ASSESSMENT.md) | rustdx-complete 1.11.0身份、优势、风险、10项差异探针及本仓库关系 |
+| 生产融合方案 | [architecture/PRODUCTION_FUSION_PLAN.md](architecture/PRODUCTION_FUSION_PLAN.md) | 复用现有强化实现，设计任务账本、版本发布、恢复及分阶段生产验收；新增组件尚未实现 |
 | 开发 | [development/DEVELOPMENT.md](development/DEVELOPMENT.md) | 构建、源码导航、接口及实现约束 |
 | 测试 | [validation/VALIDATION.md](validation/VALIDATION.md) | MSRV/fmt/Clippy/测试、fuzz、数值及性能证据 |
 | 验收 | [validation/PRODUCTION_ACCEPTANCE.md](validation/PRODUCTION_ACCEPTANCE.md)、[DATABASE_ACCEPTANCE.md](validation/DATABASE_ACCEPTANCE.md) | 历次真实服务范围、固定配置、小表/历史子集及故障恢复 |
@@ -44,6 +46,8 @@
 - [回读基准](validation/evidence/round3-readback-baseline.json)、[优化测量](validation/evidence/round3-readback-optimized.json)。
 - [格式化等待失败](validation/evidence/round3-real-day-formatting-failure.json)、[线程池耗尽失败](validation/evidence/round3-real-day-thread-pool-failure.json)。
 - [分块内存](validation/evidence/day-memory-20261023.json)、[前轮最终验收](validation/evidence/final-acceptance-20261023.json)。
+
+另有[原包研究证据](validation/evidence/upstream-review-20261023.json)，记录发布包校验和、离线构建与10项差异探针；这些结果不计为原包生产验收，也不代表拟议发布层已经实现。
 
 JSON中的原始命令和本机绝对路径保留当时记录；复现使用[当前脚本入口](../scripts/README.md)及[迁移对应](architecture/PROJECT_STRUCTURE.md)。/tmp日志不属于长期备份，固定样本及仓库中的摘要/指标才是本次持久材料。
 
