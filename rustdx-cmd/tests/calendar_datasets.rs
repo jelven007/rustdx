@@ -7,8 +7,8 @@ fn exchange_2026_datasets_match_each_other_and_builtin_every_day() {
     let read = |text| {
         HolidayCalendar::try_from(serde_json::from_str::<CalendarDataset>(text).unwrap()).unwrap()
     };
-    let a = read(include_str!("../../data/calendars/sse-2026.json"));
-    let b = read(include_str!("../../data/calendars/szse-2026.json"));
+    let a = read(include_str!("../../config/calendars/sse-2026.json"));
+    let b = read(include_str!("../../config/calendars/szse-2026.json"));
     let mut date = a.metadata().start;
     let mut sessions = 0;
     loop {

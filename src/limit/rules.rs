@@ -44,7 +44,7 @@ pub enum LimitRuleError {
     InvalidPrice,
 }
 
-/// 已核实的规则版本；来源及例外见 docs/LIMIT_RULES.md。
+/// 已核实的规则版本；来源及例外见 docs/requirements/LIMIT_RULES.md。
 pub const RULE_VERSION: &str = "exchange-rules/2026-07-06";
 /// 维护规则时必须同时复核各交易所的实施公告；不能仅移动此日期。
 pub const RULE_CHECKED_THROUGH: &str = "2026-10-22";

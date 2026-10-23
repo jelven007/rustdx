@@ -2,7 +2,7 @@ name: Database acceptance
 
 on:
   pull_request:
-    paths: ["rustdx-cmd/**", "src/**", "scripts/verify*database*.py", "scripts/measure_database_readback.py", "deploy/**", ".github/workflows/database-acceptance.yml"]
+    paths: ["rustdx-cmd/**", "src/**", "scripts/validation/*database*.py", "scripts/bench/measure_database_readback.py", "deploy/**", ".github/workflows/database-acceptance.yml"]
   workflow_dispatch:
     inputs:
       real_zip:
@@ -51,15 +51,15 @@ jobs:
           cargo build -p jelven-rustdx-cli --release --locked
           cargo test -p jelven-rustdx-cli --test database_acceptance --locked -- --nocapture
       - name: Repeated 65,536-row import and independent readback
-        run: python3 scripts/measure_database_readback.py --binary target/release/rustdx --output acceptance/bulk.json
+        run: python3 scripts/bench/measure_database_readback.py --binary target/release/rustdx --output acceptance/bulk.json
       - name: TCP outage, lost acknowledgement, SIGKILL and recovery
-        run: python3 scripts/verify_database_faults.py --binary target/release/rustdx --output acceptance/faults.json
+        run: python3 scripts/validation/verify_database_faults.py --binary target/release/rustdx --output acceptance/faults.json
       - name: Optional real historical subset
         if: github.event_name == 'workflow_dispatch' && inputs.real_zip
         run: |
           curl --fail --location --retry 2 --max-time 600 \
             https://data.tdx.com.cn/vipdoc/hsjday.zip -o "$RUNNER_TEMP/hsjday.zip"
-          python3 scripts/verify_real_day_database.py --binary target/release/rustdx \
+          python3 scripts/validation/verify_real_day_database.py --binary target/release/rustdx \
             --zip "$RUNNER_TEMP/hsjday.zip" --output acceptance/real-history.json
       - name: Capture database logs
         if: always()

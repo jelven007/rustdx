@@ -61,7 +61,7 @@ type Result<T> = std::result::Result<T, Error>;
 
 #[test]
 fn day() -> Result<()> {
-    let path = "assets/sz000001.day";
+    let path = "tests/fixtures/tdx/sz000001.day";
     let day1 = Day::from_file_into_vec("sz000001", path)?;
     let day2 = write_to_csv(rustdx_complete::file::day::Day::from_file_into_vec(
         "sz000001", path,

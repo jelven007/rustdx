@@ -3,7 +3,7 @@ use eyre::Result;
 use rustdx_cli::fetch_code;
 use rustdx_cli::fetch_code::StockList;
 
-/// 例子：`rustdx day /vdb/tmp/tdx/sh/ /vdb/tmp/tdx/sz/ -l official -g ../assets/gbbq`。
+/// 例子：`rustdx day /vdb/tmp/tdx/sh/ /vdb/tmp/tdx/sz/ -l official -g /path/to/current/gbbq`。
 ///
 /// **无参数模式**：直接运行 `rustdx day`（不带任何目录）时，自动从通达信官网
 /// 下载日线完整包 <https://data.tdx.com.cn/vipdoc/hsjday.zip>，解压后解析；

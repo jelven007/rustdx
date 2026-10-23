@@ -42,7 +42,7 @@ pub struct Gbbq<'a> {
     /// use rustdx_complete::file::gbbq::{Gbbq, Gbbqs};
     ///
     /// fn main() {
-    ///     let mut gbbqs = Gbbqs::from_file("assets/gbbq").unwrap();
+    ///     let mut gbbqs = Gbbqs::from_file("tests/fixtures/tdx/gbbq").unwrap();
     ///     let v: Vec<_> = gbbqs.to_vec().into_iter()
     ///         .unique_by(|Gbbq { category, .. }| *category).collect();
     ///     println!("len: {}\n{:#?}", v.len(), v);

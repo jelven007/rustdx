@@ -66,7 +66,7 @@ proptest! {
 
 #[test]
 fn checked_gbbq_matches_legacy_on_real_fixture_and_decode_is_idempotent() {
-    let bytes = std::fs::read("assets/gbbq").unwrap();
+    let bytes = std::fs::read("tests/fixtures/tdx/gbbq").unwrap();
     let mut safe = Gbbqs::from_bytes(bytes.clone()).unwrap();
     let mut legacy = Gbbqs::from_bytes(bytes).unwrap();
     let expected = format!("{:?}", legacy.to_vec());

@@ -9,9 +9,10 @@ repository  = "https://github.com/jelven007/rustdx"
 readme      = "README.md"
 authors     = ["张路 <jelven@126.com>", "zjp <jiping_zhou@foxmail.com>"]
 exclude     = [
-                "assets", "examples", "benches", "tests", "old", "tests-integration",
-                "docs", "scripts", "deploy", "CHANGELOG.md", "*.csv", "*.log",
-                ".github", ".gitignore", "rustfmt.toml"
+                "examples", "benches", "tests", "old", "tests-integration",
+                "docs", "scripts", "deploy", "/config", "/data", "/fuzz",
+                "/reports", "/acceptance", "CHANGELOG.md", "*.csv", "*.log",
+                ".github", ".gitignore", ".screenshots", "AGENTS.md", "rustfmt.toml"
               ]
 
 [lib]

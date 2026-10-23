@@ -500,7 +500,7 @@ pub fn setup_clickhouse(_fq: bool, table: &str) -> Result<()> {
          WHERE database='{database}' AND table='{name}' FORMAT TabSeparated"
     ))?;
     validate_clickhouse_schema(&metadata, &columns).map_err(|e| {
-        eyre!("{table}表结构不兼容：{e}；请按 docs/MIGRATION.md 迁移，不会自动修改原表")
+        eyre!("{table}表结构不兼容：{e}；请按 docs/release/MIGRATION.md 迁移，不会自动修改原表")
     })
 }
 

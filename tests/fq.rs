@@ -6,14 +6,14 @@ fn day_sz000001() -> rustdx_complete::Result<()> {
         day::Day,
         gbbq::{Fq, Gbbq},
     };
-    let day_src = std::fs::read("assets/sz000001.day")?;
+    let day_src = std::fs::read("tests/fixtures/tdx/sz000001.day")?;
     let days = day_src
         .as_chunks::<32>()
         .0
         .iter()
         .map(|arr| Day::from_bytes("sz000001", arr));
 
-    let mut gbbq_src = std::fs::read("assets/gbbq")?;
+    let mut gbbq_src = std::fs::read("tests/fixtures/tdx/gbbq")?;
     let stock_gbbq = Gbbq::filter_hashmap(Gbbq::iter(&mut gbbq_src[4..]));
 
     let fq = Fq::new(days, stock_gbbq.get("sz000001").unwrap()).unwrap();

@@ -1,45 +1,52 @@
 # rustdx 文档索引
 
-更新日期：2026-10-23。本文档组包含10月22日四个源码优化提交及10月23日六步优化，逐步证据见[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)。Cargo版本仍为核心库1.12.2、CLI1.8.2；这些新增行为属于仓库源码，尚未发布到crates.io。使用该行为须从仓库源码构建。
+更新日期：2026-10-23。文档按生产交付生命周期归类，需求主文档版本2.0。当前源码采用Rust2024/MSRV1.89及同步有界架构，运行清单schema6；Cargo版本仍为核心库1.12.2、CLI1.8.2，后续优化尚未发布新crate版本，使用新行为须从源码构建。
 
 ## 按工作查找
 
 | 工作 | 主文档 | 内容 |
 | --- | --- | --- |
-| 需求 | [REQUIREMENTS.md](REQUIREMENTS.md) | 用户任务、已实现功能、完成条件及异常行为 |
-| 方案与架构 | [PROJECT_ANALYSIS.md](PROJECT_ANALYSIS.md) | 模块职责、同步有界架构、设计选择及剩余工作 |
-| 开发 | [DEVELOPMENT.md](DEVELOPMENT.md) | 构建、源码导航、接口选择及兼容约束 |
-| 测试 | [VALIDATION.md](VALIDATION.md) | 检查命令、回归范围、fuzz及性能实测 |
-| 验收 | [PRODUCTION_ACCEPTANCE.md](PRODUCTION_ACCEPTANCE.md)、[NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md) | 分轮记录，区分历史全量、当前在线小样本与离线验证 |
-| 运营 | [OPERATIONS.md](OPERATIONS.md) | 日线/快照使用、数据质量判断、补数和业务口径 |
-| 运维 | [RUNBOOK.md](RUNBOOK.md) | 部署、监控、备份、故障恢复及版本回退 |
-| 版本交付 | [RELEASES.md](RELEASES.md) | 分支合并、源码推送、两个历史版本及包发布边界 |
-| 迭代记录 | [ITERATION.md](ITERATION.md)、[OPTIMIZATION.md](OPTIMIZATION.md) | 各阶段交付和优先级处理结果 |
-| 行为迁移 | [MIGRATION.md](MIGRATION.md) | API、CSV、数据库和旧调用迁移 |
+| 产品需求 | [requirements/REQUIREMENTS.md](requirements/REQUIREMENTS.md) | 产品范围、角色/对象/状态、FR-01至14、非功能要求、证据及待补事实 |
+| 项目目录 | [architecture/PROJECT_STRUCTURE.md](architecture/PROJECT_STRUCTURE.md) | 实际目录、责任边界、迁移对应及新增文件规则 |
+| 技术架构 | [architecture/PROJECT_ANALYSIS.md](architecture/PROJECT_ANALYSIS.md) | 模块职责、同步有界架构、设计选择、兼容边界 |
+| 开发 | [development/DEVELOPMENT.md](development/DEVELOPMENT.md) | 构建、源码导航、接口及实现约束 |
+| 测试 | [validation/VALIDATION.md](validation/VALIDATION.md) | MSRV/fmt/Clippy/测试、fuzz、数值及性能证据 |
+| 验收 | [validation/PRODUCTION_ACCEPTANCE.md](validation/PRODUCTION_ACCEPTANCE.md)、[DATABASE_ACCEPTANCE.md](validation/DATABASE_ACCEPTANCE.md) | 历次真实服务范围、固定配置、小表/历史子集及故障恢复 |
+| 运营 | [operations/OPERATIONS.md](operations/OPERATIONS.md) | 数据选择、完成判定、单位、补数和来源风险 |
+| 运维 | [operations/RUNBOOK.md](operations/RUNBOOK.md) | 部署、配置、观测、备份和按状态恢复 |
+| 发布/迁移 | [release/RELEASES.md](release/RELEASES.md)、[MIGRATION.md](release/MIGRATION.md) | 源码版本、历史快照、包发布门禁及旧调用迁移 |
+| 迭代历史 | [history/ITERATION.md](history/ITERATION.md)、[OPTIMIZATION.md](history/OPTIMIZATION.md) | 早期阶段与10月22日四步记录 |
+| 后续优化 | [history/NEXT_OPTIMIZATION.md](history/NEXT_OPTIMIZATION.md)、[OPTIMIZATION_ROUND3.md](history/OPTIMIZATION_ROUND3.md) | 10月23日两轮六步实现及交叉验证 |
 
-专项规则只在以下文档完整定义，其他文档引用这些定义：
+配置、脚本、固定夹具和部署入口分别见[config](../config/README.md)、[scripts](../scripts/README.md)、[tests/fixtures](../tests/fixtures/README.md)、[deploy](../deploy/README.md)。运行数据约定见[data](../data/README.md)。旧docs/REQUIREMENTS.md只保留跳转。
 
-- [NETWORK.md](NETWORK.md)：受管TCP预算、时限、配置和观测。
-- [LIMIT_RULES.md](LIMIT_RULES.md)：日期化涨跌幅、上市阶段及原始依据。
-- [IMPORTS.md](IMPORTS.md)：运行清单字段、状态、摘要范围及数据库确认边界。
-- [DATA_MAINTENANCE.md](DATA_MAINTENANCE.md)：日历交叉核验、原子更新与有公告证据的证券状态区间。
-- [NEXT_OPTIMIZATION.md](NEXT_OPTIMIZATION.md)：2026-10-23后续六步优化及本轮交叉验证证据。
-- [OPTIMIZATION_ROUND3.md](OPTIMIZATION_ROUND3.md)：覆盖告警、来源重放、回读效率、协议安全、阶段观测及部署故障验收。
-- [PROTOCOL_REQUESTS.md](PROTOCOL_REQUESTS.md)：K线/快照/财务/逐笔checked请求、独立解码与源单位迁移。
-- [OBSERVABILITY.md](OBSERVABILITY.md)：每任务阶段计时、临时文件逻辑字节峰值、新鲜度及并发统计口径。
-- [DATABASE_ACCEPTANCE.md](DATABASE_ACCEPTANCE.md)：固定Linux镜像/配置、真实历史子集、隔离故障及恢复验收和CI。
+## 专项定义
 
-## 本轮变更覆盖
+| 主文档 | 唯一定义范围 | 关联需求 |
+| --- | --- | --- |
+| [日期规则](requirements/LIMIT_RULES.md) | 日期化涨跌幅、上市阶段、原始依据及覆盖 | FR-02 |
+| [网络预算](architecture/NETWORK.md) | 任务时限、受管TCP/HTTP、同机许可与配置 | FR-04 |
+| [协议请求](architecture/PROTOCOL_REQUESTS.md) | checked请求、独立解码、参数及旧对象边界 | FR-07 |
+| [导入证据](operations/IMPORTS.md) | 清单字段/状态、摘要、精确回读和CSV恢复 | FR-05、FR-06 |
+| [数据维护](operations/DATA_MAINTENANCE.md) | 日历交叉核验、证券公告证据与覆盖巡检 | FR-01、FR-02 |
+| [东财重放](operations/EAST_REPLAY.md) | 原始正文、摘要范围、重放及前因子限制 | FR-13 |
+| [阶段观测](operations/OBSERVABILITY.md) | 耗时并集/累计、临时逻辑字节、新鲜度口径 | FR-14 |
+| [验证方法](validation/VALIDATION.md) | 工程检查、指标/缓存/文件回归和测量 | FR-09、FR-10、FR-12 |
+| [目录与版本](architecture/PROJECT_STRUCTURE.md) | 源码附件、配置/数据分界和交付 | FR-11 |
 
-| 源码提交 | 变更 | 对应需求 | 方案/开发依据 | 测试及运营、运维依据 |
-| --- | --- | --- | --- | --- |
-| `7cd02e7` | 严格外部日历、历史规则、标准行情、股票名单HTTPS | FR-01、FR-02、FR-03、FR-08 | 架构评估、开发说明、日期规则、迁移说明 | 验证方法；运营的数据口径/日历维护；运维更新日历 |
-| `5fb5b70` | 进程连接预算、轮换/冷却、总体时限、统计 | FR-04 | 架构评估、开发说明、网络预算 | 独立进程网络回归；运营采集限制；运维网络排障 |
-| `401265c` | 导入清单、摘要/回读、故障状态、安全二进制解析 | FR-05、FR-06、FR-07 | 架构评估、开发说明、导入说明 | 清单/坏文件/数据库故障回归；运营成功判定；运维恢复 |
-| `1f9f739` | 线性指标、分页/复权/sink拆分、属性/fuzz/性能CI | FR-09、FR-10 | 架构评估、开发说明、优化记录 | 验证方法；运营指标口径；运维部署门禁 |
-| 本轮文档更新 | 文档对齐、分支合并与两个历史版本保留 | FR-11 | 本文档组、版本交付说明 | 文档链接和代码对照检查；远端引用核验 |
-| 10月23日步骤1–2 | data-check/证券证据、当前行情及隔离数据库验收 | FR-01、FR-02、FR-08、FR-10 | 数据维护、架构评估、六步结果 | 两交易所逐日日历、真实TDX/东财与数据库小表 |
-| 10月23日步骤3–4 | 精确数据库回读、目标写锁、整任务deadline/取消、同机许可 | FR-04、FR-06 | 导入说明、网络预算、开发说明 | 故障注入、独立进程、完整CLI及实际服务 |
-| 10月23日步骤5–6 | 分块/确定性输出、东财标准适配、不可变K线请求/独立解码 | FR-03、FR-05、FR-07 | 架构评估、开发说明、迁移说明 | 新旧实际RSS/字段摘要、跨块因子、固定pytdx真实协议样本及fuzz |
+其他文档引用专项定义，历史章节保留当时结论。需求变更先更新稳定编号及用户可观察行为，再同步受影响架构、开发、验证和运营/运维文档。
 
-内置日历只覆盖2024–2026；历史规则核实截至2026-10-22。当前源码已实测通达信、东财及隔离ClickHouse/MongoDB小表，目标生产版本/配置和全量负载仍须验收；2027完整数据、全市场证券状态和长期P95未取得。详细边界见各专项文档。[项目入口](../README.md) · [变更记录](../CHANGELOG.md)。
+## 当前证据与边界
+
+第三轮真实官方ZIP子集为128文件、779,200行，Python独立逐行解码，1/4线程CSV一致；两库首次/重复全部键及数值精确回读通过，四项断连/确认丢失/SIGKILL恢复通过。原始指标、失败与恢复分别保存：
+
+- [真实历史](validation/evidence/round3-real-day-databases.json)、[故障恢复](validation/evidence/round3-database-faults.json)。
+- [回读基准](validation/evidence/round3-readback-baseline.json)、[优化测量](validation/evidence/round3-readback-optimized.json)。
+- [格式化等待失败](validation/evidence/round3-real-day-formatting-failure.json)、[线程池耗尽失败](validation/evidence/round3-real-day-thread-pool-failure.json)。
+- [分块内存](validation/evidence/day-memory-20261023.json)、[前轮最终验收](validation/evidence/final-acceptance-20261023.json)。
+
+JSON中的原始命令和本机绝对路径保留当时记录；复现使用[当前脚本入口](../scripts/README.md)及[迁移对应](architecture/PROJECT_STRUCTURE.md)。/tmp日志不属于长期备份，固定样本及仓库中的摘要/指标才是本次持久材料。
+
+实际服务是macOS实验ClickHouse26.11.1.548与MongoDB8.0.16；固定Linux镜像/数据库CI已配置，尚未在该平台运行。未重跑最新全包约2971万行，不能以历史10月10日2981万行结果替代当前全量。内置日历为2024–2026、规则核实截至2026-10-22，2027完整日历、全市场证券状态、长期P95、目标生产配置及备份恢复仍待相应证据。
+
+[项目入口](../README.md) · [变更记录](../CHANGELOG.md)
