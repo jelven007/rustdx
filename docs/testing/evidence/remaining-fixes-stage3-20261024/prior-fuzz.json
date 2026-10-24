@@ -1,0 +1,46 @@
+[
+  {
+    "target": "modern_parsers",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+nightly",
+      "fuzz",
+      "run",
+      "modern_parsers",
+      "/tmp/rustdx-stage3-fuzz/modern-corpus",
+      "--fuzz-dir",
+      "/Users/bytedance/Documents/rustdx/tools/fuzz",
+      "--target-dir",
+      "/tmp/rustdx-stage3-fuzz/target",
+      "--",
+      "-max_total_time=30",
+      "-max_len=65536",
+      "-rss_limit_mb=2048",
+      "-artifact_prefix=/tmp/rustdx-stage3-fuzz/"
+    ],
+    "exit_code": 0,
+    "seconds": 85.48010258400001
+  },
+  {
+    "target": "checked_parsers",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+nightly",
+      "fuzz",
+      "run",
+      "checked_parsers",
+      "/Users/bytedance/Documents/rustdx/tools/fuzz/corpus/checked_parsers",
+      "--fuzz-dir",
+      "/Users/bytedance/Documents/rustdx/tools/fuzz",
+      "--target-dir",
+      "/tmp/rustdx-stage3-fuzz/target",
+      "--",
+      "-max_total_time=30",
+      "-max_len=4096",
+      "-rss_limit_mb=2048",
+      "-artifact_prefix=/tmp/rustdx-stage3-fuzz/"
+    ],
+    "exit_code": 0,
+    "seconds": 32.79299129100001
+  }
+]

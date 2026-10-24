@@ -1,0 +1,23 @@
+{
+  "semantic_schema_version": 1,
+  "market": 0,
+  "code": "000001",
+  "updated_date": 20260815,
+  "report_period": "2026-06-30",
+  "scope": "Only preserved sz000001 2026-H1 record; per-field exact raw bits",
+  "response_sha256": "47575a25e53addcba0930c4ce345381ecc604019646d460ab127915d8252820d",
+  "source": "https://ebank.pingan.com.cn/ir/file/upload/2026-08-15%20%E5%B9%B3%E5%AE%89%E9%93%B6%E8%A1%8C%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B82026%E5%B9%B4%E5%8D%8A%E5%B9%B4%E5%BA%A6%E6%8A%A5%E5%91%8A%E6%91%98%E8%A6%81.pdf",
+  "tolerance_basis": "Half float32 ULP after scaling plus issuer display rounding",
+  "fields": [
+    {"field":"total_shares","offset":16,"raw":1940591.875,"multiplier":10000,"official":19405918198,"tolerance":625},
+    {"field":"reported_eps","offset":40,"raw":1.2400000095367432,"multiplier":1,"official":1.24,"tolerance":0.0050000596046447755},
+    {"field":"total_assets","offset":44,"raw":6028785152,"multiplier":1000,"official":6028785000000,"tolerance":756000},
+    {"field":"net_assets","offset":76,"raw":548214016,"multiplier":1000,"official":548214000000,"tolerance":532000},
+    {"field":"operating_revenue","offset":80,"raw":70617000,"multiplier":1000,"official":70617000000,"tolerance":504000},
+    {"field":"operating_profit","offset":92,"raw":30828000,"multiplier":1000,"official":30828000000,"tolerance":501000},
+    {"field":"operating_cash_flow","offset":100,"raw":215012000,"multiplier":1000,"official":215012000000,"tolerance":508000},
+    {"field":"profit_before_tax","offset":112,"raw":30795000,"multiplier":1000,"official":30795000000,"tolerance":501000},
+    {"field":"net_profit","offset":120,"raw":25696000,"multiplier":1000,"official":25696000000,"tolerance":501000},
+    {"field":"net_assets_per_share","offset":128,"raw":24.1299991607666,"multiplier":1,"official":24.13,"tolerance":0.005000953674316406}
+  ]
+}

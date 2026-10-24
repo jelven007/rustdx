@@ -1,0 +1,777 @@
+{
+  "original_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+  "original_capture_date": "2026-10-22",
+  "original_sha256": "07aab2f1166a794cebfa380cda058417499c4f74049a5fe36fe029f5c803d400",
+  "derivative": "ZIP container rebuilt with byte-identical first128 sorted sh600 members; original archive not modified",
+  "subset_sha256": "edfa85b5249675379f42d6f80d5d7349b0ca2b0f1a488143d55f2a14b24008f1",
+  "members": [
+    {
+      "member": "sh\\lday\\sh600000.day",
+      "sha256": "22855dea0db065e4875d005c7ba55dff5cccc4cbf491aeccfb43d8a278529748",
+      "bytes": 205152,
+      "rows": 6411
+    },
+    {
+      "member": "sh\\lday\\sh600001.day",
+      "sha256": "bf24cb6ea47d6f4897cc712f6ea11825c9058916b08839e49485617ef172dc95",
+      "bytes": 88064,
+      "rows": 2752
+    },
+    {
+      "member": "sh\\lday\\sh600002.day",
+      "sha256": "9584245ac4d1789adba38654c249be794db7733937713591d03f14dec17035a3",
+      "bytes": 61152,
+      "rows": 1911
+    },
+    {
+      "member": "sh\\lday\\sh600003.day",
+      "sha256": "d6ae5679ba4281dd9b14c449716cda1cf8456a315b734d97d24cd8d709dc63d6",
+      "bytes": 72000,
+      "rows": 2250
+    },
+    {
+      "member": "sh\\lday\\sh600004.day",
+      "sha256": "2da2962a4ab6b05fecb1c499d15550dbb3ed2c4122d736a996ac5a3750ba6256",
+      "bytes": 180864,
+      "rows": 5652
+    },
+    {
+      "member": "sh\\lday\\sh600005.day",
+      "sha256": "9e19fae3035ce0ff3ce97fa7c0f3fbfcf61ab8bb3daa03c96e2b36ce616ba705",
+      "bytes": 130016,
+      "rows": 4063
+    },
+    {
+      "member": "sh\\lday\\sh600006.day",
+      "sha256": "b57355908eb72c3bd3c7a4f63410f83cec7e295dc3ffced69f85f7c639db667e",
+      "bytes": 207648,
+      "rows": 6489
+    },
+    {
+      "member": "sh\\lday\\sh600007.day",
+      "sha256": "33c315acd77c3e22eef74bbd8f3d8f2ddd48d84dec8802962f97ce9e93e99cab",
+      "bytes": 212448,
+      "rows": 6639
+    },
+    {
+      "member": "sh\\lday\\sh600008.day",
+      "sha256": "2050e932ad75a37c7e3b6050fcd079a6286e67b94b4eccfb96886033ee4136e1",
+      "bytes": 202400,
+      "rows": 6325
+    },
+    {
+      "member": "sh\\lday\\sh600009.day",
+      "sha256": "fae6ba0a85c358c30d01bf2f4062d97f531985ad0d07c9c47ee60df25190e5c5",
+      "bytes": 220736,
+      "rows": 6898
+    },
+    {
+      "member": "sh\\lday\\sh600010.day",
+      "sha256": "e6406fd9755a01f7e1c83e69116d59cb99c746c9635a018158d1b3a7d75429af",
+      "bytes": 195104,
+      "rows": 6097
+    },
+    {
+      "member": "sh\\lday\\sh600011.day",
+      "sha256": "8161ebb1c743b7a86450fec921d51eedddc416525bf08ec8bf8714a246cfaa96",
+      "bytes": 190784,
+      "rows": 5962
+    },
+    {
+      "member": "sh\\lday\\sh600012.day",
+      "sha256": "66f823abc22c8f39d64ca240f11b7a5b14cbac17df936ffda44334a41eae8082",
+      "bytes": 182688,
+      "rows": 5709
+    },
+    {
+      "member": "sh\\lday\\sh600015.day",
+      "sha256": "70caadef12e9e96cfbff8f1212755d28085581dd8b04219c1348bc4ad754bc56",
+      "bytes": 176352,
+      "rows": 5511
+    },
+    {
+      "member": "sh\\lday\\sh600016.day",
+      "sha256": "5f5042fa0624ebe87500782d8b8bd90ff59145f9ba1b1a4241795fa27d73b059",
+      "bytes": 198400,
+      "rows": 6200
+    },
+    {
+      "member": "sh\\lday\\sh600017.day",
+      "sha256": "4f5279f6ebf67522ccd438cacea216a4b1fb03f8a5011b5f664708c749cb8bff",
+      "bytes": 154368,
+      "rows": 4824
+    },
+    {
+      "member": "sh\\lday\\sh600018.day",
+      "sha256": "00d9ed2cbcc3b4cbb961bffa555a1529e5120e783f1369c6084338b16a3f7b96",
+      "bytes": 199328,
+      "rows": 6229
+    },
+    {
+      "member": "sh\\lday\\sh600019.day",
+      "sha256": "c1dc99d9fa8aeb0b69eee583c2f2657c08827af13c5884564b26aa351c82c284",
+      "bytes": 195584,
+      "rows": 6112
+    },
+    {
+      "member": "sh\\lday\\sh600020.day",
+      "sha256": "ba70b7ad56a31041bac9123a0d7b810de69811300a1e8e989d5461dc109e31d4",
+      "bytes": 177664,
+      "rows": 5552
+    },
+    {
+      "member": "sh\\lday\\sh600021.day",
+      "sha256": "c4ce4a7827ea293fe134eb4856445534ecfa2bfd590d04f3dcdd807370599f6f",
+      "bytes": 173376,
+      "rows": 5418
+    },
+    {
+      "member": "sh\\lday\\sh600022.day",
+      "sha256": "dd75e719f05669816b10111573c689447809fdfba6eab94886178d8ac4b17943",
+      "bytes": 162592,
+      "rows": 5081
+    },
+    {
+      "member": "sh\\lday\\sh600023.day",
+      "sha256": "5b89e64df73d3d881d08ed0395b558bb7fb34c72decf4aca82893133df57bc56",
+      "bytes": 99840,
+      "rows": 3120
+    },
+    {
+      "member": "sh\\lday\\sh600025.day",
+      "sha256": "ad66216575bc8ad6c8562d9c383a17724eb28310b151de4391b1d9354bd2cef5",
+      "bytes": 68640,
+      "rows": 2145
+    },
+    {
+      "member": "sh\\lday\\sh600026.day",
+      "sha256": "bbc26cf3a9918c009a98b2568281b93b3bd6eb4666a190d711cb892852ae41df",
+      "bytes": 184608,
+      "rows": 5769
+    },
+    {
+      "member": "sh\\lday\\sh600027.day",
+      "sha256": "e60184a3d1fad27eec0868e24299ef652bd21e774c6ce8057a52bee6a2f79bf1",
+      "bytes": 166496,
+      "rows": 5203
+    },
+    {
+      "member": "sh\\lday\\sh600028.day",
+      "sha256": "3c57973392aabc76036413fcbcaccb6ad7079e4ec3d6cfd8855f1c8bba75469a",
+      "bytes": 193952,
+      "rows": 6061
+    },
+    {
+      "member": "sh\\lday\\sh600029.day",
+      "sha256": "53efdeeb78dd169e42bbd36bcfe9bdae1726094a8a9a50c263c4ccfcf6f8538e",
+      "bytes": 177344,
+      "rows": 5542
+    },
+    {
+      "member": "sh\\lday\\sh600030.day",
+      "sha256": "cd899da87e43227920c54a90e475c5b7cc5428b76a31050356cedcca41ea04bb",
+      "bytes": 181664,
+      "rows": 5677
+    },
+    {
+      "member": "sh\\lday\\sh600031.day",
+      "sha256": "e302be5422082e1b395a7e58b69a552fc4b810f39a99c31a23ae3fc82454f588",
+      "bytes": 179520,
+      "rows": 5610
+    },
+    {
+      "member": "sh\\lday\\sh600032.day",
+      "sha256": "caa91de073c151715c2af80f3ee10645473cd1d0289899535d05eb82dedf841c",
+      "bytes": 41984,
+      "rows": 1312
+    },
+    {
+      "member": "sh\\lday\\sh600033.day",
+      "sha256": "b0d12132d2ff8878430b6f474fa8951427706dfa805460f204b654c40d25ce7e",
+      "bytes": 198080,
+      "rows": 6190
+    },
+    {
+      "member": "sh\\lday\\sh600035.day",
+      "sha256": "f16f52be00ddf9b15f7ac76dac07e5de2b3c4c74837bb917c58d72bd27661f26",
+      "bytes": 168704,
+      "rows": 5272
+    },
+    {
+      "member": "sh\\lday\\sh600036.day",
+      "sha256": "2a083d6064de359c08f0d607dceca8e76bb0fea221076ec1e14d0b7eb13ab03a",
+      "bytes": 188256,
+      "rows": 5883
+    },
+    {
+      "member": "sh\\lday\\sh600037.day",
+      "sha256": "2a914b66614e4ac16bd5c7132d791c2eb72dc5ec6037255edfaa9e40f3ec6963",
+      "bytes": 197120,
+      "rows": 6160
+    },
+    {
+      "member": "sh\\lday\\sh600038.day",
+      "sha256": "d4f0ea95c88dae93078040c90dd5c8cea8760d34c0be5898113936602cf44bd3",
+      "bytes": 195168,
+      "rows": 6099
+    },
+    {
+      "member": "sh\\lday\\sh600039.day",
+      "sha256": "8bb00b32fc6cde48fb2a4c13aabce3c3e6fb4c4729caed1039ddbacf3256c9cc",
+      "bytes": 178528,
+      "rows": 5579
+    },
+    {
+      "member": "sh\\lday\\sh600048.day",
+      "sha256": "be0b243094036830c2c939fffff7f7b826b7367dfe1bc6c14e9c1e41d1b7080d",
+      "bytes": 156448,
+      "rows": 4889
+    },
+    {
+      "member": "sh\\lday\\sh600050.day",
+      "sha256": "4bf23656dc1c56d2df5023038c690a447f4d4cc60bae535e822a571dc18c182c",
+      "bytes": 182272,
+      "rows": 5696
+    },
+    {
+      "member": "sh\\lday\\sh600051.day",
+      "sha256": "6aa56b4e04320e7fb1b62e6caf1adf438325f69d05afafcff180fe2a5b2e3854",
+      "bytes": 222336,
+      "rows": 6948
+    },
+    {
+      "member": "sh\\lday\\sh600052.day",
+      "sha256": "f9bdb67adfca6048967b07f79ae32034e9272fcbb9995e60766e2c94edd9f3e3",
+      "bytes": 218528,
+      "rows": 6829
+    },
+    {
+      "member": "sh\\lday\\sh600053.day",
+      "sha256": "5964f68fd9d9af647437f92230a6458df94faf454614cb134cd67a104675f06c",
+      "bytes": 211296,
+      "rows": 6603
+    },
+    {
+      "member": "sh\\lday\\sh600054.day",
+      "sha256": "55569d663ba36ed53e65483e3797e227b48c53f8373d358611bf6676921b5e5f",
+      "bytes": 226304,
+      "rows": 7072
+    },
+    {
+      "member": "sh\\lday\\sh600055.day",
+      "sha256": "e71b94bf3fe0481777bd62ee9f5769015f0f398472adae59fa3e9269b8bf85ba",
+      "bytes": 221248,
+      "rows": 6914
+    },
+    {
+      "member": "sh\\lday\\sh600056.day",
+      "sha256": "72be36830c46f8f11dc25d19aa8bb33821e51c98333618922d12a5712ef98236",
+      "bytes": 221728,
+      "rows": 6929
+    },
+    {
+      "member": "sh\\lday\\sh600057.day",
+      "sha256": "e786ab99d8c161b534db46a15d6b78cd2613797fcd5b238cda007cba3bd62a59",
+      "bytes": 205856,
+      "rows": 6433
+    },
+    {
+      "member": "sh\\lday\\sh600058.day",
+      "sha256": "71d80b49240e029b3361b74401d88c1ff20363272c493e9596adfbf2099c0112",
+      "bytes": 219680,
+      "rows": 6865
+    },
+    {
+      "member": "sh\\lday\\sh600059.day",
+      "sha256": "7037dd545fe5ca89119098f0a36393a3aefcc8e2d65af41cab2e88056c49848b",
+      "bytes": 226528,
+      "rows": 7079
+    },
+    {
+      "member": "sh\\lday\\sh600060.day",
+      "sha256": "cf14dcd17d7aad97d7ea0e29462d7138e96d30711c826ecea695974b323daaec",
+      "bytes": 226784,
+      "rows": 7087
+    },
+    {
+      "member": "sh\\lday\\sh600061.day",
+      "sha256": "825b579a2bb6074f465b916acaf9fa4cc031289ea0338078a690bcb517152670",
+      "bytes": 221920,
+      "rows": 6935
+    },
+    {
+      "member": "sh\\lday\\sh600062.day",
+      "sha256": "91746a4c88573b0e60f593a90803624bad7976c77cbcfe1a5fb825daf2e5c47f",
+      "bytes": 224448,
+      "rows": 7014
+    },
+    {
+      "member": "sh\\lday\\sh600063.day",
+      "sha256": "2af9394ae3a62f6b13ad9ec3e9f6bcd46a2a29a052690e3ec53cda18539f0502",
+      "bytes": 223776,
+      "rows": 6993
+    },
+    {
+      "member": "sh\\lday\\sh600064.day",
+      "sha256": "c78e2ad509c9189e9f9afc75874830ded4c38f1941a8bdcb89f62a84e46eea2f",
+      "bytes": 226240,
+      "rows": 7070
+    },
+    {
+      "member": "sh\\lday\\sh600065.day",
+      "sha256": "ff4da21afc8f9641aaa2ebabecd55fefb1051af8d012b789c44203073236501e",
+      "bytes": 66688,
+      "rows": 2084
+    },
+    {
+      "member": "sh\\lday\\sh600066.day",
+      "sha256": "06b9390deca11e1565dea97315e61daba56b96a88afc3db17645f0012de2a3b1",
+      "bytes": 225568,
+      "rows": 7049
+    },
+    {
+      "member": "sh\\lday\\sh600067.day",
+      "sha256": "bc1cc722b8190eba6ac23561a8cb331e95ea29e3b5059fe901399f1dc173484c",
+      "bytes": 226304,
+      "rows": 7072
+    },
+    {
+      "member": "sh\\lday\\sh600068.day",
+      "sha256": "89dd39f8edfc01d53a3000c7adeac8a0ffd2e12398dab98882ab45133417b86e",
+      "bytes": 184448,
+      "rows": 5764
+    },
+    {
+      "member": "sh\\lday\\sh600069.day",
+      "sha256": "5c19355a75ff06c9288baed069ae04cfb5d4eed5b4ac6f87924c0638cde86abe",
+      "bytes": 173472,
+      "rows": 5421
+    },
+    {
+      "member": "sh\\lday\\sh600070.day",
+      "sha256": "49b7509d5c0006f13ac9704930e844eba7b80989228615773a187ce000f048f2",
+      "bytes": 210752,
+      "rows": 6586
+    },
+    {
+      "member": "sh\\lday\\sh600071.day",
+      "sha256": "0c58fe18a418d98a5d4660cc8ee7d767ca57decb3153dd2eb1c36c7fb03fbd76",
+      "bytes": 219872,
+      "rows": 6871
+    },
+    {
+      "member": "sh\\lday\\sh600072.day",
+      "sha256": "5f821acb44fd24c12f97b9530329e1ddfd34c4a0f2b0a45363be79fafa8a754e",
+      "bytes": 222912,
+      "rows": 6966
+    },
+    {
+      "member": "sh\\lday\\sh600073.day",
+      "sha256": "f514f4b7318f8578f615d42a879c00fc331c7d03eca5b4b70eb035fd3abc32f7",
+      "bytes": 222304,
+      "rows": 6947
+    },
+    {
+      "member": "sh\\lday\\sh600074.day",
+      "sha256": "486bdad500d8637c81761c05c0fd0bbe6846fe30e2f80ab323dd9d14bffb1dfc",
+      "bytes": 151008,
+      "rows": 4719
+    },
+    {
+      "member": "sh\\lday\\sh600075.day",
+      "sha256": "4af15bf94e7d68e5059ad667daee3fc15b206dd68c647fcd46e44fd14f2b7cf8",
+      "bytes": 219712,
+      "rows": 6866
+    },
+    {
+      "member": "sh\\lday\\sh600076.day",
+      "sha256": "d74538681555fcb54ff0d863b8d19a7880ff601e66c0e61af2046a390df6b52d",
+      "bytes": 219008,
+      "rows": 6844
+    },
+    {
+      "member": "sh\\lday\\sh600077.day",
+      "sha256": "9af3fe126fa33699a71cef46742d54f74cc29384be0b1f3df71e1fe3eb67b3a4",
+      "bytes": 197056,
+      "rows": 6158
+    },
+    {
+      "member": "sh\\lday\\sh600078.day",
+      "sha256": "59d9167495b6850911ef8d885f884f6134d1a5b0a933ec8f5981f8a468b1ddcd",
+      "bytes": 222880,
+      "rows": 6965
+    },
+    {
+      "member": "sh\\lday\\sh600079.day",
+      "sha256": "bda83ac46530a80c12661c871a81e95bb3886c24019e1b9b5c06f0b6143e1c42",
+      "bytes": 224512,
+      "rows": 7016
+    },
+    {
+      "member": "sh\\lday\\sh600080.day",
+      "sha256": "6e8deb651fac2539e4ecaeeffda5f420671b00b650b6f66e4938b6a1d70f3096",
+      "bytes": 224416,
+      "rows": 7013
+    },
+    {
+      "member": "sh\\lday\\sh600081.day",
+      "sha256": "92c264a99cf07a012afcfae7009bd13260757e288934b7c9d8e48241ece3071b",
+      "bytes": 224480,
+      "rows": 7015
+    },
+    {
+      "member": "sh\\lday\\sh600082.day",
+      "sha256": "75f7223bdf61064abd6ab3e4637d28825ae54b64466c5aefffac7604a96d9c1b",
+      "bytes": 224384,
+      "rows": 7012
+    },
+    {
+      "member": "sh\\lday\\sh600083.day",
+      "sha256": "2aaaf5d5fa961d93cec599d8297412978341eac2505c45ae5d69370681b924bf",
+      "bytes": 191328,
+      "rows": 5979
+    },
+    {
+      "member": "sh\\lday\\sh600084.day",
+      "sha256": "33d42220f40842284c100e277c0068a3c9e89b00b69330c946e2af1b1e1d5f3d",
+      "bytes": 212800,
+      "rows": 6650
+    },
+    {
+      "member": "sh\\lday\\sh600085.day",
+      "sha256": "32abfe48c5bea6debcae42d913729e570ad6f2b3daecb6e7b709c1f99706b98d",
+      "bytes": 226176,
+      "rows": 7068
+    },
+    {
+      "member": "sh\\lday\\sh600086.day",
+      "sha256": "ff8051291747fb281e231850a4d0de116db0e254e3bff046656403227f7d6cc7",
+      "bytes": 170912,
+      "rows": 5341
+    },
+    {
+      "member": "sh\\lday\\sh600087.day",
+      "sha256": "02bce5abcdeb1dc9c92da77238f40074cc4e997f75675bcc5c972f33d807df3f",
+      "bytes": 121760,
+      "rows": 3805
+    },
+    {
+      "member": "sh\\lday\\sh600088.day",
+      "sha256": "a30754e1aafb2a50090e164e2d50596e16b451c73485898fcb8fe76c6c569267",
+      "bytes": 222560,
+      "rows": 6955
+    },
+    {
+      "member": "sh\\lday\\sh600089.day",
+      "sha256": "e713241785ba60ccc5c9f8afae5f2504722aab69aab70861dc6bd8a8087790f0",
+      "bytes": 221600,
+      "rows": 6925
+    },
+    {
+      "member": "sh\\lday\\sh600090.day",
+      "sha256": "3211abdbedf2dde00db7498fc986f186b9eb753cbcad3f00cb44cf63c080a491",
+      "bytes": 180864,
+      "rows": 5652
+    },
+    {
+      "member": "sh\\lday\\sh600091.day",
+      "sha256": "e70810a9b740711b708daad44c6580db8bbd7bee16fb64a1855f36289c106df9",
+      "bytes": 184224,
+      "rows": 5757
+    },
+    {
+      "member": "sh\\lday\\sh600092.day",
+      "sha256": "127b8f49400a2a3e588b56dce69980191b0bff8c729f53a1072dc936865f4e0b",
+      "bytes": 69056,
+      "rows": 2158
+    },
+    {
+      "member": "sh\\lday\\sh600093.day",
+      "sha256": "51c216cdd9a4c6a156efa3de94c0430c6e0d963f89ae138416bbdc1174bc151a",
+      "bytes": 187616,
+      "rows": 5863
+    },
+    {
+      "member": "sh\\lday\\sh600094.day",
+      "sha256": "06c7a079d6ff171534e4b6b73dadd25030d64ff6ea7771c19f076c7c2be8bcd5",
+      "bytes": 196288,
+      "rows": 6134
+    },
+    {
+      "member": "sh\\lday\\sh600095.day",
+      "sha256": "31b45ebfbe01c39554d89a12541b2f2750010244d3d2665dd5c8cf7fc967b1d6",
+      "bytes": 222976,
+      "rows": 6968
+    },
+    {
+      "member": "sh\\lday\\sh600096.day",
+      "sha256": "88f136b39105c6d41cc16db4241f8f3013bf469a28d2de535f3884fe70c2a327",
+      "bytes": 216640,
+      "rows": 6770
+    },
+    {
+      "member": "sh\\lday\\sh600097.day",
+      "sha256": "b1d9bf31083e61aeb025478abe69ae9c87cf52caa53918fdd9926eb9155a87fc",
+      "bytes": 219392,
+      "rows": 6856
+    },
+    {
+      "member": "sh\\lday\\sh600098.day",
+      "sha256": "99815f18a0a39c6858d4d15c8056ac9c8833477c9ed393dea0f82ffa6d09dcb7",
+      "bytes": 224384,
+      "rows": 7012
+    },
+    {
+      "member": "sh\\lday\\sh600099.day",
+      "sha256": "badf9d0e98fda7d7d452c36f8fa5cedd050dccc9a1295be20820f428baaf1466",
+      "bytes": 219840,
+      "rows": 6870
+    },
+    {
+      "member": "sh\\lday\\sh600100.day",
+      "sha256": "8d0bb522eacfd0a55b6daaf9b209c06f6fce9ef75b44e7431f790cd01b2232d2",
+      "bytes": 219936,
+      "rows": 6873
+    },
+    {
+      "member": "sh\\lday\\sh600101.day",
+      "sha256": "b7c63aeb2c2d159457af2f5d52137d32ae385ffb8c51707c16dd45e26bf8832f",
+      "bytes": 225568,
+      "rows": 7049
+    },
+    {
+      "member": "sh\\lday\\sh600102.day",
+      "sha256": "149d2cc570966efe4832c30970dad6a04eb185a816ef4eb736ab31dc08519c59",
+      "bytes": 101696,
+      "rows": 3178
+    },
+    {
+      "member": "sh\\lday\\sh600103.day",
+      "sha256": "3edd6e87e0ca97d244eca85e603862d224d3c3c6ab6d39cc95e0ed27f26a0bdd",
+      "bytes": 222592,
+      "rows": 6956
+    },
+    {
+      "member": "sh\\lday\\sh600104.day",
+      "sha256": "328d5959f43d4c095ab98b57a61cff24bf04031bf6ab7a83b71867011d61bba3",
+      "bytes": 220512,
+      "rows": 6891
+    },
+    {
+      "member": "sh\\lday\\sh600105.day",
+      "sha256": "fed4380031b00dd552fcf7dcf9279797fca3935ca8d82a2181b908c3aeb73b80",
+      "bytes": 220768,
+      "rows": 6899
+    },
+    {
+      "member": "sh\\lday\\sh600106.day",
+      "sha256": "0e8fcf9acc057befb59db4f2a94c9019459274d2eb732628c3438f3bdedcdf93",
+      "bytes": 222272,
+      "rows": 6946
+    },
+    {
+      "member": "sh\\lday\\sh600107.day",
+      "sha256": "312af0e6d7a50dc5ea02041160767cb44634a99f37fc240a8f85ba1a568fa9a7",
+      "bytes": 220736,
+      "rows": 6898
+    },
+    {
+      "member": "sh\\lday\\sh600108.day",
+      "sha256": "712173a8eb06906e2c2c2c445edc3d3f8e974a6a87d1f112e943cadc250b3dda",
+      "bytes": 223328,
+      "rows": 6979
+    },
+    {
+      "member": "sh\\lday\\sh600109.day",
+      "sha256": "22a923d1ae548be8bcfea9478266d1baa6a904498ed5d9403b1d677977c33b24",
+      "bytes": 220832,
+      "rows": 6901
+    },
+    {
+      "member": "sh\\lday\\sh600110.day",
+      "sha256": "1132c649a9ad527cdcf8733468506df8f42988f14afe2519f586b9ff67dc6f00",
+      "bytes": 213024,
+      "rows": 6657
+    },
+    {
+      "member": "sh\\lday\\sh600111.day",
+      "sha256": "96880581f95eab6d0451265db872592011ad412074577e114a2ad7a36bcc28b0",
+      "bytes": 223680,
+      "rows": 6990
+    },
+    {
+      "member": "sh\\lday\\sh600112.day",
+      "sha256": "6cdf4042f5ac7472bb55fd388e97615e5a399cde6b252ed5c9709acf7357b873",
+      "bytes": 197088,
+      "rows": 6159
+    },
+    {
+      "member": "sh\\lday\\sh600113.day",
+      "sha256": "25bdc5043cebdc97c2ea68ef3aa39f98bf44feb7c3051b6da0cf29e60c040895",
+      "bytes": 216032,
+      "rows": 6751
+    },
+    {
+      "member": "sh\\lday\\sh600114.day",
+      "sha256": "35ca0bfcd5f6a22b91bbe0742a5a9e3dbb0cfd6ea80c53bfdac5144d7927a89f",
+      "bytes": 172352,
+      "rows": 5386
+    },
+    {
+      "member": "sh\\lday\\sh600115.day",
+      "sha256": "72fb1eb112c352f7daff0b8a924b8ab90d84957bc201e22036dbd0235d2ee4e5",
+      "bytes": 218176,
+      "rows": 6818
+    },
+    {
+      "member": "sh\\lday\\sh600116.day",
+      "sha256": "03e1ff891b9b8f31e6ceef29565f6790fb6bb999cd719f27e30ff7884ffa1aeb",
+      "bytes": 223264,
+      "rows": 6977
+    },
+    {
+      "member": "sh\\lday\\sh600117.day",
+      "sha256": "2828c2e0140a5f8b989610d483c85af6ae29168f2344625d5b5fd27700fa5bb9",
+      "bytes": 219904,
+      "rows": 6872
+    },
+    {
+      "member": "sh\\lday\\sh600118.day",
+      "sha256": "95bdef22b2a60cc74b509275a995528fca7accf401c3508f76fd7224e8ce8a04",
+      "bytes": 223616,
+      "rows": 6988
+    },
+    {
+      "member": "sh\\lday\\sh600119.day",
+      "sha256": "eb86969aeec5ecf9590e45dc9beac92ad604d9ba42d08d231c82d0d2063d2eec",
+      "bytes": 220192,
+      "rows": 6881
+    },
+    {
+      "member": "sh\\lday\\sh600120.day",
+      "sha256": "9de1292bb551e732b12b2e066be2b3153a024d85f319a7bdb6ffb569b76f28be",
+      "bytes": 216064,
+      "rows": 6752
+    },
+    {
+      "member": "sh\\lday\\sh600121.day",
+      "sha256": "744d44e7829c90d7e328983496c28e1324ad33f7f57c3f84e3c0fd219a506728",
+      "bytes": 217088,
+      "rows": 6784
+    },
+    {
+      "member": "sh\\lday\\sh600122.day",
+      "sha256": "c5164b557eb55248be1c63280faaf387796822ff98d4abe3e4ffa9fc04755260",
+      "bytes": 182848,
+      "rows": 5714
+    },
+    {
+      "member": "sh\\lday\\sh600123.day",
+      "sha256": "2396daa85a48d7109f0f1bd70af0e2e1d964deae169be5c6b2367b137b464e3d",
+      "bytes": 213984,
+      "rows": 6687
+    },
+    {
+      "member": "sh\\lday\\sh600125.day",
+      "sha256": "5e03d0b93fa970ddeda980b8f31f086f8134c19f0474c1385a2ce8475bf88d2f",
+      "bytes": 218848,
+      "rows": 6839
+    },
+    {
+      "member": "sh\\lday\\sh600126.day",
+      "sha256": "ef03f0869d582e2c4f9db0e63e35fd0584c1340d515fd5229de7bf9473ecce88",
+      "bytes": 217632,
+      "rows": 6801
+    },
+    {
+      "member": "sh\\lday\\sh600127.day",
+      "sha256": "a1ceeb94bfa89601775d3c6cdf1cb96375b939ff5ec93ff76ce7955d068f07b2",
+      "bytes": 216384,
+      "rows": 6762
+    },
+    {
+      "member": "sh\\lday\\sh600128.day",
+      "sha256": "7657dbff429db1919b5374c2496506392c0502355781f11893bf1c943579cf1d",
+      "bytes": 223360,
+      "rows": 6980
+    },
+    {
+      "member": "sh\\lday\\sh600129.day",
+      "sha256": "617666816ab58437319f166ee06fe64f3f928bd012f92fe7e22436157bddb459",
+      "bytes": 217280,
+      "rows": 6790
+    },
+    {
+      "member": "sh\\lday\\sh600130.day",
+      "sha256": "1ba4eb9f223b88ddbc4b48f3bfbfcd8f29176908eaf11b6b457bf0529e7f7174",
+      "bytes": 202016,
+      "rows": 6313
+    },
+    {
+      "member": "sh\\lday\\sh600131.day",
+      "sha256": "73fe110049063551dd3371e153db642198ba155b70e76d9cf85c13a76bba2027",
+      "bytes": 218048,
+      "rows": 6814
+    },
+    {
+      "member": "sh\\lday\\sh600132.day",
+      "sha256": "62ef9f98d49bbf3845847e1bda88e02d09a713f9b4c0dcb19530b3f049bdd284",
+      "bytes": 220256,
+      "rows": 6883
+    },
+    {
+      "member": "sh\\lday\\sh600133.day",
+      "sha256": "d3b0c6fc5746d4b1741bc0e7dd9d9c352eb4acb3857604bd30d013b4b64987e3",
+      "bytes": 210368,
+      "rows": 6574
+    },
+    {
+      "member": "sh\\lday\\sh600135.day",
+      "sha256": "f435b741b8a42cbc035708dc17c723514bb349ffdde717712c56ab6ae92cf795",
+      "bytes": 220032,
+      "rows": 6876
+    },
+    {
+      "member": "sh\\lday\\sh600136.day",
+      "sha256": "7de03dc004a832d0895741465c6316e3a918aa265376eb658f60b3d0630429c2",
+      "bytes": 201344,
+      "rows": 6292
+    },
+    {
+      "member": "sh\\lday\\sh600137.day",
+      "sha256": "d637732e7bf39ef6a1e3b9ba37e5b07b76bb9d8d027aef59734f6dd8e1f6198a",
+      "bytes": 215104,
+      "rows": 6722
+    },
+    {
+      "member": "sh\\lday\\sh600138.day",
+      "sha256": "cc0a430659f0f9f1a0923f6d9c28e2ff02b8f59f789c0e2286be537d10824794",
+      "bytes": 221472,
+      "rows": 6921
+    },
+    {
+      "member": "sh\\lday\\sh600139.day",
+      "sha256": "90eb410bd2f909e69a331babb072ae6201354b741d4d5de94d9f1d606fc37ad0",
+      "bytes": 180032,
+      "rows": 5626
+    },
+    {
+      "member": "sh\\lday\\sh600141.day",
+      "sha256": "d382b11f2901413cd46d4b711ac4a9cc0177b5b39c927ad1acdb139ef2cd20bb",
+      "bytes": 207872,
+      "rows": 6496
+    },
+    {
+      "member": "sh\\lday\\sh600143.day",
+      "sha256": "2ecc0f4ef32ae917668d45af487f428cc81cdda5c5356b2ab483fbf8d8a01fbd",
+      "bytes": 169088,
+      "rows": 5284
+    },
+    {
+      "member": "sh\\lday\\sh600145.day",
+      "sha256": "ea12ce5e907527a6895aeee1f2c59bbb474e83e2af900103419979ed41979470",
+      "bytes": 129504,
+      "rows": 4047
+    }
+  ]
+}

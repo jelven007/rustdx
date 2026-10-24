@@ -1,0 +1,7 @@
+[1m[33mwarning[0m[1m:[0m Patch `jelven-rustdx-complete v1.12.2 (/private/tmp/rustdx-stage3-package-check/unpacked/jelven-rustdx-complete-1.12.2)` was not used in the crate graph.
+Perhaps you misspelled the source URL being patched.
+Possible URLs for `[patch.<URL>]`:
+    /private/tmp/rustdx-stage3-package-check/package-workspace/crates/rustdx-core
+[1m[32m     Locking[0m 215 packages to latest Rust 1.89 compatible versions
+[1m[36m      Adding[0m jiff-static v0.2.5 [1m[33m(available: v0.2.38)[0m
+[1m[36m      Adding[0m zip v2.4.2 [1m[33m(available: v8.6.0)[0m

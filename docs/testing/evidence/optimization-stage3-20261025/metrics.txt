@@ -1,0 +1,73 @@
+# TYPE rustdx_jobs gauge
+rustdx_jobs{state="released"} 2
+# TYPE rustdx_events_total counter
+rustdx_events_total 8
+# TYPE rustdx_unfinished_attempts gauge
+rustdx_unfinished_attempts 0
+# TYPE rustdx_publication_timestamp_seconds gauge
+rustdx_publication_timestamp_seconds{dataset="optimization-drill"} 1792858899
+# TYPE rustdx_metrics_timestamp_seconds gauge
+rustdx_metrics_timestamp_seconds 1792858920
+# Persisted per-process records; unavailable workers are not zero-network samples.
+rustdx_observed_acquisition_timeouts_total{owner="controller"} 0
+rustdx_observed_empty_responses_total{owner="controller"} 0
+rustdx_observed_queue_wait_micros_total{owner="controller"} 0
+rustdx_observed_records_complete_total{owner="controller"} 2
+rustdx_observed_request_failures_total{owner="controller"} 0
+rustdx_observed_requests_total{owner="controller"} 0
+rustdx_observed_acquisition_timeouts_total{owner="worker"} 0
+rustdx_observed_empty_responses_total{owner="worker"} 0
+rustdx_observed_queue_wait_micros_total{owner="worker"} 0
+rustdx_observed_records_complete_total{owner="worker"} 2
+rustdx_observed_request_failures_total{owner="worker"} 0
+rustdx_observed_requests_total{owner="worker"} 0
+rustdx_stage_calls_total{owner="controller",stage="download"} 0
+rustdx_stage_failures_total{owner="controller",stage="download"} 0
+rustdx_stage_completed_seconds_total{owner="controller",stage="download"} 0
+rustdx_stage_calls_total{owner="controller",stage="extract"} 0
+rustdx_stage_failures_total{owner="controller",stage="extract"} 0
+rustdx_stage_completed_seconds_total{owner="controller",stage="extract"} 0
+rustdx_stage_calls_total{owner="controller",stage="parse"} 2
+rustdx_stage_failures_total{owner="controller",stage="parse"} 0
+rustdx_stage_completed_seconds_total{owner="controller",stage="parse"} 0.04916825
+rustdx_stage_calls_total{owner="controller",stage="readback"} 2
+rustdx_stage_failures_total{owner="controller",stage="readback"} 0
+rustdx_stage_completed_seconds_total{owner="controller",stage="readback"} 0.000234959
+rustdx_stage_calls_total{owner="controller",stage="snapshot"} 2
+rustdx_stage_failures_total{owner="controller",stage="snapshot"} 0
+rustdx_stage_completed_seconds_total{owner="controller",stage="snapshot"} 5.040734958
+rustdx_stage_calls_total{owner="controller",stage="sort"} 0
+rustdx_stage_failures_total{owner="controller",stage="sort"} 0
+rustdx_stage_completed_seconds_total{owner="controller",stage="sort"} 0
+rustdx_stage_calls_total{owner="controller",stage="source"} 2
+rustdx_stage_failures_total{owner="controller",stage="source"} 0
+rustdx_stage_completed_seconds_total{owner="controller",stage="source"} 7.932415834
+rustdx_stage_calls_total{owner="controller",stage="write"} 2
+rustdx_stage_failures_total{owner="controller",stage="write"} 0
+rustdx_stage_completed_seconds_total{owner="controller",stage="write"} 3.046765208
+rustdx_stage_calls_total{owner="worker",stage="download"} 0
+rustdx_stage_failures_total{owner="worker",stage="download"} 0
+rustdx_stage_completed_seconds_total{owner="worker",stage="download"} 0
+rustdx_stage_calls_total{owner="worker",stage="extract"} 0
+rustdx_stage_failures_total{owner="worker",stage="extract"} 0
+rustdx_stage_completed_seconds_total{owner="worker",stage="extract"} 0
+rustdx_stage_calls_total{owner="worker",stage="parse"} 512
+rustdx_stage_failures_total{owner="worker",stage="parse"} 0
+rustdx_stage_completed_seconds_total{owner="worker",stage="parse"} 0.008469915
+rustdx_stage_calls_total{owner="worker",stage="readback"} 4
+rustdx_stage_failures_total{owner="worker",stage="readback"} 0
+rustdx_stage_completed_seconds_total{owner="worker",stage="readback"} 0.9947035419999999
+rustdx_stage_calls_total{owner="worker",stage="snapshot"} 256
+rustdx_stage_failures_total{owner="worker",stage="snapshot"} 0
+rustdx_stage_completed_seconds_total{owner="worker",stage="snapshot"} 0.507647086
+rustdx_stage_calls_total{owner="worker",stage="sort"} 0
+rustdx_stage_failures_total{owner="worker",stage="sort"} 0
+rustdx_stage_completed_seconds_total{owner="worker",stage="sort"} 0
+rustdx_stage_calls_total{owner="worker",stage="source"} 2
+rustdx_stage_failures_total{owner="worker",stage="source"} 0
+rustdx_stage_completed_seconds_total{owner="worker",stage="source"} 0.000257959
+rustdx_stage_calls_total{owner="worker",stage="write"} 772
+rustdx_stage_failures_total{owner="worker",stage="write"} 0
+rustdx_stage_completed_seconds_total{owner="worker",stage="write"} 0.9582206360000001
+# TYPE rustdx_root_free_bytes gauge
+rustdx_root_free_bytes 357482151936

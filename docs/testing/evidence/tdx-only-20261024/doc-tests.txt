@@ -1,0 +1,105 @@
+    Finished `test` profile [optimized + debuginfo] target(s) in 0.61s
+   Doc-tests rustdx_cli
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests rustdx_complete
+
+running 73 tests
+test src/builder.rs - builder (line 14) - compile ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::category (line 164) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::min1 (line 360) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::build (line 225) ... ok
+test src/builder.rs - builder::KlineBuilder (line 47) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::min30 (line 321) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::min15 (line 334) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::market (line 133) ... ok
+test src/cache.rs - cache (line 14) - compile ... ok
+test src/cache.rs - cache::Cache (line 473) - compile ... ok
+test src/cache.rs - cache::Cache<B>::get_or_fetch (line 597) - compile ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::code (line 94) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::daily (line 295) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::monthly (line 386) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::count (line 204) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::start (line 184) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::min60 (line 308) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::new (line 71) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::symbol (line 107) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::weekly (line 373) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::build_request (line 239) ... ok
+test src/cache.rs - cache::Cache<B>::new (line 515) ... ok
+test src/cache.rs - cache::FileCache::new (line 304) ... ok
+test src/cache.rs - cache::MemoryCache (line 115) ... ok
+test src/builder.rs - builder::KlineBuilder<'a>::min5 (line 347) ... ok
+test src/cache.rs - cache::Cache<MemoryCache>::memory (line 652) ... ok
+test src/calendar.rs - calendar::TradingCalendar::count_trading_days (line 318) ... ok
+test src/calendar.rs - calendar::TradingCalendar::get_trading_days (line 234) ... ok
+test src/calendar.rs - calendar::TradingCalendar::current_trading_day (line 355) ... ok
+test src/file/gbbq/mod.rs - file::gbbq::Gbbq::category (line 40) ... ignored
+test src/cache.rs - cache::Cache<FileCache>::file (line 673) ... ok
+test src/calendar.rs - calendar::TradingCalendar::get_trading_days_before (line 274) ... ok
+test src/calendar.rs - calendar::TradingCalendar::next_trading_day (line 199) ... ok
+test src/calendar.rs - calendar::TradingCalendar::is_trading_time (line 136) ... ok
+test src/calendar.rs - calendar (line 14) ... ok
+test src/error.rs - error (line 14) ... ok
+test src/indicators.rs - indicators (line 19) ... ok
+test src/lib.rs - limit (line 34) ... ignored
+test src/tcp/ip.rs - tcp::ip::check_alive (line 71) - compile ... ok
+test src/tcp/ip.rs - tcp::ip::check_alive_by_rtt (line 116) - compile ... ok
+test src/tcp/mod.rs - tcp::Tcp::reconnect (line 289) ... ignored
+test src/tcp/mod.rs - tcp::Tcp::retry (line 321) ... ignored
+test src/tcp/stock/block_info.rs - tcp::stock::block_info::get_block_info (line 150) ... ignored
+test src/tcp/stock/client.rs - tcp::stock::client (line 6) ... ignored
+test src/tcp/stock/client.rs - tcp::stock::client::Client::k_batch (line 235) ... ignored
+test src/tcp/stock/company_info.rs - tcp::stock::company_info::CompanyInfoCategory (line 20) ... ignored
+test src/tcp/stock/finance_info.rs - tcp::stock::finance_info::FinanceInfo (line 11) ... ignored
+test src/calendar.rs - calendar::TradingCalendar::previous_trading_day (line 165) ... ok
+test src/tcp/stock/history_minute_time.rs - tcp::stock::history_minute_time::HistoryMinuteTime (line 14) ... ignored
+test src/tcp/stock/history_transaction.rs - tcp::stock::history_transaction::HistoryTransaction (line 13) ... ignored
+test src/indicators.rs - indicators::kdj (line 615) ... ok
+test src/calendar.rs - calendar::TradingCalendar::market_trading_day (line 384) ... ok
+test src/calendar.rs - calendar::TradingCalendar::is_trading_day (line 106) ... ok
+test src/tcp/stock/index_kline.rs - tcp::stock::index_kline::IndexKline (line 10) ... ignored
+test src/tcp/stock/minute_time.rs - tcp::stock::minute_time::MinuteTime (line 12) ... ignored
+test src/tcp/stock/mod.rs - tcp::stock::stocks (line 81) ... ignored
+test src/tcp/stock/quotes.rs - tcp::stock::quotes::SecurityQuotes (line 11) ... ignored
+test src/tcp/stock/security_list.rs - tcp::stock::security_list::SecurityList (line 12) ... ignored
+test src/tcp/stock/transaction.rs - tcp::stock::transaction::Transaction (line 12) ... ignored
+test src/tcp/stock/validator.rs - tcp::stock::validator (line 17) ... ignored
+test src/indicators.rs - indicators::ema (line 165) ... ok
+test src/indicators.rs - indicators::macd (line 239) ... ok
+test src/indicators.rs - indicators::bollinger_bands (line 516) ... ok
+test src/indicators.rs - indicators::sma (line 55) ... ok
+test src/cache.rs - cache::FileCache (line 275) ... ok
+test src/cache.rs - cache::MemoryCache::new (line 143) ... ok
+test src/indicators.rs - indicators::rsi (line 339) ... ok
+test src/tcp/stock/kline_request.rs - tcp::stock::kline_request::KlineRequest (line 16) ... ok
+test src/tcp/stock/mod.rs - tcp::stock::market_of (line 58) ... ok
+test src/tcp/stock/requests.rs - tcp::stock::requests::QuotesRequest (line 42) ... ok
+test src/tcp/stock/validator.rs - tcp::stock::validator::detect_anomalies (line 304) ... ok
+test src/tcp/stock/validator.rs - tcp::stock::validator::validate_kline_continuity (line 140) ... ok
+test src/tcp/stock/validator.rs - tcp::stock::validator::validate_finance_consistency (line 228) ... ok
+
+test result: ok. 55 passed; 0 failed; 18 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+
+running 2 tests
+test src/tcp/stock/requests.rs - tcp::stock::requests::QuotesRequest (line 49) - compile fail ... ok
+test src/tcp/stock/kline_request.rs - tcp::stock::kline_request::KlineRequest (line 23) - compile fail ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+   Doc-tests rustdx_runner
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests tests_integration
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

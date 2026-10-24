@@ -1,0 +1,139 @@
+{
+  "status": "planned_not_implemented",
+  "created_utc": "2026-10-24T05:35:26.784549+00:00",
+  "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "workspace_is_dirty": true,
+  "plan": "docs/development/TRADE_AMOUNT_SEMANTICS_FIX_PLAN_20261024.md",
+  "plan_sha256": "53ef94f15d20e96eb1fc90b9887110c83d06cc54b12089443a6c81baaac73167",
+  "scope": "New explicit record estimates, separately reported turnover, provenance and reconciliation; no exchange-level exact amount claim.",
+  "decisions": {
+    "public_estimate_entrypoints": "pages_and_collections_with_query_identity",
+    "estimate_money": "checked_i128_fen_json_decimal_string",
+    "reported_money": "preserve_source_binary32_encoding_and_f64_value",
+    "missing_source": "explicit_unavailable_no_estimate_fallback",
+    "fixed_price_records": "remain_estimates_with_reported_quantity_precision",
+    "combined_source_turnover": "requires_regular_and_after_hours_source_components",
+    "reconcile": "unique_exact_cumulative_volume_prefix_or_explicit_failure"
+  },
+  "source_sha256": {
+    "src/tcp/stock/trade_models.rs": "fd6412d796a9b58ecf44077485f8f7706d811c9af15553c4641b4194f8364bfa",
+    "src/tcp/stock/transaction.rs": "c01e698d282b4a0401cbe6a00ceb108a8c6237e1c4ff77ef46ec7bb3113b8f38",
+    "src/tcp/stock/enhanced_history_transaction.rs": "cbc05050491909cfafcd59d25c88b286d1a9453422ae805fb91a99f8aea1c175",
+    "src/tcp/stock/transaction_pagination.rs": "61edd4099b0a65e6a25d2a578042b1ac06a770c4d3bdc1d7f76cc460e2ed4e0d",
+    "src/tcp/stock/client/transactions.rs": "505a293fb9934a224f8c054ef86e2b5a3c55e15517af4e830b464a733a491044",
+    "src/tcp/stock/kline_request.rs": "5bded1466df316b5d00cf9d9a2fb871080b47cb25466c6d334607a15a71b028f",
+    "src/tcp/helper.rs": "0075197a12abd0fadefb67a902303ace8aed9d09f33715e67d357dcebf92311c",
+    "src/data.rs": "8068d653c60078264683a497c6c114c9a87c960eca624a04d6e2abcd106b7d46",
+    "src/tcp/stock/mod.rs": "9cbc512971da5d684a7654a77c133a2431bb0195e080fa68d539a09220b4d4f4",
+    "examples/transaction_all.rs": "6a382dc414763d767ae922f2434168f9ff9f85eca8090d1fc84f1cf7183b2793"
+  },
+  "evidence_sha256": {
+    "docs/validation/ENHANCED_HISTORY_AMOUNT_DIFFERENCE_20261024.md": "56574ee9af392d07ff194dc4264e81acd2f4f45155ec88aae48ac84e063fe0ca",
+    "docs/validation/evidence/enhanced-history-amount-20261024/results.json": "82212d8f8efa49de24c5f84b51466333725a4060c9f9ef8936fb5be2b9a5bec9",
+    "docs/validation/evidence/enhanced-history-amount-20261024/inputs.json": "95624fb81a3f27dcc4e86f3c5a255b666aecdefc00be17c7e464fb5a36624586",
+    "docs/validation/evidence/enhanced-history-amount-20261024/diagnostics.json": "98224286393102bc9813242715ddc6784462c847e08c22205b9087882a39205a"
+  },
+  "tasks": [
+    {
+      "id": "T01",
+      "phase": "P1",
+      "depends_on": [],
+      "objective": "Freeze independent live fixtures and review actual call sites",
+      "status": "planned"
+    },
+    {
+      "id": "T02",
+      "phase": "P1",
+      "depends_on": [
+        "T01"
+      ],
+      "objective": "Define amount origin, units, unavailability and schema",
+      "status": "planned"
+    },
+    {
+      "id": "T03",
+      "phase": "P1",
+      "depends_on": [
+        "T02"
+      ],
+      "objective": "Implement checked integer estimate and page adapters",
+      "status": "planned"
+    },
+    {
+      "id": "T04",
+      "phase": "P1",
+      "depends_on": [
+        "T03"
+      ],
+      "objective": "Summarize phases and qualifications",
+      "status": "planned"
+    },
+    {
+      "id": "T05",
+      "phase": "P2",
+      "depends_on": [
+        "T01",
+        "T02"
+      ],
+      "objective": "Retain raw amount codes and decode source amount safely",
+      "status": "planned"
+    },
+    {
+      "id": "T06",
+      "phase": "P2",
+      "depends_on": [
+        "T05"
+      ],
+      "objective": "Fetch reported turnover with bounded date and source checks",
+      "status": "planned"
+    },
+    {
+      "id": "T07",
+      "phase": "P2",
+      "depends_on": [
+        "T04",
+        "T06"
+      ],
+      "objective": "Integrate separate estimate and source results",
+      "status": "planned"
+    },
+    {
+      "id": "T08",
+      "phase": "P3",
+      "depends_on": [
+        "T07"
+      ],
+      "objective": "Align unique cumulative-volume boundaries and expose differences",
+      "status": "planned"
+    },
+    {
+      "id": "T09",
+      "phase": "P3",
+      "depends_on": [
+        "T08"
+      ],
+      "objective": "Validate real fixtures and document migration",
+      "status": "planned"
+    },
+    {
+      "id": "T10",
+      "phase": "P3",
+      "depends_on": [
+        "T09"
+      ],
+      "objective": "Run MSRV format Clippy and relevant tests",
+      "status": "planned"
+    }
+  ],
+  "acceptance": {
+    "regular_estimate_yuan": 27918010839,
+    "reported_daily_yuan": 27918479360,
+    "reported_minute_sum_yuan": 27918479958.875,
+    "estimate_minus_daily_yuan": -468521,
+    "raw_events": 4876,
+    "closing_reported_lots_remain": 4094,
+    "after_hours_estimate_yuan": 11088603,
+    "no_inferred_share_writeback": true
+  },
+  "validation_this_turn": "Source inspection, evidence numerical assertions and document/link checks only; no Rust source changed or implementation checks claimed."
+}

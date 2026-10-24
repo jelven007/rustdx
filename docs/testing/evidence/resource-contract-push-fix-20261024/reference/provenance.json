@@ -1,0 +1,9 @@
+{
+  "stats_tar_path": "docs/testing/evidence/eltdx-3.3.0-commands-20261024/eltdx-3.3.0.tar.gz",
+  "stats_tar_sha256": "16fad43e518618728a2ac5c0a5d0abf0a3bcce3ccb12daccec55d8fa912d9a9f",
+  "stats_tar_member": "eltdx-3.3.0/src/eltdx/stats.py",
+  "reference_bytes_sha256": {
+    "eltdx-stats.py": "0e0c0e36f6750e3ea34c47699db12dff3d7e466a776fa103d274e7d9ef6712b2",
+    "eltdx-resources.rs": "84a8785e9a3d48679940b92134cc94f50627d38a745da5bc2b40929d640911b2"
+  }
+}

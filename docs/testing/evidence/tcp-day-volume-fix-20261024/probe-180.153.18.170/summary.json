@@ -1,0 +1,47 @@
+{
+  "endpoint": "180.153.18.170:7709",
+  "finished_utc": "2026-10-24T13:59:29.146229Z",
+  "queries": [
+    {
+      "decoded": true,
+      "name": "052d-9-1-600000"
+    },
+    {
+      "decoded": true,
+      "name": "052d-4-1-600000"
+    },
+    {
+      "decoded": true,
+      "name": "052b-1-600000"
+    },
+    {
+      "decoded": true,
+      "name": "052d-9-1-600519"
+    },
+    {
+      "decoded": true,
+      "name": "052d-4-1-600519"
+    },
+    {
+      "decoded": true,
+      "name": "052b-1-600519"
+    },
+    {
+      "decoded": true,
+      "name": "052d-9-0-000001"
+    },
+    {
+      "decoded": true,
+      "name": "052d-4-0-000001"
+    },
+    {
+      "decoded": true,
+      "name": "052b-0-000001"
+    }
+  ],
+  "request_spacing_ms": 250,
+  "source": "live_tcp",
+  "started_utc": "2026-10-24T13:59:26.001991Z",
+  "total_timeout_seconds": 180,
+  "wire_frames": 10
+}

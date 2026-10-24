@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "checked_manifest": "docs/testing/evidence/optimization-final-20261025/source-manifest.json",
+  "checked_files": 194,
+  "changed_since_checks": [
+    ".gitignore"
+  ],
+  "additional_delivery_files": [
+    ".gitattributes",
+    "docs/release/OPTIMIZATION_SOURCE_DELIVERY_20261025.md",
+    "docs/testing/evidence/optimization-source-delivery-20261025/"
+  ],
+  "ignored_metadata_in_checked_manifest": [
+    "crates/rustdx-core/src/.DS_Store",
+    "crates/rustdx-core/src/tcp/stock/client/.DS_Store"
+  ],
+  "whitespace_check": "Frozen evidence retains exact bytes; three source/license findings reproduce original tracked content and are not new edits.",
+  "production_source": "identical to completed engineering checks",
+  "reason": "explicitly exclude only oversized compiled historical collectors from ordinary Git",
+  "final_checks": "docs/testing/evidence/optimization-final-20261025/final-engineering.json",
+  "package_checks": "docs/testing/evidence/optimization-final-20261025/package/preflight.json"
+}

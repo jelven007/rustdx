@@ -1,0 +1,12 @@
+{
+  "source": "https://qt.gtimg.cn/q=sz000001,sz159915,sh510300,sh018003,sz101123",
+  "source_raw_sha256": "c0a46f21bc22dc96673d7eb621d53d487b15f0fa503d9267247e55be8663c60f",
+  "scope": "2026-10-23 closed-session prices fetched 2026-10-24; Tencent independently corroborates price scale, not universal TDX validation",
+  "rows": [
+    {"market":0,"code":"000001","decimal":2,"timestamp":"20261023161500","tolerance":0.005,"ohlc":[11.20,11.30,11.27,11.35,11.17],"bids":[11.20,11.19,11.18,11.17,11.16],"asks":[11.21,11.22,11.23,11.24,11.25]},
+    {"market":0,"code":"159915","decimal":3,"timestamp":"20261023161427","tolerance":0.0005,"ohlc":[2.702,2.592,2.549,2.714,2.511],"bids":[2.702,2.701,2.700,2.699,2.698],"asks":[2.703,2.704,2.705,2.706,2.707]},
+    {"market":1,"code":"510300","decimal":3,"timestamp":"20261023161441","tolerance":0.0005,"ohlc":[4.178,4.107,4.080,4.186,4.031],"bids":[4.178,4.177,4.176,4.175,4.174],"asks":[4.179,4.180,4.181,4.182,4.183]},
+    {"market":1,"code":"018003","decimal":4,"timestamp":"20261023161440","tolerance":0.0005,"ohlc":[111.305,111.287,111.300,111.320,111.300],"bids":[111.030,110.987,105.000,0,0],"asks":[111.350,111.385,111.400,111.880,111.899]},
+    {"market":0,"code":"101123","decimal":4,"timestamp":"20261023161103","tolerance":0.0005,"ohlc":[121.461,121.461,0,0,0],"bids":[0,0,0,0,0],"asks":[0,0,0,0,0]}
+  ]
+}

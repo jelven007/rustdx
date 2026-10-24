@@ -1,0 +1,61 @@
+{
+  "binary_sha256": "fc8421829931a3c8148ab76ca7cee333b7a15c3f056ed77128243f839d8ba471",
+  "processes": [
+    {
+      "endpoint": "115.238.56.198:7709",
+      "command": [
+        "target/debug/examples/validate_recent_auction",
+        "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+        "115.238.56.198:7709",
+        "--date-selector-check"
+      ],
+      "pid": 84168,
+      "log": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198.log"
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "command": [
+        "target/debug/examples/validate_recent_auction",
+        "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+        "180.153.18.170:7709",
+        "--date-selector-check"
+      ],
+      "pid": 84169,
+      "log": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170.log"
+    }
+  ],
+  "source_files": {
+    "Cargo.toml": {
+      "sha256": "4d47b479225f8a85126cef336d03c7c51e5b59b51f4c910f8689ca444de98c33",
+      "bytes": 645
+    },
+    "Cargo.lock": {
+      "sha256": "1486729477f09a15dd30d30f221c873dcab5f9d2e3873eb8ae9e3df71efd885e",
+      "bytes": 43409
+    },
+    "crates/rustdx-core/Cargo.toml": {
+      "sha256": "5d8a4ab979f83c6d1c85ace45aa212efa435e6e1e6424066aab75989c88424ba",
+      "bytes": 1102
+    },
+    "crates/rustdx-core/src/tcp/stock/recent_minutes.rs": {
+      "sha256": "3a9b38d2babb9726f687073b167a0333315fa04cb3f78f94c2028ee8cc847a06",
+      "bytes": 6263
+    },
+    "crates/rustdx-core/examples/validate_recent_auction.rs": {
+      "sha256": "f6ea0a38e15b4c1b2f1d25827e8adce3e2403b3c8961140b508a0035d8f7ff93",
+      "bytes": 10798
+    }
+  },
+  "toolchain": "Rust 1.89.0 / macOS",
+  "build_command": [
+    ".cargo/bin/cargo",
+    "+1.89.0",
+    "build",
+    "-p",
+    "jelven-rustdx-complete",
+    "--example",
+    "validate_recent_auction",
+    "--offline",
+    "--locked"
+  ]
+}

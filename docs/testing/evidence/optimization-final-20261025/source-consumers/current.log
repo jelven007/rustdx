@@ -1,0 +1,5 @@
+     Locking 71 packages to latest Rust 1.89.0 compatible versions
+   Compiling jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+   Compiling rustdx-consumer-current v0.0.0 (/private/tmp/rustdx-optimization-20261024/final-source-consumers/current)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 9.36s
+     Running `/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/rustdx-consumer-current`

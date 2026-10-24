@@ -1,0 +1,51 @@
+[
+  {
+    "name": "fmt",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.937774584
+  },
+  {
+    "name": "related-tests",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "jelven-rustdx-complete",
+      "--test",
+      "quote_precision",
+      "--test",
+      "modern_commands",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 0.663038875
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "seconds": 1.3221799579999998
+  }
+]

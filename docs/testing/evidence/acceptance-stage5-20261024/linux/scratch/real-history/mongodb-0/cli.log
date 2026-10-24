@@ -1,0 +1,17 @@
+[2026-10-24T12:42:33Z INFO  rustdx::io] dir: "/tmp/rustdx-real-day-brrv_lff/source" day 文件数量：128
+[2026-10-24T12:42:33Z INFO  rustdx::io] "/tmp/rustdx-real-day-brrv_lff/source"	已完成：128
+[2026-10-24T12:42:33Z INFO  rustdx::io] 解析完成 → 文件 128 个 / 行 779200 行 / 输出 45.4 MiB / 耗时 0.3s
+2026-10-24T20:42:34.833+0800	connected to: mongodb://127.0.0.1:27018
+2026-10-24T20:42:37.833+0800	[##......................] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	4.27MB/45.4MB (9.4%)
+2026-10-24T20:42:40.834+0800	[####....................] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	8.45MB/45.4MB (18.6%)
+2026-10-24T20:42:43.833+0800	[######..................] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	12.6MB/45.4MB (27.7%)
+2026-10-24T20:42:46.834+0800	[########................] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	16.7MB/45.4MB (36.9%)
+2026-10-24T20:42:49.833+0800	[###########.............] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	20.8MB/45.4MB (45.9%)
+2026-10-24T20:42:52.833+0800	[#############...........] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	24.9MB/45.4MB (54.8%)
+2026-10-24T20:42:55.833+0800	[###############.........] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	28.9MB/45.4MB (63.8%)
+2026-10-24T20:42:58.833+0800	[#################.......] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	33.0MB/45.4MB (72.6%)
+2026-10-24T20:43:01.834+0800	[###################.....] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	37.0MB/45.4MB (81.5%)
+2026-10-24T20:43:04.833+0800	[#####################...] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	41.1MB/45.4MB (90.5%)
+2026-10-24T20:43:07.833+0800	[#######################.] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	45.1MB/45.4MB (99.4%)
+2026-10-24T20:43:08.050+0800	[########################] rustdx_real_acceptance_5a07997a0c814289aa5dc60d96b893c2.bars	45.4MB/45.4MB (100.0%)
+2026-10-24T20:43:08.050+0800	779200 document(s) imported successfully. 0 document(s) failed to import.

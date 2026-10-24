@@ -1,0 +1,1 @@
+Code: 469. DB::Exception: Constraint `share_count` for table rustdx_recovery_3291b0df13ac4945bff839756d5e6b9a.bars (b1c1f3a3-04e0-49e5-b306-5fcfc5998c64) is violated at row 1. Expression: ((volume_shares >= 0) AND (volume_shares = floor(volume_shares))). Column values: volume_shares = 1.5. (VIOLATED_CONSTRAINT) (version 25.8.33.6 (official build))

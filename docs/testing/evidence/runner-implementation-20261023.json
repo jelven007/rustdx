@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-23",
+  "implementation_base_commit": "dce1fbd",
+  "scope": "Single-host local A-share raw daily bars; immutable file releases, versioned ClickHouse/MongoDB, catalog CAS, TCP evidence interfaces and isolated controller restore.",
+  "authorization": "Local implementation and commit; no push, crate publication or production deployment.",
+  "environment": {
+    "os": "macOS 27.0.1",
+    "architecture": "arm64",
+    "rust": "1.89.0",
+    "edition": "2024",
+    "clickhouse": "26.11.1.548 (experimental macOS binary)",
+    "mongodb": "8.0.16",
+    "mongosh": "2.5.10",
+    "rusqlite": "0.40.2, bundled SQLite and online backup",
+    "async_runtime_added": false
+  },
+  "stage2_binaries_used_by_tests": {
+    "rustdx_debug_sha256": "43bcaa4dbb27c55bf518f09cadb692085d2d988698ee8da2e0ab7e90c1384003",
+    "runner_debug_sha256": "98611c4cb9ec17a61af3a486abf81a63d0dd6c7657c53f628b53c7d39f5fbb98",
+    "note": "The final uncompressed-frame move optimization was subsequently covered by workspace tests and Clippy. These hashes identify the stage2 debug builds, not a published crate."
+  },
+  "fixtures": {
+    "kind": "Explicitly synthetic market facts and daily records, using real CLI and real isolated local database services.",
+    "securities": 600,
+    "date_from": "2026-07-06",
+    "date_through": "2026-07-07",
+    "rows_per_release": 1200,
+    "source_revisions": 2,
+    "publisher_batch_rows": 512,
+    "announcements_are_real_market_evidence": false,
+    "full_market_or_full_history_acceptance": false
+  },
+  "stage2_checks": {
+    "temporary_log": "/tmp/rustdx-runner-recovery-final.log",
+    "log_sha256": "88d79b7d66ba2f25a7903f216b3818bd5b210e3987ee04cdecd3542fdf68388d",
+    "commands": [
+      {"command": "cargo +1.89.0 fmt --all", "exit_code": 0},
+      {"command": "cargo +1.89.0 clippy --workspace --all-targets --all-features -- -D warnings", "exit_code": 0},
+      {"command": "cargo +1.89.0 build -p jelven-rustdx-cli -p rustdx-runner", "exit_code": 0},
+      {"command": "cargo +1.89.0 test -p rustdx-runner -- --include-ignored", "exit_code": 0}
+    ],
+    "test_environment_names": [
+      "RUSTDX_TEST_CLI",
+      "RUSTDX_TEST_CH_URL",
+      "RUSTDX_TEST_CH_USER",
+      "RUSTDX_TEST_CH_PASSWORD",
+      "RUSTDX_TEST_MONGO_URI",
+      "RUSTDX_TEST_MONGOSH"
+    ],
+    "results": {
+      "library_passed": 1,
+      "control_plane_passed": 12,
+      "wire_archive_passed": 3,
+      "total_passed": 16,
+      "failed": 0,
+      "ignored": 0,
+      "control_plane_seconds": 67.20
+    }
+  },
+  "verified_invariants": [
+    "Job deduplication and one active Attempt survive reopening the WAL ledger.",
+    "Catalog CAS and publication event failures roll back the pointer and Job state together; events are append-only.",
+    "Unknown security history is refused before spawning a worker; missing expected keys do not advance the catalog.",
+    "All explicitly exempt keys can publish empty partitions with collector_executed=false.",
+    "Managed deadlines terminate a worker; recovery never blindly recollects an interrupted or already sealed source.",
+    "Two source revisions publish isolated releases; readers pinned to catalog 1 export all 1200 original rows after catalog 2 exists.",
+    "A directory transaction failure after both database targets are verified recovers without INSERT or changing the original verified Receipt.",
+    "Complete requests are fsynced and recorded before database transport; a lost write acknowledgement remains reconciliation_required and recovery does not increase INSERT count.",
+    "Exact full-field readback plus complete release row counts reject ClickHouse duplicate rows and MongoDB extra keys, preserving the previous output and catalog pointer.",
+    "SQLite online backup includes committed WAL and immutable inputs, releases, catalogs and database request/response evidence; isolated restore validates hashes and references.",
+    "TCP requests are observed before transmission and complete compressed frames before decoding, including handshakes and reconnects.",
+    "Compressed-frame replay through the checked parser passes; invalid compression is archived, truncation is marked failed, tampering is rejected and exhausted archives refuse the handshake before transmission."
+  ],
+  "final_workspace_checks": {
+    "temporary_log": "/tmp/rustdx-runner-workspace-final.log",
+    "log_sha256": "f8799e4d45c03586734987a1fe8b51c7e19b9303e8020f2e2fb23aee96060d25",
+    "commands": [
+      {"command": "cargo +1.89.0 fmt --all -- --check", "exit_code": 0},
+      {"command": "cargo +1.89.0 clippy --workspace --all-targets --all-features --locked --offline -- -D warnings", "exit_code": 0},
+      {"command": "RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo +1.89.0 test --workspace --all-features --locked --offline", "exit_code": 0}
+    ],
+    "selected_results": {
+      "core_unit_passed": 160,
+      "cli_library_unit_passed": 9,
+      "cli_command_unit_passed": 31,
+      "core_doc_passed": 55,
+      "core_compile_fail_passed": 2,
+      "core_network_doc_ignored": 18,
+      "runner_library_passed": 1,
+      "runner_control_plane_passed": 8,
+      "runner_control_plane_ignored": 4,
+      "runner_wire_archive_passed": 3
+    },
+    "external_skip_note": "Existing opt-in network/database tests may return early and be displayed as ok; that display is not online acceptance. The four ignored runner cases were separately executed in stage2. Do not sum repeated runs.",
+    "after_final_core_optimization": true
+  },
+  "final_build_and_package_lists": {
+    "temporary_log": "/tmp/rustdx-runner-packaging-final.log",
+    "log_sha256": "a17675f303e359d12f23ec26ed5757d516383b3303fad2d8237b95b246c6a3bc",
+    "commands": [
+      {"command": "cargo +1.89.0 build -p jelven-rustdx-cli -p rustdx-runner --locked --offline", "exit_code": 0},
+      {"command": "cargo +1.89.0 package --list --allow-dirty --locked --offline -p jelven-rustdx-complete", "exit_code": 0},
+      {"command": "cargo +1.89.0 package --list --allow-dirty --locked --offline -p jelven-rustdx-cli", "exit_code": 0}
+    ],
+    "rustdx_debug_sha256": "66cc54de3be0b4398fa295434fb956a4646289a7cfb8ceb2dc3e26fa32c626eb",
+    "runner_debug_sha256": "52384e6dd066a26b7b105ff8dcfaf28ae2d95df1b15c058df70285e2929a9355",
+    "checks": "Core/CLI lists include the new TCP source and exclude runner/config/deploy. This is list validation and a workspace build, not registry upload preparation or publication."
+  },
+  "static_document_and_deployment_checks": {
+    "markdown_local_targets_checked": 367,
+    "missing_targets": 0,
+    "functional_requirement_ids": "FR-01 through FR-18 unique and continuous",
+    "job_and_evidence_json": "Parsed",
+    "systemd_section_files": 4,
+    "timer_service_references": "Exist",
+    "alert_yaml_rules_parsed_with_ruby_yaml": 4,
+    "javascript_syntax_files_checked_with_mongosh_new_function": [
+      "deploy/runner/mongodb.js",
+      "rustdx-runner/src/database_mongo.js"
+    ],
+    "git_diff_check_exit_code": 0,
+    "systemd_analyze_or_promtool_executed": false,
+    "linux_service_startup_executed": false
+  },
+  "ci_scope_and_local_command": {
+    "matrix": "Linux/macOS cover the workspace; Windows core/CLI build, tests and Clippy exclude Unix-only rustdx-runner.",
+    "unix_step": "Runs built real CLI and local fault regressions, explicitly filtering the real database acceptance case.",
+    "temporary_log": "/tmp/rustdx-runner-ci-command.log",
+    "log_sha256": "05e746d756306d9a0a8e82b1deb39ddc9029f56eeb640c7c7327d4bdc4f38ce0",
+    "local_command": "cargo +1.89.0 test -p rustdx-runner --test control_plane --locked --offline -- --include-ignored --skip real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence",
+    "local_exit_code": 0,
+    "local_passed": 11,
+    "local_filtered_out": 1,
+    "ci_yaml_parsed": true,
+    "remote_ci_executed": false,
+    "note": "This repeat check validates the configured command after the final core optimization; it is not additional unique coverage or real database acceptance."
+  },
+  "test_service_cleanup": {
+    "status": "Only the newly created runner test services were stopped after checking PID commands, ClickHouse executable and runner-specific config/data paths.",
+    "older_service_data_deleted": false,
+    "temporary_diagnostics_retained": true
+  },
+  "gate_status": {
+    "g3_component_engineering": "Implemented and covered by the listed local regression checks.",
+    "g3_production_gate": "Not passed as a whole: G1/G2 prerequisites and business SLO/RPO/RTO remain external requirements.",
+    "g1_real_full_market_facts": "Not provided or audited; synthetic facts are not a substitute.",
+    "g2_target_linux_full_scale": "Not executed; stable target versions, full-scale load, hard quotas and server backup/restore require acceptance.",
+    "g4_long_term_trial": "Not executed; approved measurement windows and SLO are not available.",
+    "g5_cross_host_ha": "Not implemented; no epochs, distributed write gateway or publisher HA."
+  },
+  "limitations": [
+    "Runner Jobs currently collect local .day directories only, under a fixed raw A-share daily CNY/shares contract. TCP runner Job adapters are not implemented.",
+    "MongoDB launches mongosh for each bounded logical request, adding connection/process cost; the 1200-row test is not full-scale throughput or long-term P95 evidence.",
+    "Worker and publisher currently use the same OS UID. env_clear prevents inherited secrets but does not isolate a malicious same-UID program.",
+    "INSERT privileges alone cannot prevent a credential holder from appending to a sealed database release. Deployment identity, ACL and external-writer governance remain required.",
+    "Workspace scanning is periodic monitoring, not a hard disk quota. Deployment must supply filesystem quotas and persistent local Unix storage.",
+    "Controller backup includes reconstructable file bytes and WAL state, not ClickHouse/MongoDB server data volumes or logs; restore does not connect to databases or switch production.",
+    "Linux/systemd and alert templates are delivered but have not been started on the target Linux platform.",
+    "Previous 779200-row real-history and database-fault results retain their original validation round and are not new release-layer full-scale acceptance.",
+    "Temporary logs are not permanent backups; durable test sources and this command/result summary are versioned."
+  ]
+}

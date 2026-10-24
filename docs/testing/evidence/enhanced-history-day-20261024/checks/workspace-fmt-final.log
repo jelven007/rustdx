@@ -1,0 +1,382 @@
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/client/transactions.rs:10:
+ use crate::tcp::{
+     Tcp,
+     stock::{
+-        TradePage, TradeProtocol, TradeQuery, TradeSource, TransactionCollection, TransactionData, TransactionPageInfo,
+-        TransactionPaginationError, TransactionPaginationFailure, TransactionPaginationOptions,
+-        TransactionPaginationTermination,
++        TradePage, TradeProtocol, TradeQuery, TradeSource, TransactionCollection, TransactionData,
++        TransactionPageInfo, TransactionPaginationError, TransactionPaginationFailure,
++        TransactionPaginationOptions, TransactionPaginationTermination,
+     },
+ };
+ 
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/client/transactions.rs:90:
+     }
+ 
+     pub fn history_transaction_all_legacy(
+-        &mut self, market: u16, code: &str, date: u32, options: TransactionPaginationOptions,
++        &mut self,
++        market: u16,
++        code: &str,
++        date: u32,
++        options: TransactionPaginationOptions,
+     ) -> io::Result<TransactionCollection> {
+-        collect(&mut self.tcp, Query { market, code, date: Some(date), legacy: true }, options)
++        collect(
++            &mut self.tcp,
++            Query {
++                market,
++                code,
++                date: Some(date),
++                legacy: true,
++            },
++            options,
++        )
+     }
+ 
+     /// Full 0fc6 enumeration; rich records and reference bytes are in `event_pages`.
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/client/transactions.rs:99:
+     pub fn enhanced_history_transaction_all(
+-        &mut self, market: u16, code: &str, date: u32, options: TransactionPaginationOptions,
++        &mut self,
++        market: u16,
++        code: &str,
++        date: u32,
++        options: TransactionPaginationOptions,
+     ) -> io::Result<TransactionCollection> {
+         self.history_transaction_all(market, code, date, options)
+     }
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/client/transactions.rs:201:
+             .checked_add(bytes.len())
+             .filter(|total| *total <= max_bytes)
+             .ok_or_else(|| self.error(TransactionPaginationFailure::ByteLimit, start.into()))?;
+-        let mut page = crate::tcp::stock::decode_trade_page(&query.trade_query()?, start, count, &bytes).map_err(|e| {
+-            super::ctx_err(
+-                e,
+-                format_args!("成交明细全量解码(code={}, start={start})", query.code,),
+-            )
+-        })?;
++        let mut page =
++            crate::tcp::stock::decode_trade_page(&query.trade_query()?, start, count, &bytes)
++                .map_err(|e| {
++                    super::ctx_err(
++                        e,
++                        format_args!("成交明细全量解码(code={}, start={start})", query.code,),
++                    )
++                })?;
+         page.source = Some(TradeSource::capture(tcp)?);
+         let rows = page.records().iter().map(|row| row.to_legacy()).collect();
+         self.pending_page = Some(page);
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/client/transactions.rs:228:
+         }
+         if !rows.is_empty() {
+             let mut hash = DefaultHasher::new();
+-            let current = self.pending_page.as_ref().ok_or_else(|| io::Error::other("缺少成交事件页"))?;
++            let current = self
++                .pending_page
++                .as_ref()
++                .ok_or_else(|| io::Error::other("缺少成交事件页"))?;
+             current.payload().hash(&mut hash);
+             let indexes = self.fingerprints.entry(hash.finish()).or_default();
+-            if indexes.iter().any(|&index| self.event_pages[index].payload() == current.payload()) {
++            if indexes
++                .iter()
++                .any(|&index| self.event_pages[index].payload() == current.payload())
++            {
+                 return Err(self.error(
+                     TransactionPaginationFailure::RepeatedPage,
+                     info.start.into(),
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/client/transactions.rs:240:
+             indexes.push(self.pages.len());
+         }
+         self.records += rows.len();
+-        self.event_pages.push(self.pending_page.take().ok_or_else(|| io::Error::other("缺少成交事件页"))?);
++        self.event_pages.push(
++            self.pending_page
++                .take()
++                .ok_or_else(|| io::Error::other("缺少成交事件页"))?,
++        );
+         self.pages.push((info, rows));
+         Ok(())
+     }
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/mod.rs:143:
+ }
+ 
+ /// 显式使用旧0450目录，1000条/页。
+-pub fn stocks_legacy(tcp: &mut crate::tcp::Tcp, market: u16) -> crate::Result<Vec<SecurityListData>> {
++pub fn stocks_legacy(
++    tcp: &mut crate::tcp::Tcp,
++    market: u16,
++) -> crate::Result<Vec<SecurityListData>> {
+     Ok(
+         tcp.with_timeout(crate::tcp::network_policy().pagination_timeout, |tcp| {
+             stocks_until(tcp, market)
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/security_directory.rs:19:
+     /// Count is 1–1600. The wire stores count and offset as u32.
+     pub fn new(market: u16, start: u32, count: u16) -> io::Result<Self> {
+         if market > 1 || !(1..=MAX_SECURITY_DIRECTORY_COUNT).contains(&count) {
+-            return Err(io::Error::new(io::ErrorKind::InvalidInput, "目录市场须为0/1，数量须为1–1600"));
++            return Err(io::Error::new(
++                io::ErrorKind::InvalidInput,
++                "目录市场须为0/1，数量须为1–1600",
++            ));
+         }
+-        Ok(Self { market, start, count })
++        Ok(Self {
++            market,
++            start,
++            count,
++        })
+     }
+ 
+     pub fn encode(self) -> [u8; 26] {
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/security_directory.rs:106:
+     let mut reader = Reader::new(bytes);
+     let count = reader.u16()?;
+     if count > request.count || bytes.len() != 2 + usize::from(count) * 37 {
+-        return Err(io::Error::new(io::ErrorKind::InvalidData, "目录044d条数或37字节记录长度不符"));
++        return Err(io::Error::new(
++            io::ErrorKind::InvalidData,
++            "目录044d条数或37字节记录长度不符",
++        ));
+     }
+     let mut records = Vec::with_capacity(usize::from(count));
+     for _ in 0..count {
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/security_directory.rs:121:
+         let previous_close = f32::from_le_bytes(previous_close_raw);
+         let volume_ratio_base = f32::from_le_bytes(unknown0_raw);
+         if !previous_close.is_finite() || previous_close < 0.0 || !volume_ratio_base.is_finite() {
+-            return Err(io::Error::new(io::ErrorKind::InvalidData, "目录044d浮点字段非法"));
++            return Err(io::Error::new(
++                io::ErrorKind::InvalidData,
++                "目录044d浮点字段非法",
++            ));
+         }
+         let (category, board) = classify(request.market, &code);
+         records.push(SecurityDirectoryData {
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/security_directory.rs:128:
+-            market: request.market, code, name, volume_unit, decimal, previous_close,
+-            volume_ratio_base, unknown0_raw, previous_close_raw, unknown3_raw, category, board,
++            market: request.market,
++            code,
++            name,
++            volume_unit,
++            decimal,
++            previous_close,
++            volume_ratio_base,
++            unknown0_raw,
++            previous_close_raw,
++            unknown3_raw,
++            category,
++            board,
+         });
+     }
+     Ok(SecurityDirectoryPage {
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/security_directory.rs:133:
+-        market: request.market, start: request.start, request_count: request.count,
+-        records, raw_payload: bytes.to_vec(), source_endpoint: None,
++        market: request.market,
++        start: request.start,
++        request_count: request.count,
++        records,
++        raw_payload: bytes.to_vec(),
++        source_endpoint: None,
+     })
+ }
+ 
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/security_directory.rs:151:
+     } else {
+         match (market, prefix) {
+             (0, "399") | (1, "000" | "880" | "881" | "999") => Index,
+-            (0, "158" | "159") | (1, "510" | "511" | "512" | "513" | "515" | "516" |
+-                "517" | "518" | "520" | "560" | "561" | "562" | "563" | "588") => Etf,
++            (0, "158" | "159")
++            | (
++                1,
++                "510" | "511" | "512" | "513" | "515" | "516" | "517" | "518" | "520" | "560"
++                | "561" | "562" | "563" | "588",
++            ) => Etf,
+             (1, "900") => BShare,
+             (0, _) if code.starts_with("20") => BShare,
+             _ => SecurityCategory::Unknown,
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/security_directory.rs:177:
+             if !records.is_empty() {
+                 tcp.delay(std::time::Duration::from_millis(100))?;
+             }
+-            let request = SecurityDirectoryRequest::new(market, records.len() as u32,
+-                (total - records.len()).min(usize::from(MAX_SECURITY_DIRECTORY_COUNT)) as u16)?;
++            let request = SecurityDirectoryRequest::new(
++                market,
++                records.len() as u32,
++                (total - records.len()).min(usize::from(MAX_SECURITY_DIRECTORY_COUNT)) as u16,
++            )?;
+             let page = request.recv(tcp)?;
+-            if tcp.connection_id() != session || super::quote_metadata::local_date(chrono::Utc::now()) != day {
+-                return Err(io::Error::new(io::ErrorKind::ConnectionAborted, "证券目录跨连接或跨日"));
++            if tcp.connection_id() != session
++                || super::quote_metadata::local_date(chrono::Utc::now()) != day
++            {
++                return Err(io::Error::new(
++                    io::ErrorKind::ConnectionAborted,
++                    "证券目录跨连接或跨日",
++                ));
+             }
+             if page.records.is_empty() {
+-                return Err(io::Error::new(io::ErrorKind::UnexpectedEof, "证券目录未达到044e总数就返回空页"));
++                return Err(io::Error::new(
++                    io::ErrorKind::UnexpectedEof,
++                    "证券目录未达到044e总数就返回空页",
++                ));
+             }
+             for record in &page.records {
+                 if !codes.insert(record.code.clone()) {
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/security_directory.rs:191:
+-                    return Err(io::Error::new(io::ErrorKind::InvalidData, "证券目录代码重复"));
++                    return Err(io::Error::new(
++                        io::ErrorKind::InvalidData,
++                        "证券目录代码重复",
++                    ));
+                 }
+             }
+             records.extend(page.records);
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/today_minute.rs:2:
+ //! the first point, not to the previous minute.
+ use std::{io, net::SocketAddr, ops::Range};
+ 
+-use serde::Serialize;
+-use crate::tcp::{Tcp, reader::Reader};
+ use super::{PrecisionSnapshot, PriceScale};
++use crate::tcp::{Tcp, reader::Reader};
++use serde::Serialize;
+ 
+ #[derive(Debug, Clone, Copy)]
+ pub struct TodayMinuteRequest<'a> {
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/today_minute.rs:27:
+         request
+     }
+ 
+-    pub fn recv(self, tcp: &mut Tcp, metadata: &PrecisionSnapshot) -> io::Result<TodayMinuteSeries> {
++    pub fn recv(
++        self,
++        tcp: &mut Tcp,
++        metadata: &PrecisionSnapshot,
++    ) -> io::Result<TodayMinuteSeries> {
+         if !metadata.is_fresh(self.market, chrono::Utc::now()) {
+-            return Err(io::Error::new(io::ErrorKind::InvalidInput, "StalePrecision: 请刷新分时目录精度"));
++            return Err(io::Error::new(
++                io::ErrorKind::InvalidInput,
++                "StalePrecision: 请刷新分时目录精度",
++            ));
+         }
+         metadata.scale(self.market, self.code)?;
+         let bytes = crate::tcp::send_recv_decompress(tcp, &self.encode(), "当日分时0537")?;
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/today_minute.rs:82:
+     let count = reader.u16()?;
+     let reserved_raw = reader.u16()?;
+     if count > 240 {
+-        return Err(io::Error::new(io::ErrorKind::InvalidData, "0537点数超出已支持的240分钟会话"));
++        return Err(io::Error::new(
++            io::ErrorKind::InvalidData,
++            "0537点数超出已支持的240分钟会话",
++        ));
+     }
+     let mut points = Vec::with_capacity(usize::from(count));
+     let mut base = (0i64, 0i64);
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/today_minute.rs:98:
+             base = (price_raw, average_raw);
+         }
+         if price_raw < 0 || average_raw < 0 || volume_raw < 0 {
+-            return Err(io::Error::new(io::ErrorKind::InvalidData, "0537价格、均价或数量为负"));
++            return Err(io::Error::new(
++                io::ErrorKind::InvalidData,
++                "0537价格、均价或数量为负",
++            ));
+         }
+-        let minute = if index < 120 { 571 + index } else { 781 + index - 120 };
++        let minute = if index < 120 {
++            571 + index
++        } else {
++            781 + index - 120
++        };
+         points.push(TodayMinutePoint {
+-            index, time_label: format!("{:02}:{:02}", minute / 60, minute % 60),
++            index,
++            time_label: format!("{:02}:{:02}", minute / 60, minute % 60),
+             price: price_raw as f64 / f64::from(scale.divisor()),
+             // Average field carries two more decimal places than the price.
+             average_price: average_raw as f64 / (100.0 * f64::from(scale.divisor())),
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/today_minute.rs:109:
+-            volume_raw, price_field_raw, average_field_raw, price_raw, average_raw,
++            volume_raw,
++            price_field_raw,
++            average_field_raw,
++            price_raw,
++            average_raw,
+             byte_range: begin..bytes.len() - reader.remaining(),
+         });
+     }
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/today_minute.rs:113:
+     if reader.remaining() != 0 {
+-        return Err(io::Error::new(io::ErrorKind::InvalidData, "0537响应包含多余字节"));
++        return Err(io::Error::new(
++            io::ErrorKind::InvalidData,
++            "0537响应包含多余字节",
++        ));
+     }
+     Ok(TodayMinuteSeries {
+-        market: request.market, code: request.code.to_owned(), trading_date: None,
+-        points, reserved_raw, scale, metadata_generation: metadata.generation(),
+-        raw_payload: bytes.to_vec(), source_endpoint: None, fetched_at: None,
++        market: request.market,
++        code: request.code.to_owned(),
++        trading_date: None,
++        points,
++        reserved_raw,
++        scale,
++        metadata_generation: metadata.generation(),
++        raw_payload: bytes.to_vec(),
++        source_endpoint: None,
++        fetched_at: None,
+     })
+ }
+ 
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/trade_decode.rs:59:
+     let prefix = if historical {
+         let mut value = [0; 4];
+         value.copy_from_slice(reader.take(4)?);
+-        if protocol == TradeProtocol::EnhancedHistory0fc6 && !f32::from_le_bytes(value).is_finite() {
++        if protocol == TradeProtocol::EnhancedHistory0fc6 && !f32::from_le_bytes(value).is_finite()
++        {
+             return Err(io::Error::new(ErrorKind::InvalidData, "0fc6参考价非有限值"));
+         }
+         Some(value)
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/trade_models.rs:46:
+     pub fn history(market: u16, code: &str, date: u32) -> io::Result<Self> {
+         super::EnhancedHistoryTransactionRequest::new(market, code, 0, 1, date)?;
+         Ok(Self {
+-            market, code: code.to_owned(), date: Some(date),
++            market,
++            code: code.to_owned(),
++            date: Some(date),
+             protocol: TradeProtocol::EnhancedHistory0fc6,
+         })
+     }
+Diff in /Users/bytedance/Documents/rustdx/src/tcp/stock/trade_models.rs:78:
+     pub fn encode(&self, start: u16, count: u16) -> io::Result<Vec<u8>> {
+         if self.protocol == TradeProtocol::EnhancedHistory0fc6 {
+             return super::EnhancedHistoryTransactionRequest::new(
+-                self.market, &self.code, start, count,
+-                self.date.ok_or_else(|| io::Error::other("增强历史查询缺少日期"))?,
+-            ).map(|request| request.encode().to_vec());
++                self.market,
++                &self.code,
++                start,
++                count,
++                self.date
++                    .ok_or_else(|| io::Error::other("增强历史查询缺少日期"))?,
++            )
++            .map(|request| request.encode().to_vec());
+         }
+         match self.date {
+             Some(date) => {

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "dataset_id": "synthetic-recovery",
+  "version": 2,
+  "previous_version": 1,
+  "contract_version": "a-share/day/raw/cny/shares/v1",
+  "created_at": "2026-10-24T13:07:50.595558973+00:00",
+  "partitions": {
+    "2026-07-06": {
+      "date": "2026-07-06",
+      "release_id": "a-1792847268797428377-613444",
+      "file": {
+        "path": "partitions/2026-07-06.csv",
+        "sha256": "170b3639e1c630d414507ecc0f34cfb02e942a44fa0a32cbd9fe88bcdf5d261a",
+        "bytes": 32479
+      },
+      "rows": 600,
+      "exemptions": 0,
+      "source_revision": 2,
+      "source_as_of": "2026-07-07"
+    },
+    "2026-07-07": {
+      "date": "2026-07-07",
+      "release_id": "a-1792847268797428377-613444",
+      "file": {
+        "path": "partitions/2026-07-07.csv",
+        "sha256": "c3ef82f6c7f761d05ad80e3f8d65b815039dac327ffcd55b236c0cb260c32107",
+        "bytes": 32479
+      },
+      "rows": 600,
+      "exemptions": 0,
+      "source_revision": 2,
+      "source_as_of": "2026-07-07"
+    }
+  },
+  "database_releases": {
+    "a-1792847268797428377-613444": [
+      {
+        "target": {
+          "kind": "clickhouse",
+          "id": "ch",
+          "url": "http://127.0.0.1:40751",
+          "table": "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.bars",
+          "user_env": "RUSTDX_RECOVERY_CH_USER",
+          "password_env": "RUSTDX_RECOVERY_CH_PASSWORD"
+        },
+        "proof": {
+          "path": "database/a-1792847268797428377-613444/ch/verified-1792847269995253453.json",
+          "sha256": "90221ffc75bfb2c76a22a14f7ed9d02372dcd0e4edd4b19f2eeb82078c047aa4",
+          "bytes": 4229
+        }
+      },
+      {
+        "target": {
+          "kind": "mongodb",
+          "id": "mongo",
+          "database": "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2",
+          "collection": "bars",
+          "uri_env": "RUSTDX_RECOVERY_MONGO_URI",
+          "mongosh": "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh"
+        },
+        "proof": {
+          "path": "database/a-1792847268797428377-613444/mongo/verified-1792847270477519302.json",
+          "sha256": "1093523c463b5269598d996bd054ab81d360e2adbf7e5d4cd7cae7c76212414e",
+          "bytes": 4316
+        }
+      }
+    ]
+  }
+}

@@ -635,7 +635,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 
 [[package]]
 name = "jelven-rustdx-cli"
-version = "1.8.2"
+version = "2.0.0"
 dependencies = [
  "argh",
  "calamine",
@@ -646,9 +646,11 @@ dependencies = [
  "eyre",
  "jelven-rustdx-complete",
  "log",
+ "miniz_oxide 0.9.1",
  "serde",
  "serde_json",
  "sha2",
+ "tempfile",
  "thiserror",
  "ureq",
  "zip 2.4.2",
@@ -656,18 +658,21 @@ dependencies = [
 
 [[package]]
 name = "jelven-rustdx-complete"
-version = "1.12.2"
+version = "2.0.0"
 dependencies = [
  "chrono",
  "csv",
  "encoding_rs",
  "insta",
  "log",
+ "md-5",
  "miniz_oxide 0.9.1",
  "proptest",
  "serde",
+ "serde_json",
  "thiserror",
  "trade_date_a",
+ "zip 2.4.2",
 ]
 
 [[package]]
@@ -753,6 +758,16 @@ name = "log"
 version = "0.4.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f9f8bd3e56ce4dfc153cf470fffbfa98c7620958b312ca5c3a4b8d5181fd13c6"
+
+[[package]]
+name = "md-5"
+version = "0.10.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d89e7ee0cfbedfc4da3340218492196241d89eefb6dab27de5df917a6d2e78cf"
+dependencies = [
+ "cfg-if",
+ "digest",
+]
 
 [[package]]
 name = "memchr"

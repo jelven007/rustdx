@@ -1,0 +1,12 @@
+    Blocking waiting for file lock on build directory
+   Compiling ring v0.17.14
+    Checking jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+   Compiling jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/rustdx-cmd)
+   Compiling libsqlite3-sys v0.38.2
+   Compiling rustls v0.23.43
+    Checking rusqlite v0.40.2
+    Checking rustls-webpki v0.103.15
+    Checking ureq v3.4.0
+    Checking rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/rustdx-runner)
+    Checking tests-integration v1.1.0 (/Users/bytedance/Documents/rustdx/tests-integration)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 20.24s

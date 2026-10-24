@@ -1,0 +1,15 @@
+test_fixed_required_fields_and_changed_scope (test_consumption_and_facts.Consumption) ... ok
+test_issuer_bytes_must_match_the_pinned_digest (test_consumption_and_facts.Consumption) ... ok
+test_unknown_dates_and_securities_and_mutated_announcement_are_rejected (test_consumption_and_facts.Facts) ... ok
+test_identity_and_sets_must_match (test_indicator_comparison.Comparison) ... ok
+test_invalid_statistics_and_schema_are_rejected (test_indicator_comparison.Comparison) ... ok
+test_regression_and_changed_result_fail_gate (test_indicator_comparison.Comparison) ... ok
+test_changed_evidence_active_worker_and_scan_limits_refuse_preview (test_retention_preview.RetentionTests) ... ok
+test_committed_wal_is_included_without_creating_live_shm_or_writes (test_retention_preview.RetentionTests) ... ok
+test_historical_catalogs_receipts_failed_evidence_backups_and_trend (test_retention_preview.RetentionTests) ... ok
+test_symlinks_escape_lock_conflict_and_previous_scope_rejected (test_retention_preview.RetentionTests) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.359s
+
+OK

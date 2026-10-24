@@ -1,0 +1,28 @@
+{
+  "auto_reconnect": 0,
+  "between_file_spacing_ms": 250,
+  "endpoint": "115.238.56.198:7709",
+  "finished_utc": "2026-10-24T14:49:35.457016Z",
+  "heartbeat": false,
+  "page_delay_ms": 25,
+  "queries": [
+    {
+      "chunks": 45,
+      "complete": true,
+      "path": "zhb.zip",
+      "size": 1338014,
+      "termination": "ShortChunk"
+    },
+    {
+      "chunks": 11,
+      "complete": true,
+      "path": "block_zs.dat",
+      "size": 329507,
+      "termination": "ShortChunk"
+    }
+  ],
+  "source": "live_tcp",
+  "started_utc": "2026-10-24T14:49:26.780528Z",
+  "total_timeout_seconds": 180,
+  "wire_frames": 57
+}

@@ -1,0 +1,603 @@
+{
+  "verification": "passed",
+  "kind": "recent_minutes_date_selector_fix",
+  "date_schema_version": 2,
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python_version": "3.9.6",
+  "rust_toolchain": "1.89.0",
+  "selector_conflict_resolved_in_sample": true,
+  "cargo_checks": [
+    {
+      "name": "format",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 3.0
+    },
+    {
+      "name": "format-check",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.501
+    },
+    {
+      "name": "targeted-tests",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "jelven-rustdx-complete",
+        "--offline",
+        "--locked",
+        "--test",
+        "recent_minutes_boundaries",
+        "--test",
+        "recent_minutes_fixtures",
+        "--test",
+        "command_boundaries",
+        "--test",
+        "protocol_7709_decoders"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 15.953
+    },
+    {
+      "name": "workspace-tests",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 90.262
+    },
+    {
+      "name": "workspace-tests-retry",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 104.064,
+      "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 15.454,
+      "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+    }
+  ],
+  "python_checks": [
+    {
+      "command": [
+        "python3",
+        "scripts/validation/recent_minutes_selector.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/validation/verify_recent_minutes_boundaries.py",
+        "--self-test"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/validation/freeze_recent_minutes_fixtures.py",
+        "--output",
+        "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/validation/freeze_recent_minutes_fixtures.py",
+        "--output",
+        "crates/rustdx-core/tests/fixtures/recent_minutes_date_selector",
+        "--check"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "final_date_verifier": {
+    "completion": "passed",
+    "log": "checks/cross-verification-final.log"
+  },
+  "prior_failed_verifier_attempts": [
+    {
+      "name": "cross-verification",
+      "command": [
+        "python3",
+        "scripts/validation/verify_recent_minutes_date_selector.py",
+        "docs/testing/evidence/recent-minutes-date-selector-20261024",
+        "--output",
+        "docs/testing/evidence/recent-minutes-date-selector-20261024/date-selector-verification.json"
+      ],
+      "exit_code": 1,
+      "elapsed_seconds": 37.372,
+      "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+    }
+  ],
+  "workspace_harness_counts": {
+    "passed": 546,
+    "failed": 0,
+    "ignored": 27
+  },
+  "integration_skip": "RUSTDX_SKIP_INTEGRATION_TESTS=1; guarded external tests can return early; not new database/live acceptance",
+  "legacy_boundary_read_only_replay": {
+    "verification": "passed",
+    "live_nonempty_verified": false,
+    "business_status": "nonempty_not_verified",
+    "sample_frames_checked": 15,
+    "records_checked": 0,
+    "nonempty_symbols": [],
+    "scope": "Only sampled parameters; no server-date echo or full exchange session proof."
+  },
+  "legacy_nine_read_only_replay": [
+    {
+      "method": "Independent Python stdlib offsets, 64-bit signed varints, IEEE bits, XOR and arithmetic; no SDK execution",
+      "endpoint": "115.238.56.198:7709",
+      "wire_frames_checked": 66,
+      "command_frames": {
+        "0x000d": 1,
+        "0x044e": 2,
+        "0x044d": 34,
+        "0x0452": 2,
+        "0x051b": 2,
+        "0x0fd1": 2,
+        "0x0feb": 6,
+        "0x056a": 5,
+        "0x0ffc": 2,
+        "0x054c": 1,
+        "0x053e": 1,
+        "0x054b": 5,
+        "0x0547": 3
+      },
+      "command_records": {
+        "0x0452": 2,
+        "0x051b": 480,
+        "0x0fd1": 122,
+        "0x0feb": 0,
+        "0x056a": 240,
+        "0x0ffc": 10,
+        "0x054c": 3,
+        "0x054b": 25,
+        "0x0547": 3
+      },
+      "directory_rows_checked": 52171,
+      "results": [
+        {
+          "name": "special-limits",
+          "opcode": "0x0452",
+          "records_checked": 1
+        },
+        {
+          "name": "special-limits-next",
+          "opcode": "0x0452",
+          "records_checked": 1
+        },
+        {
+          "name": "aux-0",
+          "opcode": "0x051b",
+          "records_checked": 240
+        },
+        {
+          "name": "aux-11",
+          "opcode": "0x051b",
+          "records_checked": 240
+        },
+        {
+          "name": "sparkline-20",
+          "opcode": "0x0fd1",
+          "records_checked": 61
+        },
+        {
+          "name": "sparkline-40",
+          "opcode": "0x0fd1",
+          "records_checked": 61
+        },
+        {
+          "name": "recent-20261022-000001",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261022-159915",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261023-000001",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261023-159915",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261024-000001",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261024-159915",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "auction-history",
+          "opcode": "0x056a",
+          "records_checked": 80
+        },
+        {
+          "name": "auction-current",
+          "opcode": "0x056a",
+          "records_checked": 80
+        },
+        {
+          "name": "auction-page-0",
+          "opcode": "0x056a",
+          "records_checked": 40
+        },
+        {
+          "name": "auction-page-40",
+          "opcode": "0x056a",
+          "records_checked": 40
+        },
+        {
+          "name": "auction-page-80",
+          "opcode": "0x056a",
+          "records_checked": 0
+        },
+        {
+          "name": "money-0-000001",
+          "opcode": "0x0ffc",
+          "records_checked": 5
+        },
+        {
+          "name": "money-1-600519",
+          "opcode": "0x0ffc",
+          "records_checked": 5
+        },
+        {
+          "name": "snapshots",
+          "opcode": "0x054c",
+          "records_checked": 3
+        },
+        {
+          "name": "category-false",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "category-true",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "category-change-false",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "category-change-true",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "category-next",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "refresh-0",
+          "opcode": "0x0547",
+          "records_checked": 3
+        },
+        {
+          "name": "refresh-1",
+          "opcode": "0x0547",
+          "records_checked": 0
+        },
+        {
+          "name": "refresh-2",
+          "opcode": "0x0547",
+          "records_checked": 0
+        }
+      ],
+      "price_checks": [
+        {
+          "code": "000001",
+          "price": 11.2,
+          "matches_053e_and_0547": true
+        },
+        {
+          "code": "159915",
+          "price": 2.702,
+          "matches_053e_and_0547": true
+        },
+        {
+          "code": "510300",
+          "price": 4.178,
+          "matches_053e_and_0547": true
+        }
+      ],
+      "auction_pagination": [
+        40,
+        40,
+        0
+      ],
+      "scope": "Sampled parameters only; empty 0feb frames validate transport/header only; no trading-hour push or exchange-date proof",
+      "verification": "passed"
+    },
+    {
+      "method": "Independent Python stdlib offsets, 64-bit signed varints, IEEE bits, XOR and arithmetic; no SDK execution",
+      "endpoint": "180.153.18.170:7709",
+      "wire_frames_checked": 66,
+      "command_frames": {
+        "0x000d": 1,
+        "0x044e": 2,
+        "0x044d": 34,
+        "0x0452": 2,
+        "0x051b": 2,
+        "0x0fd1": 2,
+        "0x0feb": 6,
+        "0x056a": 5,
+        "0x0ffc": 2,
+        "0x054c": 1,
+        "0x053e": 1,
+        "0x054b": 5,
+        "0x0547": 3
+      },
+      "command_records": {
+        "0x0452": 2,
+        "0x051b": 480,
+        "0x0fd1": 122,
+        "0x0feb": 0,
+        "0x056a": 240,
+        "0x0ffc": 10,
+        "0x054c": 3,
+        "0x054b": 25,
+        "0x0547": 3
+      },
+      "directory_rows_checked": 52171,
+      "results": [
+        {
+          "name": "special-limits",
+          "opcode": "0x0452",
+          "records_checked": 1
+        },
+        {
+          "name": "special-limits-next",
+          "opcode": "0x0452",
+          "records_checked": 1
+        },
+        {
+          "name": "aux-0",
+          "opcode": "0x051b",
+          "records_checked": 240
+        },
+        {
+          "name": "aux-11",
+          "opcode": "0x051b",
+          "records_checked": 240
+        },
+        {
+          "name": "sparkline-20",
+          "opcode": "0x0fd1",
+          "records_checked": 61
+        },
+        {
+          "name": "sparkline-40",
+          "opcode": "0x0fd1",
+          "records_checked": 61
+        },
+        {
+          "name": "recent-20261022-000001",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261022-159915",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261023-000001",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261023-159915",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261024-000001",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "recent-20261024-159915",
+          "opcode": "0x0feb",
+          "records_checked": 0
+        },
+        {
+          "name": "auction-history",
+          "opcode": "0x056a",
+          "records_checked": 80
+        },
+        {
+          "name": "auction-current",
+          "opcode": "0x056a",
+          "records_checked": 80
+        },
+        {
+          "name": "auction-page-0",
+          "opcode": "0x056a",
+          "records_checked": 40
+        },
+        {
+          "name": "auction-page-40",
+          "opcode": "0x056a",
+          "records_checked": 40
+        },
+        {
+          "name": "auction-page-80",
+          "opcode": "0x056a",
+          "records_checked": 0
+        },
+        {
+          "name": "money-0-000001",
+          "opcode": "0x0ffc",
+          "records_checked": 5
+        },
+        {
+          "name": "money-1-600519",
+          "opcode": "0x0ffc",
+          "records_checked": 5
+        },
+        {
+          "name": "snapshots",
+          "opcode": "0x054c",
+          "records_checked": 3
+        },
+        {
+          "name": "category-false",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "category-true",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "category-change-false",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "category-change-true",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "category-next",
+          "opcode": "0x054b",
+          "records_checked": 5
+        },
+        {
+          "name": "refresh-0",
+          "opcode": "0x0547",
+          "records_checked": 3
+        },
+        {
+          "name": "refresh-1",
+          "opcode": "0x0547",
+          "records_checked": 0
+        },
+        {
+          "name": "refresh-2",
+          "opcode": "0x0547",
+          "records_checked": 0
+        }
+      ],
+      "price_checks": [
+        {
+          "code": "000001",
+          "price": 11.2,
+          "matches_053e_and_0547": true
+        },
+        {
+          "code": "159915",
+          "price": 2.702,
+          "matches_053e_and_0547": true
+        },
+        {
+          "code": "510300",
+          "price": 4.178,
+          "matches_053e_and_0547": true
+        }
+      ],
+      "auction_pagination": [
+        40,
+        40,
+        0
+      ],
+      "scope": "Sampled parameters only; empty 0feb frames validate transport/header only; no trading-hour push or exchange-date proof",
+      "verification": "passed"
+    }
+  ],
+  "rust_files_unchanged_since_stage5": 223,
+  "rust_files_changed": [
+    "crates/rustdx-core/examples/capture_nine_commands.rs",
+    "crates/rustdx-core/examples/capture_recent_minutes_boundaries.rs",
+    "crates/rustdx-core/examples/validate_recent_auction.rs",
+    "crates/rustdx-core/src/tcp/stock/recent_minutes.rs",
+    "crates/rustdx-core/tests/command_boundaries.rs",
+    "crates/rustdx-core/tests/recent_minutes_boundaries.rs",
+    "crates/rustdx-core/tests/recent_minutes_fixtures.rs"
+  ],
+  "input_files": 241,
+  "python_syntax_files": [
+    "scripts/validation/recent_minutes_selector.py",
+    "scripts/validation/verify_recent_minutes_date_selector.py",
+    "scripts/validation/verify_recent_auction.py",
+    "scripts/validation/verify_recent_minutes_boundaries.py",
+    "scripts/validation/freeze_recent_minutes_fixtures.py",
+    "scripts/validation/verify_nine_commands.py"
+  ],
+  "document_links_checked": 622,
+  "support_files": 1979,
+  "support_manifest_sha256": "423cbc563a6644136c9ec7087df6a1ddb3145eed94b1048d442b1ab147204e96",
+  "scope": "Two nodes, six symbols, six trading dates and two empty dates. No general date qualification, retention-window or share-unit acceptance.",
+  "not_run": [
+    "Linux",
+    "database native recovery",
+    "remote CI",
+    "instrumented fuzz",
+    "trading-hour push",
+    "commit/push/publish"
+  ]
+}

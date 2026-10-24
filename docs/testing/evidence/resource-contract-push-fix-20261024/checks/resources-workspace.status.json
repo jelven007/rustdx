@@ -1,0 +1,14 @@
+{
+  "command": [
+    ".cargo/bin/cargo",
+    "+1.89.0",
+    "test",
+    "--offline",
+    "--locked",
+    "--workspace",
+    "--all-features"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 260.623,
+  "integration_skip_env": true
+}

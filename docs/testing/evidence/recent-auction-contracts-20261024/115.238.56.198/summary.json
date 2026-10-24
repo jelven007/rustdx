@@ -1,0 +1,798 @@
+{
+  "archive_frame_bytes": 2632691,
+  "auction_dates": [
+    20261023,
+    20261022,
+    20261021,
+    20261020,
+    20261019,
+    null,
+    20261024,
+    20260814,
+    20261026
+  ],
+  "automatic_heartbeat": false,
+  "date_policy": "Requested dates are not server date evidence",
+  "endpoint": "115.238.56.198:7709",
+  "finished_utc": "2026-10-24T06:09:57.101704Z",
+  "kind": "live_recent_auction_contract_validation",
+  "queries": [
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "heartbeat"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "snapshots"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261021-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261020-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261019-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261016-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261015-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261014-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261013-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261012-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261023-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261022-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261021-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261020-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261019-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-0-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261024-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20260814-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261026-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261021-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261020-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261019-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261016-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261015-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261014-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261013-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261012-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261023-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261022-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261021-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261020-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261019-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-0-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261024-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20260814-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261026-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261021-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261020-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261019-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261016-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261015-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261014-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261013-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261012-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261023-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261022-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261021-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261020-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261019-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-0-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261024-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20260814-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261026-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261021-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261020-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261019-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261016-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261015-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261014-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261013-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261012-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261023-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261022-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261021-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261020-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261019-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-0-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261024-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20260814-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261026-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261021-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261020-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261019-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261016-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261015-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261014-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261013-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261012-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261023-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261022-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261021-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261020-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261019-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-0-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261024-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20260814-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261026-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261021-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261020-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261019-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261016-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261015-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261014-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261013-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261012-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261023-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261022-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261021-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261020-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261019-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-0-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261024-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20260814-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "auction-20261026-1-510300"
+    }
+  ],
+  "recent_dates": [
+    20261023,
+    20261022,
+    20261021,
+    20261020,
+    20261019,
+    20261016,
+    20261015,
+    20261014,
+    20261013,
+    20261012,
+    20261024,
+    20260817
+  ],
+  "request_spacing_ms": 250,
+  "schema_version": 1,
+  "source": "live_tcp",
+  "started_utc": "2026-10-24T06:08:53.523292Z",
+  "status": "captured",
+  "symbols": [
+    [
+      0,
+      "000001"
+    ],
+    [
+      0,
+      "000988"
+    ],
+    [
+      0,
+      "159915"
+    ],
+    [
+      1,
+      "600000"
+    ],
+    [
+      1,
+      "600519"
+    ],
+    [
+      1,
+      "510300"
+    ]
+  ],
+  "total_timeout_seconds": 180,
+  "wire_frames": 183
+}

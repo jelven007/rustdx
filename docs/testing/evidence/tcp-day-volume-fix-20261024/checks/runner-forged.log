@@ -1,0 +1,10 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Finished `test` profile [optimized + debuginfo] target(s) in 0.66s
+     Running tests/control_plane.rs (target/debug/deps/control_plane-9e1419a4eafc10a3)
+
+running 1 test
+test tcp_runner_rejects_forged_csv_even_with_matching_report_digest ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 1.46s
+

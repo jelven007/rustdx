@@ -1,0 +1,343 @@
+{
+  "request": {
+    "symbols": [
+      {
+        "market": 0,
+        "code": "000001"
+      },
+      {
+        "market": 0,
+        "code": "159915"
+      },
+      {
+        "market": 1,
+        "code": "510300"
+      }
+    ]
+  },
+  "header_raw": 0,
+  "missing_codes": [],
+  "page": {
+    "records": [
+      {
+        "market_raw": 0,
+        "code": "000001",
+        "active_raw": 4742,
+        "price": 11.2,
+        "previous_close": 11.3,
+        "open": 11.27,
+        "high": 11.35,
+        "low": 11.17,
+        "price_fields_raw": [
+          1120,
+          10,
+          7,
+          15,
+          -3
+        ],
+        "time_raw": 15298881,
+        "update_cursor": null,
+        "status_or_unknown_raw": -1120,
+        "total_volume_raw": 1448805,
+        "current_volume_raw": 10192,
+        "amount": 1628277120.0,
+        "amount_raw": 1321343763,
+        "inside_volume_raw": 740988,
+        "outside_volume_raw": 707818,
+        "after_outside_raw": 0,
+        "open_amount_raw": 67834,
+        "bids": [
+          {
+            "price": 11.2,
+            "volume_raw": 9557,
+            "price_delta_raw": 0
+          }
+        ],
+        "asks": [
+          {
+            "price": 11.21,
+            "volume_raw": 554,
+            "price_delta_raw": 1
+          }
+        ],
+        "scale": {
+          "decimal": 2,
+          "divisor": 100
+        },
+        "tail_raw": [
+          22,
+          15,
+          9,
+          0,
+          3,
+          0,
+          0,
+          42,
+          46,
+          75,
+          0,
+          0,
+          0,
+          0,
+          192,
+          30,
+          114,
+          204,
+          172,
+          93,
+          44,
+          205,
+          166,
+          19,
+          77,
+          63,
+          150,
+          163,
+          123,
+          66,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          134,
+          18
+        ]
+      },
+      {
+        "market_raw": 0,
+        "code": "159915",
+        "active_raw": 4915,
+        "price": 2.702,
+        "previous_close": 2.592,
+        "open": 2.549,
+        "high": 2.714,
+        "low": 2.511,
+        "price_fields_raw": [
+          2702,
+          -110,
+          -153,
+          12,
+          -191
+        ],
+        "time_raw": 152997298,
+        "update_cursor": null,
+        "status_or_unknown_raw": 24312,
+        "total_volume_raw": 76054209,
+        "current_volume_raw": 490690,
+        "amount": 19738443776.0,
+        "amount_raw": 1351815192,
+        "inside_volume_raw": 36110897,
+        "outside_volume_raw": 39943312,
+        "after_outside_raw": 0,
+        "open_amount_raw": 25939,
+        "bids": [
+          {
+            "price": 2.702,
+            "volume_raw": 20524,
+            "price_delta_raw": 0
+          }
+        ],
+        "asks": [
+          {
+            "price": 2.703,
+            "volume_raw": 11523,
+            "price_delta_raw": 1
+          }
+        ],
+        "scale": {
+          "decimal": 3,
+          "divisor": 1000
+        },
+        "tail_raw": [
+          86,
+          74,
+          7,
+          0,
+          36,
+          0,
+          0,
+          228,
+          252,
+          76,
+          0,
+          0,
+          0,
+          0,
+          240,
+          94,
+          221,
+          78,
+          80,
+          230,
+          200,
+          206,
+          170,
+          139,
+          54,
+          63,
+          1,
+          44,
+          149,
+          65,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          51,
+          19
+        ]
+      },
+      {
+        "market_raw": 1,
+        "code": "510300",
+        "active_raw": 5080,
+        "price": 4.178,
+        "previous_close": 4.107,
+        "open": 4.08,
+        "high": 4.186,
+        "low": 4.031,
+        "price_fields_raw": [
+          4178,
+          -71,
+          -98,
+          8,
+          -147
+        ],
+        "time_raw": 152995822,
+        "update_cursor": null,
+        "status_or_unknown_raw": 37581,
+        "total_volume_raw": 37556082,
+        "current_volume_raw": 106207,
+        "amount": 15423238144.0,
+        "amount_raw": 1348850428,
+        "inside_volume_raw": 17051157,
+        "outside_volume_raw": 20504925,
+        "after_outside_raw": 0,
+        "open_amount_raw": 0,
+        "bids": [
+          {
+            "price": 4.178,
+            "volume_raw": 31015,
+            "price_delta_raw": 0
+          }
+        ],
+        "asks": [
+          {
+            "price": 4.179,
+            "volume_raw": 6605,
+            "price_delta_raw": 1
+          }
+        ],
+        "scale": {
+          "decimal": 3,
+          "divisor": 1000
+        },
+        "tail_raw": [
+          86,
+          3,
+          10,
+          0,
+          11,
+          0,
+          0,
+          67,
+          41,
+          76,
+          0,
+          0,
+          0,
+          0,
+          10,
+          181,
+          48,
+          79,
+          0,
+          12,
+          240,
+          75,
+          122,
+          245,
+          233,
+          62,
+          146,
+          250,
+          93,
+          66,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          216,
+          19
+        ]
+      }
+    ],
+    "source": {
+      "opcode": 1356,
+      "endpoint": "180.153.18.170:7709",
+      "fetched_at": "2026-10-24T05:45:27.608330Z",
+      "connection_id": 1,
+      "metadata_generation": 0
+    }
+  }
+}

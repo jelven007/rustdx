@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "command": [
+    "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/release/examples/batch_retention_probe",
+    "10000"
+  ],
+  "interval_seconds": 0.1,
+  "scope": "Simultaneous sampled group/tree sums; short-lived children and peaks between samples can be missed. Disk values are logical file bytes at declared roots, not allocated blocks or external database storage.",
+  "samples": [
+    {
+      "elapsed_seconds": 0.067526875,
+      "processes": 1,
+      "rss_bytes": 5783552,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.16034674999999998,
+      "processes": 1,
+      "rss_bytes": 13008896,
+      "fds": null,
+      "threads": null,
+      "disk_bytes": {}
+    }
+  ],
+  "peaks": {
+    "processes": 1,
+    "rss_bytes": 13008896,
+    "fds": 19,
+    "threads": 11,
+    "disk_bytes": {}
+  },
+  "sampling_errors": [],
+  "leader_pid": 50869,
+  "exit_code": 0,
+  "elapsed_seconds": 0.184303,
+  "missing_fd_samples": 1,
+  "missing_thread_samples": 1
+}

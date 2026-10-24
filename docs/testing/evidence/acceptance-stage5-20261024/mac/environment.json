@@ -1,0 +1,18 @@
+{
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "rust": "1.89.0",
+  "database_versions": {
+    "clickhouse": "26.11.1.548 experimental macOS",
+    "mongodb": "8.0.16"
+  },
+  "mongoimport": "100.12.2",
+  "mongosh": "2.5.10",
+  "binary_sha256": {
+    "rustdx": "95b3b0596b9fb06d6041631b5d34ff053f0a37e1b75e3a3b7b5aa8cb8ebe80c5",
+    "rustdx-runner": "a40038654fe7d00b3a51553a2c4eaadb1127233efa0c451687175782e4364564"
+  },
+  "source_sha256": "719783b57e3ddbfd6643a1b78c504264e618ba7501ba68f98083eb251bd57b8e",
+  "git_head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "working_tree": "uncommitted edits and directory migrations; git HEAD alone does not identify tested source",
+  "limits": "isolated macOS processes, not stable Linux image acceptance"
+}

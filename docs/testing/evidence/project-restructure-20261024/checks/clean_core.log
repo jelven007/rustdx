@@ -1,0 +1,120 @@
+   Compiling proc-macro2 v1.0.94
+   Compiling unicode-ident v1.0.18
+   Compiling libc v0.2.191
+   Compiling cfg-if v1.0.0
+   Compiling serde_core v1.0.229
+   Compiling autocfg v1.4.0
+   Compiling getrandom v0.3.4
+   Compiling serde v1.0.229
+   Compiling zerocopy v0.8.63
+   Compiling core-foundation-sys v0.8.7
+   Compiling memchr v2.7.4
+   Compiling thiserror v2.0.20
+   Compiling serde_json v1.0.140
+   Compiling adler2 v2.0.0
+   Compiling num-traits v0.2.19
+   Compiling iana-time-zone v0.1.62
+   Compiling ryu v1.0.20
+   Compiling once_cell v1.21.1
+   Compiling itoa v1.0.15
+   Compiling csv-core v0.1.12
+   Compiling miniz_oxide v0.9.1
+   Compiling encoding_rs v0.8.35
+   Compiling unarray v0.1.4
+   Compiling linked-hash-map v0.5.6
+   Compiling similar v2.7.0
+   Compiling bitflags v2.13.2
+   Compiling quote v1.0.40
+   Compiling lazy_static v1.5.1
+   Compiling log v0.4.34
+   Compiling regex-syntax v0.8.5
+   Compiling syn v3.0.4
+   Compiling syn v2.0.100
+   Compiling console v0.15.11
+   Compiling rand_core v0.9.5
+   Compiling csv v1.4.0
+   Compiling rand v0.9.5
+   Compiling rand_xorshift v0.4.0
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.9.0
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.20
+   Compiling proptest v1.8.0
+   Compiling pin-project-internal v1.1.10
+   Compiling pin-project v1.1.10
+   Compiling insta v1.42.2
+   Compiling chrono v0.4.40
+   Compiling trade_date_a v2026.0.0
+   Compiling jelven-rustdx-complete v1.12.2 (/private/tmp/rustdx-production-restructure/clean-source/crates/rustdx-core)
+    Finished `test` profile [optimized + debuginfo] target(s) in 28.72s
+     Running tests/eltdx_330_commands.rs (/tmp/rustdx-production-restructure/clean-target/debug/deps/eltdx_330_commands-8f395264ff18f7f0)
+
+running 14 tests
+test delisted_decode_rejects_bad_dates_prices_and_volume_without_panicking ... ok
+test delisted_verified_sample_has_integer_shares_milli_prices_and_raw_suffix ... ok
+test constructors_reject_lossy_or_overflowing_parameters ... ok
+test metadata_and_directory_preserve_hash_offsets_and_legal_tail ... ok
+test packed_amount_includes_zero_and_low_exponents ... ok
+test all_four_requests_match_complete_reference_bodies ... ok
+test text_chunks_check_declared_lengths_and_keep_partial_gbk_and_tail ... ok
+test zero_length_f10_sections_do_not_send_an_invalid_text_request ... ok
+test f10_reads_multiple_frames_before_decoding_a_split_chinese_character ... ok
+test all_resource_and_full_archive_batches_use_the_bounded_pool_in_input_order ... ok
+test delisted_offset_overflow_is_incomplete_and_batch_keeps_each_error ... ok
+test f10_short_chunks_continue_but_empty_and_exhausted_budgets_fail ... ok
+test delisted_short_pages_overlap_and_budgets_have_explicit_completion ... ok
+test replays_all_98_independently_verified_live_frames_without_network ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.56s
+
+     Running tests/file-day.rs (/tmp/rustdx-production-restructure/clean-target/debug/deps/file_day-a990325cab9b3028)
+
+running 1 test
+test day ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/fq.rs (/tmp/rustdx-production-restructure/clean-target/debug/deps/fq-f27f9277c782bd6b)
+
+running 1 test
+test day_sz000001 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/protocol_decoders.rs (/tmp/rustdx-production-restructure/clean-target/debug/deps/protocol_decoders-1afc2758a8299c14)
+
+running 6 tests
+test invalid_parameters_fail_without_panicking ... ok
+test tick_values_are_checked_and_unknown_direction_is_preserved ... ok
+test response_identity_numeric_and_date_constraints ... ok
+test truncation_excess_trailing_and_stale_results_are_rejected ... ok
+test client_sends_checked_bytes_and_uses_the_independent_decoders ... ok
+test real_samples_match_independent_requests_and_all_fields ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/quote_precision.rs (/tmp/rustdx-production-restructure/clean-target/debug/deps/quote_precision-127aa983a2d26bd4)
+
+running 10 tests
+test mixed_decimals_scale_every_price_once_and_preserve_nonprice_fields ... ok
+test live_mixed_precision_frame_matches_independent_closed_session_prices ... ok
+test wide_integer_sums_zero_prices_and_missing_identity_are_preserved ... ok
+test preserved_real_two_decimal_sample_matches_all_historical_fields ... ok
+test missing_unsupported_duplicate_and_truncated_input_fail_without_fallback ... ok
+test immutable_generations_and_exchange_day_freshness_do_not_mix ... ok
+test live_request_rejects_stale_future_and_missing_precision_before_sending ... ok
+test multi_market_refresh_does_not_publish_successful_half_on_second_market_failure ... ok
+test client_cold_load_hot_cache_missing_precision_and_failed_refresh ... ok
+test nested_operation_deadline_bounds_cold_loading_and_does_not_publish_partial_cache ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/recent_minutes_fixtures.rs (/tmp/rustdx-production-restructure/clean-target/debug/deps/recent_minutes_fixtures-3ff566cb85f32bec)
+
+running 3 tests
+test nonempty_live_stock_and_etf_bodies_replay_through_checked_network_entry ... ok
+test nonempty_live_payload_truncations_never_return_a_partial_series ... ok
+test twenty_four_nonempty_live_frames_match_5760_independent_expected_records ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+

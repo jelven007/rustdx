@@ -1,0 +1,5 @@
+install: creating uninstall script at /tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/lib/rustlib/uninstall.sh
+install: installing component 'rustc'
+
+    rustc installed.
+

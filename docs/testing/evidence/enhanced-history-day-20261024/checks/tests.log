@@ -1,0 +1,30 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 6.23s
+[1m[32m     Running[0m tests/enhanced_history_transaction.rs (target/debug/deps/enhanced_history_transaction-f078acec616f83c8)
+
+running 10 tests
+test pinned_eltdx_request_and_response_layouts_match ... ok
+test classification_preserves_wire_order_and_prioritizes_status ... ok
+test offline_decoding_honors_cancellation ... ok
+test offsets_advance_by_raw_count_and_do_not_wrap ... ok
+test invalid_parameters_fail_before_io ... ok
+test legacy_and_enhanced_layouts_cannot_be_interchanged ... ok
+test malformed_payloads_fail_the_whole_page ... ok
+test client_replays_compressed_empty_and_legacy_pages_without_fallback ... ok
+test arbitrary_payloads_are_bounded_and_never_panic ... ok
+test real_frames_match_every_independently_decoded_field ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+[1m[32m     Running[0m tests/protocol_decoders.rs (target/debug/deps/protocol_decoders-935e9f3d5df2fd90)
+
+running 6 tests
+test tick_values_are_checked_and_unknown_direction_is_preserved ... ok
+test invalid_parameters_fail_without_panicking ... ok
+test response_identity_numeric_and_date_constraints ... ok
+test truncation_excess_trailing_and_stale_results_are_rejected ... ok
+test client_sends_checked_bytes_and_uses_the_independent_decoders ... ok
+test real_samples_match_independent_requests_and_all_fields ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

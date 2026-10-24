@@ -1,0 +1,33 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/rustdx-core",
+    "apps/rustdx-cli",
+    "apps/rustdx-runner",
+    "tests/integration",
+]
+default-members = ["crates/rustdx-core", "apps/rustdx-cli", "apps/rustdx-runner"]
+exclude = ["tools/fuzz"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.89"
+license = "MIT"
+repository = "https://github.com/jelven007/rustdx"
+
+[workspace.dependencies]
+log = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+
+[profile.test]
+opt-level = 3
+
+[profile.bench]
+lto = true
+opt-level = 3
+
+[profile.release]
+lto = true
+opt-level = 3

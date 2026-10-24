@@ -1,0 +1,8 @@
+{
+  "sha256": {
+    "amount-attribution.png": "cb3ab175873e1c9a39e4a28b36f6edd287fe973e5bec6f16d6b3c445c9f080c4",
+    "amount-attribution.svg": "17a09b7977a8f32589dfa7d48ad53a5b582db209d47cf2a9eaa83cb7613e6d47",
+    "diagnostics.json": "98224286393102bc9813242715ddc6784462c847e08c22205b9087882a39205a"
+  },
+  "verification": "Report links, exact amount identity, quantity candidate and all minute boundaries match results."
+}

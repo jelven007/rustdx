@@ -1,0 +1,128 @@
+{
+  "captured_at": "2026-10-24T05:45:30.278595Z",
+  "endpoint": "180.153.18.170:7709",
+  "requested_date": 20261023,
+  "results": [
+    {
+      "decoded": true,
+      "name": "special-limits"
+    },
+    {
+      "decoded": true,
+      "name": "special-limits-next"
+    },
+    {
+      "decoded": true,
+      "name": "aux-0"
+    },
+    {
+      "decoded": true,
+      "name": "aux-11"
+    },
+    {
+      "decoded": true,
+      "name": "sparkline-20"
+    },
+    {
+      "decoded": true,
+      "name": "sparkline-40"
+    },
+    {
+      "decoded": true,
+      "name": "recent-20261022-000001"
+    },
+    {
+      "decoded": true,
+      "name": "recent-20261022-159915"
+    },
+    {
+      "decoded": true,
+      "name": "recent-20261023-000001"
+    },
+    {
+      "decoded": true,
+      "name": "recent-20261023-159915"
+    },
+    {
+      "decoded": true,
+      "name": "recent-20261024-000001"
+    },
+    {
+      "decoded": true,
+      "name": "recent-20261024-159915"
+    },
+    {
+      "decoded": true,
+      "name": "auction-history"
+    },
+    {
+      "decoded": true,
+      "name": "auction-current"
+    },
+    {
+      "decoded": true,
+      "name": "auction-page-0"
+    },
+    {
+      "decoded": true,
+      "name": "auction-page-40"
+    },
+    {
+      "decoded": true,
+      "name": "auction-page-80"
+    },
+    {
+      "decoded": true,
+      "name": "money-0-000001"
+    },
+    {
+      "decoded": true,
+      "name": "money-1-600519"
+    },
+    {
+      "decoded": true,
+      "name": "snapshots"
+    },
+    {
+      "decoded": true,
+      "name": "quotes-053e"
+    },
+    {
+      "decoded": true,
+      "name": "category-false"
+    },
+    {
+      "decoded": true,
+      "name": "category-true"
+    },
+    {
+      "decoded": true,
+      "name": "category-change-false"
+    },
+    {
+      "decoded": true,
+      "name": "category-change-true"
+    },
+    {
+      "decoded": true,
+      "name": "category-next"
+    },
+    {
+      "decoded": true,
+      "name": "refresh-0"
+    },
+    {
+      "decoded": true,
+      "name": "refresh-1"
+    },
+    {
+      "decoded": true,
+      "name": "refresh-2"
+    },
+    {
+      "name": "push",
+      "observed": false
+    }
+  ],
+  "scope": "Single endpoint and sampled parameters; no trading-hour push or exchange-completeness claim"
+}

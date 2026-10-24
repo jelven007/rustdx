@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "support_files_verified": 11220,
+  "support_archive_sha256": "9a30cda49953550d1d7dfaf20c5686571284bdc83fb4e71cc7543f2e5ff7a8f9",
+  "attempts": {
+    "attempt1": {
+      "status": "failed",
+      "commands": 67,
+      "native_backup_files": 4
+    },
+    "attempt2": {
+      "status": "passed",
+      "commands": 71,
+      "native_backup_files": 4
+    }
+  },
+  "expected_final_command_results_verified": 71,
+  "old_frozen_evidence_files_unchanged": 538,
+  "rust_source_files_unchanged": 236,
+  "python_syntax": "passed",
+  "inventory_rejection_cases": [
+    "corruption",
+    "extra-file",
+    "missing-file"
+  ],
+  "unique_ports_and_help": "passed",
+  "git_diff_check": "passed",
+  "rust_changes_in_stage6": false,
+  "workflow_yaml_and_shell_syntax": "passed",
+  "workflow_shell_steps_checked": 12,
+  "database_workflow_sha256": "dd967195fa55b0caaf2c31478320610cb420e996a858ad57864f3738aaf0d0db",
+  "github_actions_executed": false,
+  "tests_not_repeated": "Cargo fmt/Clippy/tests already executed in stage5 on the same Rust inputs.",
+  "local_document_links_verified": 247
+}

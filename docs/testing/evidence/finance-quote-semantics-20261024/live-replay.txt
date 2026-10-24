@@ -1,0 +1,18 @@
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+    Finished `test` profile [optimized + debuginfo] target(s) in 4.30s
+     Running tests/quote_precision.rs (target/debug/deps/quote_precision-82879d2c81d0ee95)
+
+running 10 tests
+test wide_integer_sums_zero_prices_and_missing_identity_are_preserved ... ok
+test mixed_decimals_scale_every_price_once_and_preserve_nonprice_fields ... ok
+test preserved_real_two_decimal_sample_matches_all_historical_fields ... ok
+test live_mixed_precision_frame_matches_independent_closed_session_prices ... ok
+test immutable_generations_and_exchange_day_freshness_do_not_mix ... ok
+test missing_unsupported_duplicate_and_truncated_input_fail_without_fallback ... ok
+test live_request_rejects_stale_future_and_missing_precision_before_sending ... ok
+test multi_market_refresh_does_not_publish_successful_half_on_second_market_failure ... ok
+test client_cold_load_hot_cache_missing_precision_and_failed_refresh ... ok
+test nested_operation_deadline_bounds_cold_loading_and_does_not_publish_partial_cache ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+

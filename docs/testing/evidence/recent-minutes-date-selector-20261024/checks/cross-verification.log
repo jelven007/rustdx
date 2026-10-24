@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/bytedance/Documents/rustdx/scripts/validation/verify_recent_minutes_date_selector.py", line 182, in <module>
+    }))
+  File "/Users/bytedance/Documents/rustdx/scripts/validation/verify_recent_minutes_date_selector.py", line 171, in main
+    parser.add_argument("--output", type=Path, required=True)
+  File "/Users/bytedance/Documents/rustdx/scripts/validation/verify_recent_minutes_date_selector.py", line 93, in check
+    assert all(a["price_raw"] == b["price_raw"] for a, b in zip(lp, rp))
+AssertionError

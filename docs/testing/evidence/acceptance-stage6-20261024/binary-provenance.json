@@ -1,0 +1,13 @@
+{
+  "stage5_source_sha256": "d080d6c1ed153150d10637f6dabbff2674baa8091b581f19da30bc64986f68cf",
+  "binary_sha256": {
+    "rustdx": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2",
+    "rustdx-runner": "62be36f0f800d9e84799dba7361ae6dc088bd7120aa770979036de4d160e903e"
+  },
+  "stage5_binary_match": true,
+  "current_rust_input_files_match_stage5": 236,
+  "binary_profile": "debug; functional acceptance only",
+  "stage6_python_source_sha256": "78cd23ea98eb8c7eb12d90baf00e9f81cb511936b3fecb764b78ba9a4e9e1ff7",
+  "production_deployment": false,
+  "cargo_reexecuted_in_stage6": false
+}

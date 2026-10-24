@@ -1,0 +1,1 @@
+{"checked_at":"2026-10-24T13:07:48.127323433+00:00","per_target":{"batches":3,"evidence_bytes":65751744,"evidence_entries":54,"operations":25,"proof_bytes":42496,"rows":1200},"recovery":false,"release":"a-1792847266998288617-613409","reserve":"publication, one recovery and one complete consumer readback","schema_version":1,"targets":2}

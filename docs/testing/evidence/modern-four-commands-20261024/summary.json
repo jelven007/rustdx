@@ -1,0 +1,79 @@
+{
+  "captured_at": "2026-10-24T05:05:31.833147Z",
+  "directory_counts": [
+    {
+      "as_of_date": "2026-10-24",
+      "fetched_at": "2026-10-24T05:05:31.021624Z",
+      "market": 0,
+      "securities": 24460,
+      "source_endpoint": "115.238.56.198:7709",
+      "unsupported": 0
+    },
+    {
+      "as_of_date": "2026-10-24",
+      "fetched_at": "2026-10-24T05:05:31.021624Z",
+      "market": 1,
+      "securities": 27711,
+      "source_endpoint": "115.238.56.198:7709",
+      "unsupported": 0
+    }
+  ],
+  "endpoint": "115.238.56.198:7709",
+  "heartbeat": {
+    "raw_payload": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      159,
+      40,
+      53,
+      1
+    ],
+    "reserved_raw": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "server_date": "2026-10-23",
+    "server_date_raw": 20261023
+  },
+  "minutes": [
+    {
+      "code": "000001",
+      "count": 240,
+      "decimal": 2,
+      "first_price": 11.3,
+      "last_average": 11.2387,
+      "last_price": 11.2,
+      "market": 0,
+      "trading_date": null
+    },
+    {
+      "code": "159915",
+      "count": 240,
+      "decimal": 3,
+      "first_price": 2.55,
+      "last_average": 2.59531,
+      "last_price": 2.702,
+      "market": 0,
+      "trading_date": null
+    },
+    {
+      "code": "510300",
+      "count": 240,
+      "decimal": 3,
+      "first_price": 4.071,
+      "last_average": 4.10672,
+      "last_price": 4.178,
+      "market": 1,
+      "trading_date": null
+    }
+  ],
+  "scope": "one endpoint, closed-session sample; date-less 0537 does not verify a trading day"
+}

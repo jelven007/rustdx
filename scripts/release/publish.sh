@@ -12,9 +12,11 @@ if [ ! -f "${CARGO_HOME:-$HOME/.cargo}/credentials.toml" ]; then
     exit 1
 fi
 
-cargo fmt --all -- --check
-cargo test --workspace --locked
-cargo clippy --workspace --all-targets --locked -- -D warnings
+# A clean source tree, MSRV checks and both unpacked packages are mandatory.
+# The CLI package is compiled against the extracted new core before any upload.
+review_dir="$(mktemp -d "${TMPDIR:-/tmp}/rustdx-release-review.XXXXXX")"
+rmdir "$review_dir"
+python3 scripts/release/preflight.py --output "$review_dir"
 cargo publish -p "$CORE" --dry-run --locked
 
 read -r -p "Publish $CORE and $CLI to crates.io? Type yes: " confirm
@@ -23,9 +25,25 @@ if [ "$confirm" != "yes" ]; then
     exit 1
 fi
 
+# Do not upload different bytes after an interactive wait.
+python3 - "$review_dir/preflight.json" <<'PY'
+import importlib.util
+import json
+import sys
+from pathlib import Path
+spec = importlib.util.spec_from_file_location("preflight", "scripts/release/preflight.py")
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+report = json.loads(Path(sys.argv[1]).read_text())
+_, current = module.inventory()
+if not report["publication_qualified"] or current != report["source_sha256"] or module.git("status", "--porcelain=v1", "-z"):
+    raise SystemExit("source changed or preflight incomplete; rerun the review")
+PY
+
 cargo publish -p "$CORE" --locked
 echo "Published: https://crates.io/crates/$CORE"
 
 # 等核心库在索引可见后再发 CLI（cargo publish 自身会等待上传可用）。
+cargo publish -p "$CLI" --dry-run --locked
 cargo publish -p "$CLI" --locked
 echo "Published: https://crates.io/crates/$CLI"

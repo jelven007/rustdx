@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "rust": "1.89.0",
+    "offline": true,
+    "locked_workspace": true,
+    "external_test_skip": "RUSTDX_SKIP_INTEGRATION_TESTS=1"
+  },
+  "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "changes": [
+    "O05 local package/source audit and publication guards",
+    "O08 advisory worker scan cadence and final reconciliation",
+    "O14 process/shared probe quota and passive opcode capability observations",
+    "O16 runner cancellation/timeout categories, JSON CLI errors and bounded descendant reap",
+    "O17 incremental EMA/MACD and checked parameter contract",
+    "O18 modern decoder fuzz target and JSON timing baseline/comparison"
+  ],
+  "checks": [
+    {
+      "label": "format",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "exit_code": 0,
+      "seconds": 1.294002625
+    },
+    {
+      "label": "fuzz-format",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--manifest-path",
+        "tools/fuzz/Cargo.toml"
+      ],
+      "exit_code": 0,
+      "seconds": 0.10323770900000007
+    },
+    {
+      "label": "process-cleanup",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--offline",
+        "--locked",
+        "database_process::tests"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7366619160000001
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 2.424225833
+    },
+    {
+      "label": "tests",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "seconds": 33.565171082999996
+    },
+    {
+      "label": "doctests",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--doc",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "seconds": 9.088281082999998
+    },
+    {
+      "label": "fmt",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.7446833749999939
+    },
+    {
+      "label": "fuzz-check",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "check",
+        "--manifest-path",
+        "tools/fuzz/Cargo.toml",
+        "--bins",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 5.633392624999999
+    },
+    {
+      "label": "fuzz-fmt",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--manifest-path",
+        "tools/fuzz/Cargo.toml",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.09517770800000136
+    },
+    {
+      "label": "rustdoc",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "doc",
+        "--workspace",
+        "--no-deps",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "seconds": 10.352004207999997
+    },
+    {
+      "label": "bench",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "bench",
+        "-p",
+        "jelven-rustdx-complete",
+        "--bench",
+        "indicators",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "seconds": 15.646910333999998
+    }
+  ],
+  "workspace_tests": {
+    "passed": 474,
+    "failed": 0,
+    "ignored": 7
+  },
+  "doctests": {
+    "passed": 66,
+    "failed": 0,
+    "ignored": 18
+  },
+  "fuzz": [
+    {
+      "target": "modern_parsers",
+      "runs": 302867,
+      "seconds": 31,
+      "exit_code": 0,
+      "instrumentation": "nightly cargo-fuzz; address sanitizer",
+      "note": "short smoke run; corpus mutation, not exhaustive state-machine verification"
+    },
+    {
+      "target": "checked_parsers",
+      "runs": 279639,
+      "seconds": 31,
+      "exit_code": 0,
+      "instrumentation": "nightly cargo-fuzz; address sanitizer",
+      "note": "short smoke run; corpus mutation, not exhaustive state-machine verification"
+    }
+  ],
+  "packages": [
+    {
+      "name": "jelven-rustdx-complete",
+      "sha256": "9296a1e3bc05cb7253445596bb6eff4d11c61f2dd978062caac5253af893e1d4",
+      "crate": "target/package/jelven-rustdx-complete-1.12.2.crate",
+      "files": 101
+    },
+    {
+      "name": "jelven-rustdx-cli",
+      "sha256": "b06e69e6b9bebd0ebb9e57050be38aa1e1e357aff45cc5210b837ea8bf50963f",
+      "crate": "target/package/jelven-rustdx-cli-1.8.2.crate",
+      "files": 27
+    }
+  ],
+  "source_snapshot": {
+    "source_sha256": "abcc24c3e35f54bc724df9bc682d18cd656f869d60beda437fb398aaed77f276",
+    "archive_sha256": "72e78184706bdfa6624629aeea8f98838953daa37abc19efe52af208c8e37172",
+    "files": 7740,
+    "dirty": true,
+    "lock_sha256": "1577c41c40f9416e8166c2fa92aeef8770a9a9821c7aa225c4da1bd1cd3baacf",
+    "local_artifact": "reports/source-review-stage3-20261024",
+    "publication_qualified": false
+  },
+  "additional_script_checks": {
+    "deterministic_archive_and_source_drift": "passed",
+    "benchmark_comparator_identical_input_exit": 0,
+    "benchmark_comparator_synthetic_double_time_exit": 1
+  },
+  "scope": {
+    "registry": "not accessed; staged CLI package uses extracted core patch and staged lock",
+    "binary_reproducibility": "not claimed",
+    "benchmark": "synthetic timing observation, five-sample median; no old/new speedup or RSS comparison",
+    "skips": "passed counts include opt-out external tests; 7 tests/18 doctests ignored",
+    "not_executed": [
+      "market-hours 0547 passive push acceptance",
+      "real databases",
+      "Linux production",
+      "full-market throughput",
+      "remote CI",
+      "commit/push/version bump/publication"
+    ]
+  },
+  "files": [
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/clippy.txt",
+      "bytes": 376,
+      "sha256": "68b643ce5a3ea7ccb5ab3daa870e496748aba49ede15f372b160238b8e913770"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/tests.txt",
+      "bytes": 59169,
+      "sha256": "6145a35393f9dc7dea54e5969e1c465b3421db7762f848ba2fc72e05a905b8dd"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/doctests.txt",
+      "bytes": 9255,
+      "sha256": "fe44252890fc2e1e2cf8028e304700d56d4061717a523d24c08ac905dc9adae1"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/fmt.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/fuzz-check.txt",
+      "bytes": 587,
+      "sha256": "5489c0d1b1fa85cc776725cfeec3771551a10d559b80fa47b804fe7d33a84e1f"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/fuzz-fmt.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/rustdoc.txt",
+      "bytes": 1017,
+      "sha256": "63b0da1c58c182a78e844e0b449041e64be286a02ebfb822ff97dbb5298d90af"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/bench.txt",
+      "bytes": 2671,
+      "sha256": "a0b2485e67d5cd161f6ae92fa2f842aa230050002c676295f6f5b7dc170cdf70"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/process-cleanup.txt",
+      "bytes": 648,
+      "sha256": "a9d2a27c0a5821f4762aeb3efffd35e8f51646776776bb4ebedb98a0cf73b750"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/checks.json",
+      "bytes": 3184,
+      "sha256": "e18a4329fc442f16bc9a16716626a6f85f0387a1cc6a82b9e292bd9950312958"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/indicator-baseline.json",
+      "bytes": 2794,
+      "sha256": "4b6441421a8b7efe5a3ea2b3efd9ec136da258b596060104a18eb4a8ed6665a6"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/modern-fuzz.txt",
+      "bytes": 210335,
+      "sha256": "f97cbacbacc183142235724c32b3a1f1a4e36cf70bef0f69ba1de40603968e2c"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/checked-fuzz.txt",
+      "bytes": 54819,
+      "sha256": "9dc6adeda23c101921d03a67680fda06a9ded53f515f263640e1c7f96e545e2e"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/modern-fuzz.json",
+      "bytes": 567,
+      "sha256": "c4a86e2d2fce072b5fa1e64df2444d9e861ce109269dc3c631cc37f3f59ecc1a"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/prior-fuzz.json",
+      "bytes": 1177,
+      "sha256": "2f6f26e11762cfe5c8e9f02e528de330d9ca81965f21d8fe23c7e3e1c01a426f"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/fuzz-seeds.json",
+      "bytes": 1996,
+      "sha256": "ca69331c79a1b5cdcda8b9247717160c4849da0fe6d0a4ac77166301443a51eb"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/package-preflight.json",
+      "bytes": 2122083,
+      "sha256": "5afb61f5e9964e466f69fd4e98d22941f39f349c7d2a16c4e302d323caed53fe"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/package-downstream.txt",
+      "bytes": 1762,
+      "sha256": "d7f444dba35fdf297759536776d55077e949980ee867e7574c66ed9479737a43"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/package-package-jelven-rustdx-cli.txt",
+      "bytes": 2076,
+      "sha256": "68a88e7526a11a986d8676ebb0cdf642cca8be868018b01aebcc580e88b4d1e3"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/package-unpacked-cli-lock.txt",
+      "bytes": 228,
+      "sha256": "62d1264fc26d96f064507a383699ce3dc713faa9d0ab9425980ccc46da5fafb2"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/package-downstream-lock.txt",
+      "bytes": 80,
+      "sha256": "1b036cc475e59e112680f6046f4fd3396ff6d799b6abd313f87c9fbf1feef8c7"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/package-unpacked-cli.txt",
+      "bytes": 4890,
+      "sha256": "10c90e590936f41bb2ccd3aca09a9c610454060ca29f554222121b91cd5ea726"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/package-package-staging-lock.txt",
+      "bytes": 582,
+      "sha256": "ce9b79cb9d8142f197c5255486592f18553749e9fbf7ae69ce59cbb8d23231a8"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/package-package-jelven-rustdx-complete.txt",
+      "bytes": 11181,
+      "sha256": "5a2e0c1397642918fde8d65eb9bb855c086c412cf7d1630fa7496131257d45af"
+    }
+  ]
+}

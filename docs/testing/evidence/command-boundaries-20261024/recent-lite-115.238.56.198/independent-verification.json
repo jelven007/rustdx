@@ -1,0 +1,9 @@
+{
+  "verification": "passed",
+  "live_nonempty_verified": false,
+  "business_status": "nonempty_not_verified",
+  "sample_frames_checked": 15,
+  "records_checked": 0,
+  "nonempty_symbols": [],
+  "scope": "Only sampled parameters; no server-date echo or full exchange session proof."
+}

@@ -1,0 +1,626 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "scope": "Production workspace layout, lifecycle documentation, reference synchronization and justified cleanup",
+  "source_head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "includes_preexisting_uncommitted_work": true,
+  "platform": "Darwin/arm64",
+  "rust_version": "1.89.0",
+  "workspace_offline_locked": true,
+  "external_integration_skip": true,
+  "cargo": {
+    "fmt": {
+      "exit_code": 0,
+      "seconds": 2.702
+    },
+    "clippy": {
+      "exit_code": 0,
+      "seconds": 2.297
+    },
+    "test": {
+      "exit_code": 0,
+      "seconds": 103.432
+    },
+    "doc": {
+      "exit_code": 0,
+      "seconds": 3.357
+    }
+  },
+  "workspace_tests": {
+    "passed": 498,
+    "failed": 0,
+    "ignored": 24,
+    "result_groups": 58,
+    "qualification": "Framework totals include external cases that return early under the skip flag; not online acceptance."
+  },
+  "packages": {
+    "core_list": {
+      "exit_code": 0,
+      "seconds": 0.129,
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "package",
+        "-p",
+        "jelven-rustdx-complete",
+        "--list",
+        "--allow-dirty",
+        "--offline",
+        "--locked"
+      ],
+      "contains_readme": true,
+      "contains_license": true,
+      "contains_core_data": true,
+      "leaked_engineering_paths": []
+    },
+    "cli_list": {
+      "exit_code": 0,
+      "seconds": 0.061,
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "package",
+        "-p",
+        "jelven-rustdx-cli",
+        "--list",
+        "--allow-dirty",
+        "--offline",
+        "--locked"
+      ],
+      "contains_readme": true,
+      "contains_license": true,
+      "contains_core_data": null,
+      "leaked_engineering_paths": []
+    },
+    "core_package": {
+      "exit_code": 0,
+      "seconds": 11.184,
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "package",
+        "-p",
+        "jelven-rustdx-complete",
+        "--allow-dirty",
+        "--offline",
+        "--locked"
+      ],
+      "files": 96
+    },
+    "fuzz_check": {
+      "exit_code": 0,
+      "seconds": 9.348,
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "check",
+        "--manifest-path",
+        "tools/fuzz/Cargo.toml",
+        "--offline",
+        "--locked"
+      ]
+    }
+  },
+  "cli_upload_package": {
+    "exit_code": 101,
+    "verified": false,
+    "reason": "Offline crates.io cache has no jelven-rustdx-complete index entry.",
+    "package_list_passed": true,
+    "workspace_and_clean_source_compiled": true
+  },
+  "examples": {
+    "examples": [
+      "basic",
+      "f10_batch",
+      "trades",
+      "subscription",
+      "application_integration"
+    ],
+    "compile_exit_code": 0,
+    "executed_network_examples": false,
+    "local_example_from_external_directory_exit_code": 0
+  },
+  "fixed_recent_minutes": {
+    "frames": 24,
+    "records": 5760,
+    "read_only_independent_check_passed": true,
+    "server_trading_date_verified": false
+  },
+  "clean_source": {
+    "selected_files": 7702,
+    "commands": [
+      {
+        "name": "clean_core",
+        "args": [
+          "test",
+          "-p",
+          "jelven-rustdx-complete",
+          "--test",
+          "file-day",
+          "--test",
+          "fq",
+          "--test",
+          "protocol_decoders",
+          "--test",
+          "quote_precision",
+          "--test",
+          "recent_minutes_fixtures",
+          "--test",
+          "eltdx_330_commands",
+          "--offline",
+          "--locked"
+        ],
+        "exit_code": 0
+      },
+      {
+        "name": "clean_cli",
+        "args": [
+          "test",
+          "-p",
+          "jelven-rustdx-cli",
+          "--test",
+          "calendar_datasets",
+          "--test",
+          "cli",
+          "--offline",
+          "--locked"
+        ],
+        "exit_code": 0
+      }
+    ]
+  },
+  "script_control_flow": {
+    "mock_cargo_only": true,
+    "script_control_flow": [
+      {
+        "name": "quick",
+        "exit_code": 0,
+        "cwd": "/Users/bytedance/Documents/rustdx",
+        "argv": [
+          "test",
+          "--workspace",
+          "--lib",
+          "--locked"
+        ]
+      },
+      {
+        "name": "live",
+        "exit_code": 0,
+        "cwd": "/Users/bytedance/Documents/rustdx",
+        "argv": [
+          "test",
+          "-p",
+          "jelven-rustdx-complete",
+          "--test",
+          "comprehensive_test",
+          "--locked",
+          "--",
+          "--nocapture",
+          "--test-threads=1"
+        ]
+      },
+      {
+        "name": "ops",
+        "exit_code": 0,
+        "cwd": "/Users/bytedance/Documents/rustdx",
+        "argv": [
+          "run",
+          "-p",
+          "jelven-rustdx-complete",
+          "--locked",
+          "--example",
+          "test_connection",
+          "--",
+          "127.0.0.1:7709"
+        ]
+      },
+      {
+        "name": "report_exit",
+        "exit_code": 17,
+        "cwd": "/Users/bytedance/Documents/rustdx",
+        "argv": [
+          "test",
+          "--workspace",
+          "--locked"
+        ]
+      }
+    ],
+    "runner_global_arguments": [
+      {
+        "subcommand": "recover",
+        "exit_code": 0
+      },
+      {
+        "subcommand": "metrics",
+        "exit_code": 0
+      }
+    ]
+  },
+  "static_and_preservation": {
+    "files_before": 8828,
+    "retained_unchanged": 8714,
+    "retained_changed": [
+      ".github/workflows/ci.yml",
+      ".github/workflows/data-coverage.yml",
+      ".github/workflows/database-acceptance.yml",
+      ".gitignore",
+      "AGENTS.md",
+      "CHANGELOG.md",
+      "Cargo.toml",
+      "README.md",
+      "config/README.md",
+      "data/README.md",
+      "deploy/README.md",
+      "deploy/runner/README.md",
+      "deploy/runner/rustdx-metrics.service",
+      "deploy/runner/rustdx-runner.service",
+      "docs/README.md",
+      "docs/architecture/DAILY_IP_POOL.md",
+      "docs/architecture/NETWORK.md",
+      "docs/architecture/PRODUCTION_FUSION_PLAN.md",
+      "docs/archive/architecture/REVIEWS_THROUGH_20261024.md",
+      "docs/architecture/PROJECT_STRUCTURE.md",
+      "docs/architecture/PROTOCOL_REQUESTS.md",
+      "docs/archive/architecture/TDX_7709_ELTDX_COMPARISON_20261023.md",
+      "docs/archive/architecture/TDX_PROTOCOL_RESEARCH_20261023.md",
+      "docs/archive/architecture/TECHNICAL_ARCHITECTURE_REVIEW_20261024.md",
+      "docs/archive/architecture/UPSTREAM_CRATE_ASSESSMENT.md",
+      "docs/development/APPLICATION_INTEGRATION.md",
+      "docs/development/DEVELOPMENT.md",
+      "docs/archive/development/ENHANCED_HISTORY_0FC6_IMPLEMENTATION_20261024.md",
+      "docs/archive/development/FINANCE_QUOTE_SEMANTICS_IMPLEMENTATION_20261024.md",
+      "docs/archive/development/FOUR_COMMANDS_MODERNIZATION_20261024.md",
+      "docs/archive/development/NINE_COMMANDS_IMPLEMENTATION_20261024.md",
+      "docs/archive/development/PRODUCTION_IMPLEMENTATION.md",
+      "docs/archive/development/TRADE_AMOUNT_SEMANTICS_IMPLEMENTATION_20261024.md",
+      "docs/archive/development/TRADE_EVENT_MODEL_IMPLEMENTATION_20261024.md",
+      "docs/archive/development/TRADE_PAGINATION_CLASSIFICATION_ANALYSIS_20261024.md",
+      "docs/archive/development/TRADE_PAGINATION_IMPLEMENTATION_20261024.md",
+      "docs/archive/history/ITERATION.md",
+      "docs/archive/history/NEXT_OPTIMIZATION.md",
+      "docs/archive/history/OPTIMIZATION.md",
+      "docs/archive/history/OPTIMIZATION_ROUND3.md",
+      "docs/operations/DATA_MAINTENANCE.md",
+      "docs/archive/operations/ELTDX_3_2_2_COMMAND_GUIDE_20261024.md",
+      "docs/operations/IMPORTS.md",
+      "docs/operations/OBSERVABILITY.md",
+      "docs/operations/OPERATIONS.md",
+      "docs/runbooks/RUNBOOK.md",
+      "docs/reference/COMMAND_API.md",
+      "docs/archive/operations/TDX_API_REFERENCE_20261024.md",
+      "docs/archive/operations/TDX_UPSTREAM_DEPENDENT_APIS_20261024.md",
+      "docs/archive/operations/UPSTREAM_ACTIVE_INTERFACES.md",
+      "docs/release/MIGRATION.md",
+      "docs/archive/release/DELIVERY_20261022.md",
+      "docs/requirements/REQUIREMENTS.md",
+      "docs/archive/validation/COMMAND_0FEB_0547_BOUNDARY_REVIEW_20261024.md",
+      "docs/testing/DATABASE_ACCEPTANCE.md",
+      "docs/archive/validation/ELTDX_3_2_2_CURRENT_IMPLEMENTATION_20261024.md",
+      "docs/archive/validation/ELTDX_3_3_0_26_COMMANDS_IMPLEMENTATION_20261024.md",
+      "docs/archive/validation/ENHANCED_HISTORY_AMOUNT_DIFFERENCE_20261024.md",
+      "docs/archive/validation/ENHANCED_HISTORY_DAY_COMPLETENESS_20261024.md",
+      "docs/archive/validation/KLINE_VOLUME_UNITS_20261024.md",
+      "docs/archive/validation/LIVE_COMMAND_CONTRACT_VALIDATION_20261024.md",
+      "docs/archive/validation/NONEMPTY_FIXTURES_PUSH_WINDOW_20261024.md",
+      "docs/archive/validation/PRODUCTION_ACCEPTANCE_THROUGH_20261024.md",
+      "docs/archive/validation/QUOTE_PUSH_VALIDATION_20261024.md",
+      "docs/archive/validation/RECENT_MINUTES_PUSH_BOUNDARIES_20261024.md",
+      "docs/archive/validation/TDX_7709_22_COMMAND_AUDIT_20261024.md",
+      "docs/archive/validation/TDX_7709_FUNCTIONAL_AUDIT_20261024.md",
+      "docs/archive/validation/TDX_ONLY_VALIDATION_20261024.md",
+      "docs/archive/validation/VALIDATION_THROUGH_20261024.md",
+      "crates/rustdx-core/examples/local_data.rs",
+      "tools/fuzz/Cargo.toml",
+      "apps/rustdx-cli/Cargo.toml",
+      "apps/rustdx-cli/tests/calendar_datasets.rs",
+      "apps/rustdx-cli/tests/tcp_startup.rs",
+      "apps/rustdx-runner/Cargo.toml",
+      "apps/rustdx-runner/README.md",
+      "apps/rustdx-runner/tests/control_plane.rs",
+      "apps/rustdx-runner/tests/tcp_startup.rs",
+      "apps/rustdx-runner/tests/wire_archive.rs",
+      "scripts/README.md",
+      "scripts/dev/run_comprehensive_test.sh",
+      "scripts/ops/diagnose_network.sh",
+      "scripts/validation/analyze_enhanced_history_amount.py",
+      "scripts/validation/freeze_recent_minutes_fixtures.py",
+      "scripts/validation/verify_enhanced_history_day.py",
+      "tests/integration/Cargo.toml",
+      "crates/rustdx-core/tests/common/trade_amount.rs",
+      "crates/rustdx-core/tests/eltdx_330_commands.rs",
+      "crates/rustdx-core/tests/enhanced_history_transaction.rs",
+      "crates/rustdx-core/tests/fixtures/README.md",
+      "crates/rustdx-core/tests/fixtures/protocol_7709/README.md",
+      "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/README.md",
+      "crates/rustdx-core/tests/modern_commands.rs",
+      "crates/rustdx-core/tests/quote_precision.rs"
+    ],
+    "missing_files": [],
+    "deleted_files": [
+      ".DS_Store",
+      "docs/.DS_Store",
+      "docs/REQUIREMENTS.md",
+      "docs/development/FINANCE_QUOTE_SEMANTICS_FIX_PLAN_20261024.md",
+      "docs/development/TDX_7709_NINE_COMMANDS_PLAN_20261024.md",
+      "docs/development/TRADE_AMOUNT_SEMANTICS_FIX_PLAN_20261024.md",
+      "docs/operations/.DS_Store",
+      "docs/requirements/.DS_Store",
+      "docs/validation/evidence/.DS_Store",
+      "docs/validation/evidence/tdx-protocol-20261023/archives/.DS_Store",
+      "docs/validation/evidence/tdx-protocol-20261023/github/.DS_Store",
+      "docs/validation/evidence/tdx-protocol-20261023/registries/.DS_Store",
+      "examples/.DS_Store",
+      "rustdx-cmd/examples/.DS_Store",
+      "rustdx-cmd/src/cmd/.DS_Store",
+      "rustdx-cmd/src/eastmoney/.DS_Store",
+      "rustdx-cmd/tests/.DS_Store",
+      "rustdx-cmd/tests/fixtures/.DS_Store",
+      "scripts/validation/freeze_eltdx_330_implementation.py",
+      "tests-integration/src/.DS_Store"
+    ],
+    "protected_files_checked": 7510,
+    "protected_bytes_unchanged": true,
+    "protected_errors": [],
+    "markdown_files_checked": 77,
+    "markdown_links_checked": 1261,
+    "broken_links": [],
+    "syntax": {
+      "python": {
+        "count": 17,
+        "files": [
+          "scripts/bench/measure_day_memory.py",
+          "scripts/bench/measure_database_readback.py",
+          "scripts/validation/evidence_paths.py",
+          "scripts/validation/verify_kline_pytdx.py",
+          "scripts/validation/verify_recent_minutes_boundaries.py",
+          "scripts/validation/verify_recent_auction.py",
+          "scripts/validation/verify_enhanced_history_transaction.py",
+          "scripts/validation/verify_quote_push.py",
+          "scripts/validation/analyze_enhanced_history_amount.py",
+          "scripts/validation/verify_modern_commands.py",
+          "scripts/validation/verify_eltdx_330_commands.py",
+          "scripts/validation/verify_enhanced_history_day.py",
+          "scripts/validation/verify_real_day_database.py",
+          "scripts/validation/freeze_recent_minutes_fixtures.py",
+          "scripts/validation/verify_database_faults.py",
+          "scripts/validation/verify_protocol_pytdx.py",
+          "scripts/validation/verify_nine_commands.py"
+        ]
+      },
+      "shell": {
+        "count": 3,
+        "files": [
+          "scripts/release/publish.sh",
+          "scripts/dev/run_comprehensive_test.sh",
+          "scripts/ops/diagnose_network.sh"
+        ]
+      },
+      "yaml": {
+        "count": 6,
+        "files": [
+          "deploy/clickhouse/compose.yml",
+          "deploy/runner/alerts.yml",
+          "deploy/acceptance/compose.yml",
+          ".github/workflows/database-acceptance.yml",
+          ".github/workflows/data-coverage.yml",
+          ".github/workflows/ci.yml"
+        ]
+      },
+      "json": {
+        "count": 3,
+        "files": [
+          "config/calendars/sse-2026.json",
+          "config/calendars/szse-2026.json",
+          "config/runner/job.example.json"
+        ]
+      },
+      "xml": {
+        "count": 1,
+        "files": [
+          "deploy/acceptance/clickhouse.xml"
+        ]
+      },
+      "systemd": {
+        "count": 4,
+        "files": [
+          "deploy/runner/rustdx-metrics.timer",
+          "deploy/runner/rustdx-runner.service",
+          "deploy/runner/rustdx-runner.timer",
+          "deploy/runner/rustdx-metrics.service"
+        ]
+      }
+    },
+    "core_source_files_unchanged": true
+  },
+  "current_documents": [
+    {
+      "path": "docs/README.md",
+      "sha256": "2af5fc9f272c822fa4d02f625bdffa8add66194c59f70ace4877d3d3dc56bd9b"
+    },
+    {
+      "path": "docs/architecture/DAILY_IP_POOL.md",
+      "sha256": "65bcf218fcc74a7e103cedfd6b979dd6bb94a25e8dcc8fdfc52209b80e79cb81"
+    },
+    {
+      "path": "docs/architecture/NETWORK.md",
+      "sha256": "33e6d78fca9f33ddd846382fddad274c9524985864bf29b0d6da39a87671d9ac"
+    },
+    {
+      "path": "docs/architecture/PRODUCTION_FUSION_PLAN.md",
+      "sha256": "dbdc8cc73ef1eb0cdb022129c22995fc9b700aebb6cd3fe85811ffd7d2ab2128"
+    },
+    {
+      "path": "docs/architecture/PROJECT_ANALYSIS.md",
+      "sha256": "7076eff62b1ce72abba99565e13260935065a8c244e9497d22b140d0ce8b5a79"
+    },
+    {
+      "path": "docs/architecture/PROJECT_STRUCTURE.md",
+      "sha256": "e3e7e03f2fdc56a99da3b04749a5768c3c6492092f99cdc7e629201f9d053380"
+    },
+    {
+      "path": "docs/architecture/PROTOCOL_REQUESTS.md",
+      "sha256": "7e4767a0d5ac54ec74385d8ecef95a1aa948ff425270b399d673f3cf3b91be22"
+    },
+    {
+      "path": "docs/development/APPLICATION_INTEGRATION.md",
+      "sha256": "b173f67d8b4d12f6a66913c716e639c46c5a12eccd269e7ef4d2d2e6db507361"
+    },
+    {
+      "path": "docs/development/DEVELOPMENT.md",
+      "sha256": "3f6ba1cb588b76d7a37dd472fd2bd1fe0ae456855887c5ae49843a0fae6529fb"
+    },
+    {
+      "path": "docs/operations/DATA_MAINTENANCE.md",
+      "sha256": "34a8a850733d7e666e5189f3afee1c28bb3655d5918d4667b7b748c32ef6b750"
+    },
+    {
+      "path": "docs/operations/IMPORTS.md",
+      "sha256": "0dc505735034a9f7a7d2eec203baa29e3ec4db9151336196105958a448813351"
+    },
+    {
+      "path": "docs/operations/OBSERVABILITY.md",
+      "sha256": "aef3d340aa350158a7aeda32e029fc663335f74a08ccd6c7b97832cce7388185"
+    },
+    {
+      "path": "docs/operations/OPERATIONS.md",
+      "sha256": "d15b7d5660f02050ecbeafc5b31ab94d279b1b814367d1090431c5b4c2d36b46"
+    },
+    {
+      "path": "docs/reference/COMMAND_API.md",
+      "sha256": "423dbc54e7b05fc7fb86146b869627e8b7c0ac92d685fa5fbb5b567b188e9308"
+    },
+    {
+      "path": "docs/release/MIGRATION.md",
+      "sha256": "9eb3f8da24982a4f4bf4ac8a8aa585099863ddded3cce295fa21b09643f3e0a9"
+    },
+    {
+      "path": "docs/release/PROJECT_RESTRUCTURE.md",
+      "sha256": "f0bb48e7ba82ef46f2c71a559893eb71451b6bb9f9ca5a12923eb9d209373877"
+    },
+    {
+      "path": "docs/release/RELEASES.md",
+      "sha256": "832700ed83bb7faf48b1ce7001d76296b8477fbcce2c4e4213dec0a33780a6cd"
+    },
+    {
+      "path": "docs/requirements/LIMIT_RULES.md",
+      "sha256": "fc9d08189988ac363287333f78f0133c1590ee4e937126c58f482ae64f224fb6"
+    },
+    {
+      "path": "docs/requirements/REQUIREMENTS.md",
+      "sha256": "d38ed344c0d41064d5a16260d62b844f86c9af9414c2a42a3589d3396463a430"
+    },
+    {
+      "path": "docs/runbooks/RUNBOOK.md",
+      "sha256": "cb2cd5821f19d463e6ee5c7a2e4306261a6083759b52460fdbd3a542487083e3"
+    },
+    {
+      "path": "docs/testing/DATABASE_ACCEPTANCE.md",
+      "sha256": "fd85f77deb3ea1882e5a0025e07140c436d88476577eac17a0890dceef1d4871"
+    },
+    {
+      "path": "docs/testing/EVIDENCE.md",
+      "sha256": "d01c7ccc083fbd974921235ca978051344c4df52c63534e0dcb01bf477429575"
+    },
+    {
+      "path": "docs/testing/PRODUCTION_ACCEPTANCE.md",
+      "sha256": "6255e8768efd96d1ea137120b4b69effc6d308c79e9f281f88139f84a78c92af"
+    },
+    {
+      "path": "docs/testing/VALIDATION.md",
+      "sha256": "37de60a456fce7457ba340cd947b2d43564d5c9c2cd8515abfd392f99d767039"
+    }
+  ],
+  "archive_reports": 38,
+  "migration_inventory": {
+    "path": "docs/testing/evidence/project-restructure-20261024/migration.json",
+    "sha256": "4c7f2fbbb030baab46f2bf5db8628352e47ce14761151ffa1b3a2c54874f360a"
+  },
+  "logs": [
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/fmt.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/clippy.log",
+      "bytes": 442,
+      "sha256": "110ea632fd2619f48f91df1cdf3679e295ef80a870ed770da8a8ce76f3abcb8e"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/test.log",
+      "bytes": 50811,
+      "sha256": "400776b2e1e0c2ed483d9c292e4e7e9f70814aa2590ec8adf7746b0f9a86b37a"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/doc.log",
+      "bytes": 349,
+      "sha256": "53d14ddaec2a10e76fb95ae020f066c40cf01ac03235754064843f6043406b2d"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/core_list.log",
+      "bytes": 2418,
+      "sha256": "3df70436fd1843365d2cdc8c5be4f805087b9ef2636120eb932d3df9b5e1c90b"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/cli_list.log",
+      "bytes": 450,
+      "sha256": "b5751fe8ac24af3b1f6cdca823cb49ca3f532568ab9dc581afc7d02ff8023c16"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/core_package.log",
+      "bytes": 10222,
+      "sha256": "3b09a39fd7da35b8bd7e7c2e934ed8d57b3e9016ae78701b435e4b69a0b0b696"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/fuzz_check.log",
+      "bytes": 1218,
+      "sha256": "98a5465567e86ff669e1add6d39d69d99e0815bf4c3f5400d8d6f4b71ec38e32"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/cli-package.log",
+      "bytes": 2029,
+      "sha256": "6e67443100147fa8a7368de4105316ae461663e87676525caf8bafdbbfad5fff"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/doc-examples.log",
+      "bytes": 1150,
+      "sha256": "3590a58957155021493aab61193a616ecade0bdb20ce2f3cb56119e7c08d0d96"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/local-example.log",
+      "bytes": 454497,
+      "sha256": "73b78a18c0aabafb5ac73ce1d66b1cc22fe6f78feaca4150c3f05e31961c6771"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/clean_core.log",
+      "bytes": 5626,
+      "sha256": "1d42ed104faa844e2527aad59371d9c42fce9bd65942b554ba915d693fd83b12"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/clean_cli.log",
+      "bytes": 3877,
+      "sha256": "67a093cce9470e5c378d8f615070ebec04cf03f4e9f6b825f41927f6a7649d25"
+    },
+    {
+      "path": "docs/testing/evidence/project-restructure-20261024/checks/static-checks.log",
+      "bytes": 283,
+      "sha256": "7612109ebb19a0d75dfcc97387cca5b7341f45c894fed815249d639aa865a88e"
+    }
+  ],
+  "git_diff_check_exit_code": 0,
+  "not_executed": [
+    "new live market sampling",
+    "real database acceptance",
+    "remote CI",
+    "instrumented fuzz",
+    "commit/push/publish/deploy"
+  ],
+  "remaining_production_gates": [
+    "market-2 live coverage",
+    "0feb business-date mismatch",
+    "0547 trading-hour spontaneous push",
+    "complete real-market facts",
+    "target Linux/permissions/quotas/full-scale/long-term SLO",
+    "database server-side disaster recovery"
+  ]
+}

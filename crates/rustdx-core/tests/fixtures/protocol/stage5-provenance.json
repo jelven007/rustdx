@@ -1,0 +1,25 @@
+{
+  "copied_on": "2026-10-24",
+  "purpose": "Keep compile-time regression inputs next to their crate; original evidence and independent expectations unchanged.",
+  "scope": "Existing real mixed-precision quote and enhanced-history samples; no new market observation.",
+  "files": [
+    {
+      "original_path": "docs/testing/evidence/finance-quote-semantics-20261024/live-active-115-238-56-198/frame-056.payload.bin",
+      "fixture": "quotes.precision.payload.bin",
+      "sha256": "93440b0cbcf6bfd8ac9e8f5d1c1df20063c0e9dc972dd5ae365eb54b764c354e",
+      "bytes": 1295
+    },
+    {
+      "original_path": "docs/testing/evidence/finance-quote-semantics-20261024/live-active-115-238-56-198/frame-056.request.bin",
+      "fixture": "quotes.precision.request.bin",
+      "sha256": "5075b46e7befb60e832e005a5d8e02f49e9b4069e4863a51589db2d5db5ca4ae",
+      "bytes": 127
+    },
+    {
+      "original_path": "docs/testing/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-01.payload.bin",
+      "fixture": "enhanced-history-0fc6.payload.bin",
+      "sha256": "065134611b300af914d9f05ee5453ac059849031ddb1cf4606d97441bb2d50eb",
+      "bytes": 13615
+    }
+  ]
+}

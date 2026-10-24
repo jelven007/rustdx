@@ -1,0 +1,21 @@
+{
+  "binary_sha256": "a7d5b0f0f72bff82aaf6fb33a18b296796aa2e26c5faea826dcbc82974c69885",
+  "workspace_source_sha256": "7631261ad483205e77b1d165f428aa696bcfb13ccdf38adff431070dd45e67de",
+  "lockfile": "capture-tool/Cargo.lock",
+  "source_files": [
+    {
+      "path": "capture-tool/Cargo.lock",
+      "sha256": "3898a66c160ad7cb36eaa319364f913d6b84e29b73fefbe013f7467ca8404dd5"
+    },
+    {
+      "path": "capture-tool/Cargo.toml",
+      "sha256": "97de02c691846284b6e361b450f39ca4c0d95c873f77deb0c8cf1cd31edeed50"
+    },
+    {
+      "path": "capture-tool/src/main.rs",
+      "sha256": "652532505d338914b09dc6678871643c8c07c208484c7c3c2a24d28875e4874d"
+    }
+  ],
+  "binary_retained": false,
+  "initial_capture": "initial used before final formatting; final capture rebuilt against current sources"
+}

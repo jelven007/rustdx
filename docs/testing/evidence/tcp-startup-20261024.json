@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "scope": "默认进程TCP初始化、初始池/当日池策略、预热交接和子进程传递",
+  "rust": "1.89.0",
+  "checks": {
+    "fmt": "cargo +1.89.0 fmt --all -- --check",
+    "clippy": "cargo +1.89.0 clippy --workspace --all-targets --all-features --locked -- -D warnings",
+    "workspace_tests": {
+      "command": "RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo +1.89.0 test --workspace --all-features --locked --no-fail-fast",
+      "suites": 48,
+      "passed": 411,
+      "failed": 0,
+      "ignored": 24,
+      "note": "包含文档测试；公共网络/真实数据库检查按既有测试开关跳过。"
+    },
+    "collector_regression": {
+      "command": "RUSTDX_TEST_CLI=$PWD/target/debug/rustdx cargo +1.89.0 test -p rustdx-runner --all-features --locked --test control_plane runner_run_forwards_startup_pool_and_offline_setting_to_real_collector -- --include-ignored",
+      "passed": 1,
+      "failed": 0,
+      "coverage": "实际runner run及实际采集CLI；父子初始池传递、共享许可上限1、相对目录解析、离线设置传递，在线/离线两种运行都发布成功。"
+    },
+    "final_startup_regression": {
+      "command": "cargo +1.89.0 test --workspace --all-features --locked --test tcp_startup",
+      "passed": 4,
+      "failed": 0,
+      "coverage": [
+        "CLI/runner默认启动与显式离线",
+        "三轮筛选和客户端0004验证失败",
+        "启动失败阻止命令执行",
+        "初始化/刷新锁deadline、工作线程取消、不发布部分结果",
+        "幂等、配置/初始列表变化、失败重试",
+        "Tcp/Client/ConnectionPool预热交接",
+        "观察者从首个握手留证",
+        "单许可TCP/HTTP切换及失败客户端回收"
+      ]
+    }
+  },
+  "live_default_startup": {
+    "command": "target/debug/rustdx --timeout 185 --network-dir /tmp/rustdx-startup-live-20261024 show -v",
+    "initial_ip_override": null,
+    "started_at_utc": "2026-10-24T05:20:40Z",
+    "completed_at_utc": "2026-10-24T05:21:10Z",
+    "initial_nodes": 40,
+    "valid_nodes": 16,
+    "rounds_per_node": 3,
+    "workers": 8,
+    "stage_timeout_seconds": 3,
+    "endpoint": "119.97.185.59:7709",
+    "connection_id": 1,
+    "stdout": "当前版本号：v1.8.2",
+    "completion_log": "TCP启动完成：2026-10-24，有效节点16/40，客户端119.97.185.59:7709，连接#1",
+    "note": "16/40是本次网络环境的三轮全通过结果，不代表其他时间或环境的可用性；此试跑只验证启动，不验收业务行情完整性。"
+  }
+}

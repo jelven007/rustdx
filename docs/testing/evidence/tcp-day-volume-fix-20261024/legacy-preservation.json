@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "verified_files": 42,
+  "comparison": "Old collection report digests vs current original files; paths resolved without rewriting frozen metadata",
+  "old_052d_share_difference_preserved": true,
+  "files": [
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/collected.csv",
+      "sha256": "a79fdfeb7a0d9e343103d94b61e7eb63583d051f25480b7867d9cf5afc3d508d",
+      "bytes": 860
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600000/receipt.json",
+      "sha256": "2060df2e6c57e93ef47e4fc15c26fa48710a7251d2ec3370a50592761598000a",
+      "bytes": 1220
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600000/wire/000000.json",
+      "sha256": "9e21f814a2b3f83499c5373837af10e5ed76d16dca9f764702557b5057083057",
+      "bytes": 205
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600000/wire/000001.json",
+      "sha256": "0b3a792019b04f817f11225c9918b8e9cb454709fe6cdf09515a4fbc5495b28c",
+      "bytes": 583
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600000/wire/000002.json",
+      "sha256": "2f2579e87b0ef7e406164f825ea4e1f8ac1c31387b8ee1ed0c248a66bf4ac686",
+      "bytes": 263
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600000/wire/000003.json",
+      "sha256": "148a14e7074e0b504d9e00a57b311415f5a50e35e2099bcbd90f57c44a71b3a4",
+      "bytes": 40534
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600000/wire/inventory.json",
+      "sha256": "5a598462df54354b10c423af35f0466cd5ff38d32cbafcc962be20cc87063ac1",
+      "bytes": 478
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600519/receipt.json",
+      "sha256": "89d3a6cabfd0fc4821547ffd5d297be7b36597211a52a013539a363e6c8ee96d",
+      "bytes": 1262
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600519/wire/000000.json",
+      "sha256": "ab5ce54e7aa07cee01e000f043a3bffbf0a6b626cd02f50d2a3b5509dfe7cb3e",
+      "bytes": 205
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600519/wire/000001.json",
+      "sha256": "40ca1372640e3ffba7835ad62617c5dd697c8fa7311474546a3acc45c2dc9368",
+      "bytes": 584
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600519/wire/000002.json",
+      "sha256": "14d79c8826968cb9fc630a6b5b7f95525dff2f28b49cd78cb0cc2bab58103d40",
+      "bytes": 263
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600519/wire/000003.json",
+      "sha256": "89fb77b7a750fc5b33ecdf216715ab8ea38bd6e60cd575a3540ca7281fd3a7a5",
+      "bytes": 51953
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sh600519/wire/inventory.json",
+      "sha256": "dbb8f408e9b7f8522cf719d8a1f35910d6965b77282ee2580b45aa8be482e6f2",
+      "bytes": 478
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sz000001/receipt.json",
+      "sha256": "8d80da323fb26c1cb5939285725aa3623c54fb85614336e7b69e55eeb6cb6249",
+      "bytes": 1241
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sz000001/wire/000000.json",
+      "sha256": "3ee7a73283273830d357305fa3832c6e52838cee1f750148b6a8b2b8043c57c8",
+      "bytes": 205
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sz000001/wire/000001.json",
+      "sha256": "afb8cb7381d1e1cb1dd1c6adb46701259368189322c6a707f21582b05d984f21",
+      "bytes": 584
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sz000001/wire/000002.json",
+      "sha256": "db24df3c96af52bdc8af7eea03ad3b214632e40f42920039d7a2e8c8596b4e9a",
+      "bytes": 263
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sz000001/wire/000003.json",
+      "sha256": "52ce3a981a66a5a82490c2e098cc6efc0087dd1601284c6c94b790b099d260a8",
+      "bytes": 40065
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/raw/sz000001/wire/inventory.json",
+      "sha256": "7a15f059601fe194c8938325ce59ea6d75f311fd949a68059d28cd305d5572d8",
+      "bytes": 478
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/tcp-request.json",
+      "sha256": "e6ba046015156d8ccb22fd01431e1dd088c353da47ddab491776e52bd4e56404",
+      "bytes": 539
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-0/tcp-probes.json",
+      "sha256": "7ba2541cb4b3c35956f1585c39030639c40b0ead9c65f07cdc9ba38dc0e8eb89",
+      "bytes": 792
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/collected.csv",
+      "sha256": "a79fdfeb7a0d9e343103d94b61e7eb63583d051f25480b7867d9cf5afc3d508d",
+      "bytes": 860
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600000/receipt.json",
+      "sha256": "f4173a856c6b4d4f719e62fb1c9a2e5758c6b223681e8876e98734746b9a36cb",
+      "bytes": 1220
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600000/wire/000000.json",
+      "sha256": "d94c2701e0e6c6c9e12cc22dc3ed4f226720ec97a65dbd415dde344c9007407b",
+      "bytes": 205
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600000/wire/000001.json",
+      "sha256": "695d35c855508814b0b4aa2439e70b786002ef29d31ee4689336430fe55e705c",
+      "bytes": 601
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600000/wire/000002.json",
+      "sha256": "96b34e15ed6508ecba9748413bed6033da96a50839944ed94791e1a031286ace",
+      "bytes": 263
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600000/wire/000003.json",
+      "sha256": "88850fe8565741ca80c335510767bda8ea4ad9985c76c97e4720aaa99636e49e",
+      "bytes": 40534
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600000/wire/inventory.json",
+      "sha256": "1aa66e3178289b22c72c057f665c7d2eebe6b7ec2e9b75a4046968b95f82700f",
+      "bytes": 478
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600519/receipt.json",
+      "sha256": "11ff77e263cae764a5a96edeaa7cbb64992610faec14a4d86ec9c16652a5a8f1",
+      "bytes": 1262
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600519/wire/000000.json",
+      "sha256": "00fb8f227dffb91440642ee9fec520fa223765224ef00832c9eeca9139ae234e",
+      "bytes": 205
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600519/wire/000001.json",
+      "sha256": "86fabcdf7f3063b50483156fee508ef13262f042388caa4eea9c67044639d9eb",
+      "bytes": 605
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600519/wire/000002.json",
+      "sha256": "ed62808696505e1c5ca866edd457aafa43fc945353f2fa3432ffd9ac79dcd755",
+      "bytes": 263
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600519/wire/000003.json",
+      "sha256": "dbfda3e3e453dc61e711a6d55009fa4e55cb0bbd290e095a42b52d5253df45d1",
+      "bytes": 51953
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sh600519/wire/inventory.json",
+      "sha256": "7660399e1b4d887e097e74ac367a64deea8eee3e6ec7816f997552923cd21f72",
+      "bytes": 478
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sz000001/receipt.json",
+      "sha256": "cf237b75f49a0b557591997a9178ef4528ca941ca35804d8fddb1d365307ed30",
+      "bytes": 1241
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sz000001/wire/000000.json",
+      "sha256": "b07d388d2b347170b295d9faf0d1a796aff336b6bf7c15c3556ef7869c2099b2",
+      "bytes": 205
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sz000001/wire/000001.json",
+      "sha256": "a941c47f05ee0e114de1c854abbe551c2a610968aa65ee56926372f57161749a",
+      "bytes": 605
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sz000001/wire/000002.json",
+      "sha256": "b53f3fbc0149ecdda7ed7083b2b6139c68416e08ba1e35c942b5fed8bdcd3719",
+      "bytes": 263
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sz000001/wire/000003.json",
+      "sha256": "b586c07a19436b5bc8ab3216f1b2b5e1a360fc3e3b25fe5d2e82ad377505b74f",
+      "bytes": 40065
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/raw/sz000001/wire/inventory.json",
+      "sha256": "4bf247bf1cfd3338fecb9c430a8b61bddbbbd3e6cbb222de6bb9a613492d5a86",
+      "bytes": 478
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/tcp-request.json",
+      "sha256": "5b7400fecfebbeeb7c2854fedf1fa151faefba4c7353fd14477e143ac3347c7d",
+      "bytes": 539
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/tcp-live-1/tcp-probes.json",
+      "sha256": "ba91765574b6510232e1d7e2ab9313627b15e47d7d150a764956f87f1a55f3d6",
+      "bytes": 793
+    }
+  ]
+}

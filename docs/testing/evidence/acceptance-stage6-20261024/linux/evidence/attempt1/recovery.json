@@ -1,0 +1,1189 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "work": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b",
+  "database": "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2",
+  "ports": [
+    40751,
+    38003,
+    51015,
+    35653
+  ],
+  "scope": "quiesced_full_native_backups; fresh_data_directories; two_pinned_releases",
+  "source_is_synthetic": true,
+  "securities": 600,
+  "rows_per_release": 1200,
+  "production_rpo_rto_approved": false,
+  "commands": [
+    {
+      "label": "dump-version",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin/mongodump",
+        "--version"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.005301,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/000-dump-version.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/000-dump-version.stderr"
+    },
+    {
+      "label": "restore-version",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin/mongorestore",
+        "--version"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.005402,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/001-restore-version.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/001-restore-version.stderr"
+    },
+    {
+      "label": "mongosh-version",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--version"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.221159,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/002-mongosh-version.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/002-mongosh-version.stderr"
+    },
+    {
+      "label": "docker-version",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "--version"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.009213,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/003-docker-version.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/003-docker-version.stderr"
+    },
+    {
+      "label": "original-ch-start",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "run",
+        "-d",
+        "--name",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-original",
+        "--network",
+        "host",
+        "--cpus",
+        "2",
+        "--memory",
+        "2g",
+        "--ulimit",
+        "nofile=262144:262144",
+        "-e",
+        "CLICKHOUSE_SKIP_USER_SETUP=1",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original/ch-data:/var/lib/clickhouse",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original/ch-logs:/var/log/clickhouse-server",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/clickhouse.xml:/etc/clickhouse-server/config.d/recovery.xml:ro",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups:/backups",
+        "docker.m.daocloud.io/clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.168846,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/004-original-ch-start.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/004-original-ch-start.stderr"
+    },
+    {
+      "label": "original-mongo-start",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "run",
+        "-d",
+        "--name",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-original",
+        "--network",
+        "host",
+        "--cpus",
+        "2",
+        "--memory",
+        "1g",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original/mongo-data:/data/db",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original/mongo-config:/data/configdb",
+        "docker.1ms.run/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d",
+        "mongod",
+        "--bind_ip",
+        "127.0.0.1",
+        "--port",
+        "38003",
+        "--wiredTigerCacheSizeGB",
+        "0.25"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.115307,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/005-original-mongo-start.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/005-original-mongo-start.stderr"
+    },
+    {
+      "label": "original-mongo-ping",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--nodb",
+        "--quiet",
+        "--norc",
+        "--file",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/logs/006-original-mongo-ping.js"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.289497,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/006-original-mongo-ping.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/006-original-mongo-ping.stderr"
+    },
+    {
+      "label": "image-inspect",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "image",
+        "inspect",
+        "docker.m.daocloud.io/clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.010837,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/007-image-inspect.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/007-image-inspect.stderr"
+    },
+    {
+      "label": "image-inspect",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "image",
+        "inspect",
+        "docker.1ms.run/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.009934,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/008-image-inspect.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/008-image-inspect.stderr"
+    },
+    {
+      "label": "ch-version",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/009-ch-version.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/009-ch-version.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.002449
+    },
+    {
+      "label": "mongo-version",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--nodb",
+        "--quiet",
+        "--norc",
+        "--file",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/logs/010-mongo-version.js"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.280939,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/010-mongo-version.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/010-mongo-version.stderr"
+    },
+    {
+      "label": "provision-ch-0",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/011-provision-ch-0.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/011-provision-ch-0.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.002218
+    },
+    {
+      "label": "provision-ch-1",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/012-provision-ch-1.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/012-provision-ch-1.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.004175
+    },
+    {
+      "label": "provision-mongo",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--nodb",
+        "--quiet",
+        "--norc",
+        "--file",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/logs/013-provision-mongo.js"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.303641,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/013-provision-mongo.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/013-provision-mongo.stderr"
+    },
+    {
+      "label": "release-1",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "run",
+        "--config",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/job-1.json"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 1.896488,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/014-release-1.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/014-release-1.stderr"
+    },
+    {
+      "label": "release-2",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "run",
+        "--config",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/job-2.json"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 1.804466,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/015-release-2.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/015-release-2.stderr"
+    },
+    {
+      "label": "before-v1-file",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "1",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/before-v1-file.csv"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.007447,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/016-before-v1-file.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/016-before-v1-file.stderr"
+    },
+    {
+      "label": "before-v1-ch",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export-database",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "1",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/before-v1-ch.csv",
+        "--target",
+        "ch"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.061723,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/017-before-v1-ch.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/017-before-v1-ch.stderr"
+    },
+    {
+      "label": "before-v1-mongo",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export-database",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "1",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/before-v1-mongo.csv",
+        "--target",
+        "mongo"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.767158,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/018-before-v1-mongo.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/018-before-v1-mongo.stderr"
+    },
+    {
+      "label": "before-v2-file",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "2",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/before-v2-file.csv"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.007545,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/019-before-v2-file.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/019-before-v2-file.stderr"
+    },
+    {
+      "label": "before-v2-ch",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export-database",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "2",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/before-v2-ch.csv",
+        "--target",
+        "ch"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.059108,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/020-before-v2-ch.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/020-before-v2-ch.stderr"
+    },
+    {
+      "label": "before-v2-mongo",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export-database",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "2",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/before-v2-mongo.csv",
+        "--target",
+        "mongo"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.760423,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/021-before-v2-mongo.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/021-before-v2-mongo.stderr"
+    },
+    {
+      "label": "before-ch-rows",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/022-before-ch-rows.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/022-before-ch-rows.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.00764
+    },
+    {
+      "label": "before-ch-schema",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/023-before-ch-schema.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/023-before-ch-schema.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.001315
+    },
+    {
+      "label": "before-mongo-snapshot",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--nodb",
+        "--quiet",
+        "--norc",
+        "--file",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/logs/024-before-mongo-snapshot.js"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.358145,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/024-before-mongo-snapshot.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/024-before-mongo-snapshot.stderr"
+    },
+    {
+      "label": "control-backup",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "backup",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live",
+        "--destination",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/control-backup"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 1.258364,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/025-control-backup.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/025-control-backup.stderr"
+    },
+    {
+      "label": "ch-native-backup",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/026-ch-native-backup.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/026-ch-native-backup.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.005753
+    },
+    {
+      "label": "mongo-native-dump",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin/mongodump",
+        "--config",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/mongo-tools.json",
+        "--db",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2",
+        "--out",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups/mongo",
+        "--numParallelCollections",
+        "1"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.012166,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/027-mongo-native-dump.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/027-mongo-native-dump.stderr"
+    },
+    {
+      "label": "container-stop",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "stop",
+        "--time",
+        "30",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-original"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.581666,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/028-container-stop.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/028-container-stop.stderr"
+    },
+    {
+      "label": "container-inspect",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "inspect",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-original"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.010311,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/029-container-inspect.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/029-container-inspect.stderr"
+    },
+    {
+      "label": "container-logs",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "logs",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-original"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.010277,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/030-container-logs.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/030-container-logs.stderr"
+    },
+    {
+      "label": "container-remove",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "rm",
+        "-v",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-original"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.011783,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/031-container-remove.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/031-container-remove.stderr"
+    },
+    {
+      "label": "container-stop",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "stop",
+        "--time",
+        "30",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-original"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.065592,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/032-container-stop.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/032-container-stop.stderr"
+    },
+    {
+      "label": "container-inspect",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "inspect",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-original"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.009879,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/033-container-inspect.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/033-container-inspect.stderr"
+    },
+    {
+      "label": "container-logs",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "logs",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-original"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.011059,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/034-container-logs.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/034-container-logs.stderr"
+    },
+    {
+      "label": "container-remove",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "rm",
+        "-v",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-original"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.010977,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/035-container-remove.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/035-container-remove.stderr"
+    },
+    {
+      "label": "restored-ch-start",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "run",
+        "-d",
+        "--name",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-restored",
+        "--network",
+        "host",
+        "--cpus",
+        "2",
+        "--memory",
+        "2g",
+        "--ulimit",
+        "nofile=262144:262144",
+        "-e",
+        "CLICKHOUSE_SKIP_USER_SETUP=1",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored/ch-data:/var/lib/clickhouse",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored/ch-logs:/var/log/clickhouse-server",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/clickhouse.xml:/etc/clickhouse-server/config.d/recovery.xml:ro",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups:/backups",
+        "docker.m.daocloud.io/clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.112451,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/036-restored-ch-start.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/036-restored-ch-start.stderr"
+    },
+    {
+      "label": "restored-mongo-start",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "run",
+        "-d",
+        "--name",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-restored",
+        "--network",
+        "host",
+        "--cpus",
+        "2",
+        "--memory",
+        "1g",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored/mongo-data:/data/db",
+        "-v",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored/mongo-config:/data/configdb",
+        "docker.1ms.run/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d",
+        "mongod",
+        "--bind_ip",
+        "127.0.0.1",
+        "--port",
+        "38003",
+        "--wiredTigerCacheSizeGB",
+        "0.25"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.126118,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/037-restored-mongo-start.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/037-restored-mongo-start.stderr"
+    },
+    {
+      "label": "restored-mongo-ping",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--nodb",
+        "--quiet",
+        "--norc",
+        "--file",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/logs/038-restored-mongo-ping.js"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.289984,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/038-restored-mongo-ping.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/038-restored-mongo-ping.stderr"
+    },
+    {
+      "label": "fresh-ch-empty",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/039-fresh-ch-empty.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/039-fresh-ch-empty.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.001823
+    },
+    {
+      "label": "fresh-mongo-empty",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--nodb",
+        "--quiet",
+        "--norc",
+        "--file",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/logs/040-fresh-mongo-empty.js"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.280498,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/040-fresh-mongo-empty.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/040-fresh-mongo-empty.stderr"
+    },
+    {
+      "label": "ch-native-restore",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/041-ch-native-restore.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/041-ch-native-restore.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.008662
+    },
+    {
+      "label": "mongo-native-restore",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin/mongorestore",
+        "--config",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/mongo-tools.json",
+        "--stopOnError",
+        "--nsInclude",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.*",
+        "--numParallelCollections",
+        "1",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups/mongo"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.050754,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/042-mongo-native-restore.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/042-mongo-native-restore.stderr"
+    },
+    {
+      "label": "control-restore",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "restore",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/control-backup",
+        "--destination",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 1.751473,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/043-control-restore.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/043-control-restore.stderr"
+    },
+    {
+      "label": "after-v1-file",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "1",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/after-v1-file.csv"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.007584,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/044-after-v1-file.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/044-after-v1-file.stderr"
+    },
+    {
+      "label": "after-v1-ch",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export-database",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "1",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/after-v1-ch.csv",
+        "--target",
+        "ch"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.061875,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/045-after-v1-ch.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/045-after-v1-ch.stderr"
+    },
+    {
+      "label": "after-v1-mongo",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export-database",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "1",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/after-v1-mongo.csv",
+        "--target",
+        "mongo"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.775971,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/046-after-v1-mongo.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/046-after-v1-mongo.stderr"
+    },
+    {
+      "label": "after-v2-file",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "2",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/after-v2-file.csv"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.007766,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/047-after-v2-file.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/047-after-v2-file.stderr"
+    },
+    {
+      "label": "after-v2-ch",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export-database",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "2",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/after-v2-ch.csv",
+        "--target",
+        "ch"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.06445,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/048-after-v2-ch.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/048-after-v2-ch.stderr"
+    },
+    {
+      "label": "after-v2-mongo",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export-database",
+        "--root",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control",
+        "--dataset",
+        "synthetic-recovery",
+        "--version",
+        "2",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--output",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/after-v2-mongo.csv",
+        "--target",
+        "mongo"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.759689,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/049-after-v2-mongo.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/049-after-v2-mongo.stderr"
+    },
+    {
+      "label": "after-ch-rows",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/050-after-ch-rows.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/050-after-ch-rows.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.007341
+    },
+    {
+      "label": "after-ch-schema",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/051-after-ch-schema.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/051-after-ch-schema.response",
+      "http_status": 200,
+      "expected": 200,
+      "seconds": 0.001336
+    },
+    {
+      "label": "after-mongo-snapshot",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--nodb",
+        "--quiet",
+        "--norc",
+        "--file",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/logs/052-after-mongo-snapshot.js"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.364348,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/052-after-mongo-snapshot.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/052-after-mongo-snapshot.stderr"
+    },
+    {
+      "label": "restored-ch-reject-contract",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/053-restored-ch-reject-contract.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/053-restored-ch-reject-contract.response",
+      "http_status": 500,
+      "expected": "non-200",
+      "seconds": 0.003857
+    },
+    {
+      "label": "restored-ch-reject-identity",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/054-restored-ch-reject-identity.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/054-restored-ch-reject-identity.response",
+      "http_status": 500,
+      "expected": "non-200",
+      "seconds": 0.003198
+    },
+    {
+      "label": "restored-ch-reject-share-count",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/055-restored-ch-reject-share-count.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/055-restored-ch-reject-share-count.response",
+      "http_status": 500,
+      "expected": "non-200",
+      "seconds": 0.0035
+    },
+    {
+      "label": "restored-mongo-reject-validator-and-duplicate",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+        "--nodb",
+        "--quiet",
+        "--norc",
+        "--file",
+        "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/logs/056-restored-mongo-reject-validator-and-duplicate.js"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.302279,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/056-restored-mongo-reject-validator-and-duplicate.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/056-restored-mongo-reject-validator-and-duplicate.stderr"
+    },
+    {
+      "label": "ch-reject-nonempty-restore",
+      "request": "drill-f65173e7296b4063b9baef3c75ced55b/logs/057-ch-reject-nonempty-restore.sql",
+      "response": "drill-f65173e7296b4063b9baef3c75ced55b/logs/057-ch-reject-nonempty-restore.response",
+      "http_status": 500,
+      "expected": "non-200",
+      "seconds": 0.003629
+    },
+    {
+      "label": "container-stop",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "stop",
+        "--time",
+        "30",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-restored"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 1.743871,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/058-container-stop.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/058-container-stop.stderr"
+    },
+    {
+      "label": "container-inspect",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "inspect",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-restored"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.010537,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/059-container-inspect.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/059-container-inspect.stderr"
+    },
+    {
+      "label": "container-logs",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "logs",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-restored"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.010391,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/060-container-logs.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/060-container-logs.stderr"
+    },
+    {
+      "label": "container-remove",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "rm",
+        "-v",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-restored"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.011015,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/061-container-remove.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/061-container-remove.stderr"
+    },
+    {
+      "label": "container-stop",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "stop",
+        "--time",
+        "30",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-restored"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.063368,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/062-container-stop.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/062-container-stop.stderr"
+    },
+    {
+      "label": "container-inspect",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "inspect",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-restored"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.009774,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/063-container-inspect.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/063-container-inspect.stderr"
+    },
+    {
+      "label": "container-logs",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "logs",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-restored"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.010888,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/064-container-logs.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/064-container-logs.stderr"
+    },
+    {
+      "label": "container-remove",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "rm",
+        "-v",
+        "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-restored"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.011139,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/065-container-remove.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/065-container-remove.stderr"
+    },
+    {
+      "label": "cleanup-owned-containers",
+      "argv": [
+        "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+        "ps",
+        "-a",
+        "--filter",
+        "name=rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2",
+        "--format",
+        "{{.Names}}"
+      ],
+      "exit_code": 0,
+      "expected": 0,
+      "seconds": 0.008667,
+      "stdout": "drill-f65173e7296b4063b9baef3c75ced55b/logs/066-cleanup-owned-containers.stdout",
+      "stderr": "drill-f65173e7296b4063b9baef3c75ced55b/logs/066-cleanup-owned-containers.stderr"
+    }
+  ],
+  "checks": {
+    "before_exports": {
+      "v1-file": "77c979f92364564363ceedd7b6c10b4056d070edbf7808c3b39ec9a762f76224",
+      "v1-ch": "77c979f92364564363ceedd7b6c10b4056d070edbf7808c3b39ec9a762f76224",
+      "v1-mongo": "77c979f92364564363ceedd7b6c10b4056d070edbf7808c3b39ec9a762f76224",
+      "v2-file": "bf59f743e51e3ae8a0f5c5eb2754eb3456a45a3520e6ab540dd27d7a9629cd4c",
+      "v2-ch": "bf59f743e51e3ae8a0f5c5eb2754eb3456a45a3520e6ab540dd27d7a9629cd4c",
+      "v2-mongo": "bf59f743e51e3ae8a0f5c5eb2754eb3456a45a3520e6ab540dd27d7a9629cd4c"
+    },
+    "clickhouse_backup_seconds": 0.006102657993324101,
+    "corrupt_inventory_rejected_before_restore": true,
+    "after_exports": {
+      "v1-file": "77c979f92364564363ceedd7b6c10b4056d070edbf7808c3b39ec9a762f76224",
+      "v1-ch": "77c979f92364564363ceedd7b6c10b4056d070edbf7808c3b39ec9a762f76224",
+      "v1-mongo": "77c979f92364564363ceedd7b6c10b4056d070edbf7808c3b39ec9a762f76224",
+      "v2-file": "bf59f743e51e3ae8a0f5c5eb2754eb3456a45a3520e6ab540dd27d7a9629cd4c",
+      "v2-ch": "bf59f743e51e3ae8a0f5c5eb2754eb3456a45a3520e6ab540dd27d7a9629cd4c",
+      "v2-mongo": "bf59f743e51e3ae8a0f5c5eb2754eb3456a45a3520e6ab540dd27d7a9629cd4c"
+    },
+    "recovery_to_verified_seconds": 5.787257874995703,
+    "restored_constraints_reject_invalid_writes": true
+  },
+  "binaries": {
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner": "62be36f0f800d9e84799dba7361ae6dc088bd7120aa770979036de4d160e903e"
+  },
+  "fresh_directories": {
+    "original": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original",
+    "restored": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored"
+  },
+  "release_replies": [
+    {
+      "version": 1,
+      "manifest": {
+        "path": "catalogs/a-1792847266998288617-613409-1.json",
+        "sha256": "7cda53e8beea3aaec50e4baf85e11bd448c7b0e5a4c05e0ded5403560f35ad90",
+        "bytes": 2255
+      }
+    },
+    {
+      "version": 2,
+      "manifest": {
+        "path": "catalogs/a-1792847268797428377-613444-2.json",
+        "sha256": "fd89294b7049de69c0b1e1f32145cfdfd1bea41f33fae2da21965c08fd18f3f8",
+        "bytes": 2255
+      }
+    }
+  ],
+  "backup_boundary": {
+    "utc": "2026-10-24T13:07:52Z",
+    "catalog_version": 2,
+    "quiesced": true,
+    "rows_each_database": 2400,
+    "release_ids": [
+      "a-1792847266998288617-613409",
+      "a-1792847268797428377-613444"
+    ]
+  },
+  "error": "wrong existing target rejection",
+  "cleanup": {
+    "remaining_owned_containers": [],
+    "errors": [],
+    "native_backups_retained": true
+  }
+}

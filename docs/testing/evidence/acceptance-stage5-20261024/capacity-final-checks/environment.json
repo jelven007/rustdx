@@ -1,0 +1,6 @@
+{
+  "cli": "/Users/bytedance/Documents/rustdx/target/debug/rustdx",
+  "cli_bytes": 11059976,
+  "cli_sha256": "95b3b0596b9fb06d6041631b5d34ff053f0a37e1b75e3a3b7b5aa8cb8ebe80c5",
+  "scope": "real collector with refused loopback destination; no database service required"
+}

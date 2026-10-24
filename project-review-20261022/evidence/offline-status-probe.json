@@ -1,0 +1,16 @@
+[
+  {
+    "skip_tcp_startup": false,
+    "exit_code": 1,
+    "seconds": 0.156,
+    "stdout": "",
+    "stderr": "{\"error\":\"I/O: 当日有效IP池为空\",\"error_category\":\"io\",\"status\":\"failed\"}\n"
+  },
+  {
+    "skip_tcp_startup": true,
+    "exit_code": 0,
+    "seconds": 0.066,
+    "stdout": "[]\n",
+    "stderr": ""
+  }
+]

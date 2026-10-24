@@ -1,0 +1,22 @@
+{
+  "base": "/tmp/rustdx-recovery-20261024-19y2r7t3",
+  "daemon_pid": 612582,
+  "daemon_argv": [
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/dockerd",
+    "--data-root",
+    "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data",
+    "--exec-root",
+    "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-exec",
+    "--pidfile",
+    "/tmp/rustdx-recovery-20261024-19y2r7t3/dockerd.pid",
+    "--host",
+    "unix:///tmp/rustdx-recovery-20261024-19y2r7t3/docker.sock",
+    "--bridge=none",
+    "--iptables=false",
+    "--ip6tables=false",
+    "--ip-forward=false",
+    "--ip-masq=false"
+  ],
+  "old_cache_source": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data",
+  "free_bytes": 176498499584
+}

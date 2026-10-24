@@ -1,0 +1,112 @@
+time="2026-10-24T21:07:04.741360192+08:00" level=info msg="Starting up"
+time="2026-10-24T21:07:04.744423563+08:00" level=warning msg="could not change group /tmp/rustdx-recovery-20261024-19y2r7t3/docker.sock to docker: group docker not found"
+time="2026-10-24T21:07:04.744571923+08:00" level=info msg="containerd not running, starting managed containerd"
+time="2026-10-24T21:07:04.817403490+08:00" level=info msg="started new containerd process" address=/tmp/rustdx-recovery-20261024-19y2r7t3/docker-exec/containerd/containerd.sock module=libcontainerd pid=612598
+time="2026-10-24T21:07:04.828978070+08:00" level=info msg="starting containerd" revision=bcc810d6b9066471b0b6fa75f557a15a1cbf31bb version=v1.7.25
+time="2026-10-24T21:07:04.840085733+08:00" level=info msg="loading plugin \"io.containerd.event.v1.exchange\"..." type=io.containerd.event.v1
+time="2026-10-24T21:07:04.840146146+08:00" level=info msg="loading plugin \"io.containerd.internal.v1.opt\"..." type=io.containerd.internal.v1
+time="2026-10-24T21:07:04.840168535+08:00" level=info msg="loading plugin \"io.containerd.warning.v1.deprecations\"..." type=io.containerd.warning.v1
+time="2026-10-24T21:07:04.840176941+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.blockfile\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.840198730+08:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.blockfile\"..." error="no scratch file generator: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.840206196+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.devmapper\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.840214152+08:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.devmapper\"..." error="devmapper not configured: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.840219608+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.native\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.840232759+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.overlayfs\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.840308733+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.aufs\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.842190352+08:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.aufs\"..." error="aufs is not supported (modprobe aufs failed: exit status 1 \"modprobe: FATAL: Module aufs not found in directory /lib/modules/6.8.0-138-generic\\n\"): skip plugin" type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.842203641+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.zfs\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.842272840+08:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.zfs\"..." error="path /tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containerd/daemon/io.containerd.snapshotter.v1.zfs must be a zfs filesystem to be used with the zfs snapshotter: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-10-24T21:07:04.842279913+08:00" level=info msg="loading plugin \"io.containerd.content.v1.content\"..." type=io.containerd.content.v1
+time="2026-10-24T21:07:04.842289031+08:00" level=info msg="loading plugin \"io.containerd.metadata.v1.bolt\"..." type=io.containerd.metadata.v1
+time="2026-10-24T21:07:04.842299263+08:00" level=info msg="metadata content store policy set" policy=shared
+time="2026-10-24T21:07:04.842405956+08:00" level=info msg="loading plugin \"io.containerd.gc.v1.scheduler\"..." type=io.containerd.gc.v1
+time="2026-10-24T21:07:04.842422866+08:00" level=info msg="loading plugin \"io.containerd.differ.v1.walking\"..." type=io.containerd.differ.v1
+time="2026-10-24T21:07:04.842448615+08:00" level=info msg="loading plugin \"io.containerd.lease.v1.manager\"..." type=io.containerd.lease.v1
+time="2026-10-24T21:07:04.842458884+08:00" level=info msg="loading plugin \"io.containerd.streaming.v1.manager\"..." type=io.containerd.streaming.v1
+time="2026-10-24T21:07:04.842473823+08:00" level=info msg="loading plugin \"io.containerd.runtime.v1.linux\"..." type=io.containerd.runtime.v1
+time="2026-10-24T21:07:04.842528234+08:00" level=info msg="loading plugin \"io.containerd.monitor.v1.cgroups\"..." type=io.containerd.monitor.v1
+time="2026-10-24T21:07:04.842683355+08:00" level=info msg="loading plugin \"io.containerd.runtime.v2.task\"..." type=io.containerd.runtime.v2
+time="2026-10-24T21:07:04.842789831+08:00" level=info msg="loading plugin \"io.containerd.runtime.v2.shim\"..." type=io.containerd.runtime.v2
+time="2026-10-24T21:07:04.842801186+08:00" level=info msg="loading plugin \"io.containerd.sandbox.store.v1.local\"..." type=io.containerd.sandbox.store.v1
+time="2026-10-24T21:07:04.842811495+08:00" level=info msg="loading plugin \"io.containerd.sandbox.controller.v1.local\"..." type=io.containerd.sandbox.controller.v1
+time="2026-10-24T21:07:04.842820619+08:00" level=info msg="loading plugin \"io.containerd.service.v1.containers-service\"..." type=io.containerd.service.v1
+time="2026-10-24T21:07:04.842829064+08:00" level=info msg="loading plugin \"io.containerd.service.v1.content-service\"..." type=io.containerd.service.v1
+time="2026-10-24T21:07:04.842836657+08:00" level=info msg="loading plugin \"io.containerd.service.v1.diff-service\"..." type=io.containerd.service.v1
+time="2026-10-24T21:07:04.842845334+08:00" level=info msg="loading plugin \"io.containerd.service.v1.images-service\"..." type=io.containerd.service.v1
+time="2026-10-24T21:07:04.842854646+08:00" level=info msg="loading plugin \"io.containerd.service.v1.introspection-service\"..." type=io.containerd.service.v1
+time="2026-10-24T21:07:04.842862812+08:00" level=info msg="loading plugin \"io.containerd.service.v1.namespaces-service\"..." type=io.containerd.service.v1
+time="2026-10-24T21:07:04.842870577+08:00" level=info msg="loading plugin \"io.containerd.service.v1.snapshots-service\"..." type=io.containerd.service.v1
+time="2026-10-24T21:07:04.842877548+08:00" level=info msg="loading plugin \"io.containerd.service.v1.tasks-service\"..." type=io.containerd.service.v1
+time="2026-10-24T21:07:04.842898750+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.containers\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842909054+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.content\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842916708+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.diff\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842924447+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.events\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842932073+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.images\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842940056+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.introspection\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842946950+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.leases\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842954647+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.namespaces\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842963139+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.sandbox-controllers\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842972837+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.sandboxes\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842979630+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.snapshots\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842986335+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.streaming\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.842994165+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.tasks\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.843002982+08:00" level=info msg="loading plugin \"io.containerd.transfer.v1.local\"..." type=io.containerd.transfer.v1
+time="2026-10-24T21:07:04.843025274+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.transfer\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.843039154+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.version\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.843046680+08:00" level=info msg="loading plugin \"io.containerd.internal.v1.restart\"..." type=io.containerd.internal.v1
+time="2026-10-24T21:07:04.843094662+08:00" level=info msg="loading plugin \"io.containerd.tracing.processor.v1.otlp\"..." type=io.containerd.tracing.processor.v1
+time="2026-10-24T21:07:04.843106885+08:00" level=info msg="skip loading plugin \"io.containerd.tracing.processor.v1.otlp\"..." error="skip plugin: tracing endpoint not configured" type=io.containerd.tracing.processor.v1
+time="2026-10-24T21:07:04.843113485+08:00" level=info msg="loading plugin \"io.containerd.internal.v1.tracing\"..." type=io.containerd.internal.v1
+time="2026-10-24T21:07:04.843121725+08:00" level=info msg="skip loading plugin \"io.containerd.internal.v1.tracing\"..." error="skip plugin: tracing endpoint not configured" type=io.containerd.internal.v1
+time="2026-10-24T21:07:04.843127309+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.healthcheck\"..." type=io.containerd.grpc.v1
+time="2026-10-24T21:07:04.843134891+08:00" level=info msg="loading plugin \"io.containerd.nri.v1.nri\"..." type=io.containerd.nri.v1
+time="2026-10-24T21:07:04.843142844+08:00" level=info msg="NRI interface is disabled by configuration."
+time="2026-10-24T21:07:04.843287340+08:00" level=info msg=serving... address=/tmp/rustdx-recovery-20261024-19y2r7t3/docker-exec/containerd/containerd-debug.sock
+time="2026-10-24T21:07:04.843316732+08:00" level=info msg=serving... address=/tmp/rustdx-recovery-20261024-19y2r7t3/docker-exec/containerd/containerd.sock.ttrpc
+time="2026-10-24T21:07:04.843338329+08:00" level=info msg=serving... address=/tmp/rustdx-recovery-20261024-19y2r7t3/docker-exec/containerd/containerd.sock
+time="2026-10-24T21:07:04.843348710+08:00" level=info msg="containerd successfully booted in 0.014820s"
+time="2026-10-24T21:07:05.819562539+08:00" level=info msg="OTEL tracing is not configured, using no-op tracer provider"
+time="2026-10-24T21:07:12.009617113+08:00" level=info msg="[graphdriver] using prior storage driver: overlay2"
+time="2026-10-24T21:07:12.011195683+08:00" level=info msg="Loading containers: start."
+time="2026-10-24T21:07:12.011732991+08:00" level=info msg="Loading containers: done."
+time="2026-10-24T21:07:12.019233672+08:00" level=warning msg="WARNING: IPv4 forwarding is disabled"
+time="2026-10-24T21:07:12.019261337+08:00" level=info msg="Docker daemon" commit=4c9b3b0 containerd-snapshotter=false storage-driver=overlay2 version=27.5.1
+time="2026-10-24T21:07:12.019318532+08:00" level=info msg="Daemon has completed initialization"
+time="2026-10-24T21:07:12.038654536+08:00" level=info msg="API listen on /tmp/rustdx-recovery-20261024-19y2r7t3/docker.sock"
+time="2026-10-24T21:07:54.565996109+08:00" level=info msg="ignoring event" container=853d2f82fb33ee343d859e51541b30fa3330d9efb98a97d7bf3b7e98e2ec3448 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-10-24T21:07:54.566000480+08:00" level=info msg="shim disconnected" id=853d2f82fb33ee343d859e51541b30fa3330d9efb98a97d7bf3b7e98e2ec3448 namespace=moby
+time="2026-10-24T21:07:54.566054715+08:00" level=warning msg="cleaning up after shim disconnected" id=853d2f82fb33ee343d859e51541b30fa3330d9efb98a97d7bf3b7e98e2ec3448 namespace=moby
+time="2026-10-24T21:07:54.566061587+08:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-10-24T21:07:54.671075177+08:00" level=info msg="shim disconnected" id=36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74 namespace=moby
+time="2026-10-24T21:07:54.671115735+08:00" level=info msg="ignoring event" container=36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-10-24T21:07:54.671175275+08:00" level=warning msg="cleaning up after shim disconnected" id=36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74 namespace=moby
+time="2026-10-24T21:07:54.671195787+08:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-10-24T21:08:02.809578341+08:00" level=info msg="ignoring event" container=8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-10-24T21:08:02.809565991+08:00" level=info msg="shim disconnected" id=8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36 namespace=moby
+time="2026-10-24T21:08:02.809657180+08:00" level=warning msg="cleaning up after shim disconnected" id=8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36 namespace=moby
+time="2026-10-24T21:08:02.809664229+08:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-10-24T21:08:02.904895192+08:00" level=info msg="shim disconnected" id=367ba6b6017414b54e9294f7156aff1a0da9bc0ac04d14b41697904ef10dc2cf namespace=moby
+time="2026-10-24T21:08:02.904934189+08:00" level=warning msg="cleaning up after shim disconnected" id=367ba6b6017414b54e9294f7156aff1a0da9bc0ac04d14b41697904ef10dc2cf namespace=moby
+time="2026-10-24T21:08:02.904941523+08:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-10-24T21:08:02.904933708+08:00" level=info msg="ignoring event" container=367ba6b6017414b54e9294f7156aff1a0da9bc0ac04d14b41697904ef10dc2cf module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-10-24T21:09:09.337241748+08:00" level=info msg="ignoring event" container=e86f842e54ffa6a7987447fca804b21ba23539cf695d5ca800f25102227f656c module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-10-24T21:09:09.337230337+08:00" level=info msg="shim disconnected" id=e86f842e54ffa6a7987447fca804b21ba23539cf695d5ca800f25102227f656c namespace=moby
+time="2026-10-24T21:09:09.337292222+08:00" level=warning msg="cleaning up after shim disconnected" id=e86f842e54ffa6a7987447fca804b21ba23539cf695d5ca800f25102227f656c namespace=moby
+time="2026-10-24T21:09:09.337299269+08:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-10-24T21:09:09.434263199+08:00" level=info msg="shim disconnected" id=19569b24c1a34bcef77bf144d89d7da5526b665dc6b21946fa1b242c24aad7e9 namespace=moby
+time="2026-10-24T21:09:09.434275348+08:00" level=info msg="ignoring event" container=19569b24c1a34bcef77bf144d89d7da5526b665dc6b21946fa1b242c24aad7e9 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-10-24T21:09:09.434300327+08:00" level=warning msg="cleaning up after shim disconnected" id=19569b24c1a34bcef77bf144d89d7da5526b665dc6b21946fa1b242c24aad7e9 namespace=moby
+time="2026-10-24T21:09:09.434307641+08:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-10-24T21:09:18.590773243+08:00" level=info msg="shim disconnected" id=ee3a0830a88d98d28cfa0c939fbae6bf236e194958007b5c921c0c15e18a660c namespace=moby
+time="2026-10-24T21:09:18.590819998+08:00" level=warning msg="cleaning up after shim disconnected" id=ee3a0830a88d98d28cfa0c939fbae6bf236e194958007b5c921c0c15e18a660c namespace=moby
+time="2026-10-24T21:09:18.590826761+08:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-10-24T21:09:18.590816824+08:00" level=info msg="ignoring event" container=ee3a0830a88d98d28cfa0c939fbae6bf236e194958007b5c921c0c15e18a660c module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-10-24T21:09:18.693376462+08:00" level=info msg="shim disconnected" id=dba1cdd961aaf6b3b12e505788912d516cf8565efea15256ba07a10df2412343 namespace=moby
+time="2026-10-24T21:09:18.693414404+08:00" level=warning msg="cleaning up after shim disconnected" id=dba1cdd961aaf6b3b12e505788912d516cf8565efea15256ba07a10df2412343 namespace=moby
+time="2026-10-24T21:09:18.693421707+08:00" level=info msg="cleaning up dead shim" namespace=moby
+time="2026-10-24T21:09:18.693421904+08:00" level=info msg="ignoring event" container=dba1cdd961aaf6b3b12e505788912d516cf8565efea15256ba07a10df2412343 module=libcontainerd namespace=moby topic=/tasks/delete type="*events.TaskDelete"
+time="2026-10-24T21:10:19.100996370+08:00" level=info msg="Processing signal 'terminated'"
+time="2026-10-24T21:10:19.101583282+08:00" level=info msg="stopping event stream following graceful shutdown" error="<nil>" module=libcontainerd namespace=moby
+time="2026-10-24T21:10:19.102204872+08:00" level=info msg="Daemon shutdown complete"
+time="2026-10-24T21:10:19.102628562+08:00" level=info msg="stopping healthcheck following graceful shutdown" module=libcontainerd
+time="2026-10-24T21:10:19.102642312+08:00" level=info msg="stopping event stream following graceful shutdown" error="context canceled" module=libcontainerd namespace=plugins.moby

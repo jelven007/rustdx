@@ -1,0 +1,20 @@
+{
+  "system": "Darwin",
+  "release": "27.0.0",
+  "machine": "arm64",
+  "captured_at_utc": "2026-10-24T14:47:20.472960+00:00",
+  "rustc": "rustc 1.89.0 (29483883e 2025-08-04)\nbinary: rustc\ncommit-hash: 29483883eed69d5fb4db01964cdf2af4d86e9cb2\ncommit-date: 2025-08-04\nhost: aarch64-apple-darwin\nrelease: 1.89.0\nLLVM version: 20.1.7\n",
+  "python": "3.9.6",
+  "binaries": {
+    "capture_resources": {
+      "bytes": 1930304,
+      "sha256": "184eb4171c9447f732df40c84b007673277db74432c0bb1d29f596e13d2158af",
+      "build": "cargo +1.89.0 build --offline --locked -p jelven-rustdx-complete --example capture_resources --example validate_quote_push"
+    },
+    "validate_quote_push": {
+      "bytes": 1983896,
+      "sha256": "42677f30e040e2ee1896b7c3ef528db8f09683011cc83e9914d8e0fcbd743cd2",
+      "build": "cargo +1.89.0 build --offline --locked -p jelven-rustdx-complete --example capture_resources --example validate_quote_push"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+[1m[32m   Compiling[0m libc v0.2.191
+[1m[32m   Compiling[0m serde_json v1.0.140
+[1m[32m    Checking[0m zopfli v0.8.3
+[1m[32m    Checking[0m flate2 v1.1.0
+[1m[32m    Checking[0m pin-project v1.1.10
+[1m[32m    Checking[0m bitflags v2.13.2
+[1m[32m    Checking[0m zip v2.4.2
+[1m[32m    Checking[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Checking[0m getrandom v0.3.4
+[1m[32m    Checking[0m console v0.15.11
+[1m[32m    Checking[0m rand_core v0.9.5
+[1m[32m    Checking[0m insta v1.42.2
+[1m[32m    Checking[0m rand_chacha v0.9.0
+[1m[32m    Checking[0m rand_xorshift v0.4.0
+[1m[32m    Checking[0m rand v0.9.5
+[1m[32m    Checking[0m proptest v1.8.0
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 10.92s

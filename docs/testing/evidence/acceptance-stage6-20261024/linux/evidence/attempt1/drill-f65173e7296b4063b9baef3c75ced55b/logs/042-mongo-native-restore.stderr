@@ -1,0 +1,8 @@
+2026-10-24T21:07:56.813+0800	preparing collections to restore from
+2026-10-24T21:07:56.813+0800	don't know what to do with file "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups/mongo/rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2/prelude.json", skipping...
+2026-10-24T21:07:56.813+0800	reading metadata for rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.bars from /tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups/mongo/rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2/bars.metadata.json
+2026-10-24T21:07:56.818+0800	restoring rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.bars from /tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups/mongo/rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2/bars.bson
+2026-10-24T21:07:56.844+0800	finished restoring rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.bars (2400 documents, 0 failures)
+2026-10-24T21:07:56.844+0800	restoring indexes for collection rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.bars from metadata
+2026-10-24T21:07:56.844+0800	index: &idx.IndexDocument{Options:primitive.M{"name":"rustdx_full_release_key", "unique":true, "v":2}, Key:primitive.D{primitive.E{Key:"dataset_id", Value:1}, primitive.E{Key:"release_id", Value:1}, primitive.E{Key:"contract_version", Value:1}, primitive.E{Key:"date", Value:1}, primitive.E{Key:"market", Value:1}, primitive.E{Key:"code", Value:1}, primitive.E{Key:"instrument_class", Value:1}}, PartialFilterExpression:primitive.D(nil)}
+2026-10-24T21:07:56.856+0800	2400 document(s) restored successfully. 0 document(s) failed to restore.

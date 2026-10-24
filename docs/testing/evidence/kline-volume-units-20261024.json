@@ -1,0 +1,741 @@
+{
+  "validation_date_utc8": "2026-10-24",
+  "created_utc": "2026-10-23T23:53:57.390944+00:00",
+  "rustdx_head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "eltdx_version": "3.3.0",
+  "scope": "one endpoint; four selected instruments; unadjusted day categories 9/1 and 4/1 and 5-minute 0/1; 38/54-byte controlled requests; no full SDK execution",
+  "capture_started_utc": "2026-10-23T23:49:43.147432+00:00",
+  "capture_finished_utc": "2026-10-23T23:49:46.047782+00:00",
+  "endpoint": [
+    "115.238.56.198",
+    7709
+  ],
+  "counts": {
+    "cases": 24,
+    "decoded_rows": 928,
+    "matched_daily_rows": 144,
+    "numeric_differences": 0,
+    "native_pytdx_expected_rows": 9,
+    "length_pairs": 12,
+    "minute_vwap_rows": 576,
+    "minute_vwap_outside": 0
+  },
+  "live_failed_attempts": 0,
+  "daily_dates_compared": [
+    "2026-10-12",
+    "2026-10-13",
+    "2026-10-14",
+    "2026-10-15",
+    "2026-10-16",
+    "2026-10-19",
+    "2026-10-20",
+    "2026-10-21",
+    "2026-10-22"
+  ],
+  "daily_distinct_instrument_dates": 36,
+  "all_matched_daily_ohlc_and_amount_equal": true,
+  "all_12_same_category_length_pair_bodies_identical": true,
+  "stock_unit_conclusions": [
+    {
+      "category": 9,
+      "parameter": 1,
+      "source_unit": "100 shares per lot",
+      "rustdx_canonical_unit": "Lots",
+      "eltdx_unconditional_divide_by_100_valid": false
+    },
+    {
+      "category": 4,
+      "parameter": 1,
+      "source_unit": "shares",
+      "rustdx_canonical_unit": "Shares",
+      "eltdx_unconditional_divide_by_100_valid": true
+    },
+    {
+      "category": 0,
+      "parameter": 1,
+      "source_unit": "shares",
+      "rustdx_canonical_unit": "Shares",
+      "eltdx_unconditional_divide_by_100_valid": true
+    }
+  ],
+  "default_day_equivalence": "rustdx category9 vol is lots; eltdx category4 wire is shares and volume_lots is lots; different precision, not exact numerical equality",
+  "etf_scope": "sh510300: same category scaling in fund units; no bond/other instrument generalization",
+  "index_scope": "sh000001: daily category9/4 scale relative to official day aggregate verified; minute volume business unit unresolved",
+  "example_20261022_sz000001": {
+    "official_day_shares": 129764875,
+    "category9_wire_lots": 1297648,
+    "category4_wire_shares": 129764872,
+    "eltdx_default_day_lots": 1297648.72,
+    "five_minute_48_bar_share_sum": 129764900
+  },
+  "minute_day_sums": [
+    {
+      "case": "sz000001-c0-n38",
+      "symbol": "sz000001",
+      "date": "2026-10-22",
+      "bars": 48,
+      "first": "2026-10-22T09:35",
+      "last": "2026-10-22T15:00",
+      "minute_wire_sum": 129764900.0,
+      "day_volume": 129764875,
+      "sum_minus_day": 25.0,
+      "standard_48_timestamps_match": true,
+      "minute_amount_sum": 1468424737.0,
+      "day_amount": 1468424704.0
+    },
+    {
+      "case": "sz000001-c0-n54",
+      "symbol": "sz000001",
+      "date": "2026-10-22",
+      "bars": 48,
+      "first": "2026-10-22T09:35",
+      "last": "2026-10-22T15:00",
+      "minute_wire_sum": 129764900.0,
+      "day_volume": 129764875,
+      "sum_minus_day": 25.0,
+      "standard_48_timestamps_match": true,
+      "minute_amount_sum": 1468424737.0,
+      "day_amount": 1468424704.0
+    },
+    {
+      "case": "sh600000-c0-n38",
+      "symbol": "sh600000",
+      "date": "2026-10-22",
+      "bars": 48,
+      "first": "2026-10-22T09:35",
+      "last": "2026-10-22T15:00",
+      "minute_wire_sum": 62529900.0,
+      "day_volume": 62529869,
+      "sum_minus_day": 31.0,
+      "standard_48_timestamps_match": true,
+      "minute_amount_sum": 602885524.0,
+      "day_amount": 602885504.0
+    },
+    {
+      "case": "sh600000-c0-n54",
+      "symbol": "sh600000",
+      "date": "2026-10-22",
+      "bars": 48,
+      "first": "2026-10-22T09:35",
+      "last": "2026-10-22T15:00",
+      "minute_wire_sum": 62529900.0,
+      "day_volume": 62529869,
+      "sum_minus_day": 31.0,
+      "standard_48_timestamps_match": true,
+      "minute_amount_sum": 602885524.0,
+      "day_amount": 602885504.0
+    },
+    {
+      "case": "sh510300-c0-n38",
+      "symbol": "sh510300",
+      "date": "2026-10-22",
+      "bars": 48,
+      "first": "2026-10-22T09:35",
+      "last": "2026-10-22T15:00",
+      "minute_wire_sum": 3541977968.0,
+      "day_volume": 3541978015,
+      "sum_minus_day": -47.0,
+      "standard_48_timestamps_match": true,
+      "minute_amount_sum": 14627094500.0,
+      "day_amount": 14627094528.0
+    },
+    {
+      "case": "sh510300-c0-n54",
+      "symbol": "sh510300",
+      "date": "2026-10-22",
+      "bars": 48,
+      "first": "2026-10-22T09:35",
+      "last": "2026-10-22T15:00",
+      "minute_wire_sum": 3541977968.0,
+      "day_volume": 3541978015,
+      "sum_minus_day": -47.0,
+      "standard_48_timestamps_match": true,
+      "minute_amount_sum": 14627094500.0,
+      "day_amount": 14627094528.0
+    },
+    {
+      "case": "sh000001-c0-n38",
+      "symbol": "sh000001",
+      "date": "2026-10-22",
+      "bars": 48,
+      "first": "2026-10-22T09:35",
+      "last": "2026-10-22T15:00",
+      "minute_wire_sum": 7060954172.0,
+      "day_volume": 437691963,
+      "sum_minus_day": 6623262209.0,
+      "standard_48_timestamps_match": true,
+      "minute_amount_sum": 706095644160.0,
+      "day_amount": 706095677440.0
+    },
+    {
+      "case": "sh000001-c0-n54",
+      "symbol": "sh000001",
+      "date": "2026-10-22",
+      "bars": 48,
+      "first": "2026-10-22T09:35",
+      "last": "2026-10-22T15:00",
+      "minute_wire_sum": 7060954172.0,
+      "day_volume": 437691963,
+      "sum_minus_day": 6623262209.0,
+      "standard_48_timestamps_match": true,
+      "minute_amount_sum": 706095644160.0,
+      "day_amount": 706095677440.0
+    }
+  ],
+  "synthetic_formula_edges": [
+    {
+      "encoding_u32": 0,
+      "rustdx": 5.877471754111438e-39,
+      "eltdx": 0.0
+    },
+    {
+      "encoding_u32": 1098907648,
+      "rustdx": 2056.0,
+      "eltdx": 16.0
+    },
+    {
+      "encoding_u32": 1235775464,
+      "rustdx": 1379837.0,
+      "eltdx": 1379837.0
+    },
+    {
+      "encoding_u32": 1326643033,
+      "rustdx": 2465683712.0,
+      "eltdx": 2465683712.0
+    }
+  ],
+  "remaining_validation": [
+    "other periods and custom parameters",
+    "index minute volume business meaning",
+    "bonds, Beijing and other instruments",
+    "other servers and long-term compatibility",
+    "adjusted price requests"
+  ],
+  "candidate_followups": [
+    "retain raw category and explicit source volume unit when adapting bars",
+    "separate regression and potential fix for zero and negative-exponent helper behavior"
+  ],
+  "official_zip_sha256": "07aab2f1166a794cebfa380cda058417499c4f74049a5fe36fe029f5c803d400",
+  "official_zip_bytes": 549908719,
+  "official_zip_prior_provenance": "round3-real-day-databases.json",
+  "independent_vendor_validation": false,
+  "same_vendor_cross_representation_validation": true,
+  "verification": {
+    "offline_replay_passed": true,
+    "native_kline_existing_binary_tests": {
+      "passed": 4,
+      "failed": 0,
+      "binary_sha256": "2d024355940e1ce501a2ea3bb11be1760b4c220a7214be4664049ca07a5127fb"
+    },
+    "native_helper_existing_binary_tests": {
+      "passed": 1,
+      "failed": 0,
+      "binary_sha256": "94d4f7d57256fdd5a3c313012fe3066d91246afa9137ff169f76a9e5a5229aeb"
+    },
+    "native_capture_decoder_accepted_rows": 9,
+    "native_capture_dto_numeric_values_exported": false,
+    "pinned_pytdx_reference_and_replay_rows": 9,
+    "eltdx_sdk_executed": false,
+    "rust_source_changed": false,
+    "cargo_fmt_clippy_rebuild_run": false,
+    "toolchain_limitation": "cargo, rustc and rustfmt absent from PATH; existing native binaries used without rebuild",
+    "python": "3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]",
+    "platform": "macOS-27.0.1-arm64-arm-64bit"
+  },
+  "report": {
+    "path": "../KLINE_VOLUME_UNITS_20261024.md",
+    "sha256": "ccae15e74904db35a970cdd0bb1bea97646627a5554d2b572226c509715fdf6c"
+  },
+  "supporting_files": [
+    {
+      "path": "kline-volume-20261024/README.md",
+      "bytes": 2442,
+      "sha256": "fc5570d002a59e4b26dd028ec4ddd8b36a2b045883fa883325f93e58689ea8aa"
+    },
+    {
+      "path": "kline-volume-20261024/capture.json",
+      "bytes": 23868,
+      "sha256": "e371d707c9844fd3e40f44d01ea2b446baf1ad208888c234a07636a0923492ff"
+    },
+    {
+      "path": "kline-volume-20261024/native/index-day.expected.csv",
+      "bytes": 323,
+      "sha256": "7472927c5177ba08aa25af9a49818d07693dd3df257f7c5552db6573c10e26f6"
+    },
+    {
+      "path": "kline-volume-20261024/native/index-day.request.hex",
+      "bytes": 77,
+      "sha256": "d28099ff347332de7558b591fb482e3909c8031f4fc984689991aa23feef8608"
+    },
+    {
+      "path": "kline-volume-20261024/native/index-day.response.hex",
+      "bytes": 167,
+      "sha256": "2eef47429c607eb20eaa390d3c3944be28818dceee7d8b922032b0229c2f6624"
+    },
+    {
+      "path": "kline-volume-20261024/native/pytdx-verification.json",
+      "bytes": 2474,
+      "sha256": "0721ba0ea68b56471c0367f5b1b56dd504a406cb3bd9d06fd80b2348f0959e22"
+    },
+    {
+      "path": "kline-volume-20261024/native/stock-day.expected.csv",
+      "bytes": 269,
+      "sha256": "2eb01a8942b776d3e7f7ea0b291eae1c976d145730460995dc9b1134134f283a"
+    },
+    {
+      "path": "kline-volume-20261024/native/stock-day.request.hex",
+      "bytes": 77,
+      "sha256": "6564bd0cd585cc94db225cc8a4a307f84ab0e62cb61f4fa666f92a33d70066ad"
+    },
+    {
+      "path": "kline-volume-20261024/native/stock-day.response.hex",
+      "bytes": 117,
+      "sha256": "779ef835e4c2fb2f3c120628d2c61eebc249ba6127aa78fc8b258659b8f13cd5"
+    },
+    {
+      "path": "kline-volume-20261024/native/stock-minute.expected.csv",
+      "bytes": 264,
+      "sha256": "acbfae0333da059c909678072000407adf184f567663277c4cc9ca714938b90f"
+    },
+    {
+      "path": "kline-volume-20261024/native/stock-minute.request.hex",
+      "bytes": 77,
+      "sha256": "61314bd34ad414d6a90f152b2fc6b6215e43446c4e0403ecbafcaf8fe663850e"
+    },
+    {
+      "path": "kline-volume-20261024/native/stock-minute.response.hex",
+      "bytes": 105,
+      "sha256": "27d7740a0c3561d9060764348364291e4f010aa36f8b5b399eb9e639f200fb6b"
+    },
+    {
+      "path": "kline-volume-20261024/official-day/sh000001.day",
+      "bytes": 279904,
+      "sha256": "46eaa496d4642c1008bfcf7c227fcecca9ba1a8f61c08252c4cc8f451fdd7ced"
+    },
+    {
+      "path": "kline-volume-20261024/official-day/sh510300.day",
+      "bytes": 111968,
+      "sha256": "a9afb74f1f9c80c0fc4b6c847de332b24bdd25dd0e69fbe3f55bb0807aae5105"
+    },
+    {
+      "path": "kline-volume-20261024/official-day/sh600000.day",
+      "bytes": 205152,
+      "sha256": "22855dea0db065e4875d005c7ba55dff5cccc4cbf491aeccfb43d8a278529748"
+    },
+    {
+      "path": "kline-volume-20261024/official-day/sz000001.day",
+      "bytes": 271200,
+      "sha256": "8936282131663d1d8ddd458231a604be1b7c71440d96b3edfce2cb250de439b8"
+    },
+    {
+      "path": "kline-volume-20261024/provenance.json",
+      "bytes": 3880,
+      "sha256": "5bd7706794bf0586eef173773ef4b7235afda984c8316d4517265eacfe848fe4"
+    },
+    {
+      "path": "kline-volume-20261024/results.json",
+      "bytes": 724706,
+      "sha256": "0b0f47b1cbbdd75aafc1cfbcf3ab6c8129c2abd2108b789a395b1a53c81406f4"
+    },
+    {
+      "path": "kline-volume-20261024/validate.py",
+      "bytes": 19170,
+      "sha256": "b174a64473690d73ad22efc38d002a2a2795dbca45913b6fc4eb8c37cb0d1ed3"
+    },
+    {
+      "path": "kline-volume-20261024/verification/capture.log",
+      "bytes": 576,
+      "sha256": "cdff6de6983db7f275e448e8f3bf94aa368f352b5fd0ef806b1b55288811af45"
+    },
+    {
+      "path": "kline-volume-20261024/verification/native-helper-test.log",
+      "bytes": 171,
+      "sha256": "5bc40faaebf39b263afc5e59483b0c4182b4e414ab2bab32bc7938ed086dde65"
+    },
+    {
+      "path": "kline-volume-20261024/verification/native-kline-tests.log",
+      "bytes": 378,
+      "sha256": "06fa41c97dd4dfa0a0282ac943cee4cd333960ab4f0eed0f2338befabe440dc5"
+    },
+    {
+      "path": "kline-volume-20261024/verification/offline-replay.log",
+      "bytes": 210,
+      "sha256": "84456c1b6d8ff048af10dfca7e3b35a9e1dc1f4d7bbd9f067c82a9c84863376a"
+    },
+    {
+      "path": "kline-volume-20261024/wire/handshake-0.body.bin",
+      "bytes": 189,
+      "sha256": "208a4074973d8468380d4bd4ceff2d43a9413aa6dec44c03977a166775915c43"
+    },
+    {
+      "path": "kline-volume-20261024/wire/handshake-0.frame.bin",
+      "bytes": 108,
+      "sha256": "b47d1a4431dab75ad5ef6e8b163c67acfc287ec9b3877010a300699615ced559"
+    },
+    {
+      "path": "kline-volume-20261024/wire/handshake-0.request.bin",
+      "bytes": 13,
+      "sha256": "2cb6ebe95141a11eb0012af585f6abc51067b8ce73444223fc478981c2b924cb"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c0-n38.body.bin",
+      "bytes": 2334,
+      "sha256": "35b521262bdfd21879f0fef917feb16d378dbfcd6489ab6a808dac2a3ddcdbf7"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c0-n38.frame.bin",
+      "bytes": 2128,
+      "sha256": "c0316247706d8ea172ac8cba36d7aebaebefdb0d5000b6c16d17c2058574b9d0"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c0-n38.request.bin",
+      "bytes": 38,
+      "sha256": "c7394e33a4a453b8f18e29e5f7017c0e9b14f3d1940ffaa31df1352bcd496f43"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c0-n54.body.bin",
+      "bytes": 2334,
+      "sha256": "35b521262bdfd21879f0fef917feb16d378dbfcd6489ab6a808dac2a3ddcdbf7"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c0-n54.frame.bin",
+      "bytes": 2128,
+      "sha256": "c0316247706d8ea172ac8cba36d7aebaebefdb0d5000b6c16d17c2058574b9d0"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c0-n54.request.bin",
+      "bytes": 54,
+      "sha256": "aadb5193f5513e63d2b6a07de5f6573297bda2640f1e1d61f56f808db8b1c050"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c4-n38.body.bin",
+      "bytes": 275,
+      "sha256": "c38c767b47541a22be982e5a4bc752d7025f6af275b8bb3f8b0998f92eb5c3da"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c4-n38.frame.bin",
+      "bytes": 291,
+      "sha256": "8a40505191400fd185019f2ce656f669210344b30740a4f1068c0bb4fc433b14"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c4-n38.request.bin",
+      "bytes": 38,
+      "sha256": "09212268028bfd120b4d9da57e67a5610f065f91989a4099e9f06e014737e805"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c4-n54.body.bin",
+      "bytes": 275,
+      "sha256": "c38c767b47541a22be982e5a4bc752d7025f6af275b8bb3f8b0998f92eb5c3da"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c4-n54.frame.bin",
+      "bytes": 291,
+      "sha256": "8a40505191400fd185019f2ce656f669210344b30740a4f1068c0bb4fc433b14"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c4-n54.request.bin",
+      "bytes": 54,
+      "sha256": "952090eac1f97c00cc3bdb27401cf32c5bd7db0ac2a9d3acea905a4cdecc8af9"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c9-n38.body.bin",
+      "bytes": 275,
+      "sha256": "280370391add860ce188c631a85ba82b7d55c8979fdc336d0e1438c36b0e509f"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c9-n38.frame.bin",
+      "bytes": 291,
+      "sha256": "f3a14d7b971907d082e33e76f9a8640b535a4d45aabbca2cfef92e8322f22899"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c9-n38.request.bin",
+      "bytes": 38,
+      "sha256": "b922babcf8454789ddec38b5dee977f34d3b066d85616e29d2b4254c7fc6a509"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c9-n54.body.bin",
+      "bytes": 275,
+      "sha256": "280370391add860ce188c631a85ba82b7d55c8979fdc336d0e1438c36b0e509f"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c9-n54.frame.bin",
+      "bytes": 291,
+      "sha256": "f3a14d7b971907d082e33e76f9a8640b535a4d45aabbca2cfef92e8322f22899"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh000001-c9-n54.request.bin",
+      "bytes": 54,
+      "sha256": "5e460fd7d9533e22f32e708145e564201c71a89cd4bb21774ffe9cbea8d024e9"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c0-n38.body.bin",
+      "bytes": 1539,
+      "sha256": "c68f6f94a714e81c18702730d5398786cacd4f6ae76df07e6504b96d3f4950ab"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c0-n38.frame.bin",
+      "bytes": 1337,
+      "sha256": "d3c4ed44396d8c10298793064712296a659deb505e9bfe7ad01e3fd0508ff4a4"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c0-n38.request.bin",
+      "bytes": 38,
+      "sha256": "834db6810370b0225688853f0f9de8ffec745999128c0fa3455208a6279acf3f"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c0-n54.body.bin",
+      "bytes": 1539,
+      "sha256": "c68f6f94a714e81c18702730d5398786cacd4f6ae76df07e6504b96d3f4950ab"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c0-n54.frame.bin",
+      "bytes": 1337,
+      "sha256": "d3c4ed44396d8c10298793064712296a659deb505e9bfe7ad01e3fd0508ff4a4"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c0-n54.request.bin",
+      "bytes": 54,
+      "sha256": "efc8da0e1fab2b8ba8f3ee3189a77b0f0f78237fead77ce50b02e53d06f181c1"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c4-n38.body.bin",
+      "bytes": 169,
+      "sha256": "dcf212e18a71bdbf5fa855a302fce153e093ffa6ee3b5ac010e4bfb126bbd70f"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c4-n38.frame.bin",
+      "bytes": 185,
+      "sha256": "d2ab6d6b2429b48176711e157a5441becd74239cd228dd3c0f9f5d41524934e0"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c4-n38.request.bin",
+      "bytes": 38,
+      "sha256": "5da1f088ff8074a6099730d9f9d7fe065c053ef2e8331087fc13ba1679292223"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c4-n54.body.bin",
+      "bytes": 169,
+      "sha256": "dcf212e18a71bdbf5fa855a302fce153e093ffa6ee3b5ac010e4bfb126bbd70f"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c4-n54.frame.bin",
+      "bytes": 185,
+      "sha256": "d2ab6d6b2429b48176711e157a5441becd74239cd228dd3c0f9f5d41524934e0"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c4-n54.request.bin",
+      "bytes": 54,
+      "sha256": "38e2e202d30ff6a94f85c146f5a742dd519f34783daf4943566f95165f07f83c"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c9-n38.body.bin",
+      "bytes": 169,
+      "sha256": "ae4c0bf8b24abbf6aba7fcac2b5566eaefc8fc2d4b3adad55f212ea2a12c869e"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c9-n38.frame.bin",
+      "bytes": 185,
+      "sha256": "bb33e5d9d75220fe9876d81ba611bc34ce956d13ebc08cd889668ba805492575"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c9-n38.request.bin",
+      "bytes": 38,
+      "sha256": "4a4e94d7ff57e81b52fc232d398efd97397aaddbc6f3bc63afbadc980fc004ef"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c9-n54.body.bin",
+      "bytes": 169,
+      "sha256": "ae4c0bf8b24abbf6aba7fcac2b5566eaefc8fc2d4b3adad55f212ea2a12c869e"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c9-n54.frame.bin",
+      "bytes": 185,
+      "sha256": "bb33e5d9d75220fe9876d81ba611bc34ce956d13ebc08cd889668ba805492575"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh510300-c9-n54.request.bin",
+      "bytes": 54,
+      "sha256": "61440f4dd70295e3bd9ec88050af29a2bbbad16fa2f6ae2e4099b0daf1c918b0"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c0-n38.body.bin",
+      "bytes": 1551,
+      "sha256": "4fdb0f9eb6d398ce63c42323c30c3bde9424ffc751a461a3f9542641699f0adf"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c0-n38.frame.bin",
+      "bytes": 1246,
+      "sha256": "6f63f24546e668578c201c06b8336b394c10b8001ff2bf6730d182e583f8297c"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c0-n38.request.bin",
+      "bytes": 38,
+      "sha256": "8ef70c5db138759bf692cce7fb249c7f28d133bc8449081ca19f44aa5331b393"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c0-n54.body.bin",
+      "bytes": 1551,
+      "sha256": "4fdb0f9eb6d398ce63c42323c30c3bde9424ffc751a461a3f9542641699f0adf"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c0-n54.frame.bin",
+      "bytes": 1246,
+      "sha256": "6f63f24546e668578c201c06b8336b394c10b8001ff2bf6730d182e583f8297c"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c0-n54.request.bin",
+      "bytes": 54,
+      "sha256": "3196ba80630d3db97d86bc5177a90c5a7587df3839c536221fc2b8ff077c9dc2"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c4-n38.body.bin",
+      "bytes": 183,
+      "sha256": "8877f5f67d1282b60314e15005533373928bf04e40b76f5589dec31c7084f128"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c4-n38.frame.bin",
+      "bytes": 199,
+      "sha256": "41a4372d63e70f4aa0a725e9dbdec043e0f6c8ad06963014c3d5c6cd790387c6"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c4-n38.request.bin",
+      "bytes": 38,
+      "sha256": "af80b676a991afdca0e7a00a5499ba904109e0b4649e56689056e562637e2413"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c4-n54.body.bin",
+      "bytes": 183,
+      "sha256": "8877f5f67d1282b60314e15005533373928bf04e40b76f5589dec31c7084f128"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c4-n54.frame.bin",
+      "bytes": 199,
+      "sha256": "41a4372d63e70f4aa0a725e9dbdec043e0f6c8ad06963014c3d5c6cd790387c6"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c4-n54.request.bin",
+      "bytes": 54,
+      "sha256": "51576943454467298920aff3794c07366fa3b05cd74740ac73d1555540c9badc"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c9-n38.body.bin",
+      "bytes": 183,
+      "sha256": "4c1f27c087d5e30647a217dded1c6142ccc1c2a1c1e456bce13fe410b7fe48bc"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c9-n38.frame.bin",
+      "bytes": 199,
+      "sha256": "c1575f866f2cc03637c154d8c1e8bd6aca7657785c76df6d6718fd7a89e44d4d"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c9-n38.request.bin",
+      "bytes": 38,
+      "sha256": "58fbdd74017455c9ec06e635f32ee1647b303817a614c1d39c4f150aaa2e50df"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c9-n54.body.bin",
+      "bytes": 183,
+      "sha256": "4c1f27c087d5e30647a217dded1c6142ccc1c2a1c1e456bce13fe410b7fe48bc"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c9-n54.frame.bin",
+      "bytes": 199,
+      "sha256": "c1575f866f2cc03637c154d8c1e8bd6aca7657785c76df6d6718fd7a89e44d4d"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sh600000-c9-n54.request.bin",
+      "bytes": 54,
+      "sha256": "231a7c2df336a8f9536c1fd1862da9228564235d80a4753f8b9c6632047173c5"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c0-n38.body.bin",
+      "bytes": 1544,
+      "sha256": "d4e7c74798f80434a2486e5dc9ee22fbb32aaaa1ccf2f96db51fc3171080bd92"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c0-n38.frame.bin",
+      "bytes": 1239,
+      "sha256": "db6ef087aea1f60cdfe4572cf09a3684f935ac342334e150f373726e801f9206"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c0-n38.request.bin",
+      "bytes": 38,
+      "sha256": "6f64642ef48c541dc289e01c85e3d22e6aa858c522b7dbdfb4dff323945de990"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c0-n54.body.bin",
+      "bytes": 1544,
+      "sha256": "d4e7c74798f80434a2486e5dc9ee22fbb32aaaa1ccf2f96db51fc3171080bd92"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c0-n54.frame.bin",
+      "bytes": 1239,
+      "sha256": "db6ef087aea1f60cdfe4572cf09a3684f935ac342334e150f373726e801f9206"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c0-n54.request.bin",
+      "bytes": 54,
+      "sha256": "48b09eaed03097b41f54454be0db085b05ac1d4fbc1fd50a213a71c184acd694"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c4-n38.body.bin",
+      "bytes": 186,
+      "sha256": "1dd50f068bbfd0054137142d3f7f76ad5a0d25237432173e5b66d4b1018754db"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c4-n38.frame.bin",
+      "bytes": 202,
+      "sha256": "d1181a6fd639aef9aa5f8602b878b512657433047a2aa40b1b199d028214ff17"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c4-n38.request.bin",
+      "bytes": 38,
+      "sha256": "2f86faafc9264409d5a07700e234a5585009b495d83660df8497297c68d62ca1"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c4-n54.body.bin",
+      "bytes": 186,
+      "sha256": "1dd50f068bbfd0054137142d3f7f76ad5a0d25237432173e5b66d4b1018754db"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c4-n54.frame.bin",
+      "bytes": 202,
+      "sha256": "d1181a6fd639aef9aa5f8602b878b512657433047a2aa40b1b199d028214ff17"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c4-n54.request.bin",
+      "bytes": 54,
+      "sha256": "c9e4fcef4b99c28ab022c119bb6cf3bf0a942e99a608b3f96aca5bb131b0bd20"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c9-n38.body.bin",
+      "bytes": 186,
+      "sha256": "4f3d8761162f1be89545952bc13083ec1286d170976b9796a80a1631b6cea663"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c9-n38.frame.bin",
+      "bytes": 201,
+      "sha256": "58a835030d1b5d7fa78a93e632ab6242bc9592cadb038920cde6abe72e02d595"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c9-n38.request.bin",
+      "bytes": 38,
+      "sha256": "af4144ed09c43c7fb6849a2f21776697a8da73666caaf403e8d190f7e5bdf370"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c9-n54.body.bin",
+      "bytes": 186,
+      "sha256": "4f3d8761162f1be89545952bc13083ec1286d170976b9796a80a1631b6cea663"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c9-n54.frame.bin",
+      "bytes": 201,
+      "sha256": "58a835030d1b5d7fa78a93e632ab6242bc9592cadb038920cde6abe72e02d595"
+    },
+    {
+      "path": "kline-volume-20261024/wire/sz000001-c9-n54.request.bin",
+      "bytes": 54,
+      "sha256": "e23ac79a10a51bf8b61f5c0dde333399f0ba9c67ebd9bddec07b1736585432a3"
+    }
+  ]
+}

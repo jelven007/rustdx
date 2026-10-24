@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/run.py", line 78, in <module>
+    run("real-history",["python3","scripts/validation/verify_real_day_database.py","--binary","target/debug/rustdx","--zip",str(task/"official-subset.zip"),"--output",str(evidence/"real-history.json")],timeout=1800)
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/run.py", line 17, in run
+    if required and r.returncode:raise RuntimeError(name+" failed")
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: real-history failed

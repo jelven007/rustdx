@@ -8,11 +8,11 @@ case "${1:-offline}" in
         RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo test --workspace --locked
         ;;
     quick)
-        RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo test --lib --locked
+        RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo test --workspace --lib --locked
         ;;
     live)
         unset RUSTDX_SKIP_INTEGRATION_TESTS
-        RUSTDX_LIVE_TEST=1 cargo test --test comprehensive_test --locked -- --nocapture --test-threads=1
+        RUSTDX_LIVE_TEST=1 cargo test -p jelven-rustdx-complete --test comprehensive_test --locked -- --nocapture --test-threads=1
         ;;
     report)
         report_dir="${RUSTDX_REPORT_DIR:-${TMPDIR:-/tmp}/rustdx-reports}"

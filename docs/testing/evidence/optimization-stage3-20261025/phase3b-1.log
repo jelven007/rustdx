@@ -1,0 +1,30 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 11.61s
+[1m[32m     Running[0m tests/quote_subscription.rs (/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/deps/quote_subscription-a72fd802ff7cd1db)
+
+running 22 tests
+test direct_poll_and_refresh_enforce_resident_memory_budget ... ok
+test empty_first_refresh_keeps_baseline_pending_and_duplicate_is_not_accumulated ... ok
+test checked_query_rejects_wrong_message_identity ... ok
+test initial_response_below_requested_cursor_invalidates_without_publishing ... ok
+test endpoint_revocation_and_operation_cancellation_close_the_subscription ... ok
+test frame_and_byte_overflow_invalidate_and_release_connection ... ok
+test invalid_last_symbol_in_passive_page_never_partially_publishes_first_symbol ... ok
+test local_poll_timeout_preserves_session_but_operation_deadline_closes_it ... ok
+test invalid_subscription_budgets_fail_before_opening_a_connection ... ok
+test mixed_valid_and_regressing_records_do_not_partially_publish_response_or_push ... ok
+test observer_failure_does_not_publish_push ... ok
+test malformed_push_prefix_compression_and_truncated_body_close_session ... ok
+test overflow_rebuild_requires_every_symbol_before_business_consumption ... ok
+test passive_duplicate_and_empty_frames_preserve_state_and_cursor_max_requires_rebuild ... ok
+test passive_multi_symbol_stream_completes_baseline_and_replaces_full_depth_without_requests ... ok
+test passive_updates_reuse_message_id_without_refresh_or_heartbeat_writes ... ok
+test passive_updates_are_used_as_next_request_cursors_instead_of_resetting_baseline ... ok
+test poll_preserves_partial_header_and_body_and_close_releases_permit ... ok
+test pushes_before_response_are_queued_with_two_budgets ... ok
+test rebuild_reopens_through_daily_pool_and_resets_cursors ... ok
+test rebuild_rejects_expired_metadata_before_reconnecting ... ok
+test wrong_opcode_and_cursor_regression_are_not_published ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+

@@ -1,0 +1,809 @@
+{
+  "latest_implementation": {
+    "date": "2026-10-24",
+    "same_opcode": 22,
+    "alternate_opcode_for_related_capability": 0,
+    "absent_capability": 0,
+    "evidence": "nine-commands-implementation-20261024.json",
+    "report": "docs/development/NINE_COMMANDS_IMPLEMENTATION_20261024.md",
+    "historical_fields_below_preserved": true,
+    "full_business_compatibility_claimed": false
+  },
+  "review_date": "2026-10-24",
+  "snapshot_time_utc": "2026-10-24T03:17:50.239174+00:00",
+  "baseline": {
+    "version": "eltdx 3.2.2",
+    "archive_sha256": "5ef7c8750feaa26fa001c8e5ee0d5952ba8c424b3745ae7f66661503f1d3b955",
+    "command_count": 22,
+    "baseline_files_verified": 81
+  },
+  "current": {
+    "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+    "includes_preexisting_uncommitted_changes": true,
+    "core_version": "1.12.2",
+    "edition": "2024",
+    "rust_version": "1.89",
+    "active_opcode_count": 15,
+    "active_opcodes": [
+      "0x000d",
+      "0x000f",
+      "0x0010",
+      "0x02c5",
+      "0x02cf",
+      "0x02d0",
+      "0x044e",
+      "0x0450",
+      "0x051d",
+      "0x052d",
+      "0x053e",
+      "0x06b9",
+      "0x0fb4",
+      "0x0fb5",
+      "0x0fc5"
+    ],
+    "source_snapshot": [
+      {
+        "path": "Cargo.toml",
+        "sha256": "5609b7cdedcb85104f2d2ae7e737b43ff7fe2d56010674893c626dba30d46cab",
+        "bytes": 1769
+      },
+      {
+        "path": "src/tcp/basic.rs",
+        "sha256": "df09d5b6e2b1739074672ef940b4ad9ba8cd71d57d98e4a05c35da7255a6fbec",
+        "bytes": 8065
+      },
+      {
+        "path": "src/tcp/mod.rs",
+        "sha256": "124110ea7fa8fe953dbc6efcbc0e8ac24ed000da31218583c4854c9e459b5598",
+        "bytes": 28548
+      },
+      {
+        "path": "src/tcp/evidence.rs",
+        "sha256": "efc7c3da656c96c9df0146a1dd87756466bd57cd84c3f953422067447aebedec",
+        "bytes": 2207
+      },
+      {
+        "path": "src/tcp/governance.rs",
+        "sha256": "66dfc94f94e238ffd8872849c92cc267f70a5a6762889c26147721b4d11cf3cd",
+        "bytes": 15816
+      },
+      {
+        "path": "src/tcp/ip/daily.rs",
+        "sha256": "2dd439b5a2207cd3433d097569a0f63b776a74fa68e70c015d1f72ed10039095",
+        "bytes": 18375
+      },
+      {
+        "path": "src/tcp/ip/probe.rs",
+        "sha256": "f2221fe51dcdaaf47e1776eebe5b179a282c747cf72571b7c18fa9fd7889ca06",
+        "bytes": 9345
+      },
+      {
+        "path": "src/pool.rs",
+        "sha256": "9d51e7eabac3f914374d5111216c4e04eb683d5a8b5c6e1190192ca26682cc41",
+        "bytes": 10555
+      },
+      {
+        "path": "src/tcp/stock/client.rs",
+        "sha256": "a5c8dc17d24a0415b6237a19f3dddc3667db480f3004dddb98c6b3ae35136c21",
+        "bytes": 39204
+      },
+      {
+        "path": "src/tcp/stock/requests.rs",
+        "sha256": "3cf5739efcfa3dbaeb4f04e5dce7870208f4ff6d53244ffb486387c47fb671b8",
+        "bytes": 12818
+      },
+      {
+        "path": "src/tcp/stock/kline_request.rs",
+        "sha256": "5bded1466df316b5d00cf9d9a2fb871080b47cb25466c6d334607a15a71b028f",
+        "bytes": 11126
+      },
+      {
+        "path": "src/tcp/stock/client/pagination.rs",
+        "sha256": "a3fa13923331ac4c0dac7c29bf9997e9870785449842a578da3757c90499e166",
+        "bytes": 3029
+      },
+      {
+        "path": "src/tcp/stock/client/adjustment.rs",
+        "sha256": "b98516d7a028b5c41ee6a09f14af86aa6c8d70015acbc11ffb038f178a84d5fe",
+        "bytes": 2946
+      },
+      {
+        "path": "src/tcp/stock/client/batch.rs",
+        "sha256": "d3d4185ee7eb2c6c1075012a0249356b1436a3040816dd9538edb7cebf3bf499",
+        "bytes": 4737
+      },
+      {
+        "path": "src/tcp/stock/mod.rs",
+        "sha256": "31a8d99547e391f133e6855677b54e5782d4e9c14328ed0d0cb043c692019bc4",
+        "bytes": 6641
+      },
+      {
+        "path": "src/tcp/stock/security_list.rs",
+        "sha256": "38d46d9dc104dbf0d090448c99609a62f7b7edd84b561d93d1d615049ed04f1c",
+        "bytes": 6396
+      },
+      {
+        "path": "src/tcp/stock/quotes.rs",
+        "sha256": "a13d1a3c2960674e85a0d9d64079f4cf13fa100bbe9543615c68732c4b8af2c9",
+        "bytes": 17668
+      },
+      {
+        "path": "src/tcp/stock/finance_info.rs",
+        "sha256": "df8441f0a534ac4228fcedd0205f385071f644e822de8d9dd1bb095ebbd19c9a",
+        "bytes": 6592
+      },
+      {
+        "path": "src/tcp/stock/xdxr.rs",
+        "sha256": "4cfb7c8631cea23e5cbada55bece179a39ecd7dc9b6af202b434249931603a9b",
+        "bytes": 6728
+      },
+      {
+        "path": "src/tcp/stock/transaction.rs",
+        "sha256": "6b3bcef4a380d3c248e563022e7b872cd8404724097601346f09aafc3955c591",
+        "bytes": 6037
+      },
+      {
+        "path": "src/tcp/stock/history_transaction.rs",
+        "sha256": "91acc7b4bcdcd85f88d4a7677447e8326a50a45dfa29ebb24d9cc90509c720c7",
+        "bytes": 5815
+      },
+      {
+        "path": "src/tcp/stock/minute_time.rs",
+        "sha256": "667fc5cb473e443736eef8a4756ad6dfa98345ba0cf345533dca0503236844ed",
+        "bytes": 18945
+      },
+      {
+        "path": "src/tcp/stock/history_minute_time.rs",
+        "sha256": "f4e1a9735bdfd6b6a0cf43a39f8204c1bb95987452c8ae78f6bfc9b8fc194a63",
+        "bytes": 6432
+      },
+      {
+        "path": "src/tcp/stock/block_info.rs",
+        "sha256": "a4c214727896762bc003d71d4ac6d2e7a0e8e13550656304ea67524dcc9c661c",
+        "bytes": 10265
+      },
+      {
+        "path": "src/data.rs",
+        "sha256": "8068d653c60078264683a497c6c114c9a87c960eca624a04d6e2abcd106b7d46",
+        "bytes": 8058
+      },
+      {
+        "path": "src/data/model.rs",
+        "sha256": "925afb198ccec4905d6cd9d53ec22498ec245145bf0e7fe38b789410bd5563a9",
+        "bytes": 6690
+      },
+      {
+        "path": "src/cache.rs",
+        "sha256": "efaeb0bd62b33244728c1b05a000f0bf5d2ed3a0fcbbe22eab6e42502a05de30",
+        "bytes": 24367
+      },
+      {
+        "path": "rustdx-cmd/src/cmd/mod.rs",
+        "sha256": "9a5681241e7a79980cd4495778ce9eb65742d385bdf5b2488917b6ee04aa2faa",
+        "bytes": 1991
+      },
+      {
+        "path": "rustdx-cmd/src/cmd/day.rs",
+        "sha256": "b049fddbb49877ffe522d695bf542b12c3274ba9a1f232da555e98c6d041b8e9",
+        "bytes": 16843
+      },
+      {
+        "path": "rustdx-runner/src/pipeline.rs",
+        "sha256": "e488ea91f5c7dd29e0fcfa0111e419dc8860cac87e8d2ba6d4f89a54bc93bc52",
+        "bytes": 34851
+      },
+      {
+        "path": "tests/protocol_decoders.rs",
+        "sha256": "631f9280f2ab2dbacbd8c15991bb17913c0ed796125a1e5819f9e59f2d4adfd7",
+        "bytes": 12890
+      },
+      {
+        "path": "tests/kline_decoders.rs",
+        "sha256": "778d8c80a8ec9aa7015a459d2c83d5b598f5aa9ef8d33cd2447da5f4d8a86e56",
+        "bytes": 8617
+      },
+      {
+        "path": "tests/daily_ip_pool.rs",
+        "sha256": "69b32922454b34082cf42e0490b91df33917294120803e7415d949f9e6afcd94",
+        "bytes": 9729
+      },
+      {
+        "path": "tests/fixtures/protocol/finance.response.hex",
+        "sha256": "ef6e0d57cd33b638f73ae123f13bf84eb47a80660ddfcc7cbec0ee0ebab0991c",
+        "bytes": 291
+      },
+      {
+        "path": "tests/fixtures/protocol/finance.expected.csv",
+        "sha256": "037ea549de707652b5b5fe15dec0c3e77d8e305b957f018f6590b5f1d3d15c63",
+        "bytes": 835
+      },
+      {
+        "path": "tests/fixtures/protocol/manifest.json",
+        "sha256": "7174d36d19b68a1c9cd291100466065466664e2309e4f6fcf1d5859931e523c1",
+        "bytes": 2899
+      },
+      {
+        "path": "tests/fixtures/kline/manifest.json",
+        "sha256": "54da4fc645bf8b763e736421f0dfeb63013433a49a0c60e15023890420af6187",
+        "bytes": 2214
+      },
+      {
+        "path": "docs/development/TDX_7709_NINE_COMMANDS_PLAN_20261024.md",
+        "sha256": "5b92ee7cafbe2dbf434fd68c27343a3f14489d763e207e67e30ba8939bccf849",
+        "bytes": 25820
+      }
+    ],
+    "prior_audit_hash_comparison": [
+      {
+        "path": "src/tcp/stock/client.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/requests.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/kline_request.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/client/pagination.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/client/adjustment.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/security_list.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/quotes.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/minute_time.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/history_minute_time.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/transaction.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/history_transaction.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/finance_info.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/xdxr.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/stock/block_info.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/basic.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/mod.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/ip/daily.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/tcp/ip/probe.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "src/pool.rs",
+        "same_as_prior_audit": true
+      },
+      {
+        "path": "rustdx-runner/src/pipeline.rs",
+        "same_as_prior_audit": true
+      }
+    ],
+    "active_headers": [
+      {
+        "path": "src/tcp/basic.rs",
+        "line": 42,
+        "opcode": "0x044e",
+        "header_hex": "0c0c186c0001080008004e04"
+      },
+      {
+        "path": "src/tcp/basic.rs",
+        "line": 129,
+        "opcode": "0x0450",
+        "header_hex": "0c0118640101060006005004"
+      },
+      {
+        "path": "src/tcp/basic.rs",
+        "line": 232,
+        "opcode": "0x000d",
+        "header_hex": "0c0218930001030003000d00"
+      },
+      {
+        "path": "src/tcp/stock/block_info.rs",
+        "line": 51,
+        "opcode": "0x02c5",
+        "header_hex": "0c39186900012a002a00c502"
+      },
+      {
+        "path": "src/tcp/stock/block_info.rs",
+        "line": 112,
+        "opcode": "0x06b9",
+        "header_hex": "0c37186a00016e006e00b906"
+      },
+      {
+        "path": "src/tcp/stock/company_info.rs",
+        "line": 63,
+        "opcode": "0x02cf",
+        "header_hex": "0c0f109b00010e000e00cf02"
+      },
+      {
+        "path": "src/tcp/stock/company_info.rs",
+        "line": 166,
+        "opcode": "0x02d0",
+        "header_hex": "0c07109c000168006800d002"
+      },
+      {
+        "path": "src/tcp/stock/finance_info.rs",
+        "line": 68,
+        "opcode": "0x0010",
+        "header_hex": "0c1f187600010b000b001000"
+      },
+      {
+        "path": "src/tcp/stock/history_minute_time.rs",
+        "line": 69,
+        "opcode": "0x0fb4",
+        "header_hex": "0c01300001010d000d00b40f"
+      },
+      {
+        "path": "src/tcp/stock/history_transaction.rs",
+        "line": 76,
+        "opcode": "0x0fb5",
+        "header_hex": "0c013001000112001200b50f"
+      },
+      {
+        "path": "src/tcp/stock/index_kline.rs",
+        "line": 82,
+        "opcode": "0x052d",
+        "header_hex": "0c01086401011c001c002d05"
+      },
+      {
+        "path": "src/tcp/stock/kline.rs",
+        "line": 126,
+        "opcode": "0x052d",
+        "header_hex": "0c01086401011c001c002d05"
+      },
+      {
+        "path": "src/tcp/stock/minute_time.rs",
+        "line": 71,
+        "opcode": "0x051d",
+        "header_hex": "0c1b080001010e000e001d05"
+      },
+      {
+        "path": "src/tcp/stock/quotes.rs",
+        "line": 103,
+        "opcode": "0x053e",
+        "header_hex": "0c0120630002000000003e05"
+      },
+      {
+        "path": "src/tcp/stock/security_list.rs",
+        "line": 67,
+        "opcode": "0x0450",
+        "header_hex": "0c0118640101060006005004"
+      },
+      {
+        "path": "src/tcp/stock/transaction.rs",
+        "line": 82,
+        "opcode": "0x0fc5",
+        "header_hex": "0c17080101010e000e00c50f"
+      },
+      {
+        "path": "src/tcp/stock/xdxr.rs",
+        "line": 59,
+        "opcode": "0x000f",
+        "header_hex": "0c1f187600010b000b000f00"
+      }
+    ],
+    "client_methods": [
+      {
+        "method": "new",
+        "line": 43
+      },
+      {
+        "method": "with_config",
+        "line": 48
+      },
+      {
+        "method": "reconnect",
+        "line": 57
+      },
+      {
+        "method": "heartbeat",
+        "line": 62
+      },
+      {
+        "method": "retry",
+        "line": 67
+      },
+      {
+        "method": "quotes",
+        "line": 83
+      },
+      {
+        "method": "bars",
+        "line": 101
+      },
+      {
+        "method": "bars_range",
+        "line": 135
+      },
+      {
+        "method": "index_bars",
+        "line": 153
+      },
+      {
+        "method": "index_bars_range",
+        "line": 180
+      },
+      {
+        "method": "k",
+        "line": 202
+      },
+      {
+        "method": "k_batch",
+        "line": 245
+      },
+      {
+        "method": "bars_batch",
+        "line": 278
+      },
+      {
+        "method": "k_adjusted",
+        "line": 319
+      },
+      {
+        "method": "minute",
+        "line": 384
+      },
+      {
+        "method": "history_minute",
+        "line": 409
+      },
+      {
+        "method": "transaction",
+        "line": 427
+      },
+      {
+        "method": "history_transaction",
+        "line": 445
+      },
+      {
+        "method": "finance",
+        "line": 464
+      },
+      {
+        "method": "xdxr",
+        "line": 482
+      },
+      {
+        "method": "block",
+        "line": 495
+      },
+      {
+        "method": "stock_count",
+        "line": 504
+      },
+      {
+        "method": "stocks",
+        "line": 514
+      },
+      {
+        "method": "f10",
+        "line": 529
+      },
+      {
+        "method": "f10_categories",
+        "line": 555
+      },
+      {
+        "method": "ex_right_reference",
+        "line": 747
+      }
+    ]
+  },
+  "summary": {
+    "same_opcode": 9,
+    "alternate_opcode": 4,
+    "absent": 9,
+    "basic_handshake": 1,
+    "other_partial_capabilities": 12,
+    "same_opcode_is_not_full_compatibility": true,
+    "business_opcodes_in_baseline_excluding_session": 20,
+    "related_business_capabilities": 11,
+    "nine_command_plan_implemented": false
+  },
+  "commands": [
+    {
+      "id": 1,
+      "baseline_opcode": "0x0004",
+      "capability": "heartbeat",
+      "opcode_status": "alternate",
+      "functional_status": "partial",
+      "current_opcode": "0x044e",
+      "entry": "Client::heartbeat / Tcp::heartbeat"
+    },
+    {
+      "id": 2,
+      "baseline_opcode": "0x000d",
+      "capability": "handshake",
+      "opcode_status": "same",
+      "functional_status": "basic",
+      "current_opcode": "0x000d",
+      "entry": "Client::new/with_config -> Tcp -> PACK1"
+    },
+    {
+      "id": 3,
+      "baseline_opcode": "0x000f",
+      "capability": "capital_changes",
+      "opcode_status": "same",
+      "functional_status": "partial",
+      "current_opcode": "0x000f",
+      "entry": "Client::xdxr"
+    },
+    {
+      "id": 4,
+      "baseline_opcode": "0x0010",
+      "capability": "finance_batch",
+      "opcode_status": "same",
+      "functional_status": "partial",
+      "current_opcode": "0x0010",
+      "entry": "Client::finance / FinanceRequest"
+    },
+    {
+      "id": 5,
+      "baseline_opcode": "0x044d",
+      "capability": "security_list",
+      "opcode_status": "alternate",
+      "functional_status": "partial",
+      "current_opcode": "0x0450",
+      "entry": "Client::stocks / SecurityList"
+    },
+    {
+      "id": 6,
+      "baseline_opcode": "0x044e",
+      "capability": "security_count",
+      "opcode_status": "same",
+      "functional_status": "partial",
+      "current_opcode": "0x044e",
+      "entry": "Client::stock_count"
+    },
+    {
+      "id": 7,
+      "baseline_opcode": "0x0452",
+      "capability": "special_limits",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    },
+    {
+      "id": 8,
+      "baseline_opcode": "0x051b",
+      "capability": "intraday_aux",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    },
+    {
+      "id": 9,
+      "baseline_opcode": "0x052d",
+      "capability": "bars",
+      "opcode_status": "same",
+      "functional_status": "partial",
+      "current_opcode": "0x052d",
+      "entry": "Client::bars/index_bars/*_range/k/*_batch/k_adjusted"
+    },
+    {
+      "id": 10,
+      "baseline_opcode": "0x0537",
+      "capability": "today_minutes",
+      "opcode_status": "alternate",
+      "functional_status": "partial",
+      "current_opcode": "0x051d",
+      "entry": "Client::minute"
+    },
+    {
+      "id": 11,
+      "baseline_opcode": "0x053e",
+      "capability": "legacy_quotes",
+      "opcode_status": "same",
+      "functional_status": "partial",
+      "current_opcode": "0x053e",
+      "entry": "Client::quotes / QuotesRequest"
+    },
+    {
+      "id": 12,
+      "baseline_opcode": "0x0547",
+      "capability": "refresh_push",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    },
+    {
+      "id": 13,
+      "baseline_opcode": "0x054b",
+      "capability": "category_quotes",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    },
+    {
+      "id": 14,
+      "baseline_opcode": "0x054c",
+      "capability": "one_level_snapshot",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    },
+    {
+      "id": 15,
+      "baseline_opcode": "0x056a",
+      "capability": "auction_process",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    },
+    {
+      "id": 16,
+      "baseline_opcode": "0x06b9",
+      "capability": "file_content",
+      "opcode_status": "same",
+      "functional_status": "partial",
+      "current_opcode": "0x06b9",
+      "entry": "BlockInfoChunk / Client::block"
+    },
+    {
+      "id": 17,
+      "baseline_opcode": "0x0fb4",
+      "capability": "historical_minutes",
+      "opcode_status": "same",
+      "functional_status": "partial",
+      "current_opcode": "0x0fb4",
+      "entry": "Client::history_minute"
+    },
+    {
+      "id": 18,
+      "baseline_opcode": "0x0fc5",
+      "capability": "today_ticks",
+      "opcode_status": "same",
+      "functional_status": "partial",
+      "current_opcode": "0x0fc5",
+      "entry": "Client::transaction / TransactionRequest"
+    },
+    {
+      "id": 19,
+      "baseline_opcode": "0x0fc6",
+      "capability": "enhanced_history_ticks",
+      "opcode_status": "alternate",
+      "functional_status": "partial",
+      "current_opcode": "0x0fb5",
+      "entry": "Client::history_transaction"
+    },
+    {
+      "id": 20,
+      "baseline_opcode": "0x0fd1",
+      "capability": "sparkline",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    },
+    {
+      "id": 21,
+      "baseline_opcode": "0x0feb",
+      "capability": "recent_minutes",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    },
+    {
+      "id": 22,
+      "baseline_opcode": "0x0ffc",
+      "capability": "daily_money_flow",
+      "opcode_status": "absent",
+      "functional_status": "absent",
+      "current_opcode": null,
+      "entry": null
+    }
+  ],
+  "important_differences": {
+    "finance_amount_scaling": {
+      "source": "same preserved finance response bytes, offset25 + index7*4",
+      "raw_total_assets": 6028785152.0,
+      "rustdx_multiplier": 10000,
+      "rustdx_decoded_total_assets": 60287851520000.0,
+      "eltdx322_multiplier": 1000,
+      "eltdx322_decoded_total_assets": 6028785152000.0,
+      "independent_issuer_report_validation": false
+    },
+    "finance_same_raw_slot": {
+      "raw": 1.2400000095367432,
+      "rustdx_name": "zhigonggu",
+      "rustdx_decoded": 12400.000095367432,
+      "eltdx322_name": "eps_raw",
+      "eltdx322_decoded": 1.2400000095367432,
+      "business_meaning_independently_confirmed": false
+    },
+    "kline_pagination": {
+      "rustdx": "short page terminates; global ascending sort, timestamp dedup and range filtering",
+      "eltdx322": "empty page terminates; pages concatenated without global sort"
+    },
+    "files": {
+      "rustdx": "known metadata length; each chunk must have exact requested size; 100-byte path",
+      "eltdx322": "300-byte ASCII path; max_bytes may return truncated prefix; pinned transport"
+    },
+    "frequency": {
+      "rustdx_automatic_session_heartbeat": false,
+      "rustdx_heartbeat_opcode": "0x044e",
+      "rustdx_daily_probe_schedule": "Asia/Shanghai 09:00, plus first-use bootstrap",
+      "business_scheduler_or_qps_limiter_for_22_commands": false,
+      "network_default_max_connections": 8,
+      "probe_default_max_parallel_connections": 8,
+      "probe_connections_do_not_consume_business_permits": true
+    }
+  },
+  "validation": {
+    "command": "CARGO_HOME=/Users/bytedance/Documents/rustdx/.cargo RUSTUP_HOME=/Users/bytedance/Documents/rustdx/.cargo/rustup RUSTDX_SKIP_INTEGRATION_TESTS=1 .cargo/bin/cargo +1.89.0 test -p jelven-rustdx-complete --lib --test kline_decoders --test protocol_decoders --test daily_ip_pool --offline --locked",
+    "results": [
+      {
+        "passed": 165,
+        "failed": 0,
+        "scope": "core_library"
+      },
+      {
+        "passed": 4,
+        "failed": 0,
+        "scope": "daily_ip_pool"
+      },
+      {
+        "passed": 4,
+        "failed": 0,
+        "scope": "kline_decoders"
+      },
+      {
+        "passed": 6,
+        "failed": 0,
+        "scope": "protocol_decoders"
+      }
+    ],
+    "total_passed": 179,
+    "failed": 0,
+    "external_live_tests_disabled": true,
+    "some_core_tests_return_early_when_live_tests_disabled": true,
+    "new_live_market_requests": false,
+    "third_party_sdk_executed": false,
+    "rust_implementation_modified_by_task": false,
+    "fmt_or_clippy_rerun": false
+  }
+}

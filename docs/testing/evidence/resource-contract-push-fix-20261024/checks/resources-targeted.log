@@ -1,0 +1,73 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+    Finished `test` profile [optimized + debuginfo] target(s) in 21.07s
+     Running tests/block_integrity.rs (target/debug/deps/block_integrity-aa68ac166b025712)
+
+running 10 tests
+test metadata_verifies_known_md5_and_rejects_length_and_same_length_corruption ... ok
+test strict_decoder_rejects_malformed_layout_and_member_fields_without_partial_success ... ok
+test download_rejects_correct_length_content_with_wrong_md5 ... ok
+test download_rejects_short_chunk ... ok
+test download_rejects_reconnect_between_metadata_and_content ... ok
+test full_download_checks_multichunk_ranges_digest_raw_headers_and_sources ... ok
+test captured_full_file_matches_independent_md5_and_all_record_fields ... ok
+test high_level_entries_reject_md5_valid_but_malformed_file_and_preserve_error_kind ... ok
+test empty_and_invalid_metadata_never_trigger_chunk_download ... ok
+test whole_download_respects_outer_deadline_across_chunks ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/quote_subscription.rs (target/debug/deps/quote_subscription-31028e43579bccf2)
+
+running 21 tests
+test direct_poll_and_refresh_enforce_resident_memory_budget ... ok
+test checked_query_rejects_wrong_message_identity ... ok
+test empty_first_refresh_keeps_baseline_pending_and_duplicate_is_not_accumulated ... ok
+test endpoint_revocation_and_operation_cancellation_close_the_subscription ... ok
+test frame_and_byte_overflow_invalidate_and_release_connection ... ok
+test initial_response_below_requested_cursor_invalidates_without_publishing ... ok
+test invalid_last_symbol_in_passive_page_never_partially_publishes_first_symbol ... ok
+test invalid_subscription_budgets_fail_before_opening_a_connection ... ok
+test local_poll_timeout_preserves_session_but_operation_deadline_closes_it ... ok
+test malformed_push_prefix_compression_and_truncated_body_close_session ... ok
+test mixed_valid_and_regressing_records_do_not_partially_publish_response_or_push ... ok
+test observer_failure_does_not_publish_push ... ok
+test passive_duplicate_and_empty_frames_preserve_state_and_cursor_max_requires_rebuild ... ok
+test passive_multi_symbol_stream_completes_baseline_and_replaces_full_depth_without_requests ... ok
+test passive_updates_are_used_as_next_request_cursors_instead_of_resetting_baseline ... ok
+test passive_updates_reuse_message_id_without_refresh_or_heartbeat_writes ... ok
+test poll_preserves_partial_header_and_body_and_close_releases_permit ... ok
+test pushes_before_response_are_queued_with_two_budgets ... ok
+test rebuild_rejects_expired_metadata_before_reconnecting ... ok
+test rebuild_reopens_through_daily_pool_and_resets_cursors ... ok
+test wrong_opcode_and_cursor_regression_are_not_published ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.32s
+
+     Running tests/resource_contract.rs (target/debug/deps/resource_contract-2d7ff5d8ec5a246d)
+
+running 7 tests
+test path_ranges_and_declared_length_are_checked_and_tails_are_not_file_bytes ... ok
+test stats_preserve_raw_slots_headers_and_missing_numbers_without_inventing_verified_units ... ok
+test stats_reject_crc_corruption_bad_gbk_duplicate_keys_and_hidden_duplicate_members ... ok
+test stats_entry_refuses_a_budget_prefix_even_if_that_prefix_is_a_valid_zip ... ok
+test byte_chunk_and_response_budgets_never_claim_a_complete_file ... ok
+test full_download_observes_short_or_empty_chunk_and_retains_source_and_tail ... ok
+test reconnect_and_outer_deadline_cannot_deliver_a_successful_file ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running unittests examples/validate_quote_push.rs (target/debug/examples/validate_quote_push-fdae99449d2caa37)
+
+running 6 tests
+test tests::acceptance_never_promotes_diagnostics_or_incomplete_observations ... ok
+test tests::exact_session_endpoints_and_utc_to_beijing_conversion_are_checked ... ok
+test tests::strict_gate_rejects_weekend_holiday_lunch_close_and_crossing ... ok
+test tests::cursor_only_duplicate_and_opaque_tail_do_not_prove_market_changes ... ok
+test tests::guard_boundary_and_old_queued_notification_do_not_corrupt_the_reference ... ok
+test tests::synthetic_trading_window_requires_two_post_guard_changes_not_duplicate_frames ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

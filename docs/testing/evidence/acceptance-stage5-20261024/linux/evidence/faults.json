@@ -1,0 +1,713 @@
+{
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "scratch": "/tmp/rustdx-db-faults-rxggsxag",
+  "database": "rustdx_fault_acceptance_8ad0e3acf8e5495a9f4615a7d3a741e8",
+  "binary_sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2",
+  "rows": 8192,
+  "cases": [
+    {
+      "backend": "clickhouse",
+      "fault": "network_outage",
+      "exit": 1,
+      "seconds": 0.2251675759907812,
+      "rows_after_fault": 8192,
+      "manifest_status_after_fault": "failed",
+      "database_status_after_fault": "unknown",
+      "artifact_after_fault": {
+        "path": "clickhouse",
+        "sha256": "7045e5eed5ff0ca84c2a6d8d61ac64a4f938dc9721922f04d8c05d0a3323553a",
+        "bytes": 434217,
+        "rows": 8192,
+        "logical_keys": 8192,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "state": "published"
+      },
+      "observations_after_fault": {
+        "elapsed_wall_ms": 213.270382,
+        "stages": {
+          "download": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "extract": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "parse": {
+            "active_wall_ms": 1.3776730000000001,
+            "calls": 32,
+            "completed_span_ms": 2.742881,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "readback": {
+            "active_wall_ms": 13.606733,
+            "calls": 3,
+            "completed_span_ms": 13.606733,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "snapshot": {
+            "active_wall_ms": 0.7339100000000001,
+            "calls": 16,
+            "completed_span_ms": 1.1287859999999998,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "sort": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "source": {
+            "active_wall_ms": 0.006093,
+            "calls": 1,
+            "completed_span_ms": 0.006093,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "write": {
+            "active_wall_ms": 169.165105,
+            "calls": 52,
+            "completed_span_ms": 174.363334,
+            "failures": 1,
+            "in_flight": 0
+          }
+        },
+        "temporary_current_bytes": 0,
+        "temporary_peak_bytes": 468767,
+        "temporary_scope": "successful_write_logical_bytes_of_day_snapshots_sorted_runs_spools_and_staged_outputs; excludes_zip_cache_extraction_manifests_evidence_and_subprocess_scratch; not_allocated_disk_blocks",
+        "timing_scope": "inclusive_spans; completed_span_ms_sums_threads_and_nested_calls; active_wall_ms_is_per_stage_union; neither_is_cpu_time; stages_must_not_be_summed"
+      },
+      "recovery_verified_rows": 8192,
+      "recovery_verification": {
+        "target": "rustdx_fault_acceptance_8ad0e3acf8e5495a9f4615a7d3a741e8.clickhouse_network_outage",
+        "method": "all_exported_keys_and_numeric_fields",
+        "scope": "exported_keys",
+        "rows": 8192,
+        "logical_keys": 8192,
+        "batches": 2,
+        "batch_rows": 4096,
+        "fetch_elapsed_ms": 82.708896,
+        "elapsed_ms": 101.689753,
+        "sha256_order": "csv_row_order",
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "numeric_fields": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "amount",
+          "vol"
+        ],
+        "sha256": "68a97f707de37c370f360098ac2b44f8ae19cbd3b797381d669262f75513d8ad"
+      },
+      "recovery_observations": {
+        "elapsed_wall_ms": 348.25136899999995,
+        "stages": {
+          "download": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "extract": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "parse": {
+            "active_wall_ms": 1.2415399999999999,
+            "calls": 32,
+            "completed_span_ms": 2.70951,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "readback": {
+            "active_wall_ms": 114.896266,
+            "calls": 4,
+            "completed_span_ms": 114.896266,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "snapshot": {
+            "active_wall_ms": 0.677322,
+            "calls": 16,
+            "completed_span_ms": 1.0705689999999999,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "sort": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "source": {
+            "active_wall_ms": 0.005116,
+            "calls": 1,
+            "completed_span_ms": 0.005116,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "write": {
+            "active_wall_ms": 167.62059000000002,
+            "calls": 52,
+            "completed_span_ms": 172.840465,
+            "failures": 0,
+            "in_flight": 0
+          }
+        },
+        "temporary_current_bytes": 0,
+        "temporary_peak_bytes": 468767,
+        "temporary_scope": "successful_write_logical_bytes_of_day_snapshots_sorted_runs_spools_and_staged_outputs; excludes_zip_cache_extraction_manifests_evidence_and_subprocess_scratch; not_allocated_disk_blocks",
+        "timing_scope": "inclusive_spans; completed_span_ms_sums_threads_and_nested_calls; active_wall_ms_is_per_stage_union; neither_is_cpu_time; stages_must_not_be_summed"
+      },
+      "run_archives": 2
+    },
+    {
+      "backend": "clickhouse",
+      "fault": "sigkill",
+      "exit": -9,
+      "seconds": 0.20563281700015068,
+      "rows_after_fault": 8192,
+      "manifest_status_after_fault": "running",
+      "database_status_after_fault": "unknown",
+      "artifact_after_fault": {
+        "path": "clickhouse",
+        "sha256": "7045e5eed5ff0ca84c2a6d8d61ac64a4f938dc9721922f04d8c05d0a3323553a",
+        "bytes": 434217,
+        "rows": 8192,
+        "logical_keys": 8192,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "state": "published"
+      },
+      "observations_after_fault": {
+        "elapsed_wall_ms": 44.520371000000004,
+        "stages": {
+          "download": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "extract": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "parse": {
+            "active_wall_ms": 1.2876319999999999,
+            "calls": 32,
+            "completed_span_ms": 2.7016430000000002,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "readback": {
+            "active_wall_ms": 13.240075000000001,
+            "calls": 3,
+            "completed_span_ms": 13.240075000000001,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "snapshot": {
+            "active_wall_ms": 0.5802710000000001,
+            "calls": 16,
+            "completed_span_ms": 0.968399,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "sort": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "source": {
+            "active_wall_ms": 0.005067,
+            "calls": 1,
+            "completed_span_ms": 0.005067,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "write": {
+            "active_wall_ms": 11.874977,
+            "calls": 51,
+            "completed_span_ms": 17.027464,
+            "failures": 0,
+            "in_flight": 0
+          }
+        },
+        "temporary_current_bytes": 0,
+        "temporary_peak_bytes": 468767,
+        "temporary_scope": "successful_write_logical_bytes_of_day_snapshots_sorted_runs_spools_and_staged_outputs; excludes_zip_cache_extraction_manifests_evidence_and_subprocess_scratch; not_allocated_disk_blocks",
+        "timing_scope": "inclusive_spans; completed_span_ms_sums_threads_and_nested_calls; active_wall_ms_is_per_stage_union; neither_is_cpu_time; stages_must_not_be_summed"
+      },
+      "recovery_verified_rows": 8192,
+      "recovery_verification": {
+        "target": "rustdx_fault_acceptance_8ad0e3acf8e5495a9f4615a7d3a741e8.clickhouse_sigkill",
+        "method": "all_exported_keys_and_numeric_fields",
+        "scope": "exported_keys",
+        "rows": 8192,
+        "logical_keys": 8192,
+        "batches": 2,
+        "batch_rows": 4096,
+        "fetch_elapsed_ms": 86.858654,
+        "elapsed_ms": 105.93944900000001,
+        "sha256_order": "csv_row_order",
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "numeric_fields": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "amount",
+          "vol"
+        ],
+        "sha256": "68a97f707de37c370f360098ac2b44f8ae19cbd3b797381d669262f75513d8ad"
+      },
+      "recovery_observations": {
+        "elapsed_wall_ms": 350.785936,
+        "stages": {
+          "download": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "extract": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "parse": {
+            "active_wall_ms": 1.245818,
+            "calls": 32,
+            "completed_span_ms": 2.759013,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "readback": {
+            "active_wall_ms": 119.03153,
+            "calls": 4,
+            "completed_span_ms": 119.03153,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "snapshot": {
+            "active_wall_ms": 0.648124,
+            "calls": 16,
+            "completed_span_ms": 0.982235,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "sort": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "source": {
+            "active_wall_ms": 0.004891,
+            "calls": 1,
+            "completed_span_ms": 0.004891,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "write": {
+            "active_wall_ms": 167.11511000000002,
+            "calls": 52,
+            "completed_span_ms": 172.231686,
+            "failures": 0,
+            "in_flight": 0
+          }
+        },
+        "temporary_current_bytes": 0,
+        "temporary_peak_bytes": 468767,
+        "temporary_scope": "successful_write_logical_bytes_of_day_snapshots_sorted_runs_spools_and_staged_outputs; excludes_zip_cache_extraction_manifests_evidence_and_subprocess_scratch; not_allocated_disk_blocks",
+        "timing_scope": "inclusive_spans; completed_span_ms_sums_threads_and_nested_calls; active_wall_ms_is_per_stage_union; neither_is_cpu_time; stages_must_not_be_summed"
+      },
+      "run_archives": 2
+    },
+    {
+      "backend": "mongodb",
+      "fault": "network_outage",
+      "exit": 1,
+      "seconds": 1.096076168003492,
+      "rows_after_fault": 1000,
+      "manifest_status_after_fault": "failed",
+      "database_status_after_fault": "unknown",
+      "artifact_after_fault": {
+        "path": "mongodb",
+        "sha256": "7045e5eed5ff0ca84c2a6d8d61ac64a4f938dc9721922f04d8c05d0a3323553a",
+        "bytes": 434217,
+        "rows": 8192,
+        "logical_keys": 8192,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "state": "published"
+      },
+      "observations_after_fault": {
+        "elapsed_wall_ms": 791.005863,
+        "stages": {
+          "download": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "extract": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "parse": {
+            "active_wall_ms": 1.306359,
+            "calls": 32,
+            "completed_span_ms": 2.7831409999999996,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "readback": {
+            "active_wall_ms": 13.163294,
+            "calls": 3,
+            "completed_span_ms": 13.163294,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "snapshot": {
+            "active_wall_ms": 0.53008,
+            "calls": 16,
+            "completed_span_ms": 0.979031,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "sort": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "source": {
+            "active_wall_ms": 0.004824,
+            "calls": 1,
+            "completed_span_ms": 0.004824,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "write": {
+            "active_wall_ms": 747.938816,
+            "calls": 53,
+            "completed_span_ms": 753.0848460000001,
+            "failures": 1,
+            "in_flight": 0
+          }
+        },
+        "temporary_current_bytes": 0,
+        "temporary_peak_bytes": 468767,
+        "temporary_scope": "successful_write_logical_bytes_of_day_snapshots_sorted_runs_spools_and_staged_outputs; excludes_zip_cache_extraction_manifests_evidence_and_subprocess_scratch; not_allocated_disk_blocks",
+        "timing_scope": "inclusive_spans; completed_span_ms_sums_threads_and_nested_calls; active_wall_ms_is_per_stage_union; neither_is_cpu_time; stages_must_not_be_summed"
+      },
+      "recovery_verified_rows": 8192,
+      "recovery_verification": {
+        "target": "rustdx_fault_acceptance_8ad0e3acf8e5495a9f4615a7d3a741e8.mongodb_network_outage",
+        "method": "all_exported_keys_and_numeric_fields",
+        "scope": "exported_keys",
+        "rows": 8192,
+        "logical_keys": 8192,
+        "batches": 2,
+        "batch_rows": 4096,
+        "fetch_elapsed_ms": 782.9548430000001,
+        "elapsed_ms": 801.529594,
+        "sha256_order": "csv_row_order",
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "numeric_fields": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "amount",
+          "vol"
+        ],
+        "sha256": "68a97f707de37c370f360098ac2b44f8ae19cbd3b797381d669262f75513d8ad"
+      },
+      "recovery_observations": {
+        "elapsed_wall_ms": 1861.3458280000002,
+        "stages": {
+          "download": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "extract": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "parse": {
+            "active_wall_ms": 1.306246,
+            "calls": 32,
+            "completed_span_ms": 2.738474,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "readback": {
+            "active_wall_ms": 825.7586719999999,
+            "calls": 4,
+            "completed_span_ms": 825.7586719999999,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "snapshot": {
+            "active_wall_ms": 0.577911,
+            "calls": 16,
+            "completed_span_ms": 1.0154459999999998,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "sort": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "source": {
+            "active_wall_ms": 0.00799,
+            "calls": 1,
+            "completed_span_ms": 0.00799,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "write": {
+            "active_wall_ms": 968.789161,
+            "calls": 53,
+            "completed_span_ms": 974.0110199999999,
+            "failures": 0,
+            "in_flight": 0
+          }
+        },
+        "temporary_current_bytes": 0,
+        "temporary_peak_bytes": 468767,
+        "temporary_scope": "successful_write_logical_bytes_of_day_snapshots_sorted_runs_spools_and_staged_outputs; excludes_zip_cache_extraction_manifests_evidence_and_subprocess_scratch; not_allocated_disk_blocks",
+        "timing_scope": "inclusive_spans; completed_span_ms_sums_threads_and_nested_calls; active_wall_ms_is_per_stage_union; neither_is_cpu_time; stages_must_not_be_summed"
+      },
+      "run_archives": 2
+    },
+    {
+      "backend": "mongodb",
+      "fault": "sigkill",
+      "exit": -9,
+      "seconds": 1.417269005003618,
+      "rows_after_fault": 8192,
+      "manifest_status_after_fault": "running",
+      "database_status_after_fault": "unknown",
+      "artifact_after_fault": {
+        "path": "mongodb",
+        "sha256": "7045e5eed5ff0ca84c2a6d8d61ac64a4f938dc9721922f04d8c05d0a3323553a",
+        "bytes": 434217,
+        "rows": 8192,
+        "logical_keys": 8192,
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "state": "published"
+      },
+      "observations_after_fault": {
+        "elapsed_wall_ms": 661.846633,
+        "stages": {
+          "download": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "extract": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "parse": {
+            "active_wall_ms": 1.089262,
+            "calls": 32,
+            "completed_span_ms": 2.7125410000000003,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "readback": {
+            "active_wall_ms": 13.282134,
+            "calls": 3,
+            "completed_span_ms": 13.282134,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "snapshot": {
+            "active_wall_ms": 0.552119,
+            "calls": 16,
+            "completed_span_ms": 1.2324519999999999,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "sort": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "source": {
+            "active_wall_ms": 0.008231,
+            "calls": 1,
+            "completed_span_ms": 0.008231,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "write": {
+            "active_wall_ms": 627.45867,
+            "calls": 52,
+            "completed_span_ms": 632.615872,
+            "failures": 0,
+            "in_flight": 0
+          }
+        },
+        "temporary_current_bytes": 0,
+        "temporary_peak_bytes": 468767,
+        "temporary_scope": "successful_write_logical_bytes_of_day_snapshots_sorted_runs_spools_and_staged_outputs; excludes_zip_cache_extraction_manifests_evidence_and_subprocess_scratch; not_allocated_disk_blocks",
+        "timing_scope": "inclusive_spans; completed_span_ms_sums_threads_and_nested_calls; active_wall_ms_is_per_stage_union; neither_is_cpu_time; stages_must_not_be_summed"
+      },
+      "recovery_verified_rows": 8192,
+      "recovery_verification": {
+        "target": "rustdx_fault_acceptance_8ad0e3acf8e5495a9f4615a7d3a741e8.mongodb_sigkill",
+        "method": "all_exported_keys_and_numeric_fields",
+        "scope": "exported_keys",
+        "rows": 8192,
+        "logical_keys": 8192,
+        "batches": 2,
+        "batch_rows": 4096,
+        "fetch_elapsed_ms": 776.224155,
+        "elapsed_ms": 794.778893,
+        "sha256_order": "csv_row_order",
+        "first_date": "2024-01-02",
+        "last_date": "2025-12-17",
+        "numeric_fields": [
+          "open",
+          "high",
+          "low",
+          "close",
+          "amount",
+          "vol"
+        ],
+        "sha256": "68a97f707de37c370f360098ac2b44f8ae19cbd3b797381d669262f75513d8ad"
+      },
+      "recovery_observations": {
+        "elapsed_wall_ms": 1834.167036,
+        "stages": {
+          "download": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "extract": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "parse": {
+            "active_wall_ms": 1.1044729999999998,
+            "calls": 32,
+            "completed_span_ms": 2.693041,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "readback": {
+            "active_wall_ms": 818.088119,
+            "calls": 4,
+            "completed_span_ms": 818.088119,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "snapshot": {
+            "active_wall_ms": 0.525043,
+            "calls": 16,
+            "completed_span_ms": 1.033876,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "sort": {
+            "active_wall_ms": 0.0,
+            "calls": 0,
+            "completed_span_ms": 0.0,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "source": {
+            "active_wall_ms": 0.006132,
+            "calls": 1,
+            "completed_span_ms": 0.006132,
+            "failures": 0,
+            "in_flight": 0
+          },
+          "write": {
+            "active_wall_ms": 948.652567,
+            "calls": 53,
+            "completed_span_ms": 953.872199,
+            "failures": 0,
+            "in_flight": 0
+          }
+        },
+        "temporary_current_bytes": 0,
+        "temporary_peak_bytes": 468767,
+        "temporary_scope": "successful_write_logical_bytes_of_day_snapshots_sorted_runs_spools_and_staged_outputs; excludes_zip_cache_extraction_manifests_evidence_and_subprocess_scratch; not_allocated_disk_blocks",
+        "timing_scope": "inclusive_spans; completed_span_ms_sums_threads_and_nested_calls; active_wall_ms_is_per_stage_union; neither_is_cpu_time; stages_must_not_be_summed"
+      },
+      "run_archives": 2
+    }
+  ],
+  "scope": "owned_loopback_proxy_outage; SIGKILL_after_server_write_before_client_ack; recovery_exact_readback",
+  "versions": {
+    "clickhouse": "25.8.33.6",
+    "mongodb": "8.0.16"
+  },
+  "completed": true,
+  "cleanup_errors": [],
+  "private_database_removed": true
+}

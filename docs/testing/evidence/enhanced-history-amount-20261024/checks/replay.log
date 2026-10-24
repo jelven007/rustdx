@@ -1,0 +1,71 @@
+{
+  "verification": {
+    "frame_count": 13,
+    "input_files": 66,
+    "previous_input_files": 109,
+    "same_socket_all_queries": true,
+    "enhanced_raw_rows": 4876,
+    "legacy_raw_rows": 4876,
+    "legacy_all_common_fields_match": true,
+    "enhanced_matches_previous_capture": true,
+    "old_5min_day_payloads_unchanged": true,
+    "minute_boundary_count": 240,
+    "five_minute_boundary_count": 48,
+    "all_volume_boundaries_exact": true
+  },
+  "amounts": {
+    "proxy_yuan": 27918010839,
+    "daily_yuan": 27918479360.0,
+    "one_minute_sum_yuan": 27918479958.875,
+    "five_minute_sum_yuan": 27918479888.0,
+    "proxy_minus_day_yuan": -468521.0,
+    "proxy_minus_minute_yuan": -469119.875,
+    "minute_minus_five_yuan": 70.875,
+    "five_minus_day_yuan": 528.0,
+    "minute_minus_day_yuan": 598.875,
+    "float_arithmetic_minus_integer_proxy_yuan": 0.0,
+    "after_hours_proxy_yuan": 11088603
+  },
+  "quantization": {
+    "daily_amount_ulp_yuan": 2048.0,
+    "one_minute_amount_ulp_sum_yuan": 2416.125,
+    "five_minute_amount_ulp_sum_yuan": 2480.0,
+    "one_minute_plus_daily_one_ulp_bound_yuan": 4464.125,
+    "minute_residual_exceeds_own_amount_ulp": 239,
+    "assumption": "Bounds assume each underlying amount is encoded with at most one ULP error; not a vendor guarantee or full source-statistics error bound."
+  },
+  "aggregation_evidence": {
+    "regular_records": 4744,
+    "order_count_gt_one": 4742,
+    "order_count_sum_raw": 253181,
+    "nonempty_minute_bars": 239,
+    "last_price_matches_minute_close": 239,
+    "continuous_records_per_minute_histogram": {
+      "20": 237
+    },
+    "high_price_events": 617.43,
+    "high_price_day": 617.69,
+    "low_price_events": 553.5,
+    "low_price_day": 553.48,
+    "minute_positive_residuals": 120,
+    "minute_negative_residuals": 119,
+    "minute_positive_residual_sum_yuan": 3100355.125,
+    "minute_negative_residual_sum_yuan": -3569475.0,
+    "morning_residual_sum_yuan": -365741.0,
+    "afternoon_residual_sum_yuan": -103378.875
+  },
+  "closing_quantity_inference": {
+    "time": "2026-10-23T15:00",
+    "reported_event_lots": 4094,
+    "reported_minute_shares": 409400.0,
+    "fixed_price_yuan": "612.63",
+    "reported_kline_amount_yuan": 250838288.0,
+    "reported_proxy_yuan": 250810722,
+    "amount_derived_integer_share_candidate": 409445,
+    "candidate_minus_reported_shares": 45,
+    "candidate_amount_yuan": "250838290.35",
+    "encoded_amount_minus_candidate_yuan": "-2.35",
+    "encoding_ulp_yuan": 16.0,
+    "interpretation": "Inferred under fixed closing-match price and amount error <= one encoding ULP; not an observed exchange quantity or proof of rounding algorithm."
+  }
+}

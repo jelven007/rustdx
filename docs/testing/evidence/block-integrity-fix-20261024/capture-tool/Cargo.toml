@@ -1,0 +1,12 @@
+[package]
+name = "rustdx-block-probe"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.89"
+
+[dependencies]
+rustdx = { package = "jelven-rustdx-complete", path = "/Users/bytedance/Documents/rustdx/crates/rustdx-core" }
+serde_json = "1"
+chrono = "0.4"
+
+[workspace]

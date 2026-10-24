@@ -1,126 +1,96 @@
-# rustdx 项目目录与职责
+# 工程目录与责任边界
 
-更新日期：2026-10-23。目录覆盖开发、验证、配置、部署、运行和维护。核心包位于仓库根，CLI位于`rustdx-cmd`，新增生产控制层为`rustdx-runner`，外部接口测试包为`tests-integration`；保留现有包名、依赖路径和API，新增接口另行追踪。
+更新日期：2026-10-24。根目录是虚拟Cargo工作区，统一依赖、profiles和锁文件；产品逻辑按核心库与应用分开，测试样本就近放置。包名、Rust导入路径和二进制名保持兼容，源码path依赖使用新位置。
 
 ## 1. 当前目录
 
 ```text
 rustdx/
-├── Cargo.toml / Cargo.lock         # 核心包与workspace、依赖锁定
-├── README.md / CHANGELOG.md        # 项目入口、版本变更
+├── Cargo.toml / Cargo.lock             # 虚拟workspace、共享依赖与profiles
+├── README.md / CHANGELOG.md / AGENTS.md
 ├── LICENSE / rustfmt.toml
-├── src/                           # rustdx_complete核心库
-│   ├── lib.rs
-│   ├── tcp/                       # 同步协议、受管网络及股票Client
-│   │   ├── evidence.rs            # 可选完整帧observer、离线解压
-│   │   └── stock/client/          # 批次、分页、价格复权
-│   ├── file/                      # day、lc、gbbq checked解析
-│   ├── data/                      # 标准行情、市场/单位/价格口径
-│   ├── calendar/                  # 严格日历Provider
-│   ├── limit/                     # 日期规则与证券事实区间
-│   └── operation.rs / pool.rs / cache.rs / indicators.rs / atomic_file.rs
-├── rustdx-cmd/                    # CLI包、库与rustdx二进制
-│   ├── Cargo.toml / build.rs
-│   ├── src/
-│   │   ├── main.rs / lib.rs
-│   │   ├── cmd/                   # day/east/data-check/data-status/show
-│   │   ├── io/                    # 分块、sink/schema、精确回读
-│   │   ├── eastmoney/             # 分页、标准适配、原始正文/重放
-│   │   └── quality.rs / paths.rs / download.rs / fetch_code.rs / observation.rs / tcp_evidence.rs
-│   ├── tests/fixtures/            # CLI端到端样本、东财真实留证
-│   └── examples/                  # 离线重放等CLI库示例
-├── rustdx-runner/                 # 独立单机生产控制crate，不发布
-│   ├── Cargo.toml / README.md
-│   ├── src/
-│   │   ├── config.rs / model.rs / ledger.rs    # 严格Job、契约、SQLite WAL
-│   │   ├── supervisor.rs / pipeline.rs        # 私有worker、覆盖/封存/目录CAS
-│   │   ├── database.rs / database_mongo.js    # insert-only版本隔离、全范围回读
-│   │   └── consumer.rs / storage.rs / ops.rs  # 固定目录读取、留证、指标/备份恢复
-│   └── tests/                    # control_plane与wire_archive、opt-in真实服务
-├── tests/                         # 核心回归、属性和本地协议服务
-│   ├── fixtures/
-│   │   ├── tdx/                   # 原assets中的day/gbbq二进制样本
-│   │   ├── kline/                 # K线请求、响应、独立期望和清单
-│   │   └── protocol/              # 快照/财务/逐笔独立参考
-│   └── snapshots/                 # 版本化结构快照
-├── tests-integration/             # 不发布的外部接口测试包
-│   ├── Cargo.toml
-│   ├── src/
-│   └── tests/
-├── examples/                      # 核心库使用、采样和smoke入口
-├── benches/                       # 指标性能观测
-├── fuzz/                          # 独立workspace、不可信解析fuzz
-│   └── fuzz_targets/
-├── config/                        # 配置说明、可复制变量及核实日历
-│   ├── README.md / runtime.env.example
-│   ├── calendars/                 # 两交易所2026版本化参考数据
-│   └── runner/                    # 严格Job JSON、无凭据环境示例
-├── deploy/                        # 部署与隔离验收配置
+├── crates/
+│   └── rustdx-core/                    # jelven-rustdx-complete / rustdx_complete
+│       ├── Cargo.toml / README.md / LICENSE
+│       ├── src/
+│       │   ├── tcp/stock/client/        # 同步协议、行情、分页/批量/语义
+│       │   ├── file/                   # day、lc、gbbq
+│       │   ├── data/                   # 标准数据与单位/价格口径
+│       │   ├── calendar/ / limit/      # 有覆盖边界的日期与事实规则
+│       │   └── operation.rs / pool.rs / cache.rs / indicators.rs
+│       ├── tests/fixtures/             # 固定二进制、报文、独立期望
+│       ├── tests/snapshots/            # Rust结构版本快照
+│       ├── examples/                   # 使用、采样、诊断
+│       └── benches/                    # 指标性能观测
+├── apps/
+│   ├── rustdx-cli/                     # jelven-rustdx-cli / rustdx_cli / rustdx
+│   │   ├── Cargo.toml / build.rs / README.md / LICENSE-MIT
+│   │   ├── src/cmd/                    # day、data-check、data-status、show
+│   │   ├── src/io/                     # 分块、schema、前因子、数据库与精确回读
+│   │   └── tests/ / examples/
+│   └── rustdx-runner/                  # 单机控制层；publish=false
+│       ├── Cargo.toml / README.md
+│       ├── src/                        # Job、账本、覆盖、封存、数据库、消费/恢复
+│       │   ├── pipeline/facts.rs       # 冻结事实校验与应有键；无发布副作用
+│       │   └── database/capacity.rs    # 发送前容量/证据/回读预算
+│       └── tests/                      # control_plane、wire_archive、startup
+├── tests/integration/                  # 外部接口测试crate；publish=false
+├── tools/fuzz/                         # 独立workspace与锁文件
+├── config/                             # 无凭据配置及版本化参考数据
+│   ├── calendars/
+│   └── runner/
+├── deploy/                             # 数据库/systemd/告警/恢复模板
 │   ├── clickhouse/
-│   │   ├── compose.yml / .env.example
-│   │   └── sql/factor.sql         # 前因子查询参考，不自动执行
-│   ├── acceptance/                # 固定CH/Mongo镜像、资源限制
-│   └── runner/                    # systemd任务/指标、告警、版本隔离schema、恢复文档
-├── scripts/
-│   ├── dev/                       # 日常workspace测试与日志
-│   ├── ops/                       # 受管协议网络诊断
-│   ├── bench/                     # day内存和数据库回读测量
-│   ├── validation/                # 独立协议、真实历史/故障核验
-│   └── release/                   # crates.io发布门禁
+│   ├── acceptance/
+│   └── runner/
+├── scripts/                            # 可从仓库外调用的工程工具
+│   ├── dev/ / ops/ / bench/
+│   ├── validation/
+│   └── release/
 ├── docs/
-│   ├── README.md                  # 按职责导航
-│   ├── REQUIREMENTS.md            # 旧路径兼容入口
-│   ├── requirements/              # 唯一需求主文档、日期规则
-│   ├── architecture/              # 架构、目录、网络和协议
-│   ├── development/               # 构建与开发约束
-│   ├── validation/evidence/       # 验证方法、验收与持久JSON证据
-│   ├── operations/                # 运营、恢复、维护、留证与观测
-│   ├── release/                   # 迁移、版本交付及回退
-│   └── history/                   # 各轮迭代和优化历史
-├── data/README.md                 # 运行数据位置约定；产物不提交
-└── .github/workflows/             # 常规CI、覆盖巡检、数据库验收
+│   ├── README.md
+│   ├── requirements/ / architecture/ / development/
+│   ├── reference/                      # 稳定的26命令接口参考
+│   ├── testing/evidence/               # 当前验证方法、验收矩阵、固定证据
+│   ├── operations/ / runbooks/ / release/
+│   └── archive/                        # 历史分析、实施与验收报告
+├── data/README.md                       # 运行数据约定；实际产物忽略
+└── .github/workflows/                   # CI、数据库验收、覆盖巡检
 ```
 
-`target/`、本机`.cargo/`、日志、下载缓存、fuzz语料/产物、私有配置及运行数据不属于源码交付。runner接受显式Job配置并管理单次任务/恢复；调度由systemd等外部系统触发，没有内置Web/API或长期调度服务。
+## 2. 依赖和构建规则
 
-## 2. 目录责任与边界
+核心库、CLI、runner和tests/integration属于根工作区；默认构建三个产品包，完整工程检查显式用--workspace。fuzz保持独立工作区，不把libFuzzer依赖引入产品包。
 
-| 目录 | 放置内容 | 管理规则 |
+在根目录调用示例、测试和基准时，显式使用包名，例如：
+
+```sh
+cargo run -p jelven-rustdx-complete --example local_data
+cargo test -p jelven-rustdx-complete --test protocol_decoders
+cargo bench -p jelven-rustdx-complete --bench indicators
+cargo install --path apps/rustdx-cli --locked
+```
+
+crate内部相对测试路径以该crate为基准；需要工程级证据的测试从CARGO_MANIFEST_DIR定位根目录。脚本从自身位置定位根目录。根目录没有src/lib.rs，不再作为path依赖入口。
+
+## 3. 文件放置和所有权
+
+| 内容 | 位置 | 规则 |
 | --- | --- | --- |
-| src、rustdx-cmd/src | 已实现产品逻辑 | 核心计算/协议与CLI任务编排分离；同步I/O和有界线程 |
-| rustdx-runner | 单机Job/Attempt、覆盖、发布目录、版本隔离数据库、消费/恢复 | SQLite等依赖留在控制层；root为本地持久Unix文件系统，不提供跨机协调 |
-| tests、rustdx-cmd/tests、tests-integration | 断言、模拟服务、真实固定样本、外部opt-in测试 | 测试数据随调用包就近归类；外部skip不作为在线通过 |
-| examples、benches、fuzz | 使用演示、性能观测、恶意输入验证 | 不充当运行任务数据目录；不纳入发布crate主体 |
-| config | 无凭据示例、带版本/来源的参考日历 | 私有runtime.env被忽略；CLI不自动读取该文件，日历须显式传入 |
-| deploy | 持久化部署及独立验收模板、运维SQL | 验收容器与生产数据卷区分；镜像/配置通过不等于目标环境验收 |
-| scripts | 按开发/运维/测量/验收/发布分类的工具 | shell自动定位仓库根；Python显式路径；实际命令见[脚本说明](../../scripts/README.md) |
-| docs | 按生命周期归类的唯一主文档及历史记录 | 文档间使用相对链接；固定证据归validation/evidence，不改写原始指标 |
-| data | 本地或部署任务的运行数据入口约定 | 仅README入库；实际源、输出、清单、证据、备份在部署存储管理 |
+| 可复用协议、规则、计算 | crates/rustdx-core/src | 不依赖应用层账本/任务 |
+| 一次采集任务及兼容导入 | apps/rustdx-cli | 应用参数、清单、输出与回读 |
+| 生产业务发布与恢复 | apps/rustdx-runner | SQLite、覆盖、版本目录和恢复 |
+| 核心/CLI/runner回归 | 各crate/tests | 就近固定样本，模拟数据标明来源 |
+| 外部源集成检查 | tests/integration | 显式联网；skip不作为在线通过 |
+| 配置和部署 | config、deploy | 无凭据示例入库，私有环境与数据卷另管理 |
+| 当前文档 | docs按生命周期分类 | 稳定入口、一处定义、相对链接 |
+| 历史报告与固定证据 | docs/archive、docs/testing/evidence | 历史结论保留轮次，原始字节和摘要不改写 |
+| 运行产物 | 显式部署目录，参考data/README | 不进入Git或源码包 |
 
-## 3. 迁移对应
+target、本机.cargo、fuzz语料、日志和私有配置属于本机/运行环境。发布crate保留源码、README和许可证，工程样本、部署附件及运行产物不进入核心发布包。
 
-| 原路径 | 当前路径 |
-| --- | --- |
-| docs/REQUIREMENTS.md、LIMIT_RULES.md | docs/requirements/；旧需求路径保留跳转 |
-| docs/PROJECT_ANALYSIS.md、NETWORK.md、PROTOCOL_REQUESTS.md | docs/architecture/ |
-| docs/DEVELOPMENT.md | docs/development/ |
-| docs/VALIDATION.md、PRODUCTION_ACCEPTANCE.md、DATABASE_ACCEPTANCE.md | docs/validation/ |
-| docs/fixtures/ | docs/validation/evidence/ |
-| docs/OPERATIONS.md、RUNBOOK.md、IMPORTS.md、DATA_MAINTENANCE.md、EAST_REPLAY.md、OBSERVABILITY.md | docs/operations/ |
-| docs/MIGRATION.md、RELEASES.md | docs/release/ |
-| docs/ITERATION.md、OPTIMIZATION.md、NEXT_OPTIMIZATION.md、OPTIMIZATION_ROUND3.md | docs/history/ |
-| scripts/run_comprehensive_test.sh、diagnose_network.sh、publish.sh | scripts/dev/、ops/、release/ |
-| scripts/measure_*.py、verify_*.py | scripts/bench/、validation/ |
-| assets/gbbq、sz000001.day | tests/fixtures/tdx/ |
-| assets/factor.sql | deploy/clickhouse/sql/factor.sql |
-| data/calendars/ | config/calendars/ |
+## 4. 迁移和清理
 
-版本化参考日历与运行数据分开，使data可整体作为不提交的运行产物目录。原二进制样本、日历及验收JSON按摘要保持内容不变；源码中对应示例/测试路径已更新。四份protocol期望CSV按已有清单核对摘要后纳入版本控制，避免依赖本机被忽略文件。
+本次移动src/tests/examples/benches、两个应用、外部测试、fuzz及文档；同步Cargo、CI、脚本、include引用和应用path依赖。已实施的重复计划、需求跳转页、一次性临时审计生成脚本和Finder元数据删除；原始证据、必要参考来源、许可证及运行数据保留。
 
-## 4. 新增文件放置规则
-
-新增核心接口回归放tests，CLI任务回归放rustdx-cmd/tests，控制层发布/数据库/留证组合回归放rustdx-runner/tests。固定参考数据附来源、时间、版本和摘要；mock事实明确标注。独立核验脚本放scripts/validation，测量脚本放bench，实际运行日志/大包不入库。
-
-需求编号和可观察行为在[需求主文档](../requirements/REQUIREMENTS.md)维护；架构选择在architecture，命令/开发约束在development，专项运维字段在operations，测试结论在validation，各轮过程在history。发布crate排除config/data/docs/deploy/scripts/tests等工程附件；发布前分别检查两个包的实际清单。
-
-目录整理验证见[验证方法](../validation/VALIDATION.md)，新增组件见[实施记录](../development/PRODUCTION_IMPLEMENTATION.md)。CLI继续读取命令行/环境；runner单独提供严格Job JSON与私有目录创建，部署输入/凭据/调度由部署方管理。
+逐文件原路径、新路径、摘要及删除原因见[迁移清单](../testing/evidence/project-restructure-20261024/migration.json)，使用方升级步骤见[迁移记录](../release/PROJECT_RESTRUCTURE.md)。原始JSON中的旧路径是采样时事实，通过映射定位；不能全局替换后仍声称摘要未变。

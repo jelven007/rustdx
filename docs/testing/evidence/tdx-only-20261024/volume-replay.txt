@@ -1,0 +1,10 @@
+{
+  "cases": 24,
+  "decoded_rows": 928,
+  "matched_daily_rows": 144,
+  "numeric_differences": 0,
+  "native_pytdx_expected_rows": 9,
+  "length_pairs": 12,
+  "minute_vwap_rows": 576,
+  "minute_vwap_outside": 0
+}

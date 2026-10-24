@@ -1,0 +1,45 @@
+{
+  "method": "Python stdlib, independent byte offsets/varints/scaling; no eltdx import",
+  "wire_frames_checked": 42,
+  "directory_rows_checked": 52171,
+  "directory_counts": {
+    "0": 24460,
+    "1": 27711
+  },
+  "heartbeat_dates": [
+    20261023
+  ],
+  "minutes": [
+    {
+      "market": 0,
+      "code": "000001",
+      "points_checked": 240,
+      "decimal": 2,
+      "last_price_matches_053e": true,
+      "minute_volume_sum": 1448806,
+      "snapshot_volume": 1448805.0,
+      "volume_difference": 1.0
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "points_checked": 240,
+      "decimal": 3,
+      "last_price_matches_053e": true,
+      "minute_volume_sum": 76054209,
+      "snapshot_volume": 76054209.0,
+      "volume_difference": 0.0
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "points_checked": 240,
+      "decimal": 3,
+      "last_price_matches_053e": true,
+      "minute_volume_sum": 37556082,
+      "snapshot_volume": 37556082.0,
+      "volume_difference": 0.0
+    }
+  ],
+  "limitation": "One endpoint; volume aggregation differences and absent wire dates do not prove exchange completeness"
+}

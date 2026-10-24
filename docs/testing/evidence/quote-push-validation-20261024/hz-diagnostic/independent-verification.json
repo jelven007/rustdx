@@ -1,0 +1,20 @@
+{
+  "verification": "passed",
+  "business_status": "diagnostic_not_verified",
+  "method": "Independent stdlib framing/zlib/XOR/signed-varint/five-depth fields; captured holiday dataset, UTC+8 window and request trace replay",
+  "wire_frames_checked": 38,
+  "command_frames": {
+    "0x000d": 1,
+    "0x044e": 2,
+    "0x044d": 34,
+    "0x0547": 1
+  },
+  "directory_rows_checked": 52171,
+  "baseline_records_checked": 3,
+  "passive_frames": 0,
+  "polled_frames": 0,
+  "passive_requests": 0,
+  "advancing_change_frames": 0,
+  "live_trading_push_verified": false,
+  "scope": "One endpoint and symbol set. No push is not proof of server non-support; offline replay does not replace live trading-hour evidence."
+}

@@ -1,0 +1,154 @@
+{
+  "arch": "aarch64",
+  "measurements": [
+    {
+      "median_ns": 386708,
+      "name": "sma_rsi",
+      "period": 20,
+      "rows": 10000
+    },
+    {
+      "median_ns": 489875,
+      "name": "bands_kdj",
+      "period": 20,
+      "rows": 10000
+    },
+    {
+      "median_ns": 309958,
+      "name": "sma_rsi",
+      "period": 200,
+      "rows": 10000
+    },
+    {
+      "median_ns": 575958,
+      "name": "bands_kdj",
+      "period": 200,
+      "rows": 10000
+    },
+    {
+      "median_ns": 294500,
+      "name": "sma_rsi",
+      "period": 2000,
+      "rows": 10000
+    },
+    {
+      "median_ns": 477500,
+      "name": "bands_kdj",
+      "period": 2000,
+      "rows": 10000
+    },
+    {
+      "median_ns": 104084,
+      "name": "ema_macd_batch",
+      "period": 0,
+      "rows": 10000
+    },
+    {
+      "median_ns": 43500,
+      "name": "macd_stream",
+      "period": 0,
+      "rows": 10000
+    },
+    {
+      "median_ns": 3269792,
+      "name": "sma_rsi",
+      "period": 20,
+      "rows": 100000
+    },
+    {
+      "median_ns": 5102958,
+      "name": "bands_kdj",
+      "period": 20,
+      "rows": 100000
+    },
+    {
+      "median_ns": 3382875,
+      "name": "sma_rsi",
+      "period": 200,
+      "rows": 100000
+    },
+    {
+      "median_ns": 5436375,
+      "name": "bands_kdj",
+      "period": 200,
+      "rows": 100000
+    },
+    {
+      "median_ns": 3175959,
+      "name": "sma_rsi",
+      "period": 2000,
+      "rows": 100000
+    },
+    {
+      "median_ns": 5493208,
+      "name": "bands_kdj",
+      "period": 2000,
+      "rows": 100000
+    },
+    {
+      "median_ns": 1151375,
+      "name": "ema_macd_batch",
+      "period": 0,
+      "rows": 100000
+    },
+    {
+      "median_ns": 442209,
+      "name": "macd_stream",
+      "period": 0,
+      "rows": 100000
+    },
+    {
+      "median_ns": 34113458,
+      "name": "sma_rsi",
+      "period": 20,
+      "rows": 1000000
+    },
+    {
+      "median_ns": 50134834,
+      "name": "bands_kdj",
+      "period": 20,
+      "rows": 1000000
+    },
+    {
+      "median_ns": 52394875,
+      "name": "sma_rsi",
+      "period": 200,
+      "rows": 1000000
+    },
+    {
+      "median_ns": 53055417,
+      "name": "bands_kdj",
+      "period": 200,
+      "rows": 1000000
+    },
+    {
+      "median_ns": 32836959,
+      "name": "sma_rsi",
+      "period": 2000,
+      "rows": 1000000
+    },
+    {
+      "median_ns": 53867000,
+      "name": "bands_kdj",
+      "period": 2000,
+      "rows": 1000000
+    },
+    {
+      "median_ns": 12348542,
+      "name": "ema_macd_batch",
+      "period": 0,
+      "rows": 1000000
+    },
+    {
+      "median_ns": 4559375,
+      "name": "macd_stream",
+      "period": 0,
+      "rows": 1000000
+    }
+  ],
+  "os": "macos",
+  "samples_per_measurement": 5,
+  "schema_version": 1,
+  "statistic": "median",
+  "synthetic": true
+}

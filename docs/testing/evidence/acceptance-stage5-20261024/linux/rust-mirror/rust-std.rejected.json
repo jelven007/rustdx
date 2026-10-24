@@ -1,0 +1,1 @@
+{"bytes": 29451928, "actual_sha256": "bf3f2949b2d73373e3832bd9cdb9929383a97a72051ecfd74820e517a98e2719", "expected_sha256": "2719470dcd78b3f97d78b978c8f85a1a58d84ff11b62558294621c01bca34d49", "reason": "overlapping abandoned downloader produced invalid partial file; never installed"}

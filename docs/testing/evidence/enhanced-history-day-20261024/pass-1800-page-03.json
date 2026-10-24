@@ -1,0 +1,25 @@
+{
+  "market": 0,
+  "code": "300308",
+  "date": 20261023,
+  "start": 4876,
+  "request_count": 1800,
+  "records": [],
+  "price_base_raw_f32": 590.11,
+  "price_base_raw_bytes": [
+    10,
+    135,
+    19,
+    68
+  ],
+  "raw_payload": [
+    0,
+    0,
+    10,
+    135,
+    19,
+    68
+  ],
+  "source_endpoint": "115.238.56.198:7709",
+  "fetched_at": "2026-10-24T04:53:17.799536Z"
+}

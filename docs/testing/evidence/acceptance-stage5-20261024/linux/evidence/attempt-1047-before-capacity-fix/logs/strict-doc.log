@@ -1,0 +1,20 @@
+   Compiling num-traits v0.2.19
+    Checking regex-syntax v0.8.5
+    Checking bitflags v2.13.2
+    Checking nix v0.31.3
+    Checking rusqlite v0.40.2
+    Checking ctrlc v3.5.2
+    Checking chrono v0.4.40
+    Checking regex-automata v0.4.9
+    Checking trade_date_a v2026.0.0
+    Checking jelven-rustdx-complete v1.12.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/crates/rustdx-core)
+ Documenting jelven-rustdx-complete v1.12.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/crates/rustdx-core)
+    Checking regex v1.11.1
+    Checking env_filter v0.1.3
+    Checking env_logger v0.11.7
+    Checking jelven-rustdx-cli v1.8.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/apps/rustdx-cli)
+ Documenting jelven-rustdx-cli v1.8.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/apps/rustdx-cli)
+ Documenting tests-integration v1.1.0 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/tests/integration)
+ Documenting rustdx-runner v0.1.0 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/apps/rustdx-runner)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.49s
+   Generated /tmp/rustdx-acceptance-20261024-TLDCn5/source/target/doc/rustdx_cli/index.html and 4 other files

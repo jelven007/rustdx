@@ -1,0 +1,48 @@
+[
+  {
+    "name": "workspace-tests-retry",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "--workspace",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 104.064,
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 15.454,
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+  },
+  {
+    "name": "cross-verification",
+    "command": [
+      "python3",
+      "scripts/validation/verify_recent_minutes_date_selector.py",
+      "docs/testing/evidence/recent-minutes-date-selector-20261024",
+      "--output",
+      "docs/testing/evidence/recent-minutes-date-selector-20261024/date-selector-verification.json"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 37.372,
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+  }
+]

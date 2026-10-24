@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.2993521670000001,
+      "log": "/tmp/rustdx-optimization-20261024/phase2docs-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--doc",
+        "--all-features",
+        "--locked"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 28.248511416,
+      "log": "/tmp/rustdx-optimization-20261024/phase2docs-1.log"
+    }
+  ]
+}

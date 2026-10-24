@@ -1,0 +1,22 @@
+[
+  {
+    "path": "full.zip",
+    "bytes": 7540,
+    "sha256": "ea6168dcd5568840ad1e1ab5faf442b2dbed1cc3e6741ca83e94d991ea308f6c"
+  },
+  {
+    "path": "mongo/rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2/bars.bson",
+    "bytes": 763200,
+    "sha256": "40b515280bb67a12b39195e1390019304facac1570f64ac9f23d84165513d04d"
+  },
+  {
+    "path": "mongo/rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2/bars.metadata.json",
+    "bytes": 1367,
+    "sha256": "c44029f90eb6b9d62839a5ceaded30dd8e09c446e4a5aa54151e512edf93b37b"
+  },
+  {
+    "path": "mongo/rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2/prelude.json",
+    "bytes": 51,
+    "sha256": "d7bba1cd3e46ec5a03386753a9cf19ebf4581eb857db52deeb021f8d143ff977"
+  }
+]

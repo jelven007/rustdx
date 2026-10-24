@@ -1,0 +1,35 @@
+[1m[32m   Compiling[0m jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[0m[1m[38;5;9merror[E0282][0m[0m[1m: type annotations needed for `Vec<_>`[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mapps/rustdx-cli/src/io/rowbinary.rs:156:17[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m156[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            let mut bytes = Vec::new();[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                 [0m[0m[1m[38;5;9m^^^^^^^^^[0m[0m   [0m[0m[1m[38;5;12m----------[0m[0m [0m[0m[1m[38;5;12mtype must be known at this point[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;14mhelp[0m[0m: consider giving `bytes` an explicit type, where the type for type parameter `T` is specified[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m156[0m[0m [0m[0m[1m[38;5;12m| [0m[0m            let mut bytes[0m[0m[38;5;10m: Vec<T>[0m[0m = Vec::new();[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                          [0m[0m[38;5;10m++++++++[0m
+
+[0m[1m[38;5;9merror[E0283][0m[0m[1m: type annotations needed for `Vec<_>`[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mapps/rustdx-cli/src/io/rowbinary.rs:156:17[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m156[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            let mut bytes = Vec::new();[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                 [0m[0m[1m[38;5;9m^^^^^^^^^[0m
+[0m[1m[38;5;12m...[0m
+[0m[1m[38;5;12m165[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            assert_eq!(bytes, expected().repeat(2));[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m             [0m[0m[1m[38;5;12m---------------------------------------[0m[0m [0m[0m[1m[38;5;12mtype must be known at this point[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: multiple `impl`s satisfying `_: PartialEq<u8>` found in the following crates: `core`, `serde_json`:[0m
+[0m            - impl PartialEq for u8;[0m
+[0m            - impl PartialEq<u8> for serde_json::Value;[0m
+[0m            - impl<'a> PartialEq<u8> for &'a mut serde_json::Value;[0m
+[0m            - impl<'a> PartialEq<u8> for &'a serde_json::Value;[0m
+[0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: required for `Vec<_>` to implement `PartialEq<Vec<u8>>`[0m
+[0m[1m[38;5;14mhelp[0m[0m: consider giving `bytes` an explicit type, where the placeholders `_` are specified[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m156[0m[0m [0m[0m[1m[38;5;12m| [0m[0m            let mut bytes[0m[0m[38;5;10m: Vec<T>[0m[0m = Vec::new();[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                          [0m[0m[38;5;10m++++++++[0m
+
+[0m[1mSome errors have detailed explanations: E0282, E0283.[0m
+[0m[1mFor more information about an error, try `rustc --explain E0282`.[0m
+[1m[31merror[0m[1m:[0m could not compile `jelven-rustdx-cli` (bin "rustdx" test) due to 2 previous errors

@@ -1,0 +1,18 @@
+{
+  "command": [
+    ".cargo/bin/cargo",
+    "+1.89.0",
+    "build",
+    "--offline",
+    "--locked",
+    "-p",
+    "jelven-rustdx-complete",
+    "--example",
+    "capture_resources",
+    "--example",
+    "validate_quote_push"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.558,
+  "integration_skip_env": true
+}

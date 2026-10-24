@@ -1,0 +1,173 @@
+{
+  "capture_complete": true,
+  "connection_id": 1,
+  "criteria": "each stock/ETF has at least one nonempty response, followed by independent byte/field verification",
+  "dates": [
+    20261019,
+    20261020,
+    20261021,
+    20261022,
+    20261023
+  ],
+  "endpoint": "115.238.56.198:7709",
+  "finished_utc": "2026-10-24T06:11:18.717003Z",
+  "nonempty_symbols": [],
+  "opcode": "0x0feb",
+  "results": [
+    {
+      "actual_server_date_verified": false,
+      "code": "000001",
+      "file": "recent-20261019-0-000001.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261019
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "159915",
+      "file": "recent-20261019-0-159915.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261019
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "510300",
+      "file": "recent-20261019-1-510300.json",
+      "market": 1,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261019
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "000001",
+      "file": "recent-20261020-0-000001.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261020
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "159915",
+      "file": "recent-20261020-0-159915.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261020
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "510300",
+      "file": "recent-20261020-1-510300.json",
+      "market": 1,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261020
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "000001",
+      "file": "recent-20261021-0-000001.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261021
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "159915",
+      "file": "recent-20261021-0-159915.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261021
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "510300",
+      "file": "recent-20261021-1-510300.json",
+      "market": 1,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261021
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "000001",
+      "file": "recent-20261022-0-000001.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261022
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "159915",
+      "file": "recent-20261022-0-159915.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261022
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "510300",
+      "file": "recent-20261022-1-510300.json",
+      "market": 1,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261022
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "000001",
+      "file": "recent-20261023-0-000001.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261023
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "159915",
+      "file": "recent-20261023-0-159915.json",
+      "market": 0,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261023
+    },
+    {
+      "actual_server_date_verified": false,
+      "code": "510300",
+      "file": "recent-20261023-1-510300.json",
+      "market": 1,
+      "nonempty": false,
+      "points": 0,
+      "requested_date": 20261023
+    }
+  ],
+  "schema": 1,
+  "scope": "Nonempty samples only, no server trading-date or exchange-completeness proof",
+  "source": "live_tcp",
+  "started_utc": "2026-10-24T06:11:06.233438Z",
+  "status": "nonempty_not_observed_for_all_symbols",
+  "symbols": [
+    [
+      0,
+      "000001"
+    ],
+    [
+      0,
+      "159915"
+    ],
+    [
+      1,
+      "510300"
+    ]
+  ],
+  "synthetic": false
+}

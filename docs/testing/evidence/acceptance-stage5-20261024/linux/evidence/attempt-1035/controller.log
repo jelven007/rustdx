@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/run.py", line 66, in <module>
+    run("workspace-tests",cargo+["test","--workspace","--all-targets","--all-features","--offline","--locked"],timeout=900)
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/run.py", line 17, in run
+    if required and r.returncode:raise RuntimeError(name+" failed")
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: workspace-tests failed

@@ -1,0 +1,10 @@
+[2026-10-24T12:41:09Z INFO  rustdx::io] dir: "/tmp/rustdx-db-faults-rxggsxag/source" day 文件数量：16
+[2026-10-24T12:41:09Z INFO  rustdx::io] "/tmp/rustdx-db-faults-rxggsxag/source"	已完成：16
+[2026-10-24T12:41:09Z INFO  rustdx::io] 解析完成 → 文件 16 个 / 行 8192 行 / 输出 0.4 MiB / 耗时 0.0s
+2026-10-24T20:41:09.501+0800	connected to: mongodb://127.0.0.1:40511/?directConnection=true&serverSelectionTimeoutMS=1500&connectTimeoutMS=1000
+2026-10-24T20:41:09.583+0800	Failed: connection(127.0.0.1:40511[-3]) socket was unexpectedly closed: EOF
+2026-10-24T20:41:09.583+0800	0 document(s) imported successfully. 0 document(s) failed to import.
+Error: 数据库导入失败: exit status: 1
+
+Location:
+    apps/rustdx-cli/src/io/sinks.rs:249:21

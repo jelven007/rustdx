@@ -1,0 +1,496 @@
+{
+  "filename": "block_gn.dat",
+  "metadata": {
+    "size": 757083,
+    "md5": "135dd66cf5b2e52abcdd967633465a4f",
+    "reserved_raw": 1,
+    "md5_raw": [
+      49,
+      51,
+      53,
+      100,
+      100,
+      54,
+      54,
+      99,
+      102,
+      53,
+      98,
+      50,
+      101,
+      53,
+      50,
+      97,
+      98,
+      99,
+      100,
+      100,
+      57,
+      54,
+      55,
+      54,
+      51,
+      51,
+      52,
+      54,
+      53,
+      97,
+      52,
+      102
+    ],
+    "terminator_raw": 0,
+    "trailing_payload": [],
+    "source": {
+      "opcode": 709,
+      "endpoint": "115.238.56.198:7709",
+      "fetched_at": "2026-10-24T14:22:28.156755Z",
+      "connection_id": 1,
+      "metadata_generation": null
+    }
+  },
+  "computed_md5": "135dd66cf5b2e52abcdd967633465a4f",
+  "chunks": [
+    {
+      "start": 0,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:28.316992Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 30000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:28.404140Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 60000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:28.611860Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 90000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:28.741269Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 120000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:28.829047Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 150000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:28.923038Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 180000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:29.098305Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 210000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:29.269610Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 240000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:29.469825Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 270000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:29.561053Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 300000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:29.648235Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 330000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:29.786109Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 360000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:29.879558Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 390000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:29.964380Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 420000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.055175Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 450000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.142398Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 480000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.321239Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 510000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.405140Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 540000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.490410Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 570000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.582750Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 600000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.704805Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 630000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.867256Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 660000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:30.952354Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 690000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:31.056027Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 720000,
+      "length": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:31.143007Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "start": 750000,
+      "length": 7083,
+      "header_raw": [
+        171,
+        27,
+        0,
+        0
+      ],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "115.238.56.198:7709",
+        "fetched_at": "2026-10-24T14:22:31.225287Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    }
+  ]
+}

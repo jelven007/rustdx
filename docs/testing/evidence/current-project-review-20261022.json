@@ -1,0 +1,1055 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-22",
+  "date_basis": "session environment; dates in existing repository evidence are not new executions",
+  "workspace": "/Users/bytedance/Documents/rustdx",
+  "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "basis": "actual dirty workspace; HEAD alone does not reproduce current files",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "rust_version": "rustc 1.89.0 (29483883e 2025-08-04)",
+  "cargo_version": "cargo 1.89.0 (c24e10642 2025-06-23)",
+  "check_environment": {
+    "CARGO_HOME": "/Users/bytedance/Documents/rustdx/.cargo",
+    "RUSTUP_HOME": "/Users/bytedance/Documents/rustdx/.cargo/rustup",
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+  },
+  "validation_scope": {
+    "public_tcp_live": false,
+    "real_database_services": false,
+    "remote_ci": false,
+    "instrumented_fuzz": false,
+    "performance_benchmark": false,
+    "local_simulated_services": true,
+    "real_local_cli_subprocess": true,
+    "rust_source_modified_by_review": false
+  },
+  "checks": [
+    {
+      "check": "fmt",
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.87,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "log_tail": []
+    },
+    {
+      "check": "clippy",
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.77,
+      "log_sha256": "3bb679965f0a12982e07be2b1c71ba457c15ceb768859fabb10911106022ba16",
+      "log_tail": [
+        "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.66s"
+      ]
+    },
+    {
+      "check": "tests",
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 56.15,
+      "log_sha256": "430b444ce7e12472e2bdf76cda4c0ceb2aedeefa24f803dbc79496a595a9d3ba",
+      "reported_tests": {
+        "passed": 438,
+        "failed": 0,
+        "ignored": 6,
+        "summary_groups": 96
+      },
+      "test_summary_lines": [
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s",
+        "test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.51s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.44s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.55s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.42s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 170 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s",
+        "test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.77s",
+        "test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s",
+        "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+        "test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s",
+        "test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s",
+        "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s",
+        "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s",
+        "test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.22s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 8 passed; 0 failed; 5 ignored; 0 measured; 0 filtered out; finished in 0.20s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.80s",
+        "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s",
+        "test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      ],
+      "log_tail": [
+        "test fetch_code::offical_stocks ... ignored, 联网更新数据",
+        "",
+        "test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "",
+        "     Running tests/stocklist.rs (target/debug/deps/stocklist-572b0425f86bd2b8)",
+        "",
+        "running 2 tests",
+        "test head ... ok",
+        "test stocklist ... ok",
+        "",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        ""
+      ]
+    },
+    {
+      "check": "doctests",
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--doc",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 6.05,
+      "log_sha256": "740fda2243b535d5cef07eca905c49807c7509a5bcde94cec445b1fa3ee17924",
+      "reported_tests": {
+        "passed": 66,
+        "failed": 0,
+        "ignored": 18,
+        "summary_groups": 5
+      },
+      "test_summary_lines": [
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 64 passed; 0 failed; 18 ignored; 0 measured; 0 filtered out; finished in 0.07s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+      ],
+      "log_tail": [
+        "   Doc-tests rustdx_runner",
+        "",
+        "running 0 tests",
+        "",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "",
+        "   Doc-tests tests_integration",
+        "",
+        "running 0 tests",
+        "",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        ""
+      ]
+    },
+    {
+      "check": "runner-local-faults",
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--offline",
+        "--locked",
+        "--",
+        "--include-ignored",
+        "--skip",
+        "real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 25.39,
+      "log_sha256": "4f662bc389fd74b3af837c82876e7f03564b2d3a361ee7af03061a7c16333ecb",
+      "reported_tests": {
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "summary_groups": 1
+      },
+      "test_summary_lines": [
+        "test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 4.55s"
+      ],
+      "log_tail": [
+        "test failed_publication_event_rolls_back_pointer_and_job_state ... ok",
+        "test managed_deadline_kills_worker_and_recovery_does_not_rerun ... ok",
+        "test wal_backup_restore_and_corruption_detection ... ok",
+        "test strict_config_and_unknown_history_refuse_before_spawn ... ok",
+        "test all_explicitly_exempt_keys_publish_empty_partitions_without_a_collector ... ok",
+        "test ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts ... ok",
+        "test runner_run_forwards_startup_pool_and_offline_setting_to_real_collector ... ok",
+        "test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ok",
+        "test real_cli_release_revision_missing_coverage_and_isolated_restore ... ok",
+        "",
+        "test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 4.55s",
+        ""
+      ]
+    },
+    {
+      "check": "rustdoc",
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "doc",
+        "--workspace",
+        "--all-features",
+        "--no-deps",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.58,
+      "log_sha256": "8787262f9510673ce0d4b300218d55f45cda73d37a2e1d11542ae797d9babfd1",
+      "log_tail": [
+        " Documenting rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)",
+        "    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.51s",
+        "   Generated /Users/bytedance/Documents/rustdx/target/doc/rustdx_cli/index.html and 4 other files"
+      ]
+    }
+  ],
+  "additional_checks": {
+    "current_markdown_relative_targets_checked": 555,
+    "missing_relative_file_targets": 0,
+    "link_check_excluded": [
+      "archive",
+      "evidence",
+      "external URLs",
+      "anchor validity"
+    ],
+    "git_diff_check_exit_code": 0
+  },
+  "git_status_record_counts": {
+    " M": 32,
+    " D": 220,
+    "??": 23
+  },
+  "staged_changes": 0,
+  "source_inventory": {
+    "core_production_rs_files": 90,
+    "core_production_rs_lines": 25652,
+    "apps_production_rs_files": 31,
+    "apps_production_rs_lines": 10060,
+    "total_core_apps_production_rs_lines": 35712,
+    "note": "inventory and hash manifest do not assert a line-by-line formal audit"
+  },
+  "source_manifest": {
+    ".github/workflows/ci.yml": {
+      "sha256": "5d1d3f99bd398b2b1ba3bbbe5255708f1d80cd83fd7657951498e12e5c3786d2",
+      "bytes": 2877
+    },
+    ".github/workflows/data-coverage.yml": {
+      "sha256": "9073052de8cec6ee7f63efe92e1b15338537d541cd556693d7eee7469eaa7f7b",
+      "bytes": 644
+    },
+    ".github/workflows/database-acceptance.yml": {
+      "sha256": "db9a637adad996c4f18345f20fbe5f37f2caafb1e3a3480d705a72abbf5cdfc8",
+      "bytes": 3746
+    },
+    "AGENTS.md": {
+      "sha256": "eaf490103dc6851757fe51a3ee6da388cb0510ab4f86f6438347c20470c3dffd",
+      "bytes": 1404
+    },
+    "Cargo.lock": {
+      "sha256": "1577c41c40f9416e8166c2fa92aeef8770a9a9821c7aa225c4da1bd1cd3baacf",
+      "bytes": 43374
+    },
+    "Cargo.toml": {
+      "sha256": "4d47b479225f8a85126cef336d03c7c51e5b59b51f4c910f8689ca444de98c33",
+      "bytes": 645
+    },
+    "README.md": {
+      "sha256": "cd59a2c2540a6b443f26901740676d5d38a8e2d739319b2f254751eae730b503",
+      "bytes": 4311
+    },
+    "apps/rustdx-cli/Cargo.toml": {
+      "sha256": "a834de84071f2a5a5f717360d7b80d84b7459b9d77ff14e2cff18b8eedea47a9",
+      "bytes": 1293
+    },
+    "apps/rustdx-cli/src/cmd/data_check.rs": {
+      "sha256": "20af457f973fbf0f7f6e0d3bee7960f8b88948c4e800260e8318cb8649e8445b",
+      "bytes": 5776
+    },
+    "apps/rustdx-cli/src/cmd/data_status.rs": {
+      "sha256": "4c3e162a3f5bf4ea51853b4345e4ed1cb48277ac47bc416353eae0784f6b9f06",
+      "bytes": 3652
+    },
+    "apps/rustdx-cli/src/cmd/day.rs": {
+      "sha256": "b049fddbb49877ffe522d695bf542b12c3274ba9a1f232da555e98c6d041b8e9",
+      "bytes": 16843
+    },
+    "apps/rustdx-cli/src/cmd/mod.rs": {
+      "sha256": "f6d82f4609d80993b4f1dc0d3f22a7ed2be68a82fcfe54ec7e82ff59d0db0a61",
+      "bytes": 2140
+    },
+    "apps/rustdx-cli/src/download.rs": {
+      "sha256": "625bf5a031d9018d249d965929752b9251eb55594be90ac7a41510310006b518",
+      "bytes": 27573
+    },
+    "apps/rustdx-cli/src/fetch_code.rs": {
+      "sha256": "19f7c580999bb6e15beba114921fbf4a94814f067279a84ece0b9b7ecfad0141",
+      "bytes": 9764
+    },
+    "apps/rustdx-cli/src/http.rs": {
+      "sha256": "52ce12a73787edd9b5ee6881525f9a677daf9cdbb78a192d1a2ce638e8ceba02",
+      "bytes": 4570
+    },
+    "apps/rustdx-cli/src/io/mongo_readback.rs": {
+      "sha256": "1d84599b197140db4431f65d980690c67a3c30caf40e496050720709d86c461f",
+      "bytes": 11087
+    },
+    "apps/rustdx-cli/src/io/schema.rs": {
+      "sha256": "d77c2f78fff7ce4fd21219080600208cf2eff37f5e3c0df921a498ecd052e126",
+      "bytes": 2341
+    },
+    "apps/rustdx-cli/src/io/sinks.rs": {
+      "sha256": "6a93a16065a6afe22ce7e2aab9827b7abb3ba910f93b3ef903ee9c14681aedf7",
+      "bytes": 14004
+    },
+    "apps/rustdx-cli/src/io/streaming.rs": {
+      "sha256": "b56cedd1c28adbea91fe2fca4e2c081054dd827d7a1380d947ab6195310e58f4",
+      "bytes": 15195
+    },
+    "apps/rustdx-cli/src/io/verify.rs": {
+      "sha256": "7e7382fea81cc50d33fa7d48ccc27fcf4305c4059c0f831dcfe3d05243bf96e3",
+      "bytes": 11932
+    },
+    "apps/rustdx-cli/src/io.rs": {
+      "sha256": "e9bf60583d52e3c6b8a9d25dea3fea33d730c401a97acc2762be5c3ae17bebe3",
+      "bytes": 39909
+    },
+    "apps/rustdx-cli/src/lib.rs": {
+      "sha256": "8094707db6da21f5ac0164147533c9239ba50879387206705a134399a97a091a",
+      "bytes": 365
+    },
+    "apps/rustdx-cli/src/main.rs": {
+      "sha256": "4b5fb85c50bb2c9af917d3a5602f4dd0567b6ba549f8d8d36be4255bc21b36b7",
+      "bytes": 1287
+    },
+    "apps/rustdx-cli/src/maintenance.rs": {
+      "sha256": "6b356a61f77d56917d05015fd9b5a96533eb981e0bc45b03315d253b0339da7a",
+      "bytes": 4435
+    },
+    "apps/rustdx-cli/src/observation.rs": {
+      "sha256": "683a2492dcb30905c54670bb9968e5d327c96b20fe3b5d60c09a67a38081f406",
+      "bytes": 11603
+    },
+    "apps/rustdx-cli/src/paths.rs": {
+      "sha256": "55eb34685841e1fef7f4fb2039a70cb3360ec0219bbc2cafcedce007db18102e",
+      "bytes": 7006
+    },
+    "apps/rustdx-cli/src/quality.rs": {
+      "sha256": "ed04e5156544d3ec9adec94dd8fad836d98063e165286e365b76b600ad43df6f",
+      "bytes": 28968
+    },
+    "apps/rustdx-cli/src/tcp_evidence.rs": {
+      "sha256": "797749d026ae466ea891283f741aefc8d9143e35ce51090d27d70991dfc8151d",
+      "bytes": 7729
+    },
+    "apps/rustdx-runner/Cargo.toml": {
+      "sha256": "cca6f073de9f2526cd3d4e6bd849d89116a098a94c40f1a7b3ec3692fac12a06",
+      "bytes": 884
+    },
+    "apps/rustdx-runner/src/config.rs": {
+      "sha256": "e5b41e9bdfc27732f07ed0d2c1af0e0661523e38cfde364ecef3fa9b307cbd66",
+      "bytes": 9836
+    },
+    "apps/rustdx-runner/src/consumer.rs": {
+      "sha256": "75a7c2d3919522b9ae67a0f1931395cea5922ae251f4095093d859c92c03e7b7",
+      "bytes": 10150
+    },
+    "apps/rustdx-runner/src/database.rs": {
+      "sha256": "8ffb7993aac074e1b0226aa2acc867e9ab761773248124d55790f63beadfa889",
+      "bytes": 25933
+    },
+    "apps/rustdx-runner/src/database_mongo.js": {
+      "sha256": "0f524c24c26db95a15ec12ff249942a35846d85fcf0935b35f28760f0e7bdc0a",
+      "bytes": 1702
+    },
+    "apps/rustdx-runner/src/ledger.rs": {
+      "sha256": "31cf05b182216ae1306381950c94963bd501357a3e662e17bb42a9cd6c8b56a8",
+      "bytes": 15297
+    },
+    "apps/rustdx-runner/src/lib.rs": {
+      "sha256": "7f447d399a720bcc14bebc7e74364c36db65b7904c78606b24faa027f40e9840",
+      "bytes": 1517
+    },
+    "apps/rustdx-runner/src/main.rs": {
+      "sha256": "9b96ef51aabc499774507715b73074d6844cf2750ab27132be742bfb4086de9e",
+      "bytes": 8097
+    },
+    "apps/rustdx-runner/src/model.rs": {
+      "sha256": "8dbd4b8879c88e6278936243ff7b5e7fb7d221e7942be68099eda90167baf62c",
+      "bytes": 2307
+    },
+    "apps/rustdx-runner/src/ops.rs": {
+      "sha256": "c4a84835ccb991538c09998c077f1699ba5c0ef2d09b60d8d7e7b2fc9a46c940",
+      "bytes": 11792
+    },
+    "apps/rustdx-runner/src/pipeline.rs": {
+      "sha256": "e488ea91f5c7dd29e0fcfa0111e419dc8860cac87e8d2ba6d4f89a54bc93bc52",
+      "bytes": 34851
+    },
+    "apps/rustdx-runner/src/storage.rs": {
+      "sha256": "46141d7ac8fb0b3f2f0a9a2f671f7b2feecbb75da1013f096400e343317e7197",
+      "bytes": 8936
+    },
+    "apps/rustdx-runner/src/supervisor.rs": {
+      "sha256": "10991bc157e1907b63078f06258e0fa3a9f613744380a3b0255bf5d620247d69",
+      "bytes": 6223
+    },
+    "crates/rustdx-core/Cargo.toml": {
+      "sha256": "5a01a305e6087860d3e2f39790590f45c5c0d11576800efb822ce8d6f0535bd8",
+      "bytes": 1102
+    },
+    "crates/rustdx-core/src/atomic_file.rs": {
+      "sha256": "973150d4e9caedc8b0eedfce2537b852f2977572945cb62c12d4287baccff716",
+      "bytes": 1868
+    },
+    "crates/rustdx-core/src/builder.rs": {
+      "sha256": "294d870d070b4236a20db269dafe80261ded590ae79458ffed32de2d451de943",
+      "bytes": 15473
+    },
+    "crates/rustdx-core/src/bytes_helper.rs": {
+      "sha256": "aa07ece8445b803eb642cee750cacc2d12074ca9c5579bc292c01e24d2464fe0",
+      "bytes": 2234
+    },
+    "crates/rustdx-core/src/cache.rs": {
+      "sha256": "efaeb0bd62b33244728c1b05a000f0bf5d2ed3a0fcbbe22eab6e42502a05de30",
+      "bytes": 24367
+    },
+    "crates/rustdx-core/src/calendar/provider.rs": {
+      "sha256": "f8d338c0e22dc4f20f1d44d4d57b739e887eae3bf757184745a15bdfda181159",
+      "bytes": 8938
+    },
+    "crates/rustdx-core/src/calendar.rs": {
+      "sha256": "6d443876edacf6c0903cebffe342db1ca7ff9f405649334029e6391c42945c36",
+      "bytes": 19453
+    },
+    "crates/rustdx-core/src/data/model.rs": {
+      "sha256": "925afb198ccec4905d6cd9d53ec22498ec245145bf0e7fe38b789410bd5563a9",
+      "bytes": 6690
+    },
+    "crates/rustdx-core/src/data.rs": {
+      "sha256": "8068d653c60078264683a497c6c114c9a87c960eca624a04d6e2abcd106b7d46",
+      "bytes": 8058
+    },
+    "crates/rustdx-core/src/error.rs": {
+      "sha256": "3d7da50ff515213fc4f03545d507816df8073441d794e731c06002f1ab03f4c1",
+      "bytes": 11614
+    },
+    "crates/rustdx-core/src/file/day/fq.rs": {
+      "sha256": "b8ecd1560c9af726251639fafc4f2bf40295f21f40ebd9b3d78b58b58e9aa7db",
+      "bytes": 3571
+    },
+    "crates/rustdx-core/src/file/day/mod.rs": {
+      "sha256": "d87c7eb7b141911c12ac7d56d33ae2523f52d97f4fb46110b3737ba15eef9764",
+      "bytes": 5963
+    },
+    "crates/rustdx-core/src/file/gbbq/fq.rs": {
+      "sha256": "b57ff388bbb876b59dcac4eb2058b3696233b444034c9e9f1cfced29985b54bc",
+      "bytes": 4549
+    },
+    "crates/rustdx-core/src/file/gbbq/key.rs": {
+      "sha256": "1f5353ace5153e94ebbd8504f79755e7397f825b54e5c650d49e5707eea5b9fe",
+      "bytes": 19930
+    },
+    "crates/rustdx-core/src/file/gbbq/mod.rs": {
+      "sha256": "6b3f36b522830da636e8e0bc27996a90f2ce1317a0d4808d548f4ea89e203812",
+      "bytes": 11684
+    },
+    "crates/rustdx-core/src/file/lc/mod.rs": {
+      "sha256": "6c4647afac9dee3916ea2a971656ccff7b41f82a491a06d65c4fd88f0b01a1e9",
+      "bytes": 5681
+    },
+    "crates/rustdx-core/src/file/mod.rs": {
+      "sha256": "2d1eea41d7b56beb73baa5f8d0aef0152c86d7a9fb6301be0ba52a3bd5bc3480",
+      "bytes": 39
+    },
+    "crates/rustdx-core/src/indicators.rs": {
+      "sha256": "bbb092dd9c02a812ae17c9f11d29ed3b6fa5461265dc88ae2da8987b4113b3c8",
+      "bytes": 32825
+    },
+    "crates/rustdx-core/src/lib.rs": {
+      "sha256": "981422f3cbc37ae55fd40cf464084d6c9a569b48a2c6f7b9dd1a3cc2f97998dc",
+      "bytes": 627
+    },
+    "crates/rustdx-core/src/limit/history.rs": {
+      "sha256": "b8f03dc236c5c3db584fe62d0b0f875823d506f7b9c8c328b1625c38230c8262",
+      "bytes": 7054
+    },
+    "crates/rustdx-core/src/limit/rules.rs": {
+      "sha256": "fe7fb620855f926b97f9134a63b71f7936ac62f1984cbbcadab5ce8b5031f98b",
+      "bytes": 8641
+    },
+    "crates/rustdx-core/src/limit.rs": {
+      "sha256": "563e89afc3cd9af35a1db1b264cfc73011abf294f75c8dcca935b66b892dd11d",
+      "bytes": 12237
+    },
+    "crates/rustdx-core/src/operation.rs": {
+      "sha256": "2bf0f89aacd43c107bb8d69a53074a4c8e813ba581a3729bac87d8fb0f4e34e8",
+      "bytes": 6284
+    },
+    "crates/rustdx-core/src/pool.rs": {
+      "sha256": "9d51e7eabac3f914374d5111216c4e04eb683d5a8b5c6e1190192ca26682cc41",
+      "bytes": 10555
+    },
+    "crates/rustdx-core/src/tcp/basic.rs": {
+      "sha256": "2b22e893790bb2a06ae6d5d0e8fbbe5ad5b1373cbcf16e955b0ff6248748e7db",
+      "bytes": 7992
+    },
+    "crates/rustdx-core/src/tcp/evidence.rs": {
+      "sha256": "efc7c3da656c96c9df0146a1dd87756466bd57cd84c3f953422067447aebedec",
+      "bytes": 2207
+    },
+    "crates/rustdx-core/src/tcp/frame.rs": {
+      "sha256": "58b36ba4743884d912bf6b691c54a4b39c4a2dcb4a6d9152a8cf09b0e81dd3cd",
+      "bytes": 1660
+    },
+    "crates/rustdx-core/src/tcp/governance.rs": {
+      "sha256": "9cf367065d29203db43651cb51ae54372e77bcf24e26528ce13c2cecced54c82",
+      "bytes": 16884
+    },
+    "crates/rustdx-core/src/tcp/heartbeat.rs": {
+      "sha256": "f62681ee5e5b93aea53176c5ae5c77c0fb91925daf6a7aa023d90748cafb9fd0",
+      "bytes": 8898
+    },
+    "crates/rustdx-core/src/tcp/helper.rs": {
+      "sha256": "0075197a12abd0fadefb67a902303ace8aed9d09f33715e67d357dcebf92311c",
+      "bytes": 6736
+    },
+    "crates/rustdx-core/src/tcp/ip/daily.rs": {
+      "sha256": "5efbfe42e1764687b02399f6ab55fced212427a8c1430ffea41e2b82612962ee",
+      "bytes": 19761
+    },
+    "crates/rustdx-core/src/tcp/ip/probe.rs": {
+      "sha256": "bf0f85da46e044121cfa8adcca1a44b3136da1ff201d66f560126d3e3ae74172",
+      "bytes": 10869
+    },
+    "crates/rustdx-core/src/tcp/ip.rs": {
+      "sha256": "f2314884a9f2c2c16343aea90d5051020bdfdda52671e758723537efd0b0a1a7",
+      "bytes": 8978
+    },
+    "crates/rustdx-core/src/tcp/mod.rs": {
+      "sha256": "6618e3970f382290a97c0698c976d6e57847b9c6bb40da5ebe780b236d96400e",
+      "bytes": 35220
+    },
+    "crates/rustdx-core/src/tcp/reader.rs": {
+      "sha256": "da8c78974fca205a112f8876944d13e7bbfb28493a1ebb02644dcb5ee8848f04",
+      "bytes": 4567
+    },
+    "crates/rustdx-core/src/tcp/startup.rs": {
+      "sha256": "80c36398648aba49c212491c3e911befeba2fc2813239c8c34ba4c4882f6077c",
+      "bytes": 8978
+    },
+    "crates/rustdx-core/src/tcp/stock/auctions.rs": {
+      "sha256": "9f2f94931a5eb781bba9da8bd15ac4be86529ecf1eadc08b444251ecd27eace8",
+      "bytes": 6210
+    },
+    "crates/rustdx-core/src/tcp/stock/block_info.rs": {
+      "sha256": "de12b358dfcca9b9a011545062aee7b525a6b1b3bbad9f1be181af34902248fb",
+      "bytes": 10408
+    },
+    "crates/rustdx-core/src/tcp/stock/category_quotes.rs": {
+      "sha256": "2e1b04585aa3fc93be4c6c074abef184c263782a57ec73b178876406851dbeba",
+      "bytes": 8001
+    },
+    "crates/rustdx-core/src/tcp/stock/client/adjustment.rs": {
+      "sha256": "b98516d7a028b5c41ee6a09f14af86aa6c8d70015acbc11ffb038f178a84d5fe",
+      "bytes": 2946
+    },
+    "crates/rustdx-core/src/tcp/stock/client/batch.rs": {
+      "sha256": "f55d4ed380b39af0e0e6473a214b16d00fa9d08f62acc3d212c08aaba8b65679",
+      "bytes": 4759
+    },
+    "crates/rustdx-core/src/tcp/stock/client/extended_queries.rs": {
+      "sha256": "a29184e55e55a8469f8b045870f08186f5577073415091f517c9e37fe3244385",
+      "bytes": 13621
+    },
+    "crates/rustdx-core/src/tcp/stock/client/pagination.rs": {
+      "sha256": "a3fa13923331ac4c0dac7c29bf9997e9870785449842a578da3757c90499e166",
+      "bytes": 3029
+    },
+    "crates/rustdx-core/src/tcp/stock/client/transactions.rs": {
+      "sha256": "505a293fb9934a224f8c054ef86e2b5a3c55e15517af4e830b464a733a491044",
+      "bytes": 15323
+    },
+    "crates/rustdx-core/src/tcp/stock/client/turnover.rs": {
+      "sha256": "fcefc2f229051abcd5879ccccbb7596e78519568155f4f64ae469a73028647dd",
+      "bytes": 6135
+    },
+    "crates/rustdx-core/src/tcp/stock/client/version_330.rs": {
+      "sha256": "e3d8be29a7ef15cb7ef8e4d31f7a8de476eeda91c6708f059f5831459483ecaa",
+      "bytes": 6713
+    },
+    "crates/rustdx-core/src/tcp/stock/client.rs": {
+      "sha256": "02e6d1ccec3c9b4bb9da9a30ee01ff5cb108bc76b25e74a9c3a2fed77866fa35",
+      "bytes": 47768
+    },
+    "crates/rustdx-core/src/tcp/stock/command_request.rs": {
+      "sha256": "55c1c16c4d26c032c53a259534b325d362fdca96b9fd19ce80dacef1a80fae89",
+      "bytes": 7244
+    },
+    "crates/rustdx-core/src/tcp/stock/company_info.rs": {
+      "sha256": "13ef22447eb1f36ccfb0bb2df3d35d2c1b0419250ae560b36060504faa5c3732",
+      "bytes": 8306
+    },
+    "crates/rustdx-core/src/tcp/stock/company_info_request.rs": {
+      "sha256": "2f027625e9d29eb362056becf7c34c3f2ba3ad63915e1e547f762aa5409d336e",
+      "bytes": 10251
+    },
+    "crates/rustdx-core/src/tcp/stock/concept_mapping.rs": {
+      "sha256": "eada194a936c65c64c6453fbea6ddb349199ff69dff6b0a9772f77fae3279321",
+      "bytes": 1183
+    },
+    "crates/rustdx-core/src/tcp/stock/delisted_bars.rs": {
+      "sha256": "bf8464749826e40837c9071f6d8eaab10582f8e363ee1e8b96e56287fb26114a",
+      "bytes": 9845
+    },
+    "crates/rustdx-core/src/tcp/stock/enhanced_history_transaction.rs": {
+      "sha256": "cbc05050491909cfafcd59d25c88b286d1a9453422ae805fb91a99f8aea1c175",
+      "bytes": 13061
+    },
+    "crates/rustdx-core/src/tcp/stock/extended_quote.rs": {
+      "sha256": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+      "bytes": 8381
+    },
+    "crates/rustdx-core/src/tcp/stock/finance_info.rs": {
+      "sha256": "4f72188074dd37d444a1d981133d55b8687dd0b04543677bc612913390014399",
+      "bytes": 7345
+    },
+    "crates/rustdx-core/src/tcp/stock/finance_raw.rs": {
+      "sha256": "5f28520cd8404a031a946cdcd21e9c12f00553006df1c1b7ee955c7943576f41",
+      "bytes": 4010
+    },
+    "crates/rustdx-core/src/tcp/stock/finance_semantics.rs": {
+      "sha256": "e726ef9ef9acb7c4fa8bf72093b421dab6226641d1fa9ee6c967359bbba875fd",
+      "bytes": 11464
+    },
+    "crates/rustdx-core/src/tcp/stock/history_minute_time.rs": {
+      "sha256": "f4e1a9735bdfd6b6a0cf43a39f8204c1bb95987452c8ae78f6bfc9b8fc194a63",
+      "bytes": 6432
+    },
+    "crates/rustdx-core/src/tcp/stock/history_transaction.rs": {
+      "sha256": "91acc7b4bcdcd85f88d4a7677447e8326a50a45dfa29ebb24d9cc90509c720c7",
+      "bytes": 5815
+    },
+    "crates/rustdx-core/src/tcp/stock/index_kline.rs": {
+      "sha256": "0b4450e6bb27d7654a81d5817edb5a186691258d8032ee26186b3b00447fb798",
+      "bytes": 5724
+    },
+    "crates/rustdx-core/src/tcp/stock/industry_mapping.rs": {
+      "sha256": "9137fa53d1ee8e32ab98fe3ec9566b47a47dc896ab4990eeeaeb0ec22a1019ea",
+      "bytes": 1050
+    },
+    "crates/rustdx-core/src/tcp/stock/intraday_aux.rs": {
+      "sha256": "a65b7ecfa25157d26e6d8296d05650977921cc96e9f5daba2a51159bd465d1b2",
+      "bytes": 3078
+    },
+    "crates/rustdx-core/src/tcp/stock/kline.rs": {
+      "sha256": "40857c59c5ff6aaa3156b164ccdb379b8656b5bb696dab89791e0aa9c0fd9376",
+      "bytes": 8170
+    },
+    "crates/rustdx-core/src/tcp/stock/kline_request.rs": {
+      "sha256": "c049ce4e857560be5eacb809fec7ba41566784e2b2c229fc295342b294b89a8f",
+      "bytes": 12027
+    },
+    "crates/rustdx-core/src/tcp/stock/minute_time.rs": {
+      "sha256": "43b17246c23a36e0039aa306d40abd57cb45458a985d22a5d59c22b9f720e722",
+      "bytes": 18955
+    },
+    "crates/rustdx-core/src/tcp/stock/mod.rs": {
+      "sha256": "60733c281c45d9767b0b262932025c01d155cfcb0617ae42661fec59b6b7ae7b",
+      "bytes": 11763
+    },
+    "crates/rustdx-core/src/tcp/stock/money_flow.rs": {
+      "sha256": "6c5ff4175ac3a344534220f842849f4012f5141471005a6542229280a2d725f9",
+      "bytes": 4931
+    },
+    "crates/rustdx-core/src/tcp/stock/price_scale.rs": {
+      "sha256": "ff2e8969308054117f0ee030af97cdf7133fddc033645c86ebf6d6b523cacda5",
+      "bytes": 964
+    },
+    "crates/rustdx-core/src/tcp/stock/quote_metadata.rs": {
+      "sha256": "dac5d2f925d152118547d68f6750d2ff1166d572f6f1a9f753d4e46ae50d5a4b",
+      "bytes": 9073
+    },
+    "crates/rustdx-core/src/tcp/stock/quote_refresh.rs": {
+      "sha256": "4f814bba48ff012c50b5d88b99230780ebb01b383f07d6edc15addb268ffb4d8",
+      "bytes": 3516
+    },
+    "crates/rustdx-core/src/tcp/stock/quote_subscription.rs": {
+      "sha256": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+      "bytes": 19073
+    },
+    "crates/rustdx-core/src/tcp/stock/quotes.rs": {
+      "sha256": "184755e6968f9c34e100303e474e93db2690ba9d73b2f1aa54e795ddb67762ba",
+      "bytes": 20836
+    },
+    "crates/rustdx-core/src/tcp/stock/recent_minutes.rs": {
+      "sha256": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+      "bytes": 4921
+    },
+    "crates/rustdx-core/src/tcp/stock/reported_turnover.rs": {
+      "sha256": "5ecd132b7197fb578b8ba71c0504f78e4f2a6e6ea293f1685ed21c24a6a98b0b",
+      "bytes": 19271
+    },
+    "crates/rustdx-core/src/tcp/stock/requests.rs": {
+      "sha256": "4147c5504984c17b1f2cdfe077824abc582d5fad91df2aefd72f773edf1dac57",
+      "bytes": 14260
+    },
+    "crates/rustdx-core/src/tcp/stock/resource_metadata.rs": {
+      "sha256": "19914c6f2a41955cac23c44893dc7d02ac06f16934865db4a2a898abc0d193b3",
+      "bytes": 2617
+    },
+    "crates/rustdx-core/src/tcp/stock/security_directory.rs": {
+      "sha256": "a9c3a584bca63423abef704ca2998eaa89dd45b35e6e3cb8e8f3b5d81534e4d3",
+      "bytes": 8407
+    },
+    "crates/rustdx-core/src/tcp/stock/security_list.rs": {
+      "sha256": "058892c122a3a976652bc8ae5bc799247ace59c14f5a0161cb1fed8f9ccd59a2",
+      "bytes": 6644
+    },
+    "crates/rustdx-core/src/tcp/stock/snapshots.rs": {
+      "sha256": "c70a054897c1b594ae161901bbe3b82e4ded54beddb05ef82b8d6b62065bbb8b",
+      "bytes": 2821
+    },
+    "crates/rustdx-core/src/tcp/stock/sparkline.rs": {
+      "sha256": "e0e32bb11253f85b272e8a327fd3ae0bb37145743d85b7d5a08c2620b3c7a740",
+      "bytes": 3361
+    },
+    "crates/rustdx-core/src/tcp/stock/special_limits.rs": {
+      "sha256": "78dd6d553871116848bff1c169ae72e60beb6cc6bdb2f895f24601f18fa54f79",
+      "bytes": 4079
+    },
+    "crates/rustdx-core/src/tcp/stock/today_minute.rs": {
+      "sha256": "6db7e3c8f385fd1e84266bde6712a148a07bef01cd88e129d3515684420021d0",
+      "bytes": 5367
+    },
+    "crates/rustdx-core/src/tcp/stock/trade_amount.rs": {
+      "sha256": "a76087e5e105709af4bdb7acb517fc7e70a1f8dc20140220a7e9dba53fdf0780",
+      "bytes": 21573
+    },
+    "crates/rustdx-core/src/tcp/stock/trade_amount_reconcile.rs": {
+      "sha256": "6bb5385575fde4f74c0362896213e586efabfe457ab899d7758185714aaec9bc",
+      "bytes": 11782
+    },
+    "crates/rustdx-core/src/tcp/stock/trade_decode.rs": {
+      "sha256": "dc55a8946fab4aa1fe070160de831bd574ad985b2953160bc35dc30622649817",
+      "bytes": 3804
+    },
+    "crates/rustdx-core/src/tcp/stock/trade_models.rs": {
+      "sha256": "fd6412d796a9b58ecf44077485f8f7706d811c9af15553c4641b4194f8364bfa",
+      "bytes": 23276
+    },
+    "crates/rustdx-core/src/tcp/stock/transaction.rs": {
+      "sha256": "c01e698d282b4a0401cbe6a00ceb108a8c6237e1c4ff77ef46ec7bb3113b8f38",
+      "bytes": 6372
+    },
+    "crates/rustdx-core/src/tcp/stock/transaction_pagination.rs": {
+      "sha256": "61edd4099b0a65e6a25d2a578042b1ac06a770c4d3bdc1d7f76cc460e2ed4e0d",
+      "bytes": 5466
+    },
+    "crates/rustdx-core/src/tcp/stock/validator.rs": {
+      "sha256": "322aed0ad07d9f94c46be14c10e040f640b14d7864670b2d29e39bb3be1618a5",
+      "bytes": 25825
+    },
+    "crates/rustdx-core/src/tcp/stock/xdxr.rs": {
+      "sha256": "4cfb7c8631cea23e5cbada55bece179a39ecd7dc9b6af202b434249931603a9b",
+      "bytes": 6728
+    },
+    "crates/rustdx-core/src/tcp/tests.rs": {
+      "sha256": "d38288541586b71dd5c04fd06f98b1275b148ffef167eaee86ab88649c066f94",
+      "bytes": 3935
+    },
+    "deploy/runner/rustdx-runner.service": {
+      "sha256": "ede4f19ee3baa7defdbd3188a23196af81684de3c92d8580623b8e33d63a0a92",
+      "bytes": 799
+    },
+    "docs/development/APPLICATION_INTEGRATION.md": {
+      "sha256": "b173f67d8b4d12f6a66913c716e639c46c5a12eccd269e7ef4d2d2e6db507361",
+      "bytes": 12424
+    },
+    "docs/release/PROJECT_RESTRUCTURE.md": {
+      "sha256": "f0bb48e7ba82ef46f2c71a559893eb71451b6bb9f9ca5a12923eb9d209373877",
+      "bytes": 3197
+    },
+    "docs/testing/PRODUCTION_ACCEPTANCE.md": {
+      "sha256": "6255e8768efd96d1ea137120b4b69effc6d308c79e9f281f88139f84a78c92af",
+      "bytes": 4207
+    },
+    "docs/testing/VALIDATION.md": {
+      "sha256": "37de60a456fce7457ba340cd947b2d43564d5c9c2cd8515abfd392f99d767039",
+      "bytes": 5376
+    },
+    "scripts/release/publish.sh": {
+      "sha256": "24b26f3d3d773e1bbf0656ea0218ab636e1d85ce1c6a4613ef4202d5e9932deb",
+      "bytes": 983
+    },
+    "tests/integration/Cargo.toml": {
+      "sha256": "b5e8f691881722d97a83c9bdeb48bb87e218b9f4c4cd558c96bae0c5cdf09f66",
+      "bytes": 355
+    },
+    "tests/integration/src/fetch_code.rs": {
+      "sha256": "b4b2fe4b6e09386ed4ee3101ba7530a39387293ef954a4b024bf9cf44b3c5a0a",
+      "bytes": 708
+    },
+    "tests/integration/src/lib.rs": {
+      "sha256": "823d0d189ae6e818a702399f22bc5f69bd614afadce4fd32ac5474cb660e5c65",
+      "bytes": 1081
+    },
+    "tools/fuzz/fuzz_targets/checked_parsers.rs": {
+      "sha256": "d41183fba4b0a41da979151cc7be642cf3f2ca86e7691f9d683c44380c75f7c9",
+      "bytes": 2746
+    }
+  },
+  "findings": [
+    {
+      "id": "O01",
+      "priority": "P0",
+      "recommendation": "统一旧、新命令的响应身份校验",
+      "impact": "错配报文可能进入正文解码",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O02",
+      "priority": "P0",
+      "recommendation": "明确0feb交易日期的业务资格",
+      "impact": "请求日期不能证明数据所属交易日",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O03",
+      "priority": "P0",
+      "recommendation": "完成0547真实盘中推送验收",
+      "impact": "本地会话通过尚不足以支撑实时服务承诺",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O04",
+      "priority": "P0",
+      "recommendation": "补齐日历、点时事实和目标生产验收",
+      "impact": "跨年与全市场发布依赖完整依据",
+      "relative_cost": "中至高"
+    },
+    {
+      "id": "O05",
+      "priority": "P0",
+      "recommendation": "固定可复现源码与正式发布版本",
+      "impact": "同版本包与工作区能力不同",
+      "relative_cost": "低至中"
+    },
+    {
+      "id": "O06",
+      "priority": "P1",
+      "recommendation": "runner改用稳定键分页与持久MongoDB会话",
+      "impact": "深分页和反复启动进程",
+      "relative_cost": "中至高"
+    },
+    {
+      "id": "O07",
+      "priority": "P1",
+      "recommendation": "发布前预估数据库I/O和证据预算",
+      "impact": "大任务可能中途遇到固定上限",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O08",
+      "priority": "P1",
+      "recommendation": "证据增量计量与冻结配置复用",
+      "impact": "每次请求/监督循环重复遍历文件",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O09",
+      "priority": "P1",
+      "recommendation": "TCP批量增加流式交付与字节预算",
+      "impact": "有界并发仍保留全部结果",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O10",
+      "priority": "P1",
+      "recommendation": "标准行情保存可重建的来源元数据",
+      "impact": "标准周期丢失原始category和单位依据",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O11",
+      "priority": "P1",
+      "recommendation": "K线区间返回完成状态和来源连续性",
+      "impact": "短页停止及跨会话拼接边界不透明",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O12",
+      "priority": "P1",
+      "recommendation": "数据库CI实际执行runner验收",
+      "impact": "当前数据库job主要验证CLI路径",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O13",
+      "priority": "P1",
+      "recommendation": "增加TCP采集适配器和runner契约",
+      "impact": "行情API与持续发布尚未连通",
+      "relative_cost": "高"
+    },
+    {
+      "id": "O14",
+      "priority": "P1",
+      "recommendation": "节点能力分层与全局探测协调",
+      "impact": "普通探活不能证明特殊命令可用",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O15",
+      "priority": "P1",
+      "recommendation": "CLI认证URI退出进程参数",
+      "impact": "部分MongoDB调用将URI放入argv",
+      "relative_cost": "低至中"
+    },
+    {
+      "id": "O16",
+      "priority": "P2",
+      "recommendation": "统一阶段指标与结构化错误",
+      "impact": "传输、解码、超时和取消难以统一对账",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O17",
+      "priority": "P2",
+      "recommendation": "指标参数合同与增量状态",
+      "impact": "公式约定、跨块和重复全量计算",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O18",
+      "priority": "P2",
+      "recommendation": "扩展fuzz并建立性能回归基线",
+      "impact": "新解析器覆盖和规模回归不足",
+      "relative_cost": "中"
+    },
+    {
+      "id": "O19",
+      "priority": "P2",
+      "recommendation": "缓存增量字节计数和磁盘总限额",
+      "impact": "全表扫描、复制和过期文件积累",
+      "relative_cost": "低至中"
+    },
+    {
+      "id": "O20",
+      "priority": "P2",
+      "recommendation": "收敛兼容接口与公共合同测试",
+      "impact": "可变旧对象、无错误parse和长模块",
+      "relative_cost": "中"
+    }
+  ],
+  "static_capacity_derivation": {
+    "basis": "fresh ClickHouse target; 512 rows per insert/fetch, max 50000 target_io sequences, at least 4 other exchanges",
+    "minimum_exchanges": "2 * ceil(rows / 512) + 4",
+    "maximum_rows_from_this_limit_only": 12798976,
+    "not_a_measured_throughput": true,
+    "other_limits_and_recovery_not_included": true
+  },
+  "report": {
+    "path": "docs/archive/architecture/CURRENT_PROJECT_REVIEW_20261022.md",
+    "sha256": "6486f2eecfd78a78266fe425e174ed3baf2e97ea1766a633acebd5aba5261b76"
+  }
+}

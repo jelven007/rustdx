@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "run",
+        "--locked",
+        "--release",
+        "-p",
+        "jelven-rustdx-complete",
+        "--example",
+        "metadata_hot_path"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 27.585351792,
+      "log": "/tmp/rustdx-optimization-20261024/f11-baseline-0.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--locked",
+        "-p",
+        "jelven-rustdx-complete",
+        "--lib",
+        "tcp::stock::client"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 18.8505935,
+      "log": "/tmp/rustdx-optimization-20261024/f11-baseline-1.log"
+    }
+  ]
+}

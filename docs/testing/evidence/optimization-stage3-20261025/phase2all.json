@@ -1,0 +1,35 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 174.416072,
+      "log": "/tmp/rustdx-optimization-20261024/phase2all-0.log"
+    },
+    {
+      "command": [
+        "env",
+        "RUSTDOCFLAGS=-D warnings",
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "doc",
+        "--workspace",
+        "--all-features",
+        "--no-deps",
+        "--locked"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 10.403868834000008,
+      "log": "/tmp/rustdx-optimization-20261024/phase2all-1.log"
+    }
+  ]
+}

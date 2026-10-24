@@ -1,0 +1,4988 @@
+{
+  "review_date": "2026-10-24",
+  "package": "eltdx",
+  "version": "3.2.2",
+  "source_url": "https://files.pythonhosted.org/packages/aa/ea/c5c790d3c6e33d1ea83591c21ecd8a217f9a0df24e018e81fd90b03c0aeb/eltdx-3.2.2.tar.gz",
+  "version_url": "https://pypi.org/project/eltdx/3.2.2/",
+  "archive_sha256": "5ef7c8750feaa26fa001c8e5ee0d5952ba8c424b3745ae7f66661503f1d3b955",
+  "command_count": 22,
+  "command_codes": [
+    "0x0004",
+    "0x000d",
+    "0x000f",
+    "0x0010",
+    "0x044d",
+    "0x044e",
+    "0x0452",
+    "0x051b",
+    "0x052d",
+    "0x0537",
+    "0x053e",
+    "0x0547",
+    "0x054b",
+    "0x054c",
+    "0x056a",
+    "0x06b9",
+    "0x0fb4",
+    "0x0fc5",
+    "0x0fc6",
+    "0x0fd1",
+    "0x0feb",
+    "0x0ffc"
+  ],
+  "verification": {
+    "archive_sha256_verified": true,
+    "third_party_sdk_executed": false,
+    "new_live_market_requests": false,
+    "rust_implementation_modified": false,
+    "official_rate_limit_obtained": false,
+    "collection_intervals_in_guide_are_recommendations": true
+  },
+  "important_source_behaviors": {
+    "idle_heartbeat_interval_seconds": 30,
+    "finance_shares_multiplier": 10000,
+    "finance_amount_multiplier": 1000,
+    "kline_volume_lots": "volume_wire_value / 100.0",
+    "kline_all_pages": "concatenates pages in request order; does not globally sort",
+    "trade_all_pages": "reverses page order while preserving per-page wire order",
+    "money_flow_main_net": "(b[0]-b[1]+b[4]-b[5])/50000*total_amount",
+    "money_flow_main_net_is_not_sum_of_all_four_main_buckets": true,
+    "snapshot_legacy_no_specific_80_code_validator": true,
+    "refresh_codes_max": 100
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "c28d722f7a4d22d2a9c77a63dce25ef203d3ecfe5ff0c0fc5766d6ab9c95df73",
+      "bytes": 1345
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/auctions.rs",
+      "sha256": "833595f52aaf3037faa78f234f82e4a6440b9f19c02cd6bc790631651ccc583b",
+      "bytes": 11004
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/corporate.rs",
+      "sha256": "c5f2fddbf0599a3f6ecf89fb81900383513603de175a177e2f3215bde5ab9d91",
+      "bytes": 26242
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/klines.rs",
+      "sha256": "eef93b83af4f0829788f645c3e6acf26a1f57730b18d83be7a6f97b22889ad13",
+      "bytes": 10811
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/limits.rs",
+      "sha256": "8061998cf006404e81f55ba817299a63a9713b5569ac925aea00e48e6bf3bf4b",
+      "bytes": 5289
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/minutes.rs",
+      "sha256": "e5c1bd1a75212784c963d603655082c96d1dab77e61caf9128b17cb4d4fd43b5",
+      "bytes": 38620
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/mod.rs",
+      "sha256": "105a313a0589640c2df59b224e2878cc67afb73cb2a98196cefe34d4b2bd38d3",
+      "bytes": 192
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/money_flow.rs",
+      "sha256": "2b796555749f401edde613b900ea37f10c52862e4bb42b639b99e9554ab56e0f",
+      "bytes": 10400
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/quotes.rs",
+      "sha256": "44b7c7000f9c3aba18c5527e25466b1ff0c895384e68086d43549ac9da0a0ab9",
+      "bytes": 43924
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/resources.rs",
+      "sha256": "57a6f448183f5633faef01d90a393de714e5e4709e61f43ed21d5d913009262c",
+      "bytes": 6246
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/security.rs",
+      "sha256": "f3755aadf60722f5b93bc2f3a42e2a2dccf9c08655bfdb242c99fae94c0c40a2",
+      "bytes": 14658
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/session.rs",
+      "sha256": "c2ef2c47339b3c475155cc399bec986eeac5fe203e6c3549a73b1c94369cb2e5",
+      "bytes": 6746
+    },
+    {
+      "path": "crates/eltdx-protocol/src/commands/trades.rs",
+      "sha256": "abe5ea80d98708bcfb682b1c35cbe6efbe2b037c48bce9a5e3550df604bce5dc",
+      "bytes": 20685
+    },
+    {
+      "path": "crates/eltdx-protocol/src/frame.rs",
+      "sha256": "5cb4cc5cc55a9988d8d1a7e5ba5687eaabf8c5eba96dc5b3201c125cc18e2fdd",
+      "bytes": 26424
+    },
+    {
+      "path": "crates/eltdx-protocol/src/limits.rs",
+      "sha256": "9f68e4ac466df18ec93e6339e79cb6b438778b5332954df906325b173a200b10",
+      "bytes": 2490
+    },
+    {
+      "path": "crates/eltdx-protocol/src/request.rs",
+      "sha256": "a8bf7887413c6c8fc342d61874bdc7db014ecdbf80650126e40b28a8f56d2b4d",
+      "bytes": 15544
+    },
+    {
+      "path": "crates/eltdx-protocol/src/unit.rs",
+      "sha256": "1f4e21ce95e30cfb67c5f8e979e086ea6cb0886a9371333f9c3c3bf4d2145314",
+      "bytes": 30650
+    },
+    {
+      "path": "crates/eltdx-python/src/request.rs",
+      "sha256": "fa88c1dea477c73c58a4be4b0049b13e36885df2410e4eb8286ff4a54373594d",
+      "bytes": 31006
+    },
+    {
+      "path": "crates/eltdx-runtime/src/slot.rs",
+      "sha256": "946705bac03dd6dbdb0bd52b4dd43119135315e9ab08877105d0ed8cf741d017",
+      "bytes": 62048
+    },
+    {
+      "path": "docs/API_REFERENCE.md",
+      "sha256": "b657daec1f8dddbc86495500459c01680ff787924aa1492c36d3d1983a45aa3b",
+      "bytes": 24835
+    },
+    {
+      "path": "docs/COMMANDS_7709.md",
+      "sha256": "6f3f524f3dc064ebf534c22649215ee62cd6e7da279e72abca035e4203b28d34",
+      "bytes": 6599
+    },
+    {
+      "path": "docs/FIELD_REFERENCE.md",
+      "sha256": "ff8093f17a20ae5eb3ab2182787493f3e426ca6071ee4d5b97739754679d956d",
+      "bytes": 27087
+    },
+    {
+      "path": "docs/methods/0x0ffc-资金流向日数据接口.md",
+      "sha256": "84c3e25248bb1394e208d67009a73c593ce917ba733348489dc5d369bdbe36fd",
+      "bytes": 8892
+    },
+    {
+      "path": "docs/methods/7709-0925竞价成交快照.md",
+      "sha256": "c055cc202d9016b7ca5f5f046165098db68695a1b6d42586d205a226d0f2788c",
+      "bytes": 3202
+    },
+    {
+      "path": "docs/methods/7709-K线周期线.md",
+      "sha256": "f9a02747547d591733ae9e7d40c5087f6b925967ca7d677ff591b46b59c4ad68",
+      "bytes": 7794
+    },
+    {
+      "path": "docs/methods/7709-代码数量.md",
+      "sha256": "7af170dcaca88cc1549188d3e7fc66d5a87815f36e6d2913e48a400433f849fe",
+      "bytes": 2830
+    },
+    {
+      "path": "docs/methods/7709-代码表.md",
+      "sha256": "a78b3590fa52d1fdeb2eb975c9e3765a6246db0f7414bfcccf118f45c23e3758",
+      "bytes": 10145
+    },
+    {
+      "path": "docs/methods/7709-分时副图.md",
+      "sha256": "49758074c90668bf799a7c153e5b704b719c7b478a3a6c133e8c13cacb015a8b",
+      "bytes": 3248
+    },
+    {
+      "path": "docs/methods/7709-分类行情.md",
+      "sha256": "0f7a0280ddd75c4b13a85a5f3469df7102ad3ca23535775e55de0d9ada6a34e2",
+      "bytes": 7221
+    },
+    {
+      "path": "docs/methods/7709-历史0925正式撮合.md",
+      "sha256": "294e73d4a710506a4aff8b01154d12c573d7de9fbf5c2db40aae6ce5dae480a1",
+      "bytes": 4002
+    },
+    {
+      "path": "docs/methods/7709-历史成交明细.md",
+      "sha256": "1091dc4574c72f7da89a73ad8900060de53e56da97b737d97d8f8d7859017471",
+      "bytes": 13134
+    },
+    {
+      "path": "docs/methods/7709-增量刷新推送队列.md",
+      "sha256": "d6808924af352fc543539913118c90df5624878295dbbd078ebc680eebb62ca4",
+      "bytes": 5189
+    },
+    {
+      "path": "docs/methods/7709-小走势图.md",
+      "sha256": "6614cd50023c865303e14d5c32a01509b3df62dfede273a1c688aeb2ea4003bb",
+      "bytes": 2392
+    },
+    {
+      "path": "docs/methods/7709-当日0925正式撮合.md",
+      "sha256": "e0c10ba6915a343625c879ea4682235b6b94f8087c7763107fddde8bcc13a675",
+      "bytes": 3826
+    },
+    {
+      "path": "docs/methods/7709-当日分时.md",
+      "sha256": "7401c8b1ef157f45ed629541b913d0b940b7f1a659b696b331fb92ef11e69f16",
+      "bytes": 4177
+    },
+    {
+      "path": "docs/methods/7709-当日成交明细.md",
+      "sha256": "fc232e6985026b732ad793dad26a1b17c980d2d7ca1c652a33c8637f522de0b8",
+      "bytes": 9128
+    },
+    {
+      "path": "docs/methods/7709-心跳.md",
+      "sha256": "fb34606391c23e674e65ff74c373438ae9903b7601bc9e4da832c72d05d3ec0b",
+      "bytes": 1938
+    },
+    {
+      "path": "docs/methods/7709-批量快照.md",
+      "sha256": "0e852227e25dfa0ca14cc4b5091c6c120e40bd7bdd8116ec3d09724400f2d70a",
+      "bytes": 5304
+    },
+    {
+      "path": "docs/methods/7709-指定日期历史分时.md",
+      "sha256": "e60bfcc4824eea0f03c7ff67b701b1f088acb8d3c2ca100923e5727a70281d1e",
+      "bytes": 4533
+    },
+    {
+      "path": "docs/methods/7709-握手.md",
+      "sha256": "a917935a0a23dd3dbd869cbffb8eb5216dfadaab7a0afd221c9c743ecc1e28a1",
+      "bytes": 2564
+    },
+    {
+      "path": "docs/methods/7709-旧版批量行情.md",
+      "sha256": "339b19423407060c64a2e29fab98602bed76f06dbd11a56aa430fa9f5e684fed",
+      "bytes": 4095
+    },
+    {
+      "path": "docs/methods/7709-服务器文件下载.md",
+      "sha256": "d9009238addc08529c0d79bd7b69ba3b34a0a216659729f34a7fc5f6fd777cce",
+      "bytes": 2408
+    },
+    {
+      "path": "docs/methods/7709-服务器文件读取.md",
+      "sha256": "4ae636812e3df8188b69630e05882326ca58317d887f0563c947c3469128766d",
+      "bytes": 5195
+    },
+    {
+      "path": "docs/methods/7709-服务器统计文件解析.md",
+      "sha256": "95fd0bb8314f8e6b08e24e5946ce1db168ddab5438c889b91f1a7578bc41a3be",
+      "bytes": 3170
+    },
+    {
+      "path": "docs/methods/7709-本地复权系数.md",
+      "sha256": "e536b9bfb573986d3510d22d05cce1a43b1a09d129eabedc8aba7dfd53be579b",
+      "bytes": 7619
+    },
+    {
+      "path": "docs/methods/7709-特殊品种涨跌停限制.md",
+      "sha256": "0abd58fb23fcf73e65894203c39eb0f2316275d7cd528b7a71fc0f9eb96a2f59",
+      "bytes": 2985
+    },
+    {
+      "path": "docs/methods/7709-股本变迁GBBQ.md",
+      "sha256": "a14c61d2b64d362760e17d2a9d3b3992748062dca8af7acc4a33bcb881c31280",
+      "bytes": 6461
+    },
+    {
+      "path": "docs/methods/7709-财务基础信息.md",
+      "sha256": "c9e326c1bd2ad899a7c76af6d9617deed49298e42eb7556372b43b67be18ca09",
+      "bytes": 6471
+    },
+    {
+      "path": "docs/methods/7709-近期历史分时.md",
+      "sha256": "3cad679e05f3388735a64b6a8c56c5cf5c022d2784cab0128d4dd75b58a7b069",
+      "bytes": 3581
+    },
+    {
+      "path": "docs/methods/7709-集合竞价明细.md",
+      "sha256": "037fc74b5124ef3b312c0c756d78a17af3b107762cc1aca97fcdbcda882a9f27",
+      "bytes": 7071
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "b7417fd4aac118e16d052b133c728435391f2614ca127368b561183978364120",
+      "bytes": 2749
+    },
+    {
+      "path": "src/eltdx/api/__init__.py",
+      "sha256": "73bae65e27d79111afacde9f408287aabbea9a4804e7cb5efeaafc308c39329f",
+      "bytes": 630
+    },
+    {
+      "path": "src/eltdx/api/auctions.py",
+      "sha256": "55c863f501655fb671e1e690d3557d15729cbc05be6e9b9a4e2919bbd6bc5857",
+      "bytes": 1492
+    },
+    {
+      "path": "src/eltdx/api/bars.py",
+      "sha256": "17fce1891a9e3919400e92a7a183de6cb8c9c00f49dfa7623bbaabd3fec8bef6",
+      "bytes": 5655
+    },
+    {
+      "path": "src/eltdx/api/base.py",
+      "sha256": "adb222db2ff10ac1f9243ae86e1063cf10cad031fe83a367a681bc34d6c06bd5",
+      "bytes": 1010
+    },
+    {
+      "path": "src/eltdx/api/codes.py",
+      "sha256": "b2ab356e5dd34884590d66cc4885043fd8c5e5e51fedc4aee02fdba9b2277d56",
+      "bytes": 4917
+    },
+    {
+      "path": "src/eltdx/api/corporate.py",
+      "sha256": "c80659e857c8f682e5a28cf3187ff96017a8bb7632ae9be17bc6936d38f2c2a7",
+      "bytes": 6288
+    },
+    {
+      "path": "src/eltdx/api/health.py",
+      "sha256": "a561a9a313c8ebeced01e7870c2fb16d1ab5c7bd0cc449aa61ae974937e30dac",
+      "bytes": 421
+    },
+    {
+      "path": "src/eltdx/api/limits.py",
+      "sha256": "cb858322e0c4ebe21dc2913f9092cbec43fa634d25f8d871785c108f6cd917c8",
+      "bytes": 617
+    },
+    {
+      "path": "src/eltdx/api/minutes.py",
+      "sha256": "58970c668516026b4de78d18381364a0c0ac3057f2fee3c271d71b731c1ed55d",
+      "bytes": 3344
+    },
+    {
+      "path": "src/eltdx/api/money_flow.py",
+      "sha256": "30c71964361f0d5b8a7efd4c5d463c0c960b3a7a3effca77a657e0c0b6c9c286",
+      "bytes": 3231
+    },
+    {
+      "path": "src/eltdx/api/quotes.py",
+      "sha256": "98bfcf4677a2fcf6397e72229c4b1278be049e32a3b1a967541ff733b3b0b904",
+      "bytes": 2473
+    },
+    {
+      "path": "src/eltdx/api/resources.py",
+      "sha256": "d61691947901b00def88832c73bff8cd1506401b76c836d36898976e3648505a",
+      "bytes": 4159
+    },
+    {
+      "path": "src/eltdx/api/session.py",
+      "sha256": "e2a662ce166f293058a047c079496fb84f25d6a3c6aecf60692c94329f992bdc",
+      "bytes": 332
+    },
+    {
+      "path": "src/eltdx/api/trades.py",
+      "sha256": "c743b893ba8d7e8a99da3405404a128d448555203df50b84aee424d02862b4c7",
+      "bytes": 15901
+    },
+    {
+      "path": "src/eltdx/client.py",
+      "sha256": "351848d3ea18dd5084bc375bd96e3023667757d44a2f0dfae5adb39edc75dc90",
+      "bytes": 16298
+    },
+    {
+      "path": "src/eltdx/models/__init__.py",
+      "sha256": "d6b55430c2e5c3d687b9cce5f4d78b95740ed7ce73f32531dd5663ef698ac30a",
+      "bytes": 2095
+    },
+    {
+      "path": "src/eltdx/models/auction.py",
+      "sha256": "3974dce06d96d4fd7870eb8d8eb80a6f6015160e4ad3fa4c278fcd322e706135",
+      "bytes": 1058
+    },
+    {
+      "path": "src/eltdx/models/corporate.py",
+      "sha256": "ce4daeb1eb3fb13997d16e0766011e48b3db2d15d293eb1efc6ab6e6d859d60e",
+      "bytes": 6683
+    },
+    {
+      "path": "src/eltdx/models/kline.py",
+      "sha256": "d4d04f5104015b99b6e1069945dc5469c4cca7917802c7e13b7e043bc1bf368d",
+      "bytes": 1243
+    },
+    {
+      "path": "src/eltdx/models/limit.py",
+      "sha256": "11f45370c3983793d93cf4cf7febc8933384b6e82846759a5185dc2f00247a34",
+      "bytes": 839
+    },
+    {
+      "path": "src/eltdx/models/minute.py",
+      "sha256": "dfa73d3b121fb408cd68f6a252cb3a6e9f53cfd24f411ac7a51a3b05e77a7a5a",
+      "bytes": 2481
+    },
+    {
+      "path": "src/eltdx/models/money_flow.py",
+      "sha256": "b058bd8656ab4d838b5958df6df6be7bb6bdf776fc818cda420c573969dbffce",
+      "bytes": 1956
+    },
+    {
+      "path": "src/eltdx/models/quote.py",
+      "sha256": "ef567710a00c03b8d685bb2068fc0c35854904d8e86ef9b45014b3c790769754",
+      "bytes": 5574
+    },
+    {
+      "path": "src/eltdx/models/resource.py",
+      "sha256": "703f19163c8590334cca5756fe94f7a64c12f367a9ed172c297d8454d74c894c",
+      "bytes": 2817
+    },
+    {
+      "path": "src/eltdx/models/response.py",
+      "sha256": "e0c732279c9c71195cfa64883ba443ece1f4fcd72182a48e511148b7895d1651",
+      "bytes": 260
+    },
+    {
+      "path": "src/eltdx/models/security.py",
+      "sha256": "f516989790140e01a8762dd37eaf5d29fc367648f3ad6751459c0422eee57ba0",
+      "bytes": 574
+    },
+    {
+      "path": "src/eltdx/models/session.py",
+      "sha256": "a5da168e7aa39dbe3f3aa19242e1d694266db3a26c43304eede2f0d151f1a987",
+      "bytes": 721
+    },
+    {
+      "path": "src/eltdx/models/trade.py",
+      "sha256": "67eb07e852cd4bc1fe9690b97a2c44795b0c873a05870bc67c4d32d8c18759f8",
+      "bytes": 3372
+    },
+    {
+      "path": "src/eltdx/models/trade_batch.py",
+      "sha256": "d44a230d07e8fbeea8d06e35f6b76ba8ddce17416ee66438b20dad0fb32791ff",
+      "bytes": 6148
+    },
+    {
+      "path": "src/eltdx/protocol/unit.py",
+      "sha256": "b577880c322fe81aab0b6921528357494b919c0cbaefb9cf2eb87e58f5958f3f",
+      "bytes": 7152
+    }
+  ],
+  "model_schemas": [
+    {
+      "class": "AuctionPoint",
+      "source": "src/eltdx/models/auction.py",
+      "line": 10,
+      "fields": [
+        {
+          "name": "index",
+          "type": "int",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "minute_of_day_raw",
+          "type": "int",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "second_raw",
+          "type": "int",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "time_label",
+          "type": "str",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "time_seconds",
+          "type": "int",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "price",
+          "type": "float",
+          "default": null,
+          "line": 16
+        },
+        {
+          "name": "price_milli",
+          "type": "int",
+          "default": null,
+          "line": 17
+        },
+        {
+          "name": "matched_volume",
+          "type": "int",
+          "default": null,
+          "line": 18
+        },
+        {
+          "name": "unmatched_signed_raw",
+          "type": "int",
+          "default": null,
+          "line": 19
+        },
+        {
+          "name": "unmatched_volume",
+          "type": "int",
+          "default": null,
+          "line": 20
+        },
+        {
+          "name": "unmatched_direction_raw",
+          "type": "int",
+          "default": null,
+          "line": 21
+        },
+        {
+          "name": "reserved_zero_0e",
+          "type": "int",
+          "default": null,
+          "line": 22
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 23
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "matched_amount_estimated",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 26,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "AuctionSeries",
+      "source": "src/eltdx/models/auction.py",
+      "line": 31,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 32
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 33
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 34
+        },
+        {
+          "name": "trading_date",
+          "type": "date | None",
+          "default": null,
+          "line": 35
+        },
+        {
+          "name": "mode_or_selector_raw",
+          "type": "int",
+          "default": null,
+          "line": 36
+        },
+        {
+          "name": "start_raw",
+          "type": "int",
+          "default": null,
+          "line": 37
+        },
+        {
+          "name": "limit_or_count_raw",
+          "type": "int",
+          "default": null,
+          "line": 38
+        },
+        {
+          "name": "points",
+          "type": "tuple[AuctionPoint, ...]",
+          "default": null,
+          "line": 39
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 40
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 43,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 47,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "CapitalChangeRecord",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 10,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "reserved_7",
+          "type": "int",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "date_raw",
+          "type": "int",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "date",
+          "type": "date | None",
+          "default": null,
+          "line": 16
+        },
+        {
+          "name": "category_raw",
+          "type": "int",
+          "default": null,
+          "line": 17
+        },
+        {
+          "name": "category_name",
+          "type": "str | None",
+          "default": null,
+          "line": 18
+        },
+        {
+          "name": "c1_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 19
+        },
+        {
+          "name": "c2_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 20
+        },
+        {
+          "name": "c3_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 21
+        },
+        {
+          "name": "c4_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 22
+        },
+        {
+          "name": "c1_float",
+          "type": "float",
+          "default": null,
+          "line": 23
+        },
+        {
+          "name": "c2_float",
+          "type": "float",
+          "default": null,
+          "line": 24
+        },
+        {
+          "name": "c3_float",
+          "type": "float",
+          "default": null,
+          "line": 25
+        },
+        {
+          "name": "c4_float",
+          "type": "float",
+          "default": null,
+          "line": 26
+        },
+        {
+          "name": "c1_value",
+          "type": "float",
+          "default": null,
+          "line": 27
+        },
+        {
+          "name": "c2_value",
+          "type": "float",
+          "default": null,
+          "line": 28
+        },
+        {
+          "name": "c3_value",
+          "type": "float",
+          "default": null,
+          "line": 29
+        },
+        {
+          "name": "c4_value",
+          "type": "float",
+          "default": null,
+          "line": 30
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 31
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 34,
+          "property": true
+        },
+        {
+          "name": "time",
+          "arguments": "self",
+          "return_annotation": "datetime | None",
+          "line": 38,
+          "property": true
+        },
+        {
+          "name": "category",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 44,
+          "property": true
+        },
+        {
+          "name": "c1",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 48,
+          "property": true
+        },
+        {
+          "name": "c2",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 52,
+          "property": true
+        },
+        {
+          "name": "c3",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 56,
+          "property": true
+        },
+        {
+          "name": "c4",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 60,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "CapitalChangeBlock",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 65,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 66
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 67
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 68
+        },
+        {
+          "name": "block_count",
+          "type": "int",
+          "default": null,
+          "line": 69
+        },
+        {
+          "name": "records",
+          "type": "tuple[CapitalChangeRecord, ...]",
+          "default": null,
+          "line": 70
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 71
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 74,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 78,
+          "property": true
+        },
+        {
+          "name": "items",
+          "arguments": "self",
+          "return_annotation": "tuple[CapitalChangeRecord, ...]",
+          "line": 82,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "CapitalChangeBatch",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 87,
+      "fields": [
+        {
+          "name": "blocks",
+          "type": "tuple[CapitalChangeBlock, ...]",
+          "default": null,
+          "line": 88
+        },
+        {
+          "name": "raw_payloads",
+          "type": "tuple[bytes, ...]",
+          "default": "field(default_factory=tuple)",
+          "line": 89
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 92,
+          "property": true
+        },
+        {
+          "name": "items",
+          "arguments": "self",
+          "return_annotation": "tuple[CapitalChangeBlock, ...]",
+          "line": 96,
+          "property": true
+        },
+        {
+          "name": "records",
+          "arguments": "self",
+          "return_annotation": "tuple[CapitalChangeRecord, ...]",
+          "line": 100,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "XdxrRecord",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 105,
+      "fields": [
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 106
+        },
+        {
+          "name": "date",
+          "type": "date | None",
+          "default": null,
+          "line": 107
+        },
+        {
+          "name": "category",
+          "type": "int",
+          "default": null,
+          "line": 108
+        },
+        {
+          "name": "category_name",
+          "type": "str | None",
+          "default": null,
+          "line": 109
+        },
+        {
+          "name": "fenhong",
+          "type": "float",
+          "default": null,
+          "line": 110
+        },
+        {
+          "name": "peigujia",
+          "type": "float",
+          "default": null,
+          "line": 111
+        },
+        {
+          "name": "songzhuangu",
+          "type": "float",
+          "default": null,
+          "line": 112
+        },
+        {
+          "name": "peigu",
+          "type": "float",
+          "default": null,
+          "line": 113
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "time",
+          "arguments": "self",
+          "return_annotation": "datetime | None",
+          "line": 116,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "EquityRecord",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 123,
+      "fields": [
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 124
+        },
+        {
+          "name": "date",
+          "type": "date | None",
+          "default": null,
+          "line": 125
+        },
+        {
+          "name": "category",
+          "type": "int",
+          "default": null,
+          "line": 126
+        },
+        {
+          "name": "category_name",
+          "type": "str | None",
+          "default": null,
+          "line": 127
+        },
+        {
+          "name": "float_shares",
+          "type": "int",
+          "default": null,
+          "line": 128
+        },
+        {
+          "name": "total_shares",
+          "type": "int",
+          "default": null,
+          "line": 129
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "time",
+          "arguments": "self",
+          "return_annotation": "datetime | None",
+          "line": 132,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "EquityResponse",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 139,
+      "fields": [
+        {
+          "name": "count",
+          "type": "int",
+          "default": null,
+          "line": 140
+        },
+        {
+          "name": "items",
+          "type": "tuple[EquityRecord, ...]",
+          "default": null,
+          "line": 141
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "FactorRecord",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 145,
+      "fields": [
+        {
+          "name": "time",
+          "type": "datetime",
+          "default": null,
+          "line": 146
+        },
+        {
+          "name": "last_close_price",
+          "type": "float | None",
+          "default": null,
+          "line": 147
+        },
+        {
+          "name": "last_close_price_milli",
+          "type": "int | None",
+          "default": null,
+          "line": 148
+        },
+        {
+          "name": "pre_last_close_price",
+          "type": "float | None",
+          "default": null,
+          "line": 149
+        },
+        {
+          "name": "pre_last_close_price_milli",
+          "type": "int | None",
+          "default": null,
+          "line": 150
+        },
+        {
+          "name": "qfq_factor",
+          "type": "float",
+          "default": null,
+          "line": 151
+        },
+        {
+          "name": "hfq_factor",
+          "type": "float",
+          "default": null,
+          "line": 152
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "FactorResponse",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 156,
+      "fields": [
+        {
+          "name": "count",
+          "type": "int",
+          "default": null,
+          "line": 157
+        },
+        {
+          "name": "items",
+          "type": "tuple[FactorRecord, ...]",
+          "default": null,
+          "line": 158
+        },
+        {
+          "name": "anchor_date",
+          "type": "date | None",
+          "default": "None",
+          "line": 159
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "AdjustmentFactor",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 163,
+      "fields": [
+        {
+          "name": "date",
+          "type": "date",
+          "default": null,
+          "line": 164
+        },
+        {
+          "name": "qfq_scale",
+          "type": "float",
+          "default": null,
+          "line": 165
+        },
+        {
+          "name": "qfq_offset",
+          "type": "float",
+          "default": null,
+          "line": 166
+        },
+        {
+          "name": "hfq_scale",
+          "type": "float",
+          "default": null,
+          "line": 167
+        },
+        {
+          "name": "hfq_offset",
+          "type": "float",
+          "default": null,
+          "line": 168
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "time",
+          "arguments": "self",
+          "return_annotation": "datetime",
+          "line": 171,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "AdjustmentFactorResponse",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 176,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 177
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 178
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 179
+        },
+        {
+          "name": "anchor_date",
+          "type": "date | None",
+          "default": null,
+          "line": 180
+        },
+        {
+          "name": "start_date",
+          "type": "date | None",
+          "default": null,
+          "line": 181
+        },
+        {
+          "name": "items",
+          "type": "tuple[AdjustmentFactor, ...]",
+          "default": null,
+          "line": 182
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 185,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 189,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "AdjustmentFactorBatch",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 194,
+      "fields": [
+        {
+          "name": "responses",
+          "type": "tuple[AdjustmentFactorResponse, ...]",
+          "default": null,
+          "line": 195
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 198,
+          "property": true
+        },
+        {
+          "name": "items",
+          "arguments": "self",
+          "return_annotation": "tuple[AdjustmentFactorResponse, ...]",
+          "line": 202,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "FinanceRecord",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 207,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 208
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 209
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 210
+        },
+        {
+          "name": "finance_info_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 211
+        },
+        {
+          "name": "liu_tong_gu_ben_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 212
+        },
+        {
+          "name": "province_raw",
+          "type": "int",
+          "default": null,
+          "line": 213
+        },
+        {
+          "name": "industry_raw",
+          "type": "int",
+          "default": null,
+          "line": 214
+        },
+        {
+          "name": "updated_date_raw",
+          "type": "int",
+          "default": null,
+          "line": 215
+        },
+        {
+          "name": "updated_date",
+          "type": "date | None",
+          "default": null,
+          "line": 216
+        },
+        {
+          "name": "ipo_date_raw",
+          "type": "int",
+          "default": null,
+          "line": 217
+        },
+        {
+          "name": "ipo_date",
+          "type": "date | None",
+          "default": null,
+          "line": 218
+        },
+        {
+          "name": "zong_gu_ben_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 219
+        },
+        {
+          "name": "guo_jia_gu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 220
+        },
+        {
+          "name": "fa_qi_ren_fa_ren_gu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 221
+        },
+        {
+          "name": "fa_ren_gu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 222
+        },
+        {
+          "name": "b_gu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 223
+        },
+        {
+          "name": "h_gu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 224
+        },
+        {
+          "name": "eps_raw",
+          "type": "float",
+          "default": null,
+          "line": 225
+        },
+        {
+          "name": "zong_zi_chan_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 226
+        },
+        {
+          "name": "liu_dong_zi_chan_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 227
+        },
+        {
+          "name": "gu_ding_zi_chan_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 228
+        },
+        {
+          "name": "wu_xing_zi_chan_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 229
+        },
+        {
+          "name": "gu_dong_ren_shu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 230
+        },
+        {
+          "name": "liu_dong_fu_zhai_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 231
+        },
+        {
+          "name": "chang_qi_fu_zhai_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 232
+        },
+        {
+          "name": "zi_ben_gong_ji_jin_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 233
+        },
+        {
+          "name": "jing_zi_chan_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 234
+        },
+        {
+          "name": "zhu_ying_shou_ru_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 235
+        },
+        {
+          "name": "zhu_ying_li_run_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 236
+        },
+        {
+          "name": "ying_shou_zhang_kuan_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 237
+        },
+        {
+          "name": "ying_ye_li_run_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 238
+        },
+        {
+          "name": "tou_zi_shou_yu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 239
+        },
+        {
+          "name": "jing_ying_xian_jin_liu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 240
+        },
+        {
+          "name": "zong_xian_jin_liu_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 241
+        },
+        {
+          "name": "cun_huo_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 242
+        },
+        {
+          "name": "li_run_zong_he_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 243
+        },
+        {
+          "name": "shui_hou_li_run_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 244
+        },
+        {
+          "name": "jing_li_run_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 245
+        },
+        {
+          "name": "wei_fen_li_run_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 246
+        },
+        {
+          "name": "mei_gu_jing_zi_chan_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 247
+        },
+        {
+          "name": "bao_liu_2_raw_float",
+          "type": "float",
+          "default": null,
+          "line": 248
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 249
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 252,
+          "property": true
+        },
+        {
+          "name": "circulating_shares",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 256,
+          "property": true
+        },
+        {
+          "name": "total_shares",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 260,
+          "property": true
+        },
+        {
+          "name": "total_assets_yuan",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 264,
+          "property": true
+        },
+        {
+          "name": "net_profit_yuan",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 268,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "FinanceBatch",
+      "source": "src/eltdx/models/corporate.py",
+      "line": 273,
+      "fields": [
+        {
+          "name": "records",
+          "type": "tuple[FinanceRecord, ...]",
+          "default": null,
+          "line": 274
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 275
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 278,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "KlineBar",
+      "source": "src/eltdx/models/kline.py",
+      "line": 10,
+      "fields": [
+        {
+          "name": "time",
+          "type": "datetime",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "open",
+          "type": "float",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "close",
+          "type": "float",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "high",
+          "type": "float",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "low",
+          "type": "float",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "open_price_milli",
+          "type": "int",
+          "default": null,
+          "line": 16
+        },
+        {
+          "name": "close_price_milli",
+          "type": "int",
+          "default": null,
+          "line": 17
+        },
+        {
+          "name": "high_price_milli",
+          "type": "int",
+          "default": null,
+          "line": 18
+        },
+        {
+          "name": "low_price_milli",
+          "type": "int",
+          "default": null,
+          "line": 19
+        },
+        {
+          "name": "last_close_price_milli",
+          "type": "int | None",
+          "default": null,
+          "line": 20
+        },
+        {
+          "name": "volume_raw",
+          "type": "int",
+          "default": null,
+          "line": 21
+        },
+        {
+          "name": "amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 22
+        },
+        {
+          "name": "volume_wire_value",
+          "type": "float",
+          "default": null,
+          "line": 23
+        },
+        {
+          "name": "volume_lots",
+          "type": "float",
+          "default": null,
+          "line": 24
+        },
+        {
+          "name": "amount",
+          "type": "float",
+          "default": null,
+          "line": 25
+        },
+        {
+          "name": "open_delta_raw",
+          "type": "int",
+          "default": null,
+          "line": 26
+        },
+        {
+          "name": "close_delta_raw",
+          "type": "int",
+          "default": null,
+          "line": 27
+        },
+        {
+          "name": "high_delta_raw",
+          "type": "int",
+          "default": null,
+          "line": 28
+        },
+        {
+          "name": "low_delta_raw",
+          "type": "int",
+          "default": null,
+          "line": 29
+        },
+        {
+          "name": "up_count",
+          "type": "int | None",
+          "default": "None",
+          "line": 30
+        },
+        {
+          "name": "down_count",
+          "type": "int | None",
+          "default": "None",
+          "line": 31
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 32
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "KlineSeries",
+      "source": "src/eltdx/models/kline.py",
+      "line": 36,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 37
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 38
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 39
+        },
+        {
+          "name": "period_raw",
+          "type": "int",
+          "default": null,
+          "line": 40
+        },
+        {
+          "name": "period_param_raw",
+          "type": "int",
+          "default": null,
+          "line": 41
+        },
+        {
+          "name": "period_name",
+          "type": "str",
+          "default": null,
+          "line": 42
+        },
+        {
+          "name": "start",
+          "type": "int",
+          "default": null,
+          "line": 43
+        },
+        {
+          "name": "request_count",
+          "type": "int",
+          "default": null,
+          "line": 44
+        },
+        {
+          "name": "adjust_mode_raw",
+          "type": "int",
+          "default": null,
+          "line": 45
+        },
+        {
+          "name": "adjust_mode",
+          "type": "str",
+          "default": null,
+          "line": 46
+        },
+        {
+          "name": "anchor_date_raw",
+          "type": "int",
+          "default": null,
+          "line": 47
+        },
+        {
+          "name": "anchor_date",
+          "type": "date | None",
+          "default": null,
+          "line": 48
+        },
+        {
+          "name": "bars",
+          "type": "tuple[KlineBar, ...]",
+          "default": null,
+          "line": 49
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 50
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 53,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 57,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "SpecialLimitRecord",
+      "source": "src/eltdx/models/limit.py",
+      "line": 9,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 10
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "code_num",
+          "type": "int",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "upper_price_raw_f32",
+          "type": "float",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "lower_price_raw_f32",
+          "type": "float",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 16
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 19,
+          "property": true
+        },
+        {
+          "name": "limit_up_price",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 23,
+          "property": true
+        },
+        {
+          "name": "limit_down_price",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 27,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "SpecialLimitPage",
+      "source": "src/eltdx/models/limit.py",
+      "line": 32,
+      "fields": [
+        {
+          "name": "start_index",
+          "type": "int",
+          "default": null,
+          "line": 33
+        },
+        {
+          "name": "records",
+          "type": "tuple[SpecialLimitRecord, ...]",
+          "default": null,
+          "line": 34
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 35
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 38,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "MinutePoint",
+      "source": "src/eltdx/models/minute.py",
+      "line": 10,
+      "fields": [
+        {
+          "name": "index",
+          "type": "int",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "time_label",
+          "type": "str",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "time",
+          "type": "datetime | None",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "price",
+          "type": "float",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "price_milli",
+          "type": "int",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "volume",
+          "type": "int",
+          "default": null,
+          "line": 16
+        },
+        {
+          "name": "price_field",
+          "type": "int | None",
+          "default": "None",
+          "line": 17
+        },
+        {
+          "name": "avg_field",
+          "type": "int | None",
+          "default": "None",
+          "line": 18
+        },
+        {
+          "name": "avg_price",
+          "type": "float | None",
+          "default": "None",
+          "line": 19
+        },
+        {
+          "name": "price_raw",
+          "type": "int | None",
+          "default": "None",
+          "line": 20
+        },
+        {
+          "name": "avg_raw",
+          "type": "int | None",
+          "default": "None",
+          "line": 21
+        },
+        {
+          "name": "price_delta_raw",
+          "type": "int | None",
+          "default": "None",
+          "line": 22
+        },
+        {
+          "name": "aux_delta_raw",
+          "type": "int | None",
+          "default": "None",
+          "line": 23
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 24
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "MinuteSeries",
+      "source": "src/eltdx/models/minute.py",
+      "line": 28,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 29
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 30
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 31
+        },
+        {
+          "name": "trading_date",
+          "type": "date | None",
+          "default": null,
+          "line": 32
+        },
+        {
+          "name": "points",
+          "type": "tuple[MinutePoint, ...]",
+          "default": null,
+          "line": 33
+        },
+        {
+          "name": "reserved_zero",
+          "type": "int | None",
+          "default": "None",
+          "line": 34
+        },
+        {
+          "name": "prev_close",
+          "type": "float | None",
+          "default": "None",
+          "line": 35
+        },
+        {
+          "name": "open_price",
+          "type": "float | None",
+          "default": "None",
+          "line": 36
+        },
+        {
+          "name": "date_selector_raw",
+          "type": "int | None",
+          "default": "None",
+          "line": 37
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 38
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 41,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 45,
+          "property": true
+        },
+        {
+          "name": "volume_sum",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 49,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "MinuteAuxPoint",
+      "source": "src/eltdx/models/minute.py",
+      "line": 54,
+      "fields": [
+        {
+          "name": "index",
+          "type": "int",
+          "default": null,
+          "line": 55
+        },
+        {
+          "name": "time_label",
+          "type": "str",
+          "default": null,
+          "line": 56
+        },
+        {
+          "name": "series_a",
+          "type": "float | int",
+          "default": null,
+          "line": 57
+        },
+        {
+          "name": "series_b",
+          "type": "float | int",
+          "default": null,
+          "line": 58
+        },
+        {
+          "name": "buy_commission",
+          "type": "int | None",
+          "default": "None",
+          "line": 59
+        },
+        {
+          "name": "sell_commission",
+          "type": "int | None",
+          "default": "None",
+          "line": 60
+        },
+        {
+          "name": "previous_day_cumulative_volume",
+          "type": "float | None",
+          "default": "None",
+          "line": 61
+        },
+        {
+          "name": "current_day_cumulative_volume",
+          "type": "float | None",
+          "default": "None",
+          "line": 62
+        },
+        {
+          "name": "cumulative_volume",
+          "type": "float | None",
+          "default": "None",
+          "line": 63
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 64
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "MinuteAuxSeries",
+      "source": "src/eltdx/models/minute.py",
+      "line": 68,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 69
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 70
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 71
+        },
+        {
+          "name": "selector_raw",
+          "type": "int",
+          "default": null,
+          "line": 72
+        },
+        {
+          "name": "kind",
+          "type": "str",
+          "default": null,
+          "line": 73
+        },
+        {
+          "name": "points",
+          "type": "tuple[MinuteAuxPoint, ...]",
+          "default": null,
+          "line": 74
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 75
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 78,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 82,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "SparklineSeries",
+      "source": "src/eltdx/models/minute.py",
+      "line": 87,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 88
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 89
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 90
+        },
+        {
+          "name": "selector_raw",
+          "type": "int",
+          "default": null,
+          "line": 91
+        },
+        {
+          "name": "selector_echo",
+          "type": "int",
+          "default": null,
+          "line": 92
+        },
+        {
+          "name": "window_or_count_raw",
+          "type": "int",
+          "default": null,
+          "line": 93
+        },
+        {
+          "name": "max_count_raw",
+          "type": "int",
+          "default": null,
+          "line": 94
+        },
+        {
+          "name": "base_price",
+          "type": "float",
+          "default": null,
+          "line": 95
+        },
+        {
+          "name": "prices",
+          "type": "tuple[float, ...]",
+          "default": null,
+          "line": 96
+        },
+        {
+          "name": "reserved_param_u32",
+          "type": "int",
+          "default": null,
+          "line": 97
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 98
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 101,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 105,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "MoneyFlowDaily",
+      "source": "src/eltdx/models/money_flow.py",
+      "line": 10,
+      "fields": [
+        {
+          "name": "date_raw",
+          "type": "int",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "date",
+          "type": "date | None",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "total_amount",
+          "type": "float",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "buckets",
+          "type": "tuple[int, ...]",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "main_net",
+          "type": "float",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "main_ratio",
+          "type": "float",
+          "default": null,
+          "line": 16
+        },
+        {
+          "name": "raw",
+          "type": "tuple[int, ...]",
+          "default": null,
+          "line": 17
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 18
+        },
+        {
+          "name": "main_buy_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 19
+        },
+        {
+          "name": "main_buy_ratio",
+          "type": "float",
+          "default": "0.0",
+          "line": 20
+        },
+        {
+          "name": "main_buy_super_large_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 21
+        },
+        {
+          "name": "main_buy_large_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 22
+        },
+        {
+          "name": "main_buy_medium_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 23
+        },
+        {
+          "name": "main_buy_small_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 24
+        },
+        {
+          "name": "main_super_large_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 25
+        },
+        {
+          "name": "main_large_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 26
+        },
+        {
+          "name": "main_medium_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 27
+        },
+        {
+          "name": "main_small_net",
+          "type": "float",
+          "default": "0.0",
+          "line": 28
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "MoneyFlowBlock",
+      "source": "src/eltdx/models/money_flow.py",
+      "line": 32,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 33
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 34
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 35
+        },
+        {
+          "name": "records",
+          "type": "tuple[MoneyFlowDaily, ...]",
+          "default": null,
+          "line": 36
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 39,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 43,
+          "property": true
+        },
+        {
+          "name": "main_buy_net_total",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 47,
+          "property": true
+        },
+        {
+          "name": "main_buy_ratio_total",
+          "arguments": "self",
+          "return_annotation": "float | None",
+          "line": 51,
+          "property": true
+        },
+        {
+          "name": "main_net_total",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 58,
+          "property": true
+        },
+        {
+          "name": "main_ratio_total",
+          "arguments": "self",
+          "return_annotation": "float | None",
+          "line": 62,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "MoneyFlowBatch",
+      "source": "src/eltdx/models/money_flow.py",
+      "line": 70,
+      "fields": [
+        {
+          "name": "blocks",
+          "type": "tuple[MoneyFlowBlock, ...]",
+          "default": null,
+          "line": 71
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 74,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "QuoteLevel",
+      "source": "src/eltdx/models/quote.py",
+      "line": 9,
+      "fields": [
+        {
+          "name": "price",
+          "type": "float",
+          "default": null,
+          "line": 10
+        },
+        {
+          "name": "volume",
+          "type": "int",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "price_delta_raw",
+          "type": "int",
+          "default": null,
+          "line": 12
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "QuoteSnapshot",
+      "source": "src/eltdx/models/quote.py",
+      "line": 16,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 17
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 18
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 19
+        },
+        {
+          "name": "active1",
+          "type": "int",
+          "default": null,
+          "line": 20
+        },
+        {
+          "name": "last_price",
+          "type": "float",
+          "default": null,
+          "line": 21
+        },
+        {
+          "name": "pre_close_price",
+          "type": "float",
+          "default": null,
+          "line": 22
+        },
+        {
+          "name": "open_price",
+          "type": "float",
+          "default": null,
+          "line": 23
+        },
+        {
+          "name": "high_price",
+          "type": "float",
+          "default": null,
+          "line": 24
+        },
+        {
+          "name": "low_price",
+          "type": "float",
+          "default": null,
+          "line": 25
+        },
+        {
+          "name": "time_raw",
+          "type": "int",
+          "default": null,
+          "line": 26
+        },
+        {
+          "name": "unknown_after_time_raw",
+          "type": "int",
+          "default": null,
+          "line": 27
+        },
+        {
+          "name": "total_hand",
+          "type": "int",
+          "default": null,
+          "line": 28
+        },
+        {
+          "name": "current_hand",
+          "type": "int",
+          "default": null,
+          "line": 29
+        },
+        {
+          "name": "amount",
+          "type": "float",
+          "default": null,
+          "line": 30
+        },
+        {
+          "name": "amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 31
+        },
+        {
+          "name": "inside_dish",
+          "type": "int",
+          "default": null,
+          "line": 32
+        },
+        {
+          "name": "outer_disc",
+          "type": "int",
+          "default": null,
+          "line": 33
+        },
+        {
+          "name": "unknown_after_outer_raw",
+          "type": "int",
+          "default": null,
+          "line": 34
+        },
+        {
+          "name": "open_amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 35
+        },
+        {
+          "name": "open_amount_yuan",
+          "type": "float",
+          "default": null,
+          "line": 36
+        },
+        {
+          "name": "buy_levels",
+          "type": "tuple[QuoteLevel, ...]",
+          "default": null,
+          "line": 37
+        },
+        {
+          "name": "sell_levels",
+          "type": "tuple[QuoteLevel, ...]",
+          "default": null,
+          "line": 38
+        },
+        {
+          "name": "tail_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 39
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 42,
+          "property": true
+        },
+        {
+          "name": "change",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 46,
+          "property": true
+        },
+        {
+          "name": "change_pct",
+          "arguments": "self",
+          "return_annotation": "float | None",
+          "line": 50,
+          "property": true
+        },
+        {
+          "name": "sum_buy_vol",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 56,
+          "property": true
+        },
+        {
+          "name": "sum_sell_vol",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 60,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "LegacyQuote",
+      "source": "src/eltdx/models/quote.py",
+      "line": 65,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 66
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 67
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 68
+        },
+        {
+          "name": "active1",
+          "type": "int",
+          "default": null,
+          "line": 69
+        },
+        {
+          "name": "last_price",
+          "type": "float",
+          "default": null,
+          "line": 70
+        },
+        {
+          "name": "pre_close_price",
+          "type": "float",
+          "default": null,
+          "line": 71
+        },
+        {
+          "name": "open_price",
+          "type": "float",
+          "default": null,
+          "line": 72
+        },
+        {
+          "name": "high_price",
+          "type": "float",
+          "default": null,
+          "line": 73
+        },
+        {
+          "name": "low_price",
+          "type": "float",
+          "default": null,
+          "line": 74
+        },
+        {
+          "name": "server_time_raw",
+          "type": "int",
+          "default": null,
+          "line": 75
+        },
+        {
+          "name": "unknown_after_time_raw",
+          "type": "int",
+          "default": null,
+          "line": 76
+        },
+        {
+          "name": "total_hand",
+          "type": "int",
+          "default": null,
+          "line": 77
+        },
+        {
+          "name": "current_hand",
+          "type": "int",
+          "default": null,
+          "line": 78
+        },
+        {
+          "name": "amount",
+          "type": "float",
+          "default": null,
+          "line": 79
+        },
+        {
+          "name": "amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 80
+        },
+        {
+          "name": "inside_dish",
+          "type": "int",
+          "default": null,
+          "line": 81
+        },
+        {
+          "name": "outer_disc",
+          "type": "int",
+          "default": null,
+          "line": 82
+        },
+        {
+          "name": "unknown_after_outer_raw",
+          "type": "int",
+          "default": null,
+          "line": 83
+        },
+        {
+          "name": "open_amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 84
+        },
+        {
+          "name": "open_amount_yuan",
+          "type": "float",
+          "default": null,
+          "line": 85
+        },
+        {
+          "name": "buy_levels",
+          "type": "tuple[QuoteLevel, ...]",
+          "default": null,
+          "line": 86
+        },
+        {
+          "name": "sell_levels",
+          "type": "tuple[QuoteLevel, ...]",
+          "default": null,
+          "line": 87
+        },
+        {
+          "name": "trading_status_raw",
+          "type": "int",
+          "default": null,
+          "line": 88
+        },
+        {
+          "name": "tail_metrics_raw",
+          "type": "tuple[int, int, int, int]",
+          "default": null,
+          "line": 89
+        },
+        {
+          "name": "rise_speed_raw",
+          "type": "int | None",
+          "default": null,
+          "line": 90
+        },
+        {
+          "name": "active2",
+          "type": "int | None",
+          "default": null,
+          "line": 91
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 92
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 95,
+          "property": true
+        },
+        {
+          "name": "change",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 99,
+          "property": true
+        },
+        {
+          "name": "change_pct",
+          "arguments": "self",
+          "return_annotation": "float | None",
+          "line": 103,
+          "property": true
+        },
+        {
+          "name": "sum_buy_vol",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 109,
+          "property": true
+        },
+        {
+          "name": "sum_sell_vol",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 113,
+          "property": true
+        },
+        {
+          "name": "trading_status_hex",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 117,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "CategoryQuoteRecord",
+      "source": "src/eltdx/models/quote.py",
+      "line": 122,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 123
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 124
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 125
+        },
+        {
+          "name": "active1",
+          "type": "int",
+          "default": null,
+          "line": 126
+        },
+        {
+          "name": "active2",
+          "type": "int",
+          "default": null,
+          "line": 127
+        },
+        {
+          "name": "last_price",
+          "type": "float",
+          "default": null,
+          "line": 128
+        },
+        {
+          "name": "pre_close_price",
+          "type": "float",
+          "default": null,
+          "line": 129
+        },
+        {
+          "name": "open_price",
+          "type": "float",
+          "default": null,
+          "line": 130
+        },
+        {
+          "name": "high_price",
+          "type": "float",
+          "default": null,
+          "line": 131
+        },
+        {
+          "name": "low_price",
+          "type": "float",
+          "default": null,
+          "line": 132
+        },
+        {
+          "name": "server_time_raw",
+          "type": "int",
+          "default": null,
+          "line": 133
+        },
+        {
+          "name": "neg_price_raw",
+          "type": "int",
+          "default": null,
+          "line": 134
+        },
+        {
+          "name": "total_hand",
+          "type": "int",
+          "default": null,
+          "line": 135
+        },
+        {
+          "name": "current_hand",
+          "type": "int",
+          "default": null,
+          "line": 136
+        },
+        {
+          "name": "amount",
+          "type": "float",
+          "default": null,
+          "line": 137
+        },
+        {
+          "name": "amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 138
+        },
+        {
+          "name": "inside_dish",
+          "type": "int",
+          "default": null,
+          "line": 139
+        },
+        {
+          "name": "outer_disc",
+          "type": "int",
+          "default": null,
+          "line": 140
+        },
+        {
+          "name": "after_outer_raw",
+          "type": "int",
+          "default": null,
+          "line": 141
+        },
+        {
+          "name": "open_amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 142
+        },
+        {
+          "name": "open_amount",
+          "type": "float",
+          "default": null,
+          "line": 143
+        },
+        {
+          "name": "bid1",
+          "type": "float",
+          "default": null,
+          "line": 144
+        },
+        {
+          "name": "ask1",
+          "type": "float",
+          "default": null,
+          "line": 145
+        },
+        {
+          "name": "bid_vol1",
+          "type": "int",
+          "default": null,
+          "line": 146
+        },
+        {
+          "name": "ask_vol1",
+          "type": "int",
+          "default": null,
+          "line": 147
+        },
+        {
+          "name": "status_or_sort_raw",
+          "type": "int",
+          "default": null,
+          "line": 148
+        },
+        {
+          "name": "rise_speed_raw",
+          "type": "int",
+          "default": null,
+          "line": 149
+        },
+        {
+          "name": "rise_speed",
+          "type": "float",
+          "default": null,
+          "line": 150
+        },
+        {
+          "name": "short_turnover_raw",
+          "type": "int",
+          "default": null,
+          "line": 151
+        },
+        {
+          "name": "short_turnover",
+          "type": "float",
+          "default": null,
+          "line": 152
+        },
+        {
+          "name": "min2_amount",
+          "type": "float",
+          "default": null,
+          "line": 153
+        },
+        {
+          "name": "opening_rush_raw",
+          "type": "int",
+          "default": null,
+          "line": 154
+        },
+        {
+          "name": "opening_rush",
+          "type": "float",
+          "default": null,
+          "line": 155
+        },
+        {
+          "name": "extra_pair_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 156
+        },
+        {
+          "name": "vol_rise_speed",
+          "type": "float",
+          "default": null,
+          "line": 157
+        },
+        {
+          "name": "depth",
+          "type": "float",
+          "default": null,
+          "line": 158
+        },
+        {
+          "name": "extra_meta_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 159
+        },
+        {
+          "name": "tail_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 160
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 161
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 164,
+          "property": true
+        },
+        {
+          "name": "change",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 168,
+          "property": true
+        },
+        {
+          "name": "change_pct",
+          "arguments": "self",
+          "return_annotation": "float | None",
+          "line": 172,
+          "property": true
+        },
+        {
+          "name": "locked_amount",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 178,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "CategoryQuotePage",
+      "source": "src/eltdx/models/quote.py",
+      "line": 183,
+      "fields": [
+        {
+          "name": "category",
+          "type": "int",
+          "default": null,
+          "line": 184
+        },
+        {
+          "name": "sort_type",
+          "type": "int",
+          "default": null,
+          "line": 185
+        },
+        {
+          "name": "start",
+          "type": "int",
+          "default": null,
+          "line": 186
+        },
+        {
+          "name": "request_count",
+          "type": "int",
+          "default": null,
+          "line": 187
+        },
+        {
+          "name": "sort_reverse",
+          "type": "int",
+          "default": null,
+          "line": 188
+        },
+        {
+          "name": "filter_raw",
+          "type": "int",
+          "default": null,
+          "line": 189
+        },
+        {
+          "name": "header",
+          "type": "int",
+          "default": null,
+          "line": 190
+        },
+        {
+          "name": "records",
+          "type": "tuple[CategoryQuoteRecord, ...]",
+          "default": null,
+          "line": 191
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 192
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 195,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "QuoteRefreshRecord",
+      "source": "src/eltdx/models/quote.py",
+      "line": 200,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 201
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 202
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 203
+        },
+        {
+          "name": "active",
+          "type": "int",
+          "default": null,
+          "line": 204
+        },
+        {
+          "name": "update_time_raw",
+          "type": "int",
+          "default": null,
+          "line": 205
+        },
+        {
+          "name": "last_price",
+          "type": "float",
+          "default": null,
+          "line": 206
+        },
+        {
+          "name": "last_close_price",
+          "type": "float",
+          "default": null,
+          "line": 207
+        },
+        {
+          "name": "open_price",
+          "type": "float",
+          "default": null,
+          "line": 208
+        },
+        {
+          "name": "high_price",
+          "type": "float",
+          "default": null,
+          "line": 209
+        },
+        {
+          "name": "low_price",
+          "type": "float",
+          "default": null,
+          "line": 210
+        },
+        {
+          "name": "status_or_reserved_raw",
+          "type": "int",
+          "default": null,
+          "line": 211
+        },
+        {
+          "name": "total_hand",
+          "type": "int",
+          "default": null,
+          "line": 212
+        },
+        {
+          "name": "current_hand",
+          "type": "int",
+          "default": null,
+          "line": 213
+        },
+        {
+          "name": "amount",
+          "type": "float",
+          "default": null,
+          "line": 214
+        },
+        {
+          "name": "amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 215
+        },
+        {
+          "name": "inside_dish",
+          "type": "int",
+          "default": null,
+          "line": 216
+        },
+        {
+          "name": "outer_disc",
+          "type": "int",
+          "default": null,
+          "line": 217
+        },
+        {
+          "name": "unknown_after_outer_raw",
+          "type": "int",
+          "default": null,
+          "line": 218
+        },
+        {
+          "name": "open_amount_raw",
+          "type": "int",
+          "default": null,
+          "line": 219
+        },
+        {
+          "name": "open_amount_yuan",
+          "type": "float",
+          "default": null,
+          "line": 220
+        },
+        {
+          "name": "buy_levels",
+          "type": "tuple[QuoteLevel, ...]",
+          "default": null,
+          "line": 221
+        },
+        {
+          "name": "sell_levels",
+          "type": "tuple[QuoteLevel, ...]",
+          "default": null,
+          "line": 222
+        },
+        {
+          "name": "tail_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 223
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 224
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 227,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "QuoteRefreshPage",
+      "source": "src/eltdx/models/quote.py",
+      "line": 232,
+      "fields": [
+        {
+          "name": "requested_codes",
+          "type": "tuple[str, ...]",
+          "default": null,
+          "line": 233
+        },
+        {
+          "name": "records",
+          "type": "tuple[QuoteRefreshRecord, ...]",
+          "default": null,
+          "line": 234
+        },
+        {
+          "name": "decoded_payload",
+          "type": "bytes",
+          "default": null,
+          "line": 235
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 236
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 239,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "FileContentChunk",
+      "source": "src/eltdx/models/resource.py",
+      "line": 10,
+      "fields": [
+        {
+          "name": "path",
+          "type": "str",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "offset",
+          "type": "int",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "request_size",
+          "type": "int",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "chunk_len",
+          "type": "int",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "content",
+          "type": "bytes",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 16
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "is_last",
+          "arguments": "self",
+          "return_annotation": "bool",
+          "line": 19,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "TdxStatRow",
+      "source": "src/eltdx/models/resource.py",
+      "line": 24,
+      "fields": [
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 25
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 26
+        },
+        {
+          "name": "stats_date",
+          "type": "str | None",
+          "default": null,
+          "line": 27
+        },
+        {
+          "name": "beta_60d",
+          "type": "float | None",
+          "default": null,
+          "line": 28
+        },
+        {
+          "name": "pe_ttm",
+          "type": "float | None",
+          "default": null,
+          "line": 29
+        },
+        {
+          "name": "free_float_shares_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 30
+        },
+        {
+          "name": "year_limit_up_days",
+          "type": "int | None",
+          "default": null,
+          "line": 31
+        },
+        {
+          "name": "limit_stat_days",
+          "type": "int | None",
+          "default": null,
+          "line": 32
+        },
+        {
+          "name": "limit_up_count_in_stat_days",
+          "type": "int | None",
+          "default": null,
+          "line": 33
+        },
+        {
+          "name": "limit_up_streak_days",
+          "type": "int | None",
+          "default": null,
+          "line": 34
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "key",
+          "arguments": "self",
+          "return_annotation": "tuple[int, str]",
+          "line": 37,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "TdxStat2Row",
+      "source": "src/eltdx/models/resource.py",
+      "line": 42,
+      "fields": [
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 43
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 44
+        },
+        {
+          "name": "stats_date",
+          "type": "str | None",
+          "default": null,
+          "line": 45
+        },
+        {
+          "name": "amount_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 46
+        },
+        {
+          "name": "seal_amount_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 47
+        },
+        {
+          "name": "prev_amount_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 48
+        },
+        {
+          "name": "prev_seal_amount_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 49
+        },
+        {
+          "name": "prev2_amount_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 50
+        },
+        {
+          "name": "prev2_seal_amount_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 51
+        },
+        {
+          "name": "open_volume_hand",
+          "type": "float | None",
+          "default": null,
+          "line": 52
+        },
+        {
+          "name": "prev_open_volume_hand",
+          "type": "float | None",
+          "default": null,
+          "line": 53
+        },
+        {
+          "name": "open_amount_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 54
+        },
+        {
+          "name": "prev_open_amount_10k",
+          "type": "float | None",
+          "default": null,
+          "line": 55
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "key",
+          "arguments": "self",
+          "return_annotation": "tuple[int, str]",
+          "line": 58,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "TdxStatsResource",
+      "source": "src/eltdx/models/resource.py",
+      "line": 63,
+      "fields": [
+        {
+          "name": "stat",
+          "type": "dict[tuple[int, str], TdxStatRow]",
+          "default": null,
+          "line": 64
+        },
+        {
+          "name": "stat2",
+          "type": "dict[tuple[int, str], TdxStat2Row]",
+          "default": null,
+          "line": 65
+        },
+        {
+          "name": "source_path",
+          "type": "str",
+          "default": null,
+          "line": 66
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "row",
+          "arguments": "self, market_id: int, code: str",
+          "return_annotation": "tuple[TdxStatRow | None, TdxStat2Row | None]",
+          "line": 68,
+          "property": false
+        },
+        {
+          "name": "stat_count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 73,
+          "property": true
+        },
+        {
+          "name": "stat2_count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 77,
+          "property": true
+        },
+        {
+          "name": "stats_date",
+          "arguments": "self",
+          "return_annotation": "str | None",
+          "line": 81,
+          "property": true
+        },
+        {
+          "name": "stats_date_counts",
+          "arguments": "self",
+          "return_annotation": "dict[str, int]",
+          "line": 88,
+          "property": true
+        },
+        {
+          "name": "stats_date_coverage",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 99,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "Response",
+      "source": "src/eltdx/models/response.py",
+      "line": 9,
+      "fields": [
+        {
+          "name": "status",
+          "type": "str",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 13
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "SecurityCode",
+      "source": "src/eltdx/models/security.py",
+      "line": 9,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 10
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "name",
+          "type": "str",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "multiple",
+          "type": "int",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "decimal",
+          "type": "int",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "previous_close_price",
+          "type": "float",
+          "default": null,
+          "line": 16
+        },
+        {
+          "name": "volume_ratio_base",
+          "type": "float",
+          "default": null,
+          "line": 17
+        },
+        {
+          "name": "unknown0_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 18
+        },
+        {
+          "name": "previous_close_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 19
+        },
+        {
+          "name": "unknown3_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 20
+        },
+        {
+          "name": "category",
+          "type": "str",
+          "default": null,
+          "line": 21
+        },
+        {
+          "name": "category_reason",
+          "type": "str",
+          "default": null,
+          "line": 22
+        },
+        {
+          "name": "board",
+          "type": "str",
+          "default": null,
+          "line": 23
+        },
+        {
+          "name": "board_reason",
+          "type": "str",
+          "default": null,
+          "line": 24
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 27,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "HandshakeInfo",
+      "source": "src/eltdx/models/session.py",
+      "line": 10,
+      "fields": [
+        {
+          "name": "server_datetime",
+          "type": "datetime | None",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "session_minutes_1",
+          "type": "tuple[str, ...]",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "session_minutes_2",
+          "type": "tuple[str, ...]",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "server_date_1",
+          "type": "date | None",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "server_date_2",
+          "type": "date | None",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "server_name",
+          "type": "str",
+          "default": null,
+          "line": 16
+        },
+        {
+          "name": "product_tag",
+          "type": "str",
+          "default": null,
+          "line": 17
+        },
+        {
+          "name": "unknown_time_1_raw",
+          "type": "int | None",
+          "default": null,
+          "line": 18
+        },
+        {
+          "name": "unknown_time_2_raw",
+          "type": "int | None",
+          "default": null,
+          "line": 19
+        },
+        {
+          "name": "flags_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 20
+        },
+        {
+          "name": "tail_control_raw",
+          "type": "bytes",
+          "default": null,
+          "line": 21
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": null,
+          "line": 22
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "HeartbeatAck",
+      "source": "src/eltdx/models/session.py",
+      "line": 26,
+      "fields": [
+        {
+          "name": "reserved",
+          "type": "bytes",
+          "default": null,
+          "line": 27
+        },
+        {
+          "name": "server_date_raw",
+          "type": "int",
+          "default": null,
+          "line": 28
+        },
+        {
+          "name": "server_date",
+          "type": "date | None",
+          "default": null,
+          "line": 29
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": null,
+          "line": 30
+        }
+      ],
+      "public_methods": []
+    },
+    {
+      "class": "TradeTick",
+      "source": "src/eltdx/models/trade.py",
+      "line": 10,
+      "fields": [
+        {
+          "name": "index",
+          "type": "int",
+          "default": null,
+          "line": 11
+        },
+        {
+          "name": "absolute_index",
+          "type": "int",
+          "default": null,
+          "line": 12
+        },
+        {
+          "name": "time_minutes",
+          "type": "int",
+          "default": null,
+          "line": 13
+        },
+        {
+          "name": "time_label",
+          "type": "str",
+          "default": null,
+          "line": 14
+        },
+        {
+          "name": "trade_datetime",
+          "type": "datetime | None",
+          "default": null,
+          "line": 15
+        },
+        {
+          "name": "price",
+          "type": "float",
+          "default": null,
+          "line": 16
+        },
+        {
+          "name": "price_milli",
+          "type": "int",
+          "default": null,
+          "line": 17
+        },
+        {
+          "name": "volume",
+          "type": "int",
+          "default": null,
+          "line": 18
+        },
+        {
+          "name": "order_count",
+          "type": "int",
+          "default": null,
+          "line": 19
+        },
+        {
+          "name": "status_raw",
+          "type": "int",
+          "default": null,
+          "line": 20
+        },
+        {
+          "name": "side",
+          "type": "str",
+          "default": null,
+          "line": 21
+        },
+        {
+          "name": "price_delta_raw",
+          "type": "int",
+          "default": null,
+          "line": 22
+        },
+        {
+          "name": "price_acc_raw",
+          "type": "int",
+          "default": null,
+          "line": 23
+        },
+        {
+          "name": "unknown_tail_raw",
+          "type": "int | None",
+          "default": "None",
+          "line": 24
+        },
+        {
+          "name": "reserved_zero",
+          "type": "int | None",
+          "default": "None",
+          "line": 25
+        },
+        {
+          "name": "record_hex",
+          "type": "str",
+          "default": "''",
+          "line": 26
+        },
+        {
+          "name": "event_kind",
+          "type": "str",
+          "default": "'trade'",
+          "line": 30
+        },
+        {
+          "name": "auction_matched_volume",
+          "type": "int | None",
+          "default": "None",
+          "line": 31
+        },
+        {
+          "name": "auction_unmatched_signed_volume",
+          "type": "int | None",
+          "default": "None",
+          "line": 32
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "is_auction_snapshot",
+          "arguments": "self",
+          "return_annotation": "bool",
+          "line": 35,
+          "property": true
+        },
+        {
+          "name": "is_opening_match",
+          "arguments": "self",
+          "return_annotation": "bool",
+          "line": 39,
+          "property": true
+        },
+        {
+          "name": "is_trade",
+          "arguments": "self",
+          "return_annotation": "bool",
+          "line": 43,
+          "property": true
+        },
+        {
+          "name": "is_actual_trade",
+          "arguments": "self",
+          "return_annotation": "bool",
+          "line": 47,
+          "property": true
+        },
+        {
+          "name": "is_after_hours_fixed_price",
+          "arguments": "self",
+          "return_annotation": "bool",
+          "line": 53,
+          "property": true
+        },
+        {
+          "name": "auction_unmatched_volume",
+          "arguments": "self",
+          "return_annotation": "int | None",
+          "line": 62,
+          "property": true
+        },
+        {
+          "name": "trade_amount_yuan",
+          "arguments": "self",
+          "return_annotation": "float",
+          "line": 68,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "TradePage",
+      "source": "src/eltdx/models/trade.py",
+      "line": 73,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 74
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 75
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 76
+        },
+        {
+          "name": "start",
+          "type": "int",
+          "default": null,
+          "line": 77
+        },
+        {
+          "name": "request_count",
+          "type": "int",
+          "default": null,
+          "line": 78
+        },
+        {
+          "name": "ticks",
+          "type": "tuple[TradeTick, ...]",
+          "default": null,
+          "line": 79
+        },
+        {
+          "name": "trading_date",
+          "type": "date | None",
+          "default": "None",
+          "line": 80
+        },
+        {
+          "name": "price_base_raw_f32",
+          "type": "float | None",
+          "default": "None",
+          "line": 81
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 82
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 85,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 89,
+          "property": true
+        },
+        {
+          "name": "has_more",
+          "arguments": "self",
+          "return_annotation": "bool",
+          "line": 93,
+          "property": true
+        },
+        {
+          "name": "auction_snapshots",
+          "arguments": "self",
+          "return_annotation": "tuple[TradeTick, ...]",
+          "line": 97,
+          "property": true
+        },
+        {
+          "name": "actual_trades",
+          "arguments": "self",
+          "return_annotation": "tuple[TradeTick, ...]",
+          "line": 103,
+          "property": true
+        },
+        {
+          "name": "after_hours_trades",
+          "arguments": "self",
+          "return_annotation": "tuple[TradeTick, ...]",
+          "line": 109,
+          "property": true
+        },
+        {
+          "name": "opening_matches",
+          "arguments": "self",
+          "return_annotation": "tuple[TradeTick, ...]",
+          "line": 115,
+          "property": true
+        }
+      ]
+    },
+    {
+      "class": "TradeBatch",
+      "source": "src/eltdx/models/trade_batch.py",
+      "line": 34,
+      "fields": [
+        {
+          "name": "exchange",
+          "type": "str",
+          "default": null,
+          "line": 42
+        },
+        {
+          "name": "market_id",
+          "type": "int",
+          "default": null,
+          "line": 43
+        },
+        {
+          "name": "code",
+          "type": "str",
+          "default": null,
+          "line": 44
+        },
+        {
+          "name": "start",
+          "type": "int",
+          "default": null,
+          "line": 45
+        },
+        {
+          "name": "request_count",
+          "type": "int",
+          "default": null,
+          "line": 46
+        },
+        {
+          "name": "_blocks",
+          "type": "tuple[tuple[Any, ...], ...]",
+          "default": "field(repr=False)",
+          "line": 47
+        },
+        {
+          "name": "trading_date",
+          "type": "date | None",
+          "default": "None",
+          "line": 48
+        },
+        {
+          "name": "price_base_raw_f32",
+          "type": "float | None",
+          "default": "None",
+          "line": 49
+        },
+        {
+          "name": "raw_payload",
+          "type": "bytes",
+          "default": "b''",
+          "line": 50
+        },
+        {
+          "name": "_ends",
+          "type": "tuple[int, ...]",
+          "default": "field(init=False, repr=False, compare=False)",
+          "line": 51
+        },
+        {
+          "name": "columns",
+          "type": "ClassVar[tuple[str, ...]]",
+          "default": "_COLUMNS",
+          "line": 53
+        }
+      ],
+      "public_methods": [
+        {
+          "name": "full_code",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 66,
+          "property": true
+        },
+        {
+          "name": "count",
+          "arguments": "self",
+          "return_annotation": "int",
+          "line": 70,
+          "property": true
+        },
+        {
+          "name": "has_more",
+          "arguments": "self",
+          "return_annotation": "bool",
+          "line": 77,
+          "property": true
+        },
+        {
+          "name": "column",
+          "arguments": "self, name: str",
+          "return_annotation": "tuple[Any, ...]",
+          "line": 80,
+          "property": false
+        },
+        {
+          "name": "to_columns",
+          "arguments": "self, names: Iterable[str] | None=None",
+          "return_annotation": "dict[str, tuple[Any, ...]]",
+          "line": 99,
+          "property": false
+        },
+        {
+          "name": "tick",
+          "arguments": "self, index: int",
+          "return_annotation": "TradeTick",
+          "line": 113,
+          "property": false
+        },
+        {
+          "name": "select",
+          "arguments": "self, indices: Iterable[int]",
+          "return_annotation": "TradeBatch",
+          "line": 118,
+          "property": false
+        },
+        {
+          "name": "to_page",
+          "arguments": "self",
+          "return_annotation": "TradePage",
+          "line": 134,
+          "property": false
+        },
+        {
+          "name": "from_page",
+          "arguments": "cls, page: TradePage",
+          "return_annotation": "TradeBatch",
+          "line": 148,
+          "property": false
+        }
+      ]
+    }
+  ],
+  "api_schemas": [
+    {
+      "class": "AuctionApi",
+      "source": "src/eltdx/api/auctions.py",
+      "line": 14,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "series",
+          "arguments": "self, code: str, date=None, *, include_raw: bool=False",
+          "return_annotation": null,
+          "line": 40,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "BarApi",
+      "source": "src/eltdx/api/bars.py",
+      "line": 15,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "get",
+          "arguments": "self, code: str | Sequence[str], *, period: str='day', start: int=0, count: int=800, adjust: str | None=None, anchor_date=None, kind: str | None=None, include_raw: bool=False, all_pages: bool=False, page_size: int=800, max_pages: int | None=200, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 16,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "ApiBase",
+      "source": "src/eltdx/api/base.py",
+      "line": 11,
+      "fields": [],
+      "public_methods": []
+    },
+    {
+      "class": "CodeApi",
+      "source": "src/eltdx/api/codes.py",
+      "line": 12,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "count",
+          "arguments": "self, market: str",
+          "return_annotation": null,
+          "line": 13,
+          "property": false
+        },
+        {
+          "name": "list",
+          "arguments": "self, market: str, *, start: int=0, limit: int=1600",
+          "return_annotation": null,
+          "line": 16,
+          "property": false
+        },
+        {
+          "name": "all",
+          "arguments": "self, market: str, *, page_size: int=DEFAULT_CODE_PAGE_SIZE",
+          "return_annotation": null,
+          "line": 23,
+          "property": false
+        },
+        {
+          "name": "stock_count",
+          "arguments": "self, market: str",
+          "return_annotation": "int",
+          "line": 39,
+          "property": false
+        },
+        {
+          "name": "a_share_count",
+          "arguments": "self, market: str",
+          "return_annotation": "int",
+          "line": 42,
+          "property": false
+        },
+        {
+          "name": "stocks",
+          "arguments": "self, market: str",
+          "return_annotation": null,
+          "line": 45,
+          "property": false
+        },
+        {
+          "name": "a_shares",
+          "arguments": "self, market: str",
+          "return_annotation": null,
+          "line": 48,
+          "property": false
+        },
+        {
+          "name": "etfs",
+          "arguments": "self, market: str",
+          "return_annotation": null,
+          "line": 51,
+          "property": false
+        },
+        {
+          "name": "indices",
+          "arguments": "self, market: str",
+          "return_annotation": null,
+          "line": 54,
+          "property": false
+        },
+        {
+          "name": "all_markets",
+          "arguments": "self",
+          "return_annotation": "builtins.list",
+          "line": 57,
+          "property": false
+        },
+        {
+          "name": "all_stocks",
+          "arguments": "self",
+          "return_annotation": "builtins.list[str]",
+          "line": 63,
+          "property": false
+        },
+        {
+          "name": "all_a_shares",
+          "arguments": "self",
+          "return_annotation": "builtins.list[str]",
+          "line": 66,
+          "property": false
+        },
+        {
+          "name": "all_etfs",
+          "arguments": "self",
+          "return_annotation": "builtins.list[str]",
+          "line": 69,
+          "property": false
+        },
+        {
+          "name": "all_indices",
+          "arguments": "self",
+          "return_annotation": "builtins.list[str]",
+          "line": 72,
+          "property": false
+        },
+        {
+          "name": "latest_stock_list",
+          "arguments": "self, market: str | None=None",
+          "return_annotation": null,
+          "line": 75,
+          "property": false
+        },
+        {
+          "name": "latest_st",
+          "arguments": "self, market: str | None=None",
+          "return_annotation": null,
+          "line": 81,
+          "property": false
+        },
+        {
+          "name": "st",
+          "arguments": "self, market: str | None=None",
+          "return_annotation": null,
+          "line": 86,
+          "property": false
+        },
+        {
+          "name": "latest_stocks",
+          "arguments": "self, market: str | None=None",
+          "return_annotation": null,
+          "line": 90,
+          "property": false
+        },
+        {
+          "name": "latest_suspended",
+          "arguments": "self, market: str | None=None",
+          "return_annotation": null,
+          "line": 94,
+          "property": false
+        },
+        {
+          "name": "suspended",
+          "arguments": "self, market: str | None=None",
+          "return_annotation": null,
+          "line": 110,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "CorporateApi",
+      "source": "src/eltdx/api/corporate.py",
+      "line": 28,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "capital_changes",
+          "arguments": "self, code: str | Sequence[str], *, include_raw: bool=False, batch_size: int=DEFAULT_CAPITAL_CHANGE_BATCH_SIZE",
+          "return_annotation": null,
+          "line": 29,
+          "property": false
+        },
+        {
+          "name": "adjustment_factors",
+          "arguments": "self, code: str | Sequence[str], anchor_date=None, *, start_date=None, batch_size: int=DEFAULT_CAPITAL_CHANGE_BATCH_SIZE",
+          "return_annotation": null,
+          "line": 79,
+          "property": false
+        },
+        {
+          "name": "finance_batch",
+          "arguments": "self, codes: str | Sequence[str], fields: Sequence[str] | None=None, *, include_raw: bool=False",
+          "return_annotation": null,
+          "line": 145,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "LimitApi",
+      "source": "src/eltdx/api/limits.py",
+      "line": 8,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "special",
+          "arguments": "self, *, start_index: int=0",
+          "return_annotation": null,
+          "line": 9,
+          "property": false
+        },
+        {
+          "name": "scan_special",
+          "arguments": "self, *, start_index: int=0, max_rows: int=10000",
+          "return_annotation": null,
+          "line": 12,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "MinuteApi",
+      "source": "src/eltdx/api/minutes.py",
+      "line": 13,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "today",
+          "arguments": "self, code: str | Sequence[str], *, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 14,
+          "property": false
+        },
+        {
+          "name": "history",
+          "arguments": "self, code: str | Sequence[str], trading_date, *, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 19,
+          "property": false
+        },
+        {
+          "name": "recent",
+          "arguments": "self, code: str | Sequence[str], trading_date=None, *, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 24,
+          "property": false
+        },
+        {
+          "name": "aux",
+          "arguments": "self, code: str, kind: str | int='buy_sell_strength', *, include_raw: bool=False",
+          "return_annotation": null,
+          "line": 48,
+          "property": false
+        },
+        {
+          "name": "buy_sell_strength",
+          "arguments": "self, code: str, *, include_raw: bool=False",
+          "return_annotation": null,
+          "line": 51,
+          "property": false
+        },
+        {
+          "name": "volume_comparison",
+          "arguments": "self, code: str, *, include_raw: bool=False",
+          "return_annotation": null,
+          "line": 55,
+          "property": false
+        },
+        {
+          "name": "sparkline",
+          "arguments": "self, code: str, *, selector: int=1, window: int=20, include_raw: bool=False",
+          "return_annotation": null,
+          "line": 59,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "MoneyFlowApi",
+      "source": "src/eltdx/api/money_flow.py",
+      "line": 16,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "close",
+          "arguments": "self",
+          "return_annotation": "None",
+          "line": 33,
+          "property": false
+        },
+        {
+          "name": "daily",
+          "arguments": "self, code: str | Sequence[str], *, include_raw: bool=False, batch_size: int=75",
+          "return_annotation": null,
+          "line": 39,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "QuoteApi",
+      "source": "src/eltdx/api/quotes.py",
+      "line": 10,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "get_snapshots",
+          "arguments": "self, codes: str | Sequence[str]",
+          "return_annotation": null,
+          "line": 11,
+          "property": false
+        },
+        {
+          "name": "legacy",
+          "arguments": "self, codes: str | Sequence[str]",
+          "return_annotation": null,
+          "line": 15,
+          "property": false
+        },
+        {
+          "name": "get_depth",
+          "arguments": "self, codes: str | Sequence[str]",
+          "return_annotation": null,
+          "line": 21,
+          "property": false
+        },
+        {
+          "name": "list_by_category",
+          "arguments": "self, category: str | int, *, sort_by: str | int | None=None, start: int=0, count: int=80, ascending: bool=False",
+          "return_annotation": null,
+          "line": 26,
+          "property": false
+        },
+        {
+          "name": "refresh",
+          "arguments": "self, codes: str | Sequence[str] | None=None, cursors: dict[str, int] | None=None",
+          "return_annotation": null,
+          "line": 45,
+          "property": false
+        },
+        {
+          "name": "poll_push",
+          "arguments": "self, *, timeout: float | None=0.0, parse: bool=False",
+          "return_annotation": null,
+          "line": 51,
+          "property": false
+        },
+        {
+          "name": "drain_pushes",
+          "arguments": "self, *, parse: bool=False",
+          "return_annotation": null,
+          "line": 60,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "ResourceApi",
+      "source": "src/eltdx/api/resources.py",
+      "line": 19,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "read",
+          "arguments": "self, path: str, *, offset: int=0, size: int=DEFAULT_FILE_CHUNK_SIZE",
+          "return_annotation": null,
+          "line": 20,
+          "property": false
+        },
+        {
+          "name": "download_file",
+          "arguments": "self, path: str, *, chunk_size: int=DEFAULT_FILE_CHUNK_SIZE, max_bytes: int | None=None",
+          "return_annotation": "bytes",
+          "line": 25,
+          "property": false
+        },
+        {
+          "name": "read_stats",
+          "arguments": "self, path: str='zhb.zip', *, chunk_size: int=DEFAULT_FILE_CHUNK_SIZE",
+          "return_annotation": "TdxStatsResource",
+          "line": 71,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "SessionApi",
+      "source": "src/eltdx/api/session.py",
+      "line": 8,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "ping",
+          "arguments": "self",
+          "return_annotation": "str",
+          "line": 9,
+          "property": false
+        },
+        {
+          "name": "handshake",
+          "arguments": "self",
+          "return_annotation": null,
+          "line": 12,
+          "property": false
+        },
+        {
+          "name": "heartbeat",
+          "arguments": "self",
+          "return_annotation": null,
+          "line": 15,
+          "property": false
+        }
+      ]
+    },
+    {
+      "class": "TradeApi",
+      "source": "src/eltdx/api/trades.py",
+      "line": 18,
+      "fields": [],
+      "public_methods": [
+        {
+          "name": "today",
+          "arguments": "self, code: str | Sequence[str], *, start: int=0, count: int=1800, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 19,
+          "property": false
+        },
+        {
+          "name": "history",
+          "arguments": "self, code: str | Sequence[str], trading_date, *, start: int=0, count: int=1800, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 40,
+          "property": false
+        },
+        {
+          "name": "all_today",
+          "arguments": "self, code: str | Sequence[str], *, page_size: int=1800, max_pages: int | None=100, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 73,
+          "property": false
+        },
+        {
+          "name": "all_history",
+          "arguments": "self, code: str | Sequence[str], trading_date, *, page_size: int=1800, max_pages: int | None=100, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 97,
+          "property": false
+        },
+        {
+          "name": "history_batch",
+          "arguments": "self, code: str | Sequence[str], trading_date, *, start: int=0, count: int=1800, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": "TradeBatch | dict[str, TradeBatch]",
+          "line": 122,
+          "property": false
+        },
+        {
+          "name": "today_batch",
+          "arguments": "self, code: str | Sequence[str], *, start: int=0, count: int=1800, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": "TradeBatch | dict[str, TradeBatch]",
+          "line": 158,
+          "property": false
+        },
+        {
+          "name": "all_today_batch",
+          "arguments": "self, code: str | Sequence[str], *, page_size: int=1800, max_pages: int | None=100, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": "TradeBatch | dict[str, TradeBatch]",
+          "line": 190,
+          "property": false
+        },
+        {
+          "name": "all_history_batch",
+          "arguments": "self, code: str | Sequence[str], trading_date, *, page_size: int=1800, max_pages: int | None=100, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": "TradeBatch | dict[str, TradeBatch]",
+          "line": 228,
+          "property": false
+        },
+        {
+          "name": "opening_match_today",
+          "arguments": "self, code: str | Sequence[str], *, page_size: int=1800, max_pages: int | None=100, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 268,
+          "property": false
+        },
+        {
+          "name": "opening_match_history",
+          "arguments": "self, code: str | Sequence[str], trading_date, *, page_size: int=1800, max_pages: int | None=100, include_raw: bool=False, batch_size: int | None=None",
+          "return_annotation": null,
+          "line": 294,
+          "property": false
+        }
+      ]
+    }
+  ]
+}

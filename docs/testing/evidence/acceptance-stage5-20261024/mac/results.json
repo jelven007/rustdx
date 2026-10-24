@@ -1,0 +1,53 @@
+[
+  {
+    "name": "provision-mongo",
+    "command": [
+      "/private/tmp/rustdx-next-services/mongosh-2.5.10-darwin-arm64/bin/mongosh",
+      "--nodb",
+      "--quiet",
+      "--norc",
+      "--eval",
+      "const db=connect(process.env.RUSTDX_TEST_MONGO_URI);load(\"/Users/bytedance/Documents/rustdx/deploy/runner/mongodb.js\");"
+    ],
+    "exit_code": 0,
+    "seconds": 2.5381768749999996
+  },
+  {
+    "name": "small-table",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "jelven-rustdx-cli",
+      "--test",
+      "database_acceptance",
+      "--offline",
+      "--locked",
+      "--",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 86.00004070899999
+  },
+  {
+    "name": "real-runner",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--test",
+      "control_plane",
+      "real_databases_isolate_versions",
+      "--offline",
+      "--locked",
+      "--",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 56.93013679200001
+  }
+]

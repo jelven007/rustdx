@@ -1,0 +1,1 @@
+{"status": "passed", "peaks": {"processes": 3, "rss_bytes": 38010880, "fds": 22, "threads": 9, "disk_bytes": {"/tmp/rustdx-optimization-20261024/local-drill": 157276594}}}

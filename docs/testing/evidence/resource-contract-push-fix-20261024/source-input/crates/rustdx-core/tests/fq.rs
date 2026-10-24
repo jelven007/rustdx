@@ -1,0 +1,22 @@
+use insta::assert_debug_snapshot;
+
+#[test]
+fn day_sz000001() -> rustdx_complete::Result<()> {
+    use rustdx_complete::file::{
+        day::Day,
+        gbbq::{Fq, Gbbq},
+    };
+    let day_src = std::fs::read("tests/fixtures/tdx/sz000001.day")?;
+    let days = day_src
+        .as_chunks::<32>()
+        .0
+        .iter()
+        .map(|arr| Day::from_bytes("sz000001", arr));
+
+    let mut gbbq_src = std::fs::read("tests/fixtures/tdx/gbbq")?;
+    let stock_gbbq = Gbbq::filter_hashmap(Gbbq::iter(&mut gbbq_src[4..]));
+
+    let fq = Fq::new(days, stock_gbbq.get("sz000001").unwrap()).unwrap();
+    assert_debug_snapshot!(&fq[..3]);
+    Ok(())
+}

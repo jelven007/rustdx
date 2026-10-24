@@ -1,0 +1,8 @@
+[1m[32m   Compiling[0m zmij v1.0.21
+[1m[32m   Compiling[0m serde_json v1.0.150
+[1m[32m    Checking[0m itoa v1.0.18
+[1m[32m    Checking[0m memchr v2.8.0
+[1m[32m   Compiling[0m libfuzzer-sys v0.4.13
+[1m[32m    Checking[0m jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Checking[0m rustdx-fuzz v0.0.0 (/Users/bytedance/Documents/rustdx/tools/fuzz)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 5.60s

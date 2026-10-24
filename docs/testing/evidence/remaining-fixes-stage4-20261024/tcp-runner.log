@@ -1,0 +1,12 @@
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 7.30s
+[1m[32m     Running[0m tests/control_plane.rs (target/debug/deps/control_plane-9e1419a4eafc10a3)
+
+running 4 tests
+test tcp_config_excludes_ambiguous_source_offline_and_historical_vintage ... ok
+test tcp_explicitly_exempt_scope_publishes_without_contacting_the_source ... ok
+test tcp_runner_rejects_forged_csv_even_with_matching_report_digest ... ok
+test tcp_daily_release_revision_missing_keys_and_offline_recovery ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 3.62s
+

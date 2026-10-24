@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "env",
+        "RUSTDX_TEST_CLI=/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/rustdx",
+        "RUSTDX_TEST_CH_USER=default",
+        "RUSTDX_TEST_CH_PASSWORD=",
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--locked",
+        "--",
+        "--include-ignored",
+        "--skip",
+        "real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 13.128864582999999,
+      "log": "/tmp/rustdx-optimization-20261024/phase2runner-0.log"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "source_files": {
+    "src/tcp/stock/recent_minutes.rs": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+    "src/tcp/stock/quote_refresh.rs": "4f814bba48ff012c50b5d88b99230780ebb01b383f07d6edc15addb268ffb4d8",
+    "src/tcp/stock/quote_subscription.rs": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+    "src/tcp/stock/extended_quote.rs": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+    "tests/recent_minutes_boundaries.rs": "9ee4a223ace6df62f38a33f6237bbe5b26b74146885a9db51d361cb38eeb3550",
+    "tests/quote_subscription.rs": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5",
+    "tests/command_boundaries.rs": "31e559e622c0037d96f57ee0b2589a722fcb9874acb6c37d3c44d5f90b9a4bf9",
+    "examples/capture_recent_minutes_boundaries.rs": "6c4954f1c9c4ca5b2fcbab6c3aed7d4aff1beccfbc45bf98dd073dd401e4fbad",
+    "examples/validate_quote_push.rs": "95b1a10ecab5aef9912024bf0a87883673797b51c23c7209c465c54be36e3160",
+    "scripts/validation/verify_recent_minutes_boundaries.py": "eeb651b0ab9d6eb5005c4c23fb9a4dce1235cc6a70660e38369f16a5613450f3",
+    "scripts/validation/verify_quote_push.py": "846a3abc9dea7175a3ac8b3cb2b9c3d5e5e72931cec257dedffc107b042d7bbc",
+    "docs/validation/RECENT_MINUTES_PUSH_BOUNDARIES_20261024.md": "4a8d9bea07c55f50ff7605472a7df3931072aefa99eb596aa3f178e213f7f57c"
+  },
+  "checks": {
+    "clippy.log": "aaa707a7f07c59aa5e52d8b905332753fe6c5182742c141da5504713c643172e",
+    "workspace-tests.log": "16382d203e478d8bf1d2b0309b76133c3bece51c8c275e55c338f4a798caac86"
+  }
+}

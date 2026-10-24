@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "root": "/var/lib/rustdx-tcp-subset",
+  "cli": "/opt/rustdx/bin/rustdx",
+  "dataset_id": "a-share-tcp-day-subset",
+  "contract_version": "a-share/day/raw/cny/shares/v1",
+  "policy_revision": 1,
+  "source_revision": 1,
+  "source_as_of": "2026-10-24",
+  "planned_date": "2026-10-24",
+  "from": "2026-10-22",
+  "through": "2026-10-23",
+  "day_directories": [],
+  "tcp_day": {
+    "endpoint": "115.238.56.198:7709",
+    "volume_evidence_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "page_size": 800,
+    "max_pages": 128,
+    "max_raw_rows": 65536,
+    "max_payload_bytes": 16777216,
+    "max_wire_records": 20000
+  },
+  "tcp_day_schedule": {
+    "max_parallel": 2,
+    "timeout_seconds": 3300,
+    "max_raw_rows": 1000000,
+    "max_payload_bytes": 67108864
+  },
+  "calendar": "/srv/rustdx/inputs/calendar.json",
+  "calendar_source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "security_history": "/srv/rustdx/inputs/history.json",
+  "universe": "/srv/rustdx/inputs/subset-universe.json",
+  "facts_directory": "/srv/rustdx/inputs/facts",
+  "timeout_seconds": 3600,
+  "publish_reserve_seconds": 300,
+  "cancel_grace_seconds": 10,
+  "workers": 2,
+  "max_source_bytes": 67108864,
+  "max_workspace_bytes": 536870912,
+  "max_rows": 100000,
+  "min_free_bytes": 1073741824,
+  "database_targets": []
+}

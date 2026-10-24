@@ -1,0 +1,19 @@
+{
+  "snapshot_transform": {
+    "date": "2026-10-24",
+    "representation": "filtered_derivative",
+    "original_sha256": "06bfaaa985c150c5840cfafa474408cbe3667241c7ed7561b1138b31416e39d2",
+    "retrieved_on": "2026-10-23",
+    "retained": "Issue metadata relevant to TDX empty responses. Original body and unrelated provider recommendations omitted; the title is an author claim, not independent verification."
+  },
+  "url": "https://api.github.com/repos/simonlin1212/a-stock-data/issues/52",
+  "html_url": "https://github.com/simonlin1212/a-stock-data/issues/52",
+  "number": 52,
+  "title": "[数据源失效] TDX 行情类命令(bars/quotes/transaction)全面静默返回空：10/10 TCP 可达但 0/10 验活通过，stocks/xdxr/finance 正常（#43/#48 延续）",
+  "state": "closed",
+  "comments": 3,
+  "created_at": "2026-09-11T14:50:49Z",
+  "updated_at": "2026-09-20T00:39:22Z",
+  "closed_at": "2026-09-20T00:39:22Z",
+  "state_reason": "completed"
+}

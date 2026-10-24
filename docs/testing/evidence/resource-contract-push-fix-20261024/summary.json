@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "completed_at_utc": "2026-10-24T14:51:07.529242+00:00",
+  "source_sha256": "c6567d9901ffb49939065ee8a93038474bdc7d17788c3797291db163296e0671",
+  "source_files": 858,
+  "binary_identity": "receipt before final capture, hashes checked again afterward; test-profile examples",
+  "resource_contract": "implemented and verified in captured scope",
+  "live_trading_push_verified": false,
+  "push_business_status": "market_closed",
+  "next_trading_day_suggested_start": "2026-10-26T09:35:00+08:00",
+  "live_nodes": {
+    "hz": {
+      "verification": "passed",
+      "source": "live_tcp",
+      "wire_frames": 57,
+      "compressed_frames": 24,
+      "files": {
+        "zhb.zip": {
+          "bytes": 1338014,
+          "chunks": 45,
+          "md5_computed_only": "7c6dc37aa302670d2bcc204a188e1660",
+          "sha256": "fde08da903a18edf8edac2d1150d1ccac20a836cde08d14b61809c3c65abdba2"
+        },
+        "block_zs.dat": {
+          "bytes": 329507,
+          "chunks": 11,
+          "md5_computed_only": "deddfa997800581cf5cff4ea5cf200ca",
+          "sha256": "fcc3befb6299f06af053f39bfc44a4ffe60d2112ba66c4161c571a5299b71151"
+        }
+      },
+      "stats": {
+        "tdxstat.cfg": {
+          "rows": 8101,
+          "fields_checked": 283535,
+          "candidate_values_checked": 64808,
+          "unparsed_lines": 0,
+          "crc32": 1642068913
+        },
+        "tdxstat2.cfg": {
+          "rows": 8101,
+          "fields_checked": 170121,
+          "candidate_values_checked": 89111,
+          "unparsed_lines": 0,
+          "crc32": 1138322863
+        }
+      },
+      "archive_entries_crc_checked": 47,
+      "scope": "Framing/declared lengths/byte boundaries/source continuity/ZIP CRC/GBK/all CFG slots and candidate mapping. No independent business-unit, vendor-authority or trading-push acceptance."
+    },
+    "sh": {
+      "verification": "passed",
+      "source": "live_tcp",
+      "wire_frames": 57,
+      "compressed_frames": 24,
+      "files": {
+        "zhb.zip": {
+          "bytes": 1338014,
+          "chunks": 45,
+          "md5_computed_only": "7c6dc37aa302670d2bcc204a188e1660",
+          "sha256": "fde08da903a18edf8edac2d1150d1ccac20a836cde08d14b61809c3c65abdba2"
+        },
+        "block_zs.dat": {
+          "bytes": 329507,
+          "chunks": 11,
+          "md5_computed_only": "deddfa997800581cf5cff4ea5cf200ca",
+          "sha256": "fcc3befb6299f06af053f39bfc44a4ffe60d2112ba66c4161c571a5299b71151"
+        }
+      },
+      "stats": {
+        "tdxstat.cfg": {
+          "rows": 8101,
+          "fields_checked": 283535,
+          "candidate_values_checked": 64808,
+          "unparsed_lines": 0,
+          "crc32": 1642068913
+        },
+        "tdxstat2.cfg": {
+          "rows": 8101,
+          "fields_checked": 170121,
+          "candidate_values_checked": 89111,
+          "unparsed_lines": 0,
+          "crc32": 1138322863
+        }
+      },
+      "archive_entries_crc_checked": 47,
+      "scope": "Framing/declared lengths/byte boundaries/source continuity/ZIP CRC/GBK/all CFG slots and candidate mapping. No independent business-unit, vendor-authority or trading-push acceptance."
+    }
+  },
+  "total_wire_frames": 114,
+  "total_cfg_rows": 32404,
+  "total_raw_cfg_fields": 907312,
+  "total_candidate_mappings": 307838,
+  "workspace_tests": {
+    "passed": 565,
+    "failed": 0,
+    "ignored": 27
+  },
+  "targeted_rust_tests_passed": 44,
+  "python_push_regressions_passed": 3,
+  "negative_cases_rejected": 8,
+  "fmt_check": "passed",
+  "clippy_all_targets_features": "passed (-D warnings)",
+  "integration_skip_env": true,
+  "external_services": "not executed",
+  "earlier_capture": "attempt1 original bytes retained; binary identity not fixed before that run; excluded from final scope totals",
+  "scope_exclusions": [
+    "statistics business-unit/date qualification",
+    "other resource formats",
+    "vendor authority",
+    "resource atomic version",
+    "actual trading-hour push",
+    "Linux/database/recovery/fuzz",
+    "target production"
+  ]
+}

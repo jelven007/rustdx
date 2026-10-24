@@ -1,0 +1,13 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[0m[1m[33mwarning[0m[0m[1m: unused variable: `market`[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/src/tcp/stock/quote_metadata.rs:167:14[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m167[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m        for (market, candidate) in candidates {[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m              [0m[0m[1m[33m^^^^^^[0m[0m [0m[0m[1m[33mhelp: if this is intentional, prefix it with an underscore: `_market`[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: `#[warn(unused_variables)]` on by default[0m
+
+[1m[33mwarning[0m[1m:[0m `jelven-rustdx-complete` (lib) generated 1 warning
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`release` profile [optimized]]8;;\ target(s) in 19.95s
+[1m[32m     Running[0m `/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/release/examples/metadata_hot_path`
+{"dataset":"markets=0,1; codes=000000..004999; decimals=2,3","entries":10000,"lookups_per_sample":200000,"network":false,"samples":[{"allocated_bytes":0,"allocations":0,"checksum":500000,"elapsed_ns":22132042},{"allocated_bytes":0,"allocations":0,"checksum":500000,"elapsed_ns":20479292},{"allocated_bytes":0,"allocations":0,"checksum":500000,"elapsed_ns":22464958},{"allocated_bytes":0,"allocations":0,"checksum":500000,"elapsed_ns":25845375},{"allocated_bytes":0,"allocations":0,"checksum":500000,"elapsed_ns":25314917}],"schema_version":1,"synthetic":true}

@@ -1,0 +1,13 @@
+[package]
+name = "tests-integration"
+version = "1.1.0"
+edition = "2024"
+rust-version = "1.89"
+publish = false
+
+[dependencies]
+tabled = "0.21"
+insta = "1"
+rustdx-complete = { package = "jelven-rustdx-complete", path = "../../crates/rustdx-core" }
+rustdx-cli = { package = "jelven-rustdx-cli", path = "../../apps/rustdx-cli" }
+chrono = { workspace = true }

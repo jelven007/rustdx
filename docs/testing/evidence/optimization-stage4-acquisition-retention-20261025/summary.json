@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "scope": "synthetic loopback and existing synthetic local recovery root; no market sampling",
+  "cli_daily_tests": 7,
+  "runner_control_tests": 20,
+  "real_database_tests_excluded": 1,
+  "python_tests": 7,
+  "parallel_securities": 40,
+  "parallel_rows": 80,
+  "observed_parallel_range": [
+    2,
+    3
+  ],
+  "missing_40_keys": "catalog unchanged",
+  "legacy_v1_archive": "original lossy shares replayed",
+  "retention": {
+    "registered_catalogs": 2,
+    "registered_releases": 2,
+    "events": 8,
+    "live_logical_bytes": 52362154,
+    "live_allocated_bytes": 53510144,
+    "backup_logical_bytes": 52416526,
+    "candidate_bytes": 0,
+    "trend": "two unchanged closely spaced samples; not a long-term production forecast"
+  },
+  "corrected_checks": [
+    "First runner group omitted RUSTDX_TEST_CH_USER/PASSWORD and failed the credential-dependent loopback test; recheck supplied them and passed.",
+    "Readonly source WAL opening required auxiliary-file creation on this machine; tool now snapshots main database AND committed WAL under the controller lock, runs query-only on a private temp copy, and includes a no-live-write WAL regression."
+  ],
+  "external_limits": [
+    "real full-market facts/throughput",
+    "minute/snapshot/subscription runner execution",
+    "production retention retirement/delete policy",
+    "long-term target capacity"
+  ]
+}

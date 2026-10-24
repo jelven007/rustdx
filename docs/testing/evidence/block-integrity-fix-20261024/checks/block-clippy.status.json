@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+    "+1.89.0",
+    "clippy",
+    "--workspace",
+    "--all-targets",
+    "--all-features",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "exit_code": 101,
+  "elapsed_seconds": 141.11,
+  "integration_skip_env": true
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "precise_float_parsing": 0,
+    "readback_csv": "\"date\",\"code\",\"open\",\"high\",\"low\",\"close\",\"amount\",\"vol\"\n\"2005-01-13\",\"sh600000\",6.95,7.02,6.9399999999999995,6.96,8976785,12848.27\n",
+    "stored_bits": {
+      "reinterpretAsUInt64(open)": 4619511022779944141,
+      "reinterpretAsUInt64(high)": 4619589835773423124,
+      "reinterpretAsUInt64(low)": 4619499763780875714,
+      "reinterpretAsUInt64(close)": 4619522281779012567,
+      "reinterpretAsUInt64(amount)": 4711080985351946240,
+      "reinterpretAsUInt64(vol)": 4668289025459366134
+    },
+    "expected_bits": {
+      "open": 4619511022779944141,
+      "high": 4619589835773423124,
+      "low": 4619499763780875715,
+      "close": 4619522281779012567,
+      "amount": 4711080985351946240,
+      "vol": 4668289025459366134
+    }
+  },
+  {
+    "precise_float_parsing": 1,
+    "readback_csv": "\"date\",\"code\",\"open\",\"high\",\"low\",\"close\",\"amount\",\"vol\"\n\"2005-01-13\",\"sh600000\",6.95,7.02,6.9399999999999995,6.96,8976785,12848.27\n",
+    "stored_bits": {
+      "reinterpretAsUInt64(open)": 4619511022779944141,
+      "reinterpretAsUInt64(high)": 4619589835773423124,
+      "reinterpretAsUInt64(low)": 4619499763780875714,
+      "reinterpretAsUInt64(close)": 4619522281779012567,
+      "reinterpretAsUInt64(amount)": 4711080985351946240,
+      "reinterpretAsUInt64(vol)": 4668289025459366134
+    },
+    "expected_bits": {
+      "open": 4619511022779944141,
+      "high": 4619589835773423124,
+      "low": 4619499763780875715,
+      "close": 4619522281779012567,
+      "amount": 4711080985351946240,
+      "vol": 4668289025459366134
+    }
+  }
+]

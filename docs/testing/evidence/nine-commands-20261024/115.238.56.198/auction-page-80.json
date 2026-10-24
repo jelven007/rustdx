@@ -1,0 +1,25 @@
+{
+  "request": {
+    "symbol": {
+      "market": 0,
+      "code": "000001"
+    },
+    "date_raw": 0,
+    "mode": 3,
+    "start": 80,
+    "count": 40
+  },
+  "requested_date": null,
+  "server_trading_date": null,
+  "process_snapshots": true,
+  "page": {
+    "records": [],
+    "source": {
+      "opcode": 1386,
+      "endpoint": "115.238.56.198:7709",
+      "fetched_at": "2026-10-24T05:44:01.199995Z",
+      "connection_id": 1,
+      "metadata_generation": null
+    }
+  }
+}

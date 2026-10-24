@@ -1,0 +1,8 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Checking jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+    Checking jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+    Checking tests-integration v1.1.0 (/Users/bytedance/Documents/rustdx/tests/integration)
+    Checking rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 21.33s

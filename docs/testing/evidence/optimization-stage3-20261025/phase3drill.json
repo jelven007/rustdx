@@ -1,0 +1,73 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.4667115419999999,
+      "log": "/tmp/rustdx-optimization-20261024/phase3drill-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "-p",
+        "rustdx-runner",
+        "-p",
+        "jelven-rustdx-cli",
+        "--bins",
+        "--locked"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 6.458312416,
+      "log": "/tmp/rustdx-optimization-20261024/phase3drill-1.log"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/bench/measure_process_tree.py",
+        "--output",
+        "/tmp/rustdx-optimization-20261024/local-drill-tree.json",
+        "--disk-root",
+        "/tmp/rustdx-optimization-20261024/local-drill",
+        "--interval",
+        "0.5",
+        "--timeout",
+        "120",
+        "--",
+        "python3",
+        "/tmp/rustdx-optimization-20261024/local_drill.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 43.886344083,
+      "log": "/tmp/rustdx-optimization-20261024/phase3drill-2.log"
+    },
+    {
+      "command": [
+        "env",
+        "RUSTDX_TEST_CLI=/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/rustdx",
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--locked",
+        "--",
+        "--include-ignored",
+        "--skip",
+        "real_databases"
+      ],
+      "returncode": 101,
+      "elapsed_seconds": 31.799829959,
+      "log": "/tmp/rustdx-optimization-20261024/phase3drill-3.log"
+    }
+  ]
+}

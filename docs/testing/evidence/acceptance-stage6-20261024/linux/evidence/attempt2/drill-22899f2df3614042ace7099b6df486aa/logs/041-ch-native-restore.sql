@@ -1,0 +1,1 @@
+RESTORE DATABASE rustdx_recovery_3291b0df13ac4945bff839756d5e6b9a FROM Disk('backups','full.zip')

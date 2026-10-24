@@ -1,0 +1,7 @@
+[2026-10-24T12:41:07Z INFO  rustdx::io] dir: "/tmp/rustdx-db-faults-rxggsxag/source" day 文件数量：16
+[2026-10-24T12:41:07Z INFO  rustdx::io] "/tmp/rustdx-db-faults-rxggsxag/source"	已完成：16
+[2026-10-24T12:41:07Z INFO  rustdx::io] 解析完成 → 文件 16 个 / 行 8192 行 / 输出 0.4 MiB / 耗时 0.0s
+Error: io: Peer disconnected
+
+Location:
+    apps/rustdx-cli/src/io.rs:456:20

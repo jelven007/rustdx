@@ -1,0 +1,161 @@
+[
+  {
+    "label": "format",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--all"
+    ],
+    "exit_code": 0,
+    "seconds": 1.294002625
+  },
+  {
+    "label": "fuzz-format",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--manifest-path",
+      "tools/fuzz/Cargo.toml"
+    ],
+    "exit_code": 0,
+    "seconds": 0.10323770900000007
+  },
+  {
+    "label": "process-cleanup",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--lib",
+      "--offline",
+      "--locked",
+      "database_process::tests"
+    ],
+    "exit_code": 0,
+    "seconds": 0.7366619160000001
+  },
+  {
+    "label": "clippy",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "seconds": 2.424225833
+  },
+  {
+    "label": "tests",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 33.565171082999996
+  },
+  {
+    "label": "doctests",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "--workspace",
+      "--doc",
+      "--all-features",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 9.088281082999998
+  },
+  {
+    "label": "fmt",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.7446833749999939
+  },
+  {
+    "label": "fuzz-check",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "check",
+      "--manifest-path",
+      "tools/fuzz/Cargo.toml",
+      "--bins",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 5.633392624999999
+  },
+  {
+    "label": "fuzz-fmt",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--manifest-path",
+      "tools/fuzz/Cargo.toml",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.09517770800000136
+  },
+  {
+    "label": "rustdoc",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "doc",
+      "--workspace",
+      "--no-deps",
+      "--all-features",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 10.352004207999997
+  },
+  {
+    "label": "bench",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "bench",
+      "-p",
+      "jelven-rustdx-complete",
+      "--bench",
+      "indicators",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 15.646910333999998
+  }
+]

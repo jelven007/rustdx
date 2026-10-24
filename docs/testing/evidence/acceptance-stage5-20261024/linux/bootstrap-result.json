@@ -1,0 +1,63 @@
+[
+  {
+    "name": "verify-docker-archive",
+    "command": [
+      "tar",
+      "-tzf",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/downloads/docker.tgz"
+    ],
+    "exit_code": 0,
+    "seconds": 1.516100226988783
+  },
+  {
+    "name": "download-mongosh.tgz",
+    "command": [
+      "curl",
+      "--fail",
+      "--location",
+      "--retry",
+      "2",
+      "--max-time",
+      "240",
+      "--output",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/downloads/mongosh.tgz",
+      "https://downloads.mongodb.com/compass/mongosh-2.5.10-linux-x64.tgz"
+    ],
+    "exit_code": 0,
+    "seconds": 85.37029993298347
+  },
+  {
+    "name": "download-rustup-init",
+    "command": [
+      "curl",
+      "--fail",
+      "--location",
+      "--retry",
+      "2",
+      "--max-time",
+      "240",
+      "--output",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/downloads/rustup-init",
+      "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init"
+    ],
+    "exit_code": -15,
+    "seconds": 93.58216756299953
+  },
+  {
+    "name": "download-mongo-tools.tgz",
+    "command": [
+      "curl",
+      "--fail",
+      "--location",
+      "--retry",
+      "2",
+      "--max-time",
+      "240",
+      "--output",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/downloads/mongo-tools.tgz",
+      "https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2404-x86_64-100.12.2.tgz"
+    ],
+    "exit_code": 0,
+    "seconds": 153.20730425199145
+  }
+]

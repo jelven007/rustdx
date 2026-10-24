@@ -1,0 +1,58 @@
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+    Finished `test` profile [optimized + debuginfo] target(s) in 10.27s
+     Running tests/command_boundaries.rs (target/debug/deps/command_boundaries-b8ccb4d6a6dbd3a3)
+
+running 10 tests
+test recent_minutes_checks_counts_session_labels_and_zero_values ... ok
+test recent_minutes_rejects_negative_header_prices_even_for_empty_series ... ok
+test recent_minutes_rejects_nonfinite_overflow_negative_and_truncated_fields ... ok
+test recent_minutes_request_date_and_symbol_bounds ... ok
+test refresh_accepts_zero_prices_and_depth_but_rejects_negative_values ... ok
+test refresh_preserves_marker_candidate_limit ... ok
+test refresh_checks_count_identity_duplicates_and_ambiguous_boundaries ... ok
+test refresh_rejects_cursor_below_request_before_initial_baseline ... ok
+test shared_quote_partition_accepts_eighty_snapshot_records ... ok
+test refresh_accepts_all_one_hundred_records_with_and_without_opaque_tails ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/protocol_7709_decoders.rs (target/debug/deps/protocol_7709_decoders-27281a6ed3c07f61)
+
+running 11 tests
+test auxiliary_supports_i64_extremes_and_finite_float_pairs ... ok
+test sparkline_validates_identity_and_capacity ... ok
+test limits_fixed_length_validation_and_negative_auction_direction ... ok
+test requests_encode_nine_distinct_opcodes_and_reserved_fields ... ok
+test money_flow_packed_buckets_allow_negative_amounts_and_keep_both_sets ... ok
+test recent_minute_deltas_are_relative_to_first_and_average_has_extra_scale ... ok
+test category_tail_and_sort_contract_are_independent ... ok
+test snapshots_handle_missing_out_of_order_codes_and_preserve_tails ... ok
+test refresh_xor_is_distinct_from_snapshot_and_depth_is_complete ... ok
+test malformed_payloads_never_panic ... ok
+test independently_verified_live_frames_match_all_owned_records ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests/recent_minutes_boundaries.rs (target/debug/deps/recent_minutes_boundaries-c5764eb3f103791a)
+
+running 7 tests
+test date_selector_preserves_calendar_boundaries_and_does_not_repeat_legacy_offset ... ok
+test nonempty_requires_symbol_precision_and_preserves_leap_date_selector ... ok
+test nonempty_rejects_overflow_negative_values_bad_floats_and_extra_bytes ... ok
+test fixed_nonempty_bytes_preserve_signed_deltas_zero_volume_and_unknown_date ... ok
+test requested_weekend_and_out_of_window_dates_never_qualify_cached_data ... ok
+test full_session_respects_lunch_boundary_point_limit_and_all_supported_scales ... ok
+test nonempty_compressed_wire_replay_and_mismatched_identity_do_not_hide_errors ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/recent_minutes_fixtures.rs (target/debug/deps/recent_minutes_fixtures-5741a8f886c4a4d3)
+
+running 4 tests
+test nonempty_live_stock_and_etf_bodies_replay_through_checked_network_entry ... ok
+test nonempty_live_payload_truncations_never_return_a_partial_series ... ok
+test twenty_four_nonempty_live_frames_match_5760_independent_expected_records ... ok
+test corrected_selectors_replay_72_live_series_with_17280_independent_records ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+

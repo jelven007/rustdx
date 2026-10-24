@@ -1,0 +1,36 @@
+{
+  "request": {
+    "symbol": {
+      "market": 0,
+      "code": "000001"
+    },
+    "requested_date": 20261024,
+    "selector": 4274706272
+  },
+  "requested_date": 20261024,
+  "server_trading_date": null,
+  "date_qualification": {
+    "Unverified": {
+      "reason": "ServerDoesNotEchoTradingDate"
+    }
+  },
+  "date_selector_raw": 4274706272,
+  "previous_close": 0.0,
+  "open_price": 0.0,
+  "previous_close_bits": 0,
+  "open_bits": 0,
+  "scale": {
+    "decimal": 2,
+    "divisor": 100
+  },
+  "page": {
+    "records": [],
+    "source": {
+      "opcode": 4075,
+      "endpoint": "180.153.18.170:7709",
+      "fetched_at": "2026-10-24T13:33:52.718803Z",
+      "connection_id": 1,
+      "metadata_generation": 0
+    }
+  }
+}

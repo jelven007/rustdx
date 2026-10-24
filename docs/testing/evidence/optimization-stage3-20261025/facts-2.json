@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "expected_keys": 256,
+  "states": {
+    "Trading": 256
+  },
+  "unknown_examples": [],
+  "unknown_examples_truncated": false,
+  "calendar_version": "synthetic-drill",
+  "calendar_through": "2026-07-07",
+  "calendar_reference_checked": false,
+  "history_version": "synthetic-drill",
+  "universe_version": "synthetic-drill",
+  "source_as_of": "2026-07-07",
+  "evidence": [
+    {
+      "sha256": "07d37030697f9d813092901fa6d47ae9be8684ba803870c87806e7bad0e390e4",
+      "bytes": 50
+    }
+  ],
+  "scope": "Only declared point-in-time universe and range. Integrity/coverage do not prove announcement semantics or a full-market universe. No future coverage is inferred."
+}

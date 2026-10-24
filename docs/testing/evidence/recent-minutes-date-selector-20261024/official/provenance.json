@@ -1,0 +1,15 @@
+{
+  "provenance": {
+    "original_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+    "original_capture_date": "2026-10-22",
+    "original_sha256": "07aab2f1166a794cebfa380cda058417499c4f74049a5fe36fe029f5c803d400",
+    "derivative": "ZIP container rebuilt with byte-identical first128 sorted sh600 members; original archive not modified",
+    "subset_sha256": "edfa85b5249675379f42d6f80d5d7349b0ca2b0f1a488143d55f2a14b24008f1"
+  },
+  "member": {
+    "member": "sh\\lday\\sh600000.day",
+    "sha256": "22855dea0db065e4875d005c7ba55dff5cccc4cbf491aeccfb43d8a278529748",
+    "bytes": 205152,
+    "rows": 6411
+  }
+}

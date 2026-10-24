@@ -1,0 +1,22 @@
+CREATE TABLE rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.bars
+(
+    `dataset_id` String,
+    `release_id` String,
+    `contract_version` String,
+    `date` Date,
+    `market` String,
+    `code` String,
+    `instrument_class` String,
+    `open` Float64,
+    `high` Float64,
+    `low` Float64,
+    `close` Float64,
+    `amount_cny` Float64,
+    `volume_shares` Float64,
+    CONSTRAINT contract CHECK contract_version = 'a-share/day/raw/cny/shares/v1',
+    CONSTRAINT identity CHECK (instrument_class = 'a_share') AND (market IN ('sh', 'sz')),
+    CONSTRAINT share_count CHECK (volume_shares >= 0) AND (volume_shares = floor(volume_shares))
+)
+ENGINE = MergeTree
+ORDER BY (dataset_id, release_id, contract_version, date, market, code, instrument_class)
+SETTINGS index_granularity = 8192

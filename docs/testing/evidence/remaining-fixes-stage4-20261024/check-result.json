@@ -1,0 +1,17 @@
+[
+  {
+    "name": "check",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "check",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 8.931158065795898
+  }
+]

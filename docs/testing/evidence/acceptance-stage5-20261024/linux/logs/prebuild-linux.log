@@ -1,0 +1,25 @@
+   Compiling jelven-rustdx-cli v1.8.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/apps/rustdx-cli)
+   Compiling jelven-rustdx-complete v1.12.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/crates/rustdx-core)
+   Compiling libsqlite3-sys v0.38.2
+   Compiling tests-integration v1.1.0 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/tests/integration)
+   Compiling rusqlite v0.40.2
+   Compiling rustdx-runner v0.1.0 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/apps/rustdx-runner)
+error: couldn't read `crates/rustdx-core/tests/../../../docs/testing/evidence/finance-quote-semantics-20261024/live-active-115-238-56-198/frame-056.payload.bin`: No such file or directory (os error 2)
+   --> crates/rustdx-core/tests/quote_precision.rs:469:19
+    |
+469 |       let payload = include_bytes!(
+    |  ___________________^
+470 | |         "../../../docs/testing/evidence/finance-quote-semantics-20261024/live-active-115-238-56-198/frame-056.payload.bin"
+471 | |     );
+    | |_____^
+
+error: couldn't read `crates/rustdx-core/tests/../../../docs/testing/evidence/finance-quote-semantics-20261024/live-active-115-238-56-198/frame-056.request.bin`: No such file or directory (os error 2)
+   --> crates/rustdx-core/tests/quote_precision.rs:492:9
+    |
+492 | /         include_bytes!(
+493 | |             "../../../docs/testing/evidence/finance-quote-semantics-20261024/live-active-115-238-56-198/frame-056.request.bin"
+494 | |         )
+    | |_________^
+
+error: could not compile `jelven-rustdx-complete` (test "quote_precision") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

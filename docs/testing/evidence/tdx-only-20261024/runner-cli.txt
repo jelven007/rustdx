@@ -1,0 +1,13 @@
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+   Compiling jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/rustdx-cmd)
+   Compiling rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/rustdx-runner)
+    Finished `test` profile [optimized + debuginfo] target(s) in 6.56s
+     Running tests/control_plane.rs (target/debug/deps/control_plane-5e0656beff9dd650)
+
+running 3 tests
+test ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts ... ok
+test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ok
+test real_cli_release_revision_missing_coverage_and_isolated_restore ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 3.84s
+

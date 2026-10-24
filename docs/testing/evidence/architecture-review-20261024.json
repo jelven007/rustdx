@@ -1,0 +1,736 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-24",
+  "recorded_at_utc": "2026-10-24T03:32:19.378080+00:00",
+  "review_kind": "current_workspace_static_architecture_review",
+  "report_path": "docs/architecture/TECHNICAL_ARCHITECTURE_REVIEW_20261024.md",
+  "repository": {
+    "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+    "basis": "current working-tree bytes; not HEAD or released-package equivalence",
+    "status_before_report_and_index_creation": [
+      "M .gitignore",
+      " M CHANGELOG.md",
+      " M README.md",
+      " M config/README.md",
+      " M config/runtime.env.example",
+      " M docs/README.md",
+      " M docs/architecture/PRODUCTION_FUSION_PLAN.md",
+      " M docs/architecture/PROJECT_ANALYSIS.md",
+      " M docs/architecture/PROJECT_STRUCTURE.md",
+      " M docs/architecture/UPSTREAM_CRATE_ASSESSMENT.md",
+      " M docs/development/DEVELOPMENT.md",
+      " M docs/history/ITERATION.md",
+      " M docs/history/NEXT_OPTIMIZATION.md",
+      " M docs/history/OPTIMIZATION.md",
+      " M docs/history/OPTIMIZATION_ROUND3.md",
+      " M docs/operations/DATA_MAINTENANCE.md",
+      " D docs/operations/EAST_REPLAY.md",
+      " M docs/operations/IMPORTS.md",
+      " M docs/operations/OBSERVABILITY.md",
+      " M docs/operations/OPERATIONS.md",
+      " M docs/operations/RUNBOOK.md",
+      " M docs/release/MIGRATION.md",
+      " M docs/requirements/REQUIREMENTS.md",
+      " M docs/validation/PRODUCTION_ACCEPTANCE.md",
+      " M docs/validation/VALIDATION.md",
+      " M docs/validation/evidence/final-acceptance-20261023.json",
+      " M docs/validation/evidence/runner-implementation-20261023.json",
+      " M docs/validation/evidence/upstream-review-20261023.json",
+      " M rustdx-cmd/Cargo.toml",
+      " D rustdx-cmd/examples/east_replay.rs",
+      " D rustdx-cmd/examples/source_crosscheck.rs",
+      " D rustdx-cmd/src/cmd/east.rs",
+      " M rustdx-cmd/src/cmd/mod.rs",
+      " D rustdx-cmd/src/eastmoney/mod.rs",
+      " M rustdx-cmd/src/lib.rs",
+      " M rustdx-cmd/src/quality.rs",
+      " M rustdx-cmd/tests/cli.rs",
+      " M rustdx-cmd/tests/database_acceptance.rs",
+      " M rustdx-cmd/tests/day_streaming.rs",
+      " D rustdx-cmd/tests/east_replay_capture.rs",
+      " D rustdx-cmd/tests/fixtures/east-20261022.csv",
+      " D rustdx-cmd/tests/fixtures/east-raw-20261023.json",
+      " M rustdx-runner/src/pipeline.rs",
+      " M rustdx-runner/tests/wire_archive.rs",
+      " M src/data/model.rs",
+      " M src/tcp/ip.rs",
+      " M src/tcp/mod.rs",
+      " M src/tcp/tests.rs",
+      " D tests-integration/src/east.rs",
+      " M tests-integration/src/lib.rs",
+      " M tests-integration/tests/stocklist.rs",
+      " M tests/fixtures/README.md",
+      " M tests/network_budget.rs",
+      " M tests/protocol_decoders.rs",
+      " M tests/reliability.rs",
+      " M tests/struct_size.rs",
+      " M tests/tcp_cancel.rs",
+      "?? AGENTS.md",
+      "?? docs/architecture/DAILY_IP_POOL.md",
+      "?? docs/architecture/TDX_7709_ELTDX_COMPARISON_20261023.md",
+      "?? docs/architecture/TDX_PROTOCOL_RESEARCH_20261023.md",
+      "?? docs/development/FINANCE_QUOTE_SEMANTICS_FIX_PLAN_20261024.md",
+      "?? docs/development/TDX_7709_NINE_COMMANDS_PLAN_20261024.md",
+      "?? docs/operations/ELTDX_3_2_2_COMMAND_GUIDE_20261024.md",
+      "?? docs/operations/TDX_API_REFERENCE_20261024.md",
+      "?? docs/operations/TDX_UPSTREAM_DEPENDENT_APIS_20261024.md",
+      "?? docs/operations/UPSTREAM_ACTIVE_INTERFACES.md",
+      "?? docs/validation/ELTDX_3_2_2_CURRENT_IMPLEMENTATION_20261024.md",
+      "?? docs/validation/KLINE_VOLUME_UNITS_20261024.md",
+      "?? docs/validation/TDX_7709_22_COMMAND_AUDIT_20261024.md",
+      "?? docs/validation/TDX_7709_FUNCTIONAL_AUDIT_20261024.md",
+      "?? docs/validation/TDX_ONLY_VALIDATION_20261024.md",
+      "?? docs/validation/evidence/eltdx-3.2.2-command-guide-20261024.json",
+      "?? docs/validation/evidence/eltdx-3.2.2-command-guide-20261024/",
+      "?? docs/validation/evidence/eltdx-3.2.2-current-implementation-20261024.json",
+      "?? docs/validation/evidence/finance-quote-semantics-20261024/",
+      "?? docs/validation/evidence/kline-volume-20261024/",
+      "?? docs/validation/evidence/kline-volume-units-20261024.json",
+      "?? docs/validation/evidence/pytdxdata-api-review-20261024.json",
+      "?? docs/validation/evidence/tdx-7709-22-command-audit-20261024.json",
+      "?? docs/validation/evidence/tdx-7709-eltdx-comparison-20261023.json",
+      "?? docs/validation/evidence/tdx-only-20261024.json",
+      "?? docs/validation/evidence/tdx-only-20261024/",
+      "?? docs/validation/evidence/tdx-protocol-20261023/",
+      "?? docs/validation/evidence/tdx-protocol-research-20261023.json",
+      "?? src/tcp/ip/",
+      "?? tests/common/",
+      "?? tests/daily_ip_pool.rs"
+    ]
+  },
+  "sources": [
+    {
+      "id": "S01",
+      "label": "Workspace and package versions",
+      "files": [
+        {
+          "path": "Cargo.toml",
+          "sha256": "5609b7cdedcb85104f2d2ae7e737b43ff7fe2d56010674893c626dba30d46cab",
+          "bytes": 1769,
+          "lines": 72
+        },
+        {
+          "path": "rustdx-cmd/Cargo.toml",
+          "sha256": "a967720999d8e3909c18f05d47d68321862e83210ddef105cf1d35264e5a49d7",
+          "bytes": 1275,
+          "lines": 53
+        },
+        {
+          "path": "rustdx-runner/Cargo.toml",
+          "sha256": "09b1536e99c1e4e84c59adad7b05392aafb1d162e22d39a2295eb622605cd8e2",
+          "bytes": 862,
+          "lines": 27
+        },
+        {
+          "path": "tests-integration/Cargo.toml",
+          "sha256": "3475fef5216d0bce1beb45c78daeb9f50fe840f6ed34c4d021a1e004cc8b3e33",
+          "bytes": 304,
+          "lines": 12
+        }
+      ]
+    },
+    {
+      "id": "S02",
+      "label": "Core exports and TCP transport",
+      "files": [
+        {
+          "path": "src/lib.rs",
+          "sha256": "981422f3cbc37ae55fd40cf464084d6c9a569b48a2c6f7b9dd1a3cc2f97998dc",
+          "bytes": 627,
+          "lines": 37
+        },
+        {
+          "path": "src/tcp/mod.rs",
+          "sha256": "124110ea7fa8fe953dbc6efcbc0e8ac24ed000da31218583c4854c9e459b5598",
+          "bytes": 28548,
+          "lines": 761
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "label": "Operation budgets and network contract",
+      "files": [
+        {
+          "path": "src/operation.rs",
+          "sha256": "2bf0f89aacd43c107bb8d69a53074a4c8e813ba581a3729bac87d8fb0f4e34e8",
+          "bytes": 6284,
+          "lines": 197
+        },
+        {
+          "path": "src/pool.rs",
+          "sha256": "9d51e7eabac3f914374d5111216c4e04eb683d5a8b5c6e1190192ca26682cc41",
+          "bytes": 10555,
+          "lines": 334
+        },
+        {
+          "path": "docs/architecture/NETWORK.md",
+          "sha256": "f7016344ef3deb2ce0781beeee9727ad116c1e7d13b5b52252e2d918ee887521",
+          "bytes": 6068,
+          "lines": 48
+        }
+      ]
+    },
+    {
+      "id": "S04",
+      "label": "Current daily IP pool",
+      "files": [
+        {
+          "path": "src/tcp/ip.rs",
+          "sha256": "f2314884a9f2c2c16343aea90d5051020bdfdda52671e758723537efd0b0a1a7",
+          "bytes": 8978,
+          "lines": 201
+        },
+        {
+          "path": "src/tcp/ip/daily.rs",
+          "sha256": "2dd439b5a2207cd3433d097569a0f63b776a74fa68e70c015d1f72ed10039095",
+          "bytes": 18375,
+          "lines": 530
+        },
+        {
+          "path": "src/tcp/ip/probe.rs",
+          "sha256": "f2221fe51dcdaaf47e1776eebe5b179a282c747cf72571b7c18fa9fd7889ca06",
+          "bytes": 9345,
+          "lines": 272
+        },
+        {
+          "path": "docs/architecture/DAILY_IP_POOL.md",
+          "sha256": "de0c65fa9a5e40daedf983ee7d6a4c60bd39105cf9d5f5c4698eaa3a972ae421",
+          "bytes": 5921,
+          "lines": 107
+        }
+      ]
+    },
+    {
+      "id": "S05",
+      "label": "Protocol request compatibility",
+      "files": [
+        {
+          "path": "docs/architecture/PROTOCOL_REQUESTS.md",
+          "sha256": "402d6e58758a7146ac327c34afbc139d93cff4ce76584e60cce289f2f1dd2ffa",
+          "bytes": 3804,
+          "lines": 38
+        }
+      ]
+    },
+    {
+      "id": "S06",
+      "label": "TCP batch retention and pagination",
+      "files": [
+        {
+          "path": "src/tcp/stock/client/batch.rs",
+          "sha256": "d3d4185ee7eb2c6c1075012a0249356b1436a3040816dd9538edb7cebf3bf499",
+          "bytes": 4737,
+          "lines": 144
+        },
+        {
+          "path": "src/tcp/stock/client/pagination.rs",
+          "sha256": "a3fa13923331ac4c0dac7c29bf9997e9870785449842a578da3757c90499e166",
+          "bytes": 3029,
+          "lines": 97
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "label": "Canonical data contract",
+      "files": [
+        {
+          "path": "src/data/model.rs",
+          "sha256": "925afb198ccec4905d6cd9d53ec22498ec245145bf0e7fe38b789410bd5563a9",
+          "bytes": 6690,
+          "lines": 236
+        }
+      ]
+    },
+    {
+      "id": "S08",
+      "label": "Existing indicator implementation",
+      "files": [
+        {
+          "path": "src/indicators.rs",
+          "sha256": "bbb092dd9c02a812ae17c9f11d29ed3b6fa5461265dc88ae2da8987b4113b3c8",
+          "bytes": 32825,
+          "lines": 1068
+        }
+      ]
+    },
+    {
+      "id": "S09",
+      "label": "Current CLI entry points and day pipeline",
+      "files": [
+        {
+          "path": "rustdx-cmd/src/cmd/mod.rs",
+          "sha256": "9a5681241e7a79980cd4495778ce9eb65742d385bdf5b2488917b6ee04aa2faa",
+          "bytes": 1991,
+          "lines": 71
+        },
+        {
+          "path": "rustdx-cmd/src/cmd/day.rs",
+          "sha256": "b049fddbb49877ffe522d695bf542b12c3274ba9a1f232da555e98c6d041b8e9",
+          "bytes": 16843,
+          "lines": 401
+        }
+      ]
+    },
+    {
+      "id": "S10",
+      "label": "CLI chunking, sinks and exact verification",
+      "files": [
+        {
+          "path": "rustdx-cmd/src/io/streaming.rs",
+          "sha256": "b56cedd1c28adbea91fe2fca4e2c081054dd827d7a1380d947ab6195310e58f4",
+          "bytes": 15195,
+          "lines": 417
+        },
+        {
+          "path": "rustdx-cmd/src/io/sinks.rs",
+          "sha256": "6a93a16065a6afe22ce7e2aab9827b7abb3ba910f93b3ef903ee9c14681aedf7",
+          "bytes": 14004,
+          "lines": 366
+        },
+        {
+          "path": "rustdx-cmd/src/io/schema.rs",
+          "sha256": "d77c2f78fff7ce4fd21219080600208cf2eff37f5e3c0df921a498ecd052e126",
+          "bytes": 2341,
+          "lines": 62
+        },
+        {
+          "path": "rustdx-cmd/src/io/verify.rs",
+          "sha256": "7e7382fea81cc50d33fa7d48ccc27fcf4305c4059c0f831dcfe3d05243bf96e3",
+          "bytes": 11932,
+          "lines": 338
+        }
+      ]
+    },
+    {
+      "id": "S11",
+      "label": "CLI schema 7 collection manifest",
+      "files": [
+        {
+          "path": "rustdx-cmd/src/quality.rs",
+          "sha256": "ed04e5156544d3ec9adec94dd8fad836d98063e165286e365b76b600ad43df6f",
+          "bytes": 28968,
+          "lines": 844
+        }
+      ]
+    },
+    {
+      "id": "S12",
+      "label": "Already implemented persistent CLI MongoDB readback",
+      "files": [
+        {
+          "path": "rustdx-cmd/src/io/mongo_readback.rs",
+          "sha256": "1d84599b197140db4431f65d980690c67a3c30caf40e496050720709d86c461f",
+          "bytes": 11087,
+          "lines": 294
+        },
+        {
+          "path": "rustdx-cmd/src/io/mongo_readback.js",
+          "sha256": "cef4407ca3458654a6ec9a506fa99b75b76def261ef3600d26e4aa543bc9b720",
+          "bytes": 980,
+          "lines": 20
+        }
+      ]
+    },
+    {
+      "id": "S13",
+      "label": "Runner local-day-only configuration",
+      "files": [
+        {
+          "path": "rustdx-runner/src/config.rs",
+          "sha256": "27eb25ae0d4852afacc0f2046ff3529479d581e516f327127780e8fa371e4a17",
+          "bytes": 9620,
+          "lines": 291
+        }
+      ]
+    },
+    {
+      "id": "S14",
+      "label": "Runner snapshot, coverage and supervision",
+      "files": [
+        {
+          "path": "rustdx-runner/src/pipeline.rs",
+          "sha256": "e488ea91f5c7dd29e0fcfa0111e419dc8860cac87e8d2ba6d4f89a54bc93bc52",
+          "bytes": 34851,
+          "lines": 975
+        },
+        {
+          "path": "rustdx-runner/src/supervisor.rs",
+          "sha256": "a37ab132fe20da7f0ea9a2876914e0f1815dff9cb6cb32b168d077e62b74b36c",
+          "bytes": 4790,
+          "lines": 146
+        }
+      ]
+    },
+    {
+      "id": "S15",
+      "label": "Runner durable ledger and release models",
+      "files": [
+        {
+          "path": "rustdx-runner/src/ledger.rs",
+          "sha256": "31cf05b182216ae1306381950c94963bd501357a3e662e17bb42a9cd6c8b56a8",
+          "bytes": 15297,
+          "lines": 408
+        },
+        {
+          "path": "rustdx-runner/src/model.rs",
+          "sha256": "8dbd4b8879c88e6278936243ff7b5e7fb7d221e7942be68099eda90167baf62c",
+          "bytes": 2307,
+          "lines": 91
+        }
+      ]
+    },
+    {
+      "id": "S16",
+      "label": "Runner versioned database publication and readback",
+      "files": [
+        {
+          "path": "rustdx-runner/src/database.rs",
+          "sha256": "8ffb7993aac074e1b0226aa2acc867e9ab761773248124d55790f63beadfa889",
+          "bytes": 25933,
+          "lines": 639
+        },
+        {
+          "path": "rustdx-runner/src/database_mongo.js",
+          "sha256": "0f524c24c26db95a15ec12ff249942a35846d85fcf0935b35f28760f0e7bdc0a",
+          "bytes": 1702,
+          "lines": 28
+        }
+      ]
+    },
+    {
+      "id": "S17",
+      "label": "Runner consumption, storage and recovery operations",
+      "files": [
+        {
+          "path": "rustdx-runner/src/consumer.rs",
+          "sha256": "75a7c2d3919522b9ae67a0f1931395cea5922ae251f4095093d859c92c03e7b7",
+          "bytes": 10150,
+          "lines": 324
+        },
+        {
+          "path": "rustdx-runner/src/storage.rs",
+          "sha256": "46141d7ac8fb0b3f2f0a9a2f671f7b2feecbb75da1013f096400e343317e7197",
+          "bytes": 8936,
+          "lines": 270
+        },
+        {
+          "path": "rustdx-runner/src/ops.rs",
+          "sha256": "c4a84835ccb991538c09998c077f1699ba5c0ef2d09b60d8d7e7b2fc9a46c940",
+          "bytes": 11792,
+          "lines": 301
+        }
+      ]
+    },
+    {
+      "id": "S18",
+      "label": "Configured CI and its current scope",
+      "files": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "4ff9373bc7714d197bab5971a4b5f1155219979e4e635f28402e014fa624e0eb",
+          "bytes": 2807,
+          "lines": 96
+        },
+        {
+          "path": ".github/workflows/database-acceptance.yml",
+          "sha256": "22218b5a557294b9e065a20be0ecfc5c1271f744ba929c6932f261c887625850",
+          "bytes": 3673,
+          "lines": 81
+        }
+      ]
+    },
+    {
+      "id": "S19",
+      "label": "Existing limited real K-line volume validation",
+      "files": [
+        {
+          "path": "docs/validation/KLINE_VOLUME_UNITS_20261024.md",
+          "sha256": "ccae15e74904db35a970cdd0bb1bea97646627a5554d2b572226c509715fdf6c",
+          "bytes": 12347,
+          "lines": 158
+        },
+        {
+          "path": "docs/validation/evidence/kline-volume-units-20261024.json",
+          "sha256": "d5906486cfb0850288c81b390740daef93157e6b3fb9f6da921de9aca2837f64",
+          "bytes": 26104,
+          "lines": 741
+        }
+      ]
+    },
+    {
+      "id": "S20",
+      "label": "Current protocol implementation and semantic gaps",
+      "files": [
+        {
+          "path": "docs/validation/TDX_7709_FUNCTIONAL_AUDIT_20261024.md",
+          "sha256": "7a6c08650a7904671a3d2b9fed28832f85646592a77635c248cebf33a27614d6",
+          "bytes": 21056,
+          "lines": 158
+        },
+        {
+          "path": "docs/validation/ELTDX_3_2_2_CURRENT_IMPLEMENTATION_20261024.md",
+          "sha256": "d79fb48f85a13d22988859029fdf4a7872af432af0cb816325725bcfc071df4d",
+          "bytes": 30583,
+          "lines": 343
+        }
+      ]
+    },
+    {
+      "id": "S21",
+      "label": "Nine-command plan; not implemented",
+      "files": [
+        {
+          "path": "docs/development/TDX_7709_NINE_COMMANDS_PLAN_20261024.md",
+          "sha256": "5b92ee7cafbe2dbf434fd68c27343a3f14489d763e207e67e30ba8939bccf849",
+          "bytes": 25820,
+          "lines": 363
+        }
+      ]
+    },
+    {
+      "id": "S22",
+      "label": "Existing runner acceptance; simulated securities",
+      "files": [
+        {
+          "path": "rustdx-runner/README.md",
+          "sha256": "f6b1ac213e136d94ab539faa25620d74130390270743980c83adbb8d96d2c19f",
+          "bytes": 7093,
+          "lines": 74
+        },
+        {
+          "path": "docs/development/PRODUCTION_IMPLEMENTATION.md",
+          "sha256": "1fbfe667e16a12cbb5414cc05c2e26c65db83b80c4bbc3965f686b26e80ca456",
+          "bytes": 10795,
+          "lines": 93
+        },
+        {
+          "path": "docs/validation/evidence/runner-implementation-20261023.json",
+          "sha256": "20ba4944ff76d2a0ba810252d4f8dd4c79b624bad762e700c9ca6ae7ace7c2e2",
+          "bytes": 10452,
+          "lines": 163
+        }
+      ]
+    },
+    {
+      "id": "S23",
+      "label": "Existing legacy CLI real historical database acceptance",
+      "files": [
+        {
+          "path": "docs/validation/PRODUCTION_ACCEPTANCE.md",
+          "sha256": "7bfb38d34e94ded1b1ff0844812b30902ef765871e8cfce56e6a257612092b51",
+          "bytes": 13885,
+          "lines": 174
+        },
+        {
+          "path": "docs/validation/DATABASE_ACCEPTANCE.md",
+          "sha256": "989fa49bbf3f12e91d15cdb684ac42f3560321be75149b5ecf39dab690641d4e",
+          "bytes": 4439,
+          "lines": 41
+        },
+        {
+          "path": "docs/validation/evidence/round3-real-day-databases.json",
+          "sha256": "ea8631294935248d0a42add69ef3e9dae6d4010c8c5e9cfb94a723389cd3974d",
+          "bytes": 43703,
+          "lines": 1326
+        }
+      ]
+    },
+    {
+      "id": "S24",
+      "label": "Calendar, rule and security-fact maintenance contracts",
+      "files": [
+        {
+          "path": "docs/operations/DATA_MAINTENANCE.md",
+          "sha256": "d37daf9d67f9a185b1dac8e86cd5437d009273914d533b18b1ea47c5cb31d210",
+          "bytes": 4015,
+          "lines": 30
+        },
+        {
+          "path": "docs/requirements/LIMIT_RULES.md",
+          "sha256": "fc9d08189988ac363287333f78f0133c1590ee4e937126c58f482ae64f224fb6",
+          "bytes": 3780,
+          "lines": 36
+        },
+        {
+          "path": "docs/requirements/REQUIREMENTS.md",
+          "sha256": "698ca046714bec3c0f82960cb33c7e69fe8b21f48c54d0fddab71f1da207c677",
+          "bytes": 40100,
+          "lines": 358
+        }
+      ]
+    },
+    {
+      "id": "S25",
+      "label": "Current-source regression and release boundaries",
+      "files": [
+        {
+          "path": "docs/validation/TDX_ONLY_VALIDATION_20261024.md",
+          "sha256": "5219db4539bd701c8fd5c120657bac80a5a9b7c4d7835abaf28c6bb9c7466365",
+          "bytes": 4047,
+          "lines": 36
+        },
+        {
+          "path": "docs/validation/evidence/tdx-only-20261024.json",
+          "sha256": "ef81a6906d6dfa4916190b089863c50108c1da0a5f55db4611e58aa426eb10f8",
+          "bytes": 6416,
+          "lines": 141
+        },
+        {
+          "path": "docs/release/RELEASES.md",
+          "sha256": "2ed56a98b3d91d3a6a60cbcaf5c5850400330e7f3655d525e67666d7ce46e1fe",
+          "bytes": 4313,
+          "lines": 59
+        }
+      ]
+    }
+  ],
+  "current_architecture": {
+    "primary_data_source": "TongDaXin TCP, official files and local TDX files",
+    "eastmoney_active": false,
+    "runtime": "synchronous I/O with bounded threads; no Tokio runtime",
+    "rust_edition": "2024",
+    "production_package_msrv": "1.89",
+    "cli_commands": [
+      "day",
+      "data-check",
+      "data-status",
+      "show"
+    ],
+    "cli_manifest_schema": 7,
+    "cli_row_chunk": 4096,
+    "runner_ledger_schema": 2,
+    "runner_contract": "a-share/day/raw/cny/shares/v1",
+    "runner_source": "local day directories",
+    "runner_tcp_collector_job": false,
+    "core_macd_available": true,
+    "macd_histogram_convention": "DIF - DEA, no factor of 2",
+    "cli_runner_automatic_macd_output": false,
+    "cli_mongo_readback": "persistent process per import",
+    "runner_mongo_transport": "new mongosh process per exchange",
+    "runner_readback_pagination": "ClickHouse OFFSET / MongoDB skip",
+    "tcp_batch_results": "all per-symbol result vectors retained until batch return",
+    "daily_ip_pool": {
+      "implemented_in_current_working_tree": true,
+      "refresh_at": "09:00 UTC+8 plus startup/missed refresh",
+      "required_successful_rounds": 3,
+      "workers_per_probe_all": 8,
+      "probe_budget": "reserved independently from business permits",
+      "probe": "TCP connect + handshake + 0x044e heartbeat",
+      "capability_profile_pools": "planned only"
+    }
+  },
+  "recommendations": [
+    {
+      "id": "O01",
+      "priority": "P0",
+      "topic": "protocol and data provenance contracts",
+      "sources": [
+        "S05",
+        "S06",
+        "S07",
+        "S19",
+        "S20"
+      ]
+    },
+    {
+      "id": "O02",
+      "priority": "P0",
+      "topic": "calendar facts and target-platform acceptance",
+      "sources": [
+        "S18",
+        "S22",
+        "S23",
+        "S24",
+        "S25"
+      ]
+    },
+    {
+      "id": "O03",
+      "priority": "P1",
+      "topic": "TCP collection through the release contract",
+      "sources": [
+        "S09",
+        "S13",
+        "S14",
+        "S21"
+      ]
+    },
+    {
+      "id": "O04",
+      "priority": "P1",
+      "topic": "bounded streaming TCP batch API",
+      "sources": [
+        "S06",
+        "S10"
+      ]
+    },
+    {
+      "id": "O05",
+      "priority": "P1",
+      "topic": "versioned MACD derived dataset",
+      "sources": [
+        "S07",
+        "S08",
+        "S10",
+        "S13"
+      ]
+    },
+    {
+      "id": "O06",
+      "priority": "P1",
+      "topic": "runner database readback growth and evidence accounting",
+      "sources": [
+        "S12",
+        "S16",
+        "S17"
+      ]
+    },
+    {
+      "id": "O07",
+      "priority": "P1",
+      "topic": "IP readiness and command-specific capabilities",
+      "sources": [
+        "S03",
+        "S04",
+        "S21"
+      ]
+    },
+    {
+      "id": "O08",
+      "priority": "P1",
+      "topic": "production credential and process isolation",
+      "sources": [
+        "S10",
+        "S12",
+        "S14",
+        "S16",
+        "S22"
+      ]
+    },
+    {
+      "id": "O09",
+      "priority": "P2",
+      "topic": "observability, schema reuse and source-pinned releases",
+      "sources": [
+        "S01",
+        "S11",
+        "S15",
+        "S25"
+      ]
+    }
+  ],
+  "evidence_boundaries": {
+    "new_cargo_tests": false,
+    "new_live_tcp_requests": false,
+    "new_database_acceptance": false,
+    "new_performance_benchmark": false,
+    "implementation_changes_in_this_review": false,
+    "optimization_speedup_claims": "unmeasured; no numeric gain asserted",
+    "existing_cli_history": "128 official historical files / 779200 rows",
+    "existing_runner_local_acceptance": "600 simulated securities / 1200 rows",
+    "existing_volume_probe": "one endpoint / four instruments / selected categories only",
+    "configured_linux_ci": "configuration presence is not execution evidence"
+  }
+}

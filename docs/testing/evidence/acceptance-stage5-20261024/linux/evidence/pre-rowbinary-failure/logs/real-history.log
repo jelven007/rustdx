@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/source/scripts/validation/verify_real_day_database.py", line 183, in <module>
+    main()
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/source/scripts/validation/verify_real_day_database.py", line 155, in main
+    assert digest(run(f"{backend}-{repeat}", 4, backend)) == baseline_sha
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/source/scripts/validation/verify_real_day_database.py", line 121, in run
+    assert completed.returncode == 0, str(work / "cli.log")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: /tmp/rustdx-real-day-ia0zyngd/clickhouse-0/cli.log

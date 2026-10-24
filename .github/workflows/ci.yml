@@ -70,6 +70,41 @@ jobs:
       - uses: swatinem/rust-cache@v2
       - run: cargo test --workspace --all-features --locked
 
+  contracts:
+    name: Behavior / Consumers / Packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.89.0"
+      - uses: swatinem/rust-cache@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Pool, cache, calendar and adjustment behavior regressions
+        run: cargo test -p jelven-rustdx-complete --lib --locked
+      - name: Offline evidence, retention and benchmark comparison regressions
+        run: python3 -m unittest discover -s scripts/validation/tests -v
+      - name: Standalone current and legacy signature consumers
+        run: python3 scripts/release/check_consumers.py --output "$RUNNER_TEMP/source-consumers"
+      - name: Actual package extraction and downstream consumption
+        run: >-
+          python3 scripts/release/preflight.py
+          --output "$RUNNER_TEMP/package-preflight" --skip-workspace-checks
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: contracts-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/source-consumers/*.json
+            ${{ runner.temp }}/source-consumers/*.log
+            ${{ runner.temp }}/package-preflight/preflight.json
+            ${{ runner.temp }}/package-preflight/*.log
+            ${{ runner.temp }}/package-preflight/target/package/*.crate
+            ${{ runner.temp }}/package-preflight/signature-consumers/*.json
+            ${{ runner.temp }}/package-preflight/signature-consumers/*.log
+
   fuzz:
     runs-on: ubuntu-latest
     steps:
@@ -77,20 +112,53 @@ jobs:
       - uses: dtolnay/rust-toolchain@nightly
       - uses: swatinem/rust-cache@v2
         with:
-          workspaces: fuzz
+          workspaces: tools/fuzz
       - run: cargo install cargo-fuzz --locked
       - name: Checked parser smoke fuzzing
-        run: cargo fuzz run checked_parsers -- -max_total_time=30 -max_len=4096
+        run: cargo fuzz run checked_parsers --fuzz-dir . -- -max_total_time=30 -max_len=4096
+        working-directory: tools/fuzz
+      - name: Modern command and refresh decoder smoke fuzzing
+        run: cargo fuzz run modern_parsers --fuzz-dir . -- -max_total_time=30 -max_len=65536
+        working-directory: tools/fuzz
 
   performance:
+    name: Same-host indicator regression
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: swatinem/rust-cache@v2
-      - name: Indicator benchmark observation
-        run: cargo bench --bench indicators --locked > indicator-benchmark.txt
-      - uses: actions/upload-artifact@v4
         with:
-          name: indicator-benchmark
-          path: indicator-benchmark.txt
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.89.0"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: swatinem/rust-cache@v2
+      - name: Compare shared batch APIs against base commit on this runner
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if [ -z "$BASE_REF" ] || [ "$BASE_REF" = "0000000000000000000000000000000000000000" ]; then
+            BASE_REF="$(git rev-parse HEAD^)"
+          fi
+          python3 scripts/bench/run_indicator_comparison.py \
+            --baseline-ref "$BASE_REF" --output "$RUNNER_TEMP/indicator-comparison"
+      - name: Indicator benchmark observation
+        if: always()
+        run: cargo bench -p jelven-rustdx-complete --bench indicators --locked > indicator-benchmark.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: indicator-benchmark-${{ github.sha }}
+          path: |
+            indicator-benchmark.json
+            ${{ runner.temp }}/indicator-comparison/*.json
+            ${{ runner.temp }}/indicator-comparison/*.log
+            ${{ runner.temp }}/indicator-comparison/input.f64le
+            ${{ runner.temp }}/indicator-comparison/baseline/Cargo.lock
+            ${{ runner.temp }}/indicator-comparison/baseline/Cargo.toml
+            ${{ runner.temp }}/indicator-comparison/baseline/src/
+            ${{ runner.temp }}/indicator-comparison/current/Cargo.lock
+            ${{ runner.temp }}/indicator-comparison/current/Cargo.toml
+            ${{ runner.temp }}/indicator-comparison/current/src/

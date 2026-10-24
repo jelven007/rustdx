@@ -1,0 +1,364 @@
+{
+  "started_utc": "2026-10-24T05:11:35.783088+00:00",
+  "endpoint": [
+    "115.238.56.198",
+    7709
+  ],
+  "global_budget_seconds": 120,
+  "frame_budget_seconds": 15,
+  "max_frames": 80,
+  "max_pages_per_pass": 32,
+  "market": 0,
+  "code": "300308",
+  "requested_date": 20261023,
+  "auto_reconnect": false,
+  "queries": [
+    {
+      "label": "handshake",
+      "kind": "handshake",
+      "started_utc": "2026-10-24T05:11:35.870963+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "rows": null,
+      "payload_sha256": "25e7c973199e8b2dccb9dc131f4ddb45d226857de053f15d99a329317278801f",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:35.944519+00:00"
+    },
+    {
+      "label": "enhanced-00",
+      "kind": "enhanced",
+      "started_utc": "2026-10-24T05:11:35.946321+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "start": 0,
+      "count": 1800,
+      "rows": 1800,
+      "payload_sha256": "065134611b300af914d9f05ee5453ac059849031ddb1cf4606d97441bb2d50eb",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.021758+00:00"
+    },
+    {
+      "label": "enhanced-01",
+      "kind": "enhanced",
+      "started_utc": "2026-10-24T05:11:36.023430+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "start": 1800,
+      "count": 1800,
+      "rows": 1800,
+      "payload_sha256": "8809b79a836042fc0ab2e308d99d30f6e79797b5000e5d5ecbf37192b12e2b96",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.099176+00:00"
+    },
+    {
+      "label": "enhanced-02",
+      "kind": "enhanced",
+      "started_utc": "2026-10-24T05:11:36.100174+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "start": 3600,
+      "count": 1800,
+      "rows": 1276,
+      "payload_sha256": "2016cff46a2ef810427c664e4a2178464e50c6706dbed912647553d379d4d446",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.175444+00:00"
+    },
+    {
+      "label": "enhanced-03",
+      "kind": "enhanced",
+      "started_utc": "2026-10-24T05:11:36.179388+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "start": 4876,
+      "count": 1800,
+      "rows": 0,
+      "payload_sha256": "efc7e4a6a29ceb214fda73eaf7c6d3940874a41d808fa925261b6d968756e53f",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.255068+00:00"
+    },
+    {
+      "label": "legacy-00",
+      "kind": "legacy",
+      "started_utc": "2026-10-24T05:11:36.257387+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "start": 0,
+      "count": 1800,
+      "rows": 1800,
+      "payload_sha256": "e83fe20218fd67025fcf168afbaeb93cd7feb55f9aec6a63fb0bfb4402c42585",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.335401+00:00"
+    },
+    {
+      "label": "legacy-01",
+      "kind": "legacy",
+      "started_utc": "2026-10-24T05:11:36.336648+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "start": 1800,
+      "count": 1800,
+      "rows": 1800,
+      "payload_sha256": "be380ce0f4bf64d3f9eff7ddcc322f639cbd9119c83e81da75dd90a3c7b743e9",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.413100+00:00"
+    },
+    {
+      "label": "legacy-02",
+      "kind": "legacy",
+      "started_utc": "2026-10-24T05:11:36.414136+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "start": 3600,
+      "count": 1800,
+      "rows": 1276,
+      "payload_sha256": "6abaf6dc9999efcac5470db2d5926f8a149085c50a6093b2499637341bfaad21",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.489295+00:00"
+    },
+    {
+      "label": "legacy-03",
+      "kind": "legacy",
+      "started_utc": "2026-10-24T05:11:36.490651+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "start": 4876,
+      "count": 1800,
+      "rows": 0,
+      "payload_sha256": "efc7e4a6a29ceb214fda73eaf7c6d3940874a41d808fa925261b6d968756e53f",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.564355+00:00"
+    },
+    {
+      "label": "kline-8",
+      "kind": "kline",
+      "started_utc": "2026-10-24T05:11:36.568690+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "category": 8,
+      "start": 0,
+      "count": 480,
+      "rows": 480,
+      "payload_sha256": "796732df16f3632e648a9d0ed63eebbb1e71d45cd26f7c3cb922cff4849b9be9",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.645416+00:00"
+    },
+    {
+      "label": "kline-0",
+      "kind": "kline",
+      "started_utc": "2026-10-24T05:11:36.646685+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "category": 0,
+      "start": 0,
+      "count": 96,
+      "rows": 96,
+      "payload_sha256": "225d13affe16e55d5fbdd1ddf701b02fc8ea68b31974f85d09a30b717087cc55",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.722574+00:00"
+    },
+    {
+      "label": "kline-9",
+      "kind": "kline",
+      "started_utc": "2026-10-24T05:11:36.724230+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "category": 9,
+      "start": 0,
+      "count": 3,
+      "rows": 3,
+      "payload_sha256": "f2c34224833d4cd479dfbd021ada722da1b00cd7cf96f59bead452d67345dbc9",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.798143+00:00"
+    },
+    {
+      "label": "kline-4",
+      "kind": "kline",
+      "started_utc": "2026-10-24T05:11:36.799463+00:00",
+      "peer_before": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_before": [
+        "10.5.70.239",
+        55992
+      ],
+      "category": 4,
+      "start": 0,
+      "count": 3,
+      "rows": 3,
+      "payload_sha256": "13b9a1a3962935e2aa970ca0409af44593b4430029799f9b8a07a97d7c75d6ee",
+      "peer_after": [
+        "115.238.56.198",
+        7709
+      ],
+      "local_after": [
+        "10.5.70.239",
+        55992
+      ],
+      "finished_utc": "2026-10-24T05:11:36.883579+00:00"
+    }
+  ],
+  "capture_complete": true,
+  "capture_program_sha256": "3efa334e4c7683ffb502493b4c284da3df09e14db6ab3adeddfd14a7d7d5de59",
+  "local": [
+    "10.5.70.239",
+    55992
+  ],
+  "finished_utc": "2026-10-24T05:11:36.885235+00:00"
+}

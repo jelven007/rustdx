@@ -1,0 +1,47 @@
+[package]
+name = "jelven-rustdx-complete"
+version = "2.0.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "生产可用的 A 股行情、通达信文件解析与技术指标 Rust 库"
+readme = "README.md"
+authors = ["张路 <jelven@126.com>", "zjp <jiping_zhou@foxmail.com>"]
+exclude = ["examples", "benches", "tests", "*.csv", "*.log"]
+
+[lib]
+name = "rustdx_complete"
+path = "src/lib.rs"
+
+[dependencies]
+miniz_oxide = "0.9"
+log = { workspace = true }
+serde = { workspace = true }
+serde_json = "1"
+chrono = { workspace = true }
+thiserror = { workspace = true }
+trade_date_a = "2026.0"
+encoding_rs = { version = "0.8", features = ["fast-gb-hanzi-encode"] }
+md-5 = "0.10"
+zip = { version = "=2.4.2", default-features = false, features = ["deflate"] }
+
+[dev-dependencies]
+insta = "1"
+csv = "1"
+proptest = { version = "=1.8.0", default-features = false, features = ["std"] }
+
+[[bench]]
+name = "indicators"
+harness = false
+
+[features]
+default = []
+docsrs = []
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(docsrs)'] }
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

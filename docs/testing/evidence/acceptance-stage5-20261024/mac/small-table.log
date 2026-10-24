@@ -1,0 +1,10 @@
+[1m[32m   Compiling[0m jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 3.61s
+[1m[32m     Running[0m tests/database_acceptance.rs (target/debug/deps/database_acceptance-4dc04fc2d1751f24)
+
+running 1 test
+test real_databases_verify_all_keys_updates_and_constraints has been running for over 60 seconds
+test real_databases_verify_all_keys_updates_and_constraints ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 80.38s
+

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "kind": "frozen_nonempty_wire_fixtures_and_synthetic_trading_window_regression",
+  "toolchain": "Rust 1.89.0 / edition 2024",
+  "includes_other_uncommitted_workspace_changes": true,
+  "validation": {
+    "fmt": "passed",
+    "clippy_workspace_all_targets_all_features_deny_warnings": "passed",
+    "workspace_all_features": {
+      "passed": 483,
+      "failed": 0,
+      "ignored": 24
+    },
+    "targeted_suites": {
+      "recent_minutes_fixtures": 3,
+      "recent_minutes_boundaries": 5,
+      "quote_subscription": 21,
+      "command_boundaries": 10,
+      "validate_quote_push_example": 6
+    },
+    "targeted_passed": 45,
+    "targeted_failed": 0,
+    "fixture_sha_source_and_independent_fields": "passed",
+    "fixture_verification_from_other_cwd": "passed",
+    "logs": "docs/validation/evidence/nonempty-fixtures-push-window-20261024",
+    "offline_test_env": "RUSTDX_SKIP_INTEGRATION_TESTS=1",
+    "commands": [
+      "cargo +1.89.0 test -p jelven-rustdx-complete --test recent_minutes_fixtures --test recent_minutes_boundaries --test quote_subscription --test command_boundaries --example validate_quote_push --offline --locked",
+      "cargo +1.89.0 fmt --all --check",
+      "cargo +1.89.0 clippy --workspace --all-targets --all-features --offline --locked -- -D warnings",
+      "cargo +1.89.0 test --workspace --all-features --offline --locked --no-fail-fast",
+      "python3 scripts/validation/freeze_recent_minutes_fixtures.py --output tests/fixtures/recent_minutes_nonempty --check"
+    ]
+  },
+  "nonempty_fixtures": {
+    "manifest": "tests/fixtures/recent_minutes_nonempty/manifest.json",
+    "synthetic": false,
+    "frames": 24,
+    "records": 5760,
+    "requested_dates": [
+      20260817,
+      20260818
+    ],
+    "endpoints": [
+      "115.238.56.198:7709",
+      "180.153.18.170:7709"
+    ],
+    "symbols": [
+      [
+        0,
+        "000001"
+      ],
+      [
+        0,
+        "000988"
+      ],
+      [
+        0,
+        "159915"
+      ],
+      [
+        1,
+        "600000"
+      ],
+      [
+        1,
+        "600519"
+      ],
+      [
+        1,
+        "510300"
+      ]
+    ],
+    "expectation_origin": "Python stdlib independent IEEE/header/varint/price/average decode, not Rust DTO generation"
+  },
+  "new_cases": {
+    "nonempty_real_frame_tests": 3,
+    "synthetic_push_trading_window_cases": 3,
+    "guard_seconds": 5,
+    "guard_rule": "received_at >= passive_started_at + 5 seconds",
+    "duplicate_frames_do_not_count": true,
+    "queued_old_state_does_not_roll_back": true,
+    "utc_to_beijing_and_exact_session_endpoints_checked": true,
+    "test_clock": "2026-10-26T01:35:00Z is injected in unit tests only; not a live capture"
+  },
+  "nonempty_live_wire_verified": true,
+  "requested_date_business_verified": false,
+  "live_trading_hour_push_verified": false,
+  "remaining_scope": "0feb has no echoed date and conflicts with 0fb4 controls; actual 0547 trading-hour unsolicited frames require live observation",
+  "source_files_sha256": {
+    "tests/recent_minutes_fixtures.rs": "6690306cec391671dfa24433470934bcca100fd6a7300790e493b270012eb961",
+    "tests/recent_minutes_boundaries.rs": "9ee4a223ace6df62f38a33f6237bbe5b26b74146885a9db51d361cb38eeb3550",
+    "tests/quote_subscription.rs": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5",
+    "tests/command_boundaries.rs": "31e559e622c0037d96f57ee0b2589a722fcb9874acb6c37d3c44d5f90b9a4bf9",
+    "examples/validate_quote_push.rs": "5d17672bccb80b128a8d450db807507c0cd115a6b4d714d141cbf726ca0e6dce",
+    "scripts/validation/freeze_recent_minutes_fixtures.py": "f029e87e4644bc5871675750f73f733ab4698d30eb83640f1b3b2ad006dce8b5",
+    "scripts/validation/verify_recent_minutes_boundaries.py": "eeb651b0ab9d6eb5005c4c23fb9a4dce1235cc6a70660e38369f16a5613450f3",
+    "scripts/validation/verify_recent_auction.py": "abdb5e585dc3b86e2be4739b220443f625e633b8318c26a9abd0aa3987a21eb8",
+    "scripts/validation/verify_quote_push.py": "846a3abc9dea7175a3ac8b3cb2b9c3d5e5e72931cec257dedffc107b042d7bbc",
+    "tests/fixtures/recent_minutes_nonempty/manifest.json": "e56282a937c074087453db90beb59d3c60f67b8eb60aae46fc1ef04eb5dd44c9",
+    "docs/validation/NONEMPTY_FIXTURES_PUSH_WINDOW_20261024.md": "1ffe1e349efbe9d86279231c465913903967168ccf33840011273b8711db71bd"
+  },
+  "report": "docs/validation/NONEMPTY_FIXTURES_PUSH_WINDOW_20261024.md"
+}

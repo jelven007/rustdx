@@ -1,0 +1,435 @@
+{
+  "status": "Synchronized",
+  "connection_id": 1,
+  "generation": 0,
+  "states": [
+    {
+      "symbol": {
+        "market": 0,
+        "code": "000001"
+      },
+      "quote": {
+        "market_raw": 0,
+        "code": "000001",
+        "active_raw": 4742,
+        "price": 11.2,
+        "previous_close": 11.3,
+        "open": 11.27,
+        "high": 11.35,
+        "low": 11.17,
+        "price_fields_raw": [
+          1120,
+          10,
+          7,
+          15,
+          -3
+        ],
+        "time_raw": null,
+        "update_cursor": 153000,
+        "status_or_unknown_raw": 22800,
+        "total_volume_raw": 1448805,
+        "current_volume_raw": 10192,
+        "amount": 1628277120.0,
+        "amount_raw": 1321343763,
+        "inside_volume_raw": 740988,
+        "outside_volume_raw": 707818,
+        "after_outside_raw": 0,
+        "open_amount_raw": 678341,
+        "bids": [
+          {
+            "price": 11.2,
+            "volume_raw": 9557,
+            "price_delta_raw": 0
+          },
+          {
+            "price": 11.19,
+            "volume_raw": 12196,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 11.18,
+            "volume_raw": 7747,
+            "price_delta_raw": -2
+          },
+          {
+            "price": 11.17,
+            "volume_raw": 8122,
+            "price_delta_raw": -3
+          },
+          {
+            "price": 11.16,
+            "volume_raw": 9094,
+            "price_delta_raw": -4
+          }
+        ],
+        "asks": [
+          {
+            "price": 11.21,
+            "volume_raw": 554,
+            "price_delta_raw": 1
+          },
+          {
+            "price": 11.22,
+            "volume_raw": 2801,
+            "price_delta_raw": 2
+          },
+          {
+            "price": 11.23,
+            "volume_raw": 2036,
+            "price_delta_raw": 3
+          },
+          {
+            "price": 11.24,
+            "volume_raw": 2851,
+            "price_delta_raw": 4
+          },
+          {
+            "price": 11.25,
+            "volume_raw": 2394,
+            "price_delta_raw": 5
+          }
+        ],
+        "scale": {
+          "decimal": 2,
+          "divisor": 100
+        },
+        "tail_raw": [
+          22,
+          15,
+          180,
+          16,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          224,
+          17,
+          224,
+          17,
+          0,
+          0,
+          224,
+          17,
+          224,
+          17,
+          0,
+          0,
+          224,
+          17,
+          224,
+          17,
+          0,
+          0,
+          224,
+          17,
+          224,
+          17,
+          0,
+          0,
+          224,
+          17,
+          224,
+          17,
+          0,
+          0,
+          224,
+          17,
+          224,
+          17,
+          0,
+          0
+        ]
+      },
+      "cursor": 153000,
+      "received_at": "2026-10-24T06:06:46.777474Z"
+    },
+    {
+      "symbol": {
+        "market": 0,
+        "code": "159915"
+      },
+      "quote": {
+        "market_raw": 0,
+        "code": "159915",
+        "active_raw": 4915,
+        "price": 2.702,
+        "previous_close": 2.592,
+        "open": 2.549,
+        "high": 2.714,
+        "low": 2.511,
+        "price_fields_raw": [
+          2702,
+          -110,
+          -153,
+          12,
+          -191
+        ],
+        "time_raw": null,
+        "update_cursor": 153000,
+        "status_or_unknown_raw": 2835000,
+        "total_volume_raw": 76054209,
+        "current_volume_raw": 490690,
+        "amount": 19738443776.0,
+        "amount_raw": 1351815192,
+        "inside_volume_raw": 36110897,
+        "outside_volume_raw": 39943312,
+        "after_outside_raw": 0,
+        "open_amount_raw": 259390,
+        "bids": [
+          {
+            "price": 2.702,
+            "volume_raw": 20524,
+            "price_delta_raw": 0
+          },
+          {
+            "price": 2.701,
+            "volume_raw": 10078,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 2.7,
+            "volume_raw": 7137,
+            "price_delta_raw": -2
+          },
+          {
+            "price": 2.699,
+            "volume_raw": 2293,
+            "price_delta_raw": -3
+          },
+          {
+            "price": 2.698,
+            "volume_raw": 16525,
+            "price_delta_raw": -4
+          }
+        ],
+        "asks": [
+          {
+            "price": 2.703,
+            "volume_raw": 11523,
+            "price_delta_raw": 1
+          },
+          {
+            "price": 2.704,
+            "volume_raw": 8678,
+            "price_delta_raw": 2
+          },
+          {
+            "price": 2.705,
+            "volume_raw": 8733,
+            "price_delta_raw": 3
+          },
+          {
+            "price": 2.706,
+            "volume_raw": 4939,
+            "price_delta_raw": 4
+          },
+          {
+            "price": 2.707,
+            "volume_raw": 4907,
+            "price_delta_raw": 5
+          }
+        ],
+        "scale": {
+          "decimal": 3,
+          "divisor": 1000
+        },
+        "tail_raw": [
+          86,
+          74,
+          46,
+          28,
+          7,
+          0,
+          189,
+          227,
+          44,
+          64,
+          206,
+          42,
+          206,
+          42,
+          0,
+          0,
+          206,
+          42,
+          206,
+          42,
+          0,
+          0,
+          206,
+          42,
+          206,
+          42,
+          0,
+          0,
+          206,
+          42,
+          206,
+          42,
+          0,
+          0,
+          206,
+          42,
+          206,
+          42,
+          0,
+          0,
+          206,
+          42,
+          206,
+          42,
+          0,
+          0
+        ]
+      },
+      "cursor": 153000,
+      "received_at": "2026-10-24T06:06:46.777475Z"
+    },
+    {
+      "symbol": {
+        "market": 1,
+        "code": "510300"
+      },
+      "quote": {
+        "market_raw": 1,
+        "code": "510300",
+        "active_raw": 5080,
+        "price": 4.178,
+        "previous_close": 4.107,
+        "open": 4.08,
+        "high": 4.186,
+        "low": 4.031,
+        "price_fields_raw": [
+          4178,
+          -71,
+          -98,
+          8,
+          -147
+        ],
+        "time_raw": null,
+        "update_cursor": 153000,
+        "status_or_unknown_raw": 859600,
+        "total_volume_raw": 37556082,
+        "current_volume_raw": 106207,
+        "amount": 15423238144.0,
+        "amount_raw": 1348850428,
+        "inside_volume_raw": 17051157,
+        "outside_volume_raw": 20504925,
+        "after_outside_raw": 0,
+        "open_amount_raw": 0,
+        "bids": [
+          {
+            "price": 4.178,
+            "volume_raw": 31015,
+            "price_delta_raw": 0
+          },
+          {
+            "price": 4.177,
+            "volume_raw": 39935,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 4.176,
+            "volume_raw": 12886,
+            "price_delta_raw": -2
+          },
+          {
+            "price": 4.175,
+            "volume_raw": 8912,
+            "price_delta_raw": -3
+          },
+          {
+            "price": 4.174,
+            "volume_raw": 6044,
+            "price_delta_raw": -4
+          }
+        ],
+        "asks": [
+          {
+            "price": 4.179,
+            "volume_raw": 6605,
+            "price_delta_raw": 1
+          },
+          {
+            "price": 4.18,
+            "volume_raw": 12856,
+            "price_delta_raw": 2
+          },
+          {
+            "price": 4.181,
+            "volume_raw": 1659,
+            "price_delta_raw": 3
+          },
+          {
+            "price": 4.182,
+            "volume_raw": 1973,
+            "price_delta_raw": 4
+          },
+          {
+            "price": 4.183,
+            "volume_raw": 5183,
+            "price_delta_raw": 5
+          }
+        ],
+        "scale": {
+          "decimal": 3,
+          "divisor": 1000
+        },
+        "tail_raw": [
+          86,
+          3,
+          116,
+          168,
+          3,
+          0,
+          249,
+          160,
+          133,
+          64,
+          210,
+          65,
+          210,
+          65,
+          0,
+          0,
+          210,
+          65,
+          210,
+          65,
+          0,
+          0,
+          210,
+          65,
+          210,
+          65,
+          0,
+          0,
+          210,
+          65,
+          210,
+          65,
+          0,
+          0,
+          210,
+          65,
+          210,
+          65,
+          0,
+          0,
+          210,
+          65,
+          210,
+          65,
+          0,
+          0
+        ]
+      },
+      "cursor": 153000,
+      "received_at": "2026-10-24T06:06:46.777475Z"
+    }
+  ],
+  "queued_frames": 0,
+  "queued_bytes": 0
+}

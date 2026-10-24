@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "entries": [
+    {
+      "scope": {
+        "command": "0x0010",
+        "market": 0,
+        "code": "000001",
+        "period": "finance_report",
+        "updated_date": 20260815,
+        "report_period": "2026-06-30",
+        "date_basis": "independent_issuer_report",
+        "evidence_version": "finance-quote-semantics-20261024"
+      },
+      "status": "scoped_reference_checked",
+      "required_fields": [
+        {
+          "field": "total_shares",
+          "raw_bits": 1240261503,
+          "normalized": 19405918750.0,
+          "official": 19405918198,
+          "tolerance": 625
+        },
+        {
+          "field": "reported_eps",
+          "raw_bits": 1067366482,
+          "normalized": 1.2400000095367432,
+          "official": 1.24,
+          "tolerance": 0.0050000596046447755
+        },
+        {
+          "field": "total_assets",
+          "raw_bits": 1337175035,
+          "normalized": 6028785152000.0,
+          "official": 6028785000000,
+          "tolerance": 756000
+        },
+        {
+          "field": "net_assets",
+          "raw_bits": 1308800084,
+          "normalized": 548214016000.0,
+          "official": 548214000000,
+          "tolerance": 532000
+        },
+        {
+          "field": "operating_revenue",
+          "raw_bits": 1283895541,
+          "normalized": 70617000000.0,
+          "official": 70617000000,
+          "tolerance": 504000
+        },
+        {
+          "field": "operating_profit",
+          "raw_bits": 1273705200,
+          "normalized": 30828000000.0,
+          "official": 30828000000,
+          "tolerance": 501000
+        },
+        {
+          "field": "operating_cash_flow",
+          "raw_bits": 1296895274,
+          "normalized": 215012000000.0,
+          "official": 215012000000,
+          "tolerance": 508000
+        },
+        {
+          "field": "profit_before_tax",
+          "raw_bits": 1273688700,
+          "normalized": 30795000000.0,
+          "official": 30795000000,
+          "tolerance": 501000
+        },
+        {
+          "field": "net_profit",
+          "raw_bits": 1271139200,
+          "normalized": 25696000000.0,
+          "official": 25696000000,
+          "tolerance": 501000
+        },
+        {
+          "field": "net_assets_per_share",
+          "raw_bits": 1103170109,
+          "normalized": 24.1299991607666,
+          "official": 24.13,
+          "tolerance": 0.005000953674316406
+        }
+      ],
+      "raw": {
+        "path": "crates/rustdx-core/tests/fixtures/protocol/finance.response.hex",
+        "sha256": "ef6e0d57cd33b638f73ae123f13bf84eb47a80660ddfcc7cbec0ee0ebab0991c"
+      },
+      "reference": {
+        "path": "crates/rustdx-core/tests/fixtures/protocol/finance.semantic.expected.json",
+        "sha256": "b9ed7f8dd65824039dabce8695b51b45e294e05ee4b61a91edc9222cd9071b66"
+      },
+      "authority": [
+        {
+          "path": "docs/testing/evidence/finance-quote-semantics-20261024/pingan-bank-2026-h1-summary.pdf",
+          "sha256": "6047496bb254ad7e7e335d50d6daa606e46bd7b8bb0b18a35d9276d7d33b6220"
+        }
+      ]
+    }
+  ],
+  "scope": "Pinned caller evidence only; document authenticity and mappings remain maintainer responsibilities; no other symbol/period/field is qualified."
+}

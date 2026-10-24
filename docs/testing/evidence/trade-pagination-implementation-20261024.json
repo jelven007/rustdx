@@ -1,0 +1,135 @@
+{
+  "date": "2026-10-24",
+  "scope": "strict raw enumeration of existing 0x0fc5/0x0fb5; uncommitted workspace",
+  "rust_version": "1.89.0",
+  "apis": [
+    "Client::transaction_all(market, code, options)",
+    "Client::history_transaction_all(market, code, date, options)"
+  ],
+  "source_files": [
+    "src/tcp/stock/client/transactions.rs",
+    "src/tcp/stock/transaction_pagination.rs",
+    "src/tcp/mod.rs",
+    "src/tcp/stock/transaction.rs",
+    "tests/transaction_pagination.rs",
+    "examples/transaction_all.rs"
+  ],
+  "checks": {
+    "fmt_all": "passed",
+    "clippy_workspace_all_targets_all_features_deny_warnings": "passed",
+    "new_wire_regressions": {
+      "passed": 12,
+      "failed": 0
+    },
+    "new_internal_date_regression": {
+      "passed": 1,
+      "failed": 0
+    },
+    "core_all_features": {
+      "passed": 335,
+      "failed": 0,
+      "ignored": 18
+    },
+    "workspace_all_features": {
+      "status": "failed",
+      "failure": "rustdx-cmd/tests/cli_deadline.rs:71",
+      "assertion": "start.elapsed() < Duration::from_millis(if cancel { 800 } else { 1600 })",
+      "isolated_recheck": "same assertion failed"
+    },
+    "workspace_with_known_timing_test_explicitly_excluded": {
+      "passed": 395,
+      "failed": 0,
+      "ignored": 23,
+      "filtered_out": 1,
+      "excluded_test": "full_command_deadline_and_cancellation_preserve_previous_output"
+    },
+    "skip_external_integration_env": "RUSTDX_SKIP_INTEGRATION_TESTS=1",
+    "note": "Existing live-network/database cases may return early under the integration switch. Local new TCP regressions execute. Work includes other concurrent workspace changes."
+  },
+  "cli_deadline_follow_up": {
+    "status": "fixed",
+    "source": "rustdx-cmd/tests/cli_deadline.rs",
+    "timeout_clock": "server-observed first HEAD request",
+    "cancellation_clock": "just before creating the cancellation file",
+    "thresholds_ms": {"timeout": 1600, "cancellation": 800},
+    "startup_readiness_timeout_ms": 3000,
+    "server_policy": "GET stays open until the CLI has exited; no fixed-delay synthetic EOF",
+    "child_watchdog_and_panic_cleanup": true,
+    "consecutive_rechecks_passed": 3,
+    "injected_startup_delay_ms": 1000,
+    "measured_timeout_ms": 1115.520333,
+    "measured_cancellation_ms": 307.085667,
+    "previous_csv_failure_report_and_network_release_verified": true,
+    "fmt_all": "passed",
+    "clippy_workspace_all_targets_all_features_deny_warnings": "passed",
+    "test_passed_in_full_workspace_run": true,
+    "full_workspace_result": "failed in 4 newly added modern_commands tests, not cli_deadline",
+    "wire_example_compatibility_fix": "capture uses heartbeat_legacy to match SecurityCount replay"
+  },
+  "modern_commands_follow_up": {
+    "status": "all_four_prior_failures_resolved_and_verified",
+    "source": "tests/modern_commands.rs",
+    "directory_name_field_bytes": 16,
+    "full_width_ascii_and_eight_gbk_characters_verified": true,
+    "subsequent_ieee_float_offsets_verified": true,
+    "idle_failure_regression": "join the failed worker before retry; explicitly exercise macOS peer_addr error on the shutdown socket and verify new connection identity",
+    "targeted_tests": {"passed": 10, "failed": 0},
+    "consecutive_rechecks": {"runs": 3, "passed_per_run": 10, "failed": 0},
+    "workspace_all_features": {"passed": 411, "failed": 0, "ignored": 23, "filtered_out": 0},
+    "fmt_workspace": "passed",
+    "clippy_workspace_all_targets_all_features_deny_warnings": "passed",
+    "integration_skip_env": "RUSTDX_SKIP_INTEGRATION_TESTS=1",
+    "incidental_startup_test_compile_fix": "derive Debug for Observer to satisfy FrameObserver",
+    "note": "Includes other concurrent workspace changes. Tests using the external integration skip switch do not establish live-market or database acceptance."
+  },
+  "live_samples": [
+    {
+      "command": "0x0fc5",
+      "market": 0,
+      "code": "000001",
+      "requested_date": null,
+      "observed_date": 20261024,
+      "source_endpoint": "115.238.56.198:7709",
+      "connection_generation": 0,
+      "started_at": "2026-10-24T04:46:48.409655Z",
+      "fetched_at": "2026-10-24T04:46:49.382060Z",
+      "page_offsets": [0, 1800, 3600, 4742],
+      "page_raw_counts": [1800, 1800, 1142, 0],
+      "page_requests": [1, 1, 1, 2],
+      "page_payload_bytes": [14278, 13820, 9044, 4],
+      "raw_records": 4742,
+      "requests": 5,
+      "payload_bytes": 37146,
+      "first": {"time": "09:15", "price": 11.3, "vol": 0, "num": 0, "buyorsell": 8},
+      "last": {"time": "15:22", "price": 11.2, "vol": 30, "num": 2, "buyorsell": 5},
+      "termination": "EmptyPageObserved"
+    },
+    {
+      "command": "0x0fb5",
+      "market": 0,
+      "code": "000001",
+      "requested_date": 20261023,
+      "observed_date": 20261024,
+      "source_endpoint": "115.238.56.198:7709",
+      "connection_generation": 0,
+      "started_at": "2026-10-24T04:46:12.425369Z",
+      "fetched_at": "2026-10-24T04:46:13.482828Z",
+      "page_offsets": [0, 1800, 3600, 4742],
+      "page_raw_counts": [1800, 1800, 1142, 0],
+      "page_requests": [1, 1, 1, 2],
+      "page_payload_bytes": [12292, 11922, 7703, 12],
+      "raw_records": 4742,
+      "requests": 5,
+      "payload_bytes": 31929,
+      "first": {"time": "09:15", "price": 11.3, "vol": 0, "num": 0, "buyorsell": 8},
+      "last": {"time": "15:22", "price": 11.2, "vol": 30, "num": 0, "buyorsell": 5},
+      "termination": "EmptyPageObserved"
+    }
+  ],
+  "evidence_limits": [
+    "Live samples establish enumeration of one source during two queries, not independent full-day coverage.",
+    "The date-less 0fc5 response does not verify the server trading date; the client observed Saturday 20261024.",
+    "Complete wire frames and all live rows were not archived in this run; only pagination summaries are retained.",
+    "No independent daily-volume/amount verification, 2000-record server-limit probe, or frozen intraday snapshot verification was performed."
+  ]
+}

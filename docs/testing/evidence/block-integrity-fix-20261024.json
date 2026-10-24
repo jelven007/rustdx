@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "status": "fixed_in_current_workspace",
+  "date": "2026-10-24",
+  "requirements": [
+    "FR-04",
+    "FR-07",
+    "FR-13"
+  ],
+  "fixed": [
+    "02c5 32hex and full length/MD5 verification including empty files",
+    "06b9 exact chunk length and endpoint/connection/UTC+8 observation-date continuity",
+    "strict slot/member/GBK/ASCII-code parsing with no partial high-level success"
+  ],
+  "apis": [
+    "BlockMetadata::verify_content",
+    "download_block_file",
+    "Client::block_file",
+    "BlockFile::decode_records",
+    "decode_block_content",
+    "get_block_info",
+    "Client::block"
+  ],
+  "legacy_compatibility": "parse_block_content and old low-level request constructors remain unchanged",
+  "limits": {
+    "max_file_bytes": 67108864,
+    "chunk_bytes": 30000,
+    "shared_timeout": "network_policy.pagination_timeout",
+    "capture_total_seconds_per_node": 180,
+    "capture_max_frames_per_node": 128,
+    "capture_max_bytes_per_node": 16777216
+  },
+  "real_comparison": {
+    "endpoints": [
+      "115.238.56.198:7709",
+      "180.153.18.170:7709"
+    ],
+    "files": [
+      {
+        "filename": "block_gn.dat",
+        "size": 757083,
+        "md5": "135dd66cf5b2e52abcdd967633465a4f",
+        "sha256": "dae17851d171ec094db81d256c07f88d572505dbfe1ad833e6d0f8e6201433f1",
+        "chunks": 26,
+        "boards": 269,
+        "slot_size": 2813,
+        "records": 41359,
+        "seventh_byte_counts_raw": {
+          "00": 41359
+        },
+        "all_fields_equal": true,
+        "md5_verified": true
+      },
+      {
+        "filename": "block_zs.dat",
+        "size": 329507,
+        "md5": "deddfa997800581cf5cff4ea5cf200ca",
+        "sha256": "fcc3befb6299f06af053f39bfc44a4ffe60d2112ba66c4161c571a5299b71151",
+        "chunks": 11,
+        "boards": 117,
+        "slot_size": 2813,
+        "records": 11554,
+        "seventh_byte_counts_raw": {
+          "00": 11554
+        },
+        "all_fields_equal": true,
+        "md5_verified": true
+      }
+    ],
+    "files_total": 4,
+    "wire_frames_total": 80,
+    "compressed_frames_total": 76,
+    "records_compared": 105826,
+    "two_nodes_content_equal": true,
+    "all_fields_equal": true,
+    "reference": "Python struct/zlib/hashlib.md5/strict GBK independent of Rust decoders"
+  },
+  "regression": {
+    "cargo_passed": 558,
+    "cargo_failed": 0,
+    "cargo_ignored": 27,
+    "new_board_tests_passed": 10,
+    "fmt_passed": true,
+    "clippy_warnings_denied_passed": true,
+    "skip_env": "RUSTDX_SKIP_INTEGRATION_TESTS=1",
+    "guarded_real_network_and_database_tests_not_claimed_as_executed": true,
+    "initial_failures_resolved": [
+      "NUL literal disambiguation for Clippy",
+      "macOS timeout assertion accepts WouldBlock and checks elapsed time"
+    ]
+  },
+  "checks": {
+    "block-fmt-complete": {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.721,
+      "integration_skip_env": true
+    },
+    "block-clippy-complete": {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.354,
+      "integration_skip_env": true
+    },
+    "block-workspace-final": {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 105.999,
+      "integration_skip_env": true
+    },
+    "block-probe-build-final": {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "--manifest-path",
+        "/tmp/rustdx-block-probe/Cargo.toml",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 6.266,
+      "integration_skip_env": true
+    },
+    "block-live-final-a": {
+      "command": [
+        "/tmp/rustdx-block-probe/target/debug/rustdx-block-probe",
+        "/Users/bytedance/Documents/rustdx/docs/testing/evidence/block-integrity-fix-20261024/live-a",
+        "115.238.56.198:7709"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 6.711,
+      "integration_skip_env": true
+    },
+    "block-live-final-b": {
+      "command": [
+        "/tmp/rustdx-block-probe/target/debug/rustdx-block-probe",
+        "/Users/bytedance/Documents/rustdx/docs/testing/evidence/block-integrity-fix-20261024/live-b",
+        "180.153.18.170:7709"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 6.709,
+      "integration_skip_env": true
+    }
+  },
+  "source_sha256": "7631261ad483205e77b1d165f428aa696bcfb13ccdf38adff431070dd45e67de",
+  "source_selected_files": 249,
+  "source_identity_is_git_head": false,
+  "capture_binary_sha256": "a7d5b0f0f72bff82aaf6fb33a18b296796aa2e26c5faea826dcbc82974c69885",
+  "capture_dependency_lock": "capture-tool/Cargo.lock",
+  "changed_prior_source_paths": [
+    "Cargo.lock",
+    "crates/rustdx-core/Cargo.toml",
+    "crates/rustdx-core/src/tcp/stock/block_info.rs",
+    "crates/rustdx-core/src/tcp/stock/client.rs",
+    "crates/rustdx-core/src/tcp/stock/mod.rs",
+    "crates/rustdx-core/src/tcp/stock/resource_metadata.rs"
+  ],
+  "prior_source_manifest_retained": {
+    "path": "docs/testing/evidence/tcp-day-volume-fix-20261024/source-manifest.json",
+    "file_sha256": "2785e1011c7c0bb0f0ac65d5b573e9a097a14f1a850bf65d14c76b874cb51cd6",
+    "original_source_sha256": "f81b46371f8cee81bd9042658701277c126e333fb350f27be77d77367cea1a19"
+  },
+  "remaining": [
+    "block_fg.dat/block.dat not sampled",
+    "06b9 raw prefix/seventh byte and vendor categories unverified",
+    "arbitrary resource/300-byte path/compressed statistics contract not implemented",
+    "0feb general date qualification and full retention window remain unaccepted",
+    "target Linux/production/all-market and live 0547 push not rerun"
+  ],
+  "report": "docs/archive/development/BLOCK_FILE_INTEGRITY_FIX_20261024.md",
+  "support_package": "docs/testing/evidence/block-integrity-fix-20261024",
+  "committed_or_published": false
+}

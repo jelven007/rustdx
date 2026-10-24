@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/tmp/rustdx-block-probe/target/debug/rustdx-block-probe",
+    "/Users/bytedance/Documents/rustdx/docs/testing/evidence/block-integrity-fix-20261024/live-a",
+    "115.238.56.198:7709"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 6.711,
+  "integration_skip_env": true
+}

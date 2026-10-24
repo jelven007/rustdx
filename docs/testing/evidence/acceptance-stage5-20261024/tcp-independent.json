@@ -1,0 +1,265 @@
+{
+  "results": [
+    {
+      "endpoint": "115.238.56.198:7709",
+      "securities": [
+        {
+          "code": "sh600000",
+          "frames": 2,
+          "raw_rows": 800,
+          "selected_rows": 4,
+          "comparisons": [
+            {
+              "date": "20261019",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 54074700.0,
+              "day_shares": 54074699,
+              "share_difference": 1.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261020",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 60513200.0,
+              "day_shares": 60513255,
+              "share_difference": -55.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261021",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 46256200.0,
+              "day_shares": 46256249,
+              "share_difference": -49.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261022",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 62529800.0,
+              "day_shares": 62529869,
+              "share_difference": -69.0,
+              "shares_exact": false
+            }
+          ],
+          "receipt_rows_exact": true
+        },
+        {
+          "code": "sh600519",
+          "frames": 2,
+          "raw_rows": 800,
+          "selected_rows": 4,
+          "comparisons": [
+            {
+              "date": "20261019",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 3972800.0,
+              "day_shares": 3972894,
+              "share_difference": -94.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261020",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 3413500.0,
+              "day_shares": 3413565,
+              "share_difference": -65.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261021",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 3351400.0,
+              "day_shares": 3351416,
+              "share_difference": -16.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261022",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 4249100.0,
+              "day_shares": 4249133,
+              "share_difference": -33.0,
+              "shares_exact": false
+            }
+          ],
+          "receipt_rows_exact": true
+        },
+        {
+          "code": "sz000001",
+          "frames": 2,
+          "raw_rows": 800,
+          "selected_rows": 4,
+          "comparisons": [
+            {
+              "date": "20261019",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 126779200.0,
+              "day_shares": 126779262,
+              "share_difference": -62.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261020",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 124509600.0,
+              "day_shares": 124509668,
+              "share_difference": -68.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261021",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 81354100.0,
+              "day_shares": 81354137,
+              "share_difference": -37.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261022",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 129764800.0,
+              "day_shares": 129764875,
+              "share_difference": -75.0,
+              "shares_exact": false
+            }
+          ],
+          "receipt_rows_exact": true
+        }
+      ]
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "securities": [
+        {
+          "code": "sh600000",
+          "frames": 2,
+          "raw_rows": 800,
+          "selected_rows": 4,
+          "comparisons": [
+            {
+              "date": "20261019",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 54074700.0,
+              "day_shares": 54074699,
+              "share_difference": 1.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261020",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 60513200.0,
+              "day_shares": 60513255,
+              "share_difference": -55.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261021",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 46256200.0,
+              "day_shares": 46256249,
+              "share_difference": -49.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261022",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 62529800.0,
+              "day_shares": 62529869,
+              "share_difference": -69.0,
+              "shares_exact": false
+            }
+          ],
+          "receipt_rows_exact": true
+        },
+        {
+          "code": "sh600519",
+          "frames": 2,
+          "raw_rows": 800,
+          "selected_rows": 4,
+          "comparisons": [
+            {
+              "date": "20261019",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 3972800.0,
+              "day_shares": 3972894,
+              "share_difference": -94.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261020",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 3413500.0,
+              "day_shares": 3413565,
+              "share_difference": -65.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261021",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 3351400.0,
+              "day_shares": 3351416,
+              "share_difference": -16.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261022",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 4249100.0,
+              "day_shares": 4249133,
+              "share_difference": -33.0,
+              "shares_exact": false
+            }
+          ],
+          "receipt_rows_exact": true
+        },
+        {
+          "code": "sz000001",
+          "frames": 2,
+          "raw_rows": 800,
+          "selected_rows": 4,
+          "comparisons": [
+            {
+              "date": "20261019",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 126779200.0,
+              "day_shares": 126779262,
+              "share_difference": -62.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261020",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 124509600.0,
+              "day_shares": 124509668,
+              "share_difference": -68.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261021",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 81354100.0,
+              "day_shares": 81354137,
+              "share_difference": -37.0,
+              "shares_exact": false
+            },
+            {
+              "date": "20261022",
+              "ohlc_amount_exact": true,
+              "tcp_shares": 129764800.0,
+              "day_shares": 129764875,
+              "share_difference": -75.0,
+              "shares_exact": false
+            }
+          ],
+          "receipt_rows_exact": true
+        }
+      ]
+    }
+  ],
+  "two_nodes_csv_exact": true,
+  "native_csv_fields_match_independent_wire_decoder": true,
+  "official_zip_ohlc_amount_exact": true,
+  "official_zip_volume_exact": false,
+  "limitation": "Observed category9 lots lose integer-share precision versus u32 day files (up to 94 shares); no exact-volume promotion or all-instrument unit claim."
+}

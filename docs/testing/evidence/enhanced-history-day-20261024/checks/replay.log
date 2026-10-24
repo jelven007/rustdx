@@ -1,0 +1,44 @@
+{
+  "events": {
+    "raw_count": 4876,
+    "actual_view_count": 4789,
+    "regular_count": 4744,
+    "snapshot_count": 87,
+    "after_hours_count": 45,
+    "status_counts": {
+      "0": 2504,
+      "1": 2212,
+      "2": 28,
+      "5": 45,
+      "8": 87
+    },
+    "raw_time_range": [
+      "09:15",
+      "15:29"
+    ],
+    "regular_volume_lots": 478818,
+    "regular_volume_shares": 47881800,
+    "after_hours_volume_lots": 181,
+    "after_hours_volume_shares": 18100,
+    "after_hours_fixed_price": [
+      612.63
+    ],
+    "after_hours_amount_proxy_yuan": 11088603,
+    "all_events_volume_shares": 47899900,
+    "raw_identical_tuple_groups": 24,
+    "raw_identical_tuple_excess_records": 62,
+    "actual_identical_tuple_groups": 8,
+    "actual_identical_tuple_excess_records": 10,
+    "deduplicated": false
+  },
+  "event_ohlc": {
+    "open": 572.01,
+    "close": 612.63,
+    "high": 617.43,
+    "low": 553.5
+  },
+  "minute_gaps": [],
+  "canonical_sha256": "b735e707490774cf7636ebb573e2c793768f9596ca42840ef3cb2a56814d7a9c",
+  "volume_difference_shares": 0.0,
+  "amount_proxy_minus_daily_yuan": -468521.0
+}

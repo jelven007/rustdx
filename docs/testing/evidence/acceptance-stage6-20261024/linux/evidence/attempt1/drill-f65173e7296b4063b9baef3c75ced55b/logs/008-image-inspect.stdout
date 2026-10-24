@@ -1,0 +1,85 @@
+[
+    {
+        "Id": "sha256:aba3018581e934f8ca714bda8f17e88910211ebfb1b96547824085985c884bf1",
+        "RepoTags": [],
+        "RepoDigests": [
+            "docker.1ms.run/library/mongo@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d"
+        ],
+        "Parent": "",
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2025-11-19T23:52:45.713575377Z",
+        "DockerVersion": "",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "27017/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.19",
+                "JSYAML_VERSION=3.13.1",
+                "JSYAML_CHECKSUM=662e32319bdd378e91f67578e56a34954b0a2e33aca11d70ab9f4826af24b941",
+                "MONGO_PACKAGE=mongodb-org",
+                "MONGO_REPO=repo.mongodb.org",
+                "MONGO_MAJOR=8.0",
+                "MONGO_VERSION=8.0.16",
+                "HOME=/data/db",
+                "GLIBC_TUNABLES=glibc.pthread.rseq=0"
+            ],
+            "Cmd": [
+                "mongod"
+            ],
+            "Image": "",
+            "Volumes": {
+                "/data/configdb": {},
+                "/data/db": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.version": "24.04"
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 909919705,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/8c96ac1f5f0dd9e8d5101eff066f6d7cfccc7115c0bd09f84180d17ef77a84b8/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/94457ee24d5cfd3bfe699af8e3d5682f66a6fdb996d6fb9053e3af66ebaae11b/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/209d29616703ce9a92cc7fe93f707d73ceb2ab72001bb2c4ccab022b98a57d42/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/b401ee7096461c9b12366154da846b2b445278787e5c837b278604d683baed6c/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/38954082e2c7291492a10853ef7862072ed3a4f60ce80392de926714ff31bd1e/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/4a75637a51620faf5eee4d70b16da6e923be5d1ae4af1698a431bdbf5842c26a/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/4a093a416c94e5e5214106b6aae618d9719fb84f677b690912cb8a01f5d4be3e/diff",
+                "MergedDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/099af24582ff7e3bae708465df6fb1b91336b20ec9fec9aed3bf361d7e26929b/merged",
+                "UpperDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/099af24582ff7e3bae708465df6fb1b91336b20ec9fec9aed3bf361d7e26929b/diff",
+                "WorkDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/099af24582ff7e3bae708465df6fb1b91336b20ec9fec9aed3bf361d7e26929b/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:e8bce0aabd687e9ee90e0bada33884f40b277196f72aac9934357472863a80ae",
+                "sha256:f54e71e4ad5f1dda9da9166d24e8673cf9cedf68225a1f91391d29767a49d525",
+                "sha256:cea432684ee415b739f227d977295afdd3e9c445d1c3e4642c1b44422f814df7",
+                "sha256:2d66e7f8fd0bc4ca64a3c2330ab9983195ca3098578f4c3734b3473012b1cae7",
+                "sha256:853d0449793f8803921ad88ecea43694d0f60ea12729b629313871cebcb06b40",
+                "sha256:b92617d62aadfc19cd2f58a3eb63d2cf92ed175b0f02006d465390689fd2f273",
+                "sha256:6ab3eebae122929b9b3e2b1f1efd27ea0bb725240f9966a23e862bf39aee7732",
+                "sha256:9913d7b2c2433413a8a912c12d3b608192cf1b45c62501d9bc82b44193c9f565"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        }
+    }
+]

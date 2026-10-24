@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "scope": {
+        "command": "0x0010",
+        "market": 0,
+        "code": "000001",
+        "period": "finance_report",
+        "updated_date": 20260815,
+        "report_period": "2026-06-30",
+        "date_basis": "independent_issuer_report",
+        "evidence_version": "finance-quote-semantics-20261024"
+      },
+      "required_fields": [
+        "total_shares",
+        "reported_eps",
+        "total_assets",
+        "net_assets",
+        "operating_revenue",
+        "operating_profit",
+        "operating_cash_flow",
+        "profit_before_tax",
+        "net_profit",
+        "net_assets_per_share"
+      ],
+      "raw": {
+        "path": "crates/rustdx-core/tests/fixtures/protocol/finance.response.hex",
+        "sha256": "ef6e0d57cd33b638f73ae123f13bf84eb47a80660ddfcc7cbec0ee0ebab0991c"
+      },
+      "reference": {
+        "path": "crates/rustdx-core/tests/fixtures/protocol/finance.semantic.expected.json",
+        "sha256": "b9ed7f8dd65824039dabce8695b51b45e294e05ee4b61a91edc9222cd9071b66"
+      },
+      "authority": [
+        {
+          "path": "docs/testing/evidence/finance-quote-semantics-20261024/pingan-bank-2026-h1-summary.pdf",
+          "sha256": "6047496bb254ad7e7e335d50d6daa606e46bd7b8bb0b18a35d9276d7d33b6220"
+        }
+      ]
+    }
+  ]
+}

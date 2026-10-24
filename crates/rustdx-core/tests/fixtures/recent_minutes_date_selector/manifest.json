@@ -1,0 +1,1453 @@
+{
+  "schema_version": 1,
+  "synthetic": false,
+  "origin": "Frozen live TCP captures; independently decoded Python stdlib expectations",
+  "independent_verifiers": [
+    "scripts/validation/verify_recent_auction.py",
+    "scripts/validation/verify_recent_minutes_boundaries.py"
+  ],
+  "server_trading_date_verified": false,
+  "scope": "Nonempty wire/field regression only; requested date is not server date evidence",
+  "fixtures": {
+    "115-238-56-198-7709-20260609-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:50.617343+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-048",
+      "sha256": {
+        "115-238-56-198-7709-20260609-0-000001.request.bin": "89baa12584f27565c718eb369d12a2af45d6a9612a21e6d1dddf3bad0ec992af",
+        "115-238-56-198-7709-20260609-0-000001.header.bin": "1b131f1dde8f751fd7a5f9ae820fe5dee57546805739a023b3b677195b4417e0",
+        "115-238-56-198-7709-20260609-0-000001.wire.bin": "813f36bf9e975a449891a3f1767392d219f3e90512173f1eb6001e6cf51eddc0",
+        "115-238-56-198-7709-20260609-0-000001.payload.bin": "0fd28f571f3be5a34e1f100d14f5ea51c36c131d68a33afea644db6640dd5f4b",
+        "115-238-56-198-7709-20260609-0-000001.expected.json": "53feb2179b62dc8415627444e2c21697604657c91c69f8df03b4fba40cf95abf"
+      }
+    },
+    "115-238-56-198-7709-20260610-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:50.956155+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-049",
+      "sha256": {
+        "115-238-56-198-7709-20260610-0-000001.request.bin": "94b8bd7788191c41c2bc54348299b2885c4a1b75c1927774c96e28744972aabf",
+        "115-238-56-198-7709-20260610-0-000001.header.bin": "b640703156da0044c98f52f35028f8d4869d2eafffe23b4ce16c7ddbf18303c1",
+        "115-238-56-198-7709-20260610-0-000001.wire.bin": "655c9f5bc3d6bda755ebf48cb717999dcc98b7fb8566f97920b14f3c51b641f4",
+        "115-238-56-198-7709-20260610-0-000001.payload.bin": "a5b3e3f0c30028d1cfad0c8e550acf26642357eadfed6fbafb9a166f7f291d61",
+        "115-238-56-198-7709-20260610-0-000001.expected.json": "50e3f6abb3218ae50e07d0b02f84f6f530b6b7871bbca5613713b590678bcf06"
+      }
+    },
+    "115-238-56-198-7709-20260817-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:51.295784+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-050",
+      "sha256": {
+        "115-238-56-198-7709-20260817-0-000001.request.bin": "2f02f1e181a6b042d834d420bdc8a37d411efd79e6a02e32ffc79c8eeb51eb43",
+        "115-238-56-198-7709-20260817-0-000001.header.bin": "c785b0e92caefc7a91f64572600a788f38e4adf80539e1cdb79d115b0f90f500",
+        "115-238-56-198-7709-20260817-0-000001.wire.bin": "da6495480bf9a1d3e6a855df283ab8272cf9ccb418562d34ccef764046d55e0a",
+        "115-238-56-198-7709-20260817-0-000001.payload.bin": "5e33d44a93497f82ff127e710d205ad581787cc3d9c4502fc8a922daae012344",
+        "115-238-56-198-7709-20260817-0-000001.expected.json": "f907eabb80bd08f9cdec490e05415e6040d2756259a044a821aafa33e9087651"
+      }
+    },
+    "115-238-56-198-7709-20260818-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:51.669044+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-051",
+      "sha256": {
+        "115-238-56-198-7709-20260818-0-000001.request.bin": "035c90d694f9b0985e8dc2d25916181480c352b160afe4ef238ef275b8918618",
+        "115-238-56-198-7709-20260818-0-000001.header.bin": "d7e2e7b27c3d9aa6f2e930ab6c0cdb285e3f2d5a694876a84e834119fff4a0a8",
+        "115-238-56-198-7709-20260818-0-000001.wire.bin": "332062fe27a52bcdfa75a8f5ac7bc59e39126859211107ecbd330c5062f0bcce",
+        "115-238-56-198-7709-20260818-0-000001.payload.bin": "26b72b9160ed4a3129f5b9243e9f3af238e01e155414a51ea0ab7f8f652fbae2",
+        "115-238-56-198-7709-20260818-0-000001.expected.json": "bf59cd7a4932bd0679996f89a7bc3d249f0b569a1d0e306dbb7f06b4f4930ce6"
+      }
+    },
+    "115-238-56-198-7709-20261022-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:52.007262+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-052",
+      "sha256": {
+        "115-238-56-198-7709-20261022-0-000001.request.bin": "3aad6498eb34ac937f50fc24659cc7d3378142848fc85b9870908dc4a6ccb3b3",
+        "115-238-56-198-7709-20261022-0-000001.header.bin": "745eaead066c43f0af34d74d2d5cc5cb556369c681c754caaf70d866c12f9da6",
+        "115-238-56-198-7709-20261022-0-000001.wire.bin": "55a8004c319ff917dae961b2761289eb42ac24013b1f1225ea8183c369c31d67",
+        "115-238-56-198-7709-20261022-0-000001.payload.bin": "081fe4023d598e0a352b986da275aef81d50fab047cc18bc88b87828c6ec2cce",
+        "115-238-56-198-7709-20261022-0-000001.expected.json": "f5400883b47ce5e71a6a20ae7c974a16974a4a3a99f1607d96acd35995745e84"
+      }
+    },
+    "115-238-56-198-7709-20261023-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:52.345857+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-053",
+      "sha256": {
+        "115-238-56-198-7709-20261023-0-000001.request.bin": "25ee828c47f1720b43cc4880cd8853df7369bb80849c8db7a68aeb45ac84095b",
+        "115-238-56-198-7709-20261023-0-000001.header.bin": "e6b9b8210ed6d8b54f92664cbb37d6acecfbe046d621594e7dcb27ed5aa057a8",
+        "115-238-56-198-7709-20261023-0-000001.wire.bin": "09625a65c9c4d671a5552798e88b61165275b31cc67d499e64aa5e031d5ce83c",
+        "115-238-56-198-7709-20261023-0-000001.payload.bin": "65d80855c63f56eb3d2f37493d95327085b37699ec3172c282fa3afde94c3286",
+        "115-238-56-198-7709-20261023-0-000001.expected.json": "85c10befd0ab500051b4b362cd157324af7d23d776ba9f4b85c0d6dd83a48a3f"
+      }
+    },
+    "115-238-56-198-7709-20260609-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:56.534480+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-065",
+      "sha256": {
+        "115-238-56-198-7709-20260609-0-000988.request.bin": "c6fa87051a93fae8568c6d0d0af8e14d1461e42b6ba367e347cd4f190d9d8bea",
+        "115-238-56-198-7709-20260609-0-000988.header.bin": "13040cd9cd30d14a522bafc7869d72c77f24abd8023baa401b47454fff062809",
+        "115-238-56-198-7709-20260609-0-000988.wire.bin": "e585c51d221d367216d10fe915ecada600cb4ad2b75f2c315a5b1a88f0019fb6",
+        "115-238-56-198-7709-20260609-0-000988.payload.bin": "90b0a8492bd54865a167a204cfc6e0b6bd7148270a15415c42b931b877e090e4",
+        "115-238-56-198-7709-20260609-0-000988.expected.json": "2ee6161b1e1703b17a0c87e29f57b9ee26dd941894cc7862cdb16fa07c5f23a6"
+      }
+    },
+    "115-238-56-198-7709-20260610-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:56.922748+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-066",
+      "sha256": {
+        "115-238-56-198-7709-20260610-0-000988.request.bin": "fb533b2204e8b056170c89a04b7d28b36e2fe14f44bfe13b3651b9f92a1c2e96",
+        "115-238-56-198-7709-20260610-0-000988.header.bin": "9070bedd90490d59d3bc9923c5314c391335c573f3c34d051657189eec344f30",
+        "115-238-56-198-7709-20260610-0-000988.wire.bin": "d7fd70069f2d806a2631cb4339b6e316f64aff712a9b6a74689cff8cf26626fc",
+        "115-238-56-198-7709-20260610-0-000988.payload.bin": "8ffb41a4ec7f8fd0178a8a7d99c780f6e11f07810844565770c397ea8e7a7695",
+        "115-238-56-198-7709-20260610-0-000988.expected.json": "18dbcd4e6967e1680cce760262d4a62a66f82bb0eaaab09c6b1b792eaae757ce"
+      }
+    },
+    "115-238-56-198-7709-20260817-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:57.259640+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-067",
+      "sha256": {
+        "115-238-56-198-7709-20260817-0-000988.request.bin": "05be442a0e6c5a4f909691a7599485fcec3963e98891d75afe4c32f73983265f",
+        "115-238-56-198-7709-20260817-0-000988.header.bin": "34d548197e13ad6e4fb58cda9e3680d711e19039bd94acf38da8f717353d6d02",
+        "115-238-56-198-7709-20260817-0-000988.wire.bin": "4d524ca5641c3218cd36f0aa126d45907bc52d60ed0b43887a937d2ad11dc518",
+        "115-238-56-198-7709-20260817-0-000988.payload.bin": "18250295c668c0f60eefdf16c096fdfb1f061198f9724515a4e476b6210d1aa8",
+        "115-238-56-198-7709-20260817-0-000988.expected.json": "52001988b47870dac17883791c439593bb089d7a7955b44dd38793e0c408725e"
+      }
+    },
+    "115-238-56-198-7709-20260818-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:57.598094+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-068",
+      "sha256": {
+        "115-238-56-198-7709-20260818-0-000988.request.bin": "74b29ef103ac97977ad80529bfa00e5f3f87861546f44a90390aaafeaee8f634",
+        "115-238-56-198-7709-20260818-0-000988.header.bin": "6272277587e34183afec397e140e968c6a4c5b4d8e0131207b8cb98e92dac8cc",
+        "115-238-56-198-7709-20260818-0-000988.wire.bin": "3068609a0748ab2112543a3445165abe291559b99b1a1ded615930461f139fad",
+        "115-238-56-198-7709-20260818-0-000988.payload.bin": "0450d12c284c8a3e4c033baeef5150720dfcdcc7495cef5f43d9a45108944e64",
+        "115-238-56-198-7709-20260818-0-000988.expected.json": "a6e0daa14a5a5d676b487ef5488a6a8f983c8e85b45dc3a65f31cd16b8c4038b"
+      }
+    },
+    "115-238-56-198-7709-20261022-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:57.961310+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-069",
+      "sha256": {
+        "115-238-56-198-7709-20261022-0-000988.request.bin": "a96dc8f327bbabab8de1fe9db7817c495225bec06af1a1532f9a1adf0d06d8a3",
+        "115-238-56-198-7709-20261022-0-000988.header.bin": "8afc618b59c73f3c42428c5db6665c4287a92bd42d82ec2e8dfa304cf8dce48f",
+        "115-238-56-198-7709-20261022-0-000988.wire.bin": "03b42e2041defb6c477a34823f0133621d41a06532a80997f6a921b9326dfc47",
+        "115-238-56-198-7709-20261022-0-000988.payload.bin": "ea643003b19c3cedb2a33333d35c64c7b0cd24f3bbc76b2b72d34367fac4b1b9",
+        "115-238-56-198-7709-20261022-0-000988.expected.json": "edbe5ba8e4a67c2b4b979c4850273c0cd7a7da4bae73060ea752a5ec38172310"
+      }
+    },
+    "115-238-56-198-7709-20261023-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:33:58.296591+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-070",
+      "sha256": {
+        "115-238-56-198-7709-20261023-0-000988.request.bin": "f2ba347cba14e8353b36c7281a16e29fa06c9c7001a07338886752405f5f3c53",
+        "115-238-56-198-7709-20261023-0-000988.header.bin": "fe6cc57994790f68fe319820edd1ecd83223f21601b4e724c21b97c109028bdb",
+        "115-238-56-198-7709-20261023-0-000988.wire.bin": "f6aa3f61c3502ce4d34bee2fd0ea05b1ec0b9a24c6411a24f88ced08e579e897",
+        "115-238-56-198-7709-20261023-0-000988.payload.bin": "c34feb6ca8259e8f68bcb7dcecca16c8935ee00d3d2b09c3618887be04e6ddbb",
+        "115-238-56-198-7709-20261023-0-000988.expected.json": "0b6fb8126a26f9519c24088280e576905acc2c37fc3acb03910e1ceb79e737cd"
+      }
+    },
+    "115-238-56-198-7709-20260609-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:02.603532+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-082",
+      "sha256": {
+        "115-238-56-198-7709-20260609-0-159915.request.bin": "35942575c78d201e8655d19ae46a7cf73b87a713ad9963c58c42113a44f88d5b",
+        "115-238-56-198-7709-20260609-0-159915.header.bin": "c03049f20a333aec4ea81d7faac4e9cf8d13d85701e4757f2f99f752f2e0305e",
+        "115-238-56-198-7709-20260609-0-159915.wire.bin": "9962c974c1114da183a85981699cff7e408b2a9cecfa1b95841f0543b0199da6",
+        "115-238-56-198-7709-20260609-0-159915.payload.bin": "2430bd62d91aa73e8529e78dc3385411c05751ce4d94090e3565e09be93ebc49",
+        "115-238-56-198-7709-20260609-0-159915.expected.json": "e352610315a3874dddcbf1c2687d23bd86683252b8618bf7c608b9d2a7b6700c"
+      }
+    },
+    "115-238-56-198-7709-20260610-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:02.941580+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-083",
+      "sha256": {
+        "115-238-56-198-7709-20260610-0-159915.request.bin": "94c034eabc8f47abb836b567501a31b070d053c400eb9a346b0ef947536d5660",
+        "115-238-56-198-7709-20260610-0-159915.header.bin": "1929c14427afc4d6c51bacb269b60358f48487c96c05656b0dcb8f115951592e",
+        "115-238-56-198-7709-20260610-0-159915.wire.bin": "c3cd2f1d58c737b01f1258e6acb31b6dedbaeb15c69b52060b72d8435a21bfd2",
+        "115-238-56-198-7709-20260610-0-159915.payload.bin": "0db1c46a6c8eef7dda3d8906de99b47ba6532cc4d37f7b69e1c82e47ca223ba7",
+        "115-238-56-198-7709-20260610-0-159915.expected.json": "f4f2aa75cef24eaa7c9f71c6f4470f3defe0d8bb6498da1ba41e346972fa4284"
+      }
+    },
+    "115-238-56-198-7709-20260817-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:03.315103+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-084",
+      "sha256": {
+        "115-238-56-198-7709-20260817-0-159915.request.bin": "4e3d1c11d884af777d2fc4bfd6436f9325d7f19c942c683958a4823de26afbaa",
+        "115-238-56-198-7709-20260817-0-159915.header.bin": "bdcf844af81bcb2a6cbc4d1b54618ee4c40b662ffb639e37f66a6e9b12bd588f",
+        "115-238-56-198-7709-20260817-0-159915.wire.bin": "d80f55232e5be1380fb4ebf3bcff92efa1be883d2e2a0283c9c5fd3defe94f74",
+        "115-238-56-198-7709-20260817-0-159915.payload.bin": "0849dc1bc9286ecbf01044d42b7e33622c1a70178d0cfb31121ac2f66d8a5224",
+        "115-238-56-198-7709-20260817-0-159915.expected.json": "843b5d472f891bf8f7c2ae75962a38c12f9140495167e0b39d2b3bb90e853690"
+      }
+    },
+    "115-238-56-198-7709-20260818-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:03.723990+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-085",
+      "sha256": {
+        "115-238-56-198-7709-20260818-0-159915.request.bin": "896609d08bb2f599c0254cf4feee7f9b5ba91778f73636dc3f1fa23156e9f7c5",
+        "115-238-56-198-7709-20260818-0-159915.header.bin": "d028368ff6b129594171cab11b06220a73bc2a3a5ea2c85690e0583265e98f38",
+        "115-238-56-198-7709-20260818-0-159915.wire.bin": "17e11814ac8806df39df2c5f5201356860a6b96e1871de80e510d4e54208129e",
+        "115-238-56-198-7709-20260818-0-159915.payload.bin": "6c5b21880e53b43de5d6435e55038612af2f54c2c13748781f44c8ea785ba546",
+        "115-238-56-198-7709-20260818-0-159915.expected.json": "e502e3a8b24c4b5ef378b99ee126119a0aaa895b56be90132478efb168434f3c"
+      }
+    },
+    "115-238-56-198-7709-20261022-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:04.063925+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-086",
+      "sha256": {
+        "115-238-56-198-7709-20261022-0-159915.request.bin": "dfb163b5d037bf857e8bc7b226ac3ae652efd359d9745c8637ac9d06be494dee",
+        "115-238-56-198-7709-20261022-0-159915.header.bin": "536a5fb5b95c77c8146a96bf07d03811e20fab093dc0b101f9c4e94af22ba2ae",
+        "115-238-56-198-7709-20261022-0-159915.wire.bin": "828b22a7e56b860db80efa80e80d81c7d9319be15534d3c449e1f9581d1f611f",
+        "115-238-56-198-7709-20261022-0-159915.payload.bin": "c3ba99f726a35d2ef5c76b653b764fa7080233ed612aa3107129a651b1840320",
+        "115-238-56-198-7709-20261022-0-159915.expected.json": "9a879e0383d96c008a7885f6fc6ba2575d9e791a873e1b5832d3d93a46364c53"
+      }
+    },
+    "115-238-56-198-7709-20261023-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:04.401789+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-087",
+      "sha256": {
+        "115-238-56-198-7709-20261023-0-159915.request.bin": "ecaa5cc3fdae752f39db09530fcf2c178e580de77d6c361981c3cd2b6e2b9ec3",
+        "115-238-56-198-7709-20261023-0-159915.header.bin": "e4987168b2df0ed51cf4ec55779159176dedbcfba2babaf7af35053fb5f77ba1",
+        "115-238-56-198-7709-20261023-0-159915.wire.bin": "07e1c4995c8287703a78828c6dad8e88f5dc0f74c62f656411c8aa71065b6002",
+        "115-238-56-198-7709-20261023-0-159915.payload.bin": "44493899018c7831db4503bb81abcfee7b6c1e45379f12157446155df60e5aaf",
+        "115-238-56-198-7709-20261023-0-159915.expected.json": "4298a3a58d2b191b3fafea46690e9584ec745aabd8e68dae23afa6774f735920"
+      }
+    },
+    "115-238-56-198-7709-20260609-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:08.702473+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-099",
+      "sha256": {
+        "115-238-56-198-7709-20260609-1-600000.request.bin": "028f4a250131629f29fa8ef0ca192d4dccc9ff46f1270ce64f45a84f18f6c718",
+        "115-238-56-198-7709-20260609-1-600000.header.bin": "25c6616e6a3de74e4ea7796c2d057365e61f864559d268cd93b922babb768785",
+        "115-238-56-198-7709-20260609-1-600000.wire.bin": "909fce091d11b00097129fe2d95b3d5e152d98cdc8a1367d85df8f061c477aa0",
+        "115-238-56-198-7709-20260609-1-600000.payload.bin": "35825864f9458b94d844fe388d1190d592499a207a1e4090efbfd3441df6797a",
+        "115-238-56-198-7709-20260609-1-600000.expected.json": "795ddc79d2c52637c311c2909d434e25d82f20c45b66e8fe367b633db98e73e6"
+      }
+    },
+    "115-238-56-198-7709-20260610-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:09.037770+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-100",
+      "sha256": {
+        "115-238-56-198-7709-20260610-1-600000.request.bin": "08e9954ce9510c493a3cf82605702ad8fda4968ca44556ba2710c40f798c5252",
+        "115-238-56-198-7709-20260610-1-600000.header.bin": "655916717a365c0d755328bee8dec1a057e4404ec2522692b6bb625d9663a490",
+        "115-238-56-198-7709-20260610-1-600000.wire.bin": "7ebe31607b635f0044f30b97da488e6b2f052de1ead293b15a716227f2a4b586",
+        "115-238-56-198-7709-20260610-1-600000.payload.bin": "d138612fc9abdae0a2c186a6c349b92fae4f7cc0175cef9ec869da5015ebc9d9",
+        "115-238-56-198-7709-20260610-1-600000.expected.json": "da1d8406078cb5a2024c3c5ed4f0579d46dc9bc8e3bce4fe6df47e7308f3399a"
+      }
+    },
+    "115-238-56-198-7709-20260817-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:09.414397+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-101",
+      "sha256": {
+        "115-238-56-198-7709-20260817-1-600000.request.bin": "65e52c73ba5cc13c96e1b694d8c169dc1866da15724fa9bba3c423609a6d2166",
+        "115-238-56-198-7709-20260817-1-600000.header.bin": "3f83bb63175529697462da7f2e3bb65ce06d28267e801401f67a1b019c431497",
+        "115-238-56-198-7709-20260817-1-600000.wire.bin": "8a0a2c1d6d56da266e03cd62d9e4b770594d86e11d013e0e51bd1aae3f5e0b1e",
+        "115-238-56-198-7709-20260817-1-600000.payload.bin": "ea812c81b091053e956ea705c9737cf73b0f8e658b6870f8411711d9302e5315",
+        "115-238-56-198-7709-20260817-1-600000.expected.json": "52a8305b937f1f9737d1caa95e74f283ab53477706003d84a256229043e2de3d"
+      }
+    },
+    "115-238-56-198-7709-20260818-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:09.752249+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-102",
+      "sha256": {
+        "115-238-56-198-7709-20260818-1-600000.request.bin": "4a282f0eb333ef8ab0e5cafe18958b60fec8975ea4361f92a409e88a5a7fe650",
+        "115-238-56-198-7709-20260818-1-600000.header.bin": "a3a731bdf4b1f2c5c1ce9811694ec6950492e2bb9698dd7c3485e6d735282168",
+        "115-238-56-198-7709-20260818-1-600000.wire.bin": "f3cd20f56904a6364b2cec367f06a5d9b9087b5d933909ac70651b840f388235",
+        "115-238-56-198-7709-20260818-1-600000.payload.bin": "6b4dc54c6a57c748560d1af62a65ede82f188effd90972b7871a29463849fcf7",
+        "115-238-56-198-7709-20260818-1-600000.expected.json": "0a15fd27e7207bcd3edadb7d1fea1b4df07510e29f0c6ebc88b7b2fab4333ebc"
+      }
+    },
+    "115-238-56-198-7709-20261022-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:10.092568+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-103",
+      "sha256": {
+        "115-238-56-198-7709-20261022-1-600000.request.bin": "c1e123f2919956d8217fe77fe2150619a0a9e7bb98f5e070b607308f3e8e9be9",
+        "115-238-56-198-7709-20261022-1-600000.header.bin": "9d4c1414e65bd290fa965fade04cb32f49bdabcda76f775a88334fbdea91057c",
+        "115-238-56-198-7709-20261022-1-600000.wire.bin": "91dc11803157a18761b667f653f6d21d396f528c9e0d1bb14ff45afdee6af124",
+        "115-238-56-198-7709-20261022-1-600000.payload.bin": "445804a16cd27a996400cf1554bd804a05348a6be55cbb468dd5f9a0ed9d460c",
+        "115-238-56-198-7709-20261022-1-600000.expected.json": "b8418d4f9b5bdb9d78bf2b05b87368f7a4c0c7f604e5ce63ef5b00562b0de5d7"
+      }
+    },
+    "115-238-56-198-7709-20261023-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:10.464854+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-104",
+      "sha256": {
+        "115-238-56-198-7709-20261023-1-600000.request.bin": "5b9e4ebb8835cbc463b7bdce6a527539776f89a42b6cc5cb7306e226a4d7808d",
+        "115-238-56-198-7709-20261023-1-600000.header.bin": "b07174cd277a2b39ea6bcfb7ea625f197c654cd103fa3e74b2db4ddab712c237",
+        "115-238-56-198-7709-20261023-1-600000.wire.bin": "85f390e3fed75c6284ecb264afe197676b2e5160d1c3715c079f47cbe8f94b25",
+        "115-238-56-198-7709-20261023-1-600000.payload.bin": "293617d5893d1a4299f0850f105163536c36ced9e453e109909a1e8b2705092b",
+        "115-238-56-198-7709-20261023-1-600000.expected.json": "11882065e702af0f1e60377ffd8664d3c81e80bbc97a99520630bf7aa43c346e"
+      }
+    },
+    "115-238-56-198-7709-20260609-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:14.733577+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-116",
+      "sha256": {
+        "115-238-56-198-7709-20260609-1-600519.request.bin": "b41725e2f6c9d7fe0b764ac33bb896694b7bfbbc5d5f1a0c4a1922455defe6ab",
+        "115-238-56-198-7709-20260609-1-600519.header.bin": "2755c640b4136c9fac08b3250e4d32fadd35599aa83ddfd454484c9e4fc0dec4",
+        "115-238-56-198-7709-20260609-1-600519.wire.bin": "0eac95772c8d96c3a2b17fb4136be47d4813c64121a2a41feec920730a17fa65",
+        "115-238-56-198-7709-20260609-1-600519.payload.bin": "4e8d316c2ba444058216632042333856333bb016ebb9e63d38c52e2db6f90188",
+        "115-238-56-198-7709-20260609-1-600519.expected.json": "31427657115050b2dccb6a4b181aae8346216fad6f10d6d183ba1c2454cd39bd"
+      }
+    },
+    "115-238-56-198-7709-20260610-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:15.070357+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-117",
+      "sha256": {
+        "115-238-56-198-7709-20260610-1-600519.request.bin": "372bab90aa37aabe6d8a6060858933519f329df4241b9bb96ef056601c3f6933",
+        "115-238-56-198-7709-20260610-1-600519.header.bin": "098e8ed927fa66b9216c2953b05e2946bd5c047691669a01662e3e70af5a7fbf",
+        "115-238-56-198-7709-20260610-1-600519.wire.bin": "25661a4a771bda899646d36f4182b2c955d415942f09b7fbd2c02077d422ddd9",
+        "115-238-56-198-7709-20260610-1-600519.payload.bin": "091a7081cd5bb7bf4e58a2d444a4c75bba5466e6008f27061c1eb5eb5547f0be",
+        "115-238-56-198-7709-20260610-1-600519.expected.json": "819ae39f0278534b3f717c5d0092624ed60f24c2704510b1af1a5fafaa5da021"
+      }
+    },
+    "115-238-56-198-7709-20260817-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:15.410467+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-118",
+      "sha256": {
+        "115-238-56-198-7709-20260817-1-600519.request.bin": "17e109f5e4059333be3b3f6bd48b04083d5a9e67ef6dcc22153088f4c8739485",
+        "115-238-56-198-7709-20260817-1-600519.header.bin": "f90c6a91e743367424756b01f9aa43c45dd2de7c40175463d2a3a23ac466e295",
+        "115-238-56-198-7709-20260817-1-600519.wire.bin": "593711a4e49c1ce7e545b057995d4a6610af3785a05b148a50bbcbd539a99a1c",
+        "115-238-56-198-7709-20260817-1-600519.payload.bin": "e737ac7ee3f88f95da0931090f3962453ddaf8de3733d0d83d7fe080717d8cea",
+        "115-238-56-198-7709-20260817-1-600519.expected.json": "be5b927a710cd3d1522736f9900a82bb6e134347eee4f6afa091586503b30781"
+      }
+    },
+    "115-238-56-198-7709-20260818-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:15.785937+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-119",
+      "sha256": {
+        "115-238-56-198-7709-20260818-1-600519.request.bin": "f8355d737a7bb47152b10ee665e9760297115f0725ea026219b21ea0d3a7afa3",
+        "115-238-56-198-7709-20260818-1-600519.header.bin": "93beaa8202454e4551e1af8e3757c7e140bbc153f28accd5dade4540429e1aa9",
+        "115-238-56-198-7709-20260818-1-600519.wire.bin": "b8e8660e09f269955e624f0933daeb6747585d478ca0f03c0731f2f52e8a8b5d",
+        "115-238-56-198-7709-20260818-1-600519.payload.bin": "14d6b5edbcad7a5934be36408390d20b6c7b942f7e4939d0a4146b7bb2bac150",
+        "115-238-56-198-7709-20260818-1-600519.expected.json": "81774d9ee497c25de1ce80532f7857a2f092e07c1e42be2fd01c7c420e29fdee"
+      }
+    },
+    "115-238-56-198-7709-20261022-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:16.125853+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-120",
+      "sha256": {
+        "115-238-56-198-7709-20261022-1-600519.request.bin": "dd33aa53f29669795b7c6a8d04bc4d9cbadd5612e294dcd0fd82087c11a309f7",
+        "115-238-56-198-7709-20261022-1-600519.header.bin": "b7ba2ec8df6e7371b1a0219d3451cd0ffddd8acec60f109352223dc41b80745e",
+        "115-238-56-198-7709-20261022-1-600519.wire.bin": "48277394a327faaea0281bc048358da62e54fc83a8a1185b4feb2879c72420f8",
+        "115-238-56-198-7709-20261022-1-600519.payload.bin": "70cf85e9f0d45ccda59d931f22af0644c712c064f6cd72ac393db549a5dc541f",
+        "115-238-56-198-7709-20261022-1-600519.expected.json": "199a8b0a748316e3e3a3a5fdc8e84488a0cf6506939999a280b4c2a5004d1786"
+      }
+    },
+    "115-238-56-198-7709-20261023-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:16.462323+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-121",
+      "sha256": {
+        "115-238-56-198-7709-20261023-1-600519.request.bin": "c3d0e1cf0589f482ef721b7d08c1ebfa2f6182002ae9541f24a53db9f1d87530",
+        "115-238-56-198-7709-20261023-1-600519.header.bin": "3daf03d01a285f2cae6cc182d12b4e718875618c2b1eb914759d9a719881e937",
+        "115-238-56-198-7709-20261023-1-600519.wire.bin": "efd56e744edc19882db4eba909ff87d6b624ec733b20d8efb4f7ef834d2e5c2f",
+        "115-238-56-198-7709-20261023-1-600519.payload.bin": "fd5cb889cb95629020f66c5847c0494868ef0766951578a2da4cadd9e0e5492f",
+        "115-238-56-198-7709-20261023-1-600519.expected.json": "7717ebb5f1e9d58c68c77c2f622a8ab5f61c28e935f3dbbf0ce62e3fd2e2737f"
+      }
+    },
+    "115-238-56-198-7709-20260609-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:20.765491+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-133",
+      "sha256": {
+        "115-238-56-198-7709-20260609-1-510300.request.bin": "4255ad185c3ecb00e61092a1a1d0713a6d398a3367c5fed5df518be5fe599822",
+        "115-238-56-198-7709-20260609-1-510300.header.bin": "6ba9f1c07e86a78e00489f1a152790d3cc3fc9921d5fa9adf08c34f6379f6c9a",
+        "115-238-56-198-7709-20260609-1-510300.wire.bin": "e89b7d687f9c33c2d2503c5bcbff71ad80cf3d67b7b1609cea00ff8c0a97c410",
+        "115-238-56-198-7709-20260609-1-510300.payload.bin": "a711c4a88b3c5ca2d3f5ec1cfcb65912f8e50164b9d3ca1f0a55e74ac6516b05",
+        "115-238-56-198-7709-20260609-1-510300.expected.json": "11a4544fd0d11820e38fd62608f3d9b0a8dbf6e45ecb1629a851f6af4b18c2bd"
+      }
+    },
+    "115-238-56-198-7709-20260610-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:21.109048+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-134",
+      "sha256": {
+        "115-238-56-198-7709-20260610-1-510300.request.bin": "db379296c40a1809434d1d4d0d973dbb1b19c8ff5fb7ec8f8af9d2d70b5b0caf",
+        "115-238-56-198-7709-20260610-1-510300.header.bin": "b1c3e9907c60bc6e8c87e3f69ee9900872b4a9ff7651200588daad1f6d8e146e",
+        "115-238-56-198-7709-20260610-1-510300.wire.bin": "f8fd8cb14378cc6f25bf20e842dca098792bcf4b925363f67da06ff2b59ae847",
+        "115-238-56-198-7709-20260610-1-510300.payload.bin": "a146b611e6aa51b6159e3f257fc7a9611ca06c828a702bb7a4908c38d2c446ce",
+        "115-238-56-198-7709-20260610-1-510300.expected.json": "1d397922fc54d28e660a94002485f7ba9398d158a43655dd0754e965d0052538"
+      }
+    },
+    "115-238-56-198-7709-20260817-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:21.475314+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-135",
+      "sha256": {
+        "115-238-56-198-7709-20260817-1-510300.request.bin": "7d624ee8a8b7562ed2ca9d306d9b7ac5d7b6e1b31dcd5e9038bacf9cdd2c1595",
+        "115-238-56-198-7709-20260817-1-510300.header.bin": "95872d3b6ac6cbc99f5755453f7f04e88817eaaa289c60a0e2b61cb6cb6a9d0f",
+        "115-238-56-198-7709-20260817-1-510300.wire.bin": "8633c89814e48474b11b143a4941c52ccf8188ccd691552131e95225de10c569",
+        "115-238-56-198-7709-20260817-1-510300.payload.bin": "03aa3733d9044ec455c2169d179831edac758d2c8d410bb8de3b54b70cddf326",
+        "115-238-56-198-7709-20260817-1-510300.expected.json": "f8acfc0b916687abeebb139c35491788fedd320904932875fbdcfed2e741b67b"
+      }
+    },
+    "115-238-56-198-7709-20260818-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:21.813461+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-136",
+      "sha256": {
+        "115-238-56-198-7709-20260818-1-510300.request.bin": "383dcfcf0c9019d48a67f37b5d264778e1d7256da0804982c4f6325c3d7469ca",
+        "115-238-56-198-7709-20260818-1-510300.header.bin": "bede8504821adbbee70412aa9462da179b8cf740923c7d188e0e4520b4da4cbc",
+        "115-238-56-198-7709-20260818-1-510300.wire.bin": "e94ff9858282f742ca86646dd90709f43db58a104a0add4af6f5a24dc1977aa0",
+        "115-238-56-198-7709-20260818-1-510300.payload.bin": "9f4a1e2938e1a9a69cdd5a8be8befb378f481f7fd3e3009d7d7e7a25a2249344",
+        "115-238-56-198-7709-20260818-1-510300.expected.json": "1a0139fda6d7f4a917aaf71438e6b2018739e5626e0d5b991b4132333263d160"
+      }
+    },
+    "115-238-56-198-7709-20261022-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:22.150615+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-137",
+      "sha256": {
+        "115-238-56-198-7709-20261022-1-510300.request.bin": "88abc2461c099f51f41aa4f16f30c0fd405e8b5559f3522997e07c36291591b6",
+        "115-238-56-198-7709-20261022-1-510300.header.bin": "fff40b57663059b2e4dd94c213f8dca1674e8cd61fde230b1f0c00d5c073f1d2",
+        "115-238-56-198-7709-20261022-1-510300.wire.bin": "a8df2a71ea97fb0c7e220e03ebc91ff3d156390e71afc406f2457e28d2416627",
+        "115-238-56-198-7709-20261022-1-510300.payload.bin": "a8df2a71ea97fb0c7e220e03ebc91ff3d156390e71afc406f2457e28d2416627",
+        "115-238-56-198-7709-20261022-1-510300.expected.json": "db7d69c5c80500e256f47bc83291ae9878faa95ed83cd56b1027eb8d739fd1ff"
+      }
+    },
+    "115-238-56-198-7709-20261023-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T13:34:22.523846+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/115.238.56.198",
+      "source_frame": "frame-138",
+      "sha256": {
+        "115-238-56-198-7709-20261023-1-510300.request.bin": "d17e0b71652147645d389489bbf398fe4adfb4a02db6f5cadffa5e26c0b83b7b",
+        "115-238-56-198-7709-20261023-1-510300.header.bin": "eecfbbeb3cde45732cf9015b802e04dca24efb6e1174d554dfdea730d0c31310",
+        "115-238-56-198-7709-20261023-1-510300.wire.bin": "4f27ecf01b9abaa1f9de7bbe008e971cc22c92f99b9a26d12231d46f42823dc2",
+        "115-238-56-198-7709-20261023-1-510300.payload.bin": "a5c6e791b6196611259f29d55cf376e6f31b81d0ab926be7e73ee996ee9fac75",
+        "115-238-56-198-7709-20261023-1-510300.expected.json": "0679cf8d8c92dd7b725a0a27b88eda9ea80a4d552e44984c2c58e7aed540d989"
+      }
+    },
+    "180-153-18-170-7709-20260609-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:50.621750+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-048",
+      "sha256": {
+        "180-153-18-170-7709-20260609-0-000001.request.bin": "89baa12584f27565c718eb369d12a2af45d6a9612a21e6d1dddf3bad0ec992af",
+        "180-153-18-170-7709-20260609-0-000001.header.bin": "1b131f1dde8f751fd7a5f9ae820fe5dee57546805739a023b3b677195b4417e0",
+        "180-153-18-170-7709-20260609-0-000001.wire.bin": "813f36bf9e975a449891a3f1767392d219f3e90512173f1eb6001e6cf51eddc0",
+        "180-153-18-170-7709-20260609-0-000001.payload.bin": "0fd28f571f3be5a34e1f100d14f5ea51c36c131d68a33afea644db6640dd5f4b",
+        "180-153-18-170-7709-20260609-0-000001.expected.json": "53feb2179b62dc8415627444e2c21697604657c91c69f8df03b4fba40cf95abf"
+      }
+    },
+    "180-153-18-170-7709-20260610-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:50.963227+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-049",
+      "sha256": {
+        "180-153-18-170-7709-20260610-0-000001.request.bin": "94b8bd7788191c41c2bc54348299b2885c4a1b75c1927774c96e28744972aabf",
+        "180-153-18-170-7709-20260610-0-000001.header.bin": "b640703156da0044c98f52f35028f8d4869d2eafffe23b4ce16c7ddbf18303c1",
+        "180-153-18-170-7709-20260610-0-000001.wire.bin": "655c9f5bc3d6bda755ebf48cb717999dcc98b7fb8566f97920b14f3c51b641f4",
+        "180-153-18-170-7709-20260610-0-000001.payload.bin": "a5b3e3f0c30028d1cfad0c8e550acf26642357eadfed6fbafb9a166f7f291d61",
+        "180-153-18-170-7709-20260610-0-000001.expected.json": "50e3f6abb3218ae50e07d0b02f84f6f530b6b7871bbca5613713b590678bcf06"
+      }
+    },
+    "180-153-18-170-7709-20260817-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:51.303147+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-050",
+      "sha256": {
+        "180-153-18-170-7709-20260817-0-000001.request.bin": "2f02f1e181a6b042d834d420bdc8a37d411efd79e6a02e32ffc79c8eeb51eb43",
+        "180-153-18-170-7709-20260817-0-000001.header.bin": "c785b0e92caefc7a91f64572600a788f38e4adf80539e1cdb79d115b0f90f500",
+        "180-153-18-170-7709-20260817-0-000001.wire.bin": "da6495480bf9a1d3e6a855df283ab8272cf9ccb418562d34ccef764046d55e0a",
+        "180-153-18-170-7709-20260817-0-000001.payload.bin": "5e33d44a93497f82ff127e710d205ad581787cc3d9c4502fc8a922daae012344",
+        "180-153-18-170-7709-20260817-0-000001.expected.json": "f907eabb80bd08f9cdec490e05415e6040d2756259a044a821aafa33e9087651"
+      }
+    },
+    "180-153-18-170-7709-20260818-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:51.673762+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-051",
+      "sha256": {
+        "180-153-18-170-7709-20260818-0-000001.request.bin": "035c90d694f9b0985e8dc2d25916181480c352b160afe4ef238ef275b8918618",
+        "180-153-18-170-7709-20260818-0-000001.header.bin": "d7e2e7b27c3d9aa6f2e930ab6c0cdb285e3f2d5a694876a84e834119fff4a0a8",
+        "180-153-18-170-7709-20260818-0-000001.wire.bin": "332062fe27a52bcdfa75a8f5ac7bc59e39126859211107ecbd330c5062f0bcce",
+        "180-153-18-170-7709-20260818-0-000001.payload.bin": "26b72b9160ed4a3129f5b9243e9f3af238e01e155414a51ea0ab7f8f652fbae2",
+        "180-153-18-170-7709-20260818-0-000001.expected.json": "bf59cd7a4932bd0679996f89a7bc3d249f0b569a1d0e306dbb7f06b4f4930ce6"
+      }
+    },
+    "180-153-18-170-7709-20261022-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:52.012888+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-052",
+      "sha256": {
+        "180-153-18-170-7709-20261022-0-000001.request.bin": "3aad6498eb34ac937f50fc24659cc7d3378142848fc85b9870908dc4a6ccb3b3",
+        "180-153-18-170-7709-20261022-0-000001.header.bin": "745eaead066c43f0af34d74d2d5cc5cb556369c681c754caaf70d866c12f9da6",
+        "180-153-18-170-7709-20261022-0-000001.wire.bin": "55a8004c319ff917dae961b2761289eb42ac24013b1f1225ea8183c369c31d67",
+        "180-153-18-170-7709-20261022-0-000001.payload.bin": "081fe4023d598e0a352b986da275aef81d50fab047cc18bc88b87828c6ec2cce",
+        "180-153-18-170-7709-20261022-0-000001.expected.json": "f5400883b47ce5e71a6a20ae7c974a16974a4a3a99f1607d96acd35995745e84"
+      }
+    },
+    "180-153-18-170-7709-20261023-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:52.352353+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-053",
+      "sha256": {
+        "180-153-18-170-7709-20261023-0-000001.request.bin": "25ee828c47f1720b43cc4880cd8853df7369bb80849c8db7a68aeb45ac84095b",
+        "180-153-18-170-7709-20261023-0-000001.header.bin": "e6b9b8210ed6d8b54f92664cbb37d6acecfbe046d621594e7dcb27ed5aa057a8",
+        "180-153-18-170-7709-20261023-0-000001.wire.bin": "09625a65c9c4d671a5552798e88b61165275b31cc67d499e64aa5e031d5ce83c",
+        "180-153-18-170-7709-20261023-0-000001.payload.bin": "65d80855c63f56eb3d2f37493d95327085b37699ec3172c282fa3afde94c3286",
+        "180-153-18-170-7709-20261023-0-000001.expected.json": "85c10befd0ab500051b4b362cd157324af7d23d776ba9f4b85c0d6dd83a48a3f"
+      }
+    },
+    "180-153-18-170-7709-20260609-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:56.542590+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-065",
+      "sha256": {
+        "180-153-18-170-7709-20260609-0-000988.request.bin": "c6fa87051a93fae8568c6d0d0af8e14d1461e42b6ba367e347cd4f190d9d8bea",
+        "180-153-18-170-7709-20260609-0-000988.header.bin": "13040cd9cd30d14a522bafc7869d72c77f24abd8023baa401b47454fff062809",
+        "180-153-18-170-7709-20260609-0-000988.wire.bin": "e585c51d221d367216d10fe915ecada600cb4ad2b75f2c315a5b1a88f0019fb6",
+        "180-153-18-170-7709-20260609-0-000988.payload.bin": "90b0a8492bd54865a167a204cfc6e0b6bd7148270a15415c42b931b877e090e4",
+        "180-153-18-170-7709-20260609-0-000988.expected.json": "2ee6161b1e1703b17a0c87e29f57b9ee26dd941894cc7862cdb16fa07c5f23a6"
+      }
+    },
+    "180-153-18-170-7709-20260610-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:56.925183+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-066",
+      "sha256": {
+        "180-153-18-170-7709-20260610-0-000988.request.bin": "fb533b2204e8b056170c89a04b7d28b36e2fe14f44bfe13b3651b9f92a1c2e96",
+        "180-153-18-170-7709-20260610-0-000988.header.bin": "9070bedd90490d59d3bc9923c5314c391335c573f3c34d051657189eec344f30",
+        "180-153-18-170-7709-20260610-0-000988.wire.bin": "d7fd70069f2d806a2631cb4339b6e316f64aff712a9b6a74689cff8cf26626fc",
+        "180-153-18-170-7709-20260610-0-000988.payload.bin": "8ffb41a4ec7f8fd0178a8a7d99c780f6e11f07810844565770c397ea8e7a7695",
+        "180-153-18-170-7709-20260610-0-000988.expected.json": "18dbcd4e6967e1680cce760262d4a62a66f82bb0eaaab09c6b1b792eaae757ce"
+      }
+    },
+    "180-153-18-170-7709-20260817-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:57.263961+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-067",
+      "sha256": {
+        "180-153-18-170-7709-20260817-0-000988.request.bin": "05be442a0e6c5a4f909691a7599485fcec3963e98891d75afe4c32f73983265f",
+        "180-153-18-170-7709-20260817-0-000988.header.bin": "34d548197e13ad6e4fb58cda9e3680d711e19039bd94acf38da8f717353d6d02",
+        "180-153-18-170-7709-20260817-0-000988.wire.bin": "4d524ca5641c3218cd36f0aa126d45907bc52d60ed0b43887a937d2ad11dc518",
+        "180-153-18-170-7709-20260817-0-000988.payload.bin": "18250295c668c0f60eefdf16c096fdfb1f061198f9724515a4e476b6210d1aa8",
+        "180-153-18-170-7709-20260817-0-000988.expected.json": "52001988b47870dac17883791c439593bb089d7a7955b44dd38793e0c408725e"
+      }
+    },
+    "180-153-18-170-7709-20260818-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:57.604455+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-068",
+      "sha256": {
+        "180-153-18-170-7709-20260818-0-000988.request.bin": "74b29ef103ac97977ad80529bfa00e5f3f87861546f44a90390aaafeaee8f634",
+        "180-153-18-170-7709-20260818-0-000988.header.bin": "6272277587e34183afec397e140e968c6a4c5b4d8e0131207b8cb98e92dac8cc",
+        "180-153-18-170-7709-20260818-0-000988.wire.bin": "3068609a0748ab2112543a3445165abe291559b99b1a1ded615930461f139fad",
+        "180-153-18-170-7709-20260818-0-000988.payload.bin": "0450d12c284c8a3e4c033baeef5150720dfcdcc7495cef5f43d9a45108944e64",
+        "180-153-18-170-7709-20260818-0-000988.expected.json": "a6e0daa14a5a5d676b487ef5488a6a8f983c8e85b45dc3a65f31cd16b8c4038b"
+      }
+    },
+    "180-153-18-170-7709-20261022-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:57.964118+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-069",
+      "sha256": {
+        "180-153-18-170-7709-20261022-0-000988.request.bin": "a96dc8f327bbabab8de1fe9db7817c495225bec06af1a1532f9a1adf0d06d8a3",
+        "180-153-18-170-7709-20261022-0-000988.header.bin": "8afc618b59c73f3c42428c5db6665c4287a92bd42d82ec2e8dfa304cf8dce48f",
+        "180-153-18-170-7709-20261022-0-000988.wire.bin": "03b42e2041defb6c477a34823f0133621d41a06532a80997f6a921b9326dfc47",
+        "180-153-18-170-7709-20261022-0-000988.payload.bin": "ea643003b19c3cedb2a33333d35c64c7b0cd24f3bbc76b2b72d34367fac4b1b9",
+        "180-153-18-170-7709-20261022-0-000988.expected.json": "edbe5ba8e4a67c2b4b979c4850273c0cd7a7da4bae73060ea752a5ec38172310"
+      }
+    },
+    "180-153-18-170-7709-20261023-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:33:58.306649+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-070",
+      "sha256": {
+        "180-153-18-170-7709-20261023-0-000988.request.bin": "f2ba347cba14e8353b36c7281a16e29fa06c9c7001a07338886752405f5f3c53",
+        "180-153-18-170-7709-20261023-0-000988.header.bin": "fe6cc57994790f68fe319820edd1ecd83223f21601b4e724c21b97c109028bdb",
+        "180-153-18-170-7709-20261023-0-000988.wire.bin": "f6aa3f61c3502ce4d34bee2fd0ea05b1ec0b9a24c6411a24f88ced08e579e897",
+        "180-153-18-170-7709-20261023-0-000988.payload.bin": "c34feb6ca8259e8f68bcb7dcecca16c8935ee00d3d2b09c3618887be04e6ddbb",
+        "180-153-18-170-7709-20261023-0-000988.expected.json": "0b6fb8126a26f9519c24088280e576905acc2c37fc3acb03910e1ceb79e737cd"
+      }
+    },
+    "180-153-18-170-7709-20260609-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:02.814304+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-082",
+      "sha256": {
+        "180-153-18-170-7709-20260609-0-159915.request.bin": "35942575c78d201e8655d19ae46a7cf73b87a713ad9963c58c42113a44f88d5b",
+        "180-153-18-170-7709-20260609-0-159915.header.bin": "c03049f20a333aec4ea81d7faac4e9cf8d13d85701e4757f2f99f752f2e0305e",
+        "180-153-18-170-7709-20260609-0-159915.wire.bin": "9962c974c1114da183a85981699cff7e408b2a9cecfa1b95841f0543b0199da6",
+        "180-153-18-170-7709-20260609-0-159915.payload.bin": "2430bd62d91aa73e8529e78dc3385411c05751ce4d94090e3565e09be93ebc49",
+        "180-153-18-170-7709-20260609-0-159915.expected.json": "e352610315a3874dddcbf1c2687d23bd86683252b8618bf7c608b9d2a7b6700c"
+      }
+    },
+    "180-153-18-170-7709-20260610-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:03.315022+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-083",
+      "sha256": {
+        "180-153-18-170-7709-20260610-0-159915.request.bin": "94c034eabc8f47abb836b567501a31b070d053c400eb9a346b0ef947536d5660",
+        "180-153-18-170-7709-20260610-0-159915.header.bin": "1929c14427afc4d6c51bacb269b60358f48487c96c05656b0dcb8f115951592e",
+        "180-153-18-170-7709-20260610-0-159915.wire.bin": "c3cd2f1d58c737b01f1258e6acb31b6dedbaeb15c69b52060b72d8435a21bfd2",
+        "180-153-18-170-7709-20260610-0-159915.payload.bin": "0db1c46a6c8eef7dda3d8906de99b47ba6532cc4d37f7b69e1c82e47ca223ba7",
+        "180-153-18-170-7709-20260610-0-159915.expected.json": "f4f2aa75cef24eaa7c9f71c6f4470f3defe0d8bb6498da1ba41e346972fa4284"
+      }
+    },
+    "180-153-18-170-7709-20260817-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:03.727947+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-084",
+      "sha256": {
+        "180-153-18-170-7709-20260817-0-159915.request.bin": "4e3d1c11d884af777d2fc4bfd6436f9325d7f19c942c683958a4823de26afbaa",
+        "180-153-18-170-7709-20260817-0-159915.header.bin": "bdcf844af81bcb2a6cbc4d1b54618ee4c40b662ffb639e37f66a6e9b12bd588f",
+        "180-153-18-170-7709-20260817-0-159915.wire.bin": "d80f55232e5be1380fb4ebf3bcff92efa1be883d2e2a0283c9c5fd3defe94f74",
+        "180-153-18-170-7709-20260817-0-159915.payload.bin": "0849dc1bc9286ecbf01044d42b7e33622c1a70178d0cfb31121ac2f66d8a5224",
+        "180-153-18-170-7709-20260817-0-159915.expected.json": "843b5d472f891bf8f7c2ae75962a38c12f9140495167e0b39d2b3bb90e853690"
+      }
+    },
+    "180-153-18-170-7709-20260818-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:04.069090+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-085",
+      "sha256": {
+        "180-153-18-170-7709-20260818-0-159915.request.bin": "896609d08bb2f599c0254cf4feee7f9b5ba91778f73636dc3f1fa23156e9f7c5",
+        "180-153-18-170-7709-20260818-0-159915.header.bin": "d028368ff6b129594171cab11b06220a73bc2a3a5ea2c85690e0583265e98f38",
+        "180-153-18-170-7709-20260818-0-159915.wire.bin": "17e11814ac8806df39df2c5f5201356860a6b96e1871de80e510d4e54208129e",
+        "180-153-18-170-7709-20260818-0-159915.payload.bin": "6c5b21880e53b43de5d6435e55038612af2f54c2c13748781f44c8ea785ba546",
+        "180-153-18-170-7709-20260818-0-159915.expected.json": "e502e3a8b24c4b5ef378b99ee126119a0aaa895b56be90132478efb168434f3c"
+      }
+    },
+    "180-153-18-170-7709-20261022-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:04.408476+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-086",
+      "sha256": {
+        "180-153-18-170-7709-20261022-0-159915.request.bin": "dfb163b5d037bf857e8bc7b226ac3ae652efd359d9745c8637ac9d06be494dee",
+        "180-153-18-170-7709-20261022-0-159915.header.bin": "536a5fb5b95c77c8146a96bf07d03811e20fab093dc0b101f9c4e94af22ba2ae",
+        "180-153-18-170-7709-20261022-0-159915.wire.bin": "828b22a7e56b860db80efa80e80d81c7d9319be15534d3c449e1f9581d1f611f",
+        "180-153-18-170-7709-20261022-0-159915.payload.bin": "c3ba99f726a35d2ef5c76b653b764fa7080233ed612aa3107129a651b1840320",
+        "180-153-18-170-7709-20261022-0-159915.expected.json": "9a879e0383d96c008a7885f6fc6ba2575d9e791a873e1b5832d3d93a46364c53"
+      }
+    },
+    "180-153-18-170-7709-20261023-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:04.775500+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-087",
+      "sha256": {
+        "180-153-18-170-7709-20261023-0-159915.request.bin": "ecaa5cc3fdae752f39db09530fcf2c178e580de77d6c361981c3cd2b6e2b9ec3",
+        "180-153-18-170-7709-20261023-0-159915.header.bin": "e4987168b2df0ed51cf4ec55779159176dedbcfba2babaf7af35053fb5f77ba1",
+        "180-153-18-170-7709-20261023-0-159915.wire.bin": "07e1c4995c8287703a78828c6dad8e88f5dc0f74c62f656411c8aa71065b6002",
+        "180-153-18-170-7709-20261023-0-159915.payload.bin": "44493899018c7831db4503bb81abcfee7b6c1e45379f12157446155df60e5aaf",
+        "180-153-18-170-7709-20261023-0-159915.expected.json": "4298a3a58d2b191b3fafea46690e9584ec745aabd8e68dae23afa6774f735920"
+      }
+    },
+    "180-153-18-170-7709-20260609-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:09.048976+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-099",
+      "sha256": {
+        "180-153-18-170-7709-20260609-1-600000.request.bin": "028f4a250131629f29fa8ef0ca192d4dccc9ff46f1270ce64f45a84f18f6c718",
+        "180-153-18-170-7709-20260609-1-600000.header.bin": "25c6616e6a3de74e4ea7796c2d057365e61f864559d268cd93b922babb768785",
+        "180-153-18-170-7709-20260609-1-600000.wire.bin": "909fce091d11b00097129fe2d95b3d5e152d98cdc8a1367d85df8f061c477aa0",
+        "180-153-18-170-7709-20260609-1-600000.payload.bin": "35825864f9458b94d844fe388d1190d592499a207a1e4090efbfd3441df6797a",
+        "180-153-18-170-7709-20260609-1-600000.expected.json": "795ddc79d2c52637c311c2909d434e25d82f20c45b66e8fe367b633db98e73e6"
+      }
+    },
+    "180-153-18-170-7709-20260610-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:09.414281+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-100",
+      "sha256": {
+        "180-153-18-170-7709-20260610-1-600000.request.bin": "08e9954ce9510c493a3cf82605702ad8fda4968ca44556ba2710c40f798c5252",
+        "180-153-18-170-7709-20260610-1-600000.header.bin": "655916717a365c0d755328bee8dec1a057e4404ec2522692b6bb625d9663a490",
+        "180-153-18-170-7709-20260610-1-600000.wire.bin": "7ebe31607b635f0044f30b97da488e6b2f052de1ead293b15a716227f2a4b586",
+        "180-153-18-170-7709-20260610-1-600000.payload.bin": "d138612fc9abdae0a2c186a6c349b92fae4f7cc0175cef9ec869da5015ebc9d9",
+        "180-153-18-170-7709-20260610-1-600000.expected.json": "da1d8406078cb5a2024c3c5ed4f0579d46dc9bc8e3bce4fe6df47e7308f3399a"
+      }
+    },
+    "180-153-18-170-7709-20260817-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:09.756613+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-101",
+      "sha256": {
+        "180-153-18-170-7709-20260817-1-600000.request.bin": "65e52c73ba5cc13c96e1b694d8c169dc1866da15724fa9bba3c423609a6d2166",
+        "180-153-18-170-7709-20260817-1-600000.header.bin": "3f83bb63175529697462da7f2e3bb65ce06d28267e801401f67a1b019c431497",
+        "180-153-18-170-7709-20260817-1-600000.wire.bin": "8a0a2c1d6d56da266e03cd62d9e4b770594d86e11d013e0e51bd1aae3f5e0b1e",
+        "180-153-18-170-7709-20260817-1-600000.payload.bin": "ea812c81b091053e956ea705c9737cf73b0f8e658b6870f8411711d9302e5315",
+        "180-153-18-170-7709-20260817-1-600000.expected.json": "52a8305b937f1f9737d1caa95e74f283ab53477706003d84a256229043e2de3d"
+      }
+    },
+    "180-153-18-170-7709-20260818-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:10.095231+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-102",
+      "sha256": {
+        "180-153-18-170-7709-20260818-1-600000.request.bin": "4a282f0eb333ef8ab0e5cafe18958b60fec8975ea4361f92a409e88a5a7fe650",
+        "180-153-18-170-7709-20260818-1-600000.header.bin": "a3a731bdf4b1f2c5c1ce9811694ec6950492e2bb9698dd7c3485e6d735282168",
+        "180-153-18-170-7709-20260818-1-600000.wire.bin": "f3cd20f56904a6364b2cec367f06a5d9b9087b5d933909ac70651b840f388235",
+        "180-153-18-170-7709-20260818-1-600000.payload.bin": "6b4dc54c6a57c748560d1af62a65ede82f188effd90972b7871a29463849fcf7",
+        "180-153-18-170-7709-20260818-1-600000.expected.json": "0a15fd27e7207bcd3edadb7d1fea1b4df07510e29f0c6ebc88b7b2fab4333ebc"
+      }
+    },
+    "180-153-18-170-7709-20261022-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:10.464727+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-103",
+      "sha256": {
+        "180-153-18-170-7709-20261022-1-600000.request.bin": "c1e123f2919956d8217fe77fe2150619a0a9e7bb98f5e070b607308f3e8e9be9",
+        "180-153-18-170-7709-20261022-1-600000.header.bin": "9d4c1414e65bd290fa965fade04cb32f49bdabcda76f775a88334fbdea91057c",
+        "180-153-18-170-7709-20261022-1-600000.wire.bin": "3e75e3ecaf2bccd7d1182e0472c953e7e96aec875f81d2b6ab633b7c672aacab",
+        "180-153-18-170-7709-20261022-1-600000.payload.bin": "1ca6bb224db7417f5bc65009388661bc1eed8eefdb94f4ee0f2ef2f1a3116ada",
+        "180-153-18-170-7709-20261022-1-600000.expected.json": "0f9106fda681a7be15710bc042cd016710cbebf74c3bd87e85ebae11d82ec447"
+      }
+    },
+    "180-153-18-170-7709-20261023-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:10.803262+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-104",
+      "sha256": {
+        "180-153-18-170-7709-20261023-1-600000.request.bin": "5b9e4ebb8835cbc463b7bdce6a527539776f89a42b6cc5cb7306e226a4d7808d",
+        "180-153-18-170-7709-20261023-1-600000.header.bin": "b07174cd277a2b39ea6bcfb7ea625f197c654cd103fa3e74b2db4ddab712c237",
+        "180-153-18-170-7709-20261023-1-600000.wire.bin": "85f390e3fed75c6284ecb264afe197676b2e5160d1c3715c079f47cbe8f94b25",
+        "180-153-18-170-7709-20261023-1-600000.payload.bin": "293617d5893d1a4299f0850f105163536c36ced9e453e109909a1e8b2705092b",
+        "180-153-18-170-7709-20261023-1-600000.expected.json": "11882065e702af0f1e60377ffd8664d3c81e80bbc97a99520630bf7aa43c346e"
+      }
+    },
+    "180-153-18-170-7709-20260609-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:15.077748+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-116",
+      "sha256": {
+        "180-153-18-170-7709-20260609-1-600519.request.bin": "b41725e2f6c9d7fe0b764ac33bb896694b7bfbbc5d5f1a0c4a1922455defe6ab",
+        "180-153-18-170-7709-20260609-1-600519.header.bin": "2755c640b4136c9fac08b3250e4d32fadd35599aa83ddfd454484c9e4fc0dec4",
+        "180-153-18-170-7709-20260609-1-600519.wire.bin": "0eac95772c8d96c3a2b17fb4136be47d4813c64121a2a41feec920730a17fa65",
+        "180-153-18-170-7709-20260609-1-600519.payload.bin": "4e8d316c2ba444058216632042333856333bb016ebb9e63d38c52e2db6f90188",
+        "180-153-18-170-7709-20260609-1-600519.expected.json": "31427657115050b2dccb6a4b181aae8346216fad6f10d6d183ba1c2454cd39bd"
+      }
+    },
+    "180-153-18-170-7709-20260610-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:15.427142+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-117",
+      "sha256": {
+        "180-153-18-170-7709-20260610-1-600519.request.bin": "372bab90aa37aabe6d8a6060858933519f329df4241b9bb96ef056601c3f6933",
+        "180-153-18-170-7709-20260610-1-600519.header.bin": "098e8ed927fa66b9216c2953b05e2946bd5c047691669a01662e3e70af5a7fbf",
+        "180-153-18-170-7709-20260610-1-600519.wire.bin": "25661a4a771bda899646d36f4182b2c955d415942f09b7fbd2c02077d422ddd9",
+        "180-153-18-170-7709-20260610-1-600519.payload.bin": "091a7081cd5bb7bf4e58a2d444a4c75bba5466e6008f27061c1eb5eb5547f0be",
+        "180-153-18-170-7709-20260610-1-600519.expected.json": "819ae39f0278534b3f717c5d0092624ed60f24c2704510b1af1a5fafaa5da021"
+      }
+    },
+    "180-153-18-170-7709-20260817-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:15.790295+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-118",
+      "sha256": {
+        "180-153-18-170-7709-20260817-1-600519.request.bin": "17e109f5e4059333be3b3f6bd48b04083d5a9e67ef6dcc22153088f4c8739485",
+        "180-153-18-170-7709-20260817-1-600519.header.bin": "f90c6a91e743367424756b01f9aa43c45dd2de7c40175463d2a3a23ac466e295",
+        "180-153-18-170-7709-20260817-1-600519.wire.bin": "593711a4e49c1ce7e545b057995d4a6610af3785a05b148a50bbcbd539a99a1c",
+        "180-153-18-170-7709-20260817-1-600519.payload.bin": "e737ac7ee3f88f95da0931090f3962453ddaf8de3733d0d83d7fe080717d8cea",
+        "180-153-18-170-7709-20260817-1-600519.expected.json": "be5b927a710cd3d1522736f9900a82bb6e134347eee4f6afa091586503b30781"
+      }
+    },
+    "180-153-18-170-7709-20260818-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:16.132559+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-119",
+      "sha256": {
+        "180-153-18-170-7709-20260818-1-600519.request.bin": "f8355d737a7bb47152b10ee665e9760297115f0725ea026219b21ea0d3a7afa3",
+        "180-153-18-170-7709-20260818-1-600519.header.bin": "93beaa8202454e4551e1af8e3757c7e140bbc153f28accd5dade4540429e1aa9",
+        "180-153-18-170-7709-20260818-1-600519.wire.bin": "b8e8660e09f269955e624f0933daeb6747585d478ca0f03c0731f2f52e8a8b5d",
+        "180-153-18-170-7709-20260818-1-600519.payload.bin": "14d6b5edbcad7a5934be36408390d20b6c7b942f7e4939d0a4146b7bb2bac150",
+        "180-153-18-170-7709-20260818-1-600519.expected.json": "81774d9ee497c25de1ce80532f7857a2f092e07c1e42be2fd01c7c420e29fdee"
+      }
+    },
+    "180-153-18-170-7709-20261022-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:16.475333+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-120",
+      "sha256": {
+        "180-153-18-170-7709-20261022-1-600519.request.bin": "dd33aa53f29669795b7c6a8d04bc4d9cbadd5612e294dcd0fd82087c11a309f7",
+        "180-153-18-170-7709-20261022-1-600519.header.bin": "b7ba2ec8df6e7371b1a0219d3451cd0ffddd8acec60f109352223dc41b80745e",
+        "180-153-18-170-7709-20261022-1-600519.wire.bin": "48277394a327faaea0281bc048358da62e54fc83a8a1185b4feb2879c72420f8",
+        "180-153-18-170-7709-20261022-1-600519.payload.bin": "70cf85e9f0d45ccda59d931f22af0644c712c064f6cd72ac393db549a5dc541f",
+        "180-153-18-170-7709-20261022-1-600519.expected.json": "199a8b0a748316e3e3a3a5fdc8e84488a0cf6506939999a280b4c2a5004d1786"
+      }
+    },
+    "180-153-18-170-7709-20261023-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:16.835693+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-121",
+      "sha256": {
+        "180-153-18-170-7709-20261023-1-600519.request.bin": "c3d0e1cf0589f482ef721b7d08c1ebfa2f6182002ae9541f24a53db9f1d87530",
+        "180-153-18-170-7709-20261023-1-600519.header.bin": "3daf03d01a285f2cae6cc182d12b4e718875618c2b1eb914759d9a719881e937",
+        "180-153-18-170-7709-20261023-1-600519.wire.bin": "efd56e744edc19882db4eba909ff87d6b624ec733b20d8efb4f7ef834d2e5c2f",
+        "180-153-18-170-7709-20261023-1-600519.payload.bin": "fd5cb889cb95629020f66c5847c0494868ef0766951578a2da4cadd9e0e5492f",
+        "180-153-18-170-7709-20261023-1-600519.expected.json": "7717ebb5f1e9d58c68c77c2f622a8ab5f61c28e935f3dbbf0ce62e3fd2e2737f"
+      }
+    },
+    "180-153-18-170-7709-20260609-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260609,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:21.110960+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-133",
+      "sha256": {
+        "180-153-18-170-7709-20260609-1-510300.request.bin": "4255ad185c3ecb00e61092a1a1d0713a6d398a3367c5fed5df518be5fe599822",
+        "180-153-18-170-7709-20260609-1-510300.header.bin": "6ba9f1c07e86a78e00489f1a152790d3cc3fc9921d5fa9adf08c34f6379f6c9a",
+        "180-153-18-170-7709-20260609-1-510300.wire.bin": "e89b7d687f9c33c2d2503c5bcbff71ad80cf3d67b7b1609cea00ff8c0a97c410",
+        "180-153-18-170-7709-20260609-1-510300.payload.bin": "a711c4a88b3c5ca2d3f5ec1cfcb65912f8e50164b9d3ca1f0a55e74ac6516b05",
+        "180-153-18-170-7709-20260609-1-510300.expected.json": "11a4544fd0d11820e38fd62608f3d9b0a8dbf6e45ecb1629a851f6af4b18c2bd"
+      }
+    },
+    "180-153-18-170-7709-20260610-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260610,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:21.475661+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-134",
+      "sha256": {
+        "180-153-18-170-7709-20260610-1-510300.request.bin": "db379296c40a1809434d1d4d0d973dbb1b19c8ff5fb7ec8f8af9d2d70b5b0caf",
+        "180-153-18-170-7709-20260610-1-510300.header.bin": "b1c3e9907c60bc6e8c87e3f69ee9900872b4a9ff7651200588daad1f6d8e146e",
+        "180-153-18-170-7709-20260610-1-510300.wire.bin": "88325e92efc00e36cd20f06b45f60c63f1c325f57e26523869e8be50bed1151b",
+        "180-153-18-170-7709-20260610-1-510300.payload.bin": "5f17cae40d708d9f7f2da2e4878129cc5f13bb0ce76d9c70bf31a5bbb5f75198",
+        "180-153-18-170-7709-20260610-1-510300.expected.json": "836af4a5d12e0b17ffac07b1c82528a23098c04c708c957b6878fc5a6b8116a8"
+      }
+    },
+    "180-153-18-170-7709-20260817-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:21.818639+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-135",
+      "sha256": {
+        "180-153-18-170-7709-20260817-1-510300.request.bin": "7d624ee8a8b7562ed2ca9d306d9b7ac5d7b6e1b31dcd5e9038bacf9cdd2c1595",
+        "180-153-18-170-7709-20260817-1-510300.header.bin": "95872d3b6ac6cbc99f5755453f7f04e88817eaaa289c60a0e2b61cb6cb6a9d0f",
+        "180-153-18-170-7709-20260817-1-510300.wire.bin": "8633c89814e48474b11b143a4941c52ccf8188ccd691552131e95225de10c569",
+        "180-153-18-170-7709-20260817-1-510300.payload.bin": "03aa3733d9044ec455c2169d179831edac758d2c8d410bb8de3b54b70cddf326",
+        "180-153-18-170-7709-20260817-1-510300.expected.json": "f8acfc0b916687abeebb139c35491788fedd320904932875fbdcfed2e741b67b"
+      }
+    },
+    "180-153-18-170-7709-20260818-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:22.156486+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-136",
+      "sha256": {
+        "180-153-18-170-7709-20260818-1-510300.request.bin": "383dcfcf0c9019d48a67f37b5d264778e1d7256da0804982c4f6325c3d7469ca",
+        "180-153-18-170-7709-20260818-1-510300.header.bin": "bede8504821adbbee70412aa9462da179b8cf740923c7d188e0e4520b4da4cbc",
+        "180-153-18-170-7709-20260818-1-510300.wire.bin": "e94ff9858282f742ca86646dd90709f43db58a104a0add4af6f5a24dc1977aa0",
+        "180-153-18-170-7709-20260818-1-510300.payload.bin": "9f4a1e2938e1a9a69cdd5a8be8befb378f481f7fd3e3009d7d7e7a25a2249344",
+        "180-153-18-170-7709-20260818-1-510300.expected.json": "1a0139fda6d7f4a917aaf71438e6b2018739e5626e0d5b991b4132333263d160"
+      }
+    },
+    "180-153-18-170-7709-20261022-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261022,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:22.523823+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-137",
+      "sha256": {
+        "180-153-18-170-7709-20261022-1-510300.request.bin": "88abc2461c099f51f41aa4f16f30c0fd405e8b5559f3522997e07c36291591b6",
+        "180-153-18-170-7709-20261022-1-510300.header.bin": "fff40b57663059b2e4dd94c213f8dca1674e8cd61fde230b1f0c00d5c073f1d2",
+        "180-153-18-170-7709-20261022-1-510300.wire.bin": "a8df2a71ea97fb0c7e220e03ebc91ff3d156390e71afc406f2457e28d2416627",
+        "180-153-18-170-7709-20261022-1-510300.payload.bin": "a8df2a71ea97fb0c7e220e03ebc91ff3d156390e71afc406f2457e28d2416627",
+        "180-153-18-170-7709-20261022-1-510300.expected.json": "db7d69c5c80500e256f47bc83291ae9878faa95ed83cd56b1027eb8d739fd1ff"
+      }
+    },
+    "180-153-18-170-7709-20261023-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "recent_minutes_date_schema_version": 2,
+      "requested_date": 20261023,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T13:34:22.864455+00:00",
+      "source_directory": "docs/testing/evidence/recent-minutes-date-selector-20261024/180.153.18.170",
+      "source_frame": "frame-138",
+      "sha256": {
+        "180-153-18-170-7709-20261023-1-510300.request.bin": "d17e0b71652147645d389489bbf398fe4adfb4a02db6f5cadffa5e26c0b83b7b",
+        "180-153-18-170-7709-20261023-1-510300.header.bin": "eecfbbeb3cde45732cf9015b802e04dca24efb6e1174d554dfdea730d0c31310",
+        "180-153-18-170-7709-20261023-1-510300.wire.bin": "4f27ecf01b9abaa1f9de7bbe008e971cc22c92f99b9a26d12231d46f42823dc2",
+        "180-153-18-170-7709-20261023-1-510300.payload.bin": "a5c6e791b6196611259f29d55cf376e6f31b81d0ab926be7e73ee996ee9fac75",
+        "180-153-18-170-7709-20261023-1-510300.expected.json": "0679cf8d8c92dd7b725a0a27b88eda9ea80a4d552e44984c2c58e7aed540d989"
+      }
+    }
+  }
+}

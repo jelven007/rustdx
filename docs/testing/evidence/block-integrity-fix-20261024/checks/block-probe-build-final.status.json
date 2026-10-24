@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+    "+1.89.0",
+    "build",
+    "--manifest-path",
+    "/tmp/rustdx-block-probe/Cargo.toml",
+    "--locked"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 6.266,
+  "integration_skip_env": true
+}

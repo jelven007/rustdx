@@ -1,0 +1,5 @@
+clickhouse 0 2.567 seconds 16 batches
+clickhouse 1 2.617 seconds 16 batches
+mongodb 0 7.273 seconds 16 batches
+mongodb 1 7.074 seconds 16 batches
+/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/bulk.json

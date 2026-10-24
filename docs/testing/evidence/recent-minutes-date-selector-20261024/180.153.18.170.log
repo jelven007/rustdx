@@ -1,0 +1,691 @@
+{"connection_id":1,"decoded":true,"name":"heartbeat"}
+{"connection_id":1,"decoded":true,"name":"snapshots"}
+{"connection_id":1,"decoded":true,"name":"bars-0-000001"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260609-0-000001"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260610-0-000001"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260817-0-000001"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260818-0-000001"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261022-0-000001"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261023-0-000001"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261024-0-000001"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261026-0-000001"}
+{"connection_id":1,"decoded":true,"name":"recent-20260609-0-000001"}
+{"connection_id":1,"decoded":true,"name":"recent-20260610-0-000001"}
+{"connection_id":1,"decoded":true,"name":"recent-20260817-0-000001"}
+{"connection_id":1,"decoded":true,"name":"recent-20260818-0-000001"}
+{"connection_id":1,"decoded":true,"name":"recent-20261022-0-000001"}
+{"connection_id":1,"decoded":true,"name":"recent-20261023-0-000001"}
+{"connection_id":1,"decoded":true,"name":"recent-20261024-0-000001"}
+{"connection_id":1,"decoded":true,"name":"recent-20261026-0-000001"}
+{"connection_id":1,"decoded":true,"name":"bars-0-000988"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260609-0-000988"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260610-0-000988"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260817-0-000988"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260818-0-000988"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261022-0-000988"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261023-0-000988"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261024-0-000988"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261026-0-000988"}
+{"connection_id":1,"decoded":true,"name":"recent-20260609-0-000988"}
+{"connection_id":1,"decoded":true,"name":"recent-20260610-0-000988"}
+{"connection_id":1,"decoded":true,"name":"recent-20260817-0-000988"}
+{"connection_id":1,"decoded":true,"name":"recent-20260818-0-000988"}
+{"connection_id":1,"decoded":true,"name":"recent-20261022-0-000988"}
+{"connection_id":1,"decoded":true,"name":"recent-20261023-0-000988"}
+{"connection_id":1,"decoded":true,"name":"recent-20261024-0-000988"}
+{"connection_id":1,"decoded":true,"name":"recent-20261026-0-000988"}
+{"connection_id":1,"decoded":true,"name":"bars-0-159915"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260609-0-159915"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260610-0-159915"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260817-0-159915"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260818-0-159915"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261022-0-159915"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261023-0-159915"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261024-0-159915"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261026-0-159915"}
+{"connection_id":1,"decoded":true,"name":"recent-20260609-0-159915"}
+{"connection_id":1,"decoded":true,"name":"recent-20260610-0-159915"}
+{"connection_id":1,"decoded":true,"name":"recent-20260817-0-159915"}
+{"connection_id":1,"decoded":true,"name":"recent-20260818-0-159915"}
+{"connection_id":1,"decoded":true,"name":"recent-20261022-0-159915"}
+{"connection_id":1,"decoded":true,"name":"recent-20261023-0-159915"}
+{"connection_id":1,"decoded":true,"name":"recent-20261024-0-159915"}
+{"connection_id":1,"decoded":true,"name":"recent-20261026-0-159915"}
+{"connection_id":1,"decoded":true,"name":"bars-1-600000"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260609-1-600000"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260610-1-600000"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260817-1-600000"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260818-1-600000"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261022-1-600000"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261023-1-600000"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261024-1-600000"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261026-1-600000"}
+{"connection_id":1,"decoded":true,"name":"recent-20260609-1-600000"}
+{"connection_id":1,"decoded":true,"name":"recent-20260610-1-600000"}
+{"connection_id":1,"decoded":true,"name":"recent-20260817-1-600000"}
+{"connection_id":1,"decoded":true,"name":"recent-20260818-1-600000"}
+{"connection_id":1,"decoded":true,"name":"recent-20261022-1-600000"}
+{"connection_id":1,"decoded":true,"name":"recent-20261023-1-600000"}
+{"connection_id":1,"decoded":true,"name":"recent-20261024-1-600000"}
+{"connection_id":1,"decoded":true,"name":"recent-20261026-1-600000"}
+{"connection_id":1,"decoded":true,"name":"bars-1-600519"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260609-1-600519"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260610-1-600519"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260817-1-600519"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260818-1-600519"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261022-1-600519"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261023-1-600519"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261024-1-600519"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261026-1-600519"}
+{"connection_id":1,"decoded":true,"name":"recent-20260609-1-600519"}
+{"connection_id":1,"decoded":true,"name":"recent-20260610-1-600519"}
+{"connection_id":1,"decoded":true,"name":"recent-20260817-1-600519"}
+{"connection_id":1,"decoded":true,"name":"recent-20260818-1-600519"}
+{"connection_id":1,"decoded":true,"name":"recent-20261022-1-600519"}
+{"connection_id":1,"decoded":true,"name":"recent-20261023-1-600519"}
+{"connection_id":1,"decoded":true,"name":"recent-20261024-1-600519"}
+{"connection_id":1,"decoded":true,"name":"recent-20261026-1-600519"}
+{"connection_id":1,"decoded":true,"name":"bars-1-510300"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260609-1-510300"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260610-1-510300"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260817-1-510300"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20260818-1-510300"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261022-1-510300"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261023-1-510300"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261024-1-510300"}
+{"connection_id":1,"decoded":true,"name":"history-minute-20261026-1-510300"}
+{"connection_id":1,"decoded":true,"name":"recent-20260609-1-510300"}
+{"connection_id":1,"decoded":true,"name":"recent-20260610-1-510300"}
+{"connection_id":1,"decoded":true,"name":"recent-20260817-1-510300"}
+{"connection_id":1,"decoded":true,"name":"recent-20260818-1-510300"}
+{"connection_id":1,"decoded":true,"name":"recent-20261022-1-510300"}
+{"connection_id":1,"decoded":true,"name":"recent-20261023-1-510300"}
+{"connection_id":1,"decoded":true,"name":"recent-20261024-1-510300"}
+{"connection_id":1,"decoded":true,"name":"recent-20261026-1-510300"}
+{
+  "archive_focus": false,
+  "archive_frame_bytes": 2662166,
+  "auction_dates": [],
+  "automatic_heartbeat": false,
+  "control_dates": [
+    20260609,
+    20260610,
+    20260817,
+    20260818,
+    20261022,
+    20261023,
+    20261024,
+    20261026
+  ],
+  "date_policy": "Requested dates are not server date evidence",
+  "date_selector_check": true,
+  "endpoint": "180.153.18.170:7709",
+  "finished_utc": "2026-10-24T13:34:23.820584Z",
+  "kind": "live_recent_auction_contract_validation",
+  "queries": [
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "heartbeat"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "snapshots"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260609-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260610-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260817-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260818-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261024-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261026-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260609-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260610-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260818-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261026-0-000001"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260609-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260610-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260817-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260818-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261024-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261026-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260609-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260610-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260818-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261026-0-000988"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260609-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260610-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260817-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260818-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261024-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261026-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260609-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260610-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260818-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261026-0-159915"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260609-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260610-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260817-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260818-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261024-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261026-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260609-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260610-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260818-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261026-1-600000"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260609-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260610-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260817-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260818-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261024-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261026-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260609-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260610-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260818-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261026-1-600519"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "bars-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260609-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260610-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260817-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20260818-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261022-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261023-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261024-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "history-minute-20261026-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260609-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260610-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260817-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20260818-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261022-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261023-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261024-1-510300"
+    },
+    {
+      "connection_id": 1,
+      "decoded": true,
+      "name": "recent-20261026-1-510300"
+    }
+  ],
+  "recent_dates": [
+    20260609,
+    20260610,
+    20260817,
+    20260818,
+    20261022,
+    20261023,
+    20261024,
+    20261026
+  ],
+  "recent_minutes_date_schema_version": 2,
+  "request_spacing_ms": 250,
+  "schema_version": 1,
+  "source": "live_tcp",
+  "started_utc": "2026-10-24T13:33:38.095642Z",
+  "status": "captured",
+  "symbols": [
+    [
+      0,
+      "000001"
+    ],
+    [
+      0,
+      "000988"
+    ],
+    [
+      0,
+      "159915"
+    ],
+    [
+      1,
+      "600000"
+    ],
+    [
+      1,
+      "600519"
+    ],
+    [
+      1,
+      "510300"
+    ]
+  ],
+  "total_timeout_seconds": 180,
+  "wire_frames": 141
+}

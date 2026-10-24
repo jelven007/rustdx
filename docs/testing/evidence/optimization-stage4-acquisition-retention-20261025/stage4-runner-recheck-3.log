@@ -1,0 +1,28 @@
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 20.40s
+[1m[32m     Running[0m tests/control_plane.rs (/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/deps/control_plane-d73318101ec0b17b)
+
+running 20 tests
+test evidence_limits_path_traversal_and_controller_exclusion ... ok
+test failed_publication_event_rolls_back_pointer_and_job_state ... ok
+test catalog_cas_preserves_previous_pointer_and_append_only_events ... ok
+test deduplication_and_one_active_attempt_survive_reopen ... ok
+test persisted_worker_statistics_survive_reopen_and_missing_records_are_not_zero_samples ... ok
+test tcp_config_excludes_ambiguous_source_offline_and_historical_vintage ... ok
+test explicit_worker_cancellation_is_not_reported_as_timeout ... ok
+test all_explicitly_exempt_keys_publish_empty_partitions_without_a_collector ... ok
+test strict_config_and_unknown_history_refuse_before_spawn ... ok
+test wal_backup_restore_and_corruption_detection ... ok
+test tcp_explicitly_exempt_scope_publishes_without_contacting_the_source ... ok
+test managed_deadline_kills_worker_and_recovery_does_not_rerun ... ok
+test tcp_runner_rejects_forged_csv_even_with_matching_report_digest ... ok
+test ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts ... ok
+test database_capacity_rejects_before_request_or_unknown_target ... ok
+test local_run_and_collector_are_offline_without_an_explicit_warmup ... ok
+test tcp_daily_release_revision_missing_keys_and_offline_recovery ... ok
+test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ok
+test real_cli_release_revision_missing_coverage_and_isolated_restore ... ok
+test scheduled_tcp_scope_publishes_only_after_all_expected_keys_match ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 24.19s
+

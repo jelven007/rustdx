@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/run.py", line 75, in <module>
+    run("runner-all",cargo+["test","-p","rustdx-runner","--all-features","--offline","--locked","--","--include-ignored","--nocapture","--test-threads=1"],timeout=900)
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/run.py", line 17, in run
+    if required and r.returncode:raise RuntimeError(name+" failed")
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: runner-all failed

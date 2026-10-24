@@ -1,0 +1,1 @@
+{"command": [".cargo/bin/cargo", "+1.89.0", "build", "-p", "jelven-rustdx-complete", "--example", "validate_recent_auction", "--offline", "--locked"], "pid": 84110}

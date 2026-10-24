@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "result": "passed",
+  "all_17_engineering_items_processed": true,
+  "final_checks": "final-engineering.json",
+  "actual_packages": "package/preflight.json",
+  "same_host_comparison": "indicators/comparison.json",
+  "documents_after_package_review": [
+    {
+      "path": "docs/archive/development/OPTIMIZATION_FINAL_20261025.md",
+      "bytes": 5834,
+      "sha256": "cd289636079a88f46de35f2beabee4191317a4c82b50f26458243e2dae329a93"
+    },
+    {
+      "path": "docs/development/OPTIMIZATION_PROGRESS.md",
+      "bytes": 8416,
+      "sha256": "9b9477be02f1c7e2d5385cf97eaef408457f1c4cd2327315d93985c0bb89f582"
+    }
+  ],
+  "limits": [
+    "no live market/real database/target production/fuzz run in this final check",
+    "no remote Actions, commit, push, publication, deployment or runtime cleanup",
+    "all external scope exceptions remain in progress/report"
+  ]
+}

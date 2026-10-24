@@ -1,0 +1,13 @@
+[package]
+name="rustdx-indicator-comparison"
+version="0.0.0"
+edition="2024"
+[workspace]
+[dependencies]
+thiserror="2"
+serde_json="1"
+[profile.release]
+opt-level=3
+lto=false
+codegen-units=1
+incremental=false

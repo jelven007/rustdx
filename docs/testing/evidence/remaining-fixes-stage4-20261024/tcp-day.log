@@ -1,0 +1,12 @@
+[1m[32m   Compiling[0m jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 6.16s
+[1m[32m     Running[0m tests/tcp_day.rs (target/debug/deps/tcp_day-45d1bfd1f9e10549)
+
+running 4 tests
+test an_enumerated_empty_tail_keeps_missing_dates_visible_to_runner ... ok
+test compressed_short_pages_replay_exact_fields_and_duplicate_boundaries ... ok
+test wire_receipt_and_orphan_file_changes_are_rejected_independently ... ok
+test closed_date_unit_evidence_scope_and_archive_budget_refuse_collection ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+

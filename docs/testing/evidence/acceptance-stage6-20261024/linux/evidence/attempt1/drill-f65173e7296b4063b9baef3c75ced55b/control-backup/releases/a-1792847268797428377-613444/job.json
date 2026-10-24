@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "root": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live",
+  "cli": "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx",
+  "no_tcp_startup": true,
+  "dataset_id": "synthetic-recovery",
+  "contract_version": "a-share/day/raw/cny/shares/v1",
+  "policy_revision": 1,
+  "source_revision": 2,
+  "source_as_of": "2026-07-07",
+  "planned_date": "2026-07-07",
+  "from": "2026-07-06",
+  "through": "2026-07-07",
+  "day_directories": [
+    "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/source-2"
+  ],
+  "calendar": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/calendar.json",
+  "calendar_source_sha256": "4e778227732974a70e3de83b27d6b24510c56221f6feb30c5e336f07ac397579",
+  "security_history": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/history.json",
+  "universe": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/universe.json",
+  "facts_directory": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/facts",
+  "timeout_seconds": 180,
+  "publish_reserve_seconds": 30,
+  "cancel_grace_seconds": 1,
+  "workers": 4,
+  "max_source_bytes": 1048576,
+  "max_workspace_bytes": 268435456,
+  "max_rows": 10000,
+  "min_free_bytes": 0,
+  "database_targets": [
+    {
+      "kind": "clickhouse",
+      "id": "ch",
+      "url": "http://127.0.0.1:40751",
+      "table": "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.bars",
+      "user_env": "RUSTDX_RECOVERY_CH_USER",
+      "password_env": "RUSTDX_RECOVERY_CH_PASSWORD"
+    },
+    {
+      "kind": "mongodb",
+      "id": "mongo",
+      "database": "rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2",
+      "collection": "bars",
+      "uri_env": "RUSTDX_RECOVERY_MONGO_URI",
+      "mongosh": "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+    "+1.89.0",
+    "test",
+    "-p",
+    "jelven-rustdx-complete",
+    "--test",
+    "block_integrity"
+  ],
+  "exit_code": 101,
+  "elapsed_seconds": 33.108,
+  "integration_skip_env": true
+}

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "target/debug/examples/capture_resources",
+    "/tmp/rustdx-resources-final-hz-20261024",
+    "115.238.56.198:7709"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 15.951,
+  "integration_skip_env": true
+}

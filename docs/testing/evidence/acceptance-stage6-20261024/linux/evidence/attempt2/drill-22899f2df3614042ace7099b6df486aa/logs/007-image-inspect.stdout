@@ -1,0 +1,80 @@
+[
+    {
+        "Id": "sha256:eb6f811377c9da6f83a494c6f8f62cd921db45b6ded8b06d91df5db391797708",
+        "RepoTags": [],
+        "RepoDigests": [
+            "docker.m.daocloud.io/clickhouse/clickhouse-server@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146"
+        ],
+        "Parent": "",
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-08-26T13:10:13.116915045Z",
+        "DockerVersion": "",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "8123/tcp": {},
+                "9000/tcp": {},
+                "9009/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=en_US.UTF-8",
+                "LANGUAGE=en_US:en",
+                "LC_ALL=en_US.UTF-8",
+                "TZ=UTC",
+                "CLICKHOUSE_CONFIG=/etc/clickhouse-server/config.xml"
+            ],
+            "Cmd": null,
+            "Image": "",
+            "Volumes": {
+                "/var/lib/clickhouse": {}
+            },
+            "WorkingDir": "/",
+            "Entrypoint": [
+                "/entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "com.clickhouse.build.version": "25.8.33.6-alpine"
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 715276762,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/60680426cbb23b427e99bdc12bd01cbbbe8c2710d3cd66147e034aa55b5f8c7f/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/96db752c376c77bcfaca60b351ae9675271e93a02d82cd2131fc52a61a7e700b/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/2c09d7bc5148290a0e0331683f110df68c909fc2693004b28e15effb05ec6273/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/7ee2b34ab326781c07f82fad9fc7e30d5372828032fc7ccb29982daed270ca9b/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/e4c853cd5d59034c4e95b16b530a8b6c6ba4d1782d64fd8d1add9531338c9058/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/8543d75dd4d7757be4c2fe79025d485dc9c325727c15f6cc561d9481e03dea93/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/7e443065cdfe08f01c717cb1a20f0478af592039042b6d792ed00af3b804eb84/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/34d6d83f4a15b4effcdabf14ef782bc2845b825b753763c506c80bc9fe7a7687/diff",
+                "MergedDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/d725dba750c743523de6906ed72dac35f4539c8a44d8cc8dc809ee46b0c4803b/merged",
+                "UpperDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/d725dba750c743523de6906ed72dac35f4539c8a44d8cc8dc809ee46b0c4803b/diff",
+                "WorkDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/d725dba750c743523de6906ed72dac35f4539c8a44d8cc8dc809ee46b0c4803b/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:34884abbe92863fce933ed7c39c0e045631af0ed86d5cc0dfbdf9fdca426ce3c",
+                "sha256:a9aa1d585339ae07b6b4e02a4705a70f3a8adb97af3274cf627826788d01b83d",
+                "sha256:1c86be53b23fc64b428d764c86171f3678f8aa071d13f5747f737862eb2d06e6",
+                "sha256:06c633de2838ae9f973b00bd793be2fe6dcb28e648f7482ae87aabb6ef66827d",
+                "sha256:9385ed64c709de34434add110d00db20da61f2e3114ea77b57b9e346e5eac19c",
+                "sha256:d9a6931f17a800a83f1809ed3d3054bdbc19717df0e3f9192a54fff4a6624d11",
+                "sha256:dff6a9d0db51f2f61a16c62bd5ef1b27172b9c88fbd02bb747eff71523ade435",
+                "sha256:048debb1ac07b62c5a626a57f967070d3a9ebdf9369443944db0b15882d9c67f",
+                "sha256:13e0f555254a68e99434e69d634a2bc0d4169910f535f4c3aaba38989705f4e8"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        }
+    }
+]

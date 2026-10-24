@@ -1,0 +1,7 @@
+   Compiling ring v0.17.14
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+   Compiling rustls v0.23.43
+   Compiling rustls-webpki v0.103.15
+   Compiling ureq v3.4.0
+   Compiling jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 20.19s

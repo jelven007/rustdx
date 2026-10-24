@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "scripts/bench/run_indicator_comparison.py",
+        "--baseline-ref",
+        "408e30eb172704070e384fb35fb0e56549a1fbc5",
+        "--output",
+        "/tmp/rustdx-optimization-20261024/indicator-pair",
+        "--cargo",
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "--toolchain",
+        "1.89.0",
+        "--offline"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 25.6732385,
+      "log": "/tmp/rustdx-optimization-20261024/stage4-indicators-0.log"
+    }
+  ]
+}

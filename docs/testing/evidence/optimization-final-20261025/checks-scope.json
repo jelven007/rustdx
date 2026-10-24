@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "workspace_tests": {
+    "passed": 522,
+    "failed": 0,
+    "ignored": 10
+  },
+  "doc_tests": {
+    "passed": 57,
+    "failed": 0,
+    "ignored": 18
+  },
+  "runner_extra": {
+    "passed": 20,
+    "filtered_real_database": 1,
+    "overlap": "not additive with workspace"
+  },
+  "python_tests": 10,
+  "performance": {
+    "shared_batch_groups": 10,
+    "alternating_samples": 7,
+    "max_ratio": 1.5
+  },
+  "package_result_file": "package/preflight.json",
+  "external_scope": "skip may return early; loopback/synthetic only; no live market, real DB, remote Actions, fuzz, publication or deployment"
+}

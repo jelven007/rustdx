@@ -1,0 +1,24 @@
+{
+  "date": 20261023,
+  "market": 0,
+  "code": "300308",
+  "start": 0,
+  "request_count": 1800,
+  "price_base_raw_f32": 590.1099853515625,
+  "record_count": 1800,
+  "all_record_fields_match": true,
+  "status_counts": {
+    "1": 739,
+    "0": 985,
+    "2": 12,
+    "8": 19,
+    "5": 45
+  },
+  "sha256": {
+    "request.bin": "ab7021c1aaa95d919e1056ef663888dbc718df4bfb3972a771b09fef50f5bc40",
+    "header.bin": "7af2f65387bfd70f30e29635bf087361d7110bd2e767475ca51430204ff553f8",
+    "wire.bin": "837cd4a289e4d378615526b9abeeeeeca1ce7f3f59e8e8fcd26c6e23460620c1",
+    "payload.bin": "065134611b300af914d9f05ee5453ac059849031ddb1cf4606d97441bb2d50eb"
+  },
+  "expected_sha256": "5e957924c279f955c9e23927d2f94cebfd08796d9a0c401c62cb935ff5489f62"
+}

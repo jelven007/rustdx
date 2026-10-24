@@ -1,44 +1,25 @@
-[package]
-name        = "jelven-rustdx-complete"
-version     = "1.12.2"
-edition     = "2024"
+[workspace]
+resolver = "3"
+members = [
+    "crates/rustdx-core",
+    "apps/rustdx-cli",
+    "apps/rustdx-runner",
+    "tests/integration",
+]
+default-members = ["crates/rustdx-core", "apps/rustdx-cli", "apps/rustdx-runner"]
+exclude = ["tools/fuzz"]
+
+[workspace.package]
+edition = "2024"
 rust-version = "1.89"
-license     = "MIT"
-description = "生产可用的 A 股行情、通达信文件解析与技术指标 Rust 库"
-repository  = "https://github.com/jelven007/rustdx"
-readme      = "README.md"
-authors     = ["张路 <jelven@126.com>", "zjp <jiping_zhou@foxmail.com>"]
-exclude     = [
-                "examples", "benches", "tests", "old", "tests-integration", "rustdx-runner",
-                "docs", "scripts", "deploy", "/config", "/data", "/fuzz",
-                "/reports", "/acceptance", "CHANGELOG.md", "*.csv", "*.log",
-                ".github", ".gitignore", ".screenshots", "AGENTS.md", "rustfmt.toml"
-              ]
+license = "MIT"
+repository = "https://github.com/jelven007/rustdx"
 
-[lib]
-name = "rustdx_complete"
-path = "src/lib.rs"
-
-[dependencies]
-miniz_oxide = "0.9"
-log = { workspace = true }
-serde = { workspace = true }
-chrono = { workspace = true }
-thiserror = { workspace = true }
-trade_date_a = "2026.0"
-
-[dependencies.encoding_rs]
-version  = "0.8"
-features = ["fast-gb-hanzi-encode"]
-
-[dev-dependencies]
-insta = "1"
-csv = "1"
-proptest = { version = "=1.8.0", default-features = false, features = ["std"] }
-
-[[bench]]
-name = "indicators"
-harness = false
+[workspace.dependencies]
+log = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
 
 [profile.test]
 opt-level = 3
@@ -50,23 +31,3 @@ opt-level = 3
 [profile.release]
 lto = true
 opt-level = 3
-
-[features]
-default = []
-docsrs = []
-
-[lints.rust]
-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(docsrs)'] }
-
-[workspace]
-members = ["rustdx-cmd", "rustdx-runner", "tests-integration"]
-
-[workspace.dependencies]
-log = "0.4"
-chrono  = { version = "0.4", features = ["serde"] }
-thiserror = "2"
-serde = { version = "1", features = ["derive"] }
-
-[package.metadata.docs.rs]
-all-features = true
-rustdoc-args = ["--cfg", "docsrs"]

@@ -1,0 +1,102 @@
+[
+  {
+    "name": "real_cli_release_revision",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--test",
+      "control_plane",
+      "real_cli_release_revision",
+      "--offline",
+      "--locked",
+      "--",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 4.599821090698242
+  },
+  {
+    "name": "database_capacity_rejects",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--test",
+      "control_plane",
+      "database_capacity_rejects",
+      "--offline",
+      "--locked",
+      "--",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 1.268221139907837
+  },
+  {
+    "name": "durable_seal_recovers",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--test",
+      "control_plane",
+      "durable_seal_recovers",
+      "--offline",
+      "--locked",
+      "--",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 2.175236940383911
+  },
+  {
+    "name": "runner_run_forwards",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--test",
+      "control_plane",
+      "runner_run_forwards",
+      "--offline",
+      "--locked",
+      "--",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 2.5157999992370605
+  },
+  {
+    "name": "ambiguous_database_write",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--test",
+      "control_plane",
+      "ambiguous_database_write",
+      "--offline",
+      "--locked",
+      "--",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 1.3837392330169678
+  }
+]

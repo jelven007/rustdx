@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/tmp/rustdx-recovery-20261024-19y2r7t3/source/scripts/validation/verify_database_recovery.py", line 542, in <module>
+    main()
+  File "/tmp/rustdx-recovery-20261024-19y2r7t3/source/scripts/validation/verify_database_recovery.py", line 530, in main
+    drill.execute()
+  File "/tmp/rustdx-recovery-20261024-19y2r7t3/source/scripts/validation/verify_database_recovery.py", line 472, in execute
+    raise AssertionError("wrong existing target rejection")
+AssertionError: wrong existing target rejection

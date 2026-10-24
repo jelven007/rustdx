@@ -1,0 +1,26 @@
+{
+  "pid": 614963,
+  "argv": [
+    "python3",
+    "/tmp/rustdx-recovery-20261024-19y2r7t3/source/scripts/validation/verify_database_recovery.py",
+    "--cli",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx",
+    "--runner",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx-runner",
+    "--docker",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+    "--mongosh",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+    "--mongodump",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin/mongodump",
+    "--mongorestore",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin/mongorestore",
+    "--output",
+    "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt2/recovery.json",
+    "--clickhouse-image",
+    "docker.m.daocloud.io/clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146",
+    "--mongodb-image",
+    "docker.1ms.run/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d"
+  ],
+  "docker_host": "unix:///tmp/rustdx-recovery-20261024-19y2r7t3/docker.sock"
+}

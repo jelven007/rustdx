@@ -1,0 +1,12 @@
+{
+  "command": [
+    "target/debug/examples/validate_quote_push",
+    "/tmp/rustdx-resource-push-closed-20261024",
+    "115.238.56.198:7709",
+    "--seconds",
+    "30"
+  ],
+  "exit_code": 2,
+  "elapsed_seconds": 0.745,
+  "integration_skip_env": true
+}

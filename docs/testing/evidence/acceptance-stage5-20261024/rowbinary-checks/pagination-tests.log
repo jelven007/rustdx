@@ -1,0 +1,20 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 13.55s
+[1m[32m     Running[0m tests/transaction_pagination.rs (target/debug/deps/transaction_pagination-3d4b62a35970cb73)
+
+running 12 tests
+test invalid_parameters_do_not_send_any_page ... ok
+test auto_reconnect_to_the_same_endpoint_cannot_mix_pages ... ok
+test page_limit_is_an_error_but_an_empty_first_page_completes_in_one_slot ... ok
+test raw_short_pages_continue_and_page_order_preserves_identical_ticks ... ok
+test malformed_later_page_propagates_instead_of_returning_the_first_page ... ok
+test identical_whole_pages_and_reversed_minute_order_are_not_normal_completion ... ok
+test record_budget_requires_an_empty_probe_even_at_the_exact_limit ... ok
+test u16_offset_boundary_allows_65535_but_never_wraps_or_truncates ... ok
+test all_pages_share_one_deadline_and_honor_outer_cancellation ... ok
+test pacing_cannot_extend_an_outer_operation_deadline ... ok
+test byte_budget_counts_all_payloads_including_discarded_empty_rechecks ... ok
+test empty_pages_are_rechecked_at_the_same_offset_without_reconnecting ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.26s
+

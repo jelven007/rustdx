@@ -1,0 +1,1 @@
+calendar_date=2027-01-01 legacy_trading_day=true strict_error=Some(Calendar(OutOfRange { date: 2027-01-01, start: 2024-01-01, end: 2026-12-31, version: "trade_date_a/2026.0" }))

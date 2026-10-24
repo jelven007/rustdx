@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-10-24T14:16:06.811871+00:00",
+  "status": "passed",
+  "source_files_exact": 244,
+  "source_sha256": "f81b46371f8cee81bd9042658701277c126e333fb350f27be77d77367cea1a19",
+  "evidence_files": 255,
+  "evidence_manifest_sha256": "d775bc021d73b640aac9694b751492612e537c0376209ed44d7e27de4a22be15",
+  "current_doc_local_targets": 630,
+  "anchors_and_external_links": "not checked",
+  "new_fixture_frames": 6,
+  "old_052d_files_verified_against_original_digests": 42,
+  "source_contract": "a-share/tcp-052b/day/raw/cny/integer-shares/v2",
+  "final_two_nodes_exact_rows": 24,
+  "same_csv_as_first_collection": true,
+  "git_diff_check_exit_code": 0,
+  "database_services_rerun": false,
+  "remote_ci_rerun": false,
+  "commit_or_publish_executed": false
+}

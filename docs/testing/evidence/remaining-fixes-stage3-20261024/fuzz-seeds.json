@@ -1,0 +1,52 @@
+[
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-0.payload.bin",
+    "sha256": "35c6ea334a472b101fcdbe5a6438b4f34e3eb9826a6a4c3aec82905d8507d033",
+    "selector": 5
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-11.payload.bin",
+    "sha256": "0669b95a938d2746c405d295f8fe5fb38c8490ae335034bc44c9220c108a4112",
+    "selector": 6
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/sparkline-20.payload.bin",
+    "sha256": "bc24f19300cd985c5c06cf7537434d4d6863f52a3dfc42371e6bee2e1ecbaf17",
+    "selector": 7
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/recent-20261023-000001.payload.bin",
+    "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca",
+    "selector": 8
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/auction-current.payload.bin",
+    "sha256": "8210da9f355385a89685649080abf489f3e9427f97e6dbfe8071bd36b40229a8",
+    "selector": 9
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/money-0-000001.payload.bin",
+    "sha256": "89390c0156d4dbdc1a8f5abe5cfc62b3848764d8ea1fd5397c100d136d6a1b8d",
+    "selector": 10
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/snapshots.payload.bin",
+    "sha256": "b99362ab467a00f94eeeba624f20cb885b94755b4a44c98bec9d8219650b4efd",
+    "selector": 11
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/category-true.payload.bin",
+    "sha256": "a724bad932d052acbcaab7b41370384e13525fc4c5fe880b0632e2cd5269ad2c",
+    "selector": 12
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/refresh-0.payload.bin",
+    "sha256": "8342c5f441fa32df27e1a49ec9b62dcba9623a82ff4b84520dc333be3f883306",
+    "selector": 13
+  },
+  {
+    "source": "crates/rustdx-core/tests/fixtures/protocol_7709/special-limits.payload.bin",
+    "sha256": "b01d43dacceb8d787a358016cf15a7eeb6c7eb43701996847e04ed537b290e8b",
+    "selector": 14
+  }
+]

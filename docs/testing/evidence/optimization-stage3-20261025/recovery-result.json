@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "root": "/private/tmp/rustdx-optimization-20261024/local-drill/live",
+  "dataset": "optimization-drill",
+  "catalog_version": 1,
+  "scope": "Consistent local control/archive backup only. No native remote database restore or target production RPO/RTO claim.",
+  "commands": [
+    {
+      "argv": [
+        "/private/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export",
+        "--root",
+        "/private/tmp/rustdx-optimization-20261024/local-drill/live",
+        "--dataset",
+        "optimization-drill",
+        "--version",
+        "1",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--max-bytes",
+        "10737418240",
+        "--max-rows",
+        "10000000",
+        "--output",
+        "/private/tmp/rustdx-optimization-20261024/local-drill/recovery/before.csv"
+      ],
+      "exit_code": 0,
+      "seconds": 0.047463874999999996
+    },
+    {
+      "argv": [
+        "/private/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "backup",
+        "--root",
+        "/private/tmp/rustdx-optimization-20261024/local-drill/live",
+        "--destination",
+        "/private/tmp/rustdx-optimization-20261024/local-drill/recovery/backup",
+        "--max-bytes",
+        "10737418240"
+      ],
+      "exit_code": 0,
+      "seconds": 7.370440541000001
+    },
+    {
+      "argv": [
+        "/private/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "restore",
+        "--root",
+        "/private/tmp/rustdx-optimization-20261024/local-drill/recovery/backup",
+        "--destination",
+        "/private/tmp/rustdx-optimization-20261024/local-drill/recovery/restored",
+        "--max-bytes",
+        "10737418240"
+      ],
+      "exit_code": 0,
+      "seconds": 13.457395584
+    },
+    {
+      "argv": [
+        "/private/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/rustdx-runner",
+        "--no-tcp-startup",
+        "export",
+        "--root",
+        "/private/tmp/rustdx-optimization-20261024/local-drill/recovery/restored",
+        "--dataset",
+        "optimization-drill",
+        "--version",
+        "1",
+        "--from",
+        "2026-07-06",
+        "--through",
+        "2026-07-07",
+        "--max-bytes",
+        "10737418240",
+        "--max-rows",
+        "10000000",
+        "--output",
+        "/private/tmp/rustdx-optimization-20261024/local-drill/recovery/after.csv"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04474087499999868
+    }
+  ],
+  "rows": 256,
+  "csv_sha256": {
+    "before.csv": "2c3ed566ab4d6d76888ac05c626d0fcd3c8e7ad7ee48b86e9f7033907ebe92fb",
+    "after.csv": "2c3ed566ab4d6d76888ac05c626d0fcd3c8e7ad7ee48b86e9f7033907ebe92fb"
+  },
+  "recovery_to_verified_seconds": 13.503286166999999
+}

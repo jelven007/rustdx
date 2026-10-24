@@ -1,0 +1,21 @@
+{
+  "result": "passed",
+  "scope": "existing optimization evidence bytes, not current-source equality or all historical market archives",
+  "checks": [
+    {
+      "directory": "docs/testing/evidence/optimization-stage3-20261025",
+      "files_verified": 56,
+      "result": "passed"
+    },
+    {
+      "directory": "docs/testing/evidence/optimization-stage4-batch-20261025",
+      "files_verified": 41,
+      "result": "passed"
+    },
+    {
+      "directory": "docs/testing/evidence/optimization-stage4-acquisition-retention-20261025",
+      "files_verified": 18,
+      "result": "passed"
+    }
+  ]
+}

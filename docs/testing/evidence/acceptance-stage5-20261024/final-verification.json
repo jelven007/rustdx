@@ -1,0 +1,235 @@
+{
+  "recorded_at_utc": "2026-10-24T12:48:06.952959+00:00",
+  "passed": true,
+  "checks": [
+    {
+      "check": "python_syntax",
+      "path": "scripts/bench/measure_database_readback.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "scripts/validation/verify_database_faults.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "scripts/validation/verify_real_day_database.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/audit-linux.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/freeze-source.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/linux-run.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/mac-checks.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/package-linux.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/rustdx-stage5-independent.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/rustdx-stage5-linux-run.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/rustdx-stage5-live.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/rustdx-stage5-mac-db.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/rustdx-stage5-mirror-rust.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/rustdx-stage5-package-linux.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/rustdx-stage5-transfer-rust.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/rustdx-stage5-zip-subset.py",
+      "passed": true
+    },
+    {
+      "check": "python_syntax",
+      "path": "docs/testing/evidence/acceptance-stage5-20261024/reproduce/verify-package.py",
+      "passed": true
+    },
+    {
+      "check": "source_snapshots_and_final_workspace",
+      "passed": true,
+      "snapshots": [
+        {
+          "manifest": "source-manifest.json",
+          "source_sha256": "719783b57e3ddbfd6643a1b78c504264e618ba7501ba68f98083eb251bd57b8e",
+          "files": 505,
+          "archive_sha256": "3f5ebdfc59cdca90f3a6dcc20f545306a049a66f49348947007557aee84fa446",
+          "current_workspace_exact": false
+        },
+        {
+          "manifest": "source-final-manifest.json",
+          "source_sha256": "55b7f0620f1bf40bd58b308bc31f03898e46edc3c7694798c4098e0863ff608a",
+          "files": 1035,
+          "archive_sha256": "cd8792d02c1d3f1d5ae0a003dd788034a0e18e4461d092110eeaed444430654d",
+          "current_workspace_exact": false
+        },
+        {
+          "manifest": "source-complete-manifest.json",
+          "source_sha256": "cf3af420b5bf56878c1d92ed1f1f2a77a626352a9251f95b767a7cc3e9be888b",
+          "files": 1047,
+          "archive_sha256": "168c3405443eb0d4961a9b8dcbc44e2a8ec332a5153323b38d2212dbf28419aa",
+          "current_workspace_exact": false
+        },
+        {
+          "manifest": "source-tested-manifest.json",
+          "source_sha256": "44fd2c549811218c711459330fae5ac81682fced6bf4ef63188a62b30e9eee50",
+          "files": 1047,
+          "archive_sha256": "02a857b59f9ae60e60f892dc96520c09c70d912483afa9e8f00588a8a1d02bdb",
+          "current_workspace_exact": false
+        },
+        {
+          "manifest": "source-accepted-manifest.json",
+          "source_sha256": "ea7a35a538580a717a31870b0311906aa379adca131371c41cd17d7361991d4f",
+          "files": 1047,
+          "archive_sha256": "d0f1253f0b7f6d062cbd7bec45ee1740dbed54fc04a96fb92ac4d978d43e1c4d",
+          "current_workspace_exact": false
+        },
+        {
+          "manifest": "source-rowbinary-manifest.json",
+          "source_sha256": "6e9a8833c7aa366c20df09f7aa06c6104530f585c3e3f150090474b5a616f4a1",
+          "files": 1048,
+          "archive_sha256": "a4138bdddcb65f3d33cbcf3f890f032270b963c0309921b1f7af3b5d7ac5d646",
+          "current_workspace_exact": false
+        },
+        {
+          "manifest": "source-rowbinary-final-manifest.json",
+          "source_sha256": "64588321c2d8e944c3a10a9cacd187eb0cef71d6992b92aee2fd227551fd925d",
+          "files": 1048,
+          "archive_sha256": "81ba81b59cfd8b5ebd1ac2d177816206a1101fae42e36d40f8cd9051881b699e",
+          "current_workspace_exact": false
+        },
+        {
+          "manifest": "source-pacing-final-manifest.json",
+          "source_sha256": "d080d6c1ed153150d10637f6dabbff2674baa8091b581f19da30bc64986f68cf",
+          "files": 1048,
+          "archive_sha256": "af2cfc5bb8ec0dad92ab41efc11fd5b35eb1eaf079e5d0cfc99c2786edb67aa0",
+          "current_workspace_exact": true
+        }
+      ]
+    },
+    {
+      "check": "compile_time_fixture_original_bytes",
+      "passed": true,
+      "files": 3
+    },
+    {
+      "check": "official_subset_original_member_bytes_and_crc",
+      "passed": true,
+      "members": 128,
+      "rows": 779200,
+      "original_zip_sha256": "07aab2f1166a794cebfa380cda058417499c4f74049a5fe36fe029f5c803d400",
+      "derivative_zip_sha256": "edfa85b5249675379f42d6f80d5d7349b0ca2b0f1a488143d55f2a14b24008f1"
+    },
+    {
+      "check": "linux_packaged_files",
+      "passed": true,
+      "files": 345
+    },
+    {
+      "check": "final_source_binary_database_and_float_evidence",
+      "passed": true,
+      "source_sha256": "d080d6c1ed153150d10637f6dabbff2674baa8091b581f19da30bc64986f68cf",
+      "binary_sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2",
+      "real_rows": 779200,
+      "fault_cases": 4
+    },
+    {
+      "check": "recorded_command_exit_codes",
+      "passed": true,
+      "path": "local-checks/results.json",
+      "commands": 3
+    },
+    {
+      "check": "recorded_command_exit_codes",
+      "passed": true,
+      "path": "capacity-final-checks/results.json",
+      "commands": 3
+    },
+    {
+      "check": "recorded_command_exit_codes",
+      "passed": true,
+      "path": "rowbinary-checks/results.json",
+      "commands": 4
+    },
+    {
+      "check": "recorded_command_exit_codes",
+      "passed": true,
+      "path": "linux/evidence/results.json",
+      "commands": 18
+    },
+    {
+      "check": "independently_audited_linux_cleanup",
+      "passed": true
+    },
+    {
+      "check": "current_markdown_local_targets",
+      "passed": true,
+      "files": 10,
+      "links": 243,
+      "anchors_and_external_urls": "not checked"
+    },
+    {
+      "check": "git_diff_check",
+      "passed": true,
+      "exit_code": 0
+    }
+  ],
+  "current_document_sha256": {
+    "docs/README.md": "5d5eed14a9948fdb1bff449664ca28cabab7f22f2babcba2239006bd87ce2552",
+    "docs/archive/README.md": "e4ec227fe7b849f2e890f3adb4a21fe9e6b1c82283da8e774c426094353cb294",
+    "docs/archive/development/REMAINING_ACCEPTANCE_STAGE5_20261024.md": "e865d781a4d82dbe8fd71150c8a46dca0827a2d54c89982785464bddd277f14f",
+    "docs/testing/PRODUCTION_ACCEPTANCE.md": "1a6bf90d93445f7c9b5dc7f7fc804f0c53b563dd31b64a68484251aa88238b88",
+    "docs/testing/DATABASE_ACCEPTANCE.md": "5297bcad65c10a549c2370f08de79d213c7483b2f0a57adeabced3984d498294",
+    "docs/requirements/REQUIREMENTS.md": "ec788ca782910919516e237c677e6b9489e29c976e7651f51b663a5b5a6f0ab6",
+    "docs/development/APPLICATION_INTEGRATION.md": "5eb0097cfcfae3f69714828a90c0919c829bd5fe68d33ad70acf7b7173cc8759",
+    "crates/rustdx-core/tests/fixtures/README.md": "e6132db2ab94948b752cfbd581ec645276bd2feedf313030e1308eb15af251f1",
+    "docs/operations/IMPORTS.md": "816f009c8bb73d28a4b67b9d27eba14bcd4129a0b97b2ee90512628de58fedc4",
+    "docs/testing/evidence/acceptance-stage5-20261024/README.md": "857253fbb379a3555a1e309bf329504a7614e87a3640dee43f3bb9b553c6f79d"
+  },
+  "tested_source_sha256": "d080d6c1ed153150d10637f6dabbff2674baa8091b581f19da30bc64986f68cf",
+  "full_market_accepted": false,
+  "production_deployment_accepted": false,
+  "tcp_cross_source_integer_shares_exact": false
+}

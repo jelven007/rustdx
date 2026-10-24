@@ -1,0 +1,10 @@
+{
+  "command": [
+    "target/debug/examples/capture_resources",
+    "docs/testing/evidence/resource-contract-push-fix-20261024/live-sh",
+    "180.153.18.170:7709"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.374,
+  "integration_skip_env": true
+}

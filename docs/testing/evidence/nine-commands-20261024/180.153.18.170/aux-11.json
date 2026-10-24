@@ -1,0 +1,2180 @@
+{
+  "request": {
+    "symbol": {
+      "market": 0,
+      "code": "000001"
+    },
+    "kind": "VolumeComparison"
+  },
+  "page": {
+    "records": [
+      {
+        "VolumePair": {
+          "index": 0,
+          "previous_day": 41997.0,
+          "current_day": 57424.0,
+          "previous_bits": 1193544960,
+          "current_bits": 1197494272
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 1,
+          "previous_day": 58445.0,
+          "current_day": 71754.0,
+          "previous_bits": 1197755648,
+          "current_bits": 1200366848
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 2,
+          "previous_day": 94640.0,
+          "current_day": 93049.0,
+          "previous_bits": 1203296256,
+          "current_bits": 1203092608
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 3,
+          "previous_day": 108654.0,
+          "current_day": 107043.0,
+          "previous_bits": 1205090048,
+          "current_bits": 1204883840
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 4,
+          "previous_day": 129469.0,
+          "current_day": 127803.0,
+          "previous_bits": 1207754368,
+          "current_bits": 1207541120
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 5,
+          "previous_day": 139344.0,
+          "current_day": 144877.0,
+          "previous_bits": 1208488960,
+          "current_bits": 1208843072
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 6,
+          "previous_day": 158935.0,
+          "current_day": 164438.0,
+          "previous_bits": 1209742784,
+          "current_bits": 1210094976
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 7,
+          "previous_day": 183472.0,
+          "current_day": 186879.0,
+          "previous_bits": 1211313152,
+          "current_bits": 1211531200
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 8,
+          "previous_day": 200786.0,
+          "current_day": 195608.0,
+          "previous_bits": 1212421248,
+          "current_bits": 1212089856
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 9,
+          "previous_day": 210206.0,
+          "current_day": 214509.0,
+          "previous_bits": 1213024128,
+          "current_bits": 1213299520
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 10,
+          "previous_day": 217281.0,
+          "current_day": 229162.0,
+          "previous_bits": 1213476928,
+          "current_bits": 1214237312
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 11,
+          "previous_day": 226595.0,
+          "current_day": 235891.0,
+          "previous_bits": 1214073024,
+          "current_bits": 1214667968
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 12,
+          "previous_day": 229107.0,
+          "current_day": 242181.0,
+          "previous_bits": 1214233792,
+          "current_bits": 1215070528
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 13,
+          "previous_day": 235549.0,
+          "current_day": 247059.0,
+          "previous_bits": 1214646080,
+          "current_bits": 1215382720
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 14,
+          "previous_day": 241620.0,
+          "current_day": 257683.0,
+          "previous_bits": 1215034624,
+          "current_bits": 1216062656
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 15,
+          "previous_day": 251144.0,
+          "current_day": 272203.0,
+          "previous_bits": 1215644160,
+          "current_bits": 1216670048
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 16,
+          "previous_day": 257782.0,
+          "current_day": 279487.0,
+          "previous_bits": 1216068992,
+          "current_bits": 1216903136
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 17,
+          "previous_day": 267987.0,
+          "current_day": 284702.0,
+          "previous_bits": 1216535136,
+          "current_bits": 1217070016
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 18,
+          "previous_day": 282252.0,
+          "current_day": 312897.0,
+          "previous_bits": 1216991616,
+          "current_bits": 1217972256
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 19,
+          "previous_day": 287628.0,
+          "current_day": 324066.0,
+          "previous_bits": 1217163648,
+          "current_bits": 1218329664
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 20,
+          "previous_day": 333719.0,
+          "current_day": 333957.0,
+          "previous_bits": 1218638560,
+          "current_bits": 1218646176
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 21,
+          "previous_day": 341890.0,
+          "current_day": 341614.0,
+          "previous_bits": 1218900032,
+          "current_bits": 1218891200
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 22,
+          "previous_day": 347388.0,
+          "current_day": 352438.0,
+          "previous_bits": 1219075968,
+          "current_bits": 1219237568
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 23,
+          "previous_day": 352583.0,
+          "current_day": 360074.0,
+          "previous_bits": 1219242208,
+          "current_bits": 1219481920
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 24,
+          "previous_day": 354442.0,
+          "current_day": 364973.0,
+          "previous_bits": 1219301696,
+          "current_bits": 1219638688
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 25,
+          "previous_day": 358718.0,
+          "current_day": 372827.0,
+          "previous_bits": 1219438528,
+          "current_bits": 1219890016
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 26,
+          "previous_day": 363451.0,
+          "current_day": 375892.0,
+          "previous_bits": 1219589984,
+          "current_bits": 1219988096
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 27,
+          "previous_day": 373685.0,
+          "current_day": 380367.0,
+          "previous_bits": 1219917472,
+          "current_bits": 1220131296
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 28,
+          "previous_day": 378803.0,
+          "current_day": 385281.0,
+          "previous_bits": 1220081248,
+          "current_bits": 1220288544
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 29,
+          "previous_day": 383325.0,
+          "current_day": 391564.0,
+          "previous_bits": 1220225952,
+          "current_bits": 1220489600
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 30,
+          "previous_day": 386953.0,
+          "current_day": 394583.0,
+          "previous_bits": 1220342048,
+          "current_bits": 1220586208
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 31,
+          "previous_day": 391938.0,
+          "current_day": 397646.0,
+          "previous_bits": 1220501568,
+          "current_bits": 1220684224
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 32,
+          "previous_day": 399117.0,
+          "current_day": 399760.0,
+          "previous_bits": 1220731296,
+          "current_bits": 1220751872
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 33,
+          "previous_day": 405959.0,
+          "current_day": 400987.0,
+          "previous_bits": 1220950240,
+          "current_bits": 1220791136
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 34,
+          "previous_day": 408205.0,
+          "current_day": 405610.0,
+          "previous_bits": 1221022112,
+          "current_bits": 1220939072
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 35,
+          "previous_day": 414848.0,
+          "current_day": 411437.0,
+          "previous_bits": 1221234688,
+          "current_bits": 1221125536
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 36,
+          "previous_day": 421291.0,
+          "current_day": 415585.0,
+          "previous_bits": 1221440864,
+          "current_bits": 1221258272
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 37,
+          "previous_day": 428930.0,
+          "current_day": 427841.0,
+          "previous_bits": 1221685312,
+          "current_bits": 1221650464
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 38,
+          "previous_day": 435111.0,
+          "current_day": 435704.0,
+          "previous_bits": 1221883104,
+          "current_bits": 1221902080
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 39,
+          "previous_day": 442701.0,
+          "current_day": 440184.0,
+          "previous_bits": 1222125984,
+          "current_bits": 1222045440
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 40,
+          "previous_day": 446472.0,
+          "current_day": 448108.0,
+          "previous_bits": 1222246656,
+          "current_bits": 1222299008
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 41,
+          "previous_day": 460414.0,
+          "current_day": 450993.0,
+          "previous_bits": 1222692800,
+          "current_bits": 1222391328
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 42,
+          "previous_day": 465060.0,
+          "current_day": 453529.0,
+          "previous_bits": 1222841472,
+          "current_bits": 1222472480
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 43,
+          "previous_day": 465993.0,
+          "current_day": 456897.0,
+          "previous_bits": 1222871328,
+          "current_bits": 1222580256
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 44,
+          "previous_day": 469664.0,
+          "current_day": 459460.0,
+          "previous_bits": 1222988800,
+          "current_bits": 1222662272
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 45,
+          "previous_day": 470556.0,
+          "current_day": 462381.0,
+          "previous_bits": 1223017344,
+          "current_bits": 1222755744
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 46,
+          "previous_day": 480643.0,
+          "current_day": 464294.0,
+          "previous_bits": 1223340128,
+          "current_bits": 1222816960
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 47,
+          "previous_day": 484711.0,
+          "current_day": 467429.0,
+          "previous_bits": 1223470304,
+          "current_bits": 1222917280
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 48,
+          "previous_day": 491933.0,
+          "current_day": 470552.0,
+          "previous_bits": 1223701408,
+          "current_bits": 1223017216
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 49,
+          "previous_day": 496743.0,
+          "current_day": 474315.0,
+          "previous_bits": 1223855328,
+          "current_bits": 1223137632
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 50,
+          "previous_day": 501923.0,
+          "current_day": 481124.0,
+          "previous_bits": 1224021088,
+          "current_bits": 1223355520
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 51,
+          "previous_day": 504162.0,
+          "current_day": 499680.0,
+          "previous_bits": 1224092736,
+          "current_bits": 1223949312
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 52,
+          "previous_day": 507188.0,
+          "current_day": 506195.0,
+          "previous_bits": 1224189568,
+          "current_bits": 1224157792
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 53,
+          "previous_day": 510918.0,
+          "current_day": 513166.0,
+          "previous_bits": 1224308928,
+          "current_bits": 1224380864
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 54,
+          "previous_day": 512958.0,
+          "current_day": 527291.0,
+          "previous_bits": 1224374208,
+          "current_bits": 1224784816
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 55,
+          "previous_day": 515714.0,
+          "current_day": 534781.0,
+          "previous_bits": 1224462400,
+          "current_bits": 1224904656
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 56,
+          "previous_day": 517103.0,
+          "current_day": 536978.0,
+          "previous_bits": 1224506848,
+          "current_bits": 1224939808
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 57,
+          "previous_day": 520137.0,
+          "current_day": 538769.0,
+          "previous_bits": 1224603936,
+          "current_bits": 1224968464
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 58,
+          "previous_day": 522267.0,
+          "current_day": 542476.0,
+          "previous_bits": 1224672096,
+          "current_bits": 1225027776
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 59,
+          "previous_day": 526687.0,
+          "current_day": 545322.0,
+          "previous_bits": 1224775152,
+          "current_bits": 1225073312
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 60,
+          "previous_day": 534785.0,
+          "current_day": 551666.0,
+          "previous_bits": 1224904720,
+          "current_bits": 1225174816
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 61,
+          "previous_day": 541463.0,
+          "current_day": 556066.0,
+          "previous_bits": 1225011568,
+          "current_bits": 1225245216
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 62,
+          "previous_day": 542437.0,
+          "current_day": 569441.0,
+          "previous_bits": 1225027152,
+          "current_bits": 1225459216
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 63,
+          "previous_day": 543812.0,
+          "current_day": 577697.0,
+          "previous_bits": 1225049152,
+          "current_bits": 1225591312
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 64,
+          "previous_day": 544682.0,
+          "current_day": 586073.0,
+          "previous_bits": 1225063072,
+          "current_bits": 1225725328
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 65,
+          "previous_day": 546810.0,
+          "current_day": 596601.0,
+          "previous_bits": 1225097120,
+          "current_bits": 1225893776
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 66,
+          "previous_day": 549122.0,
+          "current_day": 600928.0,
+          "previous_bits": 1225134112,
+          "current_bits": 1225963008
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 67,
+          "previous_day": 551623.0,
+          "current_day": 603453.0,
+          "previous_bits": 1225174128,
+          "current_bits": 1226003408
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 68,
+          "previous_day": 553196.0,
+          "current_day": 607131.0,
+          "previous_bits": 1225199296,
+          "current_bits": 1226062256
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 69,
+          "previous_day": 554580.0,
+          "current_day": 609880.0,
+          "previous_bits": 1225221440,
+          "current_bits": 1226106240
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 70,
+          "previous_day": 555376.0,
+          "current_day": 613798.0,
+          "previous_bits": 1225234176,
+          "current_bits": 1226168928
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 71,
+          "previous_day": 555926.0,
+          "current_day": 616237.0,
+          "previous_bits": 1225242976,
+          "current_bits": 1226207952
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 72,
+          "previous_day": 556664.0,
+          "current_day": 618267.0,
+          "previous_bits": 1225254784,
+          "current_bits": 1226240432
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 73,
+          "previous_day": 561067.0,
+          "current_day": 621616.0,
+          "previous_bits": 1225325232,
+          "current_bits": 1226294016
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 74,
+          "previous_day": 563366.0,
+          "current_day": 622598.0,
+          "previous_bits": 1225362016,
+          "current_bits": 1226309728
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 75,
+          "previous_day": 564138.0,
+          "current_day": 626422.0,
+          "previous_bits": 1225374368,
+          "current_bits": 1226370912
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 76,
+          "previous_day": 571886.0,
+          "current_day": 628109.0,
+          "previous_bits": 1225498336,
+          "current_bits": 1226397904
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 77,
+          "previous_day": 572922.0,
+          "current_day": 630628.0,
+          "previous_bits": 1225514912,
+          "current_bits": 1226438208
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 78,
+          "previous_day": 574188.0,
+          "current_day": 631660.0,
+          "previous_bits": 1225535168,
+          "current_bits": 1226454720
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 79,
+          "previous_day": 575009.0,
+          "current_day": 635727.0,
+          "previous_bits": 1225548304,
+          "current_bits": 1226519792
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 80,
+          "previous_day": 577308.0,
+          "current_day": 638756.0,
+          "previous_bits": 1225585088,
+          "current_bits": 1226568256
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 81,
+          "previous_day": 578624.0,
+          "current_day": 650521.0,
+          "previous_bits": 1225606144,
+          "current_bits": 1226756496
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 82,
+          "previous_day": 581429.0,
+          "current_day": 659433.0,
+          "previous_bits": 1225651024,
+          "current_bits": 1226899088
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 83,
+          "previous_day": 582072.0,
+          "current_day": 664415.0,
+          "previous_bits": 1225661312,
+          "current_bits": 1226978800
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 84,
+          "previous_day": 583864.0,
+          "current_day": 670116.0,
+          "previous_bits": 1225689984,
+          "current_bits": 1227070016
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 85,
+          "previous_day": 585569.0,
+          "current_day": 672381.0,
+          "previous_bits": 1225717264,
+          "current_bits": 1227106256
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 86,
+          "previous_day": 588789.0,
+          "current_day": 673174.0,
+          "previous_bits": 1225768784,
+          "current_bits": 1227118944
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 87,
+          "previous_day": 601164.0,
+          "current_day": 676033.0,
+          "previous_bits": 1225966784,
+          "current_bits": 1227164688
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 88,
+          "previous_day": 604691.0,
+          "current_day": 677688.0,
+          "previous_bits": 1226023216,
+          "current_bits": 1227191168
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 89,
+          "previous_day": 608380.0,
+          "current_day": 679837.0,
+          "previous_bits": 1226082240,
+          "current_bits": 1227225552
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 90,
+          "previous_day": 612291.0,
+          "current_day": 681988.0,
+          "previous_bits": 1226144816,
+          "current_bits": 1227259968
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 91,
+          "previous_day": 615800.0,
+          "current_day": 690236.0,
+          "previous_bits": 1226200960,
+          "current_bits": 1227391936
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 92,
+          "previous_day": 617725.0,
+          "current_day": 691657.0,
+          "previous_bits": 1226231760,
+          "current_bits": 1227414672
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 93,
+          "previous_day": 618114.0,
+          "current_day": 697264.0,
+          "previous_bits": 1226237984,
+          "current_bits": 1227504384
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 94,
+          "previous_day": 618686.0,
+          "current_day": 700367.0,
+          "previous_bits": 1226247136,
+          "current_bits": 1227554032
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 95,
+          "previous_day": 620731.0,
+          "current_day": 703706.0,
+          "previous_bits": 1226279856,
+          "current_bits": 1227607456
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 96,
+          "previous_day": 623779.0,
+          "current_day": 709567.0,
+          "previous_bits": 1226328624,
+          "current_bits": 1227701232
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 97,
+          "previous_day": 626399.0,
+          "current_day": 712796.0,
+          "previous_bits": 1226370544,
+          "current_bits": 1227752896
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 98,
+          "previous_day": 648246.0,
+          "current_day": 718352.0,
+          "previous_bits": 1226720096,
+          "current_bits": 1227841792
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 99,
+          "previous_day": 670309.0,
+          "current_day": 721429.0,
+          "previous_bits": 1227073104,
+          "current_bits": 1227891024
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 100,
+          "previous_day": 671127.0,
+          "current_day": 723916.0,
+          "previous_bits": 1227086192,
+          "current_bits": 1227930816
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 101,
+          "previous_day": 682401.0,
+          "current_day": 725924.0,
+          "previous_bits": 1227266576,
+          "current_bits": 1227962944
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 102,
+          "previous_day": 684308.0,
+          "current_day": 727401.0,
+          "previous_bits": 1227297088,
+          "current_bits": 1227986576
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 103,
+          "previous_day": 684920.0,
+          "current_day": 728534.0,
+          "previous_bits": 1227306880,
+          "current_bits": 1228004704
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 104,
+          "previous_day": 686448.0,
+          "current_day": 732327.0,
+          "previous_bits": 1227331328,
+          "current_bits": 1228065392
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 105,
+          "previous_day": 686812.0,
+          "current_day": 733989.0,
+          "previous_bits": 1227337152,
+          "current_bits": 1228091984
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 106,
+          "previous_day": 690113.0,
+          "current_day": 737490.0,
+          "previous_bits": 1227389968,
+          "current_bits": 1228148000
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 107,
+          "previous_day": 691437.0,
+          "current_day": 742231.0,
+          "previous_bits": 1227411152,
+          "current_bits": 1228223856
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 108,
+          "previous_day": 692991.0,
+          "current_day": 744611.0,
+          "previous_bits": 1227436016,
+          "current_bits": 1228261936
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 109,
+          "previous_day": 694435.0,
+          "current_day": 746035.0,
+          "previous_bits": 1227459120,
+          "current_bits": 1228284720
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 110,
+          "previous_day": 695395.0,
+          "current_day": 746755.0,
+          "previous_bits": 1227474480,
+          "current_bits": 1228296240
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 111,
+          "previous_day": 696487.0,
+          "current_day": 754847.0,
+          "previous_bits": 1227491952,
+          "current_bits": 1228425712
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 112,
+          "previous_day": 698139.0,
+          "current_day": 760368.0,
+          "previous_bits": 1227518384,
+          "current_bits": 1228514048
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 113,
+          "previous_day": 699891.0,
+          "current_day": 764201.0,
+          "previous_bits": 1227546416,
+          "current_bits": 1228575376
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 114,
+          "previous_day": 702396.0,
+          "current_day": 770500.0,
+          "previous_bits": 1227586496,
+          "current_bits": 1228676160
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 115,
+          "previous_day": 703981.0,
+          "current_day": 771090.0,
+          "previous_bits": 1227611856,
+          "current_bits": 1228685600
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 116,
+          "previous_day": 706098.0,
+          "current_day": 779518.0,
+          "previous_bits": 1227645728,
+          "current_bits": 1228820448
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 117,
+          "previous_day": 708127.0,
+          "current_day": 780856.0,
+          "previous_bits": 1227678192,
+          "current_bits": 1228841856
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 118,
+          "previous_day": 710087.0,
+          "current_day": 785960.0,
+          "previous_bits": 1227709552,
+          "current_bits": 1228923520
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 119,
+          "previous_day": 712795.0,
+          "current_day": 788527.0,
+          "previous_bits": 1227752880,
+          "current_bits": 1228964592
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 120,
+          "previous_day": 720622.0,
+          "current_day": 803370.0,
+          "previous_bits": 1227878112,
+          "current_bits": 1229202080
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 121,
+          "previous_day": 722920.0,
+          "current_day": 808287.0,
+          "previous_bits": 1227914880,
+          "current_bits": 1229280752
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 122,
+          "previous_day": 725330.0,
+          "current_day": 813038.0,
+          "previous_bits": 1227953440,
+          "current_bits": 1229356768
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 123,
+          "previous_day": 726855.0,
+          "current_day": 816305.0,
+          "previous_bits": 1227977840,
+          "current_bits": 1229409040
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 124,
+          "previous_day": 728263.0,
+          "current_day": 820401.0,
+          "previous_bits": 1228000368,
+          "current_bits": 1229474576
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 125,
+          "previous_day": 730760.0,
+          "current_day": 824943.0,
+          "previous_bits": 1228040320,
+          "current_bits": 1229547248
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 126,
+          "previous_day": 732255.0,
+          "current_day": 830970.0,
+          "previous_bits": 1228064240,
+          "current_bits": 1229643680
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 127,
+          "previous_day": 734621.0,
+          "current_day": 834731.0,
+          "previous_bits": 1228102096,
+          "current_bits": 1229703856
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 128,
+          "previous_day": 738079.0,
+          "current_day": 838729.0,
+          "previous_bits": 1228157424,
+          "current_bits": 1229767824
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 129,
+          "previous_day": 740279.0,
+          "current_day": 844124.0,
+          "previous_bits": 1228192624,
+          "current_bits": 1229854144
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 130,
+          "previous_day": 743648.0,
+          "current_day": 849830.0,
+          "previous_bits": 1228246528,
+          "current_bits": 1229945440
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 131,
+          "previous_day": 744847.0,
+          "current_day": 853306.0,
+          "previous_bits": 1228265712,
+          "current_bits": 1230001056
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 132,
+          "previous_day": 746158.0,
+          "current_day": 857227.0,
+          "previous_bits": 1228286688,
+          "current_bits": 1230063792
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 133,
+          "previous_day": 750273.0,
+          "current_day": 861311.0,
+          "previous_bits": 1228352528,
+          "current_bits": 1230129136
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 134,
+          "previous_day": 751670.0,
+          "current_day": 865533.0,
+          "previous_bits": 1228374880,
+          "current_bits": 1230196688
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 135,
+          "previous_day": 754854.0,
+          "current_day": 869487.0,
+          "previous_bits": 1228425824,
+          "current_bits": 1230259952
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 136,
+          "previous_day": 757629.0,
+          "current_day": 873138.0,
+          "previous_bits": 1228470224,
+          "current_bits": 1230318368
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 137,
+          "previous_day": 760925.0,
+          "current_day": 877610.0,
+          "previous_bits": 1228522960,
+          "current_bits": 1230389920
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 138,
+          "previous_day": 766765.0,
+          "current_day": 880719.0,
+          "previous_bits": 1228616400,
+          "current_bits": 1230439664
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 139,
+          "previous_day": 771589.0,
+          "current_day": 884831.0,
+          "previous_bits": 1228693584,
+          "current_bits": 1230505456
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 140,
+          "previous_day": 773985.0,
+          "current_day": 889141.0,
+          "previous_bits": 1228731920,
+          "current_bits": 1230574416
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 141,
+          "previous_day": 779071.0,
+          "current_day": 893348.0,
+          "previous_bits": 1228813296,
+          "current_bits": 1230641728
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 142,
+          "previous_day": 781235.0,
+          "current_day": 899225.0,
+          "previous_bits": 1228847920,
+          "current_bits": 1230735760
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 143,
+          "previous_day": 786082.0,
+          "current_day": 906966.0,
+          "previous_bits": 1228925472,
+          "current_bits": 1230859616
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 144,
+          "previous_day": 787118.0,
+          "current_day": 911663.0,
+          "previous_bits": 1228942048,
+          "current_bits": 1230934768
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 145,
+          "previous_day": 788750.0,
+          "current_day": 915783.0,
+          "previous_bits": 1228968160,
+          "current_bits": 1231000688
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 146,
+          "previous_day": 789930.0,
+          "current_day": 921931.0,
+          "previous_bits": 1228987040,
+          "current_bits": 1231099056
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 147,
+          "previous_day": 791655.0,
+          "current_day": 930628.0,
+          "previous_bits": 1229014640,
+          "current_bits": 1231238208
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 148,
+          "previous_day": 792906.0,
+          "current_day": 933807.0,
+          "previous_bits": 1229034656,
+          "current_bits": 1231289072
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 149,
+          "previous_day": 806986.0,
+          "current_day": 937153.0,
+          "previous_bits": 1229259936,
+          "current_bits": 1231342608
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 150,
+          "previous_day": 820001.0,
+          "current_day": 946996.0,
+          "previous_bits": 1229468176,
+          "current_bits": 1231500096
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 151,
+          "previous_day": 828752.0,
+          "current_day": 954345.0,
+          "previous_bits": 1229608192,
+          "current_bits": 1231617680
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 152,
+          "previous_day": 836826.0,
+          "current_day": 961508.0,
+          "previous_bits": 1229737376,
+          "current_bits": 1231732288
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 153,
+          "previous_day": 852731.0,
+          "current_day": 969163.0,
+          "previous_bits": 1229991856,
+          "current_bits": 1231854768
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 154,
+          "previous_day": 872037.0,
+          "current_day": 973339.0,
+          "previous_bits": 1230300752,
+          "current_bits": 1231921584
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 155,
+          "previous_day": 874340.0,
+          "current_day": 976841.0,
+          "previous_bits": 1230337600,
+          "current_bits": 1231977616
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 156,
+          "previous_day": 877482.0,
+          "current_day": 980158.0,
+          "previous_bits": 1230387872,
+          "current_bits": 1232030688
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 157,
+          "previous_day": 881066.0,
+          "current_day": 986847.0,
+          "previous_bits": 1230445216,
+          "current_bits": 1232137712
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 158,
+          "previous_day": 882833.0,
+          "current_day": 999073.0,
+          "previous_bits": 1230473488,
+          "current_bits": 1232333328
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 159,
+          "previous_day": 885343.0,
+          "current_day": 1003090.0,
+          "previous_bits": 1230513648,
+          "current_bits": 1232397600
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 160,
+          "previous_day": 887471.0,
+          "current_day": 1014676.0,
+          "previous_bits": 1230547696,
+          "current_bits": 1232582976
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 161,
+          "previous_day": 891061.0,
+          "current_day": 1024933.0,
+          "previous_bits": 1230605136,
+          "current_bits": 1232747088
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 162,
+          "previous_day": 893492.0,
+          "current_day": 1028719.0,
+          "previous_bits": 1230644032,
+          "current_bits": 1232807664
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 163,
+          "previous_day": 896281.0,
+          "current_day": 1032220.0,
+          "previous_bits": 1230688656,
+          "current_bits": 1232863680
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 164,
+          "previous_day": 898880.0,
+          "current_day": 1035384.0,
+          "previous_bits": 1230730240,
+          "current_bits": 1232914304
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 165,
+          "previous_day": 900544.0,
+          "current_day": 1041362.0,
+          "previous_bits": 1230756864,
+          "current_bits": 1233009952
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 166,
+          "previous_day": 905406.0,
+          "current_day": 1046445.0,
+          "previous_bits": 1230834656,
+          "current_bits": 1233091280
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 167,
+          "previous_day": 908682.0,
+          "current_day": 1053210.0,
+          "previous_bits": 1230887072,
+          "current_bits": 1233162448
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 168,
+          "previous_day": 918800.0,
+          "current_day": 1055992.0,
+          "previous_bits": 1231048960,
+          "current_bits": 1233184704
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 169,
+          "previous_day": 925113.0,
+          "current_day": 1059961.0,
+          "previous_bits": 1231149968,
+          "current_bits": 1233216456
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 170,
+          "previous_day": 939893.0,
+          "current_day": 1064104.0,
+          "previous_bits": 1231386448,
+          "current_bits": 1233249600
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 171,
+          "previous_day": 966192.0,
+          "current_day": 1075291.0,
+          "previous_bits": 1231807232,
+          "current_bits": 1233339096
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 172,
+          "previous_day": 968524.0,
+          "current_day": 1079636.0,
+          "previous_bits": 1231844544,
+          "current_bits": 1233373856
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 173,
+          "previous_day": 973900.0,
+          "current_day": 1082670.0,
+          "previous_bits": 1231930560,
+          "current_bits": 1233398128
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 174,
+          "previous_day": 982744.0,
+          "current_day": 1087318.0,
+          "previous_bits": 1232072064,
+          "current_bits": 1233435312
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 175,
+          "previous_day": 989496.0,
+          "current_day": 1089483.0,
+          "previous_bits": 1232180096,
+          "current_bits": 1233452632
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 176,
+          "previous_day": 990524.0,
+          "current_day": 1100236.0,
+          "previous_bits": 1232196544,
+          "current_bits": 1233538656
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 177,
+          "previous_day": 995027.0,
+          "current_day": 1102337.0,
+          "previous_bits": 1232268592,
+          "current_bits": 1233555464
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 178,
+          "previous_day": 998314.0,
+          "current_day": 1104825.0,
+          "previous_bits": 1232321184,
+          "current_bits": 1233575368
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 179,
+          "previous_day": 1000794.0,
+          "current_day": 1111962.0,
+          "previous_bits": 1232360864,
+          "current_bits": 1233632464
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 180,
+          "previous_day": 1008166.0,
+          "current_day": 1116082.0,
+          "previous_bits": 1232478816,
+          "current_bits": 1233665424
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 181,
+          "previous_day": 1010240.0,
+          "current_day": 1120961.0,
+          "previous_bits": 1232512000,
+          "current_bits": 1233704456
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 182,
+          "previous_day": 1012756.0,
+          "current_day": 1125395.0,
+          "previous_bits": 1232552256,
+          "current_bits": 1233739928
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 183,
+          "previous_day": 1016145.0,
+          "current_day": 1129302.0,
+          "previous_bits": 1232606480,
+          "current_bits": 1233771184
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 184,
+          "previous_day": 1020199.0,
+          "current_day": 1136092.0,
+          "previous_bits": 1232671344,
+          "current_bits": 1233825504
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 185,
+          "previous_day": 1023714.0,
+          "current_day": 1148348.0,
+          "previous_bits": 1232727584,
+          "current_bits": 1233923552
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 186,
+          "previous_day": 1026151.0,
+          "current_day": 1155912.0,
+          "previous_bits": 1232766576,
+          "current_bits": 1233984064
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 187,
+          "previous_day": 1028684.0,
+          "current_day": 1164592.0,
+          "previous_bits": 1232807104,
+          "current_bits": 1234053504
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 188,
+          "previous_day": 1031139.0,
+          "current_day": 1170126.0,
+          "previous_bits": 1232846384,
+          "current_bits": 1234097776
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 189,
+          "previous_day": 1032731.0,
+          "current_day": 1174826.0,
+          "previous_bits": 1232871856,
+          "current_bits": 1234135376
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 190,
+          "previous_day": 1033739.0,
+          "current_day": 1192373.0,
+          "previous_bits": 1232887984,
+          "current_bits": 1234275752
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 191,
+          "previous_day": 1035099.0,
+          "current_day": 1199120.0,
+          "previous_bits": 1232909744,
+          "current_bits": 1234329728
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 192,
+          "previous_day": 1036645.0,
+          "current_day": 1203295.0,
+          "previous_bits": 1232934480,
+          "current_bits": 1234363128
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 193,
+          "previous_day": 1038222.0,
+          "current_day": 1209348.0,
+          "previous_bits": 1232959712,
+          "current_bits": 1234411552
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 194,
+          "previous_day": 1041917.0,
+          "current_day": 1213574.0,
+          "previous_bits": 1233018832,
+          "current_bits": 1234445360
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 195,
+          "previous_day": 1043201.0,
+          "current_day": 1218330.0,
+          "previous_bits": 1233039376,
+          "current_bits": 1234483408
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 196,
+          "previous_day": 1044420.0,
+          "current_day": 1221838.0,
+          "previous_bits": 1233058880,
+          "current_bits": 1234511472
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 197,
+          "previous_day": 1048288.0,
+          "current_day": 1225810.0,
+          "previous_bits": 1233120768,
+          "current_bits": 1234543248
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 198,
+          "previous_day": 1052320.0,
+          "current_day": 1230398.0,
+          "previous_bits": 1233155328,
+          "current_bits": 1234579952
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 199,
+          "previous_day": 1056150.0,
+          "current_day": 1237329.0,
+          "previous_bits": 1233185968,
+          "current_bits": 1234635400
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 200,
+          "previous_day": 1058957.0,
+          "current_day": 1239869.0,
+          "previous_bits": 1233208424,
+          "current_bits": 1234655720
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 201,
+          "previous_day": 1065350.0,
+          "current_day": 1246637.0,
+          "previous_bits": 1233259568,
+          "current_bits": 1234709864
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 202,
+          "previous_day": 1070972.0,
+          "current_day": 1253760.0,
+          "previous_bits": 1233304544,
+          "current_bits": 1234766848
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 203,
+          "previous_day": 1073436.0,
+          "current_day": 1256872.0,
+          "previous_bits": 1233324256,
+          "current_bits": 1234791744
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 204,
+          "previous_day": 1077388.0,
+          "current_day": 1263603.0,
+          "previous_bits": 1233355872,
+          "current_bits": 1234845592
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 205,
+          "previous_day": 1079121.0,
+          "current_day": 1269722.0,
+          "previous_bits": 1233369736,
+          "current_bits": 1234894544
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 206,
+          "previous_day": 1080876.0,
+          "current_day": 1276696.0,
+          "previous_bits": 1233383776,
+          "current_bits": 1234950336
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 207,
+          "previous_day": 1082116.0,
+          "current_day": 1279355.0,
+          "previous_bits": 1233393696,
+          "current_bits": 1234971608
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 208,
+          "previous_day": 1084273.0,
+          "current_day": 1281621.0,
+          "previous_bits": 1233410952,
+          "current_bits": 1234989736
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 209,
+          "previous_day": 1085094.0,
+          "current_day": 1285221.0,
+          "previous_bits": 1233417520,
+          "current_bits": 1235018536
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 210,
+          "previous_day": 1088723.0,
+          "current_day": 1288776.0,
+          "previous_bits": 1233446552,
+          "current_bits": 1235046976
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 211,
+          "previous_day": 1091356.0,
+          "current_day": 1292512.0,
+          "previous_bits": 1233467616,
+          "current_bits": 1235076864
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 212,
+          "previous_day": 1092909.0,
+          "current_day": 1299137.0,
+          "previous_bits": 1233480040,
+          "current_bits": 1235129864
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 213,
+          "previous_day": 1094984.0,
+          "current_day": 1301344.0,
+          "previous_bits": 1233496640,
+          "current_bits": 1235147520
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 214,
+          "previous_day": 1108496.0,
+          "current_day": 1306084.0,
+          "previous_bits": 1233604736,
+          "current_bits": 1235185440
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 215,
+          "previous_day": 1112220.0,
+          "current_day": 1307452.0,
+          "previous_bits": 1233634528,
+          "current_bits": 1235196384
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 216,
+          "previous_day": 1113702.0,
+          "current_day": 1309086.0,
+          "previous_bits": 1233646384,
+          "current_bits": 1235209456
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 217,
+          "previous_day": 1116555.0,
+          "current_day": 1310929.0,
+          "previous_bits": 1233669208,
+          "current_bits": 1235224200
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 218,
+          "previous_day": 1119823.0,
+          "current_day": 1314390.0,
+          "previous_bits": 1233695352,
+          "current_bits": 1235251888
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 219,
+          "previous_day": 1126907.0,
+          "current_day": 1323488.0,
+          "previous_bits": 1233752024,
+          "current_bits": 1235324672
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 220,
+          "previous_day": 1128606.0,
+          "current_day": 1330432.0,
+          "previous_bits": 1233765616,
+          "current_bits": 1235380224
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 221,
+          "previous_day": 1135949.0,
+          "current_day": 1338833.0,
+          "previous_bits": 1233824360,
+          "current_bits": 1235447432
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 222,
+          "previous_day": 1143426.0,
+          "current_day": 1342741.0,
+          "previous_bits": 1233884176,
+          "current_bits": 1235478696
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 223,
+          "previous_day": 1145883.0,
+          "current_day": 1348283.0,
+          "previous_bits": 1233903832,
+          "current_bits": 1235523032
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 224,
+          "previous_day": 1149938.0,
+          "current_day": 1351883.0,
+          "previous_bits": 1233936272,
+          "current_bits": 1235551832
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 225,
+          "previous_day": 1154100.0,
+          "current_day": 1356847.0,
+          "previous_bits": 1233969568,
+          "current_bits": 1235591544
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 226,
+          "previous_day": 1158430.0,
+          "current_day": 1361452.0,
+          "previous_bits": 1234004208,
+          "current_bits": 1235628384
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 227,
+          "previous_day": 1162375.0,
+          "current_day": 1364448.0,
+          "previous_bits": 1234035768,
+          "current_bits": 1235652352
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 228,
+          "previous_day": 1167602.0,
+          "current_day": 1369659.0,
+          "previous_bits": 1234077584,
+          "current_bits": 1235694040
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 229,
+          "previous_day": 1175562.0,
+          "current_day": 1377106.0,
+          "previous_bits": 1234141264,
+          "current_bits": 1235753616
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 230,
+          "previous_day": 1183388.0,
+          "current_day": 1386002.0,
+          "previous_bits": 1234203872,
+          "current_bits": 1235824784
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 231,
+          "previous_day": 1196089.0,
+          "current_day": 1399035.0,
+          "previous_bits": 1234305480,
+          "current_bits": 1235929048
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 232,
+          "previous_day": 1211574.0,
+          "current_day": 1410881.0,
+          "previous_bits": 1234429360,
+          "current_bits": 1236023816
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 233,
+          "previous_day": 1232151.0,
+          "current_day": 1417514.0,
+          "previous_bits": 1234593976,
+          "current_bits": 1236076880
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 234,
+          "previous_day": 1255572.0,
+          "current_day": 1424525.0,
+          "previous_bits": 1234781344,
+          "current_bits": 1236132968
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 235,
+          "previous_day": 1270286.0,
+          "current_day": 1432689.0,
+          "previous_bits": 1234899056,
+          "current_bits": 1236198280
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 236,
+          "previous_day": 1283773.0,
+          "current_day": 1438559.0,
+          "previous_bits": 1235006952,
+          "current_bits": 1236245240
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 237,
+          "previous_day": 1283780.0,
+          "current_day": 1438614.0,
+          "previous_bits": 1235007008,
+          "current_bits": 1236245680
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 238,
+          "previous_day": 1283780.0,
+          "current_day": 1438614.0,
+          "previous_bits": 1235007008,
+          "current_bits": 1236245680
+        }
+      },
+      {
+        "VolumePair": {
+          "index": 239,
+          "previous_day": 1297649.0,
+          "current_day": 1448806.0,
+          "previous_bits": 1235117960,
+          "current_bits": 1236327216
+        }
+      }
+    ],
+    "source": {
+      "opcode": 1307,
+      "endpoint": "180.153.18.170:7709",
+      "fetched_at": "2026-10-24T05:45:23.787351Z",
+      "connection_id": 1,
+      "metadata_generation": null
+    }
+  }
+}

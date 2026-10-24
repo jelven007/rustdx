@@ -1,0 +1,6 @@
+{
+  "name": "rustdx-stage5",
+  "prefix": "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain",
+  "exit_code": 0,
+  "reason": "Cargo subcommands find CARGO_HOME rustup proxies before PATH; custom link uses already verified official binaries without download"
+}

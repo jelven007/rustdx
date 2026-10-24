@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "source_contract": "a-share/tcp-052b/day/raw/cny/integer-shares/v2",
+  "source": {
+    "endpoint": "115.238.56.198:7709",
+    "volume_evidence_sha256": "ed5cb7c5b22a49b8ff1ece014764cdb30370a37e6e109fea305bc987d4fc6d51",
+    "page_size": 12,
+    "max_pages": 4,
+    "max_raw_rows": 48,
+    "max_payload_bytes": 4194304,
+    "max_wire_records": 64
+  },
+  "from": "2026-10-19",
+  "through": "2026-10-22",
+  "acquired_on": "2026-10-24",
+  "codes": [
+    "sh600000",
+    "sh600519",
+    "sz000001"
+  ],
+  "max_archive_bytes": 8388608,
+  "max_csv_bytes": 1048576,
+  "max_rows": 100
+}

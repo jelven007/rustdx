@@ -1,0 +1,455 @@
+   Compiling memchr v2.7.4
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+   Compiling csv-core v0.1.12
+   Compiling serde_json v1.0.140
+   Compiling csv v1.4.0
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.20s
+     Running `target/debug/examples/capture_quote_precision docs/validation/evidence/finance-quote-semantics-20261024/live-115-238-56-198 '115.238.56.198:7709'`
+{
+  "distribution": {
+    "2": 6980,
+    "3": 2631,
+    "4": 42560
+  },
+  "metadata": [
+    {
+      "as_of_date": "2026-10-24",
+      "fetched_at": "2026-10-24T03:52:17.486112Z",
+      "market": 0,
+      "securities": 24460,
+      "source_endpoint": "115.238.56.198:7709",
+      "unsupported": 0
+    },
+    {
+      "as_of_date": "2026-10-24",
+      "fetched_at": "2026-10-24T03:52:17.486112Z",
+      "market": 1,
+      "securities": 27711,
+      "source_endpoint": "115.238.56.198:7709",
+      "unsupported": 0
+    }
+  ],
+  "quotes": {
+    "fetched_at": "2026-10-24T03:52:17.650415Z",
+    "metadata_generation": 0,
+    "missing_codes": [],
+    "precision": [
+      {
+        "code": "000001",
+        "decimal": 2,
+        "market": 0,
+        "source_endpoint": "115.238.56.198:7709"
+      },
+      {
+        "code": "159915",
+        "decimal": 3,
+        "market": 0,
+        "source_endpoint": "115.238.56.198:7709"
+      },
+      {
+        "code": "510300",
+        "decimal": 3,
+        "market": 1,
+        "source_endpoint": "115.238.56.198:7709"
+      },
+      {
+        "code": "100706",
+        "decimal": 4,
+        "market": 0,
+        "source_endpoint": "115.238.56.198:7709"
+      },
+      {
+        "code": "100713",
+        "decimal": 4,
+        "market": 0,
+        "source_endpoint": "115.238.56.198:7709"
+      },
+      {
+        "code": "100806",
+        "decimal": 4,
+        "market": 0,
+        "source_endpoint": "115.238.56.198:7709"
+      },
+      {
+        "code": "100813",
+        "decimal": 4,
+        "market": 0,
+        "source_endpoint": "115.238.56.198:7709"
+      },
+      {
+        "code": "100820",
+        "decimal": 4,
+        "market": 0,
+        "source_endpoint": "115.238.56.198:7709"
+      }
+    ],
+    "records": [
+      {
+        "amount": 1628277120.0,
+        "ask1": 11.21,
+        "ask1_vol": 554.0,
+        "ask2": 11.22,
+        "ask2_vol": 2801.0,
+        "ask3": 11.23,
+        "ask3_vol": 2036.0,
+        "ask4": 11.24,
+        "ask4_vol": 2851.0,
+        "ask5": 11.25,
+        "ask5_vol": 2394.0,
+        "b_vol": 707818.0,
+        "bid1": 11.2,
+        "bid1_vol": 9557.0,
+        "bid2": 11.19,
+        "bid2_vol": 12196.0,
+        "bid3": 11.18,
+        "bid3_vol": 7747.0,
+        "bid4": 11.17,
+        "bid4_vol": 8122.0,
+        "bid5": 11.16,
+        "bid5_vol": 9094.0,
+        "change": -0.10000000000000142,
+        "change_percent": -0.8849557522124019,
+        "code": "000001",
+        "cur_vol": 10192.0,
+        "high": 11.35,
+        "last_close": 11.3,
+        "low": 11.17,
+        "open": 11.27,
+        "price": 11.2,
+        "s_vol": 740988.0,
+        "servertime": "15:29:53.286",
+        "speed": 0.09,
+        "vol": 1448805.0
+      },
+      {
+        "amount": 19738443776.0,
+        "ask1": 2.703,
+        "ask1_vol": 11523.0,
+        "ask2": 2.704,
+        "ask2_vol": 8678.0,
+        "ask3": 2.705,
+        "ask3_vol": 8733.0,
+        "ask4": 2.706,
+        "ask4_vol": 4939.0,
+        "ask5": 2.707,
+        "ask5_vol": 4907.0,
+        "b_vol": 39943312.0,
+        "bid1": 2.702,
+        "bid1_vol": 20524.0,
+        "bid2": 2.701,
+        "bid2_vol": 10078.0,
+        "bid3": 2.7,
+        "bid3_vol": 7137.0,
+        "bid4": 2.699,
+        "bid4_vol": 2293.0,
+        "bid5": 2.698,
+        "bid5_vol": 16525.0,
+        "change": 0.10999999999999988,
+        "change_percent": 4.243827160493822,
+        "code": "159915",
+        "cur_vol": 490690.0,
+        "high": 2.714,
+        "last_close": 2.592,
+        "low": 2.511,
+        "open": 2.549,
+        "price": 2.702,
+        "s_vol": 36110897.0,
+        "servertime": "",
+        "speed": 0.07,
+        "vol": 76054209.0
+      },
+      {
+        "amount": 15423238144.0,
+        "ask1": 4.179,
+        "ask1_vol": 6605.0,
+        "ask2": 4.18,
+        "ask2_vol": 12856.0,
+        "ask3": 4.181,
+        "ask3_vol": 1659.0,
+        "ask4": 4.182,
+        "ask4_vol": 1973.0,
+        "ask5": 4.183,
+        "ask5_vol": 5183.0,
+        "b_vol": 20494983.0,
+        "bid1": 4.178,
+        "bid1_vol": 31015.0,
+        "bid2": 4.177,
+        "bid2_vol": 39935.0,
+        "bid3": 4.176,
+        "bid3_vol": 12886.0,
+        "bid4": 4.175,
+        "bid4_vol": 8912.0,
+        "bid5": 4.174,
+        "bid5_vol": 6044.0,
+        "change": 0.07099999999999973,
+        "change_percent": 1.7287557828098303,
+        "code": "510300",
+        "cur_vol": 106207.0,
+        "high": 4.186,
+        "last_close": 4.107,
+        "low": 4.031,
+        "open": 4.08,
+        "price": 4.178,
+        "s_vol": 17061099.0,
+        "servertime": "",
+        "speed": 0.1,
+        "vol": 37556082.0
+      },
+      {
+        "amount": 5.877471754111438e-39,
+        "ask1": 0.0,
+        "ask1_vol": 0.0,
+        "ask2": 0.0,
+        "ask2_vol": 0.0,
+        "ask3": 0.0,
+        "ask3_vol": 0.0,
+        "ask4": 0.0,
+        "ask4_vol": 0.0,
+        "ask5": 0.0,
+        "ask5_vol": 0.0,
+        "b_vol": 0.0,
+        "bid1": 0.0,
+        "bid1_vol": 0.0,
+        "bid2": 0.0,
+        "bid2_vol": 0.0,
+        "bid3": 0.0,
+        "bid3_vol": 0.0,
+        "bid4": 0.0,
+        "bid4_vol": 0.0,
+        "bid5": 0.0,
+        "bid5_vol": 0.0,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "code": "100706",
+        "cur_vol": 0.0,
+        "high": 0.0,
+        "last_close": 100.0,
+        "low": 0.0,
+        "open": 0.0,
+        "price": 100.0,
+        "s_vol": 0.0,
+        "servertime": "",
+        "speed": 0.0,
+        "vol": 0.0
+      },
+      {
+        "amount": 5.877471754111438e-39,
+        "ask1": 0.0,
+        "ask1_vol": 0.0,
+        "ask2": 0.0,
+        "ask2_vol": 0.0,
+        "ask3": 0.0,
+        "ask3_vol": 0.0,
+        "ask4": 0.0,
+        "ask4_vol": 0.0,
+        "ask5": 0.0,
+        "ask5_vol": 0.0,
+        "b_vol": 0.0,
+        "bid1": 101.835,
+        "bid1_vol": 100.0,
+        "bid2": 101.241,
+        "bid2_vol": 100.0,
+        "bid3": 0.0,
+        "bid3_vol": 0.0,
+        "bid4": 0.0,
+        "bid4_vol": 0.0,
+        "bid5": 0.0,
+        "bid5_vol": 0.0,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "code": "100713",
+        "cur_vol": 0.0,
+        "high": 0.0,
+        "last_close": 100.0,
+        "low": 0.0,
+        "open": 0.0,
+        "price": 100.0,
+        "s_vol": 0.0,
+        "servertime": "",
+        "speed": 0.0,
+        "vol": 0.0
+      },
+      {
+        "amount": 5.877471754111438e-39,
+        "ask1": 0.0,
+        "ask1_vol": 0.0,
+        "ask2": 0.0,
+        "ask2_vol": 0.0,
+        "ask3": 0.0,
+        "ask3_vol": 0.0,
+        "ask4": 0.0,
+        "ask4_vol": 0.0,
+        "ask5": 0.0,
+        "ask5_vol": 0.0,
+        "b_vol": 0.0,
+        "bid1": 0.0,
+        "bid1_vol": 0.0,
+        "bid2": 0.0,
+        "bid2_vol": 0.0,
+        "bid3": 0.0,
+        "bid3_vol": 0.0,
+        "bid4": 0.0,
+        "bid4_vol": 0.0,
+        "bid5": 0.0,
+        "bid5_vol": 0.0,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "code": "100806",
+        "cur_vol": 0.0,
+        "high": 0.0,
+        "last_close": 100.0,
+        "low": 0.0,
+        "open": 0.0,
+        "price": 100.0,
+        "s_vol": 0.0,
+        "servertime": "",
+        "speed": 0.0,
+        "vol": 0.0
+      },
+      {
+        "amount": 5.877471754111438e-39,
+        "ask1": 0.0,
+        "ask1_vol": 0.0,
+        "ask2": 0.0,
+        "ask2_vol": 0.0,
+        "ask3": 0.0,
+        "ask3_vol": 0.0,
+        "ask4": 0.0,
+        "ask4_vol": 0.0,
+        "ask5": 0.0,
+        "ask5_vol": 0.0,
+        "b_vol": 0.0,
+        "bid1": 106.713,
+        "bid1_vol": 100.0,
+        "bid2": 106.0,
+        "bid2_vol": 100.0,
+        "bid3": 0.0,
+        "bid3_vol": 0.0,
+        "bid4": 0.0,
+        "bid4_vol": 0.0,
+        "bid5": 0.0,
+        "bid5_vol": 0.0,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "code": "100813",
+        "cur_vol": 0.0,
+        "high": 0.0,
+        "last_close": 100.0,
+        "low": 0.0,
+        "open": 0.0,
+        "price": 100.0,
+        "s_vol": 0.0,
+        "servertime": "",
+        "speed": 0.0,
+        "vol": 0.0
+      },
+      {
+        "amount": 5.877471754111438e-39,
+        "ask1": 0.0,
+        "ask1_vol": 0.0,
+        "ask2": 0.0,
+        "ask2_vol": 0.0,
+        "ask3": 0.0,
+        "ask3_vol": 0.0,
+        "ask4": 0.0,
+        "ask4_vol": 0.0,
+        "ask5": 0.0,
+        "ask5_vol": 0.0,
+        "b_vol": 0.0,
+        "bid1": 0.0,
+        "bid1_vol": 0.0,
+        "bid2": 0.0,
+        "bid2_vol": 0.0,
+        "bid3": 0.0,
+        "bid3_vol": 0.0,
+        "bid4": 0.0,
+        "bid4_vol": 0.0,
+        "bid5": 0.0,
+        "bid5_vol": 0.0,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "code": "100820",
+        "cur_vol": 0.0,
+        "high": 0.0,
+        "last_close": 100.0,
+        "low": 0.0,
+        "open": 0.0,
+        "price": 100.0,
+        "s_vol": 0.0,
+        "servertime": "",
+        "speed": 0.0,
+        "vol": 0.0
+      }
+    ],
+    "requested_codes": [
+      [
+        0,
+        "000001"
+      ],
+      [
+        0,
+        "159915"
+      ],
+      [
+        1,
+        "510300"
+      ],
+      [
+        0,
+        "100706"
+      ],
+      [
+        0,
+        "100713"
+      ],
+      [
+        0,
+        "100806"
+      ],
+      [
+        0,
+        "100813"
+      ],
+      [
+        0,
+        "100820"
+      ]
+    ],
+    "returned_codes": [
+      [
+        0,
+        "000001"
+      ],
+      [
+        0,
+        "159915"
+      ],
+      [
+        1,
+        "510300"
+      ],
+      [
+        0,
+        "100706"
+      ],
+      [
+        0,
+        "100713"
+      ],
+      [
+        0,
+        "100806"
+      ],
+      [
+        0,
+        "100813"
+      ],
+      [
+        0,
+        "100820"
+      ]
+    ],
+    "source_endpoint": "115.238.56.198:7709"
+  },
+  "scope": "Live wire and 0450 metadata consistency; independent price verification separate"
+}

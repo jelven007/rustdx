@@ -1,0 +1,20 @@
+[1m[32m   Packaging[0m jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[1m[33mwarning[0m[1m:[0m ignoring example `csv` as `examples/csv.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring example `excel` as `examples/excel.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring example `tcp_wire` as `examples/tcp_wire.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `calendar_datasets` as `tests/calendar_datasets.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `cli` as `tests/cli.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `cli_deadline` as `tests/cli_deadline.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `database_acceptance` as `tests/database_acceptance.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `day_streaming` as `tests/day_streaming.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `http_budget` as `tests/http_budget.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `maintenance_status` as `tests/maintenance_status.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `tcp_startup` as `tests/tcp_startup.rs` is not included in the published package
+[1m[36m    Blocking[0m waiting for file lock on package cache
+[1m[31merror[0m[1m:[0m failed to prepare local package for uploading
+
+Caused by:
+  no matching package named `jelven-rustdx-complete` found
+  location searched: crates.io index
+  required by package `jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)`
+  As a reminder, you're using offline mode (--offline) which can sometimes cause surprising resolution failures, if this error is too confusing you may wish to retry without `--offline`.

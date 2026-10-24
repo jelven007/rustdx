@@ -1,0 +1,52 @@
+   Compiling serde_json v1.0.140
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+    Finished `test` profile [optimized + debuginfo] target(s) in 6.32s
+     Running tests/finance_semantics.rs (target/debug/deps/finance_semantics-8bd8a83b41a6570c)
+
+running 5 tests
+test caller_evidence_can_verify_other_symbols_and_negative_financial_values ... ok
+test evidence_is_scoped_to_symbol_update_and_each_field ... ok
+test issuer_evidence_verifies_ten_fields_with_float32_and_disclosure_tolerances ... ok
+test every_slot_is_lossless_and_candidates_require_explicit_access ... ok
+test malformed_records_fail_and_clear_state_while_zero_dates_remain_unknown ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/protocol_decoders.rs (target/debug/deps/protocol_decoders-935e9f3d5df2fd90)
+
+running 6 tests
+test invalid_parameters_fail_without_panicking ... ok
+test tick_values_are_checked_and_unknown_direction_is_preserved ... ok
+test response_identity_numeric_and_date_constraints ... ok
+test truncation_excess_trailing_and_stale_results_are_rejected ... ok
+test client_sends_checked_bytes_and_uses_the_independent_decoders ... ok
+test real_samples_match_independent_requests_and_all_fields ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/quote_precision.rs (target/debug/deps/quote_precision-82879d2c81d0ee95)
+
+running 8 tests
+test wide_integer_sums_zero_prices_and_missing_identity_are_preserved ... ok
+test mixed_decimals_scale_every_price_once_and_preserve_nonprice_fields ... ok
+test preserved_real_two_decimal_sample_matches_all_historical_fields ... ok
+test missing_unsupported_duplicate_and_truncated_input_fail_without_fallback ... ok
+test immutable_generations_and_exchange_day_freshness_do_not_mix ... ok
+test multi_market_refresh_does_not_publish_successful_half_on_second_market_failure ... ok
+test client_cold_load_hot_cache_missing_precision_and_failed_refresh ... ok
+test nested_operation_deadline_bounds_cold_loading_and_does_not_publish_partial_cache ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+     Running tests/reliability.rs (target/debug/deps/reliability-db386740f3f12d07)
+
+running 6 tests
+test incremental_factor_preserves_previous_state_without_events ... ok
+test kline_recovers_after_empty_and_malformed_responses ... ok
+test rejects_every_truncated_quote_prefix_without_panic ... ok
+test invalid_client_inputs_return_errors ... ok
+test reconnects_once_after_truncated_body ... ok
+test reconnect_handshake_failure_consumes_one_attempt_and_can_recover ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

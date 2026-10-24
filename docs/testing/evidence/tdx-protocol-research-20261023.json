@@ -1,0 +1,380 @@
+{
+  "schema": 1,
+  "kind": "public_protocol_research",
+  "status": "research_only_no_live_protocol_acceptance",
+  "as_of_date": "2026-10-23",
+  "research_started_at_utc": "2026-10-23T13:16:55Z",
+  "packaged_at_utc": "2026-10-23T13:26:19.420362+00:00",
+  "strict_update_window": {
+    "start": "2026-10-01",
+    "end": "2026-10-23"
+  },
+  "context_window": {
+    "start": "2026-09-01",
+    "end": "2026-09-30"
+  },
+  "source_classes": [
+    "vendor_documentation",
+    "package_registry_metadata_and_digest_verified_archives",
+    "community_repository_source_and_release_history",
+    "community_issue_reports",
+    "search_indexes_for_discovery_only"
+  ],
+  "search_coverage": {
+    "sites": [
+      "tdx.com.cn",
+      "help.tdx.com.cn",
+      "GitHub",
+      "Gitee",
+      "PyPI",
+      "pkg.go.dev",
+      "CSDN",
+      "CodeKK",
+      "DeepWiki"
+    ],
+    "query_topics": [
+      "通达信 2026 9月/10月 协议更新",
+      "7709 commands 2026",
+      "tdxaidata tqcenter 更新",
+      "eltdx 3.3.0",
+      "injoyai tdx timezone",
+      "mootdx tdxpy empty data"
+    ],
+    "note": "Topics summarize completed searches; not an exhaustive exact-query log."
+  },
+  "official_pages": [
+    {
+      "requested_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1cfsjkbf8f3is/TdxQuantVersion.html",
+      "final_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1cfsjkbf8f3is/TdxQuantVersion.html",
+      "fetched_at_utc": "2026-10-23T13:23:56.911516+00:00",
+      "bytes": 29461,
+      "sha256": "9fc5ec9c847a29d215004b678e92309d7693eca89a81646c8b0041e4ee00bf27",
+      "content_type": "text/html",
+      "snapshot": "tdx-protocol-20261023/official/official-versions.html"
+    },
+    {
+      "requested_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hdhbmi50d038.html",
+      "final_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hdhbmi50d038.html",
+      "fetched_at_utc": "2026-10-23T13:23:56.964246+00:00",
+      "bytes": 26004,
+      "sha256": "44efbfce9272a81f5aa81b718ace28b6466f045a45836f6405521af5fa777920",
+      "content_type": "text/html",
+      "snapshot": "tdx-protocol-20261023/official/official-http17709.html"
+    },
+    {
+      "requested_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hjbgqpdhv114.html",
+      "final_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hjbgqpdhv114.html",
+      "fetched_at_utc": "2026-10-23T13:23:56.930743+00:00",
+      "bytes": 27184,
+      "sha256": "57c04813668909353827c47ee9f0b3d9b34efc8b5bd65816651d660131c2780d",
+      "content_type": "text/html",
+      "snapshot": "tdx-protocol-20261023/official/official-tdxaidata.html"
+    },
+    {
+      "requested_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1ctuhthaq5qmg/mindoc-1h10g60jt68sc.html",
+      "final_url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1ctuhthaq5qmg/mindoc-1h10g60jt68sc.html",
+      "fetched_at_utc": "2026-10-23T13:23:56.930610+00:00",
+      "bytes": 32127,
+      "sha256": "bba1c61ae477a665123aa2ed5bd957e7904b813850719c39b9188db6b569be84",
+      "content_type": "text/html",
+      "snapshot": "tdx-protocol-20261023/official/official-market-data.html"
+    }
+  ],
+  "official_latest": {
+    "sdk": "tdxaidata",
+    "version": "1.3.1",
+    "vendor_support_label": "仅内测版支持",
+    "latest_vendor_entry_date": "2026-10-23",
+    "most_recent_entry_without_beta_label": "2026-09-30 / 1.2.2",
+    "pypi_1_3_0_release_present": false,
+    "public_complete_7709_byte_spec_found": false,
+    "absence_scope": "Inspected public sources only; not a vendor-wide nonexistence claim."
+  },
+  "packages": [
+    {
+      "name": "tdxaidata",
+      "version": "1.3.1",
+      "earliest_upload_utc": "2026-10-23T11:37:45.518257Z",
+      "sdist_uploaded_at_utc": "2026-10-23T11:37:49.356034Z",
+      "archive": "tdx-protocol-20261023/archives/tdxaidata-1.3.1.tar.gz",
+      "sha256": "ab528e804b74958cedf2b3381a7f16764591c9eae9f0772ad2e1bac065d98f38",
+      "bytes": 4516507,
+      "matches_registry_digest": true,
+      "download_url": "https://files.pythonhosted.org/packages/85/98/f77d18d823566b38c232c3c522da665f785e41ee07f0ca0315d1dfd2af72/tdxaidata-1.3.1.tar.gz",
+      "registry_url": "https://pypi.org/pypi/tdxaidata/json",
+      "execution": "not_installed_or_executed"
+    },
+    {
+      "name": "eltdx",
+      "version": "3.3.0",
+      "earliest_upload_utc": "2026-10-21T11:23:09.146186Z",
+      "sdist_uploaded_at_utc": "2026-10-21T11:23:18.481691Z",
+      "source_archive_url": "https://files.pythonhosted.org/packages/ce/ed/d28b09bc33829a43169af4ba8929b41da4f71e9fde04caccec7ca48e76a4/eltdx-3.3.0.tar.gz",
+      "local_archive_removed_on": "2026-10-24",
+      "retained_protocol_sources": "tdx-protocol-20261023/eltdx-3.3.0",
+      "sha256": "16fad43e518618728a2ac5c0a5d0abf0a3bcce3ccb12daccec55d8fa912d9a9f",
+      "bytes": 1107611,
+      "matches_registry_digest": true,
+      "download_url": "https://files.pythonhosted.org/packages/ce/ed/d28b09bc33829a43169af4ba8929b41da4f71e9fde04caccec7ca48e76a4/eltdx-3.3.0.tar.gz",
+      "registry_url": "https://pypi.org/pypi/eltdx/json",
+      "execution": "not_installed_or_executed"
+    },
+    {
+      "name": "tdx-cli",
+      "version": "0.1.7",
+      "earliest_upload_utc": "2026-09-27T14:53:25.706405Z",
+      "sdist_uploaded_at_utc": "2026-09-27T14:53:25.706405Z",
+      "archive": "tdx-protocol-20261023/archives/tdx_cli-0.1.7.tar.gz",
+      "sha256": "2382b717a5237929ac90c3e328b3163d4b66501041cf20a98687f9ea4dc314df",
+      "bytes": 50637,
+      "matches_registry_digest": true,
+      "download_url": "https://files.pythonhosted.org/packages/44/68/81e5d0ea311fdd27b572293f5ba6e7f9f41e6134e791fee1527c9ed7de0d/tdx_cli-0.1.7.tar.gz",
+      "registry_url": "https://pypi.org/pypi/tdx-cli/json",
+      "execution": "not_installed_or_executed"
+    }
+  ],
+  "repository_pins": {
+    "eltdx_observed_main": "104f23336f712a98e69821a58db745cd4040862d",
+    "eltdx_pin_note": "Observed repository state, not a claim of byte identity with earlier PyPI sdist.",
+    "injoyai_tdx_observed_main": "2a9000681f5a9896ea98e4de8bc4904f1dce78ba",
+    "injoyai_tdx_timezone_fix": "aa1ebed19cab7b6ee0eee0b0f4baef7869759384",
+    "injoyai_tdx_generated_bar_timezone_fix": "58d425e7ca748e53fe1da6a24862efa4974644b4"
+  },
+  "command_comparison": {
+    "community_source": "eltdx 3.3.0 digest-verified sdist",
+    "community_document_and_registration_match": true,
+    "community_codes": [
+      "0x0004",
+      "0x000D",
+      "0x000F",
+      "0x0010",
+      "0x02C5",
+      "0x02CF",
+      "0x02D0",
+      "0x044D",
+      "0x044E",
+      "0x0452",
+      "0x051B",
+      "0x052B",
+      "0x052D",
+      "0x0537",
+      "0x053E",
+      "0x0547",
+      "0x054B",
+      "0x054C",
+      "0x056A",
+      "0x06B9",
+      "0x0FB4",
+      "0x0FC5",
+      "0x0FC6",
+      "0x0FD1",
+      "0x0FEB",
+      "0x0FFC"
+    ],
+    "rustdx_active_business_count": 14,
+    "rustdx_active_handshake_count": 1,
+    "rustdx_codes": [
+      "0x000D",
+      "0x000F",
+      "0x0010",
+      "0x02C5",
+      "0x02CF",
+      "0x02D0",
+      "0x044E",
+      "0x0450",
+      "0x051D",
+      "0x052D",
+      "0x053E",
+      "0x06B9",
+      "0x0FB4",
+      "0x0FB5",
+      "0x0FC5"
+    ],
+    "shared_opcode_count": 12,
+    "shared_codes": [
+      "0x000D",
+      "0x000F",
+      "0x0010",
+      "0x02C5",
+      "0x02CF",
+      "0x02D0",
+      "0x044E",
+      "0x052D",
+      "0x053E",
+      "0x06B9",
+      "0x0FB4",
+      "0x0FC5"
+    ],
+    "additional_to_rustdx_count": 14,
+    "additional_to_rustdx": [
+      "0x0004",
+      "0x044D",
+      "0x0452",
+      "0x051B",
+      "0x052B",
+      "0x0537",
+      "0x0547",
+      "0x054B",
+      "0x054C",
+      "0x056A",
+      "0x0FC6",
+      "0x0FD1",
+      "0x0FEB",
+      "0x0FFC"
+    ],
+    "rustdx_codes_absent_from_community_inventory": [
+      "0x0450",
+      "0x051D",
+      "0x0FB5"
+    ],
+    "same_opcode_does_not_prove_wire_or_decoder_compatibility": true
+  },
+  "kline_source_comparison": {
+    "opcode": "0x052D",
+    "rustdx_full_request_bytes": 38,
+    "eltdx_request_data_bytes": 42,
+    "eltdx_full_request_bytes": 54,
+    "both_price_divisors": 1000,
+    "rustdx_stock_volume": "vol_amount(encoded_u32), no /100 in decoder",
+    "eltdx_volume_lots": "get_volume(encoded_u32) / 100",
+    "volume_units_independently_validated_this_round": false,
+    "new_parameters": [
+      "period.raw + period.parameter",
+      "adjust 0..4",
+      "anchor_date_raw"
+    ],
+    "server_protocol_introduction_date_proven": false
+  },
+  "source_baseline": {
+    "commit": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+    "files": [
+      {
+        "path": "src/tcp/basic.rs",
+        "sha256": "df09d5b6e2b1739074672ef940b4ad9ba8cd71d57d98e4a05c35da7255a6fbec",
+        "bytes": 8065
+      },
+      {
+        "path": "src/tcp/stock/security_list.rs",
+        "sha256": "38d46d9dc104dbf0d090448c99609a62f7b7edd84b561d93d1d615049ed04f1c",
+        "bytes": 6396
+      },
+      {
+        "path": "src/tcp/stock/quotes.rs",
+        "sha256": "a13d1a3c2960674e85a0d9d64079f4cf13fa100bbe9543615c68732c4b8af2c9",
+        "bytes": 17668
+      },
+      {
+        "path": "src/tcp/stock/kline.rs",
+        "sha256": "40857c59c5ff6aaa3156b164ccdb379b8656b5bb696dab89791e0aa9c0fd9376",
+        "bytes": 8170
+      },
+      {
+        "path": "src/tcp/stock/index_kline.rs",
+        "sha256": "0b4450e6bb27d7654a81d5817edb5a186691258d8032ee26186b3b00447fb798",
+        "bytes": 5724
+      },
+      {
+        "path": "src/tcp/stock/kline_request.rs",
+        "sha256": "5bded1466df316b5d00cf9d9a2fb871080b47cb25466c6d334607a15a71b028f",
+        "bytes": 11126
+      },
+      {
+        "path": "src/tcp/stock/minute_time.rs",
+        "sha256": "667fc5cb473e443736eef8a4756ad6dfa98345ba0cf345533dca0503236844ed",
+        "bytes": 18945
+      },
+      {
+        "path": "src/tcp/stock/history_minute_time.rs",
+        "sha256": "f4e1a9735bdfd6b6a0cf43a39f8204c1bb95987452c8ae78f6bfc9b8fc194a63",
+        "bytes": 6432
+      },
+      {
+        "path": "src/tcp/stock/transaction.rs",
+        "sha256": "6b3bcef4a380d3c248e563022e7b872cd8404724097601346f09aafc3955c591",
+        "bytes": 6037
+      },
+      {
+        "path": "src/tcp/stock/history_transaction.rs",
+        "sha256": "91acc7b4bcdcd85f88d4a7677447e8326a50a45dfa29ebb24d9cc90509c720c7",
+        "bytes": 5815
+      },
+      {
+        "path": "src/tcp/stock/finance_info.rs",
+        "sha256": "df8441f0a534ac4228fcedd0205f385071f644e822de8d9dd1bb095ebbd19c9a",
+        "bytes": 6592
+      },
+      {
+        "path": "src/tcp/stock/xdxr.rs",
+        "sha256": "4cfb7c8631cea23e5cbada55bece179a39ecd7dc9b6af202b434249931603a9b",
+        "bytes": 6728
+      },
+      {
+        "path": "src/tcp/stock/company_info.rs",
+        "sha256": "13ef22447eb1f36ccfb0bb2df3d35d2c1b0419250ae560b36060504faa5c3732",
+        "bytes": 8306
+      },
+      {
+        "path": "src/tcp/stock/block_info.rs",
+        "sha256": "a4c214727896762bc003d71d4ac6d2e7a0e8e13550656304ea67524dcc9c661c",
+        "bytes": 10265
+      },
+      {
+        "path": "src/tcp/stock/requests.rs",
+        "sha256": "3cf5739efcfa3dbaeb4f04e5dce7870208f4ff6d53244ffb486387c47fb671b8",
+        "bytes": 12818
+      },
+      {
+        "path": "src/data/model.rs",
+        "sha256": "bef22c1550f7a81b7ef6903ad21b84286ee979c1ff2e46f043d4121bd6a95af2",
+        "bytes": 6705
+      }
+    ]
+  },
+  "source_manifest": {
+    "path": "tdx-protocol-20261023/SOURCE_MANIFEST.json",
+    "sha256": "3c7b4853c2be7f8db5b74b12a8ce935df39f6dbc23c232a4ca67a9f0524b7b04",
+    "entry_count": 205,
+    "total_bytes": 6827427,
+    "updated_on": "2026-10-24",
+    "filtered_derivatives": 3,
+    "original_manifest_sha256": "9b13082b66f86963135baa3778dd04a3cccb8bb309c651494a76a5e84cb903e5"
+  },
+  "boundaries": {
+    "new_live_7709_probes": false,
+    "official_sdk_executed": false,
+    "community_sdk_executed": false,
+    "synthetic_market_data_created": false,
+    "rust_source_modified": false,
+    "production_protocol_upgrade_claimed": false,
+    "eltdx_license": "ELTDX Non-Commercial Research License",
+    "eltdx_license_preserved": true,
+    "eltdx_production_adoption": false
+  },
+  "excluded_or_limited_sources": [
+    {
+      "source": "mootdx 0.11.7",
+      "latest_pypi_release": "2024-05-04",
+      "reason": "No September-after release established"
+    },
+    {
+      "source": "tdxpy 0.2.7",
+      "latest_pypi_release": "2024-03-10",
+      "reason": "No September-after release; linked repository returned 404"
+    },
+    {
+      "source": "tdx-cli 0.1.7",
+      "latest_pypi_release": "2026-09-27",
+      "reason": "September context; linked repository returned 404"
+    },
+    {
+      "source": "a-stock-data issue #52",
+      "created": "2026-09-11",
+      "updated": "2026-09-20",
+      "reason": "Specific empty-response report, not evidence of all servers failing"
+    },
+    {
+      "source": "easy-tdx",
+      "reason": "Package lookup returned 404"
+    }
+  ]
+}

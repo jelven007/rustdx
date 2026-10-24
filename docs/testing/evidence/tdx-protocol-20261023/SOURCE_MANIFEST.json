@@ -1,0 +1,1870 @@
+{
+  "schema": 1,
+  "purpose": "Public-source research snapshots and explicitly marked filtered derivatives; not runtime dependencies",
+  "created_at_utc": "2026-10-23T13:26:19.418544+00:00",
+  "omitted_source_archives": [
+    {
+      "path": "archives/eltdx-3.3.0.tar.gz",
+      "bytes": 1107611,
+      "sha256": "16fad43e518618728a2ac5c0a5d0abf0a3bcce3ccb12daccec55d8fa912d9a9f",
+      "removed_on": "2026-10-24",
+      "reason": "Original package contained unrelated provider descriptions; retained extracted TDX protocol sources have independent file hashes. origin.archive refers to the original upstream package identity, not a locally retained archive.",
+      "origin": {
+        "url": "https://files.pythonhosted.org/packages/ce/ed/d28b09bc33829a43169af4ba8929b41da4f71e9fde04caccec7ca48e76a4/eltdx-3.3.0.tar.gz"
+      }
+    }
+  ],
+  "entries": [
+    {
+      "path": "archives/tdx_cli-0.1.7.tar.gz",
+      "bytes": 50637,
+      "sha256": "2382b717a5237929ac90c3e328b3163d4b66501041cf20a98687f9ea4dc314df",
+      "origin": {
+        "url": "https://files.pythonhosted.org/packages/44/68/81e5d0ea311fdd27b572293f5ba6e7f9f41e6134e791fee1527c9ed7de0d/tdx_cli-0.1.7.tar.gz"
+      }
+    },
+    {
+      "path": "archives/tdxaidata-1.3.1.tar.gz",
+      "bytes": 4516507,
+      "sha256": "ab528e804b74958cedf2b3381a7f16764591c9eae9f0772ad2e1bac065d98f38",
+      "origin": {
+        "url": "https://files.pythonhosted.org/packages/85/98/f77d18d823566b38c232c3c522da665f785e41ee07f0ca0315d1dfd2af72/tdxaidata-1.3.1.tar.gz"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/LICENSE",
+      "bytes": 1386,
+      "sha256": "c4a43e84776c2d29a8dd9ea72e26fe4fadda4d00f9540c22dafbcc5a9a4e5a9d",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/LICENSE"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/LICENSE",
+      "bytes": 1386,
+      "sha256": "c4a43e84776c2d29a8dd9ea72e26fe4fadda4d00f9540c22dafbcc5a9a4e5a9d",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/LICENSE"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/auctions.rs",
+      "bytes": 11004,
+      "sha256": "833595f52aaf3037faa78f234f82e4a6440b9f19c02cd6bc790631651ccc583b",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/auctions.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/corporate.rs",
+      "bytes": 36565,
+      "sha256": "5a77bf247d9af57ffb6d8dbda7212abfc7a2fdc584e55941d596527358b68ad2",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/corporate.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/delisted_bars.rs",
+      "bytes": 8111,
+      "sha256": "901a81db11658bc3fcd848ad58406e7bd3cdd8113107b00e015b3d4af9f29608",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/delisted_bars.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/klines.rs",
+      "bytes": 10811,
+      "sha256": "eef93b83af4f0829788f645c3e6acf26a1f57730b18d83be7a6f97b22889ad13",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/klines.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/limits.rs",
+      "bytes": 5289,
+      "sha256": "8061998cf006404e81f55ba817299a63a9713b5569ac925aea00e48e6bf3bf4b",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/limits.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/minutes.rs",
+      "bytes": 38620,
+      "sha256": "e5c1bd1a75212784c963d603655082c96d1dab77e61caf9128b17cb4d4fd43b5",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/minutes.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/mod.rs",
+      "bytes": 215,
+      "sha256": "eac45a3c63cf61d2cdb2a7f133f0172c49c3d9596c6984e2e784789137df3ae1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/mod.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/money_flow.rs",
+      "bytes": 10400,
+      "sha256": "2b796555749f401edde613b900ea37f10c52862e4bb42b639b99e9554ab56e0f",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/money_flow.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/quotes.rs",
+      "bytes": 43924,
+      "sha256": "44b7c7000f9c3aba18c5527e25466b1ff0c895384e68086d43549ac9da0a0ab9",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/quotes.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/resources.rs",
+      "bytes": 10079,
+      "sha256": "84a8785e9a3d48679940b92134cc94f50627d38a745da5bc2b40929d640911b2",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/resources.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/security.rs",
+      "bytes": 14658,
+      "sha256": "f3755aadf60722f5b93bc2f3a42e2a2dccf9c08655bfdb242c99fae94c0c40a2",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/security.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/session.rs",
+      "bytes": 6746,
+      "sha256": "c2ef2c47339b3c475155cc399bec986eeac5fe203e6c3549a73b1c94369cb2e5",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/session.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/trades.rs",
+      "bytes": 20685,
+      "sha256": "abe5ea80d98708bcfb682b1c35cbe6efbe2b037c48bce9a5e3550df604bce5dc",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/commands/trades.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/error.rs",
+      "bytes": 2371,
+      "sha256": "88b7c4d92c3c56cc79723659437d3fe73a56b3e3c1fb76d79829ef591a08c0ec",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/error.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/frame.rs",
+      "bytes": 26424,
+      "sha256": "5cb4cc5cc55a9988d8d1a7e5ba5687eaabf8c5eba96dc5b3201c125cc18e2fdd",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/frame.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/lib.rs",
+      "bytes": 269,
+      "sha256": "e7e71a23e76960cf63c793cc911e1c425a5ccf23eb6f24a1a27612f18abee814",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/lib.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/limits.rs",
+      "bytes": 2490,
+      "sha256": "9f68e4ac466df18ec93e6339e79cb6b438778b5332954df906325b173a200b10",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/limits.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/request.rs",
+      "bytes": 17720,
+      "sha256": "a3325cb9593c4bdc472c6ed266641a69ac1aec48f940ff3360d5f3533263f21e",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/request.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/response.rs",
+      "bytes": 7437,
+      "sha256": "a460e7a6d6cf5cc3fb23dedc56c9b69ae91a1173ea369787ad837c7deb90b824",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/response.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/round2_tests.rs",
+      "bytes": 5831,
+      "sha256": "2eacd7497f074e6535459d350af68c3a65b557e0ee16fa56824c532d7b3aa53e",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/round2_tests.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/crates/eltdx-protocol/src/unit.rs",
+      "bytes": 30650,
+      "sha256": "1f4e21ce95e30cfb67c5f8e979e086ea6cb0886a9371333f9c3c3bf4d2145314",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/crates/eltdx-protocol/src/unit.rs"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/API_REFERENCE.md",
+      "bytes": 33229,
+      "sha256": "261a1d9e024086d9da5d3102f013bcb378d433ebf64a68edfb37a541eaa2a5db",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/API_REFERENCE.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/ARCHITECTURE.md",
+      "bytes": 7997,
+      "sha256": "c99a5ba4152f91db3e4fa264222636020a76cd681452c0ebbb17319edf6ff3c4",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/ARCHITECTURE.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/CHANGELOG.md",
+      "bytes": 21676,
+      "sha256": "3571b8d9655b02bc365653d1d3b79ca0830a5edc65f04bdcd91181f27dd58439",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/CHANGELOG.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/CLI.md",
+      "bytes": 8277,
+      "sha256": "6484142e28dfbefaee286ed19e329f58d519b81c63993c8054677a2ad8047aa3",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/CLI.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/COMMANDS_7709.md",
+      "bytes": 7348,
+      "sha256": "b4adf7f492d24c56d71e77db342170fc8c5920a5f3f88a6b388daf367b8e5cfc",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/COMMANDS_7709.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/DEBUG_GUIDE.md",
+      "bytes": 5917,
+      "sha256": "7d4f8c684cd43931796d3a138dd36fc59372894a2510b912ce329d3e23758d31",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/DEBUG_GUIDE.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/EXAMPLES.md",
+      "bytes": 5398,
+      "sha256": "63de0ca5a1cc867758f4a6c3d94e9be80b16086164b22fd47edd8a8fd8a37396",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/EXAMPLES.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/EXTENDED_MARKET.md",
+      "bytes": 21431,
+      "sha256": "d3d51bd7bd2286b5dddfce218424416e4c66e0577edcebc62abbf9f1db22fc9f",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/EXTENDED_MARKET.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/F10_7615.md",
+      "bytes": 9724,
+      "sha256": "ce015d1577a9fbb86aaee77470cfa9f6096c9682463b0b1be2f99fdca8cb3a84",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/F10_7615.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/FIELD_MIGRATION.md",
+      "bytes": 3720,
+      "sha256": "a49df60545814aab7d2016c462909d64c689d662e4412a6f4e4160df7efac975",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/FIELD_MIGRATION.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/FIELD_REFERENCE.md",
+      "bytes": 27811,
+      "sha256": "f3305e78028c150f07cba8944529a80e754d8357df3491fbe8fbd46f1ca3fa67",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/FIELD_REFERENCE.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/FINANCIAL.md",
+      "bytes": 1819,
+      "sha256": "cf977acdc431ae017832180876d2338c93750b48af50f4d7c63549c43a3c2343",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/FINANCIAL.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/GITHUB_PAGES.md",
+      "bytes": 881,
+      "sha256": "a85fe3eed35ecf219cd50a03fec522d48b4977b9fd769228a9ff4138967cfc47",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/GITHUB_PAGES.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/HTTP_GATEWAY.md",
+      "bytes": 4345,
+      "sha256": "2644e5045a42deb2ed834c1968bfd16f5eb9b89517bdbaefba67438fc7b61aa1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/HTTP_GATEWAY.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/MCP.md",
+      "bytes": 6037,
+      "sha256": "dc1292b86c8abbc8fd7069ef264114b7dc0a5b13f204a8fe87ecbf1881465c00",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/MCP.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/METHOD_REFERENCE.md",
+      "bytes": 61044,
+      "sha256": "1117d59971674fbd5e12975e03dc37b02debb9fcb4eb3ce45b295fe174d7744a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/METHOD_REFERENCE.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/MIGRATION_FROM_EASY_TDX.md",
+      "bytes": 7811,
+      "sha256": "3aff1f059931053cabcf3db32ad3db5458df19ef614effe563d909c1659f4d73",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/MIGRATION_FROM_EASY_TDX.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/MIGRATION_FROM_OLD.md",
+      "bytes": 2965,
+      "sha256": "47aacf700336acb218cc447b1ad2b6668ff9d6bf39c0e5341efcb7b23d339159",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/MIGRATION_FROM_OLD.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/OFFLINE.md",
+      "bytes": 3166,
+      "sha256": "18e0f8dd34e87fae3d5950f9f0a2dd5231a6b2acbb8a25660a8179870e48d284",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/OFFLINE.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/PRODUCT.md",
+      "bytes": 4986,
+      "sha256": "a60a5089257dda9ee62d5986211d860a142a6024242e090f18db60b3c4699216",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/PRODUCT.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/README.md",
+      "bytes": 3889,
+      "sha256": "2829169684e9f9c3ccaaebb0debe2aee8f8c5812c44d0ea3b73c363c4f0134b0",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/README.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/ROADMAP.md",
+      "bytes": 4669,
+      "sha256": "2f89fb6842049055c35c57cd7e21b5706cba4d3044358e4907c8f23bb9f313ef",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/ROADMAP.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/THREADING_SCALE_PLAN.md",
+      "bytes": 12327,
+      "sha256": "32d325083753e24d50be734475993d7484bcdb902153614fdd9b556d97869721",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/THREADING_SCALE_PLAN.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/UPDATE_FROM_0_5_1.md",
+      "bytes": 13379,
+      "sha256": "bca665e6d7fabb183185d829130abdcc3d16789be40eb20a7431c40918ce4a60",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/UPDATE_FROM_0_5_1.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/adr/0001-scale-native-engine.md",
+      "bytes": 3116,
+      "sha256": "dc59953a0bec2d7ebcb77de19f669cc6f6f3e7b5f37eb83bcef8a9a41dfd1271",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/adr/0001-scale-native-engine.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/adr/0002-historical-trade-batch.md",
+      "bytes": 2505,
+      "sha256": "4e6a09a84833e1970c4b10ab1b4f6f79384a1e28eb52edf659ffabca5da78d07",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/adr/0002-historical-trade-batch.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/adr/README.md",
+      "bytes": 309,
+      "sha256": "9c399542eb07ac7b5f332f303928ccc9fe3dd08371ad4f82f0abc3def3463a60",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/adr/README.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/A股常用封装.md",
+      "bytes": 3364,
+      "sha256": "8997e43fcfdfd71ce3c607cca619ba5f82ac6172be01471352751c548c03f308",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/A股常用封装.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/README.md",
+      "bytes": 2097,
+      "sha256": "9944e46e6b1b2c655d576c616a19a07ad298c9e9c7f3e7855c1f814740ab3e04",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/README.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/个股概念板块.md",
+      "bytes": 3492,
+      "sha256": "936762006b3de3e7dfd6ceadffce981f2d1de476e21e99dedac1501816cb0431",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/个股概念板块.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/买卖力道.md",
+      "bytes": 2207,
+      "sha256": "a6acc878ba297dd8808b3148ff355e9eb71d98ee519eb7b3296f791c57d2b5f7",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/买卖力道.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/全市场统计.md",
+      "bytes": 1927,
+      "sha256": "137efeb6ef4eaec4c774a47998ac61b3405e4dde6abb987d2752e9117817e71e",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/全市场统计.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/完整行情.md",
+      "bytes": 3424,
+      "sha256": "fa865fea9b68b93acd1553c58e10c3976f2fe299f6289625732851916d29d9c0",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/完整行情.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/实时榜单.md",
+      "bytes": 3550,
+      "sha256": "b5874fe83a81214f8025f8b812a4ce48663a739b64b5a906e4bf4e792c8696f4",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/实时榜单.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/当日资金流.md",
+      "bytes": 1689,
+      "sha256": "1760ba7642c492e59cd8c495d1783f2b31bd38244dddbfb2d1ec038f5b3ba2bb",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/当日资金流.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/成交对比.md",
+      "bytes": 2155,
+      "sha256": "65592a22a002bc1a98050fb1f256a916ad1b9d7ef1c234bfeed7d1d5a5fda34e",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/成交对比.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/最新ST列表.md",
+      "bytes": 1611,
+      "sha256": "811f951d627e048bfbbbf917a36b06a5e141507c3042e0b61dabdce2445f12c1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/最新ST列表.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/最新停牌列表.md",
+      "bytes": 1336,
+      "sha256": "6ff5c66134bbfb386208fcb70c16f21bb42fdead79f72fee42508ded22d03950",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/最新停牌列表.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/最新股票列表.md",
+      "bytes": 1714,
+      "sha256": "3acd8b7c29de6dc7548a7717810491febef0862adc84bb99e0be3522df53ead1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/最新股票列表.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/板块成分股行情.md",
+      "bytes": 5935,
+      "sha256": "e403824b7448fa9c7523069b1940af06c726b202f3a4dd4b94822a6573732f93",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/板块成分股行情.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/板块行情.md",
+      "bytes": 5914,
+      "sha256": "61a8c17c4e93d9e0ce6a4711587f995141c8dc9e10c9d65517049f20f7b6b45e",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/板块行情.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/概念板块成分股.md",
+      "bytes": 3743,
+      "sha256": "f5abcb38661540ef67442e7279a193ce5abecf2c1a64ef831eaccf031fa5cc6a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/概念板块成分股.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/每日涨跌停价.md",
+      "bytes": 3548,
+      "sha256": "5b0e2e8e74630d5393463334867887ac6136c84ef10fd9210b2388ba3963cd8a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/每日涨跌停价.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/每日股本.md",
+      "bytes": 2188,
+      "sha256": "460687328b19f4bb6cb5a9f05390f472ea8ddeb3491d34766e406c4a9b381ed6",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/每日股本.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/短线指标.md",
+      "bytes": 11953,
+      "sha256": "58dccb2ad781f7607658b6852a6cac1a417d0c7435a136697f70f4eba3a78988",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/短线指标.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/竞价数据.md",
+      "bytes": 6262,
+      "sha256": "fbf3b90f9fdb359ff9806f5096b2a9891435b6313be356c2f5e85c9e5647f17c",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/竞价数据.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/股票信息汇总.md",
+      "bytes": 3975,
+      "sha256": "24f744abc9c692b55388df0f5a6bd6cd58ec11f78989555ef89bfff26e9fe82b",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/股票信息汇总.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/连板天梯.md",
+      "bytes": 7031,
+      "sha256": "7d4c1ffba9d49e57fb3cf4be93d39e96d705488c5f33f794e17cf0228bb4d8f5",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/连板天梯.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/helpers/题材强度排行.md",
+      "bytes": 2109,
+      "sha256": "8d04b3131f33e0b28b48c2f7445c40beecb1207cd4869cd5026fbe1c900c6abb",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/helpers/题材强度排行.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/index.md",
+      "bytes": 3827,
+      "sha256": "0ac81ed1b5d8ca03f9c393b5eac6eb844832b10fb6d57b58ea9e4ce567cfb630",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/index.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/0x02c5-板块文件元数据接口.md",
+      "bytes": 2620,
+      "sha256": "c4bf95e8a22e5f870d0c1a3e843649051bf4ceb66438347c4f162364296c2d35",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/0x02c5-板块文件元数据接口.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/0x02cf-公司信息目录接口.md",
+      "bytes": 2883,
+      "sha256": "fbc1275fad5e41e10184ff2b4295cd332f2bb27ea37c57badc9bc93e48079f03",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/0x02cf-公司信息目录接口.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/0x02d0-公司信息内容接口.md",
+      "bytes": 2566,
+      "sha256": "6bf018c6daaf5e7264748f2de95b514b82b8ca9281cdfef7870a937921ca29fc",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/0x02d0-公司信息内容接口.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/0x0ffc-资金流向日数据接口.md",
+      "bytes": 8260,
+      "sha256": "8478467ec45c1e16f213707e5fe85f71f8b2375d7afa19195d208f6fecb6d2d1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/0x0ffc-资金流向日数据接口.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-0925竞价成交快照.md",
+      "bytes": 3202,
+      "sha256": "c055cc202d9016b7ca5f5f046165098db68695a1b6d42586d205a226d0f2788c",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-0925竞价成交快照.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-K线周期线.md",
+      "bytes": 8910,
+      "sha256": "c008afa875d701b5cc5c7ff91e2d172f5a6a4906aeba634d436fbac0765b7b12",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-K线周期线.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-代码数量.md",
+      "bytes": 2830,
+      "sha256": "7af170dcaca88cc1549188d3e7fc66d5a87815f36e6d2913e48a400433f849fe",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-代码数量.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-代码表.md",
+      "bytes": 10145,
+      "sha256": "a78b3590fa52d1fdeb2eb975c9e3765a6246db0f7414bfcccf118f45c23e3758",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-代码表.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-分时副图.md",
+      "bytes": 3248,
+      "sha256": "49758074c90668bf799a7c153e5b704b719c7b478a3a6c133e8c13cacb015a8b",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-分时副图.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-分类行情.md",
+      "bytes": 7130,
+      "sha256": "c1f50380ae96d16a1556f7300f03d9d3ba8d6fee8875cdbc413c406a901b115c",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-分类行情.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-历史0925正式撮合.md",
+      "bytes": 4002,
+      "sha256": "294e73d4a710506a4aff8b01154d12c573d7de9fbf5c2db40aae6ce5dae480a1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-历史0925正式撮合.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-历史成交明细.md",
+      "bytes": 13134,
+      "sha256": "1091dc4574c72f7da89a73ad8900060de53e56da97b737d97d8f8d7859017471",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-历史成交明细.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-增量刷新推送队列.md",
+      "bytes": 5193,
+      "sha256": "b73ea545e50fb53ca1b7ca64f6e6ef8e89692ffa3edd9ec01028476edca10de0",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-增量刷新推送队列.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-小走势图.md",
+      "bytes": 2392,
+      "sha256": "6614cd50023c865303e14d5c32a01509b3df62dfede273a1c688aeb2ea4003bb",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-小走势图.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-当日0925正式撮合.md",
+      "bytes": 3826,
+      "sha256": "e0c10ba6915a343625c879ea4682235b6b94f8087c7763107fddde8bcc13a675",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-当日0925正式撮合.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-当日分时.md",
+      "bytes": 4177,
+      "sha256": "7401c8b1ef157f45ed629541b913d0b940b7f1a659b696b331fb92ef11e69f16",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-当日分时.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-当日成交明细.md",
+      "bytes": 9128,
+      "sha256": "fc232e6985026b732ad793dad26a1b17c980d2d7ca1c652a33c8637f522de0b8",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-当日成交明细.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-心跳.md",
+      "bytes": 1938,
+      "sha256": "fb34606391c23e674e65ff74c373438ae9903b7601bc9e4da832c72d05d3ec0b",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-心跳.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-批量快照.md",
+      "bytes": 4988,
+      "sha256": "a8931870ac8aa11eb17390f504ae1b892e48b3a85b333b76da8f0641014a4fdd",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-批量快照.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-指定日期历史分时.md",
+      "bytes": 4533,
+      "sha256": "e60bfcc4824eea0f03c7ff67b701b1f088acb8d3c2ca100923e5727a70281d1e",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-指定日期历史分时.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-握手.md",
+      "bytes": 2564,
+      "sha256": "a917935a0a23dd3dbd869cbffb8eb5216dfadaab7a0afd221c9c743ecc1e28a1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-握手.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-旧版批量行情.md",
+      "bytes": 4075,
+      "sha256": "f2268955124a94a3f80efeb10592e467039f129500af616ce9aa2f86c02c91eb",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-旧版批量行情.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-服务器文件下载.md",
+      "bytes": 2408,
+      "sha256": "d9009238addc08529c0d79bd7b69ba3b34a0a216659729f34a7fc5f6fd777cce",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-服务器文件下载.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-服务器文件读取.md",
+      "bytes": 5195,
+      "sha256": "4ae636812e3df8188b69630e05882326ca58317d887f0563c947c3469128766d",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-服务器文件读取.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-服务器统计文件解析.md",
+      "bytes": 3170,
+      "sha256": "95fd0bb8314f8e6b08e24e5946ce1db168ddab5438c889b91f1a7578bc41a3be",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-服务器统计文件解析.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-本地复权系数.md",
+      "bytes": 8874,
+      "sha256": "ae101f0845230d442e61fdbc1bc0bf5b225f8e06d736d5f95341aa65ee270658",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-本地复权系数.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-特殊品种涨跌停限制.md",
+      "bytes": 2985,
+      "sha256": "0abd58fb23fcf73e65894203c39eb0f2316275d7cd528b7a71fc0f9eb96a2f59",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-特殊品种涨跌停限制.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-股本变迁GBBQ.md",
+      "bytes": 6449,
+      "sha256": "57cccffadd6019f70017d77e3f06500db2872fda0b1c8a75cb487ee4bd6bd2b6",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-股本变迁GBBQ.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-财务基础信息.md",
+      "bytes": 6471,
+      "sha256": "c9e326c1bd2ad899a7c76af6d9617deed49298e42eb7556372b43b67be18ca09",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-财务基础信息.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-近期历史分时.md",
+      "bytes": 3581,
+      "sha256": "3cad679e05f3388735a64b6a8c56c5cf5c022d2784cab0128d4dd75b58a7b069",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-近期历史分时.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-退市K线日线接口.md",
+      "bytes": 6043,
+      "sha256": "2c0c6b339f213ca08203091c608b0ff717213d222ce5825a075735158099105b",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-退市K线日线接口.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/7709-集合竞价明细.md",
+      "bytes": 6907,
+      "sha256": "9ad5a4ebb124789f57ae75b8ac1b8f6506988a1485c6da49fa30d58165ac7429",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/7709-集合竞价明细.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-个股总评.md",
+      "bytes": 2160,
+      "sha256": "e98f30659cc98fad856774bd51fce4f79c275eb38faf6ce4406572843a4e505c",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-个股总评.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-主营构成.md",
+      "bytes": 2159,
+      "sha256": "b2930a8c99824012a7c6092a48a1aa653e8fda1cec071ef7dc7d33f24de39fc7",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-主营构成.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-估值市场数据.md",
+      "bytes": 2317,
+      "sha256": "8e59647bdbb4748971b6d8db75cf9df2dcccc15616002afcabb05c606f817acc",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-估值市场数据.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-公司概况.md",
+      "bytes": 2001,
+      "sha256": "71480e562d40b0b3c345ce63de6de8dcd42b410fd3ffc060f44f541ed3eaada1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-公司概况.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-公司资讯研报.md",
+      "bytes": 2026,
+      "sha256": "e48caaaa2310decb5f4dcb87a4e63165b57b873b4efb887ae38bbaa3672c54aa",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-公司资讯研报.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-分红融资.md",
+      "bytes": 1963,
+      "sha256": "a963bd2abbeaa2b60e56183b77651f0a033a4a00e025d45e01d134004532f62a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-分红融资.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-增发获配.md",
+      "bytes": 2001,
+      "sha256": "5ecb2352c2dabfacc01fe2dd570e2c3694425163ef08ed8cd0b86cdb72a25aa6",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-增发获配.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-市场行业排名.md",
+      "bytes": 1629,
+      "sha256": "2ad72eb864cf0996ce360e7a79c677fc05219db6bfd41f3be8ca9b65ea7ef3e3",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-市场行业排名.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-新闻公告路演.md",
+      "bytes": 2200,
+      "sha256": "abe002e751f405d3e11d631eadb480df70106bab74f0db1b7d9c0d41d4b42117",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-新闻公告路演.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-沪深股通持仓.md",
+      "bytes": 1633,
+      "sha256": "d673d6b1cdad88daf0e44966ad991d0c110c205d7b944d1b0f91f39d0425388c",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-沪深股通持仓.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-涨跌停列表.md",
+      "bytes": 7026,
+      "sha256": "503333723d52175aa9c0ede70a1a80de76b6e2132513df584310f198a8415912",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-涨跌停列表.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-热点题材.md",
+      "bytes": 3113,
+      "sha256": "49ab3621f0bee2628bbb67e558508e609c74e43103a9e4895da73a10ea52c9bb",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-热点题材.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-盈利预测.md",
+      "bytes": 2138,
+      "sha256": "1908f867bf824d28bd56f003ae82bbf1e14621d50a0ec540c3e207e7ca76d155",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-盈利预测.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-股东增减持.md",
+      "bytes": 1815,
+      "sha256": "d4c82c35f5747c217fbdad2022ea06db5d80410df45839c244e1badcf98232ad",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-股东增减持.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-股票基础信息.md",
+      "bytes": 2965,
+      "sha256": "2b4cf2a4309aa870d575b946c6182239e1a4883006eff7a3177ab394d2e396fd",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-股票基础信息.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-详情正文.md",
+      "bytes": 1499,
+      "sha256": "d309841d91ac6c448a39b19b436fd8fe442cbe773b17526aad049d686ece3f3e",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-详情正文.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-财务报表.md",
+      "bytes": 2584,
+      "sha256": "8a457d651031ecb4f8004bab4f2c17f87b8fc49819448f40531847eee1812805",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-财务报表.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-财务诊断.md",
+      "bytes": 2218,
+      "sha256": "89633351436b588dffab890daa38d6fb9f8dd80b3110ddf1dd13e4b7684ccb55",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-财务诊断.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-资本运作治理.md",
+      "bytes": 2090,
+      "sha256": "e38bb432d668f6cd09a50d7f2c2a26e97fd8a7b152576b8b4973bf9ffdfa71da",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-资本运作治理.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-通用Entry调用.md",
+      "bytes": 1908,
+      "sha256": "01f55d3edd9ed8b6bf8846a4f9c6c111fd22e168e1dc491f8ddb204ff8ddbc89",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-通用Entry调用.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-题材内对比.md",
+      "bytes": 3248,
+      "sha256": "fec43a54e2a634782f9627ba7c28ebe52a82244783595e40eb3cf1d7480dc568",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-题材内对比.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/F10-题材概念行情.md",
+      "bytes": 2339,
+      "sha256": "921319b1a658360c06fa0a402dc58a54f0c82ab136254c69ccc77b954461df4a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/F10-题材概念行情.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/methods/README.md",
+      "bytes": 4261,
+      "sha256": "e503965b9efdfc37b54c8a5d5b8960b89c809187d166f5c750187152844b3852",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/methods/README.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v1.0.1.md",
+      "bytes": 745,
+      "sha256": "4e79af7414b08e56329b595c27832872f9c97990744545c55d3fd95cae7d7060",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v1.0.1.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v1.0.2.md",
+      "bytes": 463,
+      "sha256": "2fa22013dc29806d1b52f9423dcc71e3a94d246d658e0a8565064cfa8e89fb14",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v1.0.2.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v1.1.0.md",
+      "bytes": 2817,
+      "sha256": "7ff91acb6fa65e9bbde97ca503e60d0d399cacdeac27dc8d3beeb2da234ade9a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v1.1.0.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v1.2.0.md",
+      "bytes": 3279,
+      "sha256": "6fc3e275f5cc7b46b41464e5dcc2511ab6923345a68d397e9a30e6ce9a4f475a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v1.2.0.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v1.3.0.md",
+      "bytes": 1591,
+      "sha256": "e9dccf39aa2d1180f7a2d93567119351f0d21073afb747fa01677023d21779d2",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v1.3.0.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v1.3.1.md",
+      "bytes": 1665,
+      "sha256": "8af8f63f303a06f076c4ffecd82e83b3fcc5a1eeae7041c591b8dd0724f4ed67",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v1.3.1.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v2.0.0.md",
+      "bytes": 1025,
+      "sha256": "09569053e88fba4e66d31fff099fe2cfb4933300020524f78b76822b40cb9f24",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v2.0.0.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v2.0.1.md",
+      "bytes": 3333,
+      "sha256": "e7ad318435ebd9d3bd07ac68c93694d13d5c3b1911478c931d010aca30b83ca8",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v2.0.1.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v2.0.2.md",
+      "bytes": 1266,
+      "sha256": "6f380a8a89f10788f802ecc6ba6e67954db5165ad6ac4cc9c773bc0caeb5efcb",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v2.0.2.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v2.0.3.md",
+      "bytes": 854,
+      "sha256": "28894123b4b7493f695fab14d1ff70b0e8cfc2a5b82b1618008074636a112749",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v2.0.3.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v2.0.4.md",
+      "bytes": 1826,
+      "sha256": "d8d5dc9738727473a7836de68659cc2facf69e53c9a0ac4ee8165ccf38786f23",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v2.0.4.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v2.0.5.md",
+      "bytes": 1664,
+      "sha256": "91cad889a9f49be033f458bed588758c41f755e18f1f7e61ae1fea412788ee65",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v2.0.5.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.0.md",
+      "bytes": 3531,
+      "sha256": "f36d3ce3a50e98c2b64a08142f2f8f2d1af0d2c894d9513c7ccac921bd7a33c2",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.0.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.1.md",
+      "bytes": 2257,
+      "sha256": "c0c37b6b06e6a01090ca45932f1702f5f19bc904ab35bb685bea24e040ca2a0c",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.1.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.2.md",
+      "bytes": 2280,
+      "sha256": "9dcd1585d2a3aa737f0d5a3b7b2da0f0e3ddbd09a3a3b035edbf3ca9ca802fbf",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.2.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.3.md",
+      "bytes": 2304,
+      "sha256": "fc9f219c1c6974b2f831cc83d0f49b1c041c9b0ceb2792fb40c1012bbff96b81",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.3.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.4.md",
+      "bytes": 1758,
+      "sha256": "acc6b8dba0a55a22682c55bf9ea8ebe9453aa0c027234a4f692b1d6e10ad1b7a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.4.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.5.md",
+      "bytes": 1654,
+      "sha256": "1ef19944124317d2eacd2c2fab8ab5245563610b1c5f16bee7c822f650b138ac",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.5.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.6.md",
+      "bytes": 1693,
+      "sha256": "88e597968bf7a7f68330e34a319cef0aecd63c4b8c1b8bc72dee703ec066567b",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.6.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.7.md",
+      "bytes": 1087,
+      "sha256": "d28d302afafa7a13d3c6ed3d9d2d2635b9d5ae6e74833c4ec6955bbcd5f85db8",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.7.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.8.md",
+      "bytes": 1143,
+      "sha256": "5b6af0b02c25ab777a86aa74c80b4cdfc75404a753f0527e5b56ccd98a6d9714",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.8.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.0.9.md",
+      "bytes": 1413,
+      "sha256": "8c098a576c95a6051b50297cf4b7931d2c9959646288a0bdc867405fdb8812b4",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.0.9.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.0.md",
+      "bytes": 1572,
+      "sha256": "038013d52be6c29255868942668446b9aa0ea1e9ec653be9b4b40d8a2715f6bc",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.0.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.1.md",
+      "bytes": 1188,
+      "sha256": "e95cd3106fdb5af9fea2fa872e51b63e5c110b22913eb3cbde68000f75c35c38",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.1.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.2.md",
+      "bytes": 1657,
+      "sha256": "57ea8d4f13151b455ffa3fbb6f37c045ca4f0431d856a1b63a81c935a86b321a",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.2.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.3.md",
+      "bytes": 1480,
+      "sha256": "12a1153c00b8392dacae992aeec9d15e9aba13a45027158ba6c0ed148403b7d1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.3.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.4.md",
+      "bytes": 1066,
+      "sha256": "622a9b9a437c16bc6ef2d5abaced512697486f51c3210a97b962de85eb1b3765",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.4.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.5.md",
+      "bytes": 1322,
+      "sha256": "80a950ace865d806f377f52fd930419592261d00f809f1d28718e701ecac4f20",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.5.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.6.md",
+      "bytes": 1223,
+      "sha256": "1b6f01c977fde0a0074b0b26dc3d211cb59fd557e1d2b3e295dd1e52d08d64cc",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.6.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.7.md",
+      "bytes": 586,
+      "sha256": "1cb69de110e7e8404d715daa9f8b32b44adbd5b16ef534f7ae543acc555999e1",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.7.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.8.md",
+      "bytes": 1101,
+      "sha256": "e07f4643e35ef73c2302fec692e4a636928c42fcbbabfcda4d381216302853b9",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.8.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.1.9.md",
+      "bytes": 451,
+      "sha256": "e2df65296c5f535968f51337ac04ab37bb917bfc4ef550a4c2f3214c3216d6c2",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.1.9.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.2.0.md",
+      "bytes": 756,
+      "sha256": "4a2961761f7d0e1bc69733d0389946c69be55cf2737848d37854ce311277ced9",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.2.0.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.2.1.md",
+      "bytes": 969,
+      "sha256": "1f5617c6fcc293d8e813db788d1bc772c9118cc08f39c25c049ea021960721c3",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.2.1.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.2.2.md",
+      "bytes": 745,
+      "sha256": "324a6023dded748402a28833f4ec660a7b5449220183c310064ab3b55d263dc7",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.2.2.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.2.3.md",
+      "bytes": 1525,
+      "sha256": "4e1a9811bb454ad4beba95bd497c34b558f33722d04c0565d7c53830d6df3070",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.2.3.md"
+      }
+    },
+    {
+      "path": "eltdx-3.3.0/docs/releases/v3.3.0.md",
+      "bytes": 1844,
+      "sha256": "054d986952fc1351362680b5b87b3eb16619e7a48268f5b7d425e6aa436381d7",
+      "origin": {
+        "archive": "archives/eltdx-3.3.0.tar.gz",
+        "member": "eltdx-3.3.0/docs/releases/v3.3.0.md"
+      }
+    },
+    {
+      "path": "github/electkismet-eltdx-commits.json",
+      "bytes": 245811,
+      "sha256": "e9ece4976dc043dbacedd03302be624e3f3e538462f311e190755451a515f6ca",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/electkismet/eltdx/commits",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/electkismet-eltdx-info.json",
+      "bytes": 5408,
+      "sha256": "09bb53a83215c8edbc0841565f455477e6e4330eed0cd96b433a17908f6c9cb5",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/electkismet/eltdx",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/eltdx-latest-release.json",
+      "bytes": 15634,
+      "sha256": "7c9971ed95fd5d502b9df408f5c1132ca718720af4728d30f8ec3b3ed9edfa0e",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/electkismet/eltdx/releases/latest",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/eltdx-tree.json",
+      "bytes": 214730,
+      "sha256": "b5769c4f9964da258b20de377a1684bd16b9442091d191780a9d92abf1d61f71",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/electkismet/eltdx/git/trees/104f23336f712a98e69821a58db745cd4040862d?recursive=1",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/empty-response-report.json",
+      "bytes": 958,
+      "sha256": "33524655803222039ea934344ecc2cd8b2e3df947367bae26483f6b091408a5e",
+      "representation": "filtered_derivative",
+      "original_sha256": "06bfaaa985c150c5840cfafa474408cbe3667241c7ed7561b1138b31416e39d2",
+      "transform": "2026-10-24: retained issue identity/title/timestamps, omitted original body and unrelated provider recommendations",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/simonlin1212/a-stock-data/issues/52",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/injoyai-tdx-commits.json",
+      "bytes": 15052,
+      "sha256": "20f73ba8a0ad4695c000cbae9c0b0b1e3750c578fdee100e615643957effa232",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/injoyai/tdx/commits",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/injoyai-tdx-info.json",
+      "bytes": 4874,
+      "sha256": "6da774ee22a6fa6285d84745898f69e1eda49491d51c165d82064885e46da87a",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/injoyai/tdx",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/injoyai-time-fix.json",
+      "bytes": 10521,
+      "sha256": "5a7fb3e376e18d0091ed775fe94148b4f4bcba1b2db6708e664fb19c30cf9542",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/injoyai/tdx/commits/aa1ebed19cab7b6ee0eee0b0f4baef7869759384",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/injoyai-tree.json",
+      "bytes": 44512,
+      "sha256": "8820e1fd322ab16ae364373280a72e3da5e2b2e9fefc09003fc3175cdc19cf1b",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/injoyai/tdx/git/trees/2a9000681f5a9896ea98e4de8bc4904f1dce78ba?recursive=1",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/mootdx-mootdx-commits.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/mootdx/mootdx/commits",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/simonlin1212-a-stock-data-commits.json",
+      "bytes": 58070,
+      "sha256": "1041e8791d51c39e9f9f48b850b71b349b412e23df138e838262be5150d77c8c",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/simonlin1212/a-stock-data/commits",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "github/simonlin1212-a-stock-data-info.json",
+      "bytes": 6151,
+      "sha256": "0b4c84cfe8cf86263c5852cdd9d92cd124bb09aa4a666715b390a56c6eacd2ca",
+      "origin": {
+        "endpoint": "https://api.github.com/repos/simonlin1212/a-stock-data",
+        "retrieved_on": "2026-10-23",
+        "note": "Snapshot; date filters and pagination are not reconstructed."
+      }
+    },
+    {
+      "path": "injoyai-tdx/LICENSE",
+      "bytes": 1064,
+      "sha256": "55b70210774ffc484b3ff977ccdca60931a00e10c90bb5df0927a9c372977dbf",
+      "origin": {
+        "url": "https://raw.githubusercontent.com/injoyai/tdx/2a9000681f5a9896ea98e4de8bc4904f1dce78ba/LICENSE"
+      }
+    },
+    {
+      "path": "injoyai-tdx/protocol/const.go",
+      "bytes": 2688,
+      "sha256": "a75564f128052108372cdcff099d3e00e5fb1997eecedccac0bef8f3d47d1663",
+      "origin": {
+        "url": "https://raw.githubusercontent.com/injoyai/tdx/2a9000681f5a9896ea98e4de8bc4904f1dce78ba/protocol/const.go"
+      }
+    },
+    {
+      "path": "injoyai-tdx/protocol/model_history_trade.go",
+      "bytes": 1503,
+      "sha256": "e6f632f944dab275b1b07300788e14b6c1dbc6da5245a4031324d6cc110ae2bd",
+      "origin": {
+        "url": "https://raw.githubusercontent.com/injoyai/tdx/2a9000681f5a9896ea98e4de8bc4904f1dce78ba/protocol/model_history_trade.go"
+      }
+    },
+    {
+      "path": "injoyai-tdx/protocol/model_kline.go",
+      "bytes": 14651,
+      "sha256": "5391f56d18faf2627c681c491fad911dd00b710d826771fee1f8dcd3ab5493eb",
+      "origin": {
+        "url": "https://raw.githubusercontent.com/injoyai/tdx/2a9000681f5a9896ea98e4de8bc4904f1dce78ba/protocol/model_kline.go"
+      }
+    },
+    {
+      "path": "injoyai-tdx/protocol/model_quote.go",
+      "bytes": 4316,
+      "sha256": "937872d1f754703024c6bf8d1a1cdaab4db002c7b8b741555ed5f0f370333c62",
+      "representation": "filtered_derivative",
+      "original_sha256": "e119585271812e910620c4a928fb6e0ec08ed453b4c687bc79538ba3667a881f",
+      "transform": "2026-10-24: trimmed cross-provider comparisons in three comments; protocol decoding statements unchanged",
+      "origin": {
+        "url": "https://raw.githubusercontent.com/injoyai/tdx/2a9000681f5a9896ea98e4de8bc4904f1dce78ba/protocol/model_quote.go"
+      }
+    },
+    {
+      "path": "official/official-http17709.html",
+      "bytes": 26004,
+      "sha256": "44efbfce9272a81f5aa81b718ace28b6466f045a45836f6405521af5fa777920",
+      "origin": {
+        "url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hdhbmi50d038.html"
+      }
+    },
+    {
+      "path": "official/official-http17709.metadata.json",
+      "bytes": 368,
+      "sha256": "15492e9025c8fd75d633096fc33ba3089ebbe9d54a77184510f2246b65925bf7",
+      "origin": {
+        "description": "Local fetch time, final URL and raw HTML SHA-256"
+      }
+    },
+    {
+      "path": "official/official-market-data.html",
+      "bytes": 32127,
+      "sha256": "bba1c61ae477a665123aa2ed5bd957e7904b813850719c39b9188db6b569be84",
+      "origin": {
+        "url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1ctuhthaq5qmg/mindoc-1h10g60jt68sc.html"
+      }
+    },
+    {
+      "path": "official/official-market-data.metadata.json",
+      "bytes": 410,
+      "sha256": "c00ac41d817c4220e9c8d5f0ee7b1485d78fb11bd503feb5f72b9b297fb3beba",
+      "origin": {
+        "description": "Local fetch time, final URL and raw HTML SHA-256"
+      }
+    },
+    {
+      "path": "official/official-tdxaidata.html",
+      "bytes": 27184,
+      "sha256": "57c04813668909353827c47ee9f0b3d9b34efc8b5bd65816651d660131c2780d",
+      "origin": {
+        "url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1hjbgqpdhv114.html"
+      }
+    },
+    {
+      "path": "official/official-tdxaidata.metadata.json",
+      "bytes": 368,
+      "sha256": "6002e4e7fc3cd6700e6ce047bcc3b95c8e07374ef6154111871b27aaa771a7ae",
+      "origin": {
+        "description": "Local fetch time, final URL and raw HTML SHA-256"
+      }
+    },
+    {
+      "path": "official/official-versions.html",
+      "bytes": 29461,
+      "sha256": "9fc5ec9c847a29d215004b678e92309d7693eca89a81646c8b0041e4ee00bf27",
+      "origin": {
+        "url": "https://help.tdx.com.cn/quant/docs/markdown/mindoc-1cfsjkbf8f3is/TdxQuantVersion.html"
+      }
+    },
+    {
+      "path": "official/official-versions.metadata.json",
+      "bytes": 400,
+      "sha256": "be7ab5723d4cb26ad6359779cf58ddee5868bf74327fd41bcf6dec7e356180b2",
+      "origin": {
+        "description": "Local fetch time, final URL and raw HTML SHA-256"
+      }
+    },
+    {
+      "path": "registries/pypi-eltdx.json",
+      "bytes": 2335,
+      "sha256": "cc610908809039dbd99354084e93cf46ec7b44852c35602503a1920dbcd245f3",
+      "representation": "filtered_derivative",
+      "original_sha256": "df45e73774d6e68b7ac673b0df5f913e875246b2adeb2fb7a7e0cc70dea7063c",
+      "transform": "2026-10-24: retained package identity and relevant sdist metadata; omitted description, wheels and unrelated historical releases",
+      "origin": {
+        "url": "https://pypi.org/pypi/eltdx/json",
+        "retrieved_on": "2026-10-23"
+      }
+    },
+    {
+      "path": "registries/pypi-mootdx.json",
+      "bytes": 147642,
+      "sha256": "1dee96cda8720e2e08d9ae10ced7dac74858fa9488558a0b27cacc510f26cb9b",
+      "origin": {
+        "url": "https://pypi.org/pypi/mootdx/json",
+        "retrieved_on": "2026-10-23"
+      }
+    },
+    {
+      "path": "registries/pypi-tdx-cli.json",
+      "bytes": 21043,
+      "sha256": "028dfe697ea567dc1b9905c8d1ba1b2987a17fb3a8106d869e67086a4abbbc2b",
+      "origin": {
+        "url": "https://pypi.org/pypi/tdx-cli/json",
+        "retrieved_on": "2026-10-23"
+      }
+    },
+    {
+      "path": "registries/pypi-tdxaidata.json",
+      "bytes": 21100,
+      "sha256": "b7ea288480758dbb0fc52c0454668f6be18e6d9d9b68bb17f459d7d446c653c3",
+      "origin": {
+        "url": "https://pypi.org/pypi/tdxaidata/json",
+        "retrieved_on": "2026-10-23"
+      }
+    },
+    {
+      "path": "registries/pypi-tdxpy.json",
+      "bytes": 28838,
+      "sha256": "0936f52a709aad39879777949795f12c8c596dbb4627b43bf73828704b14c69d",
+      "origin": {
+        "url": "https://pypi.org/pypi/tdxpy/json",
+        "retrieved_on": "2026-10-23"
+      }
+    },
+    {
+      "path": "tdxaidata-1.3.1/CHANGELOG.md",
+      "bytes": 6323,
+      "sha256": "40b4ce4b312c3f4df254bd7a3888f034e5495563bbe495eca0c6dd952765cfd2",
+      "origin": {
+        "archive": "archives/tdxaidata-1.3.1.tar.gz",
+        "member": "tdxaidata-1.3.1/CHANGELOG.md"
+      }
+    },
+    {
+      "path": "tdxaidata-1.3.1/LICENSE",
+      "bytes": 1065,
+      "sha256": "98d3900b48e8e1de04915b5ffb07ee35cb63f8cbd180edad52cbceed86ec5cee",
+      "origin": {
+        "archive": "archives/tdxaidata-1.3.1.tar.gz",
+        "member": "tdxaidata-1.3.1/LICENSE"
+      }
+    },
+    {
+      "path": "tdxaidata-1.3.1/README.md",
+      "bytes": 6551,
+      "sha256": "4e6a21cf444c9671f5c3b5660a19239c1a340faf4737df1c3e768642ea7cdc54",
+      "origin": {
+        "archive": "archives/tdxaidata-1.3.1.tar.gz",
+        "member": "tdxaidata-1.3.1/README.md"
+      }
+    },
+    {
+      "path": "tdxaidata-1.3.1/src/tdxaidata/__init__.py",
+      "bytes": 586,
+      "sha256": "6c9b9b9b706c0fb755a5beb94fb87be771b52e9dbf7549f5a0cab5579bd7db17",
+      "origin": {
+        "archive": "archives/tdxaidata-1.3.1.tar.gz",
+        "member": "tdxaidata-1.3.1/src/tdxaidata/__init__.py"
+      }
+    },
+    {
+      "path": "tdxaidata-1.3.1/src/tdxaidata/docs/CHANGELOG.md",
+      "bytes": 6323,
+      "sha256": "40b4ce4b312c3f4df254bd7a3888f034e5495563bbe495eca0c6dd952765cfd2",
+      "origin": {
+        "archive": "archives/tdxaidata-1.3.1.tar.gz",
+        "member": "tdxaidata-1.3.1/src/tdxaidata/docs/CHANGELOG.md"
+      }
+    },
+    {
+      "path": "tdxaidata-1.3.1/src/tdxaidata/docs/tdxaidata使用文档.md",
+      "bytes": 216960,
+      "sha256": "c68a899d4c05f41f80ed83cc77ca89506ab888bfa7fc775e94b9cb0a3372918e",
+      "origin": {
+        "archive": "archives/tdxaidata-1.3.1.tar.gz",
+        "member": "tdxaidata-1.3.1/src/tdxaidata/docs/tdxaidata使用文档.md"
+      }
+    },
+    {
+      "path": "tdxaidata-1.3.1/src/tdxaidata/lib/__init__.py",
+      "bytes": 122,
+      "sha256": "541e03946e7112d8c73856eede4d99971cb89f4b8989729f398f3706050a97df",
+      "origin": {
+        "archive": "archives/tdxaidata-1.3.1.tar.gz",
+        "member": "tdxaidata-1.3.1/src/tdxaidata/lib/__init__.py"
+      }
+    },
+    {
+      "path": "tdxaidata-1.3.1/src/tdxaidata/tdxaidata.py",
+      "bytes": 76977,
+      "sha256": "79e81872e11f31084627fa489ec11961da58d9cf8afe3efb623df9dce024ed52",
+      "origin": {
+        "archive": "archives/tdxaidata-1.3.1.tar.gz",
+        "member": "tdxaidata-1.3.1/src/tdxaidata/tdxaidata.py"
+      }
+    }
+  ]
+}

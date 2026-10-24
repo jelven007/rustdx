@@ -1,0 +1,29 @@
+[
+  {
+    "name": "fetch-linux-offline",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "fetch",
+      "--offline",
+      "--locked",
+      "--target",
+      "x86_64-unknown-linux-gnu"
+    ],
+    "exit_code": 0,
+    "seconds": 0.16388755399384536
+  },
+  {
+    "name": "prebuild-linux",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "build",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 101,
+    "seconds": 15.284828473988455
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python3",
+    "/tmp/rustdx-resource-negative.py"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 7.147,
+  "integration_skip_env": true
+}

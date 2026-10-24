@@ -1,0 +1,487 @@
+[
+    {
+        "Id": "938da2089c4ee3bdd45bc74e4b11cee453a87b9d1338d7eede4fdb601980f8ac",
+        "Created": "2026-10-24T12:39:32.022949201Z",
+        "Path": "/entrypoint.sh",
+        "Args": [],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 602578,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-24T12:39:33.415871051Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:eb6f811377c9da6f83a494c6f8f62cd921db45b6ded8b06d91df5db391797708",
+        "ResolvConfPath": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containers/938da2089c4ee3bdd45bc74e4b11cee453a87b9d1338d7eede4fdb601980f8ac/resolv.conf",
+        "HostnamePath": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containers/938da2089c4ee3bdd45bc74e4b11cee453a87b9d1338d7eede4fdb601980f8ac/hostname",
+        "HostsPath": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containers/938da2089c4ee3bdd45bc74e4b11cee453a87b9d1338d7eede4fdb601980f8ac/hosts",
+        "LogPath": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containers/938da2089c4ee3bdd45bc74e4b11cee453a87b9d1338d7eede4fdb601980f8ac/938da2089c4ee3bdd45bc74e4b11cee453a87b9d1338d7eede4fdb601980f8ac-json.log",
+        "Name": "/rustdx-stage5-ch",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/tmp/rustdx-acceptance-20261024-TLDCn5/acceptance.xml:/etc/clickhouse-server/config.d/acceptance.xml:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "host",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 2147483648,
+            "NanoCpus": 2000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 4294967296,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [
+                {
+                    "Name": "nofile",
+                    "Hard": 262144,
+                    "Soft": 262144
+                }
+            ],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/959f7f0e29c144cabbe230c614d69f2c3dec5e649a30696bf61cbdae876f623c-init/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/d725dba750c743523de6906ed72dac35f4539c8a44d8cc8dc809ee46b0c4803b/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/60680426cbb23b427e99bdc12bd01cbbbe8c2710d3cd66147e034aa55b5f8c7f/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/96db752c376c77bcfaca60b351ae9675271e93a02d82cd2131fc52a61a7e700b/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/2c09d7bc5148290a0e0331683f110df68c909fc2693004b28e15effb05ec6273/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/7ee2b34ab326781c07f82fad9fc7e30d5372828032fc7ccb29982daed270ca9b/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/e4c853cd5d59034c4e95b16b530a8b6c6ba4d1782d64fd8d1add9531338c9058/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/8543d75dd4d7757be4c2fe79025d485dc9c325727c15f6cc561d9481e03dea93/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/7e443065cdfe08f01c717cb1a20f0478af592039042b6d792ed00af3b804eb84/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/34d6d83f4a15b4effcdabf14ef782bc2845b825b753763c506c80bc9fe7a7687/diff",
+                "MergedDir": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/959f7f0e29c144cabbe230c614d69f2c3dec5e649a30696bf61cbdae876f623c/merged",
+                "UpperDir": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/959f7f0e29c144cabbe230c614d69f2c3dec5e649a30696bf61cbdae876f623c/diff",
+                "WorkDir": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/959f7f0e29c144cabbe230c614d69f2c3dec5e649a30696bf61cbdae876f623c/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/tmp/rustdx-acceptance-20261024-TLDCn5/acceptance.xml",
+                "Destination": "/etc/clickhouse-server/config.d/acceptance.xml",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "volume",
+                "Name": "bfd36695abe9c216216a545933e31f4372839ac2735a539d4f1eb7777793e68e",
+                "Source": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/volumes/bfd36695abe9c216216a545933e31f4372839ac2735a539d4f1eb7777793e68e/_data",
+                "Destination": "/var/lib/clickhouse",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "ECS-DEV",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "8123/tcp": {},
+                "9000/tcp": {},
+                "9009/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "CLICKHOUSE_SKIP_USER_SETUP=1",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=en_US.UTF-8",
+                "LANGUAGE=en_US:en",
+                "LC_ALL=en_US.UTF-8",
+                "TZ=UTC",
+                "CLICKHOUSE_CONFIG=/etc/clickhouse-server/config.xml"
+            ],
+            "Cmd": null,
+            "Image": "docker.m.daocloud.io/clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146",
+            "Volumes": {
+                "/var/lib/clickhouse": {}
+            },
+            "WorkingDir": "/",
+            "Entrypoint": [
+                "/entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "com.clickhouse.build.version": "25.8.33.6-alpine"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "b1af45f1e32d2f283fae725d6d86be3f22e1603af5f3e24c6dbe5eb4e454b7b5",
+            "SandboxKey": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-exec/netns/default",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "host": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "",
+                    "DriverOpts": null,
+                    "NetworkID": "fe9868a6ffc355f4ba7f4bdb4785c92d137e8481a2c1d92e8ea0466e845f15a2",
+                    "EndpointID": "a10e01c00f295fbf601a468f8f7233b3e0aa4de4f5f64fcf7e7ba1011528acae",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": null
+                }
+            }
+        }
+    },
+    {
+        "Id": "b1bf8dda6637d25614cc26d575a129dffa5f8e2b72d18c78f8bde70a904a4c3b",
+        "Created": "2026-10-24T12:39:33.538591471Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "mongod",
+            "--bind_ip",
+            "127.0.0.1",
+            "--port",
+            "27018",
+            "--wiredTigerCacheSizeGB",
+            "0.25"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 602640,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-24T12:39:33.554676237Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:aba3018581e934f8ca714bda8f17e88910211ebfb1b96547824085985c884bf1",
+        "ResolvConfPath": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containers/b1bf8dda6637d25614cc26d575a129dffa5f8e2b72d18c78f8bde70a904a4c3b/resolv.conf",
+        "HostnamePath": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containers/b1bf8dda6637d25614cc26d575a129dffa5f8e2b72d18c78f8bde70a904a4c3b/hostname",
+        "HostsPath": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containers/b1bf8dda6637d25614cc26d575a129dffa5f8e2b72d18c78f8bde70a904a4c3b/hosts",
+        "LogPath": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containers/b1bf8dda6637d25614cc26d575a129dffa5f8e2b72d18c78f8bde70a904a4c3b/b1bf8dda6637d25614cc26d575a129dffa5f8e2b72d18c78f8bde70a904a4c3b-json.log",
+        "Name": "/rustdx-stage5-mongo",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "host",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 1073741824,
+            "NanoCpus": 2000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 2147483648,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/d421cec1c4c874a2e8a381154b0457ae6315f7e0e467fabd24b195d5389eee1d-init/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/099af24582ff7e3bae708465df6fb1b91336b20ec9fec9aed3bf361d7e26929b/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/8c96ac1f5f0dd9e8d5101eff066f6d7cfccc7115c0bd09f84180d17ef77a84b8/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/94457ee24d5cfd3bfe699af8e3d5682f66a6fdb996d6fb9053e3af66ebaae11b/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/209d29616703ce9a92cc7fe93f707d73ceb2ab72001bb2c4ccab022b98a57d42/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/b401ee7096461c9b12366154da846b2b445278787e5c837b278604d683baed6c/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/38954082e2c7291492a10853ef7862072ed3a4f60ce80392de926714ff31bd1e/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/4a75637a51620faf5eee4d70b16da6e923be5d1ae4af1698a431bdbf5842c26a/diff:/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/4a093a416c94e5e5214106b6aae618d9719fb84f677b690912cb8a01f5d4be3e/diff",
+                "MergedDir": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/d421cec1c4c874a2e8a381154b0457ae6315f7e0e467fabd24b195d5389eee1d/merged",
+                "UpperDir": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/d421cec1c4c874a2e8a381154b0457ae6315f7e0e467fabd24b195d5389eee1d/diff",
+                "WorkDir": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/overlay2/d421cec1c4c874a2e8a381154b0457ae6315f7e0e467fabd24b195d5389eee1d/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "f143413c84f54f231a7f17a2474bb3067703695d4696d568bc6fd952fd129322",
+                "Source": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/volumes/f143413c84f54f231a7f17a2474bb3067703695d4696d568bc6fd952fd129322/_data",
+                "Destination": "/data/configdb",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "bd7c44a0fa9d444c0d9728cfc8240270146443798ef6dccd402fd2bd04af322f",
+                "Source": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/volumes/bd7c44a0fa9d444c0d9728cfc8240270146443798ef6dccd402fd2bd04af322f/_data",
+                "Destination": "/data/db",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "ECS-DEV",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "27017/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.19",
+                "JSYAML_VERSION=3.13.1",
+                "JSYAML_CHECKSUM=662e32319bdd378e91f67578e56a34954b0a2e33aca11d70ab9f4826af24b941",
+                "MONGO_PACKAGE=mongodb-org",
+                "MONGO_REPO=repo.mongodb.org",
+                "MONGO_MAJOR=8.0",
+                "MONGO_VERSION=8.0.16",
+                "HOME=/data/db",
+                "GLIBC_TUNABLES=glibc.pthread.rseq=0"
+            ],
+            "Cmd": [
+                "mongod",
+                "--bind_ip",
+                "127.0.0.1",
+                "--port",
+                "27018",
+                "--wiredTigerCacheSizeGB",
+                "0.25"
+            ],
+            "Image": "docker.1ms.run/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d",
+            "Volumes": {
+                "/data/configdb": {},
+                "/data/db": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.version": "24.04"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "0d756ca1397126d5b0b15adfa3794733e90bdb68290f810214a1e929e9f1fdfc",
+            "SandboxKey": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-exec/netns/default",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "host": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "",
+                    "DriverOpts": null,
+                    "NetworkID": "fe9868a6ffc355f4ba7f4bdb4785c92d137e8481a2c1d92e8ea0466e845f15a2",
+                    "EndpointID": "c2253faa5364e1e6da2e81ca997e9250f064237be8c4eb14c8e15579c6305ba0",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": null
+                }
+            }
+        }
+    }
+]

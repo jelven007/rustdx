@@ -1,0 +1,276 @@
+[
+  {
+    "name": "pull-mongodb",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+      "-H",
+      "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+      "pull",
+      "docker.1ms.run/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d"
+    ],
+    "exit_code": 0,
+    "seconds": 0.1865628540108446
+  },
+  {
+    "name": "start-clickhouse",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+      "-H",
+      "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+      "run",
+      "-d",
+      "--name",
+      "rustdx-stage5-ch",
+      "--network",
+      "host",
+      "--memory",
+      "2g",
+      "--cpus",
+      "2",
+      "--ulimit",
+      "nofile=262144:262144",
+      "-e",
+      "CLICKHOUSE_SKIP_USER_SETUP=1",
+      "-v",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/acceptance.xml:/etc/clickhouse-server/config.d/acceptance.xml:ro",
+      "docker.m.daocloud.io/clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146"
+    ],
+    "exit_code": 0,
+    "seconds": 1.5155216109997127
+  },
+  {
+    "name": "start-mongodb",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+      "-H",
+      "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+      "run",
+      "-d",
+      "--name",
+      "rustdx-stage5-mongo",
+      "--network",
+      "host",
+      "--memory",
+      "1g",
+      "--cpus",
+      "2",
+      "docker.1ms.run/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d",
+      "mongod",
+      "--bind_ip",
+      "127.0.0.1",
+      "--port",
+      "27018",
+      "--wiredTigerCacheSizeGB",
+      "0.25"
+    ],
+    "exit_code": 0,
+    "seconds": 0.16385284200077876
+  },
+  {
+    "name": "version-rust",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/rustc",
+      "--version"
+    ],
+    "exit_code": 0,
+    "seconds": 0.015582640015054494
+  },
+  {
+    "name": "version-mongoimport",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin/mongoimport",
+      "--version"
+    ],
+    "exit_code": 0,
+    "seconds": 0.007453480997355655
+  },
+  {
+    "name": "version-mongosh",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+      "--version"
+    ],
+    "exit_code": 0,
+    "seconds": 0.16376660100650042
+  },
+  {
+    "name": "build-offline",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "build",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 0.8146763250115328
+  },
+  {
+    "name": "fmt",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.7646229259844404
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "seconds": 0.2639670339995064
+  },
+  {
+    "name": "workspace-tests",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "test",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 36.809625180991134
+  },
+  {
+    "name": "doc-tests",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "test",
+      "--workspace",
+      "--all-features",
+      "--doc",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 1.4655760119785555
+  },
+  {
+    "name": "strict-doc",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "doc",
+      "--workspace",
+      "--all-features",
+      "--no-deps",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "seconds": 1.1652043880021665
+  },
+  {
+    "name": "provision-mongo",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+      "--nodb",
+      "--quiet",
+      "--norc",
+      "--eval",
+      "const db=connect(process.env.RUSTDX_TEST_MONGO_URI);load('deploy/runner/mongodb.js');"
+    ],
+    "exit_code": 0,
+    "seconds": 0.36416432599071413
+  },
+  {
+    "name": "runner-all",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/toolchain/bin/cargo",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--all-features",
+      "--offline",
+      "--locked",
+      "--",
+      "--include-ignored",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 28.999723831017036
+  },
+  {
+    "name": "bulk",
+    "command": [
+      "python3",
+      "scripts/bench/measure_database_readback.py",
+      "--binary",
+      "target/debug/rustdx",
+      "--rows",
+      "65536",
+      "--repeat",
+      "2",
+      "--output",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/bulk.json"
+    ],
+    "exit_code": 0,
+    "seconds": 21.59073423600057
+  },
+  {
+    "name": "faults",
+    "command": [
+      "python3",
+      "scripts/validation/verify_database_faults.py",
+      "--binary",
+      "target/debug/rustdx",
+      "--output",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/faults.json"
+    ],
+    "exit_code": 0,
+    "seconds": 8.824857133993646
+  },
+  {
+    "name": "real-history",
+    "command": [
+      "python3",
+      "scripts/validation/verify_real_day_database.py",
+      "--binary",
+      "target/debug/rustdx",
+      "--zip",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/official-subset.zip",
+      "--output",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/real-history.json"
+    ],
+    "exit_code": 0,
+    "seconds": 211.78405207500327
+  },
+  {
+    "name": "systemd-smoke",
+    "command": [
+      "systemd-run",
+      "--wait",
+      "--pipe",
+      "--collect",
+      "--unit=rustdx-stage5-smoke",
+      "--property=RuntimeMaxSec=30",
+      "--property=NoNewPrivileges=yes",
+      "--property=MemoryMax=134217728",
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx",
+      "--no-tcp-startup",
+      "show",
+      "--version"
+    ],
+    "exit_code": 0,
+    "seconds": 0.032352351990994066
+  }
+]

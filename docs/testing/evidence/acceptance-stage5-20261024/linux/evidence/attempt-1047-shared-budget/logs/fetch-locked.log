@@ -1,0 +1,18 @@
+ Downloading crates ...
+warning: spurious network error (3 tries remaining): [28] Timeout was reached (failed to download any data for `windows-link v0.1.1` within 30s)
+warning: spurious network error (3 tries remaining): [28] Timeout was reached (download of `wasm-bindgen v0.2.100` failed to transfer more than 10 bytes in 30s)
+warning: spurious network error (3 tries remaining): [28] Timeout was reached (failed to download any data for `wasm-bindgen-macro v0.2.100` within 30s)
+warning: spurious network error (3 tries remaining): [28] Timeout was reached (download of `windows_x86_64_msvc v0.52.6` failed to transfer more than 10 bytes in 30s)
+  Downloaded android-tzdata v0.1.1
+  Downloaded windows-link v0.2.1
+  Downloaded iana-time-zone-haiku v0.1.2
+  Downloaded android_system_properties v0.1.5
+  Downloaded windows-link v0.1.1
+  Downloaded windows-targets v0.52.6
+  Downloaded wasm-bindgen-macro v0.2.100
+  Downloaded wasm-bindgen-shared v0.2.100
+  Downloaded derive_arbitrary v1.4.2
+  Downloaded anstyle-wincon v3.0.7
+  Downloaded wasm-bindgen-backend v0.2.100
+  Downloaded wasm-bindgen-macro-support v0.2.100
+  Downloaded wasi v0.11.0+wasi-snapshot-preview1

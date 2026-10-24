@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.664192625,
+      "log": "/tmp/rustdx-optimization-20261024/phase3a-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "jelven-rustdx-complete",
+        "--lib",
+        "--locked"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 16.595166458,
+      "log": "/tmp/rustdx-optimization-20261024/phase3a-1.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "jelven-rustdx-complete",
+        "--test",
+        "finance_semantics",
+        "--locked"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 14.129620167000002,
+      "log": "/tmp/rustdx-optimization-20261024/phase3a-2.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 9.467855665999998,
+      "log": "/tmp/rustdx-optimization-20261024/phase3a-3.log"
+    }
+  ]
+}

@@ -1,0 +1,255 @@
+[
+    {
+        "Id": "8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36",
+        "Created": "2026-10-24T13:07:54.990625878Z",
+        "Path": "/entrypoint.sh",
+        "Args": [],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-24T13:07:55.00655985Z",
+            "FinishedAt": "2026-10-24T13:08:02.801861083Z"
+        },
+        "Image": "sha256:eb6f811377c9da6f83a494c6f8f62cd921db45b6ded8b06d91df5db391797708",
+        "ResolvConfPath": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containers/8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36/resolv.conf",
+        "HostnamePath": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containers/8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36/hostname",
+        "HostsPath": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containers/8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36/hosts",
+        "LogPath": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containers/8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36/8c6165ccd2479363a4f2121da45341be19350730660bbb9089e6da0d7f80cd36-json.log",
+        "Name": "/rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-ch-restored",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored/ch-data:/var/lib/clickhouse",
+                "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored/ch-logs:/var/log/clickhouse-server",
+                "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/clickhouse.xml:/etc/clickhouse-server/config.d/recovery.xml:ro",
+                "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups:/backups"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "host",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 2147483648,
+            "NanoCpus": 2000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 4294967296,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [
+                {
+                    "Name": "nofile",
+                    "Hard": 262144,
+                    "Soft": 262144
+                }
+            ],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/e20150912a026d5b1426fac0c4d14b1d93d0d627c2171a1c64b29b71351ca0ae-init/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/d725dba750c743523de6906ed72dac35f4539c8a44d8cc8dc809ee46b0c4803b/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/60680426cbb23b427e99bdc12bd01cbbbe8c2710d3cd66147e034aa55b5f8c7f/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/96db752c376c77bcfaca60b351ae9675271e93a02d82cd2131fc52a61a7e700b/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/2c09d7bc5148290a0e0331683f110df68c909fc2693004b28e15effb05ec6273/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/7ee2b34ab326781c07f82fad9fc7e30d5372828032fc7ccb29982daed270ca9b/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/e4c853cd5d59034c4e95b16b530a8b6c6ba4d1782d64fd8d1add9531338c9058/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/8543d75dd4d7757be4c2fe79025d485dc9c325727c15f6cc561d9481e03dea93/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/7e443065cdfe08f01c717cb1a20f0478af592039042b6d792ed00af3b804eb84/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/34d6d83f4a15b4effcdabf14ef782bc2845b825b753763c506c80bc9fe7a7687/diff",
+                "MergedDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/e20150912a026d5b1426fac0c4d14b1d93d0d627c2171a1c64b29b71351ca0ae/merged",
+                "UpperDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/e20150912a026d5b1426fac0c4d14b1d93d0d627c2171a1c64b29b71351ca0ae/diff",
+                "WorkDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/e20150912a026d5b1426fac0c4d14b1d93d0d627c2171a1c64b29b71351ca0ae/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored/ch-data",
+                "Destination": "/var/lib/clickhouse",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored/ch-logs",
+                "Destination": "/var/log/clickhouse-server",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/clickhouse.xml",
+                "Destination": "/etc/clickhouse-server/config.d/recovery.xml",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/native-backups",
+                "Destination": "/backups",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "ECS-DEV",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "8123/tcp": {},
+                "9000/tcp": {},
+                "9009/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "CLICKHOUSE_SKIP_USER_SETUP=1",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=en_US.UTF-8",
+                "LANGUAGE=en_US:en",
+                "LC_ALL=en_US.UTF-8",
+                "TZ=UTC",
+                "CLICKHOUSE_CONFIG=/etc/clickhouse-server/config.xml"
+            ],
+            "Cmd": null,
+            "Image": "docker.m.daocloud.io/clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146",
+            "Volumes": {
+                "/var/lib/clickhouse": {}
+            },
+            "WorkingDir": "/",
+            "Entrypoint": [
+                "/entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "com.clickhouse.build.version": "25.8.33.6-alpine"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "host": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "",
+                    "DriverOpts": null,
+                    "NetworkID": "fe9868a6ffc355f4ba7f4bdb4785c92d137e8481a2c1d92e8ea0466e845f15a2",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": null
+                }
+            }
+        }
+    }
+]

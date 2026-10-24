@@ -1,0 +1,27 @@
+{
+  "between_file_spacing_ms": 250,
+  "endpoint": "115.238.56.198:7709",
+  "finished_utc": "2026-10-24T14:22:33.213418Z",
+  "queries": [
+    {
+      "chunks": 26,
+      "decoded": true,
+      "filename": "block_gn.dat",
+      "md5_verified": true,
+      "records": 41359,
+      "size": 757083
+    },
+    {
+      "chunks": 11,
+      "decoded": true,
+      "filename": "block_zs.dat",
+      "md5_verified": true,
+      "records": 11554,
+      "size": 329507
+    }
+  ],
+  "source": "live_tcp",
+  "started_utc": "2026-10-24T14:22:28.025494Z",
+  "total_timeout_seconds": 180,
+  "wire_frames": 40
+}

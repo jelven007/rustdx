@@ -1,0 +1,29 @@
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 0.55s
+[1m[32m     Running[0m unittests src/main.rs (target/debug/deps/rustdx-56d3abd13956d754)
+
+running 22 tests
+test io::test_insert_clickhouse ... ok
+test io::rowbinary::tests::adjusted_fields_reordering_and_signed_zero_are_preserved ... ok
+test io::rowbinary::tests::independent_bytes_and_small_reads_preserve_all_float_bits ... ok
+test io::rowbinary::tests::date_upper_bound_and_cancellation_are_enforced ... ok
+test io::tests::clickhouse_schema_must_preserve_key_precision_and_import_versions ... ok
+test io::rowbinary::tests::malformed_fields_and_unbounded_records_fail_before_encoding ... ok
+test io::tests::clickhouse_rejects_error_status_late_exception_and_truncated_body ... ok
+test io::tests::previous_inputs_are_preserved_and_invalid_rows_fail ... ok
+test io::tests::table_names_cannot_be_sql ... ok
+test io::verify::tests::batch_and_mongo_response_limits_reject_invalid_input ... ok
+test io::tests::excel_codes_keep_leading_zero_and_invalid_columns_fail ... ok
+test io::verify::tests::independent_readback_detects_values_keys_duplicates_and_crosses_batches ... ok
+test io::mongo_readback::tests::deadline_cancellation_and_blocked_pipe_are_reaped ... ok
+test io::streaming::tests::chunk_carry_matches_whole_file_with_suspended_events ... ok
+test io::sinks::tests::subprocess_failure_and_timeout_are_bounded ... ok
+test io::mongo_readback::tests::persistent_process_checks_complete_response_eof_and_exit_status ... ok
+test io::streaming::tests::multipass_merge_keeps_last_source_duplicate_and_bounds_diagnostics ... ok
+test io::tests::invalid_collection_preserves_last_success_and_records_failure ... ok
+test io::tests::all_empty_collection_preserves_output_and_fails_report ... ok
+test io::sinks::tests::late_database_error_leaves_durable_unknown_status_and_csv ... ok
+test io::sinks::tests::acknowledged_import_with_failed_readback_retains_csv_and_evidence ... ok
+test io::tests::external_calendar_enables_strict_collection_without_guessing_dates ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.84s
+

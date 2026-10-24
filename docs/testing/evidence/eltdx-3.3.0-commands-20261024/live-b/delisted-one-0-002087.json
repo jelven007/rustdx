@@ -1,0 +1,69 @@
+{
+  "request": {
+    "market": 0,
+    "code": "002087",
+    "start": 0,
+    "count": 1
+  },
+  "records": [
+    {
+      "date_raw": 20240627,
+      "date": "2024-06-27",
+      "time": "2024-06-27T00:00:00+08:00",
+      "open": 0.15,
+      "close": 0.16,
+      "high": 0.16,
+      "low": 0.14,
+      "open_price_milli": 150,
+      "close_price_milli": 160,
+      "high_price_milli": 160,
+      "low_price_milli": 140,
+      "last_close_price_milli": null,
+      "open_delta_raw": 150,
+      "close_delta_raw": 10,
+      "high_delta_raw": 10,
+      "low_delta_raw": -10,
+      "volume_raw": 37086980,
+      "volume_shares": 37086980,
+      "volume_lots": 370869.8,
+      "amount_raw": 1252686668,
+      "amount": 3489190.0,
+      "unknown_suffix_raw": [
+        0,
+        0,
+        1,
+        0
+      ],
+      "record_raw": [
+        243,
+        216,
+        52,
+        1,
+        150,
+        2,
+        10,
+        10,
+        74,
+        132,
+        156,
+        175,
+        35,
+        76,
+        123,
+        170,
+        74,
+        0,
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "source": {
+    "opcode": 1323,
+    "endpoint": "180.153.18.170:7709",
+    "fetched_at": "2026-10-24T06:23:32.584126Z",
+    "connection_id": 1,
+    "metadata_generation": null
+  }
+}

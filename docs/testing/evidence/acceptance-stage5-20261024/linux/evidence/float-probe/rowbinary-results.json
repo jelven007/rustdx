@@ -1,0 +1,10 @@
+{
+  "rowbinary_exact_low_bits": true,
+  "version_default_generated": true,
+  "readback_csv": "\"date\",\"code\",\"open\",\"high\",\"low\",\"close\",\"amount\",\"vol\",\"version\"\n\"2005-01-13\",\"sh600000\",6.95,7.02,6.94,6.96,8976785,12848.27,1792845104736884592\n",
+  "payload_hex": "fc31087368363030303030cdcccccccccc1b4014ae47e17a141c40c3f5285c8fc21b40d7a3703d0ad71b4000000020321f6141f6285c8f2218c940",
+  "bits": {
+    "low_bits": 4619499763780875715,
+    "version": 1792845104736884592
+  }
+}

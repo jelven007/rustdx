@@ -1,0 +1,4 @@
+info: syncing channel updates for 1.89.0-x86_64-unknown-linux-gnu
+warn: RUSTUP_USE_CURL is set; the curl backend is deprecated,
+            please file an issue if the default download backend does not work for your use case
+error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-1.89.0.toml.sha256' to '/tmp/rustdx-acceptance-20261024-TLDCn5/rustup/tmp/mxc3fnq4dwofzovg_file': error during download: [28] Timeout was reached (Failed to connect to static.rust-lang.org:443 after 134301 ms: Could not connect to server)

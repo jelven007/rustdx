@@ -1,0 +1,50 @@
+{
+  "reference": "https://github.com/rainx/pytdx/tree/2857fdad08534533610bd2aeca387f760c4baa42",
+  "reference_sources_sha256": {
+    "pytdx/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pytdx/parser/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pytdx/helper.py": "1574270eee7da0313dcc753e2fa50c61fbf6305541967d974944bc28effa2772",
+    "pytdx/parser/get_security_bars.py": "94a763fdc856d09fdcbb75c3498ea0e00fe0ae1ea3994fa8d8875c442713be56",
+    "pytdx/parser/get_index_bars.py": "3dbe7d7ecaf36b0f47f88499b50dc45798d72fe4d3b59be9df78b8a9dbee46d2",
+    "pytdx/parser/base.py": "365821fc502097740987075e06d7d4ae3417f503776d2588af36e85a6b643148",
+    "pytdx/log.py": "c566fe3b9f15406e924c45a4188c3836b3f46e7ada3f4a1e8515117079dbd7d8"
+  },
+  "scope": "3 recent stock day, index day and stock 5-minute bars each; raw TDX bodies, independent pytdx expectations, not full market",
+  "cases": [
+    {
+      "case": "stock-day",
+      "market": 0,
+      "code": "000001",
+      "category": 9,
+      "rows": 3,
+      "request_sha256": "bf035119ccca2afcd5eb4d142e5965cec0ffee13f76a61b6f3993b1a0a08a6e1",
+      "response_sha256": "8b384ad01d30430af172e6f2512e5706a189b239fd0b94cda6b9f1d78b79fbaa",
+      "expected_csv_sha256": "2eb01a8942b776d3e7f7ea0b291eae1c976d145730460995dc9b1134134f283a"
+    },
+    {
+      "case": "index-day",
+      "market": 1,
+      "code": "000001",
+      "category": 9,
+      "rows": 3,
+      "request_sha256": "aec66ae781ca44d9e0e19eb571d65228c106e8be65af9e20ef7703056eaf3ede",
+      "response_sha256": "53158d88529c4c4065220c2dfc5760b58d56e297bfbd72d5259138482736c85c",
+      "expected_csv_sha256": "7472927c5177ba08aa25af9a49818d07693dd3df257f7c5552db6573c10e26f6"
+    },
+    {
+      "case": "stock-minute",
+      "market": 0,
+      "code": "000001",
+      "category": 0,
+      "rows": 3,
+      "request_sha256": "8c68167e11ed619ea6f346391fc3e0fcc248f4d97e3114030e00c77ea74e4fec",
+      "response_sha256": "e28ed13b117e123d16e27505b46078a8d261a80e9996a9078088364a8e235755",
+      "expected_csv_sha256": "acbfae0333da059c909678072000407adf184f567663277c4cc9ca714938b90f"
+    }
+  ],
+  "observed_response_file_mtime_utc": [
+    "2026-10-23T23:48:12.302077+00:00",
+    "2026-10-23T23:48:12.627968+00:00"
+  ],
+  "date_note": "Original verifier hardcodes 2026-10-23; removed that value for this fresh capture. File modification times retained; native endpoint was not observed."
+}

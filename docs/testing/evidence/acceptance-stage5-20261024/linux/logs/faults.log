@@ -1,0 +1,4 @@
+clickhouse network_outage 8192 rows after fault; recovered 8192
+clickhouse sigkill 8192 rows after fault; recovered 8192
+mongodb network_outage 1000 rows after fault; recovered 8192
+mongodb sigkill 8192 rows after fault; recovered 8192

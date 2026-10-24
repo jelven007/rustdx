@@ -1,0 +1,10 @@
+{
+  "all_kline_numeric_fields_match_direct_ieee_f32": true,
+  "numeric_fields_verified": 1164,
+  "nonempty_minutes_exceed_rounded_vwap_half_cent_bound": 230,
+  "all_minute_volumes_are_multiples_of_100_shares": true,
+  "closing_difference_fraction_of_net_daily_percent": 5.883621011651559,
+  "closing_shares_inference_is_unique_under_one_ulp": true,
+  "remaining_minutes_proxy_minus_amount_yuan": -441553.875,
+  "capture_log_sha256": "1a91849bdd8db00124e11f7aef3a6425e8a77e9785c038e5634ba326efa0dc9c"
+}

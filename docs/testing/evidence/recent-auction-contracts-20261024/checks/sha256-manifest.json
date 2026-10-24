@@ -1,0 +1,20 @@
+{
+  "source_files": {
+    "examples/validate_recent_auction.rs": "f3a76ac538e9ec3ad47a9ec5fe2999479fbb482756029e253b127c197b7526ce",
+    "scripts/validation/verify_recent_auction.py": "abdb5e585dc3b86e2be4739b220443f625e633b8318c26a9abd0aa3987a21eb8",
+    "examples/validate_quote_push.rs": "5d17672bccb80b128a8d450db807507c0cd115a6b4d714d141cbf726ca0e6dce",
+    "scripts/validation/verify_quote_push.py": "846a3abc9dea7175a3ac8b3cb2b9c3d5e5e72931cec257dedffc107b042d7bbc",
+    "src/tcp/stock/recent_minutes.rs": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+    "src/tcp/stock/auctions.rs": "9f2f94931a5eb781bba9da8bd15ac4be86529ecf1eadc08b444251ecd27eace8",
+    "src/tcp/stock/quote_subscription.rs": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+    "src/tcp/stock/extended_quote.rs": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+    "src/tcp/frame.rs": "58b36ba4743884d912bf6b691c54a4b39c4a2dcb4a6d9152a8cf09b0e81dd3cd",
+    "tests/recent_minutes_boundaries.rs": "9ee4a223ace6df62f38a33f6237bbe5b26b74146885a9db51d361cb38eeb3550",
+    "tests/quote_subscription.rs": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5"
+  },
+  "checks": {
+    "fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clippy.log": "92c0cc7ce9859d80a07d3de13e95ace0e896b1345aed0b919a9aec0e43a5e26f",
+    "tests.log": "88f7ec3e8fa6b8d129eaa20dfff52771ee8660cf1fb69ed62770f1188d82bc91"
+  }
+}

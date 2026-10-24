@@ -1,0 +1,7 @@
+{
+  "old_registry": "docker.m.daocloud.io",
+  "new_registry": "docker.1ms.run",
+  "digest": "sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d",
+  "old_attempt": "terminated while slow large-layer download; no database container started",
+  "at": "2026-10-24T20:07:42.004223+08:00"
+}

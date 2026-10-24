@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "scripts/release/check_consumers.py",
+        "--output",
+        "/tmp/rustdx-optimization-20261024/final-source-consumers",
+        "--cargo",
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "--toolchain",
+        "1.89.0",
+        "--offline"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 14.123678667,
+      "log": "/tmp/rustdx-optimization-20261024/final-packages-0.log"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/release/preflight.py",
+        "--output",
+        "/tmp/rustdx-optimization-20261024/final-package-audit",
+        "--snapshot",
+        "--skip-workspace-checks",
+        "--cargo",
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "--toolchain",
+        "1.89.0",
+        "--offline"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 478.855460583,
+      "log": "/tmp/rustdx-optimization-20261024/final-packages-1.log"
+    }
+  ]
+}

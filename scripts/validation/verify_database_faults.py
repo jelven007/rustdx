@@ -187,7 +187,7 @@ def main():
         return int(mongo(f'print(db.getSiblingDB("{database}").{name}.countDocuments())'))
 
     def command(backend, name):
-        return [str(binary), "--timeout", "35", "day", str(source), "-o", backend,
+        return [str(binary), "--no-tcp-startup", "--timeout", "35", "day", str(source), "-o", backend,
                 "-t", database + "." + name, "--workers", "4", "--report", "run.json"]
 
     result["versions"] = {"clickhouse": ch("SELECT version()"), "mongodb": mongo("print(db.version())")}

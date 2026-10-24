@@ -1,0 +1,24 @@
+{
+  "reviewed_source_sha256": {
+    "Cargo.toml": "ddf1939fccb4b58d61fa3c8ad12ce4e031c8e6b9cd25f083e3e7726ae06990b2",
+    "Cargo.lock": "1577c41c40f9416e8166c2fa92aeef8770a9a9821c7aa225c4da1bd1cd3baacf",
+    "examples/validate_quote_push.rs": "95b1a10ecab5aef9912024bf0a87883673797b51c23c7209c465c54be36e3160",
+    "scripts/validation/verify_quote_push.py": "846a3abc9dea7175a3ac8b3cb2b9c3d5e5e72931cec257dedffc107b042d7bbc",
+    "scripts/validation/verify_nine_commands.py": "400cc1b4e2bd99f8e848ea1e5f0b492cebc7adc705a55dcc3f3092660d284d66",
+    "src/calendar.rs": "6d443876edacf6c0903cebffe342db1ca7ff9f405649334029e6391c42945c36",
+    "src/calendar/provider.rs": "f8d338c0e22dc4f20f1d44d4d57b739e887eae3bf757184745a15bdfda181159",
+    "src/tcp/mod.rs": "6618e3970f382290a97c0698c976d6e57847b9c6bb40da5ebe780b236d96400e",
+    "src/tcp/evidence.rs": "efc7c3da656c96c9df0146a1dd87756466bd57cd84c3f953422067447aebedec",
+    "src/tcp/frame.rs": "58b36ba4743884d912bf6b691c54a4b39c4a2dcb4a6d9152a8cf09b0e81dd3cd",
+    "src/tcp/heartbeat.rs": "f62681ee5e5b93aea53176c5ae5c77c0fb91925daf6a7aa023d90748cafb9fd0",
+    "src/tcp/stock/quote_refresh.rs": "4f814bba48ff012c50b5d88b99230780ebb01b383f07d6edc15addb268ffb4d8",
+    "src/tcp/stock/quote_subscription.rs": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+    "src/tcp/stock/extended_quote.rs": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+    "src/tcp/stock/quote_metadata.rs": "dac5d2f925d152118547d68f6750d2ff1166d572f6f1a9f753d4e46ae50d5a4b",
+    "src/tcp/stock/security_directory.rs": "a9c3a584bca63423abef704ca2998eaa89dd45b35e6e3cb8e8f3b5d81534e4d3",
+    "tests/quote_subscription.rs": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5",
+    "tests/common/extended_protocol.rs": "2e3fe88fcbc6cc7134d11ad280b8dd400a973f5e827280277c0712f8db2d90c4"
+  },
+  "capture_executable_sha256": "76d9825fcef4adf77876c97d529afb1e40a2a65a98c6e0eccba3ebfc2cae1205",
+  "note": "Source hashes describe the final reviewed workspace; executable digest identifies the binary used for this capture. Independent replay verifies preserved wire bytes."
+}

@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--locked",
+        "-p",
+        "jelven-rustdx-complete",
+        "--test",
+        "quote_precision",
+        "--test",
+        "modern_commands",
+        "--test",
+        "eltdx_330_commands",
+        "--test",
+        "command_boundaries"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 28.313112292,
+      "log": "/tmp/rustdx-optimization-20261024/f10-f11-behavior-0.log"
+    }
+  ]
+}

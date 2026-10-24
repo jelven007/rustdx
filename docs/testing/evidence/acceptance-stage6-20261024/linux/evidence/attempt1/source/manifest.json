@@ -1,0 +1,18 @@
+[
+  {
+    "path": "scripts/validation/verify_database_recovery.py",
+    "sha256": "a17a62165aa6180607232deb5886c8234332cabb35bd9d2d72d8e7f4cea1fcec"
+  },
+  {
+    "path": "deploy/runner/clickhouse.sql",
+    "sha256": "35e10f8d3d47b1f4ee6fd14e351d4bcdf5325fdb1f5bdb91b70d997e569d75e5"
+  },
+  {
+    "path": "deploy/runner/mongodb.js",
+    "sha256": "56bacbb65e4e7242a993ed50485872e84bb73f3c3057d3f1b77af4d61c1ae754"
+  },
+  {
+    "path": "deploy/acceptance/clickhouse.xml",
+    "sha256": "08f0c2b2ba8b0bc7cf416352388951db443c56849ee357138b9e0890d47eeb50"
+  }
+]

@@ -1,0 +1,242 @@
+{
+  "review_date": "2026-10-24",
+  "snapshot_time_utc": "2026-10-24T04:11:53.118932+00:00",
+  "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "preexisting_uncommitted_changes": true,
+  "scope": "trade single-page, pagination and classification analysis; implementation not changed",
+  "current_source": [
+    {
+      "path": "src/tcp/stock/transaction.rs",
+      "sha256": "6b3bcef4a380d3c248e563022e7b872cd8404724097601346f09aafc3955c591",
+      "bytes": 6037
+    },
+    {
+      "path": "src/tcp/stock/history_transaction.rs",
+      "sha256": "91acc7b4bcdcd85f88d4a7677447e8326a50a45dfa29ebb24d9cc90509c720c7",
+      "bytes": 5815
+    },
+    {
+      "path": "src/tcp/stock/requests.rs",
+      "sha256": "60b334d28a195748f01d5f123791dd2f9d950c122fa965691e47eb69c3b23fd5",
+      "bytes": 15193
+    },
+    {
+      "path": "src/tcp/stock/client.rs",
+      "sha256": "a210700c8c2b7c1c9e652a2dc0077b8710710f5a83b81ab406d1480128d9cf59",
+      "bytes": 43180
+    },
+    {
+      "path": "src/tcp/mod.rs",
+      "sha256": "124110ea7fa8fe953dbc6efcbc0e8ac24ed000da31218583c4854c9e459b5598",
+      "bytes": 28548
+    },
+    {
+      "path": "src/tcp/evidence.rs",
+      "sha256": "efc7c3da656c96c9df0146a1dd87756466bd57cd84c3f953422067447aebedec",
+      "bytes": 2207
+    },
+    {
+      "path": "src/tcp/reader.rs",
+      "sha256": "526396c8deeb0f949860b24bcaffec21eed6d1694d845423f75793d8b5008da0",
+      "bytes": 3125
+    },
+    {
+      "path": "src/tcp/governance.rs",
+      "sha256": "66dfc94f94e238ffd8872849c92cc267f70a5a6762889c26147721b4d11cf3cd",
+      "bytes": 15816
+    },
+    {
+      "path": "tests/protocol_decoders.rs",
+      "sha256": "0c42e5850db24e5202c2abc60ccf26a2388d203c5127c8e7a02c0d0f6f3a06cf",
+      "bytes": 14189
+    },
+    {
+      "path": "tests/fixtures/protocol/manifest.json",
+      "sha256": "7174d36d19b68a1c9cd291100466065466664e2309e4f6fcf1d5859931e523c1",
+      "bytes": 2899
+    },
+    {
+      "path": "tests/fixtures/protocol/transaction.response.hex",
+      "sha256": "06ae8d66b5b4a5afc351169fd32635cbcce129e6256b457f502cc574f32120bd",
+      "bytes": 51
+    },
+    {
+      "path": "tests/fixtures/protocol/history-transaction.response.hex",
+      "sha256": "e0d2452c6716372de6d6642c74e096bf9d342cd7da66789275b31cb15f70183c",
+      "bytes": 53
+    },
+    {
+      "path": "tests/fixtures/protocol/transaction.expected.csv",
+      "sha256": "5a5741d285900378712d16c3c9658b7e7b3eea86b0e559e00f9ba11b353a1826",
+      "bytes": 83
+    },
+    {
+      "path": "tests/fixtures/protocol/history-transaction.expected.csv",
+      "sha256": "a8ac0b6da03f7c46a2eeba18aac4d5334b1fd27833d5bb1469765a4391e48c8a",
+      "bytes": 82
+    },
+    {
+      "path": "examples/test_transaction.rs",
+      "sha256": "2c163eeb84d564c2dc0f1cde008b72fcfa5c006847e6381f73c8c090cad72f44",
+      "bytes": 5327
+    },
+    {
+      "path": "examples/test_readme_examples.rs",
+      "sha256": "5245d301084db1b0e385f20fce5dda4d73f9df46bb557f3d65326759bed75c10",
+      "bytes": 7029
+    }
+  ],
+  "trade_request_decode_section_sha256": "3a828e3386635c72bb01aa713a6bdcec7588b0f40dce71a501c3177ec17ef268",
+  "client_trade_section_sha256": "745039b05aa862f3c9b775701b6bae79fcb4e7774962eafa7b82b9d3a9a7169f",
+  "baseline_sources": [
+    {
+      "path": "docs/validation/evidence/eltdx-3.2.2-command-guide-20261024/src/eltdx/models/trade.py",
+      "sha256": "67eb07e852cd4bc1fe9690b97a2c44795b0c873a05870bc67c4d32d8c18759f8"
+    },
+    {
+      "path": "docs/validation/evidence/eltdx-3.2.2-command-guide-20261024/src/eltdx/models/trade_batch.py",
+      "sha256": "d44a230d07e8fbeea8d06e35f6b76ba8ddce17416ee66438b20dad0fb32791ff"
+    },
+    {
+      "path": "docs/validation/evidence/eltdx-3.2.2-command-guide-20261024/src/eltdx/api/trades.py",
+      "sha256": "c743b893ba8d7e8a99da3405404a128d448555203df50b84aee424d02862b4c7"
+    },
+    {
+      "path": "docs/validation/evidence/eltdx-3.2.2-command-guide-20261024/crates/eltdx-protocol/src/commands/trades.rs",
+      "sha256": "abe5ea80d98708bcfb682b1c35cbe6efbe2b037c48bce9a5e3550df604bce5dc"
+    }
+  ],
+  "fixture_provenance": {
+    "captured_at": "2026-10-22T23:31:59.813662+00:00",
+    "endpoint": "115.238.56.198:7709",
+    "history_date": 20261022,
+    "reference": "https://github.com/rainx/pytdx/tree/2857fdad08534533610bd2aeca387f760c4baa42"
+  },
+  "decoded_real_fixtures": [
+    {
+      "case": "transaction",
+      "source_payload_sha256": "fc324fecda8e530d48154107e78c008d2610cd6b280931b6da0c0a6219fd99eb",
+      "rows": [
+        {
+          "index": 0,
+          "time_minutes": 915,
+          "time": "15:15",
+          "price": 11.3,
+          "volume": 91,
+          "trade_count_raw": 10,
+          "status_raw": 5,
+          "tail_raw": 0
+        },
+        {
+          "index": 1,
+          "time_minutes": 916,
+          "time": "15:16",
+          "price": 11.3,
+          "volume": 1,
+          "trade_count_raw": 1,
+          "status_raw": 5,
+          "tail_raw": 0
+        },
+        {
+          "index": 2,
+          "time_minutes": 928,
+          "time": "15:28",
+          "price": 11.3,
+          "volume": 40,
+          "trade_count_raw": 1,
+          "status_raw": 5,
+          "tail_raw": 0
+        }
+      ],
+      "all_statuses": [
+        5
+      ],
+      "page_volume_raw_sum": 132,
+      "equity_amount_estimate_yuan": "149160.0",
+      "amount_estimate_assumes_equity_lots_of_100_shares": true,
+      "buy_or_sell_only_filter_kept_rows": 0,
+      "contains_0925": false,
+      "contains_status8": false,
+      "unique_transaction_id_available": false
+    },
+    {
+      "case": "history-transaction",
+      "source_payload_sha256": "be0ce8121ab08213bcd95473370026aab4fe50e005e4d6375f025b31d8389b89",
+      "rows": [
+        {
+          "index": 0,
+          "time_minutes": 915,
+          "time": "15:15",
+          "price": 11.3,
+          "volume": 91,
+          "trade_count_raw": null,
+          "status_raw": 5,
+          "tail_raw": 0
+        },
+        {
+          "index": 1,
+          "time_minutes": 916,
+          "time": "15:16",
+          "price": 11.3,
+          "volume": 1,
+          "trade_count_raw": null,
+          "status_raw": 5,
+          "tail_raw": 0
+        },
+        {
+          "index": 2,
+          "time_minutes": 928,
+          "time": "15:28",
+          "price": 11.3,
+          "volume": 40,
+          "trade_count_raw": null,
+          "status_raw": 5,
+          "tail_raw": 0
+        }
+      ],
+      "all_statuses": [
+        5
+      ],
+      "page_volume_raw_sum": 132,
+      "equity_amount_estimate_yuan": "149160.0",
+      "amount_estimate_assumes_equity_lots_of_100_shares": true,
+      "buy_or_sell_only_filter_kept_rows": 0,
+      "contains_0925": false,
+      "contains_status8": false,
+      "unique_transaction_id_available": false
+    }
+  ],
+  "findings": {
+    "current_opcodes": {
+      "today": "0x0fc5",
+      "history": "0x0fb5"
+    },
+    "full_collection_api_exists": false,
+    "event_classification_exists": false,
+    "page_size_client_max": 2000,
+    "baseline_page_size_max": 1800,
+    "offset_max": 65535,
+    "history_trade_number_available": false,
+    "current_trade_number_is_unique_id": false,
+    "raw_status8_preserved": true,
+    "status8_existing_test_time": "09:30",
+    "real_fixtures_only_cover_three_after_hours_rows_per_protocol": true,
+    "example_mislabels_status8_as_neutral": true,
+    "baseline_TradePage_has_more": "count > 0",
+    "previous_guide_has_more_description_requires_correction": true
+  },
+  "validation": {
+    "independent_python_decode_of_real_fixtures": true,
+    "fixture_hashes_match_manifest": true,
+    "matches_pinned_pytdx_csv": true,
+    "tests": {
+      "target": "protocol_decoders",
+      "passed": 6,
+      "failed": 0
+    },
+    "external_live_requests": false,
+    "new_multi_page_market_capture": false,
+    "third_party_sdk_executed": false,
+    "rust_implementation_modified": false
+  }
+}

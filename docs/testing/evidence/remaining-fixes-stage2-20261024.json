@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "phase": "remaining fixes: bar provenance, range state, streaming and cache",
+  "environment": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "rust": "1.89.0",
+    "external_network_tests_skipped": true,
+    "real_database_services": false
+  },
+  "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "preexisting_uncommitted_workspace": true,
+  "no_commits_or_publication": true,
+  "checks": [
+    {
+      "name": "fmt",
+      "exit": 0,
+      "seconds": 3.78,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "range",
+      "exit": 0,
+      "seconds": 12.59,
+      "log_sha256": "86106d5c19c54bc9683b8e1a6eb042092517a23a5e08210941db08365d8881d1"
+    },
+    {
+      "name": "canonical",
+      "exit": 0,
+      "seconds": 8.36,
+      "log_sha256": "94d3662cc42060a3a1ab606c0fb36919ddcc14de13ae7c70df63bcb69e54de9f"
+    },
+    {
+      "name": "stream",
+      "exit": 0,
+      "seconds": 0.21,
+      "log_sha256": "0eb6a138c0ab2ed867386637aaae8c0dd55155aa5a9ad0d67c6434fedb814309"
+    },
+    {
+      "name": "cache",
+      "exit": 0,
+      "seconds": 0.75,
+      "log_sha256": "18c77a1e0bced187fc869ed4209a040280a19ca395ee260ab5f0a2955881d499"
+    },
+    {
+      "name": "clippy",
+      "exit": 0,
+      "seconds": 16.39,
+      "log_sha256": "5b0902e63e07761e557e629a37d90c6e0bde582b35c425f2de5013beea2e7f7a"
+    },
+    {
+      "name": "workspace",
+      "exit": 0,
+      "seconds": 211.92,
+      "log_sha256": "268f7cbdb2a70bc5e2fff6180b07c6cd5f9a311eedef31d82aa8f3ca5cd1613e"
+    },
+    {
+      "name": "doctests",
+      "exit": 0,
+      "seconds": 17.38,
+      "log_sha256": "02dd9f16d40d59d48c3158e48df1b2361b9f7dfd399ae75252a01fa3dad836c2"
+    },
+    {
+      "name": "rustdoc",
+      "exit": 0,
+      "seconds": 8.55,
+      "log_sha256": "653cb0719333166a48d4cb7da3c17310b9714e96c5724d44c5612c38c0dca314"
+    }
+  ],
+  "final_checks": [
+    {
+      "name": "final-fmt",
+      "exit": 0,
+      "seconds": 0.99,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "final-fmt-check",
+      "exit": 0,
+      "seconds": 0.61,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "stream-example",
+      "exit": 0,
+      "seconds": 4.58,
+      "log_sha256": "f89e27126f522ac20c2bf3d6e7ec1cccf0f6a51e68ec6f078d0af7ca503b8178"
+    },
+    {
+      "name": "strict-rustdoc",
+      "exit": 0,
+      "seconds": 9.97,
+      "log_sha256": "c416cda931c15234dbd08ecd9ce1fc2ce1dd91557c94eae1e579ddee41788c5b"
+    }
+  ],
+  "test_counts": {
+    "range": {
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    "canonical": {
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    "stream": {
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    "cache": {
+      "passed": 14,
+      "failed": 0,
+      "ignored": 0
+    },
+    "workspace": {
+      "passed": 467,
+      "failed": 0,
+      "ignored": 7
+    },
+    "doctests": {
+      "passed": 66,
+      "failed": 0,
+      "ignored": 18
+    }
+  },
+  "logs_directory": "/tmp/rustdx-stage2-checks",
+  "active_document_links": {
+    "checked": 528,
+    "missing": []
+  },
+  "changed_files": [
+    {
+      "path": "crates/rustdx-core/Cargo.toml",
+      "after_sha256": "5d8a4ab979f83c6d1c85ace45aa212efa435e6e1e6424066aab75989c88424ba"
+    },
+    {
+      "path": "crates/rustdx-core/src/cache.rs",
+      "after_sha256": "baf0800202156e1789fc4c0cc69af4fe082447cce8037b5e31958052f10e962e"
+    },
+    {
+      "path": "crates/rustdx-core/src/data/model.rs",
+      "after_sha256": "ff26974237e1df6df96991ab6a4ce6b31ebe6353e756532cb2e56cca3c6916a6"
+    },
+    {
+      "path": "crates/rustdx-core/src/indicators.rs",
+      "after_sha256": "937637b9c06f40ab3f7fa11601f23e0232b452ea728217796de7051a7954671b"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client.rs",
+      "after_sha256": "f5b8241c52ae6cad978b54e044dddd934655577617a586640a1c8ba23bc2bdc9"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/bar_range.rs",
+      "after_sha256": "14cd99d726f9f20fba5d7ff7449cb6960e0eaf470ea7eb0e25717858a1f21195"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/batch.rs",
+      "after_sha256": "39c00c76be47b194fe49c0ba02ad9ca7cb0a8810a184070fa1aa4f1c299d853c"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/stream.rs",
+      "after_sha256": "c0777fcb6a411f31886fbdb71b4afa026a989236609202c9648046cd273c8678"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/stream_queries.rs",
+      "after_sha256": "c4f0a7402dc2c8f04d166e277663b95cad43041b92c015de71fbecbee0359877"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/kline_request.rs",
+      "after_sha256": "43d218b5668c1857b43b7d9b9134de3871d025ade68dcafbb41cce4d923a58a7"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/kline.rs",
+      "after_sha256": "1a8866b714302d3f73c4939af223133044e184de5f319e7ffada26d5ae79e0af"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/index_kline.rs",
+      "after_sha256": "074fa05487113b765c7b5ecfc9fc9162f25e8b54161d0945ebd2d9ee6839228e"
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/mod.rs",
+      "after_sha256": "45184920635a5a829bb53b5c0bdc777908e2d271563088fba3185614a560fcb8"
+    },
+    {
+      "path": "crates/rustdx-core/tests/kline_decoders.rs",
+      "after_sha256": "85e1cf8713e04d0b2c7b4d6ed448cafbbe6f6c605025ab0bd224b656b9f363f0"
+    },
+    {
+      "path": "crates/rustdx-core/examples/stream_bars.rs",
+      "after_sha256": "c2ae36cfda9785d4d293c7a6c6ef2d149fbf6189eacae14248f8589d6d0c4e55"
+    },
+    {
+      "path": "docs/development/APPLICATION_INTEGRATION.md",
+      "after_sha256": "41313a9edd406e854dc51831941685d0f5e857b064120fd4ee3a8f5d9655ae61"
+    },
+    {
+      "path": "docs/reference/COMMAND_API.md",
+      "after_sha256": "32422ff91d11bf7da56c20a367e64f6b10df6f6aa309e75e80797010bf6c4c22"
+    },
+    {
+      "path": "docs/release/MIGRATION.md",
+      "after_sha256": "9e4f4ef0a238569d7a3a9c1b659ad60aab56465b694b572e46693dc23c6378ed"
+    }
+  ],
+  "removed_files": [
+    "crates/rustdx-core/src/tcp/stock/client/pagination.rs"
+  ],
+  "covered_items": [
+    "O09",
+    "O10",
+    "O11",
+    "O19",
+    "O20 batch thread/error reuse (partial)"
+  ],
+  "validation_limits": [
+    "Framework pass counts include explicitly skipped external tests; ignored not executed.",
+    "No new live market/database validation, throughput or RSS benchmarks.",
+    "JSON delivery budget does not measure RSS or raw evidence bytes.",
+    "Bar complete refers only to source enumeration, not exchange history or frozen snapshot.",
+    "Original protocol fixtures and stage-one evidence remain unchanged."
+  ]
+}

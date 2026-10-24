@@ -1,6 +1,6 @@
 # 受管 TCP/HTTP 的任务与连接预算
 
-更新日期：2026-10-23；对应源码5fb5b70及本轮任务/共享资源优化，尚未发布新crate版本。开发调用见[DEVELOPMENT.md](../development/DEVELOPMENT.md)，网络排障与部署限制见[RUNBOOK.md](../operations/RUNBOOK.md)，实际服务及观测证据见[NEXT_OPTIMIZATION.md](../history/NEXT_OPTIMIZATION.md)。
+更新日期：2026-10-24；包含任务/共享资源和进程默认启动初始化，尚未发布新crate版本。开发调用见[DEVELOPMENT.md](../development/DEVELOPMENT.md)，网络排障与部署限制见[RUNBOOK.md](../runbooks/RUNBOOK.md)，实际服务及观测证据见[NEXT_OPTIMIZATION.md](../archive/history/NEXT_OPTIMIZATION.md)。
 
 `Tcp::new/with_config`、Client 主连接和 ConnectionPool 都使用同一进程预算，默认最多8条，包含正在建立、借出、空闲和重连的连接。重连先 shutdown 旧 socket，在原许可内握手；失败连接及丢弃的池槽位释放许可。同一 Client 的批次通过有界等待串行化，批次内固定 worker 并行，批次完成不保留连接，防止空闲批量池占住其他 Client 的配额。
 
@@ -21,6 +21,15 @@ println!("{:?}", network_stats());
 
 重复或晚于初始化的配置返回 `AlreadyExists`，不会在运行中改变现有配额。默认预算：获取进程许可5秒、全部服务器连接与握手30秒、一次完整帧含重连/重发/退避15秒、分页含空结果复查120秒、批次含排队与连接300秒。`TcpConfig.timeout` 仍限制每次服务器尝试与单次读写；总体时限与它取更紧的限制。`get_connection_timeout` 现在覆盖等待、建连和探活。
 
+项目CLI和runner本地命令默认离线，--tcp-warmup显式全池测速、
+发布当日有效池并建立客户端；TCP来源自行核验冻结端点。
+初始池CRUD、09:00调度、三轮/八并发/各阶段3秒及集成应用入口见
+[启动与当日IP池](DAILY_IP_POOL.md)。测速独立限制为每批8条原始连接，
+不占业务许可；预热业务客户端占1个许可，首个匹配请求接收它，其他受管
+TCP/HTTP申请许可时释放它。单许可不会被未使用的预热连接阻塞。
+runner采集子进程继承同一共享目录/额度和初始列表，父进程先释放预热连接。
+配置网络策略必须早于`startup::initialize*`。
+
 自动选服轮换起点，并在连接/请求失败后冷却10秒；全部处于冷却期时返回 WouldBlock，避免反复攻击故障端点。显式指定 `TcpConfig.ip` 表示调用方选择该服务器，仍会尝试该地址。观测包含当前/峰值连接数、许可超时、完整帧请求和失败数量、各端点操作/失败次数及剩余冷却时间，不包含业务解析错误。
 
 `Tcp::with_timeout` 可进一步收紧一组请求。读取响应头和正文都按剩余时间逐段更新 socket 超时，缓慢持续发送字节不会刷新总体时限。同步用户闭包中的计算不能被抢占，返回后仍检查超时；OS 超时粒度和线程调度可能带来少量误差。
@@ -31,7 +40,7 @@ println!("{:?}", network_stats());
 
 ## CLI整任务时限和取消
 
-`rustdx --timeout 10800 --cancel-file /tmp/my-run.cancel day ...` 从参数解析后到下载、解压、名单获取、因子、解析、CSV校验、数据库导入和独立回读使用同一绝对截止时间。默认10800秒，重试与新阶段不能延长；Ctrl-C/SIGTERM或取消文件出现会协作取消。任务模式下载失败后要求下次显式提供备选来源，不进入无法定时退出的终端输入。失败清单和归档仍允许写入；数据库未知/已确认但未验收时仍保留CSV。已开始的数据库写入不能因取消推断为未写入。
+`rustdx --timeout 10800 --cancel-file /tmp/my-run.cancel day ...` 从参数解析后到可选TCP预热、下载、解压、名单获取、因子、解析、CSV校验、数据库导入和独立回读使用同一绝对截止时间。默认10800秒，重试与新阶段不能延长；Ctrl-C/SIGTERM或取消文件出现会协作取消。任务模式下载失败后要求下次显式提供备选来源，不进入无法定时退出的终端输入。失败清单和归档仍允许写入；数据库未知/已确认但未验收时仍保留CSV。已开始的数据库写入不能因取消推断为未写入。显式预热失败发生在采集清单创建之前，错误写入stderr并非零退出，旧业务输出保留。
 
 库调用方可用`operation::OperationContext::new(timeout, cancel_file)?.enter()`启用同样策略，克隆上下文并在工作线程`enter()`；内置TCP批次已继承。嵌套范围只能缩短父时限，并继承父取消。未进入上下文的库调用保留原行为。
 

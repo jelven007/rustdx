@@ -1,0 +1,662 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "selected_rows": 24,
+  "category9_difference_range": [
+    -94.0,
+    1.0
+  ],
+  "category4_mismatches": 16,
+  "integer_052b_mismatches": 0,
+  "conclusion": "052d source precision cannot reconstruct exact shares; use 052b integer field.",
+  "results": [
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sh600000",
+      "date": 20261019,
+      "official_shares": 54074699,
+      "052d_category9": {
+        "shares": 54074700.0,
+        "difference": 1.0,
+        "volume_raw": 1225000112,
+        "payload_sha256": "796d04dbed66a0d1a9991d29785b86415d76d6c26db20b5d1743036c4d52f1d7",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-001.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 54074700.0,
+        "difference": 1.0,
+        "volume_raw": 1280198483,
+        "payload_sha256": "2ea4ad8f20cfde1979afb4fc35c15d2ebcbc694bf207da20a5a864e0a459bbcc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-002.payload.bin"
+      },
+      "052b": {
+        "shares": 54074699,
+        "difference": 0,
+        "volume_raw": 54074699,
+        "payload_sha256": "ecd2dfc12cc233c0366423ae180e1ebc4917e33c0c8e177b7b8e90b0104b1753",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-003.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sh600000",
+      "date": 20261020,
+      "official_shares": 60513255,
+      "052d_category9": {
+        "shares": 60513200.0,
+        "difference": -55.0,
+        "volume_raw": 1226030272,
+        "payload_sha256": "796d04dbed66a0d1a9991d29785b86415d76d6c26db20b5d1743036c4d52f1d7",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-001.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 60513256.0,
+        "difference": 1.0,
+        "volume_raw": 1281808122,
+        "payload_sha256": "2ea4ad8f20cfde1979afb4fc35c15d2ebcbc694bf207da20a5a864e0a459bbcc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-002.payload.bin"
+      },
+      "052b": {
+        "shares": 60513255,
+        "difference": 0,
+        "volume_raw": 60513255,
+        "payload_sha256": "ecd2dfc12cc233c0366423ae180e1ebc4917e33c0c8e177b7b8e90b0104b1753",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-003.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sh600000",
+      "date": 20261021,
+      "official_shares": 46256249,
+      "052d_category9": {
+        "shares": 46256200.0,
+        "difference": -49.0,
+        "volume_raw": 1222761536,
+        "payload_sha256": "796d04dbed66a0d1a9991d29785b86415d76d6c26db20b5d1743036c4d52f1d7",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-001.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 46256248.0,
+        "difference": -1.0,
+        "volume_raw": 1278243870,
+        "payload_sha256": "2ea4ad8f20cfde1979afb4fc35c15d2ebcbc694bf207da20a5a864e0a459bbcc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-002.payload.bin"
+      },
+      "052b": {
+        "shares": 46256249,
+        "difference": 0,
+        "volume_raw": 46256249,
+        "payload_sha256": "ecd2dfc12cc233c0366423ae180e1ebc4917e33c0c8e177b7b8e90b0104b1753",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-003.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sh600000",
+      "date": 20261022,
+      "official_shares": 62529869,
+      "052d_category9": {
+        "shares": 62529800.0,
+        "difference": -69.0,
+        "volume_raw": 1226352928,
+        "payload_sha256": "796d04dbed66a0d1a9991d29785b86415d76d6c26db20b5d1743036c4d52f1d7",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-001.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 62529868.0,
+        "difference": -1.0,
+        "volume_raw": 1282312275,
+        "payload_sha256": "2ea4ad8f20cfde1979afb4fc35c15d2ebcbc694bf207da20a5a864e0a459bbcc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-002.payload.bin"
+      },
+      "052b": {
+        "shares": 62529869,
+        "difference": 0,
+        "volume_raw": 62529869,
+        "payload_sha256": "ecd2dfc12cc233c0366423ae180e1ebc4917e33c0c8e177b7b8e90b0104b1753",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-003.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sh600519",
+      "date": 20261019,
+      "official_shares": 3972894,
+      "052d_category9": {
+        "shares": 3972800.0,
+        "difference": -94.0,
+        "volume_raw": 1192964096,
+        "payload_sha256": "c2c54dbe449697cb3787cc5413277414d93f6e13fd40bd3f3b8bb6a9512c6532",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-004.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 3972894.0,
+        "difference": 0.0,
+        "volume_raw": 1249016952,
+        "payload_sha256": "16e61d7261b31295db7699543ba6dc5b767d21d11a70b1d1aacc60a0bdfe64c3",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-005.payload.bin"
+      },
+      "052b": {
+        "shares": 3972894,
+        "difference": 0,
+        "volume_raw": 3972894,
+        "payload_sha256": "b4394bbc9a981b7d37b5d2a59053b0887545c966f71c74d374f05643129bb1f8",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-006.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sh600519",
+      "date": 20261020,
+      "official_shares": 3413565,
+      "052d_category9": {
+        "shares": 3413500.0,
+        "difference": -65.0,
+        "volume_raw": 1191532288,
+        "payload_sha256": "c2c54dbe449697cb3787cc5413277414d93f6e13fd40bd3f3b8bb6a9512c6532",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-004.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 3413565.0,
+        "difference": 0.0,
+        "volume_raw": 1246779636,
+        "payload_sha256": "16e61d7261b31295db7699543ba6dc5b767d21d11a70b1d1aacc60a0bdfe64c3",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-005.payload.bin"
+      },
+      "052b": {
+        "shares": 3413565,
+        "difference": 0,
+        "volume_raw": 3413565,
+        "payload_sha256": "b4394bbc9a981b7d37b5d2a59053b0887545c966f71c74d374f05643129bb1f8",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-006.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sh600519",
+      "date": 20261021,
+      "official_shares": 3351416,
+      "052d_category9": {
+        "shares": 3351400.0,
+        "difference": -16.0,
+        "volume_raw": 1191373312,
+        "payload_sha256": "c2c54dbe449697cb3787cc5413277414d93f6e13fd40bd3f3b8bb6a9512c6532",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-004.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 3351416.0,
+        "difference": 0.0,
+        "volume_raw": 1246531040,
+        "payload_sha256": "16e61d7261b31295db7699543ba6dc5b767d21d11a70b1d1aacc60a0bdfe64c3",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-005.payload.bin"
+      },
+      "052b": {
+        "shares": 3351416,
+        "difference": 0,
+        "volume_raw": 3351416,
+        "payload_sha256": "b4394bbc9a981b7d37b5d2a59053b0887545c966f71c74d374f05643129bb1f8",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-006.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sh600519",
+      "date": 20261022,
+      "official_shares": 4249133,
+      "052d_category9": {
+        "shares": 4249100.0,
+        "difference": -33.0,
+        "volume_raw": 1193671424,
+        "payload_sha256": "c2c54dbe449697cb3787cc5413277414d93f6e13fd40bd3f3b8bb6a9512c6532",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-004.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 4249133.0,
+        "difference": 0.0,
+        "volume_raw": 1250012250,
+        "payload_sha256": "16e61d7261b31295db7699543ba6dc5b767d21d11a70b1d1aacc60a0bdfe64c3",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-005.payload.bin"
+      },
+      "052b": {
+        "shares": 4249133,
+        "difference": 0,
+        "volume_raw": 4249133,
+        "payload_sha256": "b4394bbc9a981b7d37b5d2a59053b0887545c966f71c74d374f05643129bb1f8",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-006.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sz000001",
+      "date": 20261019,
+      "official_shares": 126779262,
+      "052d_category9": {
+        "shares": 126779200.0,
+        "difference": -62.0,
+        "volume_raw": 1234879104,
+        "payload_sha256": "9a8740b805bdb438185ab7cdac01182ce360755d8fb4fd5f07752d2781e4b7dc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-007.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 126779264.0,
+        "difference": 2.0,
+        "volume_raw": 1290915824,
+        "payload_sha256": "696ec2ad8b2f3e7c0b739fa1ea79fe5b3cb72fa3f2ccd36d784939d0b00474b2",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-008.payload.bin"
+      },
+      "052b": {
+        "shares": 126779262,
+        "difference": 0,
+        "volume_raw": 126779262,
+        "payload_sha256": "e67ecdc3f2fb2ed8f927f83d9c5e66ad9df2253bc4e0aed1721735199301dd6d",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-009.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sz000001",
+      "date": 20261020,
+      "official_shares": 124509668,
+      "052d_category9": {
+        "shares": 124509600.0,
+        "difference": -68.0,
+        "volume_raw": 1234697536,
+        "payload_sha256": "9a8740b805bdb438185ab7cdac01182ce360755d8fb4fd5f07752d2781e4b7dc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-007.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 124509664.0,
+        "difference": -4.0,
+        "volume_raw": 1290632124,
+        "payload_sha256": "696ec2ad8b2f3e7c0b739fa1ea79fe5b3cb72fa3f2ccd36d784939d0b00474b2",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-008.payload.bin"
+      },
+      "052b": {
+        "shares": 124509668,
+        "difference": 0,
+        "volume_raw": 124509668,
+        "payload_sha256": "e67ecdc3f2fb2ed8f927f83d9c5e66ad9df2253bc4e0aed1721735199301dd6d",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-009.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sz000001",
+      "date": 20261021,
+      "official_shares": 81354137,
+      "052d_category9": {
+        "shares": 81354100.0,
+        "difference": -37.0,
+        "volume_raw": 1229364816,
+        "payload_sha256": "9a8740b805bdb438185ab7cdac01182ce360755d8fb4fd5f07752d2781e4b7dc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-007.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 81354136.0,
+        "difference": -1.0,
+        "volume_raw": 1285237683,
+        "payload_sha256": "696ec2ad8b2f3e7c0b739fa1ea79fe5b3cb72fa3f2ccd36d784939d0b00474b2",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-008.payload.bin"
+      },
+      "052b": {
+        "shares": 81354137,
+        "difference": 0,
+        "volume_raw": 81354137,
+        "payload_sha256": "e67ecdc3f2fb2ed8f927f83d9c5e66ad9df2253bc4e0aed1721735199301dd6d",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-009.payload.bin"
+      }
+    },
+    {
+      "endpoint": "115.238.56.198:7709",
+      "code": "sz000001",
+      "date": 20261022,
+      "official_shares": 129764875,
+      "052d_category9": {
+        "shares": 129764800.0,
+        "difference": -75.0,
+        "volume_raw": 1235117952,
+        "payload_sha256": "9a8740b805bdb438185ab7cdac01182ce360755d8fb4fd5f07752d2781e4b7dc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-007.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 129764872.0,
+        "difference": -3.0,
+        "volume_raw": 1291289025,
+        "payload_sha256": "696ec2ad8b2f3e7c0b739fa1ea79fe5b3cb72fa3f2ccd36d784939d0b00474b2",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-008.payload.bin"
+      },
+      "052b": {
+        "shares": 129764875,
+        "difference": 0,
+        "volume_raw": 129764875,
+        "payload_sha256": "e67ecdc3f2fb2ed8f927f83d9c5e66ad9df2253bc4e0aed1721735199301dd6d",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-115.238.56.198/frame-009.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sh600000",
+      "date": 20261019,
+      "official_shares": 54074699,
+      "052d_category9": {
+        "shares": 54074700.0,
+        "difference": 1.0,
+        "volume_raw": 1225000112,
+        "payload_sha256": "796d04dbed66a0d1a9991d29785b86415d76d6c26db20b5d1743036c4d52f1d7",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-001.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 54074700.0,
+        "difference": 1.0,
+        "volume_raw": 1280198483,
+        "payload_sha256": "2ea4ad8f20cfde1979afb4fc35c15d2ebcbc694bf207da20a5a864e0a459bbcc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-002.payload.bin"
+      },
+      "052b": {
+        "shares": 54074699,
+        "difference": 0,
+        "volume_raw": 54074699,
+        "payload_sha256": "d195bb46287264155a70e30d51e62260e385020223344ab63cf356a639f0d975",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-003.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sh600000",
+      "date": 20261020,
+      "official_shares": 60513255,
+      "052d_category9": {
+        "shares": 60513200.0,
+        "difference": -55.0,
+        "volume_raw": 1226030272,
+        "payload_sha256": "796d04dbed66a0d1a9991d29785b86415d76d6c26db20b5d1743036c4d52f1d7",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-001.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 60513256.0,
+        "difference": 1.0,
+        "volume_raw": 1281808122,
+        "payload_sha256": "2ea4ad8f20cfde1979afb4fc35c15d2ebcbc694bf207da20a5a864e0a459bbcc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-002.payload.bin"
+      },
+      "052b": {
+        "shares": 60513255,
+        "difference": 0,
+        "volume_raw": 60513255,
+        "payload_sha256": "d195bb46287264155a70e30d51e62260e385020223344ab63cf356a639f0d975",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-003.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sh600000",
+      "date": 20261021,
+      "official_shares": 46256249,
+      "052d_category9": {
+        "shares": 46256200.0,
+        "difference": -49.0,
+        "volume_raw": 1222761536,
+        "payload_sha256": "796d04dbed66a0d1a9991d29785b86415d76d6c26db20b5d1743036c4d52f1d7",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-001.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 46256248.0,
+        "difference": -1.0,
+        "volume_raw": 1278243870,
+        "payload_sha256": "2ea4ad8f20cfde1979afb4fc35c15d2ebcbc694bf207da20a5a864e0a459bbcc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-002.payload.bin"
+      },
+      "052b": {
+        "shares": 46256249,
+        "difference": 0,
+        "volume_raw": 46256249,
+        "payload_sha256": "d195bb46287264155a70e30d51e62260e385020223344ab63cf356a639f0d975",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-003.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sh600000",
+      "date": 20261022,
+      "official_shares": 62529869,
+      "052d_category9": {
+        "shares": 62529800.0,
+        "difference": -69.0,
+        "volume_raw": 1226352928,
+        "payload_sha256": "796d04dbed66a0d1a9991d29785b86415d76d6c26db20b5d1743036c4d52f1d7",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-001.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 62529868.0,
+        "difference": -1.0,
+        "volume_raw": 1282312275,
+        "payload_sha256": "2ea4ad8f20cfde1979afb4fc35c15d2ebcbc694bf207da20a5a864e0a459bbcc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-002.payload.bin"
+      },
+      "052b": {
+        "shares": 62529869,
+        "difference": 0,
+        "volume_raw": 62529869,
+        "payload_sha256": "d195bb46287264155a70e30d51e62260e385020223344ab63cf356a639f0d975",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-003.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sh600519",
+      "date": 20261019,
+      "official_shares": 3972894,
+      "052d_category9": {
+        "shares": 3972800.0,
+        "difference": -94.0,
+        "volume_raw": 1192964096,
+        "payload_sha256": "c2c54dbe449697cb3787cc5413277414d93f6e13fd40bd3f3b8bb6a9512c6532",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-004.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 3972894.0,
+        "difference": 0.0,
+        "volume_raw": 1249016952,
+        "payload_sha256": "16e61d7261b31295db7699543ba6dc5b767d21d11a70b1d1aacc60a0bdfe64c3",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-005.payload.bin"
+      },
+      "052b": {
+        "shares": 3972894,
+        "difference": 0,
+        "volume_raw": 3972894,
+        "payload_sha256": "ef8aac9faec11b1d6e73ada9d042820a5686f9777e0689d46a32c8360e7866c4",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-006.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sh600519",
+      "date": 20261020,
+      "official_shares": 3413565,
+      "052d_category9": {
+        "shares": 3413500.0,
+        "difference": -65.0,
+        "volume_raw": 1191532288,
+        "payload_sha256": "c2c54dbe449697cb3787cc5413277414d93f6e13fd40bd3f3b8bb6a9512c6532",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-004.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 3413565.0,
+        "difference": 0.0,
+        "volume_raw": 1246779636,
+        "payload_sha256": "16e61d7261b31295db7699543ba6dc5b767d21d11a70b1d1aacc60a0bdfe64c3",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-005.payload.bin"
+      },
+      "052b": {
+        "shares": 3413565,
+        "difference": 0,
+        "volume_raw": 3413565,
+        "payload_sha256": "ef8aac9faec11b1d6e73ada9d042820a5686f9777e0689d46a32c8360e7866c4",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-006.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sh600519",
+      "date": 20261021,
+      "official_shares": 3351416,
+      "052d_category9": {
+        "shares": 3351400.0,
+        "difference": -16.0,
+        "volume_raw": 1191373312,
+        "payload_sha256": "c2c54dbe449697cb3787cc5413277414d93f6e13fd40bd3f3b8bb6a9512c6532",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-004.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 3351416.0,
+        "difference": 0.0,
+        "volume_raw": 1246531040,
+        "payload_sha256": "16e61d7261b31295db7699543ba6dc5b767d21d11a70b1d1aacc60a0bdfe64c3",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-005.payload.bin"
+      },
+      "052b": {
+        "shares": 3351416,
+        "difference": 0,
+        "volume_raw": 3351416,
+        "payload_sha256": "ef8aac9faec11b1d6e73ada9d042820a5686f9777e0689d46a32c8360e7866c4",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-006.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sh600519",
+      "date": 20261022,
+      "official_shares": 4249133,
+      "052d_category9": {
+        "shares": 4249100.0,
+        "difference": -33.0,
+        "volume_raw": 1193671424,
+        "payload_sha256": "c2c54dbe449697cb3787cc5413277414d93f6e13fd40bd3f3b8bb6a9512c6532",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-004.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 4249133.0,
+        "difference": 0.0,
+        "volume_raw": 1250012250,
+        "payload_sha256": "16e61d7261b31295db7699543ba6dc5b767d21d11a70b1d1aacc60a0bdfe64c3",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-005.payload.bin"
+      },
+      "052b": {
+        "shares": 4249133,
+        "difference": 0,
+        "volume_raw": 4249133,
+        "payload_sha256": "ef8aac9faec11b1d6e73ada9d042820a5686f9777e0689d46a32c8360e7866c4",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-006.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sz000001",
+      "date": 20261019,
+      "official_shares": 126779262,
+      "052d_category9": {
+        "shares": 126779200.0,
+        "difference": -62.0,
+        "volume_raw": 1234879104,
+        "payload_sha256": "9a8740b805bdb438185ab7cdac01182ce360755d8fb4fd5f07752d2781e4b7dc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-007.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 126779264.0,
+        "difference": 2.0,
+        "volume_raw": 1290915824,
+        "payload_sha256": "696ec2ad8b2f3e7c0b739fa1ea79fe5b3cb72fa3f2ccd36d784939d0b00474b2",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-008.payload.bin"
+      },
+      "052b": {
+        "shares": 126779262,
+        "difference": 0,
+        "volume_raw": 126779262,
+        "payload_sha256": "d12356e18aafebe6342bff61ae9157061302a41f95df5e19a6bdac57de0bc6cd",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-009.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sz000001",
+      "date": 20261020,
+      "official_shares": 124509668,
+      "052d_category9": {
+        "shares": 124509600.0,
+        "difference": -68.0,
+        "volume_raw": 1234697536,
+        "payload_sha256": "9a8740b805bdb438185ab7cdac01182ce360755d8fb4fd5f07752d2781e4b7dc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-007.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 124509664.0,
+        "difference": -4.0,
+        "volume_raw": 1290632124,
+        "payload_sha256": "696ec2ad8b2f3e7c0b739fa1ea79fe5b3cb72fa3f2ccd36d784939d0b00474b2",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-008.payload.bin"
+      },
+      "052b": {
+        "shares": 124509668,
+        "difference": 0,
+        "volume_raw": 124509668,
+        "payload_sha256": "d12356e18aafebe6342bff61ae9157061302a41f95df5e19a6bdac57de0bc6cd",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-009.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sz000001",
+      "date": 20261021,
+      "official_shares": 81354137,
+      "052d_category9": {
+        "shares": 81354100.0,
+        "difference": -37.0,
+        "volume_raw": 1229364816,
+        "payload_sha256": "9a8740b805bdb438185ab7cdac01182ce360755d8fb4fd5f07752d2781e4b7dc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-007.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 81354136.0,
+        "difference": -1.0,
+        "volume_raw": 1285237683,
+        "payload_sha256": "696ec2ad8b2f3e7c0b739fa1ea79fe5b3cb72fa3f2ccd36d784939d0b00474b2",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-008.payload.bin"
+      },
+      "052b": {
+        "shares": 81354137,
+        "difference": 0,
+        "volume_raw": 81354137,
+        "payload_sha256": "d12356e18aafebe6342bff61ae9157061302a41f95df5e19a6bdac57de0bc6cd",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-009.payload.bin"
+      }
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "code": "sz000001",
+      "date": 20261022,
+      "official_shares": 129764875,
+      "052d_category9": {
+        "shares": 129764800.0,
+        "difference": -75.0,
+        "volume_raw": 1235117952,
+        "payload_sha256": "9a8740b805bdb438185ab7cdac01182ce360755d8fb4fd5f07752d2781e4b7dc",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-007.payload.bin"
+      },
+      "052d_category4": {
+        "shares": 129764872.0,
+        "difference": -3.0,
+        "volume_raw": 1291289025,
+        "payload_sha256": "696ec2ad8b2f3e7c0b739fa1ea79fe5b3cb72fa3f2ccd36d784939d0b00474b2",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-008.payload.bin"
+      },
+      "052b": {
+        "shares": 129764875,
+        "difference": 0,
+        "volume_raw": 129764875,
+        "payload_sha256": "d12356e18aafebe6342bff61ae9157061302a41f95df5e19a6bdac57de0bc6cd",
+        "source": "docs/testing/evidence/tcp-day-volume-fix-20261024/probe-180.153.18.170/frame-009.payload.bin"
+      }
+    }
+  ]
+}

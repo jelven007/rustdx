@@ -1,0 +1,141 @@
+{
+  "date": "2026-10-24",
+  "base_commit": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "scope": "Current uncommitted TDX collection implementation; removed secondary-provider implementation, command, adapters, examples, fixtures and documentation; retained all existing TDX functionality.",
+  "rust": "1.89.0",
+  "platform": "macOS arm64",
+  "cargo_versions": {
+    "core": "1.12.2",
+    "cli": "1.8.2",
+    "runner": "0.1.0"
+  },
+  "compatibility": {
+    "collection_schema": 7,
+    "runner_accepted_collection_schemas": [6, 7],
+    "market_output": "CSV",
+    "quality_output": "JSON",
+    "removed_command_rejected_exit": 1
+  },
+  "binaries": {
+    "target/release/rustdx": "d29ae7970f6f5216e556f542470af8e5a4b80231ea7ae79f422fdcd9dbcd3c6d",
+    "target/release/rustdx-runner": "04d4e3f871a51caa8046abf9963ceda371bbdea3b3a5ccd0f42fe4e1d373b3c1"
+  },
+  "environment": {
+    "CARGO_HOME": "<workspace>/.cargo",
+    "RUSTUP_HOME": "<workspace>/.cargo/rustup",
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1",
+    "RUSTDX_TEST_CLI": "<workspace>/target/release/rustdx",
+    "runner_database_fault_test": "local mock HTTP, synthetic credentials; no real database writes"
+  },
+  "checks": [
+    {
+      "command": "cargo +1.89.0 fmt --all -- --check",
+      "exit": 0,
+      "log": "tdx-only-20261024/fmt.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": "cargo +1.89.0 clippy --workspace --all-targets --all-features --offline --locked -- -D warnings",
+      "exit": 0,
+      "log": "tdx-only-20261024/clippy.txt",
+      "sha256": "dfcf1766a0763ff5f45b6432667c39f300a54133480933d2747152649626204d"
+    },
+    {
+      "command": "cargo +1.89.0 test --workspace --all-targets --all-features --offline --locked",
+      "exit": 0,
+      "reported_passed": 277,
+      "failed": 0,
+      "ignored": 5,
+      "log": "tdx-only-20261024/workspace-tests.txt",
+      "sha256": "c614e0b53af6616d823cdb256facb389c0696dc95a4a5ebe3483a24bcddf050c"
+    },
+    {
+      "command": "cargo +1.89.0 test --workspace --doc --all-features --offline --locked",
+      "exit": 0,
+      "reported_passed": 57,
+      "failed": 0,
+      "ignored": 18,
+      "log": "tdx-only-20261024/doc-tests.txt",
+      "sha256": "cedc7ba9bc2de513723b36587755385fa2ff49811e37bde8990a7fb34dba701d"
+    },
+    {
+      "command": "cargo +1.89.0 build --release -p jelven-rustdx-cli -p rustdx-runner --offline --locked",
+      "exit": 0,
+      "log": "tdx-only-20261024/release-build.txt",
+      "sha256": "9d79044793136263e9352397d048188a81d9822925af241f2359f164184fb792"
+    },
+    {
+      "command": "cargo +1.89.0 test -p rustdx-runner --test control_plane --offline --locked -- --ignored --skip real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence",
+      "exit": 0,
+      "passed": 3,
+      "failed": 0,
+      "log": "tdx-only-20261024/runner-cli.txt",
+      "sha256": "e12441a068fdc4d9d648ebb088d25d23781d42ab7b9ac0dafba2b7917b992a77"
+    },
+    {
+      "command": "python3 docs/validation/evidence/kline-volume-20261024/validate.py",
+      "exit": 0,
+      "decoded_rows": 928,
+      "matched_daily_rows": 144,
+      "numeric_differences": 0,
+      "log": "tdx-only-20261024/volume-replay.txt"
+    }
+  ],
+  "official_day_validation": {
+    "inputs": [
+      {
+        "path": "kline-volume-20261024/official-day/sh000001.day",
+        "bytes": 279904,
+        "sha256": "46eaa496d4642c1008bfcf7c227fcecca9ba1a8f61c08252c4cc8f451fdd7ced"
+      },
+      {
+        "path": "kline-volume-20261024/official-day/sh510300.day",
+        "bytes": 111968,
+        "sha256": "a9afb74f1f9c80c0fc4b6c847de332b24bdd25dd0e69fbe3f55bb0807aae5105"
+      },
+      {
+        "path": "kline-volume-20261024/official-day/sh600000.day",
+        "bytes": 205152,
+        "sha256": "22855dea0db065e4875d005c7ba55dff5cccc4cbf491aeccfb43d8a278529748"
+      },
+      {
+        "path": "kline-volume-20261024/official-day/sz000001.day",
+        "bytes": 271200,
+        "sha256": "8936282131663d1d8ddd458231a604be1b7c71440d96b3edfce2cb250de439b8"
+      }
+    ],
+    "source": "Previously archived official ZIP members, no new download",
+    "independent_reference": "Python standard-library struct <IIIIIfII; exact comparison of all OHLC/amount/volume fields and all date/code keys",
+    "cli_command": "target/release/rustdx --timeout 60 day <official-day-directory> --workers <1|4> -o <output.csv> --report <report.json>",
+    "rows": 27132,
+    "logical_keys": 27132,
+    "first_date": "1990-12-19",
+    "last_date": "2026-10-22",
+    "csv_bytes": 1829998,
+    "csv_sha256": "1233cf941f7337ee96232657a5a38e9c2f7025073237216705d4f346a9114753",
+    "workers": [1, 4],
+    "outputs_byte_identical": true,
+    "all_numeric_fields_exact": true,
+    "collection_schema": 7,
+    "status": "complete",
+    "quality_errors": 0,
+    "quality_warnings_per_run": 20,
+    "warning_scope": "4 historical calendar-coverage warnings, 16 non-A-share source OHLC anomalies retained under existing default policy; not full historical trading-day completeness acceptance"
+  },
+  "audit": {
+    "retained_project_keyword_matches": 0,
+    "scope": "Tracked and untracked non-ignored project text plus retained source archives; excludes .git, shared toolchain/dependency caches and unrelated generated objects",
+    "obsolete_generated_targets_removed": 995,
+    "research_manifest_entries_verified": 205,
+    "research_manifest_bytes": 6827427,
+    "research_manifest_sha256": "3c7b4853c2be7f8db5b74b12a8ce935df39f6dbc23c232a4ca67a9f0524b7b04",
+    "provenance": "Three explicitly filtered derivatives retain original hashes; one omitted upstream archive retains source identity/hash/removal reason; remaining research and volume decoder source pins verified"
+  },
+  "limitations": [
+    "Reported harness passes include external-service tests that return early under RUSTDX_SKIP_INTEGRATION_TESTS; these are not live acceptance results",
+    "No new full ZIP or real ClickHouse/MongoDB production acceptance; current database regressions use local mock services, previous real-service evidence remains historical",
+    "Runner currently collects local .day directories; TDX TCP Job adapter remains unimplemented",
+    "Existing calendar coverage is 2024-2026; no fabricated 2027 calendar or full-market security lifecycle facts",
+    "No commit, remote push, crate release or production deployment performed"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "source_files": {
+    "src/tcp/frame.rs": "58b36ba4743884d912bf6b691c54a4b39c4a2dcb4a6d9152a8cf09b0e81dd3cd",
+    "src/tcp/reader.rs": "da8c78974fca205a112f8876944d13e7bbfb28493a1ebb02644dcb5ee8848f04",
+    "src/tcp/stock/command_request.rs": "55d50990b3b35a4daadd707f377ad595696c30c7ddce368abe713b8ba44d8e49",
+    "src/tcp/stock/intraday_aux.rs": "a65b7ecfa25157d26e6d8296d05650977921cc96e9f5daba2a51159bd465d1b2",
+    "src/tcp/stock/special_limits.rs": "78dd6d553871116848bff1c169ae72e60beb6cc6bdb2f895f24601f18fa54f79",
+    "src/tcp/stock/sparkline.rs": "e0e32bb11253f85b272e8a327fd3ae0bb37145743d85b7d5a08c2620b3c7a740",
+    "src/tcp/stock/recent_minutes.rs": "ac454993fcd8da73b13c8c6f2a33bdedc885e749d2b46885a254a3bab53dbf79",
+    "src/tcp/stock/auctions.rs": "9f2f94931a5eb781bba9da8bd15ac4be86529ecf1eadc08b444251ecd27eace8",
+    "src/tcp/stock/money_flow.rs": "6c5ff4175ac3a344534220f842849f4012f5141471005a6542229280a2d725f9",
+    "src/tcp/stock/extended_quote.rs": "025f5214c891ae3713da833b96ccd9133143a89004ac0446d7bcf229c8458e7c",
+    "src/tcp/stock/snapshots.rs": "c70a054897c1b594ae161901bbe3b82e4ded54beddb05ef82b8d6b62065bbb8b",
+    "src/tcp/stock/category_quotes.rs": "2e1b04585aa3fc93be4c6c074abef184c263782a57ec73b178876406851dbeba",
+    "src/tcp/stock/quote_refresh.rs": "7da151827edfe43ceb1fdb58ab2b2d1243a1f21bcefda7356a61c06997ae4fa5",
+    "src/tcp/stock/quote_subscription.rs": "117edf14b6e353dc0c4ddde39b543615d53017270e1ae1afac2a66f31ee03cd4",
+    "src/tcp/stock/client/extended_queries.rs": "9ea8e2e1f78da7ada0c1ed37a92deb7fa24445249e0dc6a5adec4b9d3889157f",
+    "tests/protocol_7709_decoders.rs": "a252882f79dbd16f20bf9360660cf085cd7075c0645b66f14fedea9496530534",
+    "tests/quote_subscription.rs": "73f4c171486d9b5868ee90e637cda43e2ece464a8266cd5e01e363bc46abedf8",
+    "tests/extended_queries.rs": "192ddffab602ff6f7fdd7d2f141fd241af6c20d6da237c5146fb68eb1c492660",
+    "tests/common/extended_protocol.rs": "2e3fe88fcbc6cc7134d11ad280b8dd400a973f5e827280277c0712f8db2d90c4",
+    "examples/capture_nine_commands.rs": "3f2d4cf5534321777b245ef4bbff9920b213583f239d55b89d62023aa8d170d2",
+    "scripts/validation/verify_nine_commands.py": "400cc1b4e2bd99f8e848ea1e5f0b492cebc7adc705a55dcc3f3092660d284d66"
+  },
+  "checks": {
+    "fmt.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clippy.log": "c4f99715518f2bc74f27cfd702f48c6fb24a64ccdca9d8a667767979a212e8ab",
+    "rustdoc.log": "3b56d2d759fbd8a2e42f9311f313a30277dba80909f124250d0220d6aac7d524",
+    "workspace-tests.log": "fff1d23ff4cba2ae4a7ebcb22a50fa7129a03a279b5f7de88693318086d8f96c"
+  }
+}

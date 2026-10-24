@@ -1,0 +1,7 @@
+[2026-10-24T12:28:52Z INFO  rustdx::io] dir: "/tmp/rustdx-real-day-ia0zyngd/source" day 文件数量：128
+[2026-10-24T12:28:52Z INFO  rustdx::io] "/tmp/rustdx-real-day-ia0zyngd/source"	已完成：128
+[2026-10-24T12:28:52Z INFO  rustdx::io] 解析完成 → 文件 128 个 / 行 779200 行 / 输出 45.4 MiB / 耗时 0.3s
+Error: 数据库数值与CSV不一致: ("2005-01-13", "sh600000")；CSV保留待核实
+
+Location:
+    apps/rustdx-cli/src/io/verify.rs:218:17

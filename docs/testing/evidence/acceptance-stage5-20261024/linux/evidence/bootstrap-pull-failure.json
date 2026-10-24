@@ -1,0 +1,14 @@
+[
+  {
+    "name": "pull-mongodb",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+      "-H",
+      "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+      "pull",
+      "docker.m.daocloud.io/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d"
+    ],
+    "exit_code": 1,
+    "seconds": 594.4216877580038
+  }
+]

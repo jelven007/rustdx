@@ -1,0 +1,388 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+   Compiling jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+   Compiling rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+   Compiling tests-integration v1.1.0 (/Users/bytedance/Documents/rustdx/tests/integration)
+    Finished `test` profile [optimized + debuginfo] target(s) in 2m 12s
+     Running unittests src/lib.rs (target/debug/deps/rustdx_cli-a79be827b2de98c2)
+
+running 5 tests
+test fetch_code::tests::stocklist_responses_are_bounded_and_read_errors_propagate ... ok
+test maintenance::tests::inclusive_warning_and_coverage_boundaries_do_not_extend_evidence ... ok
+test fetch_code::tests::sse_jsonp_is_structural_and_public_inputs_do_not_panic ... ok
+test observation::tests::queued_temporary_bytes_release_on_drop_and_publication ... ok
+test observation::tests::concurrent_nested_spans_and_unwinding_keep_task_counters_separate ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running unittests src/main.rs (target/debug/deps/rustdx-f468ed92a351ae3a)
+
+running 33 tests
+test download::tests::find_lday_dirs_empty_when_missing ... ok
+test download::tests::content_range_requires_exact_offset_and_length ... ok
+test download::tests::safe_join_rejects_traversal ... ok
+test cmd::data_check::tests::reference_disagreement_and_coverage_are_rejected ... ok
+test io::rowbinary::tests::adjusted_fields_reordering_and_signed_zero_are_preserved ... ok
+test io::rowbinary::tests::date_upper_bound_and_cancellation_are_enforced ... ok
+test io::rowbinary::tests::independent_bytes_and_small_reads_preserve_all_float_bits ... ok
+test io::rowbinary::tests::malformed_fields_and_unbounded_records_fail_before_encoding ... ok
+test io::test_insert_clickhouse ... ok
+test io::tests::clickhouse_rejects_error_status_late_exception_and_truncated_body ... ok
+test io::tests::clickhouse_schema_must_preserve_key_precision_and_import_versions ... ok
+test download::tests::zip_cached_logic ... ok
+test io::tests::excel_codes_keep_leading_zero_and_invalid_columns_fail ... ok
+test download::tests::http_resume_uses_validator_and_publishes_complete_archive ... ok
+test io::tests::previous_inputs_are_preserved_and_invalid_rows_fail ... ok
+test io::tests::table_names_cannot_be_sql ... ok
+test io::verify::tests::batch_and_mongo_response_limits_reject_invalid_input ... ok
+test io::mongo_readback::tests::deadline_cancellation_and_blocked_pipe_are_reaped ... ok
+test io::verify::tests::independent_readback_detects_values_keys_duplicates_and_crosses_batches ... ok
+test paths::tests::database_targets_coordinate_across_credentials_and_directories ... ok
+test quality::tests::equities_are_strict_and_indexes_keep_source_anomalies_as_warnings ... ok
+test download::tests::local_archives_have_isolated_cache_and_failure_preserves_extraction ... ok
+test io::streaming::tests::chunk_carry_matches_whole_file_with_suspended_events ... ok
+test io::sinks::tests::subprocess_failure_and_timeout_are_bounded ... ok
+test paths::tests::aliases_and_concurrent_writers_are_rejected ... ok
+test io::mongo_readback::tests::persistent_process_checks_complete_response_eof_and_exit_status ... ok
+test io::streaming::tests::multipass_merge_keeps_last_source_duplicate_and_bounds_diagnostics ... ok
+test io::tests::invalid_collection_preserves_last_success_and_records_failure ... ok
+test io::tests::all_empty_collection_preserves_output_and_fails_report ... ok
+test io::sinks::tests::late_database_error_leaves_durable_unknown_status_and_csv ... ok
+test quality::tests::manifests_preserve_each_run_and_verify_published_evidence ... ok
+test io::sinks::tests::acknowledged_import_with_failed_readback_retains_csv_and_evidence ... ok
+test io::tests::external_calendar_enables_strict_collection_without_guessing_dates ... ok
+
+test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+
+     Running tests/calendar_datasets.rs (target/debug/deps/calendar_datasets-fa7ee56ffc478c1a)
+
+running 1 test
+test exchange_2026_datasets_match_each_other_and_builtin_every_day ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (target/debug/deps/cli-1fb841ec0cc14c60)
+
+running 5 tests
+test help_and_invalid_output_finish_without_network ... ok
+test conflicting_outputs_fail_before_network_or_input_changes ... ok
+test failed_database_import_keeps_csv_and_marks_report_failed ... ok
+test csv_collection_and_strict_gap_protect_previous_output ... ok
+test invalid_readback_batch_preserves_output_before_database_access ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.38s
+
+     Running tests/cli_deadline.rs (target/debug/deps/cli_deadline-ab6d880de4e6fba5)
+
+running 1 test
+test full_command_deadline_and_cancellation_preserve_previous_output ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.54s
+
+     Running tests/database_acceptance.rs (target/debug/deps/database_acceptance-2b894da683c9efa6)
+
+running 1 test
+test real_databases_verify_all_keys_updates_and_constraints ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/day_streaming.rs (target/debug/deps/day_streaming-a375daf94bb3ff00)
+
+running 3 tests
+test cancellation_unblocks_ordered_workers_and_cleans_spools ... ok
+test local_zip_source_observations_survive_report_creation_after_extraction ... ok
+test worker_counts_are_byte_identical_and_late_errors_preserve_output ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.81s
+
+     Running tests/http_budget.rs (target/debug/deps/http_budget-421251c450114290)
+
+running 1 test
+test slow_progress_does_not_refresh_deadline_and_idle_body_can_be_cancelled ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.00s
+
+     Running tests/maintenance_status.rs (target/debug/deps/maintenance_status-c1fcded3217f26ae)
+
+running 1 test
+test status_strict_failure_still_publishes_reviewable_report ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/mongo_credentials.rs (target/debug/deps/mongo_credentials-a31d631a4affa1f6)
+
+running 1 test
+test authenticated_uri_stays_out_of_argv_and_private_config_is_removed ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.95s
+
+     Running tests/tcp_day.rs (target/debug/deps/tcp_day-126e87c0a9ad98d6)
+
+running 5 tests
+test frozen_v1_archives_replay_with_their_original_lossy_volume ... ok
+test an_enumerated_empty_tail_keeps_missing_dates_visible_to_runner ... ok
+test compressed_short_pages_replay_exact_fields_and_duplicate_boundaries ... ok
+test wire_receipt_and_orphan_file_changes_are_rejected_independently ... ok
+test closed_date_unit_evidence_scope_and_archive_budget_refuse_collection ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.68s
+
+     Running tests/tcp_startup.rs (target/debug/deps/tcp_startup-ec1308a939d313d5)
+
+running 1 test
+test cli_defaults_to_measured_pool_and_warmed_client_before_dispatch ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.47s
+
+     Running unittests src/lib.rs (target/debug/deps/rustdx_complete-ebbafb967c414c4e)
+
+running 186 tests
+test builder::tests::invalid_builder_inputs_return_errors ... ok
+test builder::tests::explicit_symbols_preserve_exchange_and_reject_unverified_mapping ... ok
+test builder::tests::test_builder_basic ... ok
+test builder::tests::test_builder_chain ... ok
+test builder::tests::test_builder_convenience_methods ... ok
+test builder::tests::test_builder_count_too_large ... ok
+test builder::tests::test_builder_missing_code ... ok
+test builder::tests::test_builder_defaults ... ok
+test bytes_helper::tests::overflowing_and_truncated_offsets_keep_legacy_zero_fallback ... ok
+test builder::tests::test_builder_auto_market ... ok
+test cache::tests::file_cache_process_writer ... ok
+test cache::tests::incremental_bytes_and_shared_views_survive_replacement_and_eviction ... ok
+test cache::tests::test_cache_manager ... ok
+test cache::tests::test_memory_cache_basic ... ok
+test cache::tests::test_get_or_fetch ... ok
+test cache::tests::concurrent_fetch_is_coalesced ... ok
+test cache::tests::test_memory_cache_clear ... ok
+test cache::tests::test_memory_cache_expiry ... ok
+test cache::tests::test_memory_cache_remove ... ok
+test calendar::provider::tests::external_calendar_uses_declared_holidays_and_rejects_invalid_datasets ... ok
+test calendar::provider::tests::strict_navigation_propagates_coverage_boundaries ... ok
+test calendar::tests::test_count_trading_days ... ok
+test calendar::tests::test_date_conversion ... ok
+test calendar::tests::test_get_trading_days ... ok
+test calendar::tests::test_get_trading_days_before ... ok
+test calendar::tests::test_is_trading_day ... ok
+test calendar::tests::test_is_trading_time ... ok
+test calendar::tests::test_next_trading_day ... ok
+test calendar::tests::test_previous_trading_day ... ok
+test data::tests::symbols_and_units_are_explicit ... ok
+test data::model::tests::adapters_keep_market_period_and_volume ... ok
+test error::tests::test_error_chain ... ok
+test error::tests::test_error_conversion ... ok
+test error::tests::test_error_display ... ok
+test error::tests::test_tcp_error_display ... ok
+test error::tests::test_indicator_error_display ... ok
+test error::tests::test_validation_error_display ... ok
+test file::gbbq::fq::tests::suspended_events_match_full_and_incremental_series ... ok
+test indicators::incremental::tests::checked_parameters_reject_empty_input_and_accept_large_periods ... ok
+test indicators::incremental::tests::chunks_gaps_and_checkpoint_replay_preserve_the_same_state ... ok
+test indicators::incremental::tests::published_recurrence_has_known_values_and_explicit_histogram_scale ... ok
+test indicators::tests::indicator_gaps_preserve_alignment_and_recover ... ok
+test indicators::tests::rolling_values_match_reference_and_recover_after_gaps ... ok
+test indicators::tests::monotonic_kdj_matches_scanned_windows_including_invalid_bars ... ok
+test indicators::tests::test_bollinger_bands ... ok
+test indicators::tests::test_ema ... ok
+test indicators::tests::test_empty_data ... ok
+test indicators::tests::test_kdj ... ok
+test indicators::tests::test_macd ... ok
+test indicators::tests::test_rsi ... ok
+test indicators::tests::test_rsi_extreme_cases ... ok
+test indicators::tests::test_single_value ... ok
+test indicators::tests::test_sma ... ok
+test limit::history::tests::gaps_overlaps_and_single_day_stages_are_explicit ... ok
+test limit::rules::tests::effective_dates_and_st_rules ... ok
+test limit::rules::tests::ipo_and_transfer_are_distinct ... ok
+test limit::tests::board_as_str_roundtrip_meaning ... ok
+test limit::tests::board_of_by_prefix ... ok
+test limit::tests::half_cent_prices_round_up_for_both_directions ... ok
+test limit::tests::is_st_name_detection ... ok
+test limit::tests::limit_prices_by_board_and_st ... ok
+test limit::tests::limit_prices_invalid_preclose ... ok
+test limit::tests::limit_prices_main_10pct ... ok
+test limit::tests::limit_status_classification ... ok
+test limit::tests::limit_up_streak_counts_recent_seals ... ok
+test pool::tests::invalid_configuration ... ok
+test tcp::basic::connection ... ok
+test tcp::basic::malformed_count_clears_previous_result_without_panicking ... ok
+test indicators::tests::rolling_bands_match_centered_reference_and_recover_from_overflow ... ok
+test tcp::governance::tests::endpoint_rotation_and_failure_cooldown ... ok
+test tcp::helper::check_datetime_price_vol_amount ... ok
+test tcp::helper::tests::datetime_ord_is_chronological ... ok
+test tcp::ip::capabilities::tests::heartbeat_does_not_qualify_special_commands_and_failure_revokes_observation ... ok
+test pool::tests::cleanup_does_not_move_borrowed_connections ... ok
+test tcp::ip::daily::tests::crud_is_shared_atomic_and_never_admits_an_untested_address ... ok
+test tcp::ip::daily::tests::empty_pool_and_unapproved_preferences_fail_without_falling_back_to_seeds ... ok
+test tcp::ip::daily::tests::publishing_a_batch_cannot_restore_addresses_removed_during_probing ... ok
+test tcp::ip::daily::tests::scheduler_uses_beijing_nine_and_expires_yesterdays_pool ... ok
+test operation::tests::scopes_restore_and_expiry_is_not_refreshed ... ok
+test tcp::ip::tests::check_all_stock_ips ... ok
+test tcp::ip::tests::first_server_is_connectable ... ok
+test tcp::governance::tests::bounded_budget_releases_and_wakes_waiters ... ok
+test tcp::reader::tests::rejects_truncated_and_overlong_values ... ok
+test pool::tests::reuse_wait_and_close ... ok
+test tcp::stock::block_info::tests::parse_block_content_two_blocks ... ok
+test tcp::stock::block_info::tests::parse_truncated_returns_empty ... ok
+test tcp::stock::block_info::tests::test_meta_send_bytes ... ok
+test tcp::stock::client::bar_range::tests::limits_and_legacy_short_page_are_explicitly_incomplete ... ok
+test tcp::stock::client::bar_range::tests::conflicting_duplicate_and_nonprogress_are_rejected ... ok
+test tcp::stock::client::bar_range::tests::short_pages_continue_with_raw_offsets_and_record_duplicate_boundaries ... ok
+test tcp::stock::client::bar_range::tests::reconnect_invalidates_the_source_even_when_endpoint_is_unchanged ... ok
+test tcp::stock::client::batch::tests::queued_batches_have_a_deadline ... ok
+test operation::tests::absolute_deadline_and_worker_cancellation ... ok
+test tcp::stock::client::stream::tests::callback_failure_deadline_and_cancellation_stop_delivery ... ok
+test tcp::stock::client::tests::adjusted_multipliers_cash_and_rights ... ok
+test tcp::stock::client::tests::adjusted_multipliers_no_xdxr ... ok
+test tcp::stock::client::tests::adjusted_multipliers_split ... ok
+test tcp::stock::client::tests::adjusted_multipliers_suspended_xdxr_day ... ok
+test tcp::stock::client::tests::adjustment_anchors_first_bar_and_chains_suspension_events ... ok
+test tcp::stock::client::tests::ex_right_reference_rounds_to_fen ... ok
+test tcp::stock::client::tests::k_range_retain_logic ... ok
+test tcp::stock::client::stream::tests::total_budgets_stop_before_delivery_and_item_failures_are_retained ... ok
+test tcp::stock::client::tests::today_yyyymmdd_format ... ok
+test tcp::stock::client::transactions::tests::current_day_date_change_is_rejected_but_history_keeps_its_explicit_date ... ok
+test tcp::stock::command_request::scan_source_tests::scans_reject_endpoint_connection_and_shanghai_day_changes ... ok
+test tcp::stock::company_info::tests::parse_category ... ok
+test tcp::stock::company_info::tests::test_category_new ... ok
+test tcp::stock::company_info::tests::test_content_new ... ok
+test tcp::stock::finance_info::tests::test_connection ... ok
+test tcp::stock::finance_info::tests::test_finance_info_invalid_code - should panic ... ok
+test tcp::stock::finance_info::tests::test_finance_info_new ... ok
+test tcp::stock::finance_info::tests::test_finance_info_new_shanghai ... ok
+test tcp::stock::finance_info::tests::test_finance_info_send_bytes ... ok
+test tcp::stock::history_minute_time::tests::parse_legacy_format ... ok
+test tcp::stock::history_minute_time::tests::parse_truncated_returns_empty ... ok
+test tcp::stock::history_minute_time::tests::test_invalid_code - should panic ... ok
+test tcp::stock::history_minute_time::tests::test_new ... ok
+test tcp::stock::history_transaction::tests::parse_two_ticks ... ok
+test tcp::stock::history_transaction::tests::test_invalid_code - should panic ... ok
+test tcp::stock::history_transaction::tests::test_new ... ok
+test tcp::stock::index_kline::tests::parse_truncated_no_panic ... ok
+test tcp::stock::index_kline::tests::test_invalid_code - should panic ... ok
+test tcp::stock::index_kline::tests::test_new_send_bytes ... ok
+test tcp::stock::kline::connection ... ok
+test tcp::stock::kline::day_new_modify ... ok
+test tcp::stock::kline::parse ... ok
+test tcp::stock::minute_time::tests::locate_data_block_finds_unique_start ... ok
+test tcp::stock::minute_time::tests::locate_data_block_insufficient_vars ... ok
+test tcp::stock::minute_time::tests::locate_data_block_requires_full_consumption ... ok
+test tcp::stock::minute_time::tests::parse_invalid_price_returns_empty ... ok
+test tcp::stock::minute_time::tests::parse_legacy_format ... ok
+test tcp::stock::minute_time::tests::parse_new_protocol ... ok
+test tcp::stock::minute_time::tests::parse_new_protocol_code_mismatch_returns_empty ... ok
+test tcp::stock::minute_time::tests::parse_new_protocol_shanghai ... ok
+test tcp::stock::minute_time::tests::parse_truncated_returns_empty ... ok
+test tcp::stock::minute_time::tests::test_connection ... ok
+test tcp::stock::minute_time::tests::test_minute_time_invalid_code - should panic ... ok
+test tcp::stock::minute_time::tests::test_minute_time_new ... ok
+test tcp::stock::minute_time::tests::test_minute_time_new_shanghai ... ok
+test tcp::stock::minute_time::tests::test_minute_time_send_bytes ... ok
+test tcp::stock::quotes::tests::parse_full_response ... ok
+test tcp::stock::quotes::tests::test_security_quotes_default ... ok
+test tcp::stock::quotes::tests::test_security_quotes_empty - should panic ... ok
+test tcp::stock::quotes::tests::test_security_quotes_new ... ok
+test tcp::stock::quotes::tests::test_servertime_string ... ok
+test tcp::stock::reported_turnover::tests::compensated_sum_retains_small_terms_and_rejects_nonfinite_results ... ok
+test tcp::stock::security_list::tests::test_connection ... ok
+test tcp::stock::security_list::tests::test_security_list_new ... ok
+test tcp::stock::security_list::tests::test_security_list_new_with_start ... ok
+test tcp::stock::security_list::tests::test_security_list_send_bytes ... ok
+test tcp::stock::security_list::tests::test_security_list_send_bytes_with_params ... ok
+test tcp::stock::tests::stocks_collects_pages_in_order ... ok
+test tcp::stock::client::stream::tests::slow_first_item_bounds_prefetch_and_preserves_errors_in_input_order ... ok
+test tcp::stock::trade_amount::tests::overflow_is_an_error_not_a_wrapped_amount ... ok
+test tcp::stock::trade_models::tests::source_checks_do_not_merge_endpoints_or_local_calendar_days ... ok
+test tcp::stock::transaction::tests::test_connection ... ok
+test tcp::stock::transaction::tests::test_transaction_invalid_code - should panic ... ok
+test tcp::stock::transaction::tests::test_transaction_new ... ok
+test tcp::stock::transaction::tests::test_transaction_new_with_start ... ok
+test tcp::stock::tests::stocks_rejects_incomplete_duplicate_and_excess_pages ... ok
+test tcp::stock::transaction::tests::test_transaction_send_bytes ... ok
+test tcp::stock::validator::tests::continuity_checks_single_missing_day_duplicates_and_holidays ... ok
+test tcp::stock::validator::tests::test_detect_anomalies_empty ... ok
+test tcp::stock::validator::tests::test_detect_anomalies_insufficient_data ... ok
+test tcp::stock::validator::tests::test_detect_anomalies_logic_error ... ok
+test tcp::stock::validator::tests::test_detect_anomalies_price_spike ... ok
+test tcp::stock::validator::tests::test_finance_consistency_invalid ... ok
+test tcp::stock::validator::tests::test_finance_consistency_normal ... ok
+test tcp::stock::validator::tests::test_kline_data_invalid ... ok
+test tcp::stock::validator::tests::test_validate_kline_continuity_empty ... ok
+test tcp::stock::validator::tests::test_kline_data_validatable ... ok
+test tcp::stock::validator::tests::test_validate_kline_continuity_missing_dates ... ok
+test tcp::stock::validator::tests::test_validate_kline_continuity_normal ... ok
+test tcp::stock::validator::tests::test_validate_kline_continuity_single ... ok
+test tcp::stock::xdxr::connection ... ok
+test tcp::stock::xdxr::xdxrdata_parse ... ok
+test tcp::ip::probe::tests::slow_headers_and_silent_heartbeat_obey_the_whole_stage_deadline ... ok
+test tcp::governance::tests::observations_use_a_bounded_nearest_rank_window_and_shared_policy_agrees ... ok
+test tcp::ip::coordinator::tests::independent_pools_share_slots_and_waiting_inherits_cancellation ... ok
+test cache::tests::test_file_cache ... ok
+test cache::tests::test_file_cache_expiry ... ok
+test cache::tests::capacity_and_file_keys_do_not_alias ... ok
+test tcp::stock::client::tests::overlapping_batches_wait_and_preserve_results_when_pool_size_changes ... ok
+test tcp::stock::client::bar_range::tests::network_short_page_and_empty_confirmation_keep_one_session ... ok
+test cache::tests::file_total_budget_replacement_expiry_and_stale_staging_are_governed ... ok
+test cache::tests::independent_processes_share_one_file_capacity_limit ... ok
+
+test result: ok. 186 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.73s
+
+     Running tests/adj_field_probe.rs (target/debug/deps/adj_field_probe-ad2cfd55e1d38a6a)
+
+running 1 test
+test probe_kline_adj_field ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/auto_reconnect.rs (target/debug/deps/auto_reconnect-ac066a7026cadb4c)
+
+running 2 tests
+test tcp_no_auto_reconnect_fails_after_shutdown ... ok
+test tcp_auto_reconnect_after_shutdown ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/bars_range_live.rs (target/debug/deps/bars_range_live-54c2cb79f8644785)
+
+running 6 tests
+test bars_batch_matches_single ... ok
+test bars_range_5m_ordered_deduped_in_window ... ok
+test bars_single_page_ascending ... ok
+test k_day_ascending_contract ... ok
+test recheck_empty_config_no_regression ... ok
+test index_bars_range_day_contract ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/block_integrity.rs (target/debug/deps/block_integrity-ca6177ffbef381b9)
+
+running 10 tests
+test metadata_verifies_known_md5_and_rejects_length_and_same_length_corruption ... ok
+test strict_decoder_rejects_malformed_layout_and_member_fields_without_partial_success ... ok
+test captured_full_file_matches_independent_md5_and_all_record_fields ... ok
+test download_rejects_correct_length_content_with_wrong_md5 ... ok
+test download_rejects_short_chunk ... ok
+test download_rejects_reconnect_between_metadata_and_content ... ok
+test full_download_checks_multichunk_ranges_digest_raw_headers_and_sources ... ok
+test high_level_entries_reject_md5_valid_but_malformed_file_and_preserve_error_kind ... ok
+test empty_and_invalid_metadata_never_trigger_chunk_download ... ok
+test whole_download_respects_outer_deadline_across_chunks ... FAILED
+
+failures:
+
+---- whole_download_respects_outer_deadline_across_chunks stdout ----
+
+thread 'whole_download_respects_outer_deadline_across_chunks' panicked at crates/rustdx-core/tests/block_integrity.rs:241:5:
+assertion `left == right` failed
+  left: WouldBlock
+ right: TimedOut
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    whole_download_respects_outer_deadline_across_chunks
+
+test result: FAILED. 9 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+error: test failed, to rerun pass `-p jelven-rustdx-complete --test block_integrity`

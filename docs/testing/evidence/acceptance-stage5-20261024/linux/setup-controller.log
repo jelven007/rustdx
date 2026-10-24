@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/setup.py", line 34, in <module>
+    list(pool.map(lambda f:f(),[rust,docker]))
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/setup.py", line 34, in <lambda>
+    list(pool.map(lambda f:f(),[rust,docker]))
+                           ^^^
+  File "/tmp/rustdx-acceptance-20261024-TLDCn5/setup.py", line 8, in rust
+    status=subprocess.call([str(task/"rustup-init"),"-y","--no-modify-path","--profile","minimal","--default-toolchain","1.89.0","--component","clippy,rustfmt"],env=env,stdout=log,stderr=subprocess.STDOUT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 389, in call
+    with Popen(*popenargs, **kwargs) as p:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+OSError: [Errno 26] Text file busy: '/tmp/rustdx-acceptance-20261024-TLDCn5/rustup-init'

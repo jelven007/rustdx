@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "result": "passed",
+  "at": "2026-10-24T22:07:08.670296+00:00",
+  "authorization": "user requested cleanup of temporary data from this optimization",
+  "removed": [
+    {
+      "path": "/private/tmp/rustdx-optimization-20261024",
+      "before": {
+        "logical_bytes": 2260296862,
+        "allocated_bytes": 2282897408,
+        "files": 7416,
+        "entries": 8339
+      },
+      "removed": true
+    },
+    {
+      "path": "/private/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta",
+      "before": {
+        "logical_bytes": 9875899384,
+        "allocated_bytes": 10015723520,
+        "files": 50504,
+        "entries": 53415
+      },
+      "removed": true
+    },
+    {
+      "path": "/private/tmp/rustdx_cache/5819c5d75cbda7878cbbda7733351eb6.cache",
+      "before": {
+        "logical_bytes": 28,
+        "allocated_bytes": 4096,
+        "files": 1,
+        "entries": 1
+      },
+      "removed": true
+    }
+  ],
+  "logical_bytes_removed": 12136196274,
+  "allocated_bytes_in_removed_entries": 12298625024,
+  "observed_free_bytes_change": 10708627456,
+  "space_note": "allocated blocks are summed from removed entries; filesystem snapshots/shared extents and unrelated writes affect free-space change",
+  "archived_evidence_checks_before_and_after": [
+    {
+      "directory": "optimization-final-20261025",
+      "verified_files": 73
+    },
+    {
+      "directory": "optimization-stage3-20261025",
+      "verified_files": 56
+    },
+    {
+      "directory": "optimization-stage4-batch-20261025",
+      "verified_files": 41
+    },
+    {
+      "directory": "optimization-stage4-acquisition-retention-20261025",
+      "verified_files": 18
+    }
+  ],
+  "workspace_status_unchanged_before_report": true,
+  "preserved": [
+    "all optimization reports, source files, actual .crate archives and engineering snapshot",
+    "original frozen market/database evidence and existing runtime data",
+    "installed .cargo toolchains and registry caches",
+    "earlier unrelated temporary directories and the pre-existing shared cache lock"
+  ],
+  "external_archive_retention_update": {
+    "files": [
+      "/tmp/rustdx-optimization-20261024/package-audit/source.tar.gz",
+      "/tmp/rustdx-optimization-20261024/final-package-audit/source.tar.gz"
+    ],
+    "status": "removed as temporary duplicate source/evidence archives",
+    "historical_reports": "retain original recorded paths and hashes unchanged",
+    "persistent_artifacts": "docs/testing/evidence/optimization-final-20261025"
+  }
+}

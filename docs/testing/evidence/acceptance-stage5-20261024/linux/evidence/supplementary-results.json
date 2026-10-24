@@ -1,0 +1,17 @@
+[
+  {
+    "name": "mongo-protocol-offline",
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh",
+      "--nodb",
+      "--quiet",
+      "--norc",
+      "--eval",
+      "require(\"/tmp/rustdx-acceptance-20261024-TLDCn5/source/apps/rustdx-runner/tests/database_mongo_protocol.cjs\");"
+    ],
+    "exit_code": 0,
+    "seconds": 0.32191078999312595,
+    "expected_success_line_seen": true,
+    "runtime": "mongosh2.5.10 embedded Node; no database connection"
+  }
+]

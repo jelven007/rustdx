@@ -1,0 +1,6 @@
+mongodump version: 100.12.2
+git version: f76a3ae4029780f61c49cbd39b7336f8d9c30ed0
+Go version: go1.23.8
+   os: linux
+   arch: amd64
+   compiler: gc

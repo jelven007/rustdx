@@ -1,0 +1,2530 @@
+{
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "8d767ce7e865902b1ece6094cbe68f853ad7e4ef2aaceec99c96a12dbf6f7168",
+      "bytes": 3086
+    },
+    {
+      "path": ".github/workflows/data-coverage.yml",
+      "sha256": "9073052de8cec6ee7f63efe92e1b15338537d541cd556693d7eee7469eaa7f7b",
+      "bytes": 644
+    },
+    {
+      "path": ".github/workflows/database-acceptance.yml",
+      "sha256": "b9a2ed86bc324307367ea53a1d1b6b51a269e04ff67166194afb8137cb6892d1",
+      "bytes": 5079
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "eaf490103dc6851757fe51a3ee6da388cb0510ab4f86f6438347c20470c3dffd",
+      "bytes": 1404
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "1486729477f09a15dd30d30f221c873dcab5f9d2e3873eb8ae9e3df71efd885e",
+      "bytes": 43409
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "4d47b479225f8a85126cef336d03c7c51e5b59b51f4c910f8689ca444de98c33",
+      "bytes": 645
+    },
+    {
+      "path": "apps/rustdx-cli/Cargo.toml",
+      "sha256": "a1706dc0718866fb9aad911b676a6ebd346e40602859c6573777c36125d3af4c",
+      "bytes": 1348
+    },
+    {
+      "path": "apps/rustdx-cli/LICENSE-MIT",
+      "sha256": "1fb7038ce53ee00005e9fc8000c6f14c0ae51370ccc55464743163916b883f86",
+      "bytes": 1069
+    },
+    {
+      "path": "apps/rustdx-cli/README.md",
+      "sha256": "2160914fbb6656935e6473df8babc16d395c717386e44f6bca6532c0aaecc854",
+      "bytes": 1985
+    },
+    {
+      "path": "apps/rustdx-cli/build.rs",
+      "sha256": "066d0534435186f912395d5042baa31df1714543489a96048663958afdcc45b5",
+      "bytes": 201
+    },
+    {
+      "path": "apps/rustdx-cli/examples/csv.rs",
+      "sha256": "5331082b4248279a599f41fb0ef52df8501ae6e100611da911cafe4765e3d135",
+      "bytes": 733
+    },
+    {
+      "path": "apps/rustdx-cli/examples/excel.rs",
+      "sha256": "1d542890e5034adf178381484ca9bc5ba225c4fd88b3f8606d8406a13eb328a7",
+      "bytes": 1658
+    },
+    {
+      "path": "apps/rustdx-cli/examples/tcp_wire.rs",
+      "sha256": "b9a866d534543a64c98bb286d34f510ca93b3f43d4440e10e6d02809841487ea",
+      "bytes": 1667
+    },
+    {
+      "path": "apps/rustdx-cli/rustfmt.toml",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "apps/rustdx-cli/src/cmd/data_check.rs",
+      "sha256": "20af457f973fbf0f7f6e0d3bee7960f8b88948c4e800260e8318cb8649e8445b",
+      "bytes": 5776
+    },
+    {
+      "path": "apps/rustdx-cli/src/cmd/data_status.rs",
+      "sha256": "4c3e162a3f5bf4ea51853b4345e4ed1cb48277ac47bc416353eae0784f6b9f06",
+      "bytes": 3652
+    },
+    {
+      "path": "apps/rustdx-cli/src/cmd/day.rs",
+      "sha256": "b049fddbb49877ffe522d695bf542b12c3274ba9a1f232da555e98c6d041b8e9",
+      "bytes": 16843
+    },
+    {
+      "path": "apps/rustdx-cli/src/cmd/mod.rs",
+      "sha256": "b295dbbab6c3d82639cbee32285b72aee5b5b597747ebe7007070c76b3a30dca",
+      "bytes": 2740
+    },
+    {
+      "path": "apps/rustdx-cli/src/download.rs",
+      "sha256": "625bf5a031d9018d249d965929752b9251eb55594be90ac7a41510310006b518",
+      "bytes": 27573
+    },
+    {
+      "path": "apps/rustdx-cli/src/fetch_code.rs",
+      "sha256": "19f7c580999bb6e15beba114921fbf4a94814f067279a84ece0b9b7ecfad0141",
+      "bytes": 9764
+    },
+    {
+      "path": "apps/rustdx-cli/src/http.rs",
+      "sha256": "52ce12a73787edd9b5ee6881525f9a677daf9cdbb78a192d1a2ce638e8ceba02",
+      "bytes": 4570
+    },
+    {
+      "path": "apps/rustdx-cli/src/io.rs",
+      "sha256": "e9bf60583d52e3c6b8a9d25dea3fea33d730c401a97acc2762be5c3ae17bebe3",
+      "bytes": 39909
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/mongo_readback.js",
+      "sha256": "e7fd380bf36f9eca67108b7a8fc81b37642799a0797b792a80cc90f767401ccb",
+      "bytes": 1040
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/mongo_readback.rs",
+      "sha256": "b34c7583efb9bdb5b3daab9bfe62f1f68a65433271788cf9323ff9098c793649",
+      "bytes": 11123
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/schema.rs",
+      "sha256": "d77c2f78fff7ce4fd21219080600208cf2eff37f5e3c0df921a498ecd052e126",
+      "bytes": 2341
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/sinks.rs",
+      "sha256": "a1703dfba2c095d81154c8f78aa3286d7b583f5c38419f1147d84f73a36318e0",
+      "bytes": 14765
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/streaming.rs",
+      "sha256": "b56cedd1c28adbea91fe2fca4e2c081054dd827d7a1380d947ab6195310e58f4",
+      "bytes": 15195
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/verify.rs",
+      "sha256": "7e7382fea81cc50d33fa7d48ccc27fcf4305c4059c0f831dcfe3d05243bf96e3",
+      "bytes": 11932
+    },
+    {
+      "path": "apps/rustdx-cli/src/lib.rs",
+      "sha256": "7f0d4b3d561314e3562bb666b562af3758f314d4066063764678563952193f8e",
+      "bytes": 463
+    },
+    {
+      "path": "apps/rustdx-cli/src/main.rs",
+      "sha256": "4b5fb85c50bb2c9af917d3a5602f4dd0567b6ba549f8d8d36be4255bc21b36b7",
+      "bytes": 1287
+    },
+    {
+      "path": "apps/rustdx-cli/src/maintenance.rs",
+      "sha256": "6b356a61f77d56917d05015fd9b5a96533eb981e0bc45b03315d253b0339da7a",
+      "bytes": 4435
+    },
+    {
+      "path": "apps/rustdx-cli/src/observation.rs",
+      "sha256": "683a2492dcb30905c54670bb9968e5d327c96b20fe3b5d60c09a67a38081f406",
+      "bytes": 11603
+    },
+    {
+      "path": "apps/rustdx-cli/src/paths.rs",
+      "sha256": "55eb34685841e1fef7f4fb2039a70cb3360ec0219bbc2cafcedce007db18102e",
+      "bytes": 7006
+    },
+    {
+      "path": "apps/rustdx-cli/src/quality.rs",
+      "sha256": "ed04e5156544d3ec9adec94dd8fad836d98063e165286e365b76b600ad43df6f",
+      "bytes": 28968
+    },
+    {
+      "path": "apps/rustdx-cli/src/tcp_day.rs",
+      "sha256": "1aa499d560a81883db9499569631cca016bcaf5838081c117164700c0ef67321",
+      "bytes": 27313
+    },
+    {
+      "path": "apps/rustdx-cli/src/tcp_evidence.rs",
+      "sha256": "ed0c2ac9a5ec75c1036d37a89f6373e669dfd55079bd7f2d5d091a66f3878148",
+      "bytes": 11011
+    },
+    {
+      "path": "apps/rustdx-cli/tests/calendar_datasets.rs",
+      "sha256": "301c797a8e0cd4fb62d4df7724f71c382d10bcc04641a603d3dee97518b34c78",
+      "bytes": 992
+    },
+    {
+      "path": "apps/rustdx-cli/tests/cli.rs",
+      "sha256": "a534a607a647ba251a9696b7cca2deedcecc0f211f1a162f4d8db489243fd872",
+      "bytes": 9929
+    },
+    {
+      "path": "apps/rustdx-cli/tests/cli_deadline.rs",
+      "sha256": "3917ef47934ad0835de4344e28fca913d7954b6ecc66c5a8b9f80cfaac925626",
+      "bytes": 5288
+    },
+    {
+      "path": "apps/rustdx-cli/tests/common/tcp_day_peer.rs",
+      "sha256": "8ba7a6f7a80abd86bc6c6ec3de2c619a25b605414fe5dde8523b2f18bc1fa1cb",
+      "bytes": 5241
+    },
+    {
+      "path": "apps/rustdx-cli/tests/database_acceptance.rs",
+      "sha256": "77614bf90f8dd876a6e007753d1ec01e338c1789dfb81ae2807ff736ccb0011f",
+      "bytes": 8266
+    },
+    {
+      "path": "apps/rustdx-cli/tests/day_streaming.rs",
+      "sha256": "2b59243ef5bfc8eae2875ef159cc7fe5b382113428cf85e039d90b951db2af86",
+      "bytes": 9688
+    },
+    {
+      "path": "apps/rustdx-cli/tests/http_budget.rs",
+      "sha256": "689ac34ea6c8f7076a3167c37f4cc31622a2e33d5406ca797f1387aa1f45a742",
+      "bytes": 2964
+    },
+    {
+      "path": "apps/rustdx-cli/tests/maintenance_status.rs",
+      "sha256": "9576cdf67ad4a47f2545f46fc890195138dc5bac30ad6df52856698f69c13859",
+      "bytes": 1291
+    },
+    {
+      "path": "apps/rustdx-cli/tests/mongo_credentials.rs",
+      "sha256": "9b7ec1a28b182af476e4ef3db4db3f45f8e0a6a1c744e02d7c8015c55c667b17",
+      "bytes": 3904
+    },
+    {
+      "path": "apps/rustdx-cli/tests/tcp_day.rs",
+      "sha256": "85efeb4867c2978e1c9405ca740db52d6dc75d538e861c334b422e2ebe6125be",
+      "bytes": 6790
+    },
+    {
+      "path": "apps/rustdx-cli/tests/tcp_startup.rs",
+      "sha256": "62783811bbf5f33b260985ab9ccf019714a9547c6ad463b09b2a55cebf22c695",
+      "bytes": 267
+    },
+    {
+      "path": "apps/rustdx-runner/Cargo.toml",
+      "sha256": "cca6f073de9f2526cd3d4e6bd849d89116a098a94c40f1a7b3ec3692fac12a06",
+      "bytes": 884
+    },
+    {
+      "path": "apps/rustdx-runner/README.md",
+      "sha256": "f02c41ff22fcb14d09f65914603b959cd4f6fbb168e4a945b422da35a9e36b77",
+      "bytes": 11769
+    },
+    {
+      "path": "apps/rustdx-runner/src/config.rs",
+      "sha256": "8237bf8a9de15e89851361bebbda1eb6d3b7bd6df08ed50a447b1808cd1b7049",
+      "bytes": 10814
+    },
+    {
+      "path": "apps/rustdx-runner/src/consumer.rs",
+      "sha256": "f55395cbe191c83e4b6a798b1843ac46104382c043f5a8d9b81ebe6e9baea50c",
+      "bytes": 10141
+    },
+    {
+      "path": "apps/rustdx-runner/src/database.rs",
+      "sha256": "65958a1187772e93a163643f180235e71c22859119929647bc30bd5f60a1e2a2",
+      "bytes": 44933
+    },
+    {
+      "path": "apps/rustdx-runner/src/database_mongo.js",
+      "sha256": "a7672f3225fb3bfd89f04df51e4fc5b887c4d5d44700612a02a2e69d29193980",
+      "bytes": 3029
+    },
+    {
+      "path": "apps/rustdx-runner/src/database_process.rs",
+      "sha256": "2e18a9135903b6a226a00b59f621ebb992373dd4170780d9e8931ec101f0f447",
+      "bytes": 10965
+    },
+    {
+      "path": "apps/rustdx-runner/src/ledger.rs",
+      "sha256": "31cf05b182216ae1306381950c94963bd501357a3e662e17bb42a9cd6c8b56a8",
+      "bytes": 15297
+    },
+    {
+      "path": "apps/rustdx-runner/src/lib.rs",
+      "sha256": "7b0ce6e897950db0e97ceff89e803839eab6b49089614495599a857370ae1cdd",
+      "bytes": 3511
+    },
+    {
+      "path": "apps/rustdx-runner/src/main.rs",
+      "sha256": "5583f01357e2837902c27957b6eb460dfb136a40ae392b8098e745a0bb18dc1d",
+      "bytes": 8586
+    },
+    {
+      "path": "apps/rustdx-runner/src/model.rs",
+      "sha256": "8dbd4b8879c88e6278936243ff7b5e7fb7d221e7942be68099eda90167baf62c",
+      "bytes": 2307
+    },
+    {
+      "path": "apps/rustdx-runner/src/ops.rs",
+      "sha256": "e556f9cff42281f945eaa14534c4689823c069d46d1516f6698262d39168c9d5",
+      "bytes": 11774
+    },
+    {
+      "path": "apps/rustdx-runner/src/pipeline.rs",
+      "sha256": "db88d5afdb744bc80d3745c6c18de1dc01b04c0cf94239e45ffed36762084b44",
+      "bytes": 40283
+    },
+    {
+      "path": "apps/rustdx-runner/src/storage.rs",
+      "sha256": "3e7b885cec6a7a2dde0c43ee74887c7fd7ef36f95ccabdccf0042289a68a78d9",
+      "bytes": 9211
+    },
+    {
+      "path": "apps/rustdx-runner/src/supervisor.rs",
+      "sha256": "b8f77612c1f92e1832541a0010a062e937075addefda87b20ac072dd30876c82",
+      "bytes": 7798
+    },
+    {
+      "path": "apps/rustdx-runner/tests/control_plane.rs",
+      "sha256": "e0c26b2ec2700df1fb811d58f9b78d35c6db45363cffe2fb00f600656d4f2bbe",
+      "bytes": 44817
+    },
+    {
+      "path": "apps/rustdx-runner/tests/database_mongo_protocol.cjs",
+      "sha256": "1eb4de0e175c8b49e80c63d193d26e03b2fc53c14bfe6d3747fdeb686ae9d568",
+      "bytes": 4499
+    },
+    {
+      "path": "apps/rustdx-runner/tests/tcp_startup.rs",
+      "sha256": "9d29e4732fc897736ce31603a66d92df43935ec276f8fed3556bcac76f1be600",
+      "bytes": 306
+    },
+    {
+      "path": "apps/rustdx-runner/tests/wire_archive.rs",
+      "sha256": "2a4dad96bc1026c19ec35ce413c8176dc1b12403d225a5c231b2005d95b8a5e7",
+      "bytes": 8001
+    },
+    {
+      "path": "config/README.md",
+      "sha256": "892a5545963b72f6a54ee5bf0542968cb1c33e74bcdaa9666d25590fd05c28e2",
+      "bytes": 4595
+    },
+    {
+      "path": "config/calendars/sse-2026.json",
+      "sha256": "162fb7b5557da2889eeabfdd377b083236810c03cc86276fd36f996864a6d889",
+      "bytes": 478
+    },
+    {
+      "path": "config/calendars/szse-2026.json",
+      "sha256": "d6897e879d64e6d7d57ba3f1ebe4b14ffbfe44817bc4853ecf381d5565cf0648",
+      "bytes": 490
+    },
+    {
+      "path": "config/runner/job.example.json",
+      "sha256": "0d663548ac7777a152da4f15c0cc6224b7e53db3bd0507309dab80943793f918",
+      "bytes": 1384
+    },
+    {
+      "path": "config/runner/publisher.env.example",
+      "sha256": "93c3571d413b692344a16e8bbf031eba600f309c60789ecea014fb9781e86482",
+      "bytes": 237
+    },
+    {
+      "path": "config/runner/tcp-day.example.json",
+      "sha256": "d26764f36a5c6ed62a9c98d1b0017c04be8445a263c6abbfabdc6c65e6707343",
+      "bytes": 1243
+    },
+    {
+      "path": "config/runtime.env.example",
+      "sha256": "f82dedca2175afa92683d3431cc2b6362e4ed01659311ba5ebd08ecaa1cd7864",
+      "bytes": 961
+    },
+    {
+      "path": "crates/rustdx-core/Cargo.toml",
+      "sha256": "5d8a4ab979f83c6d1c85ace45aa212efa435e6e1e6424066aab75989c88424ba",
+      "bytes": 1102
+    },
+    {
+      "path": "crates/rustdx-core/LICENSE",
+      "sha256": "9b0dc07dd841fcc1f51f4f1c73a4460ed2dea57ef89442b30ae4429bab8395ee",
+      "bytes": 1063
+    },
+    {
+      "path": "crates/rustdx-core/README.md",
+      "sha256": "590548f32782ec2cd8143a6ffff9dc26e0eff2ee2adb7c233a1af6f92f0cc2b6",
+      "bytes": 1377
+    },
+    {
+      "path": "crates/rustdx-core/benches/indicators.rs",
+      "sha256": "3dbed069497e0d4119df17afec9af93cb6101e0a73b51d5dc49e172cf9a9f638",
+      "bytes": 2614
+    },
+    {
+      "path": "crates/rustdx-core/examples/capture_eltdx_330_commands.rs",
+      "sha256": "561a980db863ecdba4c19675a47b0df02e92264b6416ae4931fd759ba80d864a",
+      "bytes": 5925
+    },
+    {
+      "path": "crates/rustdx-core/examples/capture_enhanced_history_transaction.rs",
+      "sha256": "36068c355be667eb9b290fa5c0522dc9fe875eb11864fc8ac34695aa2b8fdc28",
+      "bytes": 4995
+    },
+    {
+      "path": "crates/rustdx-core/examples/capture_modern_commands.rs",
+      "sha256": "eeb34c1ba4b8c17030f5991254cac113ce3f5437df5ff61a422356102792c54c",
+      "bytes": 5063
+    },
+    {
+      "path": "crates/rustdx-core/examples/capture_nine_commands.rs",
+      "sha256": "3f2d4cf5534321777b245ef4bbff9920b213583f239d55b89d62023aa8d170d2",
+      "bytes": 10977
+    },
+    {
+      "path": "crates/rustdx-core/examples/capture_quote_precision.rs",
+      "sha256": "79314f079ed33d5315dbc9834632493da7ede76d3b52c294d4816b5fea43dbba",
+      "bytes": 5035
+    },
+    {
+      "path": "crates/rustdx-core/examples/capture_recent_minutes_boundaries.rs",
+      "sha256": "6c4954f1c9c4ca5b2fcbab6c3aed7d4aff1beccfbc45bf98dd073dd401e4fbad",
+      "bytes": 7421
+    },
+    {
+      "path": "crates/rustdx-core/examples/debug_raw_data.rs",
+      "sha256": "ade67321eb0e1ed8adbafc6563960b666e3b4c92b6dc9d70c61a78da672c2958",
+      "bytes": 4482
+    },
+    {
+      "path": "crates/rustdx-core/examples/local_data.rs",
+      "sha256": "55abe414ec15feff52b2abbf74393dff7fb763f506907d1a425876b9bd03aab3",
+      "bytes": 747
+    },
+    {
+      "path": "crates/rustdx-core/examples/production_smoke.rs",
+      "sha256": "670ce0055573003f66d9d03ea9c123dbd8c1775538685c71936fb4c2e39a3b9c",
+      "bytes": 3748
+    },
+    {
+      "path": "crates/rustdx-core/examples/protocol_capture.rs",
+      "sha256": "6516fd5c5a404b92c26b89f32693b78c15c9496468d5ffe7a0024ab0db897020",
+      "bytes": 1924
+    },
+    {
+      "path": "crates/rustdx-core/examples/reliable_client.rs",
+      "sha256": "2bf67b1068a3bd9e9a56bc34f5f4ff9d56528cb12ce5da69f7b0166c7c27c7f0",
+      "bytes": 959
+    },
+    {
+      "path": "crates/rustdx-core/examples/stream_bars.rs",
+      "sha256": "c2ae36cfda9785d4d293c7a6c6ef2d149fbf6189eacae14248f8589d6d0c4e55",
+      "bytes": 1858
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_builder.rs",
+      "sha256": "11638086299c55523024e87bbe5d94e6ea95ce265ecd4ae79513f47218fc6e1f",
+      "bytes": 9149
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_cache.rs",
+      "sha256": "e0859d77d4291f7f418a27187e1a9e23c9c7da4995d4e80f01bd6571c2a8d359",
+      "bytes": 5049
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_chinese_encoding.rs",
+      "sha256": "590bca91673d9416bccc3b17021fa8e18e3361f31f9de92eeb541afc74f5f6db",
+      "bytes": 2095
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_concept_query.rs",
+      "sha256": "a68cceb327af58323a0b76528518ee95d0fd24667cdbe6a6b34f07b84d2b9e8d",
+      "bytes": 551
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_connection.rs",
+      "sha256": "3ed49ca73696f181724615f82ba987eb9ab32da3d08cce2c194ec441b6cc503a",
+      "bytes": 607
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_connection_pool.rs",
+      "sha256": "29b6d4ff67c90ae92e7c60ebdcf35052792beea0e860c00f6a62d1495cb03f06",
+      "bytes": 10645
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_data_validation.rs",
+      "sha256": "264f950f7c06b1c305a860c465575673d532d7e9fdd89d92b7fb46e11fdd9b86",
+      "bytes": 5783
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_error_handling.rs",
+      "sha256": "76f21cf303434c0b5a69f6a6f0d9754780465cea39cab3f4a88c06ab69f245ef",
+      "bytes": 9857
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_finance_info.rs",
+      "sha256": "df86abc0121d27da7c9824f8b2b0f4fe549d5cf035e2696b2d3201dd1d6d14a3",
+      "bytes": 1215
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_five_level_quotes.rs",
+      "sha256": "c0952d2d80a25fc5ec37d7a22973c0728a256b85d3ac02b85809744395375bbf",
+      "bytes": 2821
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_index_quotes.rs",
+      "sha256": "dc7b4c4fbd8fc52d0f81b49957be646b50ec6a220a5c8aa7caf810aa9d114fcc",
+      "bytes": 3679
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_industry_info.rs",
+      "sha256": "750b4398a68bf75a3ab83d0c02879eb21416077ce273ea7d26249e1993631743",
+      "bytes": 623
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_minute_time.rs",
+      "sha256": "390920dcf0dff8404dffe56d34bb4034e587db126aa2ef013a51ea50c06e1117",
+      "bytes": 4117
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_prev_day.rs",
+      "sha256": "562dd80e432a75ca1bcd264d9ef4ee242e6b34ac548bda81e538a827c739125f",
+      "bytes": 393
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_readme_examples.rs",
+      "sha256": "e25d6569444c39e078b82d9d90ba37a7ae4dcddcaaec9aff6d060b98cb81303a",
+      "bytes": 7077
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_security_list.rs",
+      "sha256": "a34d3dbbed2e28a09dd5f8949c2c2b2c17f9bedf73750ed8e87883a42361e4e2",
+      "bytes": 3479
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_security_quotes.rs",
+      "sha256": "e081f7883244a49be2f2844b6e1573fbbb3361d003dfa805dcf12d952df69864",
+      "bytes": 2721
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_tcp_connection.rs",
+      "sha256": "20500b6fa53ca9120807dfdda797a898f29a04110448bd2486b904889361ef36",
+      "bytes": 1923
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_technical_indicators.rs",
+      "sha256": "cb0b6da645da2bfb1872aee366281e4409d6498a835b0ae0125f34db2a48e5fb",
+      "bytes": 10836
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_trading_calendar.rs",
+      "sha256": "1531118a9676a3de5a5ab33c7ca35b1b9da98d3aac4cf49cf0d1c78f02036d58",
+      "bytes": 8095
+    },
+    {
+      "path": "crates/rustdx-core/examples/test_transaction.rs",
+      "sha256": "a74926e0cca0f3230fad96b2b4fc70b25839e14d2667df6d0e0074531f875e05",
+      "bytes": 5585
+    },
+    {
+      "path": "crates/rustdx-core/examples/transaction_all.rs",
+      "sha256": "6a382dc414763d767ae922f2434168f9ff9f85eca8090d1fc84f1cf7183b2793",
+      "bytes": 2357
+    },
+    {
+      "path": "crates/rustdx-core/examples/transaction_amount.rs",
+      "sha256": "fea4e38c6ebcdab7d7c7e86de6dbbb551d18605ad27590ade7b1d49bdefb9f09",
+      "bytes": 2341
+    },
+    {
+      "path": "crates/rustdx-core/examples/validate_enhanced_history_day.rs",
+      "sha256": "e368ad5c5c1c94abfe0e5b63141868e1b6f3a0d34c43b7993c14f5e647946e79",
+      "bytes": 9504
+    },
+    {
+      "path": "crates/rustdx-core/examples/validate_quote_push.rs",
+      "sha256": "5d17672bccb80b128a8d450db807507c0cd115a6b4d714d141cbf726ca0e6dce",
+      "bytes": 26049
+    },
+    {
+      "path": "crates/rustdx-core/examples/validate_recent_auction.rs",
+      "sha256": "f3a76ac538e9ec3ad47a9ec5fe2999479fbb482756029e253b127c197b7526ce",
+      "bytes": 9885
+    },
+    {
+      "path": "crates/rustdx-core/src/atomic_file.rs",
+      "sha256": "973150d4e9caedc8b0eedfce2537b852f2977572945cb62c12d4287baccff716",
+      "bytes": 1868
+    },
+    {
+      "path": "crates/rustdx-core/src/builder.rs",
+      "sha256": "294d870d070b4236a20db269dafe80261ded590ae79458ffed32de2d451de943",
+      "bytes": 15473
+    },
+    {
+      "path": "crates/rustdx-core/src/bytes_helper.rs",
+      "sha256": "aa07ece8445b803eb642cee750cacc2d12074ca9c5579bc292c01e24d2464fe0",
+      "bytes": 2234
+    },
+    {
+      "path": "crates/rustdx-core/src/cache.rs",
+      "sha256": "baf0800202156e1789fc4c0cc69af4fe082447cce8037b5e31958052f10e962e",
+      "bytes": 36020
+    },
+    {
+      "path": "crates/rustdx-core/src/calendar.rs",
+      "sha256": "6d443876edacf6c0903cebffe342db1ca7ff9f405649334029e6391c42945c36",
+      "bytes": 19453
+    },
+    {
+      "path": "crates/rustdx-core/src/calendar/provider.rs",
+      "sha256": "f8d338c0e22dc4f20f1d44d4d57b739e887eae3bf757184745a15bdfda181159",
+      "bytes": 8938
+    },
+    {
+      "path": "crates/rustdx-core/src/data.rs",
+      "sha256": "8068d653c60078264683a497c6c114c9a87c960eca624a04d6e2abcd106b7d46",
+      "bytes": 8058
+    },
+    {
+      "path": "crates/rustdx-core/src/data/model.rs",
+      "sha256": "ff26974237e1df6df96991ab6a4ce6b31ebe6353e756532cb2e56cca3c6916a6",
+      "bytes": 11483
+    },
+    {
+      "path": "crates/rustdx-core/src/error.rs",
+      "sha256": "3d7da50ff515213fc4f03545d507816df8073441d794e731c06002f1ab03f4c1",
+      "bytes": 11614
+    },
+    {
+      "path": "crates/rustdx-core/src/file/day/fq.rs",
+      "sha256": "b8ecd1560c9af726251639fafc4f2bf40295f21f40ebd9b3d78b58b58e9aa7db",
+      "bytes": 3571
+    },
+    {
+      "path": "crates/rustdx-core/src/file/day/mod.rs",
+      "sha256": "d87c7eb7b141911c12ac7d56d33ae2523f52d97f4fb46110b3737ba15eef9764",
+      "bytes": 5963
+    },
+    {
+      "path": "crates/rustdx-core/src/file/gbbq/fq.rs",
+      "sha256": "b57ff388bbb876b59dcac4eb2058b3696233b444034c9e9f1cfced29985b54bc",
+      "bytes": 4549
+    },
+    {
+      "path": "crates/rustdx-core/src/file/gbbq/key.rs",
+      "sha256": "1f5353ace5153e94ebbd8504f79755e7397f825b54e5c650d49e5707eea5b9fe",
+      "bytes": 19930
+    },
+    {
+      "path": "crates/rustdx-core/src/file/gbbq/mod.rs",
+      "sha256": "6b3f36b522830da636e8e0bc27996a90f2ce1317a0d4808d548f4ea89e203812",
+      "bytes": 11684
+    },
+    {
+      "path": "crates/rustdx-core/src/file/lc/mod.rs",
+      "sha256": "6c4647afac9dee3916ea2a971656ccff7b41f82a491a06d65c4fd88f0b01a1e9",
+      "bytes": 5681
+    },
+    {
+      "path": "crates/rustdx-core/src/file/mod.rs",
+      "sha256": "2d1eea41d7b56beb73baa5f8d0aef0152c86d7a9fb6301be0ba52a3bd5bc3480",
+      "bytes": 39
+    },
+    {
+      "path": "crates/rustdx-core/src/indicators.rs",
+      "sha256": "8bcca8050bc13fa114c4c9ead02896cbdf51fff6653227a55214aa9cd706a128",
+      "bytes": 31624
+    },
+    {
+      "path": "crates/rustdx-core/src/indicators/incremental.rs",
+      "sha256": "d0081b2a0c089082a8e6e4ef13c6d5e0cc47f157f216b4e200a3049cceff9984",
+      "bytes": 8100
+    },
+    {
+      "path": "crates/rustdx-core/src/lib.rs",
+      "sha256": "981422f3cbc37ae55fd40cf464084d6c9a569b48a2c6f7b9dd1a3cc2f97998dc",
+      "bytes": 627
+    },
+    {
+      "path": "crates/rustdx-core/src/limit.rs",
+      "sha256": "563e89afc3cd9af35a1db1b264cfc73011abf294f75c8dcca935b66b892dd11d",
+      "bytes": 12237
+    },
+    {
+      "path": "crates/rustdx-core/src/limit/history.rs",
+      "sha256": "b8f03dc236c5c3db584fe62d0b0f875823d506f7b9c8c328b1625c38230c8262",
+      "bytes": 7054
+    },
+    {
+      "path": "crates/rustdx-core/src/limit/rules.rs",
+      "sha256": "fe7fb620855f926b97f9134a63b71f7936ac62f1984cbbcadab5ce8b5031f98b",
+      "bytes": 8641
+    },
+    {
+      "path": "crates/rustdx-core/src/operation.rs",
+      "sha256": "2bf0f89aacd43c107bb8d69a53074a4c8e813ba581a3729bac87d8fb0f4e34e8",
+      "bytes": 6284
+    },
+    {
+      "path": "crates/rustdx-core/src/pool.rs",
+      "sha256": "9d51e7eabac3f914374d5111216c4e04eb683d5a8b5c6e1190192ca26682cc41",
+      "bytes": 10555
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/basic.rs",
+      "sha256": "2b22e893790bb2a06ae6d5d0e8fbbe5ad5b1373cbcf16e955b0ff6248748e7db",
+      "bytes": 7992
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/evidence.rs",
+      "sha256": "1f562a9d71c3d89aedae0d0b2ac8e173a7cefe72069ea1f4744ab8599718c5ba",
+      "bytes": 2660
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/frame.rs",
+      "sha256": "4218fe3699f591951157232b26e755be479a55b75bb5f41556b81909ec03b3b0",
+      "bytes": 2143
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/governance.rs",
+      "sha256": "390391e04597a06052d4baa89dc931e4daa9764a5cd74c0d76b84d1c8b5f5946",
+      "bytes": 17029
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/heartbeat.rs",
+      "sha256": "00d9d7a2a8c98c216a80921efdc0d04497189c66b499dd1db4b2ba5bcf643590",
+      "bytes": 8958
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/helper.rs",
+      "sha256": "0075197a12abd0fadefb67a902303ace8aed9d09f33715e67d357dcebf92311c",
+      "bytes": 6736
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/ip.rs",
+      "sha256": "979fcdb311440a51d449d7110bda433c49dcef34b496b856d8ab2c11a5cf5d02",
+      "bytes": 9482
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/ip/capabilities.rs",
+      "sha256": "35947212f1ab59c38f9b078f8a6794f65c39817379a5d78695e04e8cf68231dc",
+      "bytes": 6026
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/ip/coordinator.rs",
+      "sha256": "50acdb60ed77b1b22d3074140ef4863c954565702d7ba8c4932ee863d651d7a8",
+      "bytes": 7735
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/ip/daily.rs",
+      "sha256": "5efbfe42e1764687b02399f6ab55fced212427a8c1430ffea41e2b82612962ee",
+      "bytes": 19761
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/ip/probe.rs",
+      "sha256": "aa0884a45dc6c00e0428cdd0ff0e642bc5b2bf98f96bda4193126fa94285723d",
+      "bytes": 11918
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/mod.rs",
+      "sha256": "fa3f51a6d00d586f7b283cf58d98471856001b0bbfbdcf56e3d8d60b59092990",
+      "bytes": 36864
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/reader.rs",
+      "sha256": "da8c78974fca205a112f8876944d13e7bbfb28493a1ebb02644dcb5ee8848f04",
+      "bytes": 4567
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/startup.rs",
+      "sha256": "80c36398648aba49c212491c3e911befeba2fc2813239c8c34ba4c4882f6077c",
+      "bytes": 8978
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/auctions.rs",
+      "sha256": "9f2f94931a5eb781bba9da8bd15ac4be86529ecf1eadc08b444251ecd27eace8",
+      "bytes": 6210
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/block_info.rs",
+      "sha256": "de12b358dfcca9b9a011545062aee7b525a6b1b3bbad9f1be181af34902248fb",
+      "bytes": 10408
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/category_quotes.rs",
+      "sha256": "2e1b04585aa3fc93be4c6c074abef184c263782a57ec73b178876406851dbeba",
+      "bytes": 8001
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client.rs",
+      "sha256": "37d40de817b5b8c1d25bd9875f54f0319939cf51bcdaa0017e3904a215295400",
+      "bytes": 46993
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/adjustment.rs",
+      "sha256": "b98516d7a028b5c41ee6a09f14af86aa6c8d70015acbc11ffb038f178a84d5fe",
+      "bytes": 2946
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/bar_range.rs",
+      "sha256": "14cd99d726f9f20fba5d7ff7449cb6960e0eaf470ea7eb0e25717858a1f21195",
+      "bytes": 19601
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/batch.rs",
+      "sha256": "39c00c76be47b194fe49c0ba02ad9ca7cb0a8810a184070fa1aa4f1c299d853c",
+      "bytes": 2594
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/extended_queries.rs",
+      "sha256": "a29184e55e55a8469f8b045870f08186f5577073415091f517c9e37fe3244385",
+      "bytes": 13621
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/stream.rs",
+      "sha256": "c0777fcb6a411f31886fbdb71b4afa026a989236609202c9648046cd273c8678",
+      "bytes": 17432
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/stream_queries.rs",
+      "sha256": "c4f0a7402dc2c8f04d166e277663b95cad43041b92c015de71fbecbee0359877",
+      "bytes": 8616
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/transactions.rs",
+      "sha256": "505a293fb9934a224f8c054ef86e2b5a3c55e15517af4e830b464a733a491044",
+      "bytes": 15323
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/turnover.rs",
+      "sha256": "fcefc2f229051abcd5879ccccbb7596e78519568155f4f64ae469a73028647dd",
+      "bytes": 6135
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/client/version_330.rs",
+      "sha256": "e3d8be29a7ef15cb7ef8e4d31f7a8de476eeda91c6708f059f5831459483ecaa",
+      "bytes": 6713
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/command_request.rs",
+      "sha256": "5f26e8448836c0c49f871e417e8d43d98750a2b3402cabf543f1725d4a8468cc",
+      "bytes": 7483
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/company_info.rs",
+      "sha256": "13ef22447eb1f36ccfb0bb2df3d35d2c1b0419250ae560b36060504faa5c3732",
+      "bytes": 8306
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/company_info_request.rs",
+      "sha256": "2f027625e9d29eb362056becf7c34c3f2ba3ad63915e1e547f762aa5409d336e",
+      "bytes": 10251
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/concept_mapping.rs",
+      "sha256": "eada194a936c65c64c6453fbea6ddb349199ff69dff6b0a9772f77fae3279321",
+      "bytes": 1183
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/delisted_bars.rs",
+      "sha256": "bf8464749826e40837c9071f6d8eaab10582f8e363ee1e8b96e56287fb26114a",
+      "bytes": 9845
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/enhanced_history_transaction.rs",
+      "sha256": "cbc05050491909cfafcd59d25c88b286d1a9453422ae805fb91a99f8aea1c175",
+      "bytes": 13061
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/extended_quote.rs",
+      "sha256": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+      "bytes": 8381
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/finance_info.rs",
+      "sha256": "4f72188074dd37d444a1d981133d55b8687dd0b04543677bc612913390014399",
+      "bytes": 7345
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/finance_raw.rs",
+      "sha256": "5f28520cd8404a031a946cdcd21e9c12f00553006df1c1b7ee955c7943576f41",
+      "bytes": 4010
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/finance_semantics.rs",
+      "sha256": "e726ef9ef9acb7c4fa8bf72093b421dab6226641d1fa9ee6c967359bbba875fd",
+      "bytes": 11464
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/history_minute_time.rs",
+      "sha256": "f4e1a9735bdfd6b6a0cf43a39f8204c1bb95987452c8ae78f6bfc9b8fc194a63",
+      "bytes": 6432
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/history_transaction.rs",
+      "sha256": "91acc7b4bcdcd85f88d4a7677447e8326a50a45dfa29ebb24d9cc90509c720c7",
+      "bytes": 5815
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/index_kline.rs",
+      "sha256": "074fa05487113b765c7b5ecfc9fc9162f25e8b54161d0945ebd2d9ee6839228e",
+      "bytes": 5735
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/industry_mapping.rs",
+      "sha256": "9137fa53d1ee8e32ab98fe3ec9566b47a47dc896ab4990eeeaeb0ec22a1019ea",
+      "bytes": 1050
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/intraday_aux.rs",
+      "sha256": "a65b7ecfa25157d26e6d8296d05650977921cc96e9f5daba2a51159bd465d1b2",
+      "bytes": 3078
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/kline.rs",
+      "sha256": "1a8866b714302d3f73c4939af223133044e184de5f319e7ffada26d5ae79e0af",
+      "bytes": 8181
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/kline_request.rs",
+      "sha256": "43d218b5668c1857b43b7d9b9134de3871d025ade68dcafbb41cce4d923a58a7",
+      "bytes": 11903
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/minute_time.rs",
+      "sha256": "43b17246c23a36e0039aa306d40abd57cb45458a985d22a5d59c22b9f720e722",
+      "bytes": 18955
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/mod.rs",
+      "sha256": "45184920635a5a829bb53b5c0bdc777908e2d271563088fba3185614a560fcb8",
+      "bytes": 11962
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/money_flow.rs",
+      "sha256": "6c5ff4175ac3a344534220f842849f4012f5141471005a6542229280a2d725f9",
+      "bytes": 4931
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/price_scale.rs",
+      "sha256": "ff2e8969308054117f0ee030af97cdf7133fddc033645c86ebf6d6b523cacda5",
+      "bytes": 964
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/quote_metadata.rs",
+      "sha256": "dac5d2f925d152118547d68f6750d2ff1166d572f6f1a9f753d4e46ae50d5a4b",
+      "bytes": 9073
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/quote_refresh.rs",
+      "sha256": "4f814bba48ff012c50b5d88b99230780ebb01b383f07d6edc15addb268ffb4d8",
+      "bytes": 3516
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/quote_subscription.rs",
+      "sha256": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+      "bytes": 19073
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/quotes.rs",
+      "sha256": "184755e6968f9c34e100303e474e93db2690ba9d73b2f1aa54e795ddb67762ba",
+      "bytes": 20836
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/recent_minutes.rs",
+      "sha256": "ad075e3e0d15bc378b0863990d6c554aa1406a36627c3467e23cf593fa99a1ea",
+      "bytes": 6262
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/reported_turnover.rs",
+      "sha256": "5ecd132b7197fb578b8ba71c0504f78e4f2a6e6ea293f1685ed21c24a6a98b0b",
+      "bytes": 19271
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/requests.rs",
+      "sha256": "4147c5504984c17b1f2cdfe077824abc582d5fad91df2aefd72f773edf1dac57",
+      "bytes": 14260
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/resource_metadata.rs",
+      "sha256": "19914c6f2a41955cac23c44893dc7d02ac06f16934865db4a2a898abc0d193b3",
+      "bytes": 2617
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/security_directory.rs",
+      "sha256": "a9c3a584bca63423abef704ca2998eaa89dd45b35e6e3cb8e8f3b5d81534e4d3",
+      "bytes": 8407
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/security_list.rs",
+      "sha256": "058892c122a3a976652bc8ae5bc799247ace59c14f5a0161cb1fed8f9ccd59a2",
+      "bytes": 6644
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/snapshots.rs",
+      "sha256": "c70a054897c1b594ae161901bbe3b82e4ded54beddb05ef82b8d6b62065bbb8b",
+      "bytes": 2821
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/sparkline.rs",
+      "sha256": "e0e32bb11253f85b272e8a327fd3ae0bb37145743d85b7d5a08c2620b3c7a740",
+      "bytes": 3361
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/special_limits.rs",
+      "sha256": "78dd6d553871116848bff1c169ae72e60beb6cc6bdb2f895f24601f18fa54f79",
+      "bytes": 4079
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/today_minute.rs",
+      "sha256": "6db7e3c8f385fd1e84266bde6712a148a07bef01cd88e129d3515684420021d0",
+      "bytes": 5367
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/trade_amount.rs",
+      "sha256": "a76087e5e105709af4bdb7acb517fc7e70a1f8dc20140220a7e9dba53fdf0780",
+      "bytes": 21573
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/trade_amount_reconcile.rs",
+      "sha256": "6bb5385575fde4f74c0362896213e586efabfe457ab899d7758185714aaec9bc",
+      "bytes": 11782
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/trade_decode.rs",
+      "sha256": "dc55a8946fab4aa1fe070160de831bd574ad985b2953160bc35dc30622649817",
+      "bytes": 3804
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/trade_models.rs",
+      "sha256": "fd6412d796a9b58ecf44077485f8f7706d811c9af15553c4641b4194f8364bfa",
+      "bytes": 23276
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/transaction.rs",
+      "sha256": "c01e698d282b4a0401cbe6a00ceb108a8c6237e1c4ff77ef46ec7bb3113b8f38",
+      "bytes": 6372
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/transaction_pagination.rs",
+      "sha256": "61edd4099b0a65e6a25d2a578042b1ac06a770c4d3bdc1d7f76cc460e2ed4e0d",
+      "bytes": 5466
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/validator.rs",
+      "sha256": "322aed0ad07d9f94c46be14c10e040f640b14d7864670b2d29e39bb3be1618a5",
+      "bytes": 25825
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/xdxr.rs",
+      "sha256": "4cfb7c8631cea23e5cbada55bece179a39ecd7dc9b6af202b434249931603a9b",
+      "bytes": 6728
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/tests.rs",
+      "sha256": "b1130f896b2e846c172d92b4fc75a2c0ea4340c232d3ab878659931d1b69e168",
+      "bytes": 4153
+    },
+    {
+      "path": "crates/rustdx-core/tests/adj_field_probe.rs",
+      "sha256": "af41b107b53972eddbf24698a278ebb161be25400972039864d75ebd9d7aba38",
+      "bytes": 2018
+    },
+    {
+      "path": "crates/rustdx-core/tests/auto_reconnect.rs",
+      "sha256": "9ceec5486d6050b42dc27cb77c2e472daa451403ce9954f8786c1fa694368170",
+      "bytes": 2471
+    },
+    {
+      "path": "crates/rustdx-core/tests/bars_range_live.rs",
+      "sha256": "0ead2b19f4214d5d62d47bd533b30cf9b0462f8ea4c2cb6e258ecc66ca0e1749",
+      "bytes": 6388
+    },
+    {
+      "path": "crates/rustdx-core/tests/command_boundaries.rs",
+      "sha256": "31e559e622c0037d96f57ee0b2589a722fcb9874acb6c37d3c44d5f90b9a4bf9",
+      "bytes": 11433
+    },
+    {
+      "path": "crates/rustdx-core/tests/common/extended_protocol.rs",
+      "sha256": "2e3fe88fcbc6cc7134d11ad280b8dd400a973f5e827280277c0712f8db2d90c4",
+      "bytes": 2127
+    },
+    {
+      "path": "crates/rustdx-core/tests/common/ip_pool.rs",
+      "sha256": "7b80c672b032efb40cdcd827a228a738ce51fee8dcff8ff39dbef309b27d12a3",
+      "bytes": 2044
+    },
+    {
+      "path": "crates/rustdx-core/tests/common/startup_binary.rs",
+      "sha256": "9e36cb89f44e266fc57250b9641f369937a5e38ace2839bca2b6078da6bc076d",
+      "bytes": 6202
+    },
+    {
+      "path": "crates/rustdx-core/tests/common/startup_server.rs",
+      "sha256": "c0bcd2fd9b3738f6a4f16753e929558175d93f3668f0ef642016101f0cf05688",
+      "bytes": 6671
+    },
+    {
+      "path": "crates/rustdx-core/tests/common/trade_amount.rs",
+      "sha256": "b8d6fcbf880ecdc7dd0d532159e8f2cdd4e0d4506d316673f60428bcb4d4e730",
+      "bytes": 6685
+    },
+    {
+      "path": "crates/rustdx-core/tests/comprehensive_test.rs",
+      "sha256": "dcf41d3128105334aeb900808222178c77abc74ad3f249c16c75270fe866bf7a",
+      "bytes": 28832
+    },
+    {
+      "path": "crates/rustdx-core/tests/daily_ip_pool.rs",
+      "sha256": "36fa05d13036ef0b7f505b1291733f205d6840c2450f2e20a6c9f5cc68db8c56",
+      "bytes": 10235
+    },
+    {
+      "path": "crates/rustdx-core/tests/eltdx_330_commands.rs",
+      "sha256": "11db342479b3e6e13e342db93560f23e1f589ccc412db0e7532f0260edf7e680",
+      "bytes": 26261
+    },
+    {
+      "path": "crates/rustdx-core/tests/enhanced_history_transaction.rs",
+      "sha256": "fad47354dc70b8bddb11a3ba14fde34273afc156a9496fd2f459753f9c7258b7",
+      "bytes": 17114
+    },
+    {
+      "path": "crates/rustdx-core/tests/extended_queries.rs",
+      "sha256": "192ddffab602ff6f7fdd7d2f141fd241af6c20d6da237c5146fb68eb1c492660",
+      "bytes": 8374
+    },
+    {
+      "path": "crates/rustdx-core/tests/file-day.rs",
+      "sha256": "68e6a7ed790506511d9ecdb28682877f7b1eb96d1f84c608522be5caa95dc2a0",
+      "bytes": 2140
+    },
+    {
+      "path": "crates/rustdx-core/tests/finance_semantics.rs",
+      "sha256": "91003d1078a52ab820db015b9349297a7f0ab40f6339c349fa4d5692a8ec9bc0",
+      "bytes": 9918
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/README.md",
+      "sha256": "4227f0212abd26bc0864aea7cb09f0304af68a8ccd2616c2ac16c3ee0be2551e",
+      "bytes": 3909
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/index-day.expected.csv",
+      "sha256": "ade1e311666fbb9715c4f94b0a80a945b27b4ac031363c8dc45158126b936625",
+      "bytes": 324
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/index-day.request.hex",
+      "sha256": "d28099ff347332de7558b591fb482e3909c8031f4fc984689991aa23feef8608",
+      "bytes": 77
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/index-day.response.hex",
+      "sha256": "dadab33286ec4d98bafa14253706be416cabedc985aa4f5f2ab0d2c26ac2bb90",
+      "bytes": 165
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/manifest.json",
+      "sha256": "54da4fc645bf8b763e736421f0dfeb63013433a49a0c60e15023890420af6187",
+      "bytes": 2214
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/stock-day.expected.csv",
+      "sha256": "b1a75e6a7c99efccf789691cfcc6c9692e67290b0bbd4d6e339748f34958fd53",
+      "bytes": 270
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/stock-day.request.hex",
+      "sha256": "6564bd0cd585cc94db225cc8a4a307f84ab0e62cb61f4fa666f92a33d70066ad",
+      "bytes": 77
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/stock-day.response.hex",
+      "sha256": "1f24fe9180ee741dcefc73962dff299f4d34f108e3808c07e72880ac98e56f95",
+      "bytes": 115
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/stock-minute.expected.csv",
+      "sha256": "30dd69efb18b22f197a23478d5edbbbb9fbc6f4d0a34fdb9b75b578ce93f7158",
+      "bytes": 267
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/stock-minute.request.hex",
+      "sha256": "61314bd34ad414d6a90f152b2fc6b6215e43446c4e0403ecbafcaf8fe663850e",
+      "bytes": 77
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/kline/stock-minute.response.hex",
+      "sha256": "9eea479de1c466932ea3d0d10f46d30b75c76b2c769b35438de2268a928d9e3f",
+      "bytes": 105
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/finance.expected.csv",
+      "sha256": "037ea549de707652b5b5fe15dec0c3e77d8e305b957f018f6590b5f1d3d15c63",
+      "bytes": 835
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/finance.request.hex",
+      "sha256": "abb7284fe63fc23b2da0cce2d105d820d06d69f7e10524e6a9a8b1d4e78b9fb4",
+      "bytes": 43
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/finance.response.hex",
+      "sha256": "ef6e0d57cd33b638f73ae123f13bf84eb47a80660ddfcc7cbec0ee0ebab0991c",
+      "bytes": 291
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/finance.semantic.expected.json",
+      "sha256": "b9ed7f8dd65824039dabce8695b51b45e294e05ee4b61a91edc9222cd9071b66",
+      "bytes": 1879
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/history-transaction.expected.csv",
+      "sha256": "a8ac0b6da03f7c46a2eeba18aac4d5334b1fd27833d5bb1469765a4391e48c8a",
+      "bytes": 82
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/history-transaction.request.hex",
+      "sha256": "5c5a171e44e279b45516055aa076b8c26f155b5d28fc5720aaadc27dfde1b4e5",
+      "bytes": 57
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/history-transaction.response.hex",
+      "sha256": "e0d2452c6716372de6d6642c74e096bf9d342cd7da66789275b31cb15f70183c",
+      "bytes": 53
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/manifest.json",
+      "sha256": "7174d36d19b68a1c9cd291100466065466664e2309e4f6fcf1d5859931e523c1",
+      "bytes": 2899
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/quotes.expected.csv",
+      "sha256": "cf2d8d4a59681189c8022aede44d0d876709ba99b7c3cfca57af07cc0df8daf0",
+      "bytes": 711
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/quotes.precision.expected.json",
+      "sha256": "796dcd04d86b0cef06e452e467c00121810c4eeb226e2b6ae6eb22ba74b6776c",
+      "bytes": 1360
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/quotes.request.hex",
+      "sha256": "77abef18170a547e2b2bd41acf93c630c23bfb547047a24c32be0e0c13c4f582",
+      "bytes": 73
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/quotes.response.hex",
+      "sha256": "cf557132815ee48d5d879ca51195247929530f4323312b319702d6de694fa2ac",
+      "bytes": 333
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/transaction.expected.csv",
+      "sha256": "5a5741d285900378712d16c3c9658b7e7b3eea86b0e559e00f9ba11b353a1826",
+      "bytes": 83
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/transaction.request.hex",
+      "sha256": "4d8a642e41957e94742bdff070ce4e28c12bb7e138db5400377a8ff5140fad4b",
+      "bytes": 49
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol/transaction.response.hex",
+      "sha256": "06ae8d66b5b4a5afc351169fd32635cbcce129e6256b457f502cc574f32120bd",
+      "bytes": 51
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/README.md",
+      "sha256": "ff7138f54de04eb1cdcb9da6519dd056885a9d804ac6e51508fa59fd697a2bf9",
+      "bytes": 969
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/auction-current.expected.json",
+      "sha256": "4644af7d9991ca7fb1c7dd83ec9ea4094abfee54f313a5d090f935502e50a8b3",
+      "bytes": 25813
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/auction-current.header.bin",
+      "sha256": "af4b6517d1f47508e757e22a0a0dd54eef5c46f8626dcece15717dca229810e6",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/auction-current.payload.bin",
+      "sha256": "8210da9f355385a89685649080abf489f3e9427f97e6dbfe8071bd36b40229a8",
+      "bytes": 1282
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/auction-current.request.bin",
+      "sha256": "af92a60346b50c3a7bdef52d8bd908d9e8b12635347392db777a922f791f6b0e",
+      "bytes": 40
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/auction-current.wire.bin",
+      "sha256": "dafbb2490ea44059ec5ebd6a31946bc69c269067784399db0e724560f5d961b7",
+      "bytes": 636
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-0.expected.json",
+      "sha256": "80d2b331db3ddd8a5442ba6fbcd514f032140086cce629e7a4290d0b7093b0f8",
+      "bytes": 28247
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-0.header.bin",
+      "sha256": "60f5776cdfd4e6201fe183230aa83e7dfbf05f75bcae127d1c15742079c36fc7",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-0.payload.bin",
+      "sha256": "35c6ea334a472b101fcdbe5a6438b4f34e3eb9826a6a4c3aec82905d8507d033",
+      "bytes": 1265
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-0.request.bin",
+      "sha256": "e7cbb36e7509e6a6f4331559255a09df90dc8424ca4c328bd6dc5f84b7f4634e",
+      "bytes": 40
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-0.wire.bin",
+      "sha256": "72a07dd3b7d162f569336ee7e5e28c92b18f0be161f9165612d173eb2c893f24",
+      "bytes": 1161
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-11.expected.json",
+      "sha256": "46ba082e8e0e1ef797c02a14239ae707a0e9405d4adc3d88374b38142b637487",
+      "bytes": 49008
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-11.header.bin",
+      "sha256": "48ea611d016e0a90b702c615ed217dfc12086e2fe9600f23b0f1a17db89f4aef",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-11.payload.bin",
+      "sha256": "0669b95a938d2746c405d295f8fe5fb38c8490ae335034bc44c9220c108a4112",
+      "bytes": 1922
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-11.request.bin",
+      "sha256": "81d8246a23ba41e39b46f3fbb0173ed7fbe1bd96941162b707f4ebda65ad94df",
+      "bytes": 40
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/aux-11.wire.bin",
+      "sha256": "917b5143e79ef9e5021a9152971a3e9ee219b77977f69fb2c1658e3af1c3d89b",
+      "bytes": 1657
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-false.expected.json",
+      "sha256": "a30f802884bbc0fff22731bdc357869b00f5a6071758b6ca49ff250893b9c5ec",
+      "bytes": 13575
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-false.header.bin",
+      "sha256": "952e8cb076c2bc2064fa62ac58ef09cb4bc8cb3a7f68a9649f5eb05fb17a5ef4",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-false.payload.bin",
+      "sha256": "7f24f949f3276d1112a3b95cf555aa8c0553023b494ca57ccc76dee9e3afa3d2",
+      "bytes": 546
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-false.request.bin",
+      "sha256": "c0c630d5928587300c206872506f789f67ded7b366d68f05e0c969a12d05469d",
+      "bytes": 30
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-false.wire.bin",
+      "sha256": "510c0ac3c46bdaee45fc4c58c9e3e8ad80f7d1dbd0fc0eb1622af67a62db3233",
+      "bytes": 449
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-true.expected.json",
+      "sha256": "2616c6cb470afdcbb0ecda76d42e9ee8d9d9e74d2e33e2e0a6c08f075a3ab5c3",
+      "bytes": 12964
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-true.header.bin",
+      "sha256": "8406acdc0b2a9f7795622a102123bf23bbae452ea86f5b7fc93c9484bc8264a9",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-true.payload.bin",
+      "sha256": "a724bad932d052acbcaab7b41370384e13525fc4c5fe880b0632e2cd5269ad2c",
+      "bytes": 490
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-true.request.bin",
+      "sha256": "9226ec4929adc2b05599a18716a5c97b14c43fe5c4495f760364b3c1d8102064",
+      "bytes": 30
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/category-true.wire.bin",
+      "sha256": "8ecd76bd54090ae0469842c972b9aaab027087a61a8e1f5562b7c02efd97f29e",
+      "bytes": 329
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/manifest.json",
+      "sha256": "59aef05966ed35092d70731108fa3f1bf3cf2df4da82f41e56e3dcd290fd2d65",
+      "bytes": 8102
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/money-0-000001.expected.json",
+      "sha256": "44008e4938fd540015a5b873a0560bd5fc07d667261154bb7ccb044bcffb4cd2",
+      "bytes": 6057
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/money-0-000001.header.bin",
+      "sha256": "c4821147e2d8da6704ec05170686ded89867b5cfb13510d9851125471f1514bc",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/money-0-000001.payload.bin",
+      "sha256": "89390c0156d4dbdc1a8f5abe5cfc62b3848764d8ea1fd5397c100d136d6a1b8d",
+      "bytes": 480
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/money-0-000001.request.bin",
+      "sha256": "8470658a1dc4ad32242ecf647f5261ad78e87875839ef5367c5069f225230bf2",
+      "bytes": 50
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/money-0-000001.wire.bin",
+      "sha256": "be207da0a6565fd0a941ccf828a0e21d209f51a3adcc2b2e3a98bc6e3d7efc61",
+      "bytes": 464
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/recent-20261023-000001.expected.json",
+      "sha256": "6c1db664439054b14cf5baade95beb5c1b194266ecf60003a2aab24c85fd8359",
+      "bytes": 20
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/recent-20261023-000001.header.bin",
+      "sha256": "925b5639c9c6d4a02b0da95d5a0c9ca9ed49c42b22c0f8a230510a71cecef809",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/recent-20261023-000001.payload.bin",
+      "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca",
+      "bytes": 10
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/recent-20261023-000001.request.bin",
+      "sha256": "4032174cb72720109f9a660eedd97058004041f5b2d05c8a4c1f11a1ca394ed5",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/recent-20261023-000001.wire.bin",
+      "sha256": "01d448afd928065458cf670b60f5a594d735af0172c8d67f22a81680132681ca",
+      "bytes": 10
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/refresh-0.expected.json",
+      "sha256": "69d428ea1b76e19e189650da00ed810365d954a02438e4447e05103661a59398",
+      "bytes": 7362
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/refresh-0.header.bin",
+      "sha256": "1b44db842a9454ae13115a1eff6b29d358650ea42ad298215c77e096ad22c80c",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/refresh-0.payload.bin",
+      "sha256": "8342c5f441fa32df27e1a49ec9b62dcba9623a82ff4b84520dc333be3f883306",
+      "bytes": 382
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/refresh-0.request.bin",
+      "sha256": "63ab21e9ae876c95dbebcef2fdb16f2e8754a422983090775c04f1047c6d0879",
+      "bytes": 47
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/refresh-0.wire.bin",
+      "sha256": "368ece297d833cc6e4e8aca9001b1bbdd6b42e958d1afd711750d1339bced8c7",
+      "bytes": 309
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/snapshots.expected.json",
+      "sha256": "e3ca3c799a12f81af2e9be94562f48d4ceb2a95ff85a424e3bdb76ccc206edde",
+      "bytes": 5051
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/snapshots.header.bin",
+      "sha256": "6382e1977f7f045382e803bec7c1e895ff6fdd317da23512caf047e4aaaa2a5b",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/snapshots.payload.bin",
+      "sha256": "b99362ab467a00f94eeeba624f20cb885b94755b4a44c98bec9d8219650b4efd",
+      "bytes": 332
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/snapshots.request.bin",
+      "sha256": "d26b240ecde0891d9a8610d031f86ecafca4227bf88c56d2a575790014ae7731",
+      "bytes": 43
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/snapshots.wire.bin",
+      "sha256": "a8348e3ea4eac3f537ce4aa365ac889534c3382b3103e0a6f814d7486668d83d",
+      "bytes": 273
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/sparkline-20.expected.json",
+      "sha256": "4a02be72d099c217e46f30045103c30467fd40b000eec42ef6bc3b1e048f00ad",
+      "bytes": 3670
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/sparkline-20.header.bin",
+      "sha256": "50afd8ce2e8edb71a0c2f366f7f94200f9a3f4ea2882f5590fcbb2bcf08ed6c4",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/sparkline-20.payload.bin",
+      "sha256": "bc24f19300cd985c5c06cf7537434d4d6863f52a3dfc42371e6bee2e1ecbaf17",
+      "bytes": 286
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/sparkline-20.request.bin",
+      "sha256": "92ac2779dcb5d5d76ba4b8eb8048bf66b8d26ececc5d508d0e4520b58f2bec8b",
+      "bytes": 49
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/sparkline-20.wire.bin",
+      "sha256": "93c3780dc9fb88c4ff2a8dcafe3f440af16b1aec6a91765f177b22b00d7b121f",
+      "bytes": 143
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/special-limits.expected.json",
+      "sha256": "6d45e5778844319b1705fb1455fb49550b8e98131d2dec3fa0995b2c85d05025",
+      "bytes": 228
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/special-limits.header.bin",
+      "sha256": "e4d9043e6d25309878ccd695e0e6d01ea49dc3e7ae7a6303d06f8853a6fdeaa5",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/special-limits.payload.bin",
+      "sha256": "b01d43dacceb8d787a358016cf15a7eeb6c7eb43701996847e04ed537b290e8b",
+      "bytes": 15
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/special-limits.request.bin",
+      "sha256": "f4d0f292cf078167a8b3ab029bad4504a74d180adaeeaff67efcae0e4781259f",
+      "bytes": 26
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/protocol_7709/special-limits.wire.bin",
+      "sha256": "b01d43dacceb8d787a358016cf15a7eeb6c7eb43701996847e04ed537b290e8b",
+      "bytes": 15
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000001.expected.json",
+      "sha256": "fea63925e0c6afd182199220d1802fd83d925e8798ed59614547436b18b96c04",
+      "bytes": 61588
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000001.header.bin",
+      "sha256": "ef47a5fafc5dce2385cad267b1a6a42e5c3909e00a400d2eeb873bcb377531db",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000001.payload.bin",
+      "sha256": "0fd28f571f3be5a34e1f100d14f5ea51c36c131d68a33afea644db6640dd5f4b",
+      "bytes": 1247
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000001.request.bin",
+      "sha256": "e54ee6c52b7ffc058f8fedb18f2b54a1645bf19ad3184f580b7b45d7055d8826",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000001.wire.bin",
+      "sha256": "813f36bf9e975a449891a3f1767392d219f3e90512173f1eb6001e6cf51eddc0",
+      "bytes": 1060
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000988.expected.json",
+      "sha256": "2d9e02c8179a64c26329d48edb40aa194a4712e240a5be6d270cb3ad74fbb248",
+      "bytes": 62951
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000988.header.bin",
+      "sha256": "40488a56a6e3dd633a625380a5d2fac7db70a41aafd617fb81227306ef68bdaa",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000988.payload.bin",
+      "sha256": "90b0a8492bd54865a167a204cfc6e0b6bd7148270a15415c42b931b877e090e4",
+      "bytes": 1429
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000988.request.bin",
+      "sha256": "3202b7a261108649a6f5c88b84601fa6e8ab98bbce0493164a54744d4c9b24dc",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-000988.wire.bin",
+      "sha256": "e585c51d221d367216d10fe915ecada600cb4ad2b75f2c315a5b1a88f0019fb6",
+      "bytes": 1400
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-159915.expected.json",
+      "sha256": "2bf010c98dca6dc8ea554f2a9e91b4a99479d71b90b23f2396f3d094e934f491",
+      "bytes": 61924
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-159915.header.bin",
+      "sha256": "6dccaaf2d3a2341b4a82f41575e6c71834483f0d7981b8e02e9ba6280ce7c072",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-159915.payload.bin",
+      "sha256": "2430bd62d91aa73e8529e78dc3385411c05751ce4d94090e3565e09be93ebc49",
+      "bytes": 1523
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-159915.request.bin",
+      "sha256": "f0b264ed67d913faccbba2a6248590fd63318fcfb79920c3717fa2e6e3186c4b",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-0-159915.wire.bin",
+      "sha256": "9962c974c1114da183a85981699cff7e408b2a9cecfa1b95841f0543b0199da6",
+      "bytes": 1455
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-510300.expected.json",
+      "sha256": "5ee2adae617f136e0f68d8aca09f9d11402385441a0808db5121ff4a29c05dcc",
+      "bytes": 61711
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-510300.header.bin",
+      "sha256": "6777c48109dd57a0576db281af23bbd8ecc027ac2f45cd40d1caf08d7ee58a20",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-510300.payload.bin",
+      "sha256": "a711c4a88b3c5ca2d3f5ec1cfcb65912f8e50164b9d3ca1f0a55e74ac6516b05",
+      "bytes": 1379
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-510300.request.bin",
+      "sha256": "c684471cfbae75051b545a15a2f70ebe4a6cdca6263c73cba84ae254043def46",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-510300.wire.bin",
+      "sha256": "e89b7d687f9c33c2d2503c5bcbff71ad80cf3d67b7b1609cea00ff8c0a97c410",
+      "bytes": 1294
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600000.expected.json",
+      "sha256": "8c444b335ce3073469dc034e06ab0c0190087fdb9d722356f8a46e6b45d73211",
+      "bytes": 60289
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600000.header.bin",
+      "sha256": "e604e2239445cdbacea132588c837bcd44a7b3431e0ee9a3cefcc6722b70a601",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600000.payload.bin",
+      "sha256": "35825864f9458b94d844fe388d1190d592499a207a1e4090efbfd3441df6797a",
+      "bytes": 1227
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600000.request.bin",
+      "sha256": "89645bb355aa3ccd994252b5bd1c823ec8974702ced469ad20d3be13a5bf563a",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600000.wire.bin",
+      "sha256": "909fce091d11b00097129fe2d95b3d5e152d98cdc8a1367d85df8f061c477aa0",
+      "bytes": 1000
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600519.expected.json",
+      "sha256": "929e72e7e2dcb4dbb8b45096d75be6b1ba222fec2cfe3d639b61e8bfc04647fc",
+      "bytes": 64103
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600519.header.bin",
+      "sha256": "5785a6ec999de0f2e92bebc57534963f2f8db455fa91d0039cae18daf0908c17",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600519.payload.bin",
+      "sha256": "4e8d316c2ba444058216632042333856333bb016ebb9e63d38c52e2db6f90188",
+      "bytes": 1575
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600519.request.bin",
+      "sha256": "bef66d1d4337d138d8501134a5a5baaccb0434260a1a007248968103a73b5be8",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260817-1-600519.wire.bin",
+      "sha256": "0eac95772c8d96c3a2b17fb4136be47d4813c64121a2a41feec920730a17fa65",
+      "bytes": 1363
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000001.expected.json",
+      "sha256": "07bc8543ce3f9d25b3bca68281e4ecbde35d098fa0d0880d7c76400f2b1827b4",
+      "bytes": 61563
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000001.header.bin",
+      "sha256": "9637f3c92bbe61def1d90b132287b3535b682e7ffe820e2a9d28aeda215416cd",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000001.payload.bin",
+      "sha256": "a5b3e3f0c30028d1cfad0c8e550acf26642357eadfed6fbafb9a166f7f291d61",
+      "bytes": 1267
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000001.request.bin",
+      "sha256": "a0fa120bd9f03ef523b2d4b362c70a66fc3868491b2348d7254066b6574f967e",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000001.wire.bin",
+      "sha256": "655c9f5bc3d6bda755ebf48cb717999dcc98b7fb8566f97920b14f3c51b641f4",
+      "bytes": 1166
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000988.expected.json",
+      "sha256": "25f8b7d7fa84644f8e077b41e0156039ccfc46245752ead93f4b3253cb177bb4",
+      "bytes": 63386
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000988.header.bin",
+      "sha256": "bd35c46ab18a93dbed584650fb8952865b0d99881dfbb0a01aaff10b1743a4a2",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000988.payload.bin",
+      "sha256": "8ffb41a4ec7f8fd0178a8a7d99c780f6e11f07810844565770c397ea8e7a7695",
+      "bytes": 1615
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000988.request.bin",
+      "sha256": "98db32cb1770d6181f1d91999351671bf9e6b6bae281966ea483b6f848b632f7",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-000988.wire.bin",
+      "sha256": "d7fd70069f2d806a2631cb4339b6e316f64aff712a9b6a74689cff8cf26626fc",
+      "bytes": 1514
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-159915.expected.json",
+      "sha256": "549e351989964f72f787024c480ecc69deaca3bfb6b61abe3d64a4002c0fb590",
+      "bytes": 62226
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-159915.header.bin",
+      "sha256": "81c5ab29c32b031d80d674b03a209a7fd7b792a1dcf32692b77dc1f9e9d61d33",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-159915.payload.bin",
+      "sha256": "0db1c46a6c8eef7dda3d8906de99b47ba6532cc4d37f7b69e1c82e47ca223ba7",
+      "bytes": 1448
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-159915.request.bin",
+      "sha256": "719d3f07322d54d1e96435ead74d90120780a0596e5651a05ee2f2fa63b3d38f",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-0-159915.wire.bin",
+      "sha256": "c3cd2f1d58c737b01f1258e6acb31b6dedbaeb15c69b52060b72d8435a21bfd2",
+      "bytes": 1439
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-510300.expected.json",
+      "sha256": "0a159d603810ea46add6363be0eb15022d44886986a8cc76f34fa9cf0453422d",
+      "bytes": 61710
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-510300.header.bin",
+      "sha256": "fddd75331058d3050db44e75b9562496d3caa0823d94d655dfde2585043e9721",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-510300.payload.bin",
+      "sha256": "a146b611e6aa51b6159e3f257fc7a9611ca06c828a702bb7a4908c38d2c446ce",
+      "bytes": 1367
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-510300.request.bin",
+      "sha256": "928407338ab4d627b24808b006bf6df3edbe995afdc29fdddbc8c4f903fac09b",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-510300.wire.bin",
+      "sha256": "f8fd8cb14378cc6f25bf20e842dca098792bcf4b925363f67da06ff2b59ae847",
+      "bytes": 1281
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600000.expected.json",
+      "sha256": "75c46bd0455f624aec33b7594579d0bdf4c210f5c529e294d39c5eb3b08fe0bb",
+      "bytes": 60639
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600000.header.bin",
+      "sha256": "61016016d321ccd6fb053ee7944c80434d7566a9c6e3a5bc21fa11c905dfbfc4",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600000.payload.bin",
+      "sha256": "d138612fc9abdae0a2c186a6c349b92fae4f7cc0175cef9ec869da5015ebc9d9",
+      "bytes": 1225
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600000.request.bin",
+      "sha256": "95598d96e4c56fc173eff7b38a5310c0cfed8bb44bb07e7be9623806509cfc4a",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600000.wire.bin",
+      "sha256": "7ebe31607b635f0044f30b97da488e6b2f052de1ead293b15a716227f2a4b586",
+      "bytes": 1132
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600519.expected.json",
+      "sha256": "27350aa3608c4113d53801fb78d585b79695fb4cd64723727ea023f414758c70",
+      "bytes": 64176
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600519.header.bin",
+      "sha256": "f1d081cab7a931aa80b657ab643d36e407e80a49228d7475fdee275a20e33821",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600519.payload.bin",
+      "sha256": "091a7081cd5bb7bf4e58a2d444a4c75bba5466e6008f27061c1eb5eb5547f0be",
+      "bytes": 1652
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600519.request.bin",
+      "sha256": "ab097be64b620398e96c3fd1a962c3661e81f7ef7de40ef4ad50539b5a92a234",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/115-238-56-198-7709-20260818-1-600519.wire.bin",
+      "sha256": "25661a4a771bda899646d36f4182b2c955d415942f09b7fbd2c02077d422ddd9",
+      "bytes": 1502
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000001.expected.json",
+      "sha256": "fea63925e0c6afd182199220d1802fd83d925e8798ed59614547436b18b96c04",
+      "bytes": 61588
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000001.header.bin",
+      "sha256": "ef47a5fafc5dce2385cad267b1a6a42e5c3909e00a400d2eeb873bcb377531db",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000001.payload.bin",
+      "sha256": "0fd28f571f3be5a34e1f100d14f5ea51c36c131d68a33afea644db6640dd5f4b",
+      "bytes": 1247
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000001.request.bin",
+      "sha256": "e54ee6c52b7ffc058f8fedb18f2b54a1645bf19ad3184f580b7b45d7055d8826",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000001.wire.bin",
+      "sha256": "813f36bf9e975a449891a3f1767392d219f3e90512173f1eb6001e6cf51eddc0",
+      "bytes": 1060
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000988.expected.json",
+      "sha256": "2d9e02c8179a64c26329d48edb40aa194a4712e240a5be6d270cb3ad74fbb248",
+      "bytes": 62951
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000988.header.bin",
+      "sha256": "40488a56a6e3dd633a625380a5d2fac7db70a41aafd617fb81227306ef68bdaa",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000988.payload.bin",
+      "sha256": "90b0a8492bd54865a167a204cfc6e0b6bd7148270a15415c42b931b877e090e4",
+      "bytes": 1429
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000988.request.bin",
+      "sha256": "3202b7a261108649a6f5c88b84601fa6e8ab98bbce0493164a54744d4c9b24dc",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-000988.wire.bin",
+      "sha256": "e585c51d221d367216d10fe915ecada600cb4ad2b75f2c315a5b1a88f0019fb6",
+      "bytes": 1400
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-159915.expected.json",
+      "sha256": "2bf010c98dca6dc8ea554f2a9e91b4a99479d71b90b23f2396f3d094e934f491",
+      "bytes": 61924
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-159915.header.bin",
+      "sha256": "6dccaaf2d3a2341b4a82f41575e6c71834483f0d7981b8e02e9ba6280ce7c072",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-159915.payload.bin",
+      "sha256": "2430bd62d91aa73e8529e78dc3385411c05751ce4d94090e3565e09be93ebc49",
+      "bytes": 1523
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-159915.request.bin",
+      "sha256": "f0b264ed67d913faccbba2a6248590fd63318fcfb79920c3717fa2e6e3186c4b",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-0-159915.wire.bin",
+      "sha256": "9962c974c1114da183a85981699cff7e408b2a9cecfa1b95841f0543b0199da6",
+      "bytes": 1455
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-510300.expected.json",
+      "sha256": "5ee2adae617f136e0f68d8aca09f9d11402385441a0808db5121ff4a29c05dcc",
+      "bytes": 61711
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-510300.header.bin",
+      "sha256": "6777c48109dd57a0576db281af23bbd8ecc027ac2f45cd40d1caf08d7ee58a20",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-510300.payload.bin",
+      "sha256": "a711c4a88b3c5ca2d3f5ec1cfcb65912f8e50164b9d3ca1f0a55e74ac6516b05",
+      "bytes": 1379
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-510300.request.bin",
+      "sha256": "c684471cfbae75051b545a15a2f70ebe4a6cdca6263c73cba84ae254043def46",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-510300.wire.bin",
+      "sha256": "e89b7d687f9c33c2d2503c5bcbff71ad80cf3d67b7b1609cea00ff8c0a97c410",
+      "bytes": 1294
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600000.expected.json",
+      "sha256": "8c444b335ce3073469dc034e06ab0c0190087fdb9d722356f8a46e6b45d73211",
+      "bytes": 60289
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600000.header.bin",
+      "sha256": "e604e2239445cdbacea132588c837bcd44a7b3431e0ee9a3cefcc6722b70a601",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600000.payload.bin",
+      "sha256": "35825864f9458b94d844fe388d1190d592499a207a1e4090efbfd3441df6797a",
+      "bytes": 1227
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600000.request.bin",
+      "sha256": "89645bb355aa3ccd994252b5bd1c823ec8974702ced469ad20d3be13a5bf563a",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600000.wire.bin",
+      "sha256": "909fce091d11b00097129fe2d95b3d5e152d98cdc8a1367d85df8f061c477aa0",
+      "bytes": 1000
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600519.expected.json",
+      "sha256": "929e72e7e2dcb4dbb8b45096d75be6b1ba222fec2cfe3d639b61e8bfc04647fc",
+      "bytes": 64103
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600519.header.bin",
+      "sha256": "5785a6ec999de0f2e92bebc57534963f2f8db455fa91d0039cae18daf0908c17",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600519.payload.bin",
+      "sha256": "4e8d316c2ba444058216632042333856333bb016ebb9e63d38c52e2db6f90188",
+      "bytes": 1575
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600519.request.bin",
+      "sha256": "bef66d1d4337d138d8501134a5a5baaccb0434260a1a007248968103a73b5be8",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260817-1-600519.wire.bin",
+      "sha256": "0eac95772c8d96c3a2b17fb4136be47d4813c64121a2a41feec920730a17fa65",
+      "bytes": 1363
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000001.expected.json",
+      "sha256": "07bc8543ce3f9d25b3bca68281e4ecbde35d098fa0d0880d7c76400f2b1827b4",
+      "bytes": 61563
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000001.header.bin",
+      "sha256": "9637f3c92bbe61def1d90b132287b3535b682e7ffe820e2a9d28aeda215416cd",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000001.payload.bin",
+      "sha256": "a5b3e3f0c30028d1cfad0c8e550acf26642357eadfed6fbafb9a166f7f291d61",
+      "bytes": 1267
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000001.request.bin",
+      "sha256": "a0fa120bd9f03ef523b2d4b362c70a66fc3868491b2348d7254066b6574f967e",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000001.wire.bin",
+      "sha256": "655c9f5bc3d6bda755ebf48cb717999dcc98b7fb8566f97920b14f3c51b641f4",
+      "bytes": 1166
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000988.expected.json",
+      "sha256": "25f8b7d7fa84644f8e077b41e0156039ccfc46245752ead93f4b3253cb177bb4",
+      "bytes": 63386
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000988.header.bin",
+      "sha256": "bd35c46ab18a93dbed584650fb8952865b0d99881dfbb0a01aaff10b1743a4a2",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000988.payload.bin",
+      "sha256": "8ffb41a4ec7f8fd0178a8a7d99c780f6e11f07810844565770c397ea8e7a7695",
+      "bytes": 1615
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000988.request.bin",
+      "sha256": "98db32cb1770d6181f1d91999351671bf9e6b6bae281966ea483b6f848b632f7",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-000988.wire.bin",
+      "sha256": "d7fd70069f2d806a2631cb4339b6e316f64aff712a9b6a74689cff8cf26626fc",
+      "bytes": 1514
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-159915.expected.json",
+      "sha256": "549e351989964f72f787024c480ecc69deaca3bfb6b61abe3d64a4002c0fb590",
+      "bytes": 62226
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-159915.header.bin",
+      "sha256": "81c5ab29c32b031d80d674b03a209a7fd7b792a1dcf32692b77dc1f9e9d61d33",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-159915.payload.bin",
+      "sha256": "0db1c46a6c8eef7dda3d8906de99b47ba6532cc4d37f7b69e1c82e47ca223ba7",
+      "bytes": 1448
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-159915.request.bin",
+      "sha256": "719d3f07322d54d1e96435ead74d90120780a0596e5651a05ee2f2fa63b3d38f",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-0-159915.wire.bin",
+      "sha256": "c3cd2f1d58c737b01f1258e6acb31b6dedbaeb15c69b52060b72d8435a21bfd2",
+      "bytes": 1439
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-510300.expected.json",
+      "sha256": "0dcc8fedb94387f6a44a15827ee6eefbb34126013153a456000c576df013c6df",
+      "bytes": 61709
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-510300.header.bin",
+      "sha256": "fddd75331058d3050db44e75b9562496d3caa0823d94d655dfde2585043e9721",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-510300.payload.bin",
+      "sha256": "5f17cae40d708d9f7f2da2e4878129cc5f13bb0ce76d9c70bf31a5bbb5f75198",
+      "bytes": 1367
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-510300.request.bin",
+      "sha256": "928407338ab4d627b24808b006bf6df3edbe995afdc29fdddbc8c4f903fac09b",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-510300.wire.bin",
+      "sha256": "88325e92efc00e36cd20f06b45f60c63f1c325f57e26523869e8be50bed1151b",
+      "bytes": 1281
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600000.expected.json",
+      "sha256": "75c46bd0455f624aec33b7594579d0bdf4c210f5c529e294d39c5eb3b08fe0bb",
+      "bytes": 60639
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600000.header.bin",
+      "sha256": "61016016d321ccd6fb053ee7944c80434d7566a9c6e3a5bc21fa11c905dfbfc4",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600000.payload.bin",
+      "sha256": "d138612fc9abdae0a2c186a6c349b92fae4f7cc0175cef9ec869da5015ebc9d9",
+      "bytes": 1225
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600000.request.bin",
+      "sha256": "95598d96e4c56fc173eff7b38a5310c0cfed8bb44bb07e7be9623806509cfc4a",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600000.wire.bin",
+      "sha256": "7ebe31607b635f0044f30b97da488e6b2f052de1ead293b15a716227f2a4b586",
+      "bytes": 1132
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600519.expected.json",
+      "sha256": "27350aa3608c4113d53801fb78d585b79695fb4cd64723727ea023f414758c70",
+      "bytes": 64176
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600519.header.bin",
+      "sha256": "f1d081cab7a931aa80b657ab643d36e407e80a49228d7475fdee275a20e33821",
+      "bytes": 16
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600519.payload.bin",
+      "sha256": "091a7081cd5bb7bf4e58a2d444a4c75bba5466e6008f27061c1eb5eb5547f0be",
+      "bytes": 1652
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600519.request.bin",
+      "sha256": "ab097be64b620398e96c3fd1a962c3661e81f7ef7de40ef4ad50539b5a92a234",
+      "bytes": 23
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/180-153-18-170-7709-20260818-1-600519.wire.bin",
+      "sha256": "25661a4a771bda899646d36f4182b2c955d415942f09b7fbd2c02077d422ddd9",
+      "bytes": 1502
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/README.md",
+      "sha256": "d3e299ea108babe1ad9bff8a75e71357aadfbee15e00d0b4d23e37198a567010",
+      "bytes": 1579
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/recent_minutes_nonempty/manifest.json",
+      "sha256": "e56282a937c074087453db90beb59d3c60f67b8eb60aae46fc1ef04eb5dd44c9",
+      "bytes": 27103
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/tdx/gbbq",
+      "sha256": "52ab910be3177c78ce0a13663478965223281506c722b0ebf3f393c680f685cc",
+      "bytes": 3370152
+    },
+    {
+      "path": "crates/rustdx-core/tests/fixtures/tdx/sz000001.day",
+      "sha256": "d68b2660950ddc903e9067295babf2349a103712fabc82c571979f4bd527d30c",
+      "bytes": 231232
+    },
+    {
+      "path": "crates/rustdx-core/tests/fq.rs",
+      "sha256": "6cd0fdc854f84fa903175ee1eaf74bedad10611eb345a495b7c236597aa84b6f",
+      "bytes": 646
+    },
+    {
+      "path": "crates/rustdx-core/tests/k_batch_adjusted.rs",
+      "sha256": "a8b3912de380d2c97448b036aa7081b0a9810fca3f95b7277477c8dd1e162cd1",
+      "bytes": 5871
+    },
+    {
+      "path": "crates/rustdx-core/tests/kline_decoders.rs",
+      "sha256": "85e1cf8713e04d0b2c7b4d6ed448cafbbe6f6c605025ab0bd224b656b9f363f0",
+      "bytes": 11642
+    },
+    {
+      "path": "crates/rustdx-core/tests/minute_time_live.rs",
+      "sha256": "cd92b873e9c8c46cc32fa5de135b7d81a14d0ef041fd9ab3da603bf9b1f864e7",
+      "bytes": 4233
+    },
+    {
+      "path": "crates/rustdx-core/tests/modern_commands.rs",
+      "sha256": "06d48e14dfad614cb43c4a41c484e9300f0e5441921b5144ed029e738dc17195",
+      "bytes": 15760
+    },
+    {
+      "path": "crates/rustdx-core/tests/network_budget.rs",
+      "sha256": "261157060fc774b3fed84158b287ce0de982ba52be84a7b31ae2d86a21e9a375",
+      "bytes": 7349
+    },
+    {
+      "path": "crates/rustdx-core/tests/properties.rs",
+      "sha256": "fea462a62c7d049e78080a7dd324b663dc209fc761bfbe20002ab9bf19c37fa7",
+      "bytes": 3409
+    },
+    {
+      "path": "crates/rustdx-core/tests/protocol_7709_decoders.rs",
+      "sha256": "a252882f79dbd16f20bf9360660cf085cd7075c0645b66f14fedea9496530534",
+      "bytes": 17032
+    },
+    {
+      "path": "crates/rustdx-core/tests/protocol_decoders.rs",
+      "sha256": "5b57ec29f741911735fa897aaeaaa6e89d32740dcc0af9a2031bdfb77f59959a",
+      "bytes": 14408
+    },
+    {
+      "path": "crates/rustdx-core/tests/quote_precision.rs",
+      "sha256": "c46a049405f72670527ec443c3fa3a64ea7797bb8bcc21cd6cb3cb733b01cc50",
+      "bytes": 20455
+    },
+    {
+      "path": "crates/rustdx-core/tests/quote_subscription.rs",
+      "sha256": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5",
+      "bytes": 34504
+    },
+    {
+      "path": "crates/rustdx-core/tests/recent_minutes_boundaries.rs",
+      "sha256": "d861022b380c90027ba5d61f9e427e34194ae2503b92eac9eb57c12964cac70e",
+      "bytes": 11488
+    },
+    {
+      "path": "crates/rustdx-core/tests/recent_minutes_fixtures.rs",
+      "sha256": "6690306cec391671dfa24433470934bcca100fd6a7300790e493b270012eb961",
+      "bytes": 8584
+    },
+    {
+      "path": "crates/rustdx-core/tests/reliability.rs",
+      "sha256": "837b2d5b76506a0b31058c65d22e9a312ee0bd4c90ecb4efc953a0ad1671e221",
+      "bytes": 6973
+    },
+    {
+      "path": "crates/rustdx-core/tests/reported_turnover.rs",
+      "sha256": "6d505ffdca830fdd1e5104846a8af1df55e7d7b76e24080a6e732fbf0e89d8d8",
+      "bytes": 15347
+    },
+    {
+      "path": "crates/rustdx-core/tests/response_identity.rs",
+      "sha256": "0e51a33c77924e42aa4c8f5acfd80fd4a611d23ae902efe53cdc1d873bde0453",
+      "bytes": 20409
+    },
+    {
+      "path": "crates/rustdx-core/tests/shared_network.rs",
+      "sha256": "809517482c673597144cddf50cf8e75d8065df5d9d25f1b42c5e88c15217c95f",
+      "bytes": 2073
+    },
+    {
+      "path": "crates/rustdx-core/tests/snapshots/file_day__serde-type-csv-string.snap",
+      "sha256": "10deeafabee4c6b5c3f2be3fce8c072a3fae81ae113a91411b268292b423aedc",
+      "bytes": 459172
+    },
+    {
+      "path": "crates/rustdx-core/tests/snapshots/file_day__serde-type.snap",
+      "sha256": "47c776b69b8d539cd0184fb7ee2746640b91a11134ceec64e2d4ce95a359bb24",
+      "bytes": 920924
+    },
+    {
+      "path": "crates/rustdx-core/tests/snapshots/fq__day_sz000001.snap",
+      "sha256": "4b89221f3994b766e266456891adc5f01dd2292357399871f29bfdbbde6828c6",
+      "bytes": 615
+    },
+    {
+      "path": "crates/rustdx-core/tests/snapshots/tcp__security-list-count.snap",
+      "sha256": "51348d64455b2eb432d23b30915b55101ff1a5e2a03fd8e80f1f04d489a2ae1c",
+      "bytes": 58
+    },
+    {
+      "path": "crates/rustdx-core/tests/snapshots/tcp__security-list-recv.snap",
+      "sha256": "cffedfccd8a5fcac9c23fb9a13affe44bb3348bc6d73d94fca0511df00592750",
+      "bytes": 39189
+    },
+    {
+      "path": "crates/rustdx-core/tests/snapshots/tcp__security-list-send.snap",
+      "sha256": "2687270e71df1ee5689b239c2de29ee9bc166933fba1253aa60534684736d2d6",
+      "bytes": 173
+    },
+    {
+      "path": "crates/rustdx-core/tests/struct_size.rs",
+      "sha256": "de16b11d13c836ed0886a355632079912f376925d64cf8f79161f7f4e0df103e",
+      "bytes": 1122
+    },
+    {
+      "path": "crates/rustdx-core/tests/tcp.rs",
+      "sha256": "6b983291f523720dfa121889775dde8f193a3007a1279da0c74ff1fb258cb550",
+      "bytes": 1477
+    },
+    {
+      "path": "crates/rustdx-core/tests/tcp_cancel.rs",
+      "sha256": "c693af417ceaf8107568412ae6731e7b9af3818924eedb2ed476820cbffd3520",
+      "bytes": 1943
+    },
+    {
+      "path": "crates/rustdx-core/tests/tcp_startup.rs",
+      "sha256": "7789fba55b6a05286e55af6313bc2e0892b5e788523586216e9fd203a4290574",
+      "bytes": 7635
+    },
+    {
+      "path": "crates/rustdx-core/tests/trade_amount.rs",
+      "sha256": "13e923ce439ea61d7bde2eb4397ab383263694d0a18ca8477af4487b2b432158",
+      "bytes": 7394
+    },
+    {
+      "path": "crates/rustdx-core/tests/trade_amount_reconcile.rs",
+      "sha256": "18fadee8436a8e4773aa76943a05468b3a8a61ae7c8a88152380ccc9c21441a8",
+      "bytes": 10498
+    },
+    {
+      "path": "crates/rustdx-core/tests/trade_models.rs",
+      "sha256": "276a87bfe8a8f0909041403e816763b6cc9de87f15a970579e9cfe72dea1f590",
+      "bytes": 20070
+    },
+    {
+      "path": "crates/rustdx-core/tests/transaction_pagination.rs",
+      "sha256": "af07f5553cb4b14983c94b657e547cc1113faed6535d84ee71068eb2ba49f261",
+      "bytes": 19604
+    },
+    {
+      "path": "deploy/README.md",
+      "sha256": "01a31ecbda6e720637c4e53f4f9d0c9d25be69947409961eebf7cf97661b1bc4",
+      "bytes": 2528
+    },
+    {
+      "path": "deploy/acceptance/clickhouse.xml",
+      "sha256": "08f0c2b2ba8b0bc7cf416352388951db443c56849ee357138b9e0890d47eeb50",
+      "bytes": 713
+    },
+    {
+      "path": "deploy/acceptance/compose.yml",
+      "sha256": "17c74a5e533cd86f904bfdc44e67cee056c97576599451639e711337ce769101",
+      "bytes": 1020
+    },
+    {
+      "path": "deploy/clickhouse/.env.example",
+      "sha256": "02c16ca6c3732453b64b1b4aa49d79fe7d0b5ef366d6ac2572d8a8dc21d14d99",
+      "bytes": 134
+    },
+    {
+      "path": "deploy/clickhouse/compose.yml",
+      "sha256": "5345d81b3bce7ca038a15812e36eda1a8436cef0e5253cec012d142a8c63595b",
+      "bytes": 1126
+    },
+    {
+      "path": "deploy/clickhouse/sql/factor.sql",
+      "sha256": "ab0010fb2b0c005211e9936bf7da6d3b40d183a1c3295dc697bd52d81a9c72f0",
+      "bytes": 271
+    },
+    {
+      "path": "deploy/runner/README.md",
+      "sha256": "b5f2fee796ea344338f5d9d1ea62844c82d1ca4e0fb3839b3981c80c2df82ae8",
+      "bytes": 9186
+    },
+    {
+      "path": "deploy/runner/alerts.yml",
+      "sha256": "4dc2e6826707c217a003b420eb1b6e8ad8fc64de7ec41901a3632be5cba866c7",
+      "bytes": 1035
+    },
+    {
+      "path": "deploy/runner/clickhouse.sql",
+      "sha256": "35e10f8d3d47b1f4ee6fd14e351d4bcdf5325fdb1f5bdb91b70d997e569d75e5",
+      "bytes": 1115
+    },
+    {
+      "path": "deploy/runner/mongodb.js",
+      "sha256": "56bacbb65e4e7242a993ed50485872e84bb73f3c3057d3f1b77af4d61c1ae754",
+      "bytes": 1541
+    },
+    {
+      "path": "deploy/runner/rustdx-metrics.service",
+      "sha256": "9b3ad69c05ec8b6d3f8fb4f48d381acf3e0519cc997575051bfc9e407e7b1a01",
+      "bytes": 496
+    },
+    {
+      "path": "deploy/runner/rustdx-metrics.timer",
+      "sha256": "6efb7ec60c3cf44f0c8d3688357ecc4f072e45ca2f33cbcd49833113012c2525",
+      "bytes": 161
+    },
+    {
+      "path": "deploy/runner/rustdx-runner.service",
+      "sha256": "ede4f19ee3baa7defdbd3188a23196af81684de3c92d8580623b8e33d63a0a92",
+      "bytes": 799
+    },
+    {
+      "path": "deploy/runner/rustdx-runner.timer",
+      "sha256": "4719223c45e0187c48fdb5beb206260eb4f4c242e21a61906adce4c22838e5a1",
+      "bytes": 240
+    },
+    {
+      "path": "scripts/README.md",
+      "sha256": "0b54f9d760e8f4b2cadd056844a14565fcb5ac0fd191ffafcc5b760dda50148a",
+      "bytes": 5793
+    },
+    {
+      "path": "scripts/bench/compare_indicators.py",
+      "sha256": "e785ae2183d47d3048e713eb56ceb0d656fcfb74a5ab734871c281dddab3daec",
+      "bytes": 2134
+    },
+    {
+      "path": "scripts/bench/measure_database_readback.py",
+      "sha256": "abbdd4335ee65e7533f1f0300da30c35e6aea33dd23a79b61e3e36f98f965a99",
+      "bytes": 8318
+    },
+    {
+      "path": "scripts/bench/measure_day_memory.py",
+      "sha256": "817667f088f510da305f093d1508a6bfbc424f1213b528db1e35ee6dd8fe4d70",
+      "bytes": 4793
+    },
+    {
+      "path": "scripts/dev/run_comprehensive_test.sh",
+      "sha256": "4171cba5fb28284869d806586c8ac067b9182537fd9f181f143f769a31d0fabb",
+      "bytes": 1124
+    },
+    {
+      "path": "scripts/ops/diagnose_network.sh",
+      "sha256": "9e28332e677bebb92b7fe760e81ab320c527da5164b904d53ebc45ff8b0b2913",
+      "bytes": 234
+    },
+    {
+      "path": "scripts/release/preflight.py",
+      "sha256": "11e667eda59ce6a57ff311c3010f21e2bc4a1a27e39ba2664463459e9de90362",
+      "bytes": 12636
+    },
+    {
+      "path": "scripts/release/publish.sh",
+      "sha256": "18c166f681542e5c44f38f0b8ade943e137738fea588d12aa9d2f3901e46f6a5",
+      "bytes": 1853
+    },
+    {
+      "path": "scripts/validation/analyze_enhanced_history_amount.py",
+      "sha256": "7a072554683a2ef3a5f215a68d4d9c000d60cbdd9fd8728d4eb0cb9962032c24",
+      "bytes": 19153
+    },
+    {
+      "path": "scripts/validation/evidence_paths.py",
+      "sha256": "2f92dd07b250adb746a94f54cc6e96d2777931551960ee1e6195d2e876f222bf",
+      "bytes": 1058
+    },
+    {
+      "path": "scripts/validation/freeze_recent_minutes_fixtures.py",
+      "sha256": "643a3a19abf006208ac9e85347fe3d3f806ea749d7cb9899f38be3a9d583e0f8",
+      "bytes": 6536
+    },
+    {
+      "path": "scripts/validation/verify_database_faults.py",
+      "sha256": "5eff8a454b9274e991995f89d82d0379a8aebb213bb75c9ecc7d2bac02aec8a7",
+      "bytes": 13909
+    },
+    {
+      "path": "scripts/validation/verify_eltdx_330_commands.py",
+      "sha256": "3a118fc5d921cee02293f5ac4b6c3c64c9333a146bc013948f2a757e8102b537",
+      "bytes": 10925
+    },
+    {
+      "path": "scripts/validation/verify_enhanced_history_day.py",
+      "sha256": "be65b73d6c7be43de2d6b0d01289a326bd7c7140ed8a71866a7298c270ec4381",
+      "bytes": 18108
+    },
+    {
+      "path": "scripts/validation/verify_enhanced_history_transaction.py",
+      "sha256": "74c40cbf302c542b7f7518c0cf19c9b2b3ba75e2240885a99fad017666d0d5a8",
+      "bytes": 5575
+    },
+    {
+      "path": "scripts/validation/verify_kline_pytdx.py",
+      "sha256": "c99938b81f0342fc66f678e477a87933f5be334a60d9781a63cda31fa52fa061",
+      "bytes": 4091
+    },
+    {
+      "path": "scripts/validation/verify_modern_commands.py",
+      "sha256": "931ec603b5d1c013452697b7721364a6f21a5f9aa97bc6f81a10bac778c8c1c8",
+      "bytes": 5843
+    },
+    {
+      "path": "scripts/validation/verify_nine_commands.py",
+      "sha256": "400cc1b4e2bd99f8e848ea1e5f0b492cebc7adc705a55dcc3f3092660d284d66",
+      "bytes": 16352
+    },
+    {
+      "path": "scripts/validation/verify_protocol_pytdx.py",
+      "sha256": "c110735f91a0bf66df3f7fb97653f61f8f14d792f0e7c2ad574170dfeee18d58",
+      "bytes": 7059
+    },
+    {
+      "path": "scripts/validation/verify_quote_push.py",
+      "sha256": "846a3abc9dea7175a3ac8b3cb2b9c3d5e5e72931cec257dedffc107b042d7bbc",
+      "bytes": 16953
+    },
+    {
+      "path": "scripts/validation/verify_real_day_database.py",
+      "sha256": "bb17c1819c0c5d2f91c33390f19a923e238172f477643287c08e81d003626da0",
+      "bytes": 8120
+    },
+    {
+      "path": "scripts/validation/verify_recent_auction.py",
+      "sha256": "abdb5e585dc3b86e2be4739b220443f625e633b8318c26a9abd0aa3987a21eb8",
+      "bytes": 18210
+    },
+    {
+      "path": "scripts/validation/verify_recent_minutes_boundaries.py",
+      "sha256": "eeb651b0ab9d6eb5005c4c23fb9a4dce1235cc6a70660e38369f16a5613450f3",
+      "bytes": 8157
+    },
+    {
+      "path": "tests/integration/Cargo.toml",
+      "sha256": "b5e8f691881722d97a83c9bdeb48bb87e218b9f4c4cd558c96bae0c5cdf09f66",
+      "bytes": 355
+    },
+    {
+      "path": "tests/integration/src/fetch_code.rs",
+      "sha256": "b4b2fe4b6e09386ed4ee3101ba7530a39387293ef954a4b024bf9cf44b3c5a0a",
+      "bytes": 708
+    },
+    {
+      "path": "tests/integration/src/lib.rs",
+      "sha256": "823d0d189ae6e818a702399f22bc5f69bd614afadce4fd32ac5474cb660e5c65",
+      "bytes": 1081
+    },
+    {
+      "path": "tests/integration/tests/stocklist.rs",
+      "sha256": "2b289350d10085bc6fe1e8248ffb6ee2a633a6e641351025e66fe7c3f1490f20",
+      "bytes": 2577
+    }
+  ],
+  "source_sha256": "719783b57e3ddbfd6643a1b78c504264e618ba7501ba68f98083eb251bd57b8e"
+}

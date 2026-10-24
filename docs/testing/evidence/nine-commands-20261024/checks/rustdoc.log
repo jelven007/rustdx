@@ -1,0 +1,9 @@
+    Blocking waiting for file lock on build directory
+    Checking jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+ Documenting jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+    Checking jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/rustdx-cmd)
+ Documenting jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/rustdx-cmd)
+ Documenting tests-integration v1.1.0 (/Users/bytedance/Documents/rustdx/tests-integration)
+ Documenting rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/rustdx-runner)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 13.29s
+   Generated /Users/bytedance/Documents/rustdx/target/doc/rustdx_cli/index.html and 4 other files

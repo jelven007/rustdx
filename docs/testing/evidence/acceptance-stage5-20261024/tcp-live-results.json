@@ -1,0 +1,14 @@
+[
+  {
+    "endpoint": "115.238.56.198:7709",
+    "exit_code": 0,
+    "seconds": 1.627190375,
+    "candidate": "/tmp/rustdx-stage5/tcp-live-0"
+  },
+  {
+    "endpoint": "180.153.18.170:7709",
+    "exit_code": 0,
+    "seconds": 1.742407542,
+    "candidate": "/tmp/rustdx-stage5/tcp-live-1"
+  }
+]

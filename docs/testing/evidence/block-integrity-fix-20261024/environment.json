@@ -1,0 +1,12 @@
+{
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]",
+  "rustc": "1.89.0 (29483883e 2025-08-04)",
+  "host": "aarch64-apple-darwin",
+  "llvm": "20.1.7",
+  "edition": 2024,
+  "md5_dependency": "md-5 0.10.6",
+  "workspace_source_sha256": "7631261ad483205e77b1d165f428aa696bcfb13ccdf38adff431070dd45e67de",
+  "skip_env": "RUSTDX_SKIP_INTEGRATION_TESTS=1"
+}

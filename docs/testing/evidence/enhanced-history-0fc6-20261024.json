@@ -1,0 +1,343 @@
+{
+  "generated_at": "2026-10-24T04:48:08.806067+00:00",
+  "scope": "Independent synchronous 0x0fc6 single-page integration; current worktree also contains other uncommitted changes.",
+  "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "public_api": "Client::enhanced_history_transaction(market, code, start, count, date)",
+  "request_type": "EnhancedHistoryTransactionRequest",
+  "decoder": "decode_enhanced_history_transactions",
+  "request_count_range": [
+    1,
+    1800
+  ],
+  "legacy_opcode_preserved": "0x0fb5",
+  "sdk_baseline": {
+    "version": "eltdx 3.2.2",
+    "source_sha256": {
+      "docs/validation/evidence/eltdx-3.2.2-command-guide-20261024/crates/eltdx-protocol/src/commands/trades.rs": "abe5ea80d98708bcfb682b1c35cbe6efbe2b037c48bce9a5e3550df604bce5dc",
+      "docs/validation/evidence/eltdx-3.2.2-command-guide-20261024/crates/eltdx-protocol/src/frame.rs": "5cb4cc5cc55a9988d8d1a7e5ba5687eaabf8c5eba96dc5b3201c125cc18e2fdd",
+      "docs/validation/evidence/eltdx-3.2.2-command-guide-20261024/crates/eltdx-protocol/src/limits.rs": "9f68e4ac466df18ec93e6339e79cb6b438778b5332954df906325b173a200b10"
+    }
+  },
+  "source_snapshot_sha256": {
+    "src/tcp/stock/enhanced_history_transaction.rs": "cbc05050491909cfafcd59d25c88b286d1a9453422ae805fb91a99f8aea1c175",
+    "src/tcp/stock/client.rs": "87cc27eb35b9d954a53ef1ca3e1ae84ba38b18fb914a1eaff3c2477ef05bae76",
+    "src/tcp/stock/mod.rs": "637cd12309e5247b2f4a6fe537906cd9c11e0e0b8fb2fa7bf8f3da1ce166155c",
+    "src/tcp/stock/requests.rs": "4147c5504984c17b1f2cdfe077824abc582d5fad91df2aefd72f773edf1dac57",
+    "tests/enhanced_history_transaction.rs": "3c7c248c56483939cd15c6be37aeaf4e4c15095b44caf6f90bcb3530c90da059",
+    "examples/capture_enhanced_history_transaction.rs": "36068c355be667eb9b290fa5c0522dc9fe875eb11864fc8ac34695aa2b8fdc28",
+    "scripts/validation/verify_enhanced_history_transaction.py": "74c40cbf302c542b7f7518c0cf19c9b2b3ba75e2240885a99fad017666d0d5a8",
+    "fuzz/fuzz_targets/checked_parsers.rs": "d41183fba4b0a41da979151cc7be642cf3f2ca86e7691f9d683c44380c75f7c9"
+  },
+  "engineering_checks": [
+    {
+      "command": "cargo +1.89.0 fmt --all --check",
+      "result": "passed"
+    },
+    {
+      "command": "cargo +1.89.0 clippy --workspace --all-targets --all-features --offline --locked -- -D warnings",
+      "result": "passed"
+    },
+    {
+      "command": "cargo +1.89.0 test -p jelven-rustdx-complete --lib --test enhanced_history_transaction --test protocol_decoders --all-features --offline --locked",
+      "result": "passed",
+      "lib": 166,
+      "new_specialized_tests": 10,
+      "existing_protocol_tests": 6,
+      "total": 182
+    },
+    {
+      "command": "cargo +1.89.0 test -p jelven-rustdx-complete --doc --all-features --offline --locked",
+      "result": "passed",
+      "passed": 64,
+      "ignored": 18
+    },
+    {
+      "command": "cargo +1.89.0 check --manifest-path fuzz/Cargo.toml --bin checked_parsers --offline --locked",
+      "result": "passed",
+      "instrumented_fuzz_execution": false
+    },
+    {
+      "command": "rustfmt +1.89.0 --edition 2024 --check fuzz/fuzz_targets/checked_parsers.rs",
+      "result": "passed"
+    }
+  ],
+  "check_environment": {
+    "rust": "1.89.0",
+    "CARGO_HOME": "/Users/bytedance/Documents/rustdx/.cargo",
+    "RUSTUP_HOME": "/Users/bytedance/Documents/rustdx/.cargo/rustup",
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1",
+    "debug_logs_location": "/tmp; intermediate logs not copied into deliverables"
+  },
+  "real_samples": [
+    {
+      "directory": "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0",
+      "rust_summary": {
+        "actual_view_count": 1781,
+        "after_hours_count": 45,
+        "auction_snapshot_count": 19,
+        "code": "300308",
+        "fetched_at": "2026-10-24T04:40:13.863304Z",
+        "first_time": "13:30",
+        "last_time": "15:29",
+        "market": 0,
+        "offline_replay_matches": true,
+        "opening_match_count": 0,
+        "price_base_raw_f32": 590.1099853515625,
+        "raw_count": 1800,
+        "request_count": 1800,
+        "requested_date": 20261023,
+        "scope": "one source, one requested day, one page; not full-day coverage",
+        "source_endpoint": "115.238.56.198:7709",
+        "start": 0,
+        "status_counts": {
+          "0": 985,
+          "1": 739,
+          "2": 12,
+          "5": 45,
+          "8": 19
+        }
+      },
+      "independent": {
+        "date": 20261023,
+        "market": 0,
+        "code": "300308",
+        "start": 0,
+        "request_count": 1800,
+        "price_base_raw_f32": 590.1099853515625,
+        "record_count": 1800,
+        "all_record_fields_match": true,
+        "status_counts": {
+          "1": 739,
+          "0": 985,
+          "2": 12,
+          "8": 19,
+          "5": 45
+        },
+        "sha256": {
+          "request.bin": "ab7021c1aaa95d919e1056ef663888dbc718df4bfb3972a771b09fef50f5bc40",
+          "header.bin": "7af2f65387bfd70f30e29635bf087361d7110bd2e767475ca51430204ff553f8",
+          "wire.bin": "837cd4a289e4d378615526b9abeeeeeca1ce7f3f59e8e8fcd26c6e23460620c1",
+          "payload.bin": "065134611b300af914d9f05ee5453ac059849031ddb1cf4606d97441bb2d50eb"
+        },
+        "expected_sha256": "5e957924c279f955c9e23927d2f94cebfd08796d9a0c401c62cb935ff5489f62"
+      }
+    },
+    {
+      "directory": "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800",
+      "rust_summary": {
+        "actual_view_count": 1800,
+        "after_hours_count": 0,
+        "auction_snapshot_count": 0,
+        "code": "300308",
+        "fetched_at": "2026-10-24T04:40:28.674544Z",
+        "first_time": "10:30",
+        "last_time": "13:30",
+        "market": 0,
+        "offline_replay_matches": true,
+        "opening_match_count": 0,
+        "price_base_raw_f32": 590.1099853515625,
+        "raw_count": 1800,
+        "request_count": 1800,
+        "requested_date": 20261023,
+        "scope": "one source, one requested day, one page; not full-day coverage",
+        "source_endpoint": "115.238.56.198:7709",
+        "start": 1800,
+        "status_counts": {
+          "0": 976,
+          "1": 814,
+          "2": 10
+        }
+      },
+      "independent": {
+        "date": 20261023,
+        "market": 0,
+        "code": "300308",
+        "start": 1800,
+        "request_count": 1800,
+        "price_base_raw_f32": 590.1099853515625,
+        "record_count": 1800,
+        "all_record_fields_match": true,
+        "status_counts": {
+          "1": 814,
+          "0": 976,
+          "2": 10
+        },
+        "sha256": {
+          "request.bin": "6a16dafb87d32ed6e02d690f6f732dd31ebaf0c524a83009697d91497c7f7ce1",
+          "header.bin": "9e39fd5b899777cbd5c1c42397ad4035ea1f458330ebbf57555ba963c4e21627",
+          "wire.bin": "8b042ba3247abe83abfb0095946cc5ee8d3d74e85baed7f1482db565b7f5fbb6",
+          "payload.bin": "8809b79a836042fc0ab2e308d99d30f6e79797b5000e5d5ecbf37192b12e2b96"
+        },
+        "expected_sha256": "813d49b573b4baad9a425d0dcc479fe2b5943c5f2a2b6ed5c856001c226692ba"
+      }
+    },
+    {
+      "directory": "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600",
+      "rust_summary": {
+        "actual_view_count": 1208,
+        "after_hours_count": 0,
+        "auction_snapshot_count": 68,
+        "code": "300308",
+        "fetched_at": "2026-10-24T04:40:57.612006Z",
+        "first_time": "09:15",
+        "last_time": "10:30",
+        "market": 0,
+        "offline_replay_matches": true,
+        "opening_match_count": 1,
+        "price_base_raw_f32": 590.1099853515625,
+        "raw_count": 1276,
+        "request_count": 1800,
+        "requested_date": 20261023,
+        "scope": "one source, one requested day, one page; not full-day coverage",
+        "source_endpoint": "115.238.56.198:7709",
+        "start": 3600,
+        "status_counts": {
+          "0": 543,
+          "1": 659,
+          "2": 6,
+          "8": 68
+        }
+      },
+      "independent": {
+        "date": 20261023,
+        "market": 0,
+        "code": "300308",
+        "start": 3600,
+        "request_count": 1800,
+        "price_base_raw_f32": 590.1099853515625,
+        "record_count": 1276,
+        "all_record_fields_match": true,
+        "status_counts": {
+          "8": 68,
+          "2": 6,
+          "0": 543,
+          "1": 659
+        },
+        "sha256": {
+          "request.bin": "6a6d8996e62c62e21ec774a150c21e496aa2454cd1fc0a8e37d5fe2359fda704",
+          "header.bin": "43dc3e2cd2c1a3b6a511693925afae73890c0951abfedd10a5b30ac3cf0517d4",
+          "wire.bin": "f3d52631482db2bcd20ae24e45621b228d884ef6cb66aee63d694a1c534f287a",
+          "payload.bin": "2016cff46a2ef810427c664e4a2178464e50c6706dbed912647553d379d4d446"
+        },
+        "expected_sha256": "16a0debb3ba4beb8874a0dad8170d68f942d5b96ce3f5f9e6b6b3a329b44687e"
+      }
+    },
+    {
+      "directory": "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876",
+      "rust_summary": {
+        "actual_view_count": 0,
+        "after_hours_count": 0,
+        "auction_snapshot_count": 0,
+        "code": "300308",
+        "fetched_at": "2026-10-24T04:41:11.936195Z",
+        "first_time": null,
+        "last_time": null,
+        "market": 0,
+        "offline_replay_matches": true,
+        "opening_match_count": 0,
+        "price_base_raw_f32": 590.1099853515625,
+        "raw_count": 0,
+        "request_count": 1800,
+        "requested_date": 20261023,
+        "scope": "one source, one requested day, one page; not full-day coverage",
+        "source_endpoint": "115.238.56.198:7709",
+        "start": 4876,
+        "status_counts": {}
+      },
+      "independent": {
+        "date": 20261023,
+        "market": 0,
+        "code": "300308",
+        "start": 4876,
+        "request_count": 1800,
+        "price_base_raw_f32": 590.1099853515625,
+        "record_count": 0,
+        "all_record_fields_match": true,
+        "status_counts": {},
+        "sha256": {
+          "request.bin": "5c42897f912eba5de2fb5e262ddc1a00879129c5606eca5da10e306d661836f6",
+          "header.bin": "85036281f88455d6fa64fe81dfcc78bce3892986cc886ff49460ac3c06cf85ca",
+          "wire.bin": "efc7e4a6a29ceb214fda73eaf7c6d3940874a41d808fa925261b6d968756e53f",
+          "payload.bin": "efc7e4a6a29ceb214fda73eaf7c6d3940874a41d808fa925261b6d968756e53f"
+        },
+        "expected_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    }
+  ],
+  "real_sample_totals": {
+    "raw_events": 4876,
+    "auction_snapshots": 87,
+    "sdk_actual_view": 4789,
+    "opening_matches": 1,
+    "after_hours_fixed_price": 45,
+    "record_fields_compared": 13,
+    "all_fields_match": true
+  },
+  "limitations": [
+    "one security and one requested date at one endpoint",
+    "four separate TCP connections, not a pinned-session full-day enumeration",
+    "response date and identity are request-derived, not server echoes",
+    "unknown statuses retain raw values and SDK-compatible views, not independently verified trade eligibility",
+    "no independent daily volume/amount check",
+    "no all-market, other instrument unit, historical retention, 2000-record, CLI/runner or instrumented fuzz acceptance"
+  ],
+  "supporting_files_sha256": {
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/README.md": "8f94a4f579c3a1634aeb1a00ae9308e1c4128c041aa3fed0c0f89371a4cccb3f",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/daily-pool.json": "f1640d8fa7d844ea572e690149d7dd6910fe1b8d93b4f833f7897f424815659d",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/expected-records.json": "5e957924c279f955c9e23927d2f94cebfd08796d9a0c401c62cb935ff5489f62",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-00.endpoint.txt": "46ff36a4e979a5dbc583a2fce3598c625a2a104f7a1cccfd7af027f21e3cf470",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-00.header.bin": "d59307a09f601b371debe417f748d6309fa73e389c3332ba41980a440b3b0732",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-00.payload.bin": "de8aad8688019746aea28323644b3192efcd7add00d581f77a6b9ebe28c0179f",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-00.request.bin": "2cb6ebe95141a11eb0012af585f6abc51067b8ce73444223fc478981c2b924cb",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-00.wire.bin": "e1c8d70708f75656445dfc3918636077bd3e99cc196e0d157fa70552acee267f",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-01.endpoint.txt": "46ff36a4e979a5dbc583a2fce3598c625a2a104f7a1cccfd7af027f21e3cf470",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-01.header.bin": "7af2f65387bfd70f30e29635bf087361d7110bd2e767475ca51430204ff553f8",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-01.payload.bin": "065134611b300af914d9f05ee5453ac059849031ddb1cf4606d97441bb2d50eb",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-01.request.bin": "ab7021c1aaa95d919e1056ef663888dbc718df4bfb3972a771b09fef50f5bc40",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-01.wire.bin": "837cd4a289e4d378615526b9abeeeeeca1ce7f3f59e8e8fcd26c6e23460620c1",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/independent-verification.json": "901c592cf50a678194fe0244901704693e7b583776909ff79ac96cb176bde53f",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-0/summary.json": "49fd2812b776397d8038a4434825449a3a441c47e4c05436d5d5bdef500a3bad",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/daily-pool.json": "676b40b1176f598b2230a876ae221d3380a2212cd2a0de9d465432d328391c7d",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/expected-records.json": "813d49b573b4baad9a425d0dcc479fe2b5943c5f2a2b6ed5c856001c226692ba",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-00.endpoint.txt": "46ff36a4e979a5dbc583a2fce3598c625a2a104f7a1cccfd7af027f21e3cf470",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-00.header.bin": "d59307a09f601b371debe417f748d6309fa73e389c3332ba41980a440b3b0732",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-00.payload.bin": "9a9d1a7df46c87b464868ac76504939357c53d7d781adc0621b72fd652be1634",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-00.request.bin": "2cb6ebe95141a11eb0012af585f6abc51067b8ce73444223fc478981c2b924cb",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-00.wire.bin": "cd007affd0ee6fc8baaf91c6148a3e929d1f4ea5006136e1ab0a189dd56c2b51",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-01.endpoint.txt": "46ff36a4e979a5dbc583a2fce3598c625a2a104f7a1cccfd7af027f21e3cf470",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-01.header.bin": "9e39fd5b899777cbd5c1c42397ad4035ea1f458330ebbf57555ba963c4e21627",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-01.payload.bin": "8809b79a836042fc0ab2e308d99d30f6e79797b5000e5d5ecbf37192b12e2b96",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-01.request.bin": "6a16dafb87d32ed6e02d690f6f732dd31ebaf0c524a83009697d91497c7f7ce1",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/frame-01.wire.bin": "8b042ba3247abe83abfb0095946cc5ee8d3d74e85baed7f1482db565b7f5fbb6",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/independent-verification.json": "49de3d99a24e4c6c83d07d2d6ca08f62b1f27f2ba84f9397f3c2e6281faf2278",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-1800/summary.json": "a5ddb53269f56ab067aa33acfd02b31cfafae3fc2557dd87ccadd3b78ae1b97e",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/daily-pool.json": "6e1b5488982a944212ff80a4e8ba7ec3ebcfaefdf83f5e1fdc958399504aef09",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/expected-records.json": "16a0debb3ba4beb8874a0dad8170d68f942d5b96ce3f5f9e6b6b3a329b44687e",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-00.endpoint.txt": "46ff36a4e979a5dbc583a2fce3598c625a2a104f7a1cccfd7af027f21e3cf470",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-00.header.bin": "d59307a09f601b371debe417f748d6309fa73e389c3332ba41980a440b3b0732",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-00.payload.bin": "e90c662cab276301e2798d92508a766d3f4f9dfc191cf3f201e5d6a2fccb7317",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-00.request.bin": "2cb6ebe95141a11eb0012af585f6abc51067b8ce73444223fc478981c2b924cb",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-00.wire.bin": "8b06759eb8b99c2d4089d9b32196becb19117818314e3cf08dad9194f9169879",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-01.endpoint.txt": "46ff36a4e979a5dbc583a2fce3598c625a2a104f7a1cccfd7af027f21e3cf470",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-01.header.bin": "43dc3e2cd2c1a3b6a511693925afae73890c0951abfedd10a5b30ac3cf0517d4",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-01.payload.bin": "2016cff46a2ef810427c664e4a2178464e50c6706dbed912647553d379d4d446",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-01.request.bin": "6a6d8996e62c62e21ec774a150c21e496aa2454cd1fc0a8e37d5fe2359fda704",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/frame-01.wire.bin": "f3d52631482db2bcd20ae24e45621b228d884ef6cb66aee63d694a1c534f287a",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/independent-verification.json": "cd02fbd5a065f3324c1757f4da3ea2a7507cc94de0a0462df57437ab5c91b830",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-3600/summary.json": "5337e5bde4b88afc6bfae143712b2dbaa6765fcaabce7d57b0e57950de34b520",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/daily-pool.json": "bed1ebe6cfca59d0425d18396d0b8fddf44a43372eba296708580c7c705242d4",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/expected-records.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-00.endpoint.txt": "46ff36a4e979a5dbc583a2fce3598c625a2a104f7a1cccfd7af027f21e3cf470",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-00.header.bin": "d59307a09f601b371debe417f748d6309fa73e389c3332ba41980a440b3b0732",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-00.payload.bin": "ae1f3f61d3d74148565db69e3732ba628acfa7a81853d715a0ce0e3af52210be",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-00.request.bin": "2cb6ebe95141a11eb0012af585f6abc51067b8ce73444223fc478981c2b924cb",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-00.wire.bin": "ce29ce8d250fe46d350361e5af1060498e01cdf4fb6b083c1cd0c6c0ece6ed39",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-01.endpoint.txt": "46ff36a4e979a5dbc583a2fce3598c625a2a104f7a1cccfd7af027f21e3cf470",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-01.header.bin": "85036281f88455d6fa64fe81dfcc78bce3892986cc886ff49460ac3c06cf85ca",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-01.payload.bin": "efc7e4a6a29ceb214fda73eaf7c6d3940874a41d808fa925261b6d968756e53f",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-01.request.bin": "5c42897f912eba5de2fb5e262ddc1a00879129c5606eca5da10e306d661836f6",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/frame-01.wire.bin": "efc7e4a6a29ceb214fda73eaf7c6d3940874a41d808fa925261b6d968756e53f",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/independent-verification.json": "f41e956206c4a2c15837c95abd51e55b2f206b26d021ce800b31d98107f85e62",
+    "docs/validation/evidence/enhanced-history-0fc6-20261024/live-start-4876/summary.json": "ef80928790f6687e8e393db5eadc7918d6020650786e9a65420c386883c8d91c"
+  }
+}

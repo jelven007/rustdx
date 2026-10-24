@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "dirty": true,
+  "scope": "stage4 acquisition/retention source identity; later refactoring is separate",
+  "files": [
+    {
+      "path": "apps/rustdx-cli/src/tcp_day.rs",
+      "bytes": 24954,
+      "sha256": "99de15273c814d539606c6ca2b1c0b857d6c85ab405d89a8bc3ee61e3f263055"
+    },
+    {
+      "path": "apps/rustdx-cli/src/tcp_day/acquisition.rs",
+      "bytes": 14081,
+      "sha256": "effd3ad103f15831e95d0e20c41f8fd4c0b121c5a76b37e789aa562e6f38b59f"
+    },
+    {
+      "path": "apps/rustdx-cli/src/tcp_evidence.rs",
+      "bytes": 11011,
+      "sha256": "ed0c2ac9a5ec75c1036d37a89f6373e669dfd55079bd7f2d5d091a66f3878148"
+    },
+    {
+      "path": "apps/rustdx-cli/tests/tcp_day.rs",
+      "bytes": 12305,
+      "sha256": "8de5512c0d2e29faf0ca17cbb9818b6614d528febc33c5dc9d47f3ada5296892"
+    },
+    {
+      "path": "apps/rustdx-cli/tests/common/tcp_day_peer.rs",
+      "bytes": 7617,
+      "sha256": "b4389bcf886228bbf63d23261c0e9d4b59f9a0a03b99771552280ec980ce9f84"
+    },
+    {
+      "path": "apps/rustdx-runner/src/config.rs",
+      "bytes": 11327,
+      "sha256": "740783b4d47f1bb0136a7e6a7d5b21d4f9d98ca602202a14ace7f5b51a47a3ef"
+    },
+    {
+      "path": "apps/rustdx-runner/src/pipeline.rs",
+      "bytes": 42352,
+      "sha256": "07422d0e2b26818d9de391a972b8d49c68620f113600bfb9593c1dcd249a4ea7"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/control_plane.rs",
+      "bytes": 50514,
+      "sha256": "589f8e66b3ed250f35eb2d8bcb423febea028e3cc08f72a9381102fe95d87314"
+    },
+    {
+      "path": "scripts/ops/retention_preview.py",
+      "bytes": 15835,
+      "sha256": "4228f3c4ee41a653350a90d2c0e608d1e1ec05673407dc446d19ec8224aac973"
+    },
+    {
+      "path": "scripts/validation/tests/test_retention_preview.py",
+      "bytes": 7630,
+      "sha256": "06faf6e09e66df6f58b4c5235ff6f56538068f456b3488306e633b8116815981"
+    },
+    {
+      "path": "config/runner/tcp-day.example.json",
+      "bytes": 1387,
+      "sha256": "a83d94d0004b3fb345bab4317012fa05f51b1775cfe38d77261f07f339453f0c"
+    },
+    {
+      "path": "Cargo.toml",
+      "bytes": 645,
+      "sha256": "4d47b479225f8a85126cef336d03c7c51e5b59b51f4c910f8689ca444de98c33"
+    },
+    {
+      "path": "Cargo.lock",
+      "bytes": 43661,
+      "sha256": "358f83ea91811aa42456e5910fc6746421fa64bb02209d8cf874f0a467617b19"
+    }
+  ]
+}

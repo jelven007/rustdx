@@ -1,0 +1,566 @@
+{
+  "verification": "passed",
+  "endpoint": "115.238.56.198:7709",
+  "method": "Independent stdlib framing/zlib/IEEE bits/signed varints/fixed auction records/dated K-line and historical minute controls",
+  "wire_frames_checked": 183,
+  "command_frames": {
+    "0x000d": 1,
+    "0x044e": 2,
+    "0x044d": 34,
+    "0x0004": 1,
+    "0x054c": 1,
+    "0x052d": 6,
+    "0x0fb4": 12,
+    "0x0feb": 72,
+    "0x056a": 54
+  },
+  "directory_rows_checked": 52171,
+  "records_checked": {
+    "0x052d": 72,
+    "0x0fb4": 2880,
+    "0x0feb": 1440,
+    "0x056a": 5622
+  },
+  "nonempty_recent_series": [
+    {
+      "market": 0,
+      "code": "000001",
+      "requested_date": 20260817,
+      "points": 240,
+      "previous_close": 11.029999732971191,
+      "open": 11.010000228881836,
+      "first_price": 10.99,
+      "last_price": 11.13,
+      "volume_sum_raw": 1149672
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "requested_date": 20260817,
+      "points": 240,
+      "previous_close": 148.85000610351562,
+      "open": 152.6199951171875,
+      "first_price": 151.5,
+      "last_price": 155.53,
+      "volume_sum_raw": 649279
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "requested_date": 20260817,
+      "points": 240,
+      "previous_close": 3.8269999027252197,
+      "open": 3.877000093460083,
+      "first_price": 3.874,
+      "last_price": 3.972,
+      "volume_sum_raw": 15787653
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "requested_date": 20260817,
+      "points": 240,
+      "previous_close": 4.738999843597412,
+      "open": 4.763999938964844,
+      "first_price": 4.759,
+      "last_price": 4.826,
+      "volume_sum_raw": 4361645
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "requested_date": 20260817,
+      "points": 240,
+      "previous_close": 9.369999885559082,
+      "open": 9.329999923706055,
+      "first_price": 9.3,
+      "last_price": 9.37,
+      "volume_sum_raw": 708018
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "requested_date": 20260817,
+      "points": 240,
+      "previous_close": 1262.97998046875,
+      "open": 1262.989990234375,
+      "first_price": 1259.8,
+      "last_price": 1256.0,
+      "volume_sum_raw": 27860
+    }
+  ],
+  "recent_control_matches": [],
+  "recent_dated_bar_comparisons": [],
+  "auction_date_selection": [
+    {
+      "market": 0,
+      "code": "000001",
+      "nonempty_dates": [
+        20260814,
+        20261019,
+        20261020,
+        20261021,
+        20261022,
+        20261023
+      ],
+      "distinct_payloads": 6,
+      "date_selection_changed_payload": true,
+      "empty_requested_dates": [
+        20261024,
+        20261026
+      ]
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "nonempty_dates": [
+        20260814,
+        20261019,
+        20261020,
+        20261021,
+        20261022,
+        20261023
+      ],
+      "distinct_payloads": 6,
+      "date_selection_changed_payload": true,
+      "empty_requested_dates": [
+        20261024,
+        20261026
+      ]
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "nonempty_dates": [
+        20260814,
+        20261019,
+        20261020,
+        20261021,
+        20261022,
+        20261023
+      ],
+      "distinct_payloads": 6,
+      "date_selection_changed_payload": true,
+      "empty_requested_dates": [
+        20261024,
+        20261026
+      ]
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "nonempty_dates": [
+        20260814,
+        20261019,
+        20261020,
+        20261021,
+        20261022,
+        20261023
+      ],
+      "distinct_payloads": 6,
+      "date_selection_changed_payload": true,
+      "empty_requested_dates": [
+        20261024,
+        20261026
+      ]
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "nonempty_dates": [
+        20260814,
+        20261019,
+        20261020,
+        20261021,
+        20261022,
+        20261023
+      ],
+      "distinct_payloads": 6,
+      "date_selection_changed_payload": true,
+      "empty_requested_dates": [
+        20261024,
+        20261026
+      ]
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "nonempty_dates": [
+        20260814,
+        20261019,
+        20261020,
+        20261021,
+        20261022,
+        20261023
+      ],
+      "distinct_payloads": 6,
+      "date_selection_changed_payload": true,
+      "empty_requested_dates": [
+        20261024,
+        20261026
+      ]
+    }
+  ],
+  "auction_close_comparisons": [
+    {
+      "market": 0,
+      "code": "000001",
+      "requested_date": 20261019,
+      "auction_time": "14:59:51",
+      "auction_price": 11.65999984741211,
+      "dated_daily_close": 11.65,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 0,
+      "code": "000001",
+      "requested_date": 20261020,
+      "auction_time": "14:59:51",
+      "auction_price": 11.460000038146973,
+      "dated_daily_close": 11.44,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 0,
+      "code": "000001",
+      "requested_date": 20261021,
+      "auction_time": "14:59:51",
+      "auction_price": 11.40999984741211,
+      "dated_daily_close": 11.41,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "000001",
+      "requested_date": 20261022,
+      "auction_time": "14:59:51",
+      "auction_price": 11.329999923706055,
+      "dated_daily_close": 11.3,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 0,
+      "code": "000001",
+      "requested_date": 20261023,
+      "auction_time": "14:59:51",
+      "auction_price": 11.199999809265137,
+      "dated_daily_close": 11.2,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "requested_date": 20261019,
+      "auction_time": "14:59:51",
+      "auction_price": 75.22000122070312,
+      "dated_daily_close": 75.22,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "requested_date": 20261020,
+      "auction_time": "14:59:51",
+      "auction_price": 76.19999694824219,
+      "dated_daily_close": 76.2,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "requested_date": 20261021,
+      "auction_time": "14:59:51",
+      "auction_price": 76.66000366210938,
+      "dated_daily_close": 76.66,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "requested_date": 20261022,
+      "auction_time": "14:59:51",
+      "auction_price": 72.6500015258789,
+      "dated_daily_close": 72.65,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "requested_date": 20261023,
+      "auction_time": "14:59:51",
+      "auction_price": 74.58000183105469,
+      "dated_daily_close": 74.58,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "requested_date": 20261019,
+      "auction_time": "14:59:51",
+      "auction_price": 2.763000011444092,
+      "dated_daily_close": 2.762,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "requested_date": 20261020,
+      "auction_time": "14:59:51",
+      "auction_price": 2.75600004196167,
+      "dated_daily_close": 2.756,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "requested_date": 20261021,
+      "auction_time": "14:59:51",
+      "auction_price": 2.7139999866485596,
+      "dated_daily_close": 2.713,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "requested_date": 20261022,
+      "auction_time": "14:59:51",
+      "auction_price": 2.5920000076293945,
+      "dated_daily_close": 2.592,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "requested_date": 20261023,
+      "auction_time": "14:59:51",
+      "auction_price": 2.7019999027252197,
+      "dated_daily_close": 2.702,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "requested_date": 20261019,
+      "auction_time": "14:59:57",
+      "auction_price": 9.789999961853027,
+      "dated_daily_close": 9.78,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "requested_date": 20261020,
+      "auction_time": "14:59:58",
+      "auction_price": 9.760000228881836,
+      "dated_daily_close": 9.76,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "requested_date": 20261021,
+      "auction_time": "14:59:57",
+      "auction_price": 9.670000076293945,
+      "dated_daily_close": 9.66,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "requested_date": 20261022,
+      "auction_time": "14:59:58",
+      "auction_price": 9.640000343322754,
+      "dated_daily_close": 9.62,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "requested_date": 20261023,
+      "auction_time": "14:59:59",
+      "auction_price": 9.529999732971191,
+      "dated_daily_close": 9.53,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "requested_date": 20261019,
+      "auction_time": "14:59:57",
+      "auction_price": 1324.969970703125,
+      "dated_daily_close": 1324.97,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "requested_date": 20261020,
+      "auction_time": "14:59:58",
+      "auction_price": 1332.0,
+      "dated_daily_close": 1331.88,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "requested_date": 20261021,
+      "auction_time": "14:59:59",
+      "auction_price": 1309.68994140625,
+      "dated_daily_close": 1309.69,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "requested_date": 20261022,
+      "auction_time": "14:59:57",
+      "auction_price": 1321.989990234375,
+      "dated_daily_close": 1318.49,
+      "same_price_within_half_tick": false
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "requested_date": 20261023,
+      "auction_time": "14:59:58",
+      "auction_price": 1335.0,
+      "dated_daily_close": 1335.0,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "requested_date": 20261019,
+      "auction_time": "14:59:57",
+      "auction_price": 4.239999771118164,
+      "dated_daily_close": 4.24,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "requested_date": 20261020,
+      "auction_time": "14:59:58",
+      "auction_price": 4.21999979019165,
+      "dated_daily_close": 4.22,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "requested_date": 20261021,
+      "auction_time": "14:59:57",
+      "auction_price": 4.184999942779541,
+      "dated_daily_close": 4.185,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "requested_date": 20261022,
+      "auction_time": "14:59:58",
+      "auction_price": 4.10699987411499,
+      "dated_daily_close": 4.107,
+      "same_price_within_half_tick": true
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "requested_date": 20261023,
+      "auction_time": "14:59:59",
+      "auction_price": 4.177999973297119,
+      "dated_daily_close": 4.178,
+      "same_price_within_half_tick": true
+    }
+  ],
+  "auction_sign_counts": {
+    "1": 2799,
+    "-1": 2695,
+    "0": 128
+  },
+  "auction_direction_corroboration": [
+    {
+      "market": 0,
+      "code": "000001",
+      "requested_date": 20261023,
+      "auction_time": "14:59:51",
+      "signed_raw": 10746,
+      "auction_price": 11.199999809265137,
+      "bid1": 11.2,
+      "ask1": 11.21,
+      "post_close_book_side_at_auction_price": "buy",
+      "supports_positive_buy_negative_sell": true,
+      "synchronous_side_confirmation": false
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "requested_date": 20261023,
+      "auction_time": "14:59:51",
+      "signed_raw": 722,
+      "auction_price": 74.58000183105469,
+      "bid1": 74.58,
+      "ask1": 74.59,
+      "post_close_book_side_at_auction_price": "buy",
+      "supports_positive_buy_negative_sell": true,
+      "synchronous_side_confirmation": false
+    },
+    {
+      "market": 0,
+      "code": "159915",
+      "requested_date": 20261023,
+      "auction_time": "14:59:51",
+      "signed_raw": 31063,
+      "auction_price": 2.7019999027252197,
+      "bid1": 2.702,
+      "ask1": 2.703,
+      "post_close_book_side_at_auction_price": "buy",
+      "supports_positive_buy_negative_sell": true,
+      "synchronous_side_confirmation": false
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "requested_date": 20261023,
+      "auction_time": "14:59:59",
+      "signed_raw": -152,
+      "auction_price": 9.529999732971191,
+      "bid1": 9.52,
+      "ask1": 9.53,
+      "post_close_book_side_at_auction_price": "sell",
+      "supports_positive_buy_negative_sell": true,
+      "synchronous_side_confirmation": false
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "requested_date": 20261023,
+      "auction_time": "14:59:58",
+      "signed_raw": -41,
+      "auction_price": 1335.0,
+      "bid1": 1333.0,
+      "ask1": 1335.0,
+      "post_close_book_side_at_auction_price": "sell",
+      "supports_positive_buy_negative_sell": true,
+      "synchronous_side_confirmation": false
+    },
+    {
+      "market": 1,
+      "code": "510300",
+      "requested_date": 20261023,
+      "auction_time": "14:59:59",
+      "signed_raw": 30925,
+      "auction_price": 4.177999973297119,
+      "bid1": 4.178,
+      "ask1": 4.179,
+      "post_close_book_side_at_auction_price": "buy",
+      "supports_positive_buy_negative_sell": true,
+      "synchronous_side_confirmation": false
+    }
+  ],
+  "recent_nonempty_live_verified": true,
+  "recent_requested_date_business_verified": false,
+  "auction_date_selection_live_verified": true,
+  "auction_side_mapping_exchange_confirmed": false,
+  "scope": "Requested dates are not echoed dates. Post-close books are not synchronous auction side evidence. Empty responses do not establish the complete retention window."
+}

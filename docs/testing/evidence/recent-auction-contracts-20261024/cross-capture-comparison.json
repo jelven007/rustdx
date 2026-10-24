@@ -1,0 +1,187 @@
+{
+  "profiles_compared": 192,
+  "profiles_with_payload_differences": 8,
+  "differences": [
+    {
+      "opcode": "0x056a",
+      "request_body_hex": "010036303035313900000000030000000000000000000000f4010000",
+      "observations": [
+        {
+          "capture": "115.238.56.198",
+          "request_file": "frame-155.request.bin",
+          "payload_sha256": "9802d420b8cea24b09deda1102f696dbcb97580ef777c972bc96f175c0d9131a",
+          "payload_bytes": 3330
+        },
+        {
+          "capture": "180.153.18.170",
+          "request_file": "frame-155.request.bin",
+          "payload_sha256": "44769eb669c131642616a315058f919b216f389dca6ebf151c3c2f4fe32d912c",
+          "payload_bytes": 3330
+        }
+      ]
+    },
+    {
+      "opcode": "0x056a",
+      "request_body_hex": "01003630303531399f283501030000000000000000000000f4010000",
+      "observations": [
+        {
+          "capture": "115.238.56.198",
+          "request_file": "frame-150.request.bin",
+          "payload_sha256": "9802d420b8cea24b09deda1102f696dbcb97580ef777c972bc96f175c0d9131a",
+          "payload_bytes": 3330
+        },
+        {
+          "capture": "180.153.18.170",
+          "request_file": "frame-150.request.bin",
+          "payload_sha256": "44769eb669c131642616a315058f919b216f389dca6ebf151c3c2f4fe32d912c",
+          "payload_bytes": 3330
+        }
+      ]
+    },
+    {
+      "opcode": "0x056a",
+      "request_body_hex": "0100363030303030ce273501030000000000000000000000f4010000",
+      "observations": [
+        {
+          "capture": "115.238.56.198",
+          "request_file": "frame-133.request.bin",
+          "payload_sha256": "a42c28122129ed99f2b6dcff8ed70d53a3cc76c73debc4fa1d5d2dce9936fd22",
+          "payload_bytes": 2802
+        },
+        {
+          "capture": "180.153.18.170",
+          "request_file": "frame-133.request.bin",
+          "payload_sha256": "5aaa75c5a1aaf19eb44f344609a3e35e2fe40bf7871c5b761ed812b3be0ca330",
+          "payload_bytes": 2802
+        },
+        {
+          "capture": "115.238.56.198-archive",
+          "request_file": "frame-076.request.bin",
+          "payload_sha256": "5aaa75c5a1aaf19eb44f344609a3e35e2fe40bf7871c5b761ed812b3be0ca330",
+          "payload_bytes": 2802
+        },
+        {
+          "capture": "180.153.18.170-archive",
+          "request_file": "frame-076.request.bin",
+          "payload_sha256": "5aaa75c5a1aaf19eb44f344609a3e35e2fe40bf7871c5b761ed812b3be0ca330",
+          "payload_bytes": 2802
+        }
+      ]
+    },
+    {
+      "opcode": "0x0fb4",
+      "request_body_hex": "9e28350101363030303030",
+      "observations": [
+        {
+          "capture": "115.238.56.198",
+          "request_file": "frame-113.request.bin",
+          "payload_sha256": "ac8ef9d66280f7152be868d33736c7fcab309f10fbdf05a6afb4245a0e1cf627",
+          "payload_bytes": 980
+        },
+        {
+          "capture": "180.153.18.170",
+          "request_file": "frame-113.request.bin",
+          "payload_sha256": "56faf7d0c62f5813c7388ebb105972a2fd8e481bb9d5c96d492d1f6d69d0b609",
+          "payload_bytes": 980
+        }
+      ]
+    },
+    {
+      "opcode": "0x056a",
+      "request_body_hex": "0100363030353139ce273501030000000000000000000000f4010000",
+      "observations": [
+        {
+          "capture": "115.238.56.198",
+          "request_file": "frame-157.request.bin",
+          "payload_sha256": "4b0fa3e396215a1052534b9ed55dd498dc105c2c019d7714844be35b71ce2fb8",
+          "payload_bytes": 2530
+        },
+        {
+          "capture": "180.153.18.170",
+          "request_file": "frame-157.request.bin",
+          "payload_sha256": "0f63d4a8df5066cc8ecb147a0f7f6b6cbed62016a7ae8259473a2593a6098c86",
+          "payload_bytes": 2530
+        },
+        {
+          "capture": "115.238.56.198-archive",
+          "request_file": "frame-086.request.bin",
+          "payload_sha256": "0f63d4a8df5066cc8ecb147a0f7f6b6cbed62016a7ae8259473a2593a6098c86",
+          "payload_bytes": 2530
+        },
+        {
+          "capture": "180.153.18.170-archive",
+          "request_file": "frame-086.request.bin",
+          "payload_sha256": "0f63d4a8df5066cc8ecb147a0f7f6b6cbed62016a7ae8259473a2593a6098c86",
+          "payload_bytes": 2530
+        }
+      ]
+    },
+    {
+      "opcode": "0x056a",
+      "request_body_hex": "0100353130333030ce273501030000000000000000000000f4010000",
+      "observations": [
+        {
+          "capture": "115.238.56.198",
+          "request_file": "frame-181.request.bin",
+          "payload_sha256": "3c66259e0b19fd6c0b18aff7258ad051e988f765621265331de8abeaa301819c",
+          "payload_bytes": 3650
+        },
+        {
+          "capture": "180.153.18.170",
+          "request_file": "frame-181.request.bin",
+          "payload_sha256": "c1f0d8783e01374226b1323eac239d405c4ad3f4a5ba4fc999922ea521cd65dc",
+          "payload_bytes": 3650
+        },
+        {
+          "capture": "115.238.56.198-archive",
+          "request_file": "frame-096.request.bin",
+          "payload_sha256": "c1f0d8783e01374226b1323eac239d405c4ad3f4a5ba4fc999922ea521cd65dc",
+          "payload_bytes": 3650
+        },
+        {
+          "capture": "180.153.18.170-archive",
+          "request_file": "frame-096.request.bin",
+          "payload_sha256": "c1f0d8783e01374226b1323eac239d405c4ad3f4a5ba4fc999922ea521cd65dc",
+          "payload_bytes": 3650
+        }
+      ]
+    },
+    {
+      "opcode": "0x0feb",
+      "request_body_hex": "fed8cafe01353130333030",
+      "observations": [
+        {
+          "capture": "115.238.56.198-archive",
+          "request_file": "frame-095.request.bin",
+          "payload_sha256": "a146b611e6aa51b6159e3f257fc7a9611ca06c828a702bb7a4908c38d2c446ce",
+          "payload_bytes": 1367
+        },
+        {
+          "capture": "180.153.18.170-archive",
+          "request_file": "frame-095.request.bin",
+          "payload_sha256": "5f17cae40d708d9f7f2da2e4878129cc5f13bb0ce76d9c70bf31a5bbb5f75198",
+          "payload_bytes": 1367
+        }
+      ]
+    },
+    {
+      "opcode": "0x056a",
+      "request_body_hex": "0100363030303030d1273501030000000000000000000000f4010000",
+      "observations": [
+        {
+          "capture": "115.238.56.198-archive",
+          "request_file": "frame-077.request.bin",
+          "payload_sha256": "e858ff86a1a77c7eeb5a5eb94289ec3b703033d939d0c460b94318e8fd0d2090",
+          "payload_bytes": 2130
+        },
+        {
+          "capture": "180.153.18.170-archive",
+          "request_file": "frame-077.request.bin",
+          "payload_sha256": "c15a9bc75acf1b875ff97b6df70084d39f0c859d0e93b01df61af97d0fbd9173",
+          "payload_bytes": 2130
+        }
+      ]
+    }
+  ],
+  "policy": "Preserve node differences; no arbitrary canonical endpoint selected"
+}

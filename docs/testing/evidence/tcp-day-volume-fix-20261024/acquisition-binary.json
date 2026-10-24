@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "binary_used_for_final_acquisition": "/tmp/rustdx-volume-check/rustdx-final",
+  "sha256": "b0ed87fef9af5887cf1076a547b117226e28506929b7eee1d58f3b66f8f4b951",
+  "bytes": 25937064,
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "rustc": "rustc 1.89.0 (29483883e 2025-08-04)"
+}

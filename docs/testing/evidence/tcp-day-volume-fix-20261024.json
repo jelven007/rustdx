@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "status": "fixed_in_current_workspace",
+  "date": "2026-10-24",
+  "requirements": [
+    "FR-03",
+    "FR-04",
+    "FR-13",
+    "FR-18"
+  ],
+  "source_contract": "a-share/tcp-052b/day/raw/cny/integer-shares/v2",
+  "request_receipt_schema": 2,
+  "legacy_source_contract": "a-share/tcp-052d/day/raw/cny/lots-100-shares/v1",
+  "legacy_support": "offline replay preserves original fields; new collection rejects v1",
+  "core_api": "Client::daily_bars_range_with_options",
+  "fixed": [
+    "exact u32 share path replaces lossy lots path",
+    "052b amount includes binary32 implicit leading bit"
+  ],
+  "real_comparison": {
+    "endpoints": [
+      "115.238.56.198:7709",
+      "180.153.18.170:7709"
+    ],
+    "codes": [
+      "sh600000",
+      "sh600519",
+      "sz000001"
+    ],
+    "from": "2026-10-19",
+    "through": "2026-10-22",
+    "rows": 24,
+    "all_eight_fields_exact": true,
+    "tolerance": 0,
+    "csv_sha256": "2ecd33d4ea44f4cf2185275149b2d112913774905a3462c4f0ff087c558dd0ae"
+  },
+  "precision_diagnostic": {
+    "category9_share_difference_range": [
+      -94,
+      1
+    ],
+    "category4_mismatch_rows": 16,
+    "052b_integer_mismatch_rows": 0
+  },
+  "regression": {
+    "workspace_passed": 547,
+    "workspace_ignored": 27,
+    "additional_passed": 3,
+    "skip_env": "RUSTDX_SKIP_INTEGRATION_TESTS=1",
+    "guarded_live_database_tests_not_claimed_as_executed": true,
+    "fmt_passed": true,
+    "clippy_warnings_denied_passed": true
+  },
+  "source_sha256": "f81b46371f8cee81bd9042658701277c126e333fb350f27be77d77367cea1a19",
+  "binary_sha256": "b0ed87fef9af5887cf1076a547b117226e28506929b7eee1d58f3b66f8f4b951",
+  "report": "docs/archive/development/TCP_DAILY_INTEGER_SHARES_FIX_20261024.md",
+  "support_package": "docs/testing/evidence/tcp-day-volume-fix-20261024",
+  "production_all_market_accepted": false,
+  "database_recovery_rerun": false,
+  "committed_or_published": false
+}

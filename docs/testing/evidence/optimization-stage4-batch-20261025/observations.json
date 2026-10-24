@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "scope": "Synthetic offline/local protocol F10/F11 engineering observation; no live market or deployment acceptance",
+  "environment": {
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "cpu": "Apple M3 Pro",
+    "model": "Mac15,7",
+    "rustc": "rustc 1.89.0 (29483883e 2025-08-04)\nbinary: rustc\ncommit-hash: 29483883eed69d5fb4db01964cdf2af4d86e9cb2\ncommit-date: 2025-08-04\nhost: aarch64-apple-darwin\nrelease: 1.89.0\nLLVM version: 20.1.7\n",
+    "profile": "release LTO",
+    "load_control": "Not pinned; timings are observations, not a throughput improvement claim"
+  },
+  "lookup": {
+    "dataset_equal": true,
+    "checksum_equal": true,
+    "baseline_median_ns": 21598167,
+    "current_median_ns": 22464958,
+    "baseline_allocations_per_sample": 200000,
+    "current_allocations_per_sample": 0,
+    "baseline_allocated_bytes_per_sample": 1200000,
+    "current_allocated_bytes_per_sample": 0
+  },
+  "rss": [
+    {
+      "inputs": 16,
+      "status": "passed",
+      "samples": 12,
+      "peaks": {
+        "processes": 1,
+        "rss_bytes": 7847936,
+        "fds": 19,
+        "threads": 11,
+        "disk_bytes": {}
+      },
+      "missing_fd_samples": 1,
+      "missing_thread_samples": 1
+    },
+    {
+      "inputs": 256,
+      "status": "passed",
+      "samples": 17,
+      "peaks": {
+        "processes": 1,
+        "rss_bytes": 14663680,
+        "fds": 19,
+        "threads": 11,
+        "disk_bytes": {}
+      },
+      "missing_fd_samples": 1,
+      "missing_thread_samples": 1
+    },
+    {
+      "inputs": 10000,
+      "status": "passed",
+      "samples": 14,
+      "peaks": {
+        "processes": 1,
+        "rss_bytes": 14319616,
+        "fds": 19,
+        "threads": 11,
+        "disk_bytes": {}
+      },
+      "missing_fd_samples": 0,
+      "missing_thread_samples": 0
+    }
+  ],
+  "limitations": [
+    "RSS sampled every 100ms; possible missed peaks and exit-time missing FD/thread counts are recorded",
+    "8MiB controls retained result storage, not RSS",
+    "Baseline logs captured before lookup key change; full baseline source snapshot was not frozen",
+    "Synthetic directory only; actual cold network startup timing remains external"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 4.744739334,
+      "log": "/tmp/rustdx-optimization-20261024/f11-optimized-0.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "run",
+        "--locked",
+        "--release",
+        "-p",
+        "jelven-rustdx-complete",
+        "--example",
+        "metadata_hot_path"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 20.923426457999998,
+      "log": "/tmp/rustdx-optimization-20261024/f11-optimized-1.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--locked",
+        "-p",
+        "jelven-rustdx-complete",
+        "--lib"
+      ],
+      "returncode": 101,
+      "elapsed_seconds": 3.4490956250000018,
+      "log": "/tmp/rustdx-optimization-20261024/f11-optimized-2.log"
+    }
+  ]
+}

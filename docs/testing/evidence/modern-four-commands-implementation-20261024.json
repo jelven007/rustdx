@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-24",
+  "scope": "Four default replacement-command migrations in the shared worktree; existing and concurrent changes preserved.",
+  "rust_version": "1.89.0",
+  "package_version": "1.12.2",
+  "published": false,
+  "baseline": {
+    "sdk": "eltdx 3.2.2",
+    "total_commands": 22,
+    "same_opcode": 13,
+    "replacement_opcode": 0,
+    "not_integrated": 9,
+    "business_compatibility_claim": false
+  },
+  "migrations": [
+    {"ability": "heartbeat", "previous": "044e", "default": "0004", "idle_interval_seconds": 30},
+    {"ability": "security_directory", "previous": "0450", "default": "044d", "record_bytes": 37, "max_page": 1600, "offset": "u32"},
+    {"ability": "today_minutes", "previous": "051d with 0fb4 fallback", "default": "0537", "average_price": true, "wire_trading_date": null},
+    {"ability": "history_transactions", "previous": "0fb5", "default": "0fc6", "max_page": 1800, "lossless_full_collection_field": "event_pages"}
+  ],
+  "checks": {
+    "fmt_all_check": "passed",
+    "clippy_workspace_all_targets_all_features_deny_warnings": "passed",
+    "workspace_all_features_test_snapshot": {"passed": 406, "failed": 0, "ignored": 23},
+    "final_modern_command_tests": {"passed": 10, "failed": 0},
+    "external_network_test_env": "RUSTDX_SKIP_INTEGRATION_TESTS=1",
+    "offline_locked_dependencies": true,
+    "note": "Shared-worktree startup changes occurred during final checks. Final targeted command tests and workspace Clippy were rerun; the 406-test result records the completed workspace test run."
+  },
+  "live_capture": {
+    "endpoint": "115.238.56.198:7709",
+    "captured_at": "2026-10-24T05:05:31.833147Z",
+    "directory": "modern-four-commands-20261024",
+    "frames": 42,
+    "directory_records": 52171,
+    "minute_records": 720,
+    "independent_verifier": "../../../scripts/validation/verify_modern_commands.py",
+    "independent_verification": "modern-four-commands-20261024/independent-verification.json",
+    "last_minute_prices_match_053e": true,
+    "sz000001_minute_volume_minus_snapshot_volume": 1
+  },
+  "historical_replay": {
+    "protocol": "0fc6",
+    "code": "300308",
+    "requested_date": 20261023,
+    "records": 1800,
+    "fixture": "enhanced-history-0fc6-20261024/live-start-0/frame-01.payload.bin",
+    "new_lossless_event_model_matches_existing_decoder": true
+  },
+  "limitations": [
+    "One live endpoint and three minute securities; not all servers or instruments.",
+    "Four-decimal minutes have synthetic arithmetic validation, not a live sample in this capture.",
+    "No wire date in 0537 or 0fc6; request/capture dates do not verify source trading date.",
+    "Empty-page termination does not prove exchange-level full-day completeness."
+  ],
+  "implementation_document": "../../development/FOUR_COMMANDS_MODERNIZATION_20261024.md"
+}

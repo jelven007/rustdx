@@ -1,0 +1,264 @@
+{
+  "schema": 1,
+  "kind": "protocol_implementation_comparison",
+  "as_of": "2026-10-23",
+  "checked_at_utc": "2026-10-23T13:39:20.348645+00:00",
+  "status": "static_sources_verified_no_new_live_acceptance",
+  "vendor_complete_7709_spec_available": false,
+  "official_evidence_scope": "Previously fetched vendor public API docs; not a complete wire specification",
+  "community_version": "eltdx 3.3.0",
+  "community_archive_sha256": "16fad43e518618728a2ac5c0a5d0abf0a3bcce3ccb12daccec55d8fa912d9a9f",
+  "legacy_baseline": "rustdx at 408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "legacy_is_not_vendor_spec": true,
+  "previous_source_manifest": "tdx-protocol-20261023/SOURCE_MANIFEST.json",
+  "verified_previous_attachment_hashes": 206,
+  "snapshot_retention_update": {
+    "date": "2026-10-24",
+    "current_attachment_count": 205,
+    "note": "The original verification count is historical. Current manifest records three filtered derivatives and one omitted original archive; TDX decoding source pins remain unchanged."
+  },
+  "command_sets": {
+    "community_source": "eltdx 3.3.0 digest-verified sdist",
+    "community_document_and_registration_match": true,
+    "community_codes": [
+      "0x0004",
+      "0x000D",
+      "0x000F",
+      "0x0010",
+      "0x02C5",
+      "0x02CF",
+      "0x02D0",
+      "0x044D",
+      "0x044E",
+      "0x0452",
+      "0x051B",
+      "0x052B",
+      "0x052D",
+      "0x0537",
+      "0x053E",
+      "0x0547",
+      "0x054B",
+      "0x054C",
+      "0x056A",
+      "0x06B9",
+      "0x0FB4",
+      "0x0FC5",
+      "0x0FC6",
+      "0x0FD1",
+      "0x0FEB",
+      "0x0FFC"
+    ],
+    "rustdx_active_business_count": 14,
+    "rustdx_active_handshake_count": 1,
+    "rustdx_codes": [
+      "0x000D",
+      "0x000F",
+      "0x0010",
+      "0x02C5",
+      "0x02CF",
+      "0x02D0",
+      "0x044E",
+      "0x0450",
+      "0x051D",
+      "0x052D",
+      "0x053E",
+      "0x06B9",
+      "0x0FB4",
+      "0x0FB5",
+      "0x0FC5"
+    ],
+    "shared_opcode_count": 12,
+    "shared_codes": [
+      "0x000D",
+      "0x000F",
+      "0x0010",
+      "0x02C5",
+      "0x02CF",
+      "0x02D0",
+      "0x044E",
+      "0x052D",
+      "0x053E",
+      "0x06B9",
+      "0x0FB4",
+      "0x0FC5"
+    ],
+    "additional_to_rustdx_count": 14,
+    "additional_to_rustdx": [
+      "0x0004",
+      "0x044D",
+      "0x0452",
+      "0x051B",
+      "0x052B",
+      "0x0537",
+      "0x0547",
+      "0x054B",
+      "0x054C",
+      "0x056A",
+      "0x0FC6",
+      "0x0FD1",
+      "0x0FEB",
+      "0x0FFC"
+    ],
+    "rustdx_codes_absent_from_community_inventory": [
+      "0x0450",
+      "0x051D",
+      "0x0FB5"
+    ],
+    "same_opcode_does_not_prove_wire_or_decoder_compatibility": true
+  },
+  "checks": {
+    "legacy_quotes": {
+      "opcode": "0x053E",
+      "same_code_list_prefix": true,
+      "same_payload_structure": "8-byte prefix + u16 count + 7 bytes per security",
+      "full_frame_size_formula": "22 + 7 * count",
+      "verified_existing_fixture_securities": 2,
+      "fixture_original_capture_time": "2026-10-22T23:31:59.813662+00:00",
+      "fixture_endpoint": "115.238.56.198:7709",
+      "fixture_scope": "Request-body structure only; no eltdx response decoder execution",
+      "response_compatibility_proven": false
+    },
+    "security_list": {
+      "rustdx_opcode": "0x0450",
+      "eltdx_opcode": "0x044D",
+      "rustdx_request_bytes": 16,
+      "eltdx_request_bytes": 26,
+      "rustdx_record_bytes": 29,
+      "eltdx_record_bytes": 37,
+      "rustdx_name_bytes": 8,
+      "eltdx_name_bytes": 16,
+      "rustdx_start_type": "u16",
+      "eltdx_start_type": "u32"
+    },
+    "klines": {
+      "same_opcode": "0x052D",
+      "rustdx_request_bytes": 38,
+      "eltdx_request_bytes": 54,
+      "both_ohlc_divisors": 1000,
+      "volume_representation_differs": true,
+      "actual_volume_unit_independently_verified": false
+    }
+  },
+  "derived_fields_not_vendor_wire_definitions": [
+    "volume_lots",
+    "event_kind",
+    "is_actual_trade",
+    "SecurityCode.category",
+    "SecurityCode.board",
+    "full_code",
+    "bar_time"
+  ],
+  "sdk_execution": false,
+  "new_live_probes": false,
+  "rust_source_modified": false,
+  "sources": [
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/frame.rs",
+      "bytes": 26424,
+      "sha256": "5cb4cc5cc55a9988d8d1a7e5ba5687eaabf8c5eba96dc5b3201c125cc18e2fdd",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/limits.rs",
+      "bytes": 2490,
+      "sha256": "9f68e4ac466df18ec93e6339e79cb6b438778b5332954df906325b173a200b10",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/unit.rs",
+      "bytes": 30650,
+      "sha256": "1f4e21ce95e30cfb67c5f8e979e086ea6cb0886a9371333f9c3c3bf4d2145314",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/request.rs",
+      "bytes": 17720,
+      "sha256": "a3325cb9593c4bdc472c6ed266641a69ac1aec48f940ff3360d5f3533263f21e",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/commands/session.rs",
+      "bytes": 6746,
+      "sha256": "c2ef2c47339b3c475155cc399bec986eeac5fe203e6c3549a73b1c94369cb2e5",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/commands/security.rs",
+      "bytes": 14658,
+      "sha256": "f3755aadf60722f5b93bc2f3a42e2a2dccf9c08655bfdb242c99fae94c0c40a2",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/commands/klines.rs",
+      "bytes": 10811,
+      "sha256": "eef93b83af4f0829788f645c3e6acf26a1f57730b18d83be7a6f97b22889ad13",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/commands/quotes.rs",
+      "bytes": 43924,
+      "sha256": "44b7c7000f9c3aba18c5527e25466b1ff0c895384e68086d43549ac9da0a0ab9",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/commands/minutes.rs",
+      "bytes": 38620,
+      "sha256": "e5c1bd1a75212784c963d603655082c96d1dab77e61caf9128b17cb4d4fd43b5",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "docs/validation/evidence/tdx-protocol-20261023/eltdx-3.3.0/crates/eltdx-protocol/src/commands/trades.rs",
+      "bytes": 20685,
+      "sha256": "abe5ea80d98708bcfb682b1c35cbe6efbe2b037c48bce9a5e3550df604bce5dc",
+      "kind": "preserved_community_source"
+    },
+    {
+      "path": "src/tcp/mod.rs",
+      "bytes": 25763,
+      "sha256": "193ca3bbbea0ffc7c1c72cdf5def74ce60fa20372074ada676c73a79773649ed",
+      "kind": "existing_project_source_or_fixture"
+    },
+    {
+      "path": "src/tcp/basic.rs",
+      "bytes": 8065,
+      "sha256": "df09d5b6e2b1739074672ef940b4ad9ba8cd71d57d98e4a05c35da7255a6fbec",
+      "kind": "existing_project_source_or_fixture"
+    },
+    {
+      "path": "src/tcp/stock/security_list.rs",
+      "bytes": 6396,
+      "sha256": "38d46d9dc104dbf0d090448c99609a62f7b7edd84b561d93d1d615049ed04f1c",
+      "kind": "existing_project_source_or_fixture"
+    },
+    {
+      "path": "src/tcp/stock/kline_request.rs",
+      "bytes": 11126,
+      "sha256": "5bded1466df316b5d00cf9d9a2fb871080b47cb25466c6d334607a15a71b028f",
+      "kind": "existing_project_source_or_fixture"
+    },
+    {
+      "path": "src/tcp/stock/quotes.rs",
+      "bytes": 17668,
+      "sha256": "a13d1a3c2960674e85a0d9d64079f4cf13fa100bbe9543615c68732c4b8af2c9",
+      "kind": "existing_project_source_or_fixture"
+    },
+    {
+      "path": "src/tcp/stock/requests.rs",
+      "bytes": 12818,
+      "sha256": "3cf5739efcfa3dbaeb4f04e5dce7870208f4ff6d53244ffb486387c47fb671b8",
+      "kind": "existing_project_source_or_fixture"
+    },
+    {
+      "path": "tests/fixtures/protocol/manifest.json",
+      "bytes": 2899,
+      "sha256": "7174d36d19b68a1c9cd291100466065466664e2309e4f6fcf1d5859931e523c1",
+      "kind": "existing_project_source_or_fixture"
+    },
+    {
+      "path": "tests/fixtures/protocol/quotes.request.hex",
+      "bytes": 73,
+      "sha256": "77abef18170a547e2b2bd41acf93c630c23bfb547047a24c32be0e0c13c4f582",
+      "kind": "existing_project_source_or_fixture"
+    }
+  ]
+}

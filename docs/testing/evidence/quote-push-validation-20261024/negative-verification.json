@@ -1,0 +1,20 @@
+{
+  "synthetic_mutations_of_temporary_copies": true,
+  "checks": [
+    {
+      "case": "closed_run_promoted_to_pass",
+      "rejected": true,
+      "error": ""
+    },
+    {
+      "case": "outgoing_request_during_passive",
+      "rejected": true,
+      "error": "passive phase transmitted a request"
+    },
+    {
+      "case": "baseline_payload_corruption",
+      "rejected": true,
+      "error": ""
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 9.09s
+[1m[32m     Running[0m tests/control_plane.rs (target/debug/deps/control_plane-9e1419a4eafc10a3)
+
+running 15 tests
+test ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts ... ignored, requires RUSTDX_TEST_CLI and RUSTDX_TEST_CH_USER/PASSWORD
+test database_capacity_rejects_before_request_or_unknown_target ... ignored, requires RUSTDX_TEST_CLI; uses no database service
+test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ignored, requires RUSTDX_TEST_CLI
+test real_cli_release_revision_missing_coverage_and_isolated_restore ... ignored, requires RUSTDX_TEST_CLI pointing at the built rustdx executable
+test real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence ... ignored, requires provisioned isolated ClickHouse/MongoDB and RUSTDX_TEST_* settings
+test runner_run_forwards_startup_pool_and_offline_setting_to_real_collector ... ignored, requires RUSTDX_TEST_CLI pointing to the built current CLI
+test evidence_limits_path_traversal_and_controller_exclusion ... ok
+test deduplication_and_one_active_attempt_survive_reopen ... ok
+test catalog_cas_preserves_previous_pointer_and_append_only_events ... ok
+test failed_publication_event_rolls_back_pointer_and_job_state ... ok
+test wal_backup_restore_and_corruption_detection ... ok
+test strict_config_and_unknown_history_refuse_before_spawn ... ok
+test explicit_worker_cancellation_is_not_reported_as_timeout ... ok
+test all_explicitly_exempt_keys_publish_empty_partitions_without_a_collector ... ok
+test managed_deadline_kills_worker_and_recovery_does_not_rerun ... ok
+
+test result: ok. 9 passed; 0 failed; 6 ignored; 0 measured; 0 filtered out; finished in 2.09s
+

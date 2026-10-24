@@ -1,0 +1,16 @@
+<clickhouse>
+    <max_connections>64</max_connections>
+    <max_thread_pool_size>512</max_thread_pool_size>
+    <max_thread_pool_free_size>64</max_thread_pool_free_size>
+    <background_pool_size>16</background_pool_size>
+    <background_schedule_pool_size>4</background_schedule_pool_size>
+    <background_message_broker_schedule_pool_size>2</background_message_broker_schedule_pool_size>
+    <background_distributed_schedule_pool_size>2</background_distributed_schedule_pool_size>
+    <mark_cache_size>16777216</mark_cache_size>
+    <profiles>
+        <default>
+            <max_threads>2</max_threads>
+            <max_memory_usage>536870912</max_memory_usage>
+        </default>
+    </profiles>
+<listen_host replace="replace">127.0.0.1</listen_host><http_port replace="replace">40751</http_port><tcp_port replace="replace">51015</tcp_port><interserver_http_port replace="replace">35653</interserver_http_port><storage_configuration><disks><backups><type>local</type><path>/backups/</path></backups></disks></storage_configuration><backups><allowed_disk>backups</allowed_disk><allowed_path>/backups/</allowed_path></backups></clickhouse>

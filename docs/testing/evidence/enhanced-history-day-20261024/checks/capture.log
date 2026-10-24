@@ -1,0 +1,20 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 4.18s
+[1m[32m     Running[0m `target/debug/examples/validate_enhanced_history_day docs/validation/evidence/enhanced-history-day-20261024 '115.238.56.198:7709' 0 300308 20261023`
+pass-1800-page-00: start=0 rows=1800
+pass-1800-page-01: start=1800 rows=1800
+pass-1800-page-02: start=3600 rows=1276
+pass-1800-page-03: start=4876 rows=0
+pass-1000-page-00: start=0 rows=1000
+pass-1000-page-01: start=1000 rows=1000
+pass-1000-page-02: start=2000 rows=1000
+pass-1000-page-03: start=3000 rows=1000
+pass-1000-page-04: start=4000 rows=876
+pass-1000-page-05: start=4876 rows=0
+overlap-00: start=1784 rows=32
+overlap-01: start=3584 rows=32
+overlap-02: start=4860 rows=16
+latest-32: start=0 rows=32
+kline-9: 3 bars
+kline-4: 3 bars
+kline-0: 96 bars

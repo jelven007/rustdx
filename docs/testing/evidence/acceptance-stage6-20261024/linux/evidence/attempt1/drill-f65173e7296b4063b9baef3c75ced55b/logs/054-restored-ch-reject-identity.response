@@ -1,0 +1,1 @@
+Code: 469. DB::Exception: Constraint `identity` for table rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2.bars (c10e0e63-6691-413d-8a57-d74aa9130ba8) is violated at row 1. Expression: ((instrument_class = 'a_share') AND (market IN ('sh', 'sz'))). Column values: market = 'sh', instrument_class = 'index'. (VIOLATED_CONSTRAINT) (version 25.8.33.6 (official build))

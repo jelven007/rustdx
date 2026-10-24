@@ -1,0 +1,70 @@
+{
+  "request": {
+    "market": 1,
+    "code": "600001",
+    "start": 0,
+    "count": 1
+  },
+  "records": [
+    {
+      "date_raw": 20091215,
+      "date": "2009-12-15",
+      "time": "2009-12-15T00:00:00+08:00",
+      "open": 5.29,
+      "close": 5.29,
+      "high": 5.31,
+      "low": 5.21,
+      "open_price_milli": 5290,
+      "close_price_milli": 5290,
+      "high_price_milli": 5310,
+      "low_price_milli": 5210,
+      "last_close_price_milli": null,
+      "open_delta_raw": 5290,
+      "close_delta_raw": 0,
+      "high_delta_raw": 20,
+      "low_delta_raw": -80,
+      "volume_raw": 131004969,
+      "volume_shares": 131004969,
+      "volume_lots": 1310049.69,
+      "amount_raw": 1311005192,
+      "amount": 152470016.0,
+      "unknown_suffix_raw": [
+        23,
+        2,
+        0,
+        0
+      ],
+      "record_raw": [
+        79,
+        145,
+        50,
+        1,
+        170,
+        82,
+        0,
+        20,
+        208,
+        1,
+        169,
+        232,
+        247,
+        124,
+        8,
+        90,
+        36,
+        78,
+        23,
+        2,
+        0,
+        0
+      ]
+    }
+  ],
+  "source": {
+    "opcode": 1323,
+    "endpoint": "115.238.56.198:7709",
+    "fetched_at": "2026-10-24T06:23:33.336580Z",
+    "connection_id": 1,
+    "metadata_generation": null
+  }
+}

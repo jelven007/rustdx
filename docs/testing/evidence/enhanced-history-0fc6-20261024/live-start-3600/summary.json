@@ -1,0 +1,25 @@
+{
+  "actual_view_count": 1208,
+  "after_hours_count": 0,
+  "auction_snapshot_count": 68,
+  "code": "300308",
+  "fetched_at": "2026-10-24T04:40:57.612006Z",
+  "first_time": "09:15",
+  "last_time": "10:30",
+  "market": 0,
+  "offline_replay_matches": true,
+  "opening_match_count": 1,
+  "price_base_raw_f32": 590.1099853515625,
+  "raw_count": 1276,
+  "request_count": 1800,
+  "requested_date": 20261023,
+  "scope": "one source, one requested day, one page; not full-day coverage",
+  "source_endpoint": "115.238.56.198:7709",
+  "start": 3600,
+  "status_counts": {
+    "0": 543,
+    "1": 659,
+    "2": 6,
+    "8": 68
+  }
+}

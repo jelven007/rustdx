@@ -1,0 +1,37 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+    Finished `test` profile [optimized + debuginfo] target(s) in 31.57s
+     Running tests/block_integrity.rs (target/debug/deps/block_integrity-86ef7ddf6029e220)
+
+running 10 tests
+test metadata_verifies_known_md5_and_rejects_length_and_same_length_corruption ... ok
+test strict_decoder_rejects_malformed_layout_and_member_fields_without_partial_success ... ok
+test captured_full_file_matches_independent_md5_and_all_record_fields ... ok
+test download_rejects_correct_length_content_with_wrong_md5 ... ok
+test download_rejects_short_chunk ... ok
+test full_download_checks_multichunk_ranges_digest_raw_headers_and_sources ... ok
+test download_rejects_reconnect_between_metadata_and_content ... ok
+test high_level_entries_reject_md5_valid_but_malformed_file_and_preserve_error_kind ... ok
+test empty_and_invalid_metadata_never_trigger_chunk_download ... ok
+test whole_download_respects_outer_deadline_across_chunks ... FAILED
+
+failures:
+
+---- whole_download_respects_outer_deadline_across_chunks stdout ----
+
+thread 'whole_download_respects_outer_deadline_across_chunks' panicked at crates/rustdx-core/tests/block_integrity.rs:241:5:
+assertion `left == right` failed
+  left: WouldBlock
+ right: TimedOut
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    whole_download_respects_outer_deadline_across_chunks
+
+test result: FAILED. 9 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+error: test failed, to rerun pass `-p jelven-rustdx-complete --test block_integrity`

@@ -1,0 +1,110 @@
+   Compiling libc v0.2.191
+   Compiling memchr v2.7.4
+   Compiling log v0.4.34
+   Compiling find-msvc-tools v0.1.15
+   Compiling shlex v2.0.1
+   Compiling version_check v0.9.5
+   Compiling crc32fast v1.5.1
+   Compiling num-traits v0.2.19
+   Compiling zeroize v1.9.0
+   Compiling zlib-rs v0.4.2
+   Compiling objc2 v0.6.5
+   Compiling typenum v1.20.1
+   Compiling cc v1.9.0
+   Compiling rustls-pki-types v1.15.1
+   Compiling miniz_oxide v0.8.5
+   Compiling bumpalo v3.20.3
+   Compiling generic-array v0.14.7
+   Compiling aho-corasick v1.1.3
+   Compiling httparse v1.10.1
+   Compiling objc2-encode v4.1.0
+   Compiling equivalent v1.0.2
+   Compiling rustversion v1.0.20
+   Compiling hashbrown v0.15.2
+   Compiling cfg_aliases v0.2.2
+   Compiling simd-adler32 v0.3.10
+   Compiling untrusted v0.9.0
+   Compiling regex-syntax v0.8.5
+   Compiling getrandom v0.2.15
+   Compiling nix v0.31.3
+   Compiling zopfli v0.8.3
+   Compiling ring v0.17.14
+   Compiling indexmap v2.8.0
+   Compiling utf8parse v0.2.2
+   Compiling bytes v1.12.1
+   Compiling regex-automata v0.4.9
+   Compiling bitflags v2.13.2
+   Compiling rustls v0.23.43
+   Compiling anstyle-parse v0.2.6
+   Compiling libz-rs-sys v0.4.2
+   Compiling chrono v0.4.40
+   Compiling flate2 v1.1.0
+   Compiling http v1.5.0
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling block2 v0.6.2
+   Compiling syn v2.0.100
+   Compiling serde_json v1.0.140
+   Compiling anstyle-query v1.1.2
+   Compiling subtle v2.6.1
+   Compiling typed-path v0.12.3
+   Compiling debug_unsafe v0.1.4
+   Compiling base64 v0.23.1
+   Compiling regex v1.11.1
+   Compiling argh_shared v0.1.13
+   Compiling eyre v0.6.12
+   Compiling anstyle v1.0.10
+   Compiling zip v2.4.2
+   Compiling colorchoice v1.0.3
+   Compiling is_terminal_polyfill v1.70.1
+   Compiling anstream v0.6.18
+   Compiling env_filter v0.1.3
+   Compiling ureq-proto v0.6.1
+   Compiling argh_derive v0.1.13
+   Compiling atoi_simd v0.18.1
+   Compiling dispatch2 v0.3.1
+   Compiling zip v8.6.0
+   Compiling digest v0.10.7
+   Compiling trade_date_a v2026.0.0
+   Compiling cpufeatures v0.2.17
+   Compiling webpki-roots v1.0.9
+   Compiling quick-xml v0.41.0
+   Compiling csv-core v0.1.12
+   Compiling codepage v0.1.2
+   Compiling displaydoc v0.2.7
+   Compiling jelven-rustdx-cli v1.8.2 (/private/tmp/rustdx-production-restructure/clean-source/apps/rustdx-cli)
+   Compiling rust-fuzzy-search v0.1.1
+   Compiling fast-float2 v0.2.4
+   Compiling jiff v0.2.5
+   Compiling indenter v0.3.3
+   Compiling utf8-zero v0.8.1
+   Compiling byteorder v1.5.0
+   Compiling percent-encoding v2.3.1
+   Compiling calamine v0.36.1
+   Compiling argh v0.1.13
+   Compiling jelven-rustdx-complete v1.12.2 (/private/tmp/rustdx-production-restructure/clean-source/crates/rustdx-core)
+   Compiling csv v1.4.0
+   Compiling sha2 v0.10.9
+   Compiling ctrlc v3.5.2
+   Compiling rustls-webpki v0.103.15
+   Compiling env_logger v0.11.7
+   Compiling ureq v3.4.0
+    Finished `test` profile [optimized + debuginfo] target(s) in 48.81s
+     Running tests/calendar_datasets.rs (/tmp/rustdx-production-restructure/clean-target/debug/deps/calendar_datasets-06d3cab97beb4ed9)
+
+running 1 test
+test exchange_2026_datasets_match_each_other_and_builtin_every_day ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cli.rs (/tmp/rustdx-production-restructure/clean-target/debug/deps/cli-dc5267a12a9d58a2)
+
+running 5 tests
+test conflicting_outputs_fail_before_network_or_input_changes ... ok
+test help_and_invalid_output_finish_without_network ... ok
+test csv_collection_and_strict_gap_protect_previous_output ... ok
+test failed_database_import_keeps_csv_and_marks_report_failed ... ok
+test invalid_readback_batch_preserves_output_before_database_access ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.39s
+

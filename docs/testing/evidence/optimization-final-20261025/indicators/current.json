@@ -1,0 +1,251 @@
+{
+  "schema_version": 2,
+  "statistic": "median",
+  "synthetic": true,
+  "environment": {
+    "os": "Darwin",
+    "arch": "arm64",
+    "os_version": "27.0.0",
+    "hardware": {
+      "cpu": "Apple M3 Pro",
+      "memory_bytes": "38654705664",
+      "logical_cpus": "12",
+      "model": "Mac15,7"
+    },
+    "rustc": "rustc 1.89.0 (29483883e 2025-08-04)\nbinary: rustc\ncommit-hash: 29483883eed69d5fb4db01964cdf2af4d86e9cb2\ncommit-date: 2025-08-04\nhost: aarch64-apple-darwin\nrelease: 1.89.0\nLLVM version: 20.1.7\n",
+    "cargo": "cargo 1.89.0 (c24e10642 2025-06-23)",
+    "build": {
+      "profile": "release",
+      "opt_level": 3,
+      "lto": false,
+      "codegen_units": 1,
+      "incremental": false,
+      "edition": "2024"
+    },
+    "input_sha256": "c111de176a10b057608c089344ab1b83f457fbaf751988a508c240aa4934ef8d",
+    "harness_sha256": "3070445b569115b828ddd82ccccc1933dd932ccee453c75f7ea18fbbb8ec74af",
+    "samples": 7,
+    "session": "ae7d63b1-c554-41e9-9772-02893f5986ac",
+    "sampling": "alternating AB/BA; warmup each measurement"
+  },
+  "source_ref": "working-tree",
+  "sources": [
+    {
+      "path": "indicators.rs",
+      "sha256": "8bcca8050bc13fa114c4c9ead02896cbdf51fff6653227a55214aa9cd706a128"
+    },
+    {
+      "path": "indicators/incremental.rs",
+      "sha256": "d0081b2a0c089082a8e6e4ef13c6d5e0cc47f157f216b4e200a3049cceff9984"
+    }
+  ],
+  "binary_sha256": "935b8ed86af743c7bdae85313b4aae0e269a1ae4c00e13a0dbd9a81d94455dd6",
+  "lock_sha256": "2a8acc6c8f98944132356247104ce0f7d251b8903d892b0106dbb488c7cbd182",
+  "build_seconds": 8.571904750000002,
+  "measurements": [
+    {
+      "name": "bands_kdj",
+      "rows": 10000,
+      "period": 20,
+      "samples_ns": [
+        496959,
+        621459,
+        539750,
+        489333,
+        504083,
+        1275958,
+        555417
+      ],
+      "result_hash": "4064174e7b313430",
+      "median_ns": 539750
+    },
+    {
+      "name": "bands_kdj",
+      "rows": 10000,
+      "period": 200,
+      "samples_ns": [
+        1409250,
+        509000,
+        634125,
+        974334,
+        635791,
+        510416,
+        512833
+      ],
+      "result_hash": "290cd3914a4b6f60",
+      "median_ns": 634125
+    },
+    {
+      "name": "bands_kdj",
+      "rows": 100000,
+      "period": 20,
+      "samples_ns": [
+        6558375,
+        7639166,
+        4901209,
+        5633750,
+        5273042,
+        16842500,
+        6502334
+      ],
+      "result_hash": "ecabf699582b4d26",
+      "median_ns": 6502334
+    },
+    {
+      "name": "bands_kdj",
+      "rows": 100000,
+      "period": 200,
+      "samples_ns": [
+        5410250,
+        7722709,
+        7769167,
+        7083250,
+        13361792,
+        10263291,
+        5710292
+      ],
+      "result_hash": "79637ff7c9917397",
+      "median_ns": 7722709
+    },
+    {
+      "name": "ema_macd_batch",
+      "rows": 10000,
+      "period": 0,
+      "samples_ns": [
+        164500,
+        124500,
+        118916,
+        148125,
+        119583,
+        122292,
+        170500
+      ],
+      "result_hash": "99abc63fb1de0c71",
+      "median_ns": 124500
+    },
+    {
+      "name": "ema_macd_batch",
+      "rows": 100000,
+      "period": 0,
+      "samples_ns": [
+        1399417,
+        2787792,
+        1254917,
+        1253041,
+        1731917,
+        1297750,
+        2189250
+      ],
+      "result_hash": "c49447ae3bb300c9",
+      "median_ns": 1399417
+    },
+    {
+      "name": "sma_rsi",
+      "rows": 10000,
+      "period": 20,
+      "samples_ns": [
+        497875,
+        342458,
+        344625,
+        533709,
+        374167,
+        345500,
+        365166
+      ],
+      "result_hash": "3337de87f1230bf5",
+      "median_ns": 365166
+    },
+    {
+      "name": "sma_rsi",
+      "rows": 10000,
+      "period": 200,
+      "samples_ns": [
+        334500,
+        539708,
+        336417,
+        365834,
+        770291,
+        487916,
+        373500
+      ],
+      "result_hash": "825581f2c5c0f1ce",
+      "median_ns": 373500
+    },
+    {
+      "name": "sma_rsi",
+      "rows": 100000,
+      "period": 20,
+      "samples_ns": [
+        4031916,
+        3697542,
+        3528083,
+        3459917,
+        3587167,
+        4721750,
+        5624625
+      ],
+      "result_hash": "3178a574f851113a",
+      "median_ns": 3697542
+    },
+    {
+      "name": "sma_rsi",
+      "rows": 100000,
+      "period": 200,
+      "samples_ns": [
+        3988791,
+        9268542,
+        3589875,
+        4236084,
+        4169167,
+        12946042,
+        4634417
+      ],
+      "result_hash": "23342a9210588fd1",
+      "median_ns": 4236084
+    }
+  ],
+  "runs": [
+    {
+      "round": 0,
+      "elapsed_seconds": 0.6367103749999998,
+      "log": "0-current.log",
+      "sha256": "00fd3d92b0fed6125a59faa954b10f2382e86c15c5f7f389e77b4d2bbeb844a6"
+    },
+    {
+      "round": 1,
+      "elapsed_seconds": 0.5595355420000026,
+      "log": "1-current.log",
+      "sha256": "50a2fbd0723551362d2d858d79294cfe85aa70d5b580a11143c3f227bf02a604"
+    },
+    {
+      "round": 2,
+      "elapsed_seconds": 0.35320962500000164,
+      "log": "2-current.log",
+      "sha256": "1c1aab981cbc1e0d968f668824d86b2c31bf1d0dc56bfb2c05bcdba6a98ba88e"
+    },
+    {
+      "round": 3,
+      "elapsed_seconds": 0.32069295799999864,
+      "log": "3-current.log",
+      "sha256": "177b4e3e6065422a69cfa1c79aa2dffc8484f763c11c484af06ebc17eac247bc"
+    },
+    {
+      "round": 4,
+      "elapsed_seconds": 0.37575391600000074,
+      "log": "4-current.log",
+      "sha256": "c5743baddfae21b19c64d1023f8b6587897cc4a27a6ea8b2e87731727ad596e8"
+    },
+    {
+      "round": 5,
+      "elapsed_seconds": 0.5895014160000009,
+      "log": "5-current.log",
+      "sha256": "8490663de6fb11a405d6ad5f085281c7ba5b84823dc05b2f7caa4bba3b199f98"
+    },
+    {
+      "round": 6,
+      "elapsed_seconds": 0.336734332999999,
+      "log": "6-current.log",
+      "sha256": "fec5c014e243a883f680947dc1dc85681eac9f6b3bbb6845052541e9ccac3f1e"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "request": {
+    "symbol": {
+      "market": 1,
+      "code": "600519"
+    },
+    "date_raw": 20261026,
+    "mode": 3,
+    "start": 0,
+    "count": 500
+  },
+  "requested_date": 20261026,
+  "server_trading_date": null,
+  "process_snapshots": true,
+  "page": {
+    "records": [],
+    "source": {
+      "opcode": 1386,
+      "endpoint": "115.238.56.198:7709",
+      "fetched_at": "2026-10-24T06:09:46.152588Z",
+      "connection_id": 1,
+      "metadata_generation": null
+    }
+  }
+}

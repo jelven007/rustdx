@@ -1,0 +1,18 @@
+{
+  "command": [
+    ".cargo/bin/cargo",
+    "+1.89.0",
+    "clippy",
+    "--offline",
+    "--locked",
+    "--workspace",
+    "--all-targets",
+    "--all-features",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 25.868,
+  "integration_skip_env": true
+}

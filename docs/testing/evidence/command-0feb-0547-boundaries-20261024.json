@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "kind": "checked_boundary_fixes_and_offline_workspace_validation",
+  "status": "passed",
+  "rust_edition": "2024",
+  "toolchain": "1.89.0",
+  "fixes": [
+    {
+      "opcode": "0x0feb",
+      "boundary": "previous_close_and_open_price_must_be_nonnegative_and_finite"
+    },
+    {
+      "opcode": "0x0547",
+      "boundary": "returned_cursor_must_not_regress_even_before_first_baseline"
+    },
+    {
+      "opcode": "0x0547",
+      "boundary": "prune_impossible_quote_partitions_without_relaxing_512_candidate_2048_work_limits",
+      "legal_refresh_records_tested": [
+        1,
+        12,
+        32,
+        100
+      ],
+      "legal_shared_snapshot_records_tested": 80
+    },
+    {
+      "opcode": "0x0547",
+      "boundary": "validate_representable_positive_subscription_timeout_before_connect"
+    }
+  ],
+  "input_documentation_correction": "Markets 0/1 and six ASCII alphanumeric bytes; format validity is not server availability",
+  "regression_tests_added_in_this_review": 15,
+  "targeted_suites": {
+    "command_boundaries": 10,
+    "quote_subscription": 21,
+    "protocol_7709_decoders": 11,
+    "extended_queries": 4
+  },
+  "targeted_passed": 46,
+  "targeted_failed": 0,
+  "workspace_test_counts": {
+    "passed": 480,
+    "failed": 0,
+    "ignored": 24
+  },
+  "final_checks": [
+    {
+      "name": "fmt-final",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.784,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/fmt-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "clippy-final",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.864,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/clippy-final.log",
+      "log_sha256": "3cb5d2874e82fc3778d36d72a25500beafc7af0957ff72cb237ae1752f9796a4"
+    },
+    {
+      "name": "workspace-tests",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 111.006,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/workspace-tests.log",
+      "log_sha256": "45c7e9c93ff6aacdcc79acdb9ec995657afb0b835819554a99327a899e490e4a",
+      "test_counts": {
+        "passed": 480,
+        "failed": 0,
+        "ignored": 24
+      }
+    },
+    {
+      "name": "rustdoc",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "doc",
+        "--workspace",
+        "--all-features",
+        "--no-deps",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.018,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/rustdoc.log",
+      "log_sha256": "12a31b1ac3fb8224cfa174a193f069e26e290be9af321ae5be1cc3e82a5e35eb"
+    }
+  ],
+  "check_attempt_history": [
+    {
+      "name": "fmt",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.642,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/fmt.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 3.81,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/clippy.log",
+      "log_sha256": "56b698ddb297c08dfc49839d88ebc90b1a62e9d091aadc2aff081d78928095d8"
+    },
+    {
+      "name": "workspace-tests",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 111.006,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/workspace-tests.log",
+      "log_sha256": "45c7e9c93ff6aacdcc79acdb9ec995657afb0b835819554a99327a899e490e4a",
+      "test_counts": {
+        "passed": 480,
+        "failed": 0,
+        "ignored": 24
+      }
+    },
+    {
+      "name": "rustdoc",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "doc",
+        "--workspace",
+        "--all-features",
+        "--no-deps",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.018,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/rustdoc.log",
+      "log_sha256": "12a31b1ac3fb8224cfa174a193f069e26e290be9af321ae5be1cc3e82a5e35eb"
+    },
+    {
+      "name": "fmt-final",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.784,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/fmt-final.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "clippy-final",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.864,
+      "log": "/tmp/rustdx-0feb-0547-checks-20261024/clippy-final.log",
+      "log_sha256": "3cb5d2874e82fc3778d36d72a25500beafc7af0957ff72cb237ae1752f9796a4"
+    }
+  ],
+  "first_clippy_failure": "Two unnecessary_to_owned warnings in examples/validate_recent_auction.rs, fixed before final successful Clippy",
+  "environment": {
+    "CARGO_HOME": "/Users/bytedance/Documents/rustdx/.cargo",
+    "RUSTUP_HOME": "/Users/bytedance/Documents/rustdx/.cargo/rustup",
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1",
+    "RUSTDOCFLAGS_for_doc": "-D warnings"
+  },
+  "external_skip_cases_not_live_acceptance": true,
+  "new_live_market_sampling_performed_in_this_review": false,
+  "nonempty_0feb_live_business_verified": false,
+  "trading_hour_0547_unsolicited_push_verified": false,
+  "concurrent_workspace_validation_updates_observed": true,
+  "workspace_counts_include_other_uncommitted_changes": true,
+  "temporary_logs_are_not_long_term_assets": true,
+  "source_sha256": {
+    "src/tcp/stock/recent_minutes.rs": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+    "src/tcp/stock/quote_refresh.rs": "4f814bba48ff012c50b5d88b99230780ebb01b383f07d6edc15addb268ffb4d8",
+    "src/tcp/stock/quote_subscription.rs": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+    "src/tcp/stock/extended_quote.rs": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+    "src/tcp/stock/command_request.rs": "55d50990b3b35a4daadd707f377ad595696c30c7ddce368abe713b8ba44d8e49",
+    "src/tcp/reader.rs": "da8c78974fca205a112f8876944d13e7bbfb28493a1ebb02644dcb5ee8848f04",
+    "tests/command_boundaries.rs": "31e559e622c0037d96f57ee0b2589a722fcb9874acb6c37d3c44d5f90b9a4bf9",
+    "tests/quote_subscription.rs": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5",
+    "tests/recent_minutes_boundaries.rs": "9ee4a223ace6df62f38a33f6237bbe5b26b74146885a9db51d361cb38eeb3550",
+    "tests/protocol_7709_decoders.rs": "a252882f79dbd16f20bf9360660cf085cd7075c0645b66f14fedea9496530534",
+    "tests/extended_queries.rs": "192ddffab602ff6f7fdd7d2f141fd241af6c20d6da237c5146fb68eb1c492660",
+    "tests/fixtures/protocol_7709/manifest.json": "59aef05966ed35092d70731108fa3f1bf3cf2df4da82f41e56e3dcd290fd2d65",
+    "examples/validate_recent_auction.rs": "f3a76ac538e9ec3ad47a9ec5fe2999479fbb482756029e253b127c197b7526ce",
+    "examples/capture_recent_minutes_boundaries.rs": "6c4954f1c9c4ca5b2fcbab6c3aed7d4aff1beccfbc45bf98dd073dd401e4fbad"
+  },
+  "report": "docs/validation/COMMAND_0FEB_0547_BOUNDARY_REVIEW_20261024.md",
+  "report_sha256": "781cb4e91835218442a116e4987a6869c05ee909e5481ffd66b036c2ec3a73f7",
+  "recorded_utc": "2026-10-24T06:13:39.686422+00:00"
+}

@@ -1,0 +1,18 @@
+{
+  "base": "/tmp/rustdx-recovery-20261024-19y2r7t3",
+  "recorded_at_utc": "2026-10-24T13:10:19Z",
+  "containers": [],
+  "volumes": [],
+  "attempt1_process": {
+    "pid": 612918,
+    "state": "not_present"
+  },
+  "attempt2_process": {
+    "pid": 614963,
+    "state": "not_present"
+  },
+  "daemon_pid": 612582,
+  "daemon_stopped": true,
+  "socket_removed": true,
+  "remaining_own_containerd": []
+}

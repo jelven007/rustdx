@@ -1,59 +1,64 @@
-# rustdx 版本交付与历史保留
+# 源码与软件包交付
 
-更新日期：2026-10-22。本次按“先同步文档、再推送最新版本并合并分支、保留两个最近历史版本”的要求交付。远端仓库为 <https://github.com/jelven007/rustdx>，origin和rustdx是同一仓库的两个本地remote名称。
+更新日期：2026-10-24。当前工作区使用核心/CLI 2.0.0（未发布）与runner0.1.0；已发布1.x是历史内容。主版本迁移和本地包验证不构成提交、推送、部署或注册表发布。
 
-## 本轮交付范围
+## 1. 交付单位与身份
 
-2026-10-22四个源码优化提交已进入main；本轮在 `docs/lifecycle-20261022` 完成需求、方案、开发、测试、运营、运维与版本文档，经文档链接及源码对照检查后以合并提交合入main。最终推送main和两个历史标签，合并后的临时本地分支删除。远端原本只有main，无其他待合并分支。
+| 单位 | 必须记录 |
+| --- | --- |
+| 源码 | Git提交、工作区状态、Cargo.lock、实际检查及文档版本 |
+| 二进制 | 同一提交构建的rustdx/runner、平台、Rust版本、SHA-256 |
+| 核心/CLI包 | 新版本、CLI依赖版本、许可证、实际包清单与验证 |
+| 部署 | 配置修订、数据库/工具版本、事实版本、权限/资源及目标验收 |
+| 数据版本 | dataset、契约、catalog_version、release、source_revision/source_as_of |
 
-Cargo版本继续为 `jelven-rustdx-complete 1.12.2`、`jelven-rustdx-cli 1.8.2`。本次是源码交付，不包含crates.io发布或GitHub Release创建。10月11日已发布源码与10月22日仓库优化具有不同内容，必须用Git提交区别；需要优化行为时从源码构建。
+源码版本、包版本和数据目录版本分别管理。同版本号不能证明同一源码；history标签不能限制运行归档或备份数量。
 
-## 两个历史版本
+## 2. 工程门禁
 
-“保留两个最近历史版本”落实为最新main之外两个可检出的历史快照，以附注标签固定：
+执行[开发检查](../development/DEVELOPMENT.md)及[验证方法](../testing/VALIDATION.md)：fmt、all-targets/all-features Clippy、Rust1.89 workspace/文档测试，变更所需的独立样本与故障回归。
 
-| 引用 | 目标提交 | 含义 |
-| --- | --- | --- |
-| `main` | 本轮文档合并后的最新提交 | 当前完整源码与配套文档 |
-| `history/source-20261022` | `1f9f739cf9b35a7dd10104bc3e654309195421f5` | 文档交付前的最新源码优化版，已通过本轮离线验证 |
-| `history/release-1.12.2-1.8.2` | `904b33e` | 上一组已发布crate版本的源码/发布确认快照 |
+核对当前文档链接、配置/脚本路径、需求映射及许可证，检查两个发布包清单和解包编译。发布包排除工程样本与运行产物，不能排除src/data等实际源码。离线环境若缺注册表索引，明确区分本地源码编译与上传包验证。
 
-两个标签分别代表本轮优化交付和上一发布交付；中间优化提交是实施步骤，不各自作为一个保留版本。完整Git提交链继续可查询，未重写或截断历史。运行清单归档、数据备份、包注册表版本不受这两个源码标签的数量限制。
+`python3 scripts/release/preflight.py --output /outside/repository/new-directory`
+默认要求干净源码，执行Rust1.89格式、全目标/特性Clippy、测试/文档测试，
+生成两个`.crate`、逐个核对src与许可证，解包核心并编译最小下游和CLI。
+CLI验证使用解包核心的本地patch；正式CLI注册表验证在核心索引可见后执行。
+离线CLI打包也在隔离工作区使用该patch并生成审核锁文件；源Cargo.lock不改动。
+源码文件清单、HEAD/dirty/lock摘要、固定顺序/时间的源码归档与包/检查摘要
+写入`preflight.json`；归档包含已跟踪忽略文件及未跟踪非忽略文件。
 
-核验引用：
+审核未提交工作区可加`--snapshot --offline`，无需提交；
+产物明确`publication_qualified=false`。`--skip-workspace-checks`只做包审核，
+同样不满足正式门禁。工具不上传包、不生成提交；源码归档可重建内容身份，
+不宣称二进制位级可复现或注册表同版本已更新。生成器要求输出在仓库外，
+开始/结束及实际发布确认后重新核对源码，变动则拒绝继续。
 
-```sh
-git fetch origin --prune --tags
-git log -1 --oneline origin/main
-git for-each-ref --format='%(refname:short) %(objectname:short) %(*objectname:short)' refs/tags/history
-git ls-remote --heads --tags origin
-```
+`python3 scripts/release/check_consumers.py --output /outside/new-directory`验证
+独立2.0调用方可编译运行，以及旧日历/财务/心跳返回类型调用方按声明失败。
+该检查不是完整API diff，也不把预期失败解释为兼容。工具链/包版本/源码与
+锁摘要及每个编译结果写入报告，可指定`--cargo`、`--toolchain`和`--offline`。
+CI的contracts任务同时执行源码调用方和上述实际解包消费；MSRV、行为、
+格式/Clippy及性能任务分别保留，各产物名称绑定实际GitHub SHA。
+Actions须推送后实际核对结果，本机验证不能代替远端执行。
 
-附注标签objectname是标签对象，解引用后的 `*objectname` 或远端 `^{}` 行才是源码提交。需要回退时，在干净工作区检出相应历史标签后重新构建：
+## 3. 源码交付与历史引用
 
-```sh
-git switch --detach history/source-20261022
-cargo build --workspace --release --locked
-# 回到最新源码
-git switch main
-```
+提交应只包含本次已核实工作，不回滚已有未提交修改。推送、合并或发布按任务实际授权执行；本次结构整理不自动操作远端引用。远端CI结果须实际核实，不由本机结果推导。
 
-源码回退不恢复数据库数据或已发布文件，恢复步骤见[运维手册](../operations/RUNBOOK.md)。未来交付仍保留两个最近的交付快照：先固定新回退点、核实远端引用，再清理本项目history命名空间中超额快照；不删除其他用途标签，不强制改写main历史。
+已有history/source-20261022和history/release-1.12.2-1.8.2记录保留在[历史交付报告](../archive/release/DELIVERY_20261022.md)。它们属于当时目录结构；检出旧提交后按对应文档构建。标签解引用后的提交才是源码身份。
 
-## 分支合并与源码推送
+源码回退不会回滚数据库、文件或清单。数据消费回退固定旧catalog_version；数据库灾难恢复执行独立恢复流程。
 
-1. 确认工作区、远端分支及标签状态，拉取远端并检查是否存在未合并工作。
-2. 在任务分支更新源码及受影响文档，运行对应检查并提交。
-3. 在main创建合并提交，确认完整变更及两个回退标签目标。
-4. 通过一次原子推送更新main与两个标签，避免只更新部分引用；远端拒绝则保留本地成果并处理原因。
-5. 核验远端main提交、两个标签解引用及本地工作区；删除已经合并的临时分支。
+## 4. 正式软件包发布
 
-推送不会替代远端CI验收。本轮代码验证结果见[VALIDATION.md](../validation/VALIDATION.md)，历次真实服务结果见[PRODUCTION_ACCEPTANCE.md](../validation/PRODUCTION_ACCEPTANCE.md)。
+1. 提升核心/CLI版本及CLI注册表依赖，更新CHANGELOG和[行为迁移](MIGRATION.md)状态。
+2. 完成工程、实际包清单和注册表dry-run门禁，确认源码与最终上传包一致。
+3. 按scripts/release/publish.sh先核心后CLI，等待核心索引可见。
+4. 核实注册表版本、CLI依赖、包内源码/许可证及校验和，记录发布结果。
 
-## 后续crate发布
+发布脚本包含交互确认，需要实际发布任务及凭据；它不替代完整MSRV/all-features/独立验收。runner不发布到crates.io。目录整理没有运行实际publish。
 
-本轮源码优化尚未发包。正式发布前需提升核心库/CLI版本及CLI注册表依赖版本，更新变更记录和迁移状态；不能覆盖已经发布的1.12.2/1.8.2。
+## 5. 本次迁移交付
 
-按[开发说明](../development/DEVELOPMENT.md)执行all-features、MSRV等检查，再使用`scripts/release/publish.sh`的实际门禁：格式、离线workspace测试、Clippy、核心库dry-run及脚本发布确认。该脚本不包含完整all-features/MSRV/fuzz门禁，不能仅凭脚本成功声称全部检查通过。
-
-先发布核心库，索引可见后再发布CLI，核对注册表版本、依赖和源码包校验和。脚本需要Cargo凭据并会请求发布确认；当前源码推送没有执行该脚本，也没有使用发布凭据。仓库没有tag触发的CLI二进制Release流程，history标签仅用于版本检出。
+[目录迁移记录](PROJECT_RESTRUCTURE.md)定义应用path依赖、install、测试/示例/fuzz新入口。逐文件迁移/删除原因和最终检查保存于docs/testing/evidence/project-restructure-20261024。

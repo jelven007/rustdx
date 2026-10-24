@@ -1,0 +1,798 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-24",
+  "frozen_at": "2026-10-24T06:33:21.245470+00:00",
+  "baseline": {
+    "package": "eltdx",
+    "version": "3.3.0",
+    "uploaded_at": "2026-10-21T11:23:18.481691Z",
+    "source_url": "https://files.pythonhosted.org/packages/ce/ed/d28b09bc33829a43169af4ba8929b41da4f71e9fde04caccec7ca48e76a4/eltdx-3.3.0.tar.gz",
+    "archive": {
+      "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/eltdx-3.3.0.tar.gz",
+      "sha256": "16fad43e518618728a2ac5c0a5d0abf0a3bcce3ccb12daccec55d8fa912d9a9f",
+      "bytes": 1107611
+    },
+    "verified_package_sources": {
+      "crates/eltdx-protocol/src/request.rs": {
+        "sha256": "a3325cb9593c4bdc472c6ed266641a69ac1aec48f940ff3360d5f3533263f21e",
+        "matches_saved_snapshot": true
+      },
+      "crates/eltdx-protocol/src/unit.rs": {
+        "sha256": "1f4e21ce95e30cfb67c5f8e979e086ea6cb0886a9371333f9c3c3bf4d2145314",
+        "matches_saved_snapshot": true
+      },
+      "crates/eltdx-protocol/src/commands/resources.rs": {
+        "sha256": "84a8785e9a3d48679940b92134cc94f50627d38a745da5bc2b40929d640911b2",
+        "matches_saved_snapshot": true
+      },
+      "crates/eltdx-protocol/src/commands/corporate.rs": {
+        "sha256": "5a77bf247d9af57ffb6d8dbda7212abfc7a2fdc584e55941d596527358b68ad2",
+        "matches_saved_snapshot": true
+      },
+      "crates/eltdx-protocol/src/commands/delisted_bars.rs": {
+        "sha256": "901a81db11658bc3fcd848ad58406e7bd3cdd8113107b00e015b3d4af9f29608",
+        "matches_saved_snapshot": true
+      }
+    },
+    "command_count": 26,
+    "session_count": 2,
+    "business_count": 24,
+    "added_since_3_2_2": [
+      "02c5",
+      "02cf",
+      "02d0",
+      "052b"
+    ],
+    "all_registered_opcodes_recomputed_from_distribution": true
+  },
+  "coverage": {
+    "before_same_opcode": 25,
+    "before_missing": [
+      "052b"
+    ],
+    "after_same_opcode": 26,
+    "after_missing": [],
+    "alternate_opcode": 0,
+    "full_business_compatibility_claimed": false
+  },
+  "commands": [
+    {
+      "opcode": "0x0004",
+      "capability": "heartbeat",
+      "source": "src/tcp/heartbeat.rs",
+      "entry": "Tcp::heartbeat / Client::heartbeat",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Idle heartbeat follows connection policy"
+    },
+    {
+      "opcode": "0x000d",
+      "capability": "handshake",
+      "source": "src/tcp/mod.rs",
+      "entry": "Tcp/Client::with_config and reconnect",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Full upstream HandshakeInfo is not exposed"
+    },
+    {
+      "opcode": "0x000f",
+      "capability": "capital_changes",
+      "source": "src/tcp/stock/xdxr.rs",
+      "entry": "Client::xdxr / Xdxr",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Legacy single-symbol/category model; protocol batches not complete"
+    },
+    {
+      "opcode": "0x0010",
+      "capability": "finance_batch",
+      "source": "src/tcp/stock/requests.rs",
+      "entry": "Client::finance / FinanceRequest / FinanceSnapshot",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Single-symbol wire requests; field evidence has explicit limits"
+    },
+    {
+      "opcode": "0x02c5",
+      "capability": "block_metadata",
+      "source": "src/tcp/stock/resource_metadata.rs",
+      "entry": "Client::block_metadata / block_metadata_batch",
+      "same_opcode": true,
+      "this_task": "modernized",
+      "contract_boundary": "Hash retained; no whole-download MD5 verification claimed"
+    },
+    {
+      "opcode": "0x02cf",
+      "capability": "company_info_directory",
+      "source": "src/tcp/stock/company_info_request.rs",
+      "entry": "Client::company_info_directory / batch / f10_categories",
+      "same_opcode": true,
+      "this_task": "modernized",
+      "contract_boundary": "Markets 0/1 sampled; market 2 only parameter/decoder coverage"
+    },
+    {
+      "opcode": "0x02d0",
+      "capability": "company_info_text",
+      "source": "src/tcp/stock/company_info_request.rs",
+      "entry": "Client::company_info_chunk / company_info_text / batch / f10",
+      "same_opcode": true,
+      "this_task": "modernized",
+      "contract_boundary": "Complete specified range within byte/chunk/deadline budgets"
+    },
+    {
+      "opcode": "0x044d",
+      "capability": "security_directory",
+      "source": "src/tcp/stock/security_directory.rs",
+      "entry": "Client::stocks / security_directory",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Regular directory interface supports markets 0/1"
+    },
+    {
+      "opcode": "0x044e",
+      "capability": "security_count",
+      "source": "src/tcp/basic.rs",
+      "entry": "Client::stock_count / SecurityCount",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Market total is not A-share total"
+    },
+    {
+      "opcode": "0x0452",
+      "capability": "special_limits",
+      "source": "src/tcp/stock/special_limits.rs",
+      "entry": "Client::special_limits / special_limits_all",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Server exception table is not a complete exchange rule book"
+    },
+    {
+      "opcode": "0x051b",
+      "capability": "intraday_aux",
+      "source": "src/tcp/stock/intraday_aux.rs",
+      "entry": "Client::intraday_aux / intraday_aux_batch",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Unverified selectors retain raw meaning"
+    },
+    {
+      "opcode": "0x052b",
+      "capability": "delisted_daily_bars",
+      "source": "src/tcp/stock/delisted_bars.rs",
+      "entry": "Client::delisted_bars / scan / all / batch / all_batch",
+      "same_opcode": true,
+      "this_task": "new",
+      "contract_boundary": "Unadjusted daily archive; endpoint exhaustion not exchange completeness"
+    },
+    {
+      "opcode": "0x052d",
+      "capability": "klines",
+      "source": "src/tcp/stock/kline_request.rs",
+      "entry": "Client::bars / index_bars / k / range / batch / k_adjusted",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Enhanced periods/server adjustment/fixed adjustment not fully implemented"
+    },
+    {
+      "opcode": "0x0537",
+      "capability": "today_minutes",
+      "source": "src/tcp/stock/today_minute.rs",
+      "entry": "Client::minute_series / minute",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "No invented server date"
+    },
+    {
+      "opcode": "0x053e",
+      "capability": "legacy_depth_quotes",
+      "source": "src/tcp/stock/requests.rs",
+      "entry": "Client::quotes / quotes_with_metadata",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Compatibility DTO does not expose every upstream raw slot"
+    },
+    {
+      "opcode": "0x0547",
+      "capability": "refresh_push",
+      "source": "src/tcp/stock/quote_subscription.rs",
+      "entry": "Client::subscribe_depth / QuoteSubscription",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Trading-hour spontaneous push still requires an effective live window"
+    },
+    {
+      "opcode": "0x054b",
+      "capability": "category_quotes",
+      "source": "src/tcp/stock/category_quotes.rs",
+      "entry": "Client::category_quotes / category_quotes_all",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Unknown market precision remains unknown"
+    },
+    {
+      "opcode": "0x054c",
+      "capability": "snapshots",
+      "source": "src/tcp/stock/snapshots.rs",
+      "entry": "Client::snapshots / snapshots_batch",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Client fragment/precision policies apply"
+    },
+    {
+      "opcode": "0x056a",
+      "capability": "auction_series",
+      "source": "src/tcp/stock/auctions.rs",
+      "entry": "Client::auction_series / all / batch",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Process snapshots and direction sign are not precise opening trades"
+    },
+    {
+      "opcode": "0x06b9",
+      "capability": "file_content",
+      "source": "src/tcp/stock/block_info.rs",
+      "entry": "BlockInfoChunk / Client::block / get_block_info",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Legacy 100-byte filename is not generic 300-byte resource contract"
+    },
+    {
+      "opcode": "0x0fb4",
+      "capability": "historical_minutes",
+      "source": "src/tcp/stock/history_minute_time.rs",
+      "entry": "Client::history_minute",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Legacy series model differs from enhanced upstream contract"
+    },
+    {
+      "opcode": "0x0fc5",
+      "capability": "today_ticks",
+      "source": "src/tcp/stock/transaction_pagination.rs",
+      "entry": "Client::transaction / transaction_page / transaction_all",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Source/event/amount qualification remains explicit"
+    },
+    {
+      "opcode": "0x0fc6",
+      "capability": "historical_ticks",
+      "source": "src/tcp/stock/enhanced_history_transaction.rs",
+      "entry": "Client::history_transaction / history_transaction_page / all",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Sample endpoint completeness is not exchange tick completeness"
+    },
+    {
+      "opcode": "0x0fd1",
+      "capability": "sparkline",
+      "source": "src/tcp/stock/sparkline.rs",
+      "entry": "Client::sparkline / sparkline_batch",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Window is not an observed point count or timestamp"
+    },
+    {
+      "opcode": "0x0feb",
+      "capability": "recent_minutes",
+      "source": "src/tcp/stock/recent_minutes.rs",
+      "entry": "Client::recent_minutes / recent_minutes_batch",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "Nonempty decode does not resolve known requested-date mismatch"
+    },
+    {
+      "opcode": "0x0ffc",
+      "capability": "money_flow_daily",
+      "source": "src/tcp/stock/money_flow.rs",
+      "entry": "Client::money_flow_daily / money_flow_daily_batch",
+      "same_opcode": true,
+      "this_task": "existing",
+      "contract_boundary": "External raw amount/unit evidence is separately scoped"
+    }
+  ],
+  "current": {
+    "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+    "includes_preexisting_uncommitted_changes": true,
+    "edition": "2024",
+    "rust_version": "1.89",
+    "crate_published": false,
+    "source_snapshot": [
+      {
+        "path": "examples/capture_eltdx_330_commands.rs",
+        "sha256": "561a980db863ecdba4c19675a47b0df02e92264b6416ae4931fd759ba80d864a",
+        "bytes": 5925
+      },
+      {
+        "path": "scripts/validation/freeze_eltdx_330_implementation.py",
+        "sha256": "46361a2bc520c8b695e14a87ef4b1955e34e9a5018b214fb4291afed5f606c47",
+        "bytes": 14209
+      },
+      {
+        "path": "scripts/validation/verify_eltdx_330_commands.py",
+        "sha256": "3a118fc5d921cee02293f5ac4b6c3c64c9333a146bc013948f2a757e8102b537",
+        "bytes": 10925
+      },
+      {
+        "path": "src/tcp/basic.rs",
+        "sha256": "2b22e893790bb2a06ae6d5d0e8fbbe5ad5b1373cbcf16e955b0ff6248748e7db",
+        "bytes": 7992
+      },
+      {
+        "path": "src/tcp/heartbeat.rs",
+        "sha256": "f62681ee5e5b93aea53176c5ae5c77c0fb91925daf6a7aa023d90748cafb9fd0",
+        "bytes": 8898
+      },
+      {
+        "path": "src/tcp/mod.rs",
+        "sha256": "6618e3970f382290a97c0698c976d6e57847b9c6bb40da5ebe780b236d96400e",
+        "bytes": 35220
+      },
+      {
+        "path": "src/tcp/stock/auctions.rs",
+        "sha256": "9f2f94931a5eb781bba9da8bd15ac4be86529ecf1eadc08b444251ecd27eace8",
+        "bytes": 6210
+      },
+      {
+        "path": "src/tcp/stock/block_info.rs",
+        "sha256": "de12b358dfcca9b9a011545062aee7b525a6b1b3bbad9f1be181af34902248fb",
+        "bytes": 10408
+      },
+      {
+        "path": "src/tcp/stock/category_quotes.rs",
+        "sha256": "2e1b04585aa3fc93be4c6c074abef184c263782a57ec73b178876406851dbeba",
+        "bytes": 8001
+      },
+      {
+        "path": "src/tcp/stock/client.rs",
+        "sha256": "02e6d1ccec3c9b4bb9da9a30ee01ff5cb108bc76b25e74a9c3a2fed77866fa35",
+        "bytes": 47768
+      },
+      {
+        "path": "src/tcp/stock/client/extended_queries.rs",
+        "sha256": "a29184e55e55a8469f8b045870f08186f5577073415091f517c9e37fe3244385",
+        "bytes": 13621
+      },
+      {
+        "path": "src/tcp/stock/client/version_330.rs",
+        "sha256": "e3d8be29a7ef15cb7ef8e4d31f7a8de476eeda91c6708f059f5831459483ecaa",
+        "bytes": 6713
+      },
+      {
+        "path": "src/tcp/stock/command_request.rs",
+        "sha256": "55c1c16c4d26c032c53a259534b325d362fdca96b9fd19ce80dacef1a80fae89",
+        "bytes": 7244
+      },
+      {
+        "path": "src/tcp/stock/company_info_request.rs",
+        "sha256": "2f027625e9d29eb362056becf7c34c3f2ba3ad63915e1e547f762aa5409d336e",
+        "bytes": 10251
+      },
+      {
+        "path": "src/tcp/stock/delisted_bars.rs",
+        "sha256": "bf8464749826e40837c9071f6d8eaab10582f8e363ee1e8b96e56287fb26114a",
+        "bytes": 9845
+      },
+      {
+        "path": "src/tcp/stock/enhanced_history_transaction.rs",
+        "sha256": "cbc05050491909cfafcd59d25c88b286d1a9453422ae805fb91a99f8aea1c175",
+        "bytes": 13061
+      },
+      {
+        "path": "src/tcp/stock/history_minute_time.rs",
+        "sha256": "f4e1a9735bdfd6b6a0cf43a39f8204c1bb95987452c8ae78f6bfc9b8fc194a63",
+        "bytes": 6432
+      },
+      {
+        "path": "src/tcp/stock/intraday_aux.rs",
+        "sha256": "a65b7ecfa25157d26e6d8296d05650977921cc96e9f5daba2a51159bd465d1b2",
+        "bytes": 3078
+      },
+      {
+        "path": "src/tcp/stock/kline_request.rs",
+        "sha256": "c049ce4e857560be5eacb809fec7ba41566784e2b2c229fc295342b294b89a8f",
+        "bytes": 12027
+      },
+      {
+        "path": "src/tcp/stock/mod.rs",
+        "sha256": "60733c281c45d9767b0b262932025c01d155cfcb0617ae42661fec59b6b7ae7b",
+        "bytes": 11763
+      },
+      {
+        "path": "src/tcp/stock/money_flow.rs",
+        "sha256": "6c5ff4175ac3a344534220f842849f4012f5141471005a6542229280a2d725f9",
+        "bytes": 4931
+      },
+      {
+        "path": "src/tcp/stock/quote_subscription.rs",
+        "sha256": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+        "bytes": 19073
+      },
+      {
+        "path": "src/tcp/stock/recent_minutes.rs",
+        "sha256": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+        "bytes": 4921
+      },
+      {
+        "path": "src/tcp/stock/requests.rs",
+        "sha256": "4147c5504984c17b1f2cdfe077824abc582d5fad91df2aefd72f773edf1dac57",
+        "bytes": 14260
+      },
+      {
+        "path": "src/tcp/stock/resource_metadata.rs",
+        "sha256": "19914c6f2a41955cac23c44893dc7d02ac06f16934865db4a2a898abc0d193b3",
+        "bytes": 2617
+      },
+      {
+        "path": "src/tcp/stock/security_directory.rs",
+        "sha256": "a9c3a584bca63423abef704ca2998eaa89dd45b35e6e3cb8e8f3b5d81534e4d3",
+        "bytes": 8407
+      },
+      {
+        "path": "src/tcp/stock/snapshots.rs",
+        "sha256": "c70a054897c1b594ae161901bbe3b82e4ded54beddb05ef82b8d6b62065bbb8b",
+        "bytes": 2821
+      },
+      {
+        "path": "src/tcp/stock/sparkline.rs",
+        "sha256": "e0e32bb11253f85b272e8a327fd3ae0bb37145743d85b7d5a08c2620b3c7a740",
+        "bytes": 3361
+      },
+      {
+        "path": "src/tcp/stock/special_limits.rs",
+        "sha256": "78dd6d553871116848bff1c169ae72e60beb6cc6bdb2f895f24601f18fa54f79",
+        "bytes": 4079
+      },
+      {
+        "path": "src/tcp/stock/today_minute.rs",
+        "sha256": "6db7e3c8f385fd1e84266bde6712a148a07bef01cd88e129d3515684420021d0",
+        "bytes": 5367
+      },
+      {
+        "path": "src/tcp/stock/transaction_pagination.rs",
+        "sha256": "61edd4099b0a65e6a25d2a578042b1ac06a770c4d3bdc1d7f76cc460e2ed4e0d",
+        "bytes": 5466
+      },
+      {
+        "path": "src/tcp/stock/xdxr.rs",
+        "sha256": "4cfb7c8631cea23e5cbada55bece179a39ecd7dc9b6af202b434249931603a9b",
+        "bytes": 6728
+      },
+      {
+        "path": "tests/eltdx_330_commands.rs",
+        "sha256": "81599d47a3e862f5f7f53f06205286345b59b424b033646219b04a69eb06dc97",
+        "bytes": 26258
+      }
+    ]
+  },
+  "checks": {
+    "rust_toolchain": "1.89.0",
+    "offline_locked": true,
+    "external_integration_tests_disabled": true,
+    "fmt": "passed",
+    "clippy_all_targets_features_deny_warnings": "passed",
+    "rustdoc_deny_warnings": "passed",
+    "targeted_passed": 14,
+    "source_guard_unit_test": true,
+    "workspace_passed": 498,
+    "workspace_failed": 0,
+    "workspace_ignored": 24,
+    "workspace_result_groups": 58,
+    "logs": [
+      {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/checks/clippy.log",
+        "sha256": "80d7a5c70bce0059d831411fa6166757dca3e9d0a2a27b9f3a97d0a459bf7f32",
+        "bytes": 697
+      },
+      {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/checks/doc.log",
+        "sha256": "7bc0e05d82bcf4b2f8b8118c9db3b73c7294dab8753a86358fefe63aa6c8252b",
+        "bytes": 963
+      },
+      {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/checks/fmt.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/checks/independent.log",
+        "sha256": "0402fbf504c3a35bec8b1ace67752ea1d7f37b1c5748b504b21efe9b44fa18a9",
+        "bytes": 764
+      },
+      {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/checks/targeted.log",
+        "sha256": "a25838064652f86fab3c8e1bde8afaeb016f021241ac4830c90922e28456cb4e",
+        "bytes": 1535
+      },
+      {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/checks/workspace-tests-first.log",
+        "sha256": "ee0b0228b10bbb0c2a59f0cae9a8f3431e68c563a67c0f91b0ae024adafff76b",
+        "bytes": 51355
+      },
+      {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/checks/workspace.log",
+        "sha256": "7ecccfb9c2e73e3798ff8e6ac1bbdf9f7c2e94e14b89c14e9a71e0d65f6de1c5",
+        "bytes": 50143
+      }
+    ],
+    "first_run": "One mock accepted only first-batch sockets despite max_idle=0; fixed mock to accept 1+4*2 connections. Original failed log retained."
+  },
+  "live": [
+    {
+      "endpoint": "115.238.56.198:7709",
+      "captured_at": "2026-10-24T06:23:33.973336Z",
+      "frame_count": 49,
+      "opcode_frame_counts": {
+        "0x000d": 1,
+        "0x02c5": 1,
+        "0x02cf": 2,
+        "0x02d0": 22,
+        "0x052b": 23
+      },
+      "checked_delisted_records": 12042,
+      "checked_text_chunks": 22,
+      "verification": {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/live-a/independent-verification.json",
+        "sha256": "8fd398abdb06d6b24a0773af730d0b0c3a54dba848d7c101f3d87bcf156fbe74",
+        "bytes": 46303
+      },
+      "archives": [
+        {
+          "file": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/live-a/delisted-all-0-000038.json",
+          "records": 5072,
+          "date_min": 19940808,
+          "date_max": 20230711,
+          "pages": [
+            {
+              "start": 0,
+              "count": 800
+            },
+            {
+              "start": 800,
+              "count": 800
+            },
+            {
+              "start": 1600,
+              "count": 800
+            },
+            {
+              "start": 2400,
+              "count": 800
+            },
+            {
+              "start": 3200,
+              "count": 800
+            },
+            {
+              "start": 4000,
+              "count": 800
+            },
+            {
+              "start": 4800,
+              "count": 272
+            },
+            {
+              "start": 5072,
+              "count": 0
+            }
+          ],
+          "complete": true,
+          "termination": "EmptyPage"
+        },
+        {
+          "file": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/live-a/delisted-all-0-002087.json",
+          "records": 4215,
+          "date_min": 20061130,
+          "date_max": 20240627,
+          "pages": [
+            {
+              "start": 0,
+              "count": 800
+            },
+            {
+              "start": 800,
+              "count": 800
+            },
+            {
+              "start": 1600,
+              "count": 800
+            },
+            {
+              "start": 2400,
+              "count": 800
+            },
+            {
+              "start": 3200,
+              "count": 800
+            },
+            {
+              "start": 4000,
+              "count": 215
+            },
+            {
+              "start": 4215,
+              "count": 0
+            }
+          ],
+          "complete": true,
+          "termination": "EmptyPage"
+        },
+        {
+          "file": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/live-a/delisted-all-1-600001.json",
+          "records": 2752,
+          "date_min": 19980122,
+          "date_max": 20091215,
+          "pages": [
+            {
+              "start": 0,
+              "count": 800
+            },
+            {
+              "start": 800,
+              "count": 800
+            },
+            {
+              "start": 1600,
+              "count": 800
+            },
+            {
+              "start": 2400,
+              "count": 352
+            },
+            {
+              "start": 2752,
+              "count": 0
+            }
+          ],
+          "complete": true,
+          "termination": "EmptyPage"
+        }
+      ]
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "captured_at": "2026-10-24T06:23:34.264272Z",
+      "frame_count": 49,
+      "opcode_frame_counts": {
+        "0x000d": 1,
+        "0x02c5": 1,
+        "0x02cf": 2,
+        "0x02d0": 22,
+        "0x052b": 23
+      },
+      "checked_delisted_records": 12042,
+      "checked_text_chunks": 22,
+      "verification": {
+        "path": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/live-b/independent-verification.json",
+        "sha256": "53c2cad7789817c73d693101529a979bb8bda3632d0938cb69ae03adc7b3205e",
+        "bytes": 46303
+      },
+      "archives": [
+        {
+          "file": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/live-b/delisted-all-0-000038.json",
+          "records": 5072,
+          "date_min": 19940808,
+          "date_max": 20230711,
+          "pages": [
+            {
+              "start": 0,
+              "count": 800
+            },
+            {
+              "start": 800,
+              "count": 800
+            },
+            {
+              "start": 1600,
+              "count": 800
+            },
+            {
+              "start": 2400,
+              "count": 800
+            },
+            {
+              "start": 3200,
+              "count": 800
+            },
+            {
+              "start": 4000,
+              "count": 800
+            },
+            {
+              "start": 4800,
+              "count": 272
+            },
+            {
+              "start": 5072,
+              "count": 0
+            }
+          ],
+          "complete": true,
+          "termination": "EmptyPage"
+        },
+        {
+          "file": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/live-b/delisted-all-0-002087.json",
+          "records": 4215,
+          "date_min": 20061130,
+          "date_max": 20240627,
+          "pages": [
+            {
+              "start": 0,
+              "count": 800
+            },
+            {
+              "start": 800,
+              "count": 800
+            },
+            {
+              "start": 1600,
+              "count": 800
+            },
+            {
+              "start": 2400,
+              "count": 800
+            },
+            {
+              "start": 3200,
+              "count": 800
+            },
+            {
+              "start": 4000,
+              "count": 215
+            },
+            {
+              "start": 4215,
+              "count": 0
+            }
+          ],
+          "complete": true,
+          "termination": "EmptyPage"
+        },
+        {
+          "file": "docs/validation/evidence/eltdx-3.3.0-commands-20261024/live-b/delisted-all-1-600001.json",
+          "records": 2752,
+          "date_min": 19980122,
+          "date_max": 20091215,
+          "pages": [
+            {
+              "start": 0,
+              "count": 800
+            },
+            {
+              "start": 800,
+              "count": 800
+            },
+            {
+              "start": 1600,
+              "count": 800
+            },
+            {
+              "start": 2400,
+              "count": 352
+            },
+            {
+              "start": 2752,
+              "count": 0
+            }
+          ],
+          "complete": true,
+          "termination": "EmptyPage"
+        }
+      ]
+    }
+  ],
+  "live_totals": {
+    "frames": 98,
+    "business_frames_for_four_commands": 96,
+    "checked_delisted_records_including_resamples": 24084,
+    "unique_security_history_records_per_endpoint": 12039,
+    "checked_text_chunks": 44
+  },
+  "limitations": [
+    "No trading-hour 0547 spontaneous push acceptance",
+    "No market-2 live acceptance or all delisted symbols/all F10 files coverage",
+    "052b archive exhaustion is not exchange historical completeness",
+    "Other 22 commands' existing enhanced contract gaps are not closed by opcode coverage"
+  ],
+  "report": "docs/validation/ELTDX_3_3_0_26_COMMANDS_IMPLEMENTATION_20261024.md"
+}

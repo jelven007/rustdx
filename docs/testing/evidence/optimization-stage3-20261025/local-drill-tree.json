@@ -1,0 +1,898 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "command": [
+    "python3",
+    "/tmp/rustdx-optimization-20261024/local_drill.py"
+  ],
+  "interval_seconds": 0.5,
+  "scope": "Simultaneous sampled group/tree sums; short-lived children and peaks between samples can be missed. Disk values are logical file bytes at declared roots, not allocated blocks or external database storage.",
+  "samples": [
+    {
+      "elapsed_seconds": 0.08574383400000002,
+      "processes": 1,
+      "rss_bytes": 491520,
+      "fds": 3,
+      "threads": 1,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 66378
+      }
+    },
+    {
+      "elapsed_seconds": 0.5903434999999999,
+      "processes": 2,
+      "rss_bytes": 11993088,
+      "fds": 7,
+      "threads": 2,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 76494
+      }
+    },
+    {
+      "elapsed_seconds": 1.251838542,
+      "processes": 2,
+      "rss_bytes": 11993088,
+      "fds": 7,
+      "threads": 2,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 76494
+      }
+    },
+    {
+      "elapsed_seconds": 1.60046175,
+      "processes": 2,
+      "rss_bytes": 23773184,
+      "fds": 11,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 330024
+      }
+    },
+    {
+      "elapsed_seconds": 2.0992312920000002,
+      "processes": 2,
+      "rss_bytes": 23805952,
+      "fds": 11,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 333992
+      }
+    },
+    {
+      "elapsed_seconds": 2.6389108340000003,
+      "processes": 2,
+      "rss_bytes": 23805952,
+      "fds": 11,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 336424
+      }
+    },
+    {
+      "elapsed_seconds": 3.1080155,
+      "processes": 2,
+      "rss_bytes": 23855104,
+      "fds": 13,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 5121640
+      }
+    },
+    {
+      "elapsed_seconds": 3.620107334,
+      "processes": 2,
+      "rss_bytes": 23855104,
+      "fds": 13,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 19539560
+      }
+    },
+    {
+      "elapsed_seconds": 4.1235805,
+      "processes": 3,
+      "rss_bytes": 24018944,
+      "fds": 16,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26175464
+      }
+    },
+    {
+      "elapsed_seconds": 4.702588542,
+      "processes": 3,
+      "rss_bytes": 24018944,
+      "fds": 16,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26175464
+      }
+    },
+    {
+      "elapsed_seconds": 5.143472459,
+      "processes": 3,
+      "rss_bytes": 24018944,
+      "fds": 16,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26175464
+      }
+    },
+    {
+      "elapsed_seconds": 5.656244334,
+      "processes": 3,
+      "rss_bytes": 24018944,
+      "fds": 16,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26175464
+      }
+    },
+    {
+      "elapsed_seconds": 6.1800135,
+      "processes": 3,
+      "rss_bytes": 37797888,
+      "fds": 22,
+      "threads": 9,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26183733
+      }
+    },
+    {
+      "elapsed_seconds": 6.675815375,
+      "processes": 3,
+      "rss_bytes": 37322752,
+      "fds": 19,
+      "threads": 5,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26183027
+      }
+    },
+    {
+      "elapsed_seconds": 7.288415584,
+      "processes": 3,
+      "rss_bytes": 37552128,
+      "fds": 20,
+      "threads": 5,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26342772
+      }
+    },
+    {
+      "elapsed_seconds": 7.696820167,
+      "processes": 3,
+      "rss_bytes": 37552128,
+      "fds": 19,
+      "threads": 5,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26425711
+      }
+    },
+    {
+      "elapsed_seconds": 8.212343166999998,
+      "processes": 3,
+      "rss_bytes": 24002560,
+      "fds": null,
+      "threads": null,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26363280
+      }
+    },
+    {
+      "elapsed_seconds": 8.705796584,
+      "processes": 2,
+      "rss_bytes": 24821760,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26383934
+      }
+    },
+    {
+      "elapsed_seconds": 9.217160374999999,
+      "processes": 2,
+      "rss_bytes": 24821760,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26383934
+      }
+    },
+    {
+      "elapsed_seconds": 9.741311542,
+      "processes": 2,
+      "rss_bytes": 24920064,
+      "fds": 14,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26439691
+      }
+    },
+    {
+      "elapsed_seconds": 10.222128958999999,
+      "processes": 2,
+      "rss_bytes": 24936448,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26439691
+      }
+    },
+    {
+      "elapsed_seconds": 10.737428084,
+      "processes": 2,
+      "rss_bytes": 24936448,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26447931
+      }
+    },
+    {
+      "elapsed_seconds": 11.23772975,
+      "processes": 2,
+      "rss_bytes": 25067520,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26447931
+      }
+    },
+    {
+      "elapsed_seconds": 11.950508417,
+      "processes": 2,
+      "rss_bytes": 25067520,
+      "fds": 11,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26301097
+      }
+    },
+    {
+      "elapsed_seconds": 12.397427917,
+      "processes": 2,
+      "rss_bytes": 12648448,
+      "fds": 3,
+      "threads": null,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26442493
+      }
+    },
+    {
+      "elapsed_seconds": 12.760249125,
+      "processes": 2,
+      "rss_bytes": 23937024,
+      "fds": 13,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26458607
+      }
+    },
+    {
+      "elapsed_seconds": 13.270592666999999,
+      "processes": 2,
+      "rss_bytes": 23953408,
+      "fds": 11,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 26462127
+      }
+    },
+    {
+      "elapsed_seconds": 13.769412292,
+      "processes": 2,
+      "rss_bytes": 23953408,
+      "fds": 13,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 30331183
+      }
+    },
+    {
+      "elapsed_seconds": 14.486854542,
+      "processes": 2,
+      "rss_bytes": 23953408,
+      "fds": 13,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 43045167
+      }
+    },
+    {
+      "elapsed_seconds": 14.795617334,
+      "processes": 2,
+      "rss_bytes": 23953408,
+      "fds": 13,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 49008943
+      }
+    },
+    {
+      "elapsed_seconds": 15.278160834,
+      "processes": 3,
+      "rss_bytes": 24133632,
+      "fds": 16,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52302511
+      }
+    },
+    {
+      "elapsed_seconds": 15.788923209,
+      "processes": 3,
+      "rss_bytes": 24133632,
+      "fds": 16,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52302511
+      }
+    },
+    {
+      "elapsed_seconds": 16.296657749999998,
+      "processes": 3,
+      "rss_bytes": 24150016,
+      "fds": 16,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52302511
+      }
+    },
+    {
+      "elapsed_seconds": 16.9445995,
+      "processes": 3,
+      "rss_bytes": 24150016,
+      "fds": 16,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52302511
+      }
+    },
+    {
+      "elapsed_seconds": 17.316607709,
+      "processes": 3,
+      "rss_bytes": 38010880,
+      "fds": 20,
+      "threads": 9,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52310852
+      }
+    },
+    {
+      "elapsed_seconds": 17.81071775,
+      "processes": 3,
+      "rss_bytes": 37699584,
+      "fds": 19,
+      "threads": 5,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52475992
+      }
+    },
+    {
+      "elapsed_seconds": 18.312291124999998,
+      "processes": 3,
+      "rss_bytes": 37732352,
+      "fds": 19,
+      "threads": 5,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52550883
+      }
+    },
+    {
+      "elapsed_seconds": 18.813051083999998,
+      "processes": 2,
+      "rss_bytes": 24641536,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52523858
+      }
+    },
+    {
+      "elapsed_seconds": 19.397604709,
+      "processes": 2,
+      "rss_bytes": 25018368,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52523858
+      }
+    },
+    {
+      "elapsed_seconds": 19.827509834,
+      "processes": 2,
+      "rss_bytes": 25018368,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52523858
+      }
+    },
+    {
+      "elapsed_seconds": 20.331636042,
+      "processes": 2,
+      "rss_bytes": 25067520,
+      "fds": 14,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52546652
+      }
+    },
+    {
+      "elapsed_seconds": 20.844756874999998,
+      "processes": 2,
+      "rss_bytes": 25149440,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52579612
+      }
+    },
+    {
+      "elapsed_seconds": 21.450972084,
+      "processes": 2,
+      "rss_bytes": 25149440,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52587852
+      }
+    },
+    {
+      "elapsed_seconds": 21.908397959,
+      "processes": 2,
+      "rss_bytes": 25247744,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52587852
+      }
+    },
+    {
+      "elapsed_seconds": 22.358468542,
+      "processes": 2,
+      "rss_bytes": 25247744,
+      "fds": 12,
+      "threads": 3,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 52587852
+      }
+    },
+    {
+      "elapsed_seconds": 22.8649985,
+      "processes": 3,
+      "rss_bytes": 35749888,
+      "fds": 19,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 53714426
+      }
+    },
+    {
+      "elapsed_seconds": 23.375054959,
+      "processes": 3,
+      "rss_bytes": 35766272,
+      "fds": 19,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 67804666
+      }
+    },
+    {
+      "elapsed_seconds": 23.980787959,
+      "processes": 3,
+      "rss_bytes": 35766272,
+      "fds": 19,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 78434146
+      }
+    },
+    {
+      "elapsed_seconds": 24.503226083999998,
+      "processes": 3,
+      "rss_bytes": 35766272,
+      "fds": 18,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 78434146
+      }
+    },
+    {
+      "elapsed_seconds": 24.910383,
+      "processes": 3,
+      "rss_bytes": 35766272,
+      "fds": 18,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 78434146
+      }
+    },
+    {
+      "elapsed_seconds": 25.422007209,
+      "processes": 3,
+      "rss_bytes": 35880960,
+      "fds": 20,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 78721495
+      }
+    },
+    {
+      "elapsed_seconds": 25.932030375,
+      "processes": 3,
+      "rss_bytes": 35930112,
+      "fds": 18,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 78725655
+      }
+    },
+    {
+      "elapsed_seconds": 26.496151875,
+      "processes": 3,
+      "rss_bytes": 35962880,
+      "fds": 18,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 78728599
+      }
+    },
+    {
+      "elapsed_seconds": 26.95047275,
+      "processes": 3,
+      "rss_bytes": 35962880,
+      "fds": 19,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 85216919
+      }
+    },
+    {
+      "elapsed_seconds": 27.447039125,
+      "processes": 3,
+      "rss_bytes": 35962880,
+      "fds": 19,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 99241623
+      }
+    },
+    {
+      "elapsed_seconds": 27.959813084,
+      "processes": 3,
+      "rss_bytes": 35962880,
+      "fds": 18,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104562687
+      }
+    },
+    {
+      "elapsed_seconds": 28.467553625,
+      "processes": 3,
+      "rss_bytes": 35962880,
+      "fds": 18,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104562687
+      }
+    },
+    {
+      "elapsed_seconds": 28.969599875,
+      "processes": 3,
+      "rss_bytes": 35962880,
+      "fds": 19,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104755294
+      }
+    },
+    {
+      "elapsed_seconds": 29.478696084,
+      "processes": 3,
+      "rss_bytes": 35995648,
+      "fds": 20,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104853942
+      }
+    },
+    {
+      "elapsed_seconds": 29.987471125,
+      "processes": 3,
+      "rss_bytes": 36044800,
+      "fds": 21,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104858989
+      }
+    },
+    {
+      "elapsed_seconds": 30.503567625,
+      "processes": 3,
+      "rss_bytes": 34652160,
+      "fds": 12,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104881672
+      }
+    },
+    {
+      "elapsed_seconds": 31.159642208999998,
+      "processes": 3,
+      "rss_bytes": 34652160,
+      "fds": 12,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104881672
+      }
+    },
+    {
+      "elapsed_seconds": 31.499737334,
+      "processes": 3,
+      "rss_bytes": 34750464,
+      "fds": 12,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104881672
+      }
+    },
+    {
+      "elapsed_seconds": 32.003818417000005,
+      "processes": 3,
+      "rss_bytes": 34750464,
+      "fds": 12,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 104881672
+      }
+    },
+    {
+      "elapsed_seconds": 32.510551250000006,
+      "processes": 3,
+      "rss_bytes": 34783232,
+      "fds": 13,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 111122809
+      }
+    },
+    {
+      "elapsed_seconds": 33.018431334000006,
+      "processes": 3,
+      "rss_bytes": 34783232,
+      "fds": 13,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 125278585
+      }
+    },
+    {
+      "elapsed_seconds": 33.552193959,
+      "processes": 3,
+      "rss_bytes": 34783232,
+      "fds": 11,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 130992865
+      }
+    },
+    {
+      "elapsed_seconds": 34.031370959,
+      "processes": 3,
+      "rss_bytes": 34783232,
+      "fds": 12,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 130992865
+      }
+    },
+    {
+      "elapsed_seconds": 34.544677917,
+      "processes": 3,
+      "rss_bytes": 34783232,
+      "fds": 12,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 131000049
+      }
+    },
+    {
+      "elapsed_seconds": 35.043861584000005,
+      "processes": 3,
+      "rss_bytes": 34783232,
+      "fds": 13,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 131073004
+      }
+    },
+    {
+      "elapsed_seconds": 35.553893667000004,
+      "processes": 3,
+      "rss_bytes": 34783232,
+      "fds": 13,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 132991514
+      }
+    },
+    {
+      "elapsed_seconds": 36.0869,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 13,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 140855834
+      }
+    },
+    {
+      "elapsed_seconds": 36.564484834000005,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 13,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 153766426
+      }
+    },
+    {
+      "elapsed_seconds": 37.071216959000004,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 11,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157121410
+      }
+    },
+    {
+      "elapsed_seconds": 37.582062459,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 11,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157121410
+      }
+    },
+    {
+      "elapsed_seconds": 38.240295167,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 11,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157121410
+      }
+    },
+    {
+      "elapsed_seconds": 38.593147792,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 12,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157121410
+      }
+    },
+    {
+      "elapsed_seconds": 39.103365834,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 12,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157121410
+      }
+    },
+    {
+      "elapsed_seconds": 39.607240542,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 13,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157199885
+      }
+    },
+    {
+      "elapsed_seconds": 40.116157667,
+      "processes": 3,
+      "rss_bytes": 34799616,
+      "fds": 14,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157204685
+      }
+    },
+    {
+      "elapsed_seconds": 40.805189500000004,
+      "processes": 3,
+      "rss_bytes": 36732928,
+      "fds": 15,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157276594
+      }
+    },
+    {
+      "elapsed_seconds": 41.130221875000004,
+      "processes": 3,
+      "rss_bytes": 36732928,
+      "fds": 15,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157276594
+      }
+    },
+    {
+      "elapsed_seconds": 41.634884584000005,
+      "processes": 3,
+      "rss_bytes": 36749312,
+      "fds": 15,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157276594
+      }
+    },
+    {
+      "elapsed_seconds": 42.146068500000005,
+      "processes": 3,
+      "rss_bytes": 36749312,
+      "fds": 15,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157276594
+      }
+    },
+    {
+      "elapsed_seconds": 42.646155209,
+      "processes": 3,
+      "rss_bytes": 36978688,
+      "fds": 15,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157243826
+      }
+    },
+    {
+      "elapsed_seconds": 43.153519625,
+      "processes": 3,
+      "rss_bytes": 36995072,
+      "fds": 15,
+      "threads": 4,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157243826
+      }
+    },
+    {
+      "elapsed_seconds": 43.631635875,
+      "processes": 1,
+      "rss_bytes": 0,
+      "fds": null,
+      "threads": null,
+      "disk_bytes": {
+        "/tmp/rustdx-optimization-20261024/local-drill": 157267556
+      }
+    }
+  ],
+  "peaks": {
+    "processes": 3,
+    "rss_bytes": 38010880,
+    "fds": 22,
+    "threads": 9,
+    "disk_bytes": {
+      "/tmp/rustdx-optimization-20261024/local-drill": 157276594
+    }
+  },
+  "sampling_errors": [],
+  "leader_pid": 45567,
+  "exit_code": 0,
+  "elapsed_seconds": 43.659215167000006,
+  "missing_fd_samples": 2,
+  "missing_thread_samples": 3
+}

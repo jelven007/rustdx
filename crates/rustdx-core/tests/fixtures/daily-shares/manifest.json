@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "scope": "20261019..22; three listed A shares on two endpoints",
+  "source_contract": "a-share/tcp-052b/day/raw/cny/integer-shares/v2",
+  "official_slices": "byte-identical four 32-byte records, original files and hashes retained",
+  "entries": [
+    {
+      "name": "115.238.56.198-sh600000",
+      "endpoint": "115.238.56.198:7709",
+      "wire_source": "docs/testing/evidence/tcp-day-volume-fix-20261024/live-115.238.56.198/raw/sh600000/wire/000003.json",
+      "official_source": "docs/testing/evidence/acceptance-stage5-20261024/sh600000.day",
+      "official_source_sha256": "22855dea0db065e4875d005c7ba55dff5cccc4cbf491aeccfb43d8a278529748",
+      "files": {
+        "request.bin": {
+          "sha256": "0638436f3e53573d7eeecef160fd01bb04d5bd2de77f0e11037dc2520002134f",
+          "bytes": 24
+        },
+        "header.bin": {
+          "sha256": "dfa38cc2a700421b5c0ede0101a6f4192ac25451b32e0b90821ba1edbbc5db2f",
+          "bytes": 16
+        },
+        "wire.bin": {
+          "sha256": "9ec3767fd75204dc50661f92fa0e3590c75907f63976833b777ea43fd4c47241",
+          "bytes": 231
+        },
+        "official.day": {
+          "sha256": "344fa4ea0dde20e132ad50f72fe51c8d79bad05dbc59d49d087229eca6bbdced",
+          "bytes": 128
+        }
+      }
+    },
+    {
+      "name": "115.238.56.198-sh600519",
+      "endpoint": "115.238.56.198:7709",
+      "wire_source": "docs/testing/evidence/tcp-day-volume-fix-20261024/live-115.238.56.198/raw/sh600519/wire/000003.json",
+      "official_source": "docs/testing/evidence/acceptance-stage5-20261024/sh600519.day",
+      "official_source_sha256": "27addc921ea80f28399e58c7465d32e049e87b84208600c605414166446d7838",
+      "files": {
+        "request.bin": {
+          "sha256": "e4e8e3aaa235bfd7bf87b183ced41da7960aba16a6782009bb0bc22216718f48",
+          "bytes": 24
+        },
+        "header.bin": {
+          "sha256": "b4df8c5899d17515dd7f57143cecf68da50c127d343bbba88403d4f382e84244",
+          "bytes": 16
+        },
+        "wire.bin": {
+          "sha256": "33d497853dd5d01f5e57d45cc8627af77bb127ec033f8129fdddb0a9be2a418c",
+          "bytes": 282
+        },
+        "official.day": {
+          "sha256": "a99de23792d5100b0cbad8ca4b279c632a04e3253355f6d27905a75ee8164b35",
+          "bytes": 128
+        }
+      }
+    },
+    {
+      "name": "115.238.56.198-sz000001",
+      "endpoint": "115.238.56.198:7709",
+      "wire_source": "docs/testing/evidence/tcp-day-volume-fix-20261024/live-115.238.56.198/raw/sz000001/wire/000003.json",
+      "official_source": "docs/testing/evidence/acceptance-stage5-20261024/sz000001.day",
+      "official_source_sha256": "8936282131663d1d8ddd458231a604be1b7c71440d96b3edfce2cb250de439b8",
+      "files": {
+        "request.bin": {
+          "sha256": "4ab6138a77b6171a581cf5c106f62128f876c9dcaebe7a16f04846b7f5e2a225",
+          "bytes": 24
+        },
+        "header.bin": {
+          "sha256": "5fe7eb47527b73b930bd4e0f5a386ba8428ccf033fbf21d9a94c81c104176d15",
+          "bytes": 16
+        },
+        "wire.bin": {
+          "sha256": "a39b04fe01eeee01f51853a2dc289188847ca78180977398cb0ce2122d92792d",
+          "bytes": 236
+        },
+        "official.day": {
+          "sha256": "3cd8511a06e6891063413dbd9364761ebb60ee111c280fb7923c0009b86658e9",
+          "bytes": 128
+        }
+      }
+    },
+    {
+      "name": "180.153.18.170-sh600000",
+      "endpoint": "180.153.18.170:7709",
+      "wire_source": "docs/testing/evidence/tcp-day-volume-fix-20261024/live-180.153.18.170/raw/sh600000/wire/000003.json",
+      "official_source": "docs/testing/evidence/acceptance-stage5-20261024/sh600000.day",
+      "official_source_sha256": "22855dea0db065e4875d005c7ba55dff5cccc4cbf491aeccfb43d8a278529748",
+      "files": {
+        "request.bin": {
+          "sha256": "0638436f3e53573d7eeecef160fd01bb04d5bd2de77f0e11037dc2520002134f",
+          "bytes": 24
+        },
+        "header.bin": {
+          "sha256": "dfa38cc2a700421b5c0ede0101a6f4192ac25451b32e0b90821ba1edbbc5db2f",
+          "bytes": 16
+        },
+        "wire.bin": {
+          "sha256": "45395db6ddb6ee2c9dd95c40b80fdc8966b02301138857ad31c5f4b67ae78d69",
+          "bytes": 231
+        },
+        "official.day": {
+          "sha256": "344fa4ea0dde20e132ad50f72fe51c8d79bad05dbc59d49d087229eca6bbdced",
+          "bytes": 128
+        }
+      }
+    },
+    {
+      "name": "180.153.18.170-sh600519",
+      "endpoint": "180.153.18.170:7709",
+      "wire_source": "docs/testing/evidence/tcp-day-volume-fix-20261024/live-180.153.18.170/raw/sh600519/wire/000003.json",
+      "official_source": "docs/testing/evidence/acceptance-stage5-20261024/sh600519.day",
+      "official_source_sha256": "27addc921ea80f28399e58c7465d32e049e87b84208600c605414166446d7838",
+      "files": {
+        "request.bin": {
+          "sha256": "e4e8e3aaa235bfd7bf87b183ced41da7960aba16a6782009bb0bc22216718f48",
+          "bytes": 24
+        },
+        "header.bin": {
+          "sha256": "b4df8c5899d17515dd7f57143cecf68da50c127d343bbba88403d4f382e84244",
+          "bytes": 16
+        },
+        "wire.bin": {
+          "sha256": "eed749e1aa6b37f90978778fb4c7217e393f0eb26d81a7d9b93b9fea95c94b62",
+          "bytes": 282
+        },
+        "official.day": {
+          "sha256": "a99de23792d5100b0cbad8ca4b279c632a04e3253355f6d27905a75ee8164b35",
+          "bytes": 128
+        }
+      }
+    },
+    {
+      "name": "180.153.18.170-sz000001",
+      "endpoint": "180.153.18.170:7709",
+      "wire_source": "docs/testing/evidence/tcp-day-volume-fix-20261024/live-180.153.18.170/raw/sz000001/wire/000003.json",
+      "official_source": "docs/testing/evidence/acceptance-stage5-20261024/sz000001.day",
+      "official_source_sha256": "8936282131663d1d8ddd458231a604be1b7c71440d96b3edfce2cb250de439b8",
+      "files": {
+        "request.bin": {
+          "sha256": "4ab6138a77b6171a581cf5c106f62128f876c9dcaebe7a16f04846b7f5e2a225",
+          "bytes": 24
+        },
+        "header.bin": {
+          "sha256": "fde5f7f198c22771799f7232431738399ae7c9df0e347353e4d50833f9365bb9",
+          "bytes": 16
+        },
+        "wire.bin": {
+          "sha256": "d871cb92c745c8749b433184ddbc148519cfeceae41409dfd03540c7fb49ad25",
+          "bytes": 239
+        },
+        "official.day": {
+          "sha256": "3cd8511a06e6891063413dbd9364761ebb60ee111c280fb7923c0009b86658e9",
+          "bytes": 128
+        }
+      }
+    }
+  ]
+}

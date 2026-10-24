@@ -1,0 +1,3 @@
+[2026-10-24T13:09:04Z INFO  rustdx::io] dir: "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/live/attempts/a-1792847343512932454-615487/raw" day 文件数量：600
+[2026-10-24T13:09:04Z INFO  rustdx::io] "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/live/attempts/a-1792847343512932454-615487/raw"	已完成：600
+[2026-10-24T13:09:04Z INFO  rustdx::io] 解析完成 → 文件 600 个 / 行 1200 行 / 输出 0.1 MiB / 耗时 0.0s

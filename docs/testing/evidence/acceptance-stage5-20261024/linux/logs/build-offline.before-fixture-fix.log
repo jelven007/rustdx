@@ -1,0 +1,12 @@
+   Compiling jelven-rustdx-complete v1.12.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/crates/rustdx-core)
+error: couldn't read `crates/rustdx-core/tests/../../../docs/testing/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-01.payload.bin`: No such file or directory (os error 2)
+   --> crates/rustdx-core/tests/modern_commands.rs:395:19
+    |
+395 |       let payload = include_bytes!(
+    |  ___________________^
+396 | |         "../../../docs/testing/evidence/enhanced-history-0fc6-20261024/live-start-0/frame-01.payload.bin"
+397 | |     );
+    | |_____^
+
+error: could not compile `jelven-rustdx-complete` (test "modern_commands") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

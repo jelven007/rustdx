@@ -1,0 +1,651 @@
+{
+  "schema": 1,
+  "verified_at_utc": "2026-10-24T14:23:26.395366+00:00",
+  "method": "Python struct/zlib/hashlib.md5/strict GBK independent of Rust decoders",
+  "nodes": [
+    {
+      "endpoint": "115.238.56.198:7709",
+      "wire_frames": 40,
+      "compressed_frames": 38,
+      "response_identities_verified": true,
+      "files": [
+        {
+          "filename": "block_gn.dat",
+          "size": 757083,
+          "md5": "135dd66cf5b2e52abcdd967633465a4f",
+          "sha256": "dae17851d171ec094db81d256c07f88d572505dbfe1ad833e6d0f8e6201433f1",
+          "chunks": 26,
+          "boards": 269,
+          "slot_size": 2813,
+          "records": 41359,
+          "seventh_byte_counts_raw": {
+            "00": 41359
+          },
+          "all_fields_equal": true,
+          "md5_verified": true
+        },
+        {
+          "filename": "block_zs.dat",
+          "size": 329507,
+          "md5": "deddfa997800581cf5cff4ea5cf200ca",
+          "sha256": "fcc3befb6299f06af053f39bfc44a4ffe60d2112ba66c4161c571a5299b71151",
+          "chunks": 11,
+          "boards": 117,
+          "slot_size": 2813,
+          "records": 11554,
+          "seventh_byte_counts_raw": {
+            "00": 11554
+          },
+          "all_fields_equal": true,
+          "md5_verified": true
+        }
+      ],
+      "frames": [
+        {
+          "frame": "frame-000",
+          "opcode": "000d",
+          "sequence_hex": "02189300",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:28.025100+00:00"
+        },
+        {
+          "frame": "frame-001",
+          "opcode": "02c5",
+          "sequence_hex": "01000000",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:28.156375+00:00"
+        },
+        {
+          "frame": "frame-002",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:28.309677+00:00"
+        },
+        {
+          "frame": "frame-003",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:28.402753+00:00"
+        },
+        {
+          "frame": "frame-004",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:28.609937+00:00"
+        },
+        {
+          "frame": "frame-005",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:28.739024+00:00"
+        },
+        {
+          "frame": "frame-006",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:28.826642+00:00"
+        },
+        {
+          "frame": "frame-007",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:28.921406+00:00"
+        },
+        {
+          "frame": "frame-008",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:29.091858+00:00"
+        },
+        {
+          "frame": "frame-009",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:29.267266+00:00"
+        },
+        {
+          "frame": "frame-010",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:29.468026+00:00"
+        },
+        {
+          "frame": "frame-011",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:29.559034+00:00"
+        },
+        {
+          "frame": "frame-012",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:29.646364+00:00"
+        },
+        {
+          "frame": "frame-013",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:29.785039+00:00"
+        },
+        {
+          "frame": "frame-014",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:29.875455+00:00"
+        },
+        {
+          "frame": "frame-015",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:29.963248+00:00"
+        },
+        {
+          "frame": "frame-016",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.054170+00:00"
+        },
+        {
+          "frame": "frame-017",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.140462+00:00"
+        },
+        {
+          "frame": "frame-018",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.317733+00:00"
+        },
+        {
+          "frame": "frame-019",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.404146+00:00"
+        },
+        {
+          "frame": "frame-020",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.488897+00:00"
+        },
+        {
+          "frame": "frame-021",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.580234+00:00"
+        },
+        {
+          "frame": "frame-022",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.700445+00:00"
+        },
+        {
+          "frame": "frame-023",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.861262+00:00"
+        },
+        {
+          "frame": "frame-024",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:30.951298+00:00"
+        },
+        {
+          "frame": "frame-025",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:31.052874+00:00"
+        },
+        {
+          "frame": "frame-026",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:31.142006+00:00"
+        },
+        {
+          "frame": "frame-027",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:31.224109+00:00"
+        },
+        {
+          "frame": "frame-028",
+          "opcode": "02c5",
+          "sequence_hex": "02000000",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:31.647736+00:00"
+        },
+        {
+          "frame": "frame-029",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:31.734645+00:00"
+        },
+        {
+          "frame": "frame-030",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.037829+00:00"
+        },
+        {
+          "frame": "frame-031",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.124528+00:00"
+        },
+        {
+          "frame": "frame-032",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.206792+00:00"
+        },
+        {
+          "frame": "frame-033",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.293222+00:00"
+        },
+        {
+          "frame": "frame-034",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.409868+00:00"
+        },
+        {
+          "frame": "frame-035",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.504299+00:00"
+        },
+        {
+          "frame": "frame-036",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.587165+00:00"
+        },
+        {
+          "frame": "frame-037",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.676364+00:00"
+        },
+        {
+          "frame": "frame-038",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.761734+00:00"
+        },
+        {
+          "frame": "frame-039",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "115.238.56.198:7709",
+          "utc": "2026-10-24T14:22:32.930542+00:00"
+        }
+      ]
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "wire_frames": 40,
+      "compressed_frames": 38,
+      "response_identities_verified": true,
+      "files": [
+        {
+          "filename": "block_gn.dat",
+          "size": 757083,
+          "md5": "135dd66cf5b2e52abcdd967633465a4f",
+          "sha256": "dae17851d171ec094db81d256c07f88d572505dbfe1ad833e6d0f8e6201433f1",
+          "chunks": 26,
+          "boards": 269,
+          "slot_size": 2813,
+          "records": 41359,
+          "seventh_byte_counts_raw": {
+            "00": 41359
+          },
+          "all_fields_equal": true,
+          "md5_verified": true
+        },
+        {
+          "filename": "block_zs.dat",
+          "size": 329507,
+          "md5": "deddfa997800581cf5cff4ea5cf200ca",
+          "sha256": "fcc3befb6299f06af053f39bfc44a4ffe60d2112ba66c4161c571a5299b71151",
+          "chunks": 11,
+          "boards": 117,
+          "slot_size": 2813,
+          "records": 11554,
+          "seventh_byte_counts_raw": {
+            "00": 11554
+          },
+          "all_fields_equal": true,
+          "md5_verified": true
+        }
+      ],
+      "frames": [
+        {
+          "frame": "frame-000",
+          "opcode": "000d",
+          "sequence_hex": "02189300",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.013232+00:00"
+        },
+        {
+          "frame": "frame-001",
+          "opcode": "02c5",
+          "sequence_hex": "01000000",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.144229+00:00"
+        },
+        {
+          "frame": "frame-002",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.295357+00:00"
+        },
+        {
+          "frame": "frame-003",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.378091+00:00"
+        },
+        {
+          "frame": "frame-004",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.461717+00:00"
+        },
+        {
+          "frame": "frame-005",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.614434+00:00"
+        },
+        {
+          "frame": "frame-006",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.739024+00:00"
+        },
+        {
+          "frame": "frame-007",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.818196+00:00"
+        },
+        {
+          "frame": "frame-008",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:28.908102+00:00"
+        },
+        {
+          "frame": "frame-009",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.031343+00:00"
+        },
+        {
+          "frame": "frame-010",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.133320+00:00"
+        },
+        {
+          "frame": "frame-011",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.267266+00:00"
+        },
+        {
+          "frame": "frame-012",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.467003+00:00"
+        },
+        {
+          "frame": "frame-013",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.550812+00:00"
+        },
+        {
+          "frame": "frame-014",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.632744+00:00"
+        },
+        {
+          "frame": "frame-015",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.785349+00:00"
+        },
+        {
+          "frame": "frame-016",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.865617+00:00"
+        },
+        {
+          "frame": "frame-017",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:29.946755+00:00"
+        },
+        {
+          "frame": "frame-018",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.037246+00:00"
+        },
+        {
+          "frame": "frame-019",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.120988+00:00"
+        },
+        {
+          "frame": "frame-020",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.202469+00:00"
+        },
+        {
+          "frame": "frame-021",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.317649+00:00"
+        },
+        {
+          "frame": "frame-022",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.400621+00:00"
+        },
+        {
+          "frame": "frame-023",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.480088+00:00"
+        },
+        {
+          "frame": "frame-024",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.561325+00:00"
+        },
+        {
+          "frame": "frame-025",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.703724+00:00"
+        },
+        {
+          "frame": "frame-026",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.868530+00:00"
+        },
+        {
+          "frame": "frame-027",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:30.962578+00:00"
+        },
+        {
+          "frame": "frame-028",
+          "opcode": "02c5",
+          "sequence_hex": "02000000",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:31.429931+00:00"
+        },
+        {
+          "frame": "frame-029",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:31.617896+00:00"
+        },
+        {
+          "frame": "frame-030",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:31.703782+00:00"
+        },
+        {
+          "frame": "frame-031",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:31.805711+00:00"
+        },
+        {
+          "frame": "frame-032",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:32.054983+00:00"
+        },
+        {
+          "frame": "frame-033",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:32.144676+00:00"
+        },
+        {
+          "frame": "frame-034",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:32.223469+00:00"
+        },
+        {
+          "frame": "frame-035",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:32.303035+00:00"
+        },
+        {
+          "frame": "frame-036",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:32.409869+00:00"
+        },
+        {
+          "frame": "frame-037",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:32.495086+00:00"
+        },
+        {
+          "frame": "frame-038",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:32.573583+00:00"
+        },
+        {
+          "frame": "frame-039",
+          "opcode": "06b9",
+          "sequence_hex": "37186a00",
+          "endpoint": "180.153.18.170:7709",
+          "utc": "2026-10-24T14:22:32.659332+00:00"
+        }
+      ]
+    }
+  ],
+  "two_nodes_content_equal": true,
+  "total_files": 4,
+  "total_records_compared": 105826,
+  "scope": "captured block_gn.dat/block_zs.dat only; supplier categories and seventh-byte meaning unverified"
+}

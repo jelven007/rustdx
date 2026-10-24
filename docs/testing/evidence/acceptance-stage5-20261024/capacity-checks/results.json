@@ -1,0 +1,35 @@
+[
+  {
+    "name": "fmt",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.9166172920000001
+  },
+  {
+    "name": "capacity-test",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--test",
+      "control_plane",
+      "--offline",
+      "--locked",
+      "--",
+      "database_capacity_rejects_before_request_or_unknown_target",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "exit_code": 101,
+    "seconds": 7.36906
+  }
+]

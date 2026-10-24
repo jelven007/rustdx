@@ -1,0 +1,14 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 13.59s
+[1m[32m     Running[0m tests/finance_semantics.rs (/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/deps/finance_semantics-bea2e6d2999efd51)
+
+running 6 tests
+test consumption_requires_every_declared_field_and_the_bound_report_period ... ok
+test caller_evidence_can_verify_other_symbols_and_negative_financial_values ... ok
+test evidence_is_scoped_to_symbol_update_and_each_field ... ok
+test every_slot_is_lossless_and_candidates_require_explicit_access ... ok
+test issuer_evidence_verifies_ten_fields_with_float32_and_disclosure_tolerances ... ok
+test malformed_records_fail_and_clear_state_while_zero_dates_remain_unknown ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,5 @@
+# Frozen evidence is reviewed by recorded hashes; preserve bytes on every platform.
+docs/testing/evidence/** -text -diff -whitespace
+project-review-20261022/** -text -diff -whitespace
+crates/rustdx-core/tests/fixtures/** -text
+apps/rustdx-cli/tests/fixtures/** -text

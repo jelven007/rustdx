@@ -1,0 +1,85 @@
+{
+  "retention_edit": {
+    "date": "2026-10-24",
+    "original_sha256": "56198d28af7b4fe2e1bcf12e6255704c85096f1a9dd34bf8de7e447900787ad8",
+    "scope": "Historical acceptance record filtered to retained TDX and database capabilities; removed provider-specific commands, report and comparison results. Checks below remain historical, not current-code validation."
+  },
+  "local_date": "2026-10-23",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "rust": "1.89.0",
+  "release_binary_sha256": "e6c5241b2a480361a2f422768a0fa55019a951a25b11a4c578d52e5c1adf498f",
+  "checks": [
+    {
+      "command": ".cargo/bin/cargo +1.89.0 fmt --all -- --check",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 test --workspace --all-features --locked",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 clippy --workspace --all-targets --all-features --locked -- -D warnings",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 build --release -p jelven-rustdx-cli --locked",
+      "exit": 0
+    }
+  ],
+  "external_commands": [
+    {
+      "command": ".cargo/bin/cargo +1.89.0 run --example production_smoke --locked",
+      "exit": 0
+    },
+    {
+      "command": ".cargo/bin/cargo +1.89.0 test -p jelven-rustdx-cli --test database_acceptance --locked -- --nocapture",
+      "exit": 0
+    }
+  ],
+  "services": {
+    "clickhouse": "26.11.1.548",
+    "clickhouse_distribution": "official macOS master experimental build",
+    "mongodb": "8.0.16",
+    "scope": "isolated local services; 1040 keys and all exported numeric fields, duplicates, updates, constraints, FINAL/merge and CSV preservation"
+  },
+  "tdx": {
+    "window": "20260823..=20261022",
+    "counts": {
+      "quotes": 2,
+      "stock daily bars": 38,
+      "index daily bars": 38,
+      "adjusted daily bars": 192,
+      "minute": 240,
+      "history minute": 240,
+      "history transaction": 20,
+      "corporate actions": 45,
+      "concept block records": 41369,
+      "F10 categories": 16,
+      "F10 contents": 16
+    },
+    "stock_bounds": "20260824..=20261022",
+    "scope": "interface/ordering/date/OHLC checks; finance and all directory fields not independently audited"
+  },
+  "independent_protocol_fixtures": "../../tests/fixtures/kline/manifest.json",
+  "fuzz": {
+    "exit": 0,
+    "runs": 627152,
+    "seconds": 31,
+    "sanitizer": "AddressSanitizer",
+    "coverage_instrumented": true,
+    "scope": "bounded run; not exhaustive"
+  },
+  "logs_sha256": {
+    "rustdx-step6-services.log": "0ccd76ed4d9da9e38f2b3e2fb36558e94fa4a40e0eaa3b6c60ff44a4aacae530",
+    "rustdx-step6-final-checks.log": "8da390a080d7f748d372ce1eb6f0e95edd3a3b8733b0fad580a06b38ed6d153c",
+    "rustdx-step6-fuzz.log": "06184428f014155fbf322a2b00b32d64acd3b634a02297fce799555553623f21"
+  },
+  "limitations": [
+    "No 2027 complete calendar or full-market security lifecycle history",
+    "No new 29.8 million-row production import or target-production-version acceptance",
+    "No long-term network P95 or cross-host connection/writer coordination",
+    "Only nine independently decoded protocol bars",
+    "No new crate release or remote push"
+  ]
+}

@@ -1,0 +1,43 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 14.06s
+[1m[32m     Running[0m unittests src/lib.rs (/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/deps/rustdx_complete-823e092937ee1e1f)
+
+running 22 tests
+test tcp::stock::client::batch_budget::tests::slots_are_budgeted_before_allocation_and_rows_stop_collection ... ok
+test tcp::stock::client::batch_budget::tests::capacity_raw_payload_and_error_storage_are_charged ... ok
+test tcp::stock::client::bar_range::tests::conflicting_duplicate_and_nonprogress_are_rejected ... ok
+test tcp::stock::client::bar_range::tests::limits_and_legacy_short_page_are_explicitly_incomplete ... ok
+test tcp::stock::client::tests::adjusted_multipliers_cash_and_rights ... ok
+test tcp::stock::client::tests::adjusted_multipliers_no_xdxr ... ok
+test tcp::stock::client::bar_range::tests::short_pages_continue_with_raw_offsets_and_record_duplicate_boundaries ... ok
+test tcp::stock::client::tests::adjusted_multipliers_split ... ok
+test tcp::stock::client::tests::adjusted_multipliers_suspended_xdxr_day ... ok
+test tcp::stock::client::tests::adjustment_anchors_first_bar_and_chains_suspension_events ... ok
+test tcp::stock::client::tests::ex_right_reference_rounds_to_fen ... ok
+test tcp::stock::client::tests::k_range_retain_logic ... ok
+test tcp::stock::client::tests::today_yyyymmdd_format ... ok
+test tcp::stock::client::transactions::tests::current_day_date_change_is_rejected_but_history_keeps_its_explicit_date ... ok
+test tcp::stock::client::bar_range::tests::reconnect_invalidates_the_source_even_when_endpoint_is_unchanged ... ok
+test tcp::stock::client::stream::tests::total_budgets_stop_before_delivery_and_item_failures_are_retained ... ok
+test tcp::stock::client::batch::tests::queued_batches_have_a_deadline ... ok
+test tcp::stock::client::stream::tests::callback_failure_deadline_and_cancellation_stop_delivery ... ok
+test tcp::stock::client::stream::tests::slow_first_item_bounds_prefetch_and_preserves_errors_in_input_order ... ok
+test tcp::stock::client::tests::overlapping_batches_wait_and_preserve_results_when_pool_size_changes ... ok
+test tcp::stock::client::bar_range::tests::network_short_page_and_empty_confirmation_keep_one_session ... ok
+test tcp::stock::client::extended_queries::tests::aggregate_stops_scheduling_on_exhaustion_and_keeps_item_order_and_errors ... FAILED
+
+failures:
+
+---- tcp::stock::client::extended_queries::tests::aggregate_stops_scheduling_on_exhaustion_and_keeps_item_order_and_errors stdout ----
+
+thread 'tcp::stock::client::extended_queries::tests::aggregate_stops_scheduling_on_exhaustion_and_keeps_item_order_and_errors' panicked at crates/rustdx-core/src/tcp/stock/client/extended_queries.rs:370:14:
+called `Result::unwrap()` on an `Err` value: Custom { kind: TimedOut, error: "操作总体时限已耗尽" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    tcp::stock::client::extended_queries::tests::aggregate_stops_scheduling_on_exhaustion_and_keeps_item_order_and_errors
+
+test result: FAILED. 21 passed; 1 failed; 0 ignored; 0 measured; 175 filtered out; finished in 2.00s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p jelven-rustdx-complete --lib`

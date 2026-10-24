@@ -1,0 +1,29 @@
+    Blocking waiting for file lock on package cache
+     Locking 51 packages to latest Rust 1.89 compatible versions
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.27
+   Compiling serde_core v1.0.229
+   Compiling rustversion v1.0.23
+   Compiling autocfg v1.5.1
+   Compiling serde v1.0.229
+    Checking core-foundation-sys v0.8.7
+   Compiling thiserror v2.0.21
+    Checking simdutf8 v0.1.5
+    Checking adler2 v2.0.1
+    Checking scopeguard v1.2.0
+   Compiling multiversion_no_op v1.0.0
+    Checking cfg-if v1.0.5
+    Checking miniz_oxide v0.9.1
+    Checking log v0.4.34
+    Checking iana-time-zone v0.1.65
+   Compiling num-traits v0.2.19
+   Compiling encoding_rs v0.8.42
+   Compiling syn v3.0.9
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+    Checking chrono v0.4.45
+    Checking trade_date_a v2026.0.0
+    Checking jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+    Checking rustdx-document-examples v0.0.0 (/private/tmp/rustdx-production-restructure/doc-examples)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.68s

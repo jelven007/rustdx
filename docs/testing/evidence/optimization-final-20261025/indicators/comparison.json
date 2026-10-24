@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "max_ratio": 1.5,
+  "scope": "shared batch API; same-host alternating samples; synthetic, not market acceptance",
+  "baseline_binary_sha256": "8093ee8acde45bcc43eb27202bd855303ae71fb1df4abd514cb109b0c1792760",
+  "current_binary_sha256": "935b8ed86af743c7bdae85313b4aae0e269a1ae4c00e13a0dbd9a81d94455dd6",
+  "measurements": [
+    {
+      "name": "bands_kdj",
+      "rows": 10000,
+      "period": 20,
+      "ratio": 0.8951077943615257,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "bands_kdj",
+      "rows": 10000,
+      "period": 200,
+      "ratio": 1.2228999772438878,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "bands_kdj",
+      "rows": 100000,
+      "period": 20,
+      "ratio": 1.0002499727337433,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "bands_kdj",
+      "rows": 100000,
+      "period": 200,
+      "ratio": 1.1575237381496608,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "ema_macd_batch",
+      "rows": 10000,
+      "period": 0,
+      "ratio": 0.5700131858471906,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "ema_macd_batch",
+      "rows": 100000,
+      "period": 0,
+      "ratio": 0.4263265803503427,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "sma_rsi",
+      "rows": 10000,
+      "period": 20,
+      "ratio": 0.9525034235409194,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "sma_rsi",
+      "rows": 10000,
+      "period": 200,
+      "ratio": 0.782267759677291,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "sma_rsi",
+      "rows": 100000,
+      "period": 20,
+      "ratio": 0.7799829639733178,
+      "same_output": true,
+      "passed": true
+    },
+    {
+      "name": "sma_rsi",
+      "rows": 100000,
+      "period": 200,
+      "ratio": 1.0147524254401725,
+      "same_output": true,
+      "passed": true
+    }
+  ]
+}

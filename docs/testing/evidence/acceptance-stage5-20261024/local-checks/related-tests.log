@@ -1,0 +1,33 @@
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 0.13s
+[1m[32m     Running[0m tests/modern_commands.rs (target/debug/deps/modern_commands-cebb66da4ccac4b1)
+
+running 10 tests
+test directory_has_u32_offsets_full_name_ieee_prices_and_checked_pages ... ok
+test minute_precision_uses_metadata_for_two_three_and_four_decimals ... ok
+test today_minute_uses_first_point_bases_and_distinct_average_scale ... ok
+test enhanced_history_event_model_replays_real_wire_without_losing_new_slots ... ok
+test raw_extraction_stops_idle_worker_and_preserves_the_socket ... ok
+test client_defaults_load_new_directory_cache_and_only_use_0537_minutes ... ok
+test idle_failure_invalidates_and_next_request_reconnects_without_mixing_sessions ... ok
+test manual_heartbeat_returns_date_and_idle_worker_serializes_with_business ... ok
+test new_directory_short_pages_continue_but_early_empty_and_duplicate_fail ... ok
+test waiting_for_heartbeat_honors_business_deadline_and_drop_interrupts_worker ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+[1m[32m     Running[0m tests/quote_precision.rs (target/debug/deps/quote_precision-7409dc7f9792e976)
+
+running 10 tests
+test mixed_decimals_scale_every_price_once_and_preserve_nonprice_fields ... ok
+test live_mixed_precision_frame_matches_independent_closed_session_prices ... ok
+test wide_integer_sums_zero_prices_and_missing_identity_are_preserved ... ok
+test preserved_real_two_decimal_sample_matches_all_historical_fields ... ok
+test immutable_generations_and_exchange_day_freshness_do_not_mix ... ok
+test missing_unsupported_duplicate_and_truncated_input_fail_without_fallback ... ok
+test live_request_rejects_stale_future_and_missing_precision_before_sending ... ok
+test multi_market_refresh_does_not_publish_successful_half_on_second_market_failure ... ok
+test client_cold_load_hot_cache_missing_precision_and_failed_refresh ... ok
+test nested_operation_deadline_bounds_cold_loading_and_does_not_publish_partial_cache ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+

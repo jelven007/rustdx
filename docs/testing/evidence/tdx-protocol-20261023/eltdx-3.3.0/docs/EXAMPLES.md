@@ -1,0 +1,172 @@
+# 使用示例
+
+这些示例都基于真实 `7709` 行情主站。代码建议带市场前缀，例如 `sz000001`、`sh600000`、`bj920001`。
+
+## 快照
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3) as client:
+    quotes = client.helpers.full_quotes(["sz000001", "sh600000"])
+
+for item in quotes:
+    print(item.full_code, item.last_price, item.change_pct, item.total_hand)
+```
+
+## 代码表
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3) as client:
+    print(client.codes.count("sz"))
+    print(client.codes.list("sz", start=0, limit=5))
+    print(client.codes.all_a_shares()[:10])
+```
+
+## K 线和复权 K 线
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3) as client:
+    day = client.bars.get("sz000001", period="day", count=5)
+    history = client.bars.get("sz000001", period="day", all_pages=True)
+    qfq = client.bars.get("sz000001", period="day", adjust="qfq", count=5)
+    hfq = client.bars.get("sz000001", period="day", adjust="hfq", count=5)
+
+print(day.bars[-1].time, day.bars[-1].close)
+print(qfq.adjust_mode, qfq.bars[-1].close)
+print(hfq.adjust_mode, hfq.bars[-1].close)
+```
+
+## 退市 K 线（日线、不复权）
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3, pool_size=2) as client:
+    page = client.delisted_bars.get("T000038", count=20)
+    history = client.delisted_bars.get("sz000038", all_pages=True)
+    histories = client.delisted_bars.get(
+        ["T000038", "002087"], all_pages=True, batch_size=2
+    )
+    for code, series in histories.items():
+        print(code, series.count)
+
+for bar in page.bars:
+    print(bar.time.date(), bar.close, bar.volume_wire_value, bar.amount)
+```
+
+`all_pages=True` 自动翻页获取历史日线，批量时每只股票独立翻页。批量结果用标准代码取值，如 `histories["sz000038"]`。`batch_size` 控制同时查询的股票数，实际不超过 `pool_size`。`volume_wire_value` 的单位为股，`volume_lots` 的单位为手。完整参数和返回字段见[退市 K 线接口](methods/7709-退市K线日线接口.md)。
+
+## 分时
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3) as client:
+    today = client.minutes.today("sz000001")
+    history = client.minutes.history("sz000001", "2026-05-20")
+
+print(today.trading_date, today.count)
+print(history.trading_date, history.points[-1].price)
+```
+
+## 成交明细和 09:25 竞价
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3) as client:
+    ticks = client.trades.today("sz000001", count=20)
+    auction = client.trades.opening_match_history("sz000001", "2026-05-20")
+
+print(ticks.count, ticks.ticks[0].time_label, ticks.ticks[0].price)
+print(auction is not None, auction.price if auction else None, auction.volume if auction else None)
+```
+
+## 股本变迁和本地复权系数
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3) as client:
+    gbbq = client.corporate.capital_changes("sz000001")
+    raw = client.bars.get("sz000001", period="day", adjust="none", all_pages=True)
+    factors = client.corporate.adjustment_factors(
+        "sz000001",
+        start_date=raw.bars[0].time.date(),
+        anchor_date=raw.bars[-1].time.date(),
+    )
+
+print(gbbq.count)
+print(gbbq.records[0].category_name)
+print(factors.count, factors.items[0].qfq_scale, factors.items[0].qfq_offset)
+```
+
+`adjustment_factors()` 返回每个除权事件日期的 `scale + offset`，可按 K 线日期应用到本地不复权 OHLC。完整 K 线必须传入首根 K 线日期作为 `start_date`，避免上市前权息事件进入后复权基准。直接获取复权 K 线时使用 `client.bars.get(..., adjust="qfq" / "hfq")`；本地计算与服务端结果可能存在约 `0.01～0.02` 元差异，完整说明见 [本地复权系数](methods/7709-本地复权系数.md)。
+
+## 资金流向
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=5) as client:
+    flow = client.money_flow.daily("sz000063")
+    latest = flow.records[0]
+    print(latest.date, latest.main_net, latest.main_ratio)
+```
+
+字段说明和返回样本见 [资金流向日数据](methods/0x0ffc-资金流向日数据接口.md)。
+
+## 主站测速和连接池
+
+```python
+from eltdx import TdxClient
+
+with TdxClient.from_hosts(pool_size=2, probe_hosts=True, timeout=3) as client:
+    print(client.transport.hosts[:3])
+    print(client.helpers.full_quotes("sz000001")[0].last_price)
+```
+
+## JSON 输出
+
+```python
+from eltdx import TdxClient, to_json
+
+with TdxClient(timeout=3) as client:
+    quotes = client.helpers.full_quotes(["sz000001", "sh600000"])
+
+print(to_json(quotes, indent=2))
+```
+
+## 常用问题
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3) as client:
+    profiles = client.helpers.stock_profile_table(["sz000001", "sh600000"])
+    topics = client.helpers.stock_topics("000034")
+    stocks = client.helpers.topic_stocks("000034", topic_name="存储芯片")
+    auction = client.helpers.auction_data("sz000001", "2026-05-20")
+
+print(profiles.rows[0].name, profiles.rows[0].last_price)
+print(topics.topics[:3])
+print(stocks.rows[:10])
+print(auction.open_price, auction.open_change_pct, auction.open_amount)
+```
+
+## 协议排查
+
+```python
+from eltdx import TdxClient
+
+with TdxClient(timeout=3) as client:
+    minute = client.minutes.today("sz000001", include_raw=True)
+
+print(minute.raw_payload.hex())
+print(minute.points[0].record_hex)
+```

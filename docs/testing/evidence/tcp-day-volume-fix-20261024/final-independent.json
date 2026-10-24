@@ -1,0 +1,443 @@
+{
+  "schema_version": 1,
+  "source_contract": "a-share/tcp-052b/day/raw/cny/integer-shares/v2",
+  "status": "passed",
+  "comparison": "exact equality; no tolerance or rounding",
+  "results": [
+    {
+      "endpoint": "115.238.56.198:7709",
+      "comparisons": [
+        {
+          "code": "sh600000",
+          "date": "20261019",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 54074699,
+          "official_volume_shares": 54074699,
+          "amount_raw": 1308371440,
+          "amount_yuan": 528825856.0
+        },
+        {
+          "code": "sh600000",
+          "date": "20261020",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 60513255,
+          "official_volume_shares": 60513255,
+          "amount_raw": 1309442387,
+          "amount_yuan": 589321408.0
+        },
+        {
+          "code": "sh600000",
+          "date": "20261021",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 46256249,
+          "official_volume_shares": 46256249,
+          "amount_raw": 1305817064,
+          "amount_yuan": 447085824.0
+        },
+        {
+          "code": "sh600000",
+          "date": "20261022",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 62529869,
+          "official_volume_shares": 62529869,
+          "amount_raw": 1309654326,
+          "amount_yuan": 602885504.0
+        },
+        {
+          "code": "sh600519",
+          "date": "20261019",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 3972894,
+          "official_volume_shares": 3972894,
+          "amount_raw": 1335769079,
+          "amount_yuan": 5308935680.0
+        },
+        {
+          "code": "sh600519",
+          "date": "20261020",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 3413565,
+          "official_volume_shares": 3413565,
+          "amount_raw": 1334238734,
+          "amount_yuan": 4525399040.0
+        },
+        {
+          "code": "sh600519",
+          "date": "20261021",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 3351416,
+          "official_volume_shares": 3351416,
+          "amount_raw": 1334001281,
+          "amount_yuan": 4403823104.0
+        },
+        {
+          "code": "sh600519",
+          "date": "20261022",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 4249133,
+          "official_volume_shares": 4249133,
+          "amount_raw": 1336291113,
+          "amount_yuan": 5576217088.0
+        },
+        {
+          "code": "sz000001",
+          "date": "20261019",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 126779262,
+          "official_volume_shares": 126779262,
+          "amount_raw": 1320081603,
+          "amount_yuan": 1466720640.0
+        },
+        {
+          "code": "sz000001",
+          "date": "20261020",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 124509668,
+          "official_volume_shares": 124509668,
+          "amount_raw": 1319791284,
+          "amount_yuan": 1429559808.0
+        },
+        {
+          "code": "sz000001",
+          "date": "20261021",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 81354137,
+          "official_volume_shares": 81354137,
+          "amount_raw": 1314774034,
+          "amount_yuan": 930546816.0
+        },
+        {
+          "code": "sz000001",
+          "date": "20261022",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 129764875,
+          "official_volume_shares": 129764875,
+          "amount_raw": 1320094916,
+          "amount_yuan": 1468424704.0
+        }
+      ],
+      "exact_rows": 12,
+      "official_sources": [
+        {
+          "path": "docs/testing/evidence/acceptance-stage5-20261024/sh600000.day",
+          "sha256": "22855dea0db065e4875d005c7ba55dff5cccc4cbf491aeccfb43d8a278529748",
+          "bytes": 205152
+        },
+        {
+          "path": "docs/testing/evidence/acceptance-stage5-20261024/sh600519.day",
+          "sha256": "27addc921ea80f28399e58c7465d32e049e87b84208600c605414166446d7838",
+          "bytes": 192832
+        },
+        {
+          "path": "docs/testing/evidence/acceptance-stage5-20261024/sz000001.day",
+          "sha256": "8936282131663d1d8ddd458231a604be1b7c71440d96b3edfce2cb250de439b8",
+          "bytes": 271200
+        }
+      ],
+      "csv_sha256": "2ecd33d4ea44f4cf2185275149b2d112913774905a3462c4f0ff087c558dd0ae"
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "comparisons": [
+        {
+          "code": "sh600000",
+          "date": "20261019",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 54074699,
+          "official_volume_shares": 54074699,
+          "amount_raw": 1308371440,
+          "amount_yuan": 528825856.0
+        },
+        {
+          "code": "sh600000",
+          "date": "20261020",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 60513255,
+          "official_volume_shares": 60513255,
+          "amount_raw": 1309442387,
+          "amount_yuan": 589321408.0
+        },
+        {
+          "code": "sh600000",
+          "date": "20261021",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 46256249,
+          "official_volume_shares": 46256249,
+          "amount_raw": 1305817064,
+          "amount_yuan": 447085824.0
+        },
+        {
+          "code": "sh600000",
+          "date": "20261022",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 62529869,
+          "official_volume_shares": 62529869,
+          "amount_raw": 1309654326,
+          "amount_yuan": 602885504.0
+        },
+        {
+          "code": "sh600519",
+          "date": "20261019",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 3972894,
+          "official_volume_shares": 3972894,
+          "amount_raw": 1335769079,
+          "amount_yuan": 5308935680.0
+        },
+        {
+          "code": "sh600519",
+          "date": "20261020",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 3413565,
+          "official_volume_shares": 3413565,
+          "amount_raw": 1334238734,
+          "amount_yuan": 4525399040.0
+        },
+        {
+          "code": "sh600519",
+          "date": "20261021",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 3351416,
+          "official_volume_shares": 3351416,
+          "amount_raw": 1334001281,
+          "amount_yuan": 4403823104.0
+        },
+        {
+          "code": "sh600519",
+          "date": "20261022",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 4249133,
+          "official_volume_shares": 4249133,
+          "amount_raw": 1336291113,
+          "amount_yuan": 5576217088.0
+        },
+        {
+          "code": "sz000001",
+          "date": "20261019",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 126779262,
+          "official_volume_shares": 126779262,
+          "amount_raw": 1320081603,
+          "amount_yuan": 1466720640.0
+        },
+        {
+          "code": "sz000001",
+          "date": "20261020",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 124509668,
+          "official_volume_shares": 124509668,
+          "amount_raw": 1319791284,
+          "amount_yuan": 1429559808.0
+        },
+        {
+          "code": "sz000001",
+          "date": "20261021",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 81354137,
+          "official_volume_shares": 81354137,
+          "amount_raw": 1314774034,
+          "amount_yuan": 930546816.0
+        },
+        {
+          "code": "sz000001",
+          "date": "20261022",
+          "fields_exact": {
+            "open": true,
+            "high": true,
+            "low": true,
+            "close": true,
+            "amount": true,
+            "vol": true
+          },
+          "volume_shares": 129764875,
+          "official_volume_shares": 129764875,
+          "amount_raw": 1320094916,
+          "amount_yuan": 1468424704.0
+        }
+      ],
+      "exact_rows": 12,
+      "official_sources": [
+        {
+          "path": "docs/testing/evidence/acceptance-stage5-20261024/sh600000.day",
+          "sha256": "22855dea0db065e4875d005c7ba55dff5cccc4cbf491aeccfb43d8a278529748",
+          "bytes": 205152
+        },
+        {
+          "path": "docs/testing/evidence/acceptance-stage5-20261024/sh600519.day",
+          "sha256": "27addc921ea80f28399e58c7465d32e049e87b84208600c605414166446d7838",
+          "bytes": 192832
+        },
+        {
+          "path": "docs/testing/evidence/acceptance-stage5-20261024/sz000001.day",
+          "sha256": "8936282131663d1d8ddd458231a604be1b7c71440d96b3edfce2cb250de439b8",
+          "bytes": 271200
+        }
+      ],
+      "csv_sha256": "2ecd33d4ea44f4cf2185275149b2d112913774905a3462c4f0ff087c558dd0ae"
+    }
+  ],
+  "exact_rows": 24,
+  "two_nodes_csv_exact": true,
+  "scope": "Three listed Shanghai/Shenzhen A shares; 2026-10-19..22 only"
+}

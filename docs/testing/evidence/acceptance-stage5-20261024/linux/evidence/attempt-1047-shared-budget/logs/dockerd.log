@@ -1,0 +1,93 @@
+time="2026-10-24T19:54:18.396832986+08:00" level=info msg="Starting up"
+time="2026-10-24T19:54:18.399782887+08:00" level=warning msg="could not change group /tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock to docker: group docker not found"
+time="2026-10-24T19:54:18.399876831+08:00" level=info msg="containerd not running, starting managed containerd"
+time="2026-10-24T19:54:18.472493899+08:00" level=info msg="started new containerd process" address=/tmp/rustdx-acceptance-20261024-TLDCn5/docker-exec/containerd/containerd.sock module=libcontainerd pid=536058
+time="2026-10-24T19:54:18.483049492+08:00" level=info msg="starting containerd" revision=bcc810d6b9066471b0b6fa75f557a15a1cbf31bb version=v1.7.25
+time="2026-10-24T19:54:18.496053518+08:00" level=info msg="loading plugin \"io.containerd.event.v1.exchange\"..." type=io.containerd.event.v1
+time="2026-10-24T19:54:18.496082130+08:00" level=info msg="loading plugin \"io.containerd.internal.v1.opt\"..." type=io.containerd.internal.v1
+time="2026-10-24T19:54:18.496164968+08:00" level=info msg="loading plugin \"io.containerd.warning.v1.deprecations\"..." type=io.containerd.warning.v1
+time="2026-10-24T19:54:18.496173820+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.blockfile\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.496205527+08:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.blockfile\"..." error="no scratch file generator: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.496212417+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.devmapper\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.496221271+08:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.devmapper\"..." error="devmapper not configured: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.496227122+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.native\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.496263051+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.overlayfs\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.496388028+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.aufs\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.498314790+08:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.aufs\"..." error="aufs is not supported (modprobe aufs failed: exit status 1 \"modprobe: FATAL: Module aufs not found in directory /lib/modules/6.8.0-138-generic\\n\"): skip plugin" type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.498328921+08:00" level=info msg="loading plugin \"io.containerd.snapshotter.v1.zfs\"..." type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.498396499+08:00" level=info msg="skip loading plugin \"io.containerd.snapshotter.v1.zfs\"..." error="path /tmp/rustdx-acceptance-20261024-TLDCn5/docker-data/containerd/daemon/io.containerd.snapshotter.v1.zfs must be a zfs filesystem to be used with the zfs snapshotter: skip plugin" type=io.containerd.snapshotter.v1
+time="2026-10-24T19:54:18.498404327+08:00" level=info msg="loading plugin \"io.containerd.content.v1.content\"..." type=io.containerd.content.v1
+time="2026-10-24T19:54:18.498421861+08:00" level=info msg="loading plugin \"io.containerd.metadata.v1.bolt\"..." type=io.containerd.metadata.v1
+time="2026-10-24T19:54:18.498453650+08:00" level=info msg="metadata content store policy set" policy=shared
+time="2026-10-24T19:54:18.500031643+08:00" level=info msg="loading plugin \"io.containerd.gc.v1.scheduler\"..." type=io.containerd.gc.v1
+time="2026-10-24T19:54:18.500054294+08:00" level=info msg="loading plugin \"io.containerd.differ.v1.walking\"..." type=io.containerd.differ.v1
+time="2026-10-24T19:54:18.500063364+08:00" level=info msg="loading plugin \"io.containerd.lease.v1.manager\"..." type=io.containerd.lease.v1
+time="2026-10-24T19:54:18.500071907+08:00" level=info msg="loading plugin \"io.containerd.streaming.v1.manager\"..." type=io.containerd.streaming.v1
+time="2026-10-24T19:54:18.500083812+08:00" level=info msg="loading plugin \"io.containerd.runtime.v1.linux\"..." type=io.containerd.runtime.v1
+time="2026-10-24T19:54:18.500139447+08:00" level=info msg="loading plugin \"io.containerd.monitor.v1.cgroups\"..." type=io.containerd.monitor.v1
+time="2026-10-24T19:54:18.500282304+08:00" level=info msg="loading plugin \"io.containerd.runtime.v2.task\"..." type=io.containerd.runtime.v2
+time="2026-10-24T19:54:18.500335110+08:00" level=info msg="loading plugin \"io.containerd.runtime.v2.shim\"..." type=io.containerd.runtime.v2
+time="2026-10-24T19:54:18.500342670+08:00" level=info msg="loading plugin \"io.containerd.sandbox.store.v1.local\"..." type=io.containerd.sandbox.store.v1
+time="2026-10-24T19:54:18.500351133+08:00" level=info msg="loading plugin \"io.containerd.sandbox.controller.v1.local\"..." type=io.containerd.sandbox.controller.v1
+time="2026-10-24T19:54:18.500371416+08:00" level=info msg="loading plugin \"io.containerd.service.v1.containers-service\"..." type=io.containerd.service.v1
+time="2026-10-24T19:54:18.500380914+08:00" level=info msg="loading plugin \"io.containerd.service.v1.content-service\"..." type=io.containerd.service.v1
+time="2026-10-24T19:54:18.500388149+08:00" level=info msg="loading plugin \"io.containerd.service.v1.diff-service\"..." type=io.containerd.service.v1
+time="2026-10-24T19:54:18.500396689+08:00" level=info msg="loading plugin \"io.containerd.service.v1.images-service\"..." type=io.containerd.service.v1
+time="2026-10-24T19:54:18.500405194+08:00" level=info msg="loading plugin \"io.containerd.service.v1.introspection-service\"..." type=io.containerd.service.v1
+time="2026-10-24T19:54:18.500412489+08:00" level=info msg="loading plugin \"io.containerd.service.v1.namespaces-service\"..." type=io.containerd.service.v1
+time="2026-10-24T19:54:18.500419745+08:00" level=info msg="loading plugin \"io.containerd.service.v1.snapshots-service\"..." type=io.containerd.service.v1
+time="2026-10-24T19:54:18.500426641+08:00" level=info msg="loading plugin \"io.containerd.service.v1.tasks-service\"..." type=io.containerd.service.v1
+time="2026-10-24T19:54:18.500439898+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.containers\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500448106+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.content\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500456132+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.diff\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500463199+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.events\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500470919+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.images\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500478437+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.introspection\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500485769+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.leases\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500493789+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.namespaces\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500501585+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.sandbox-controllers\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500515385+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.sandboxes\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500536706+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.snapshots\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500545425+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.streaming\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500553310+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.tasks\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500562732+08:00" level=info msg="loading plugin \"io.containerd.transfer.v1.local\"..." type=io.containerd.transfer.v1
+time="2026-10-24T19:54:18.500577424+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.transfer\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500585107+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.version\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500593210+08:00" level=info msg="loading plugin \"io.containerd.internal.v1.restart\"..." type=io.containerd.internal.v1
+time="2026-10-24T19:54:18.500625441+08:00" level=info msg="loading plugin \"io.containerd.tracing.processor.v1.otlp\"..." type=io.containerd.tracing.processor.v1
+time="2026-10-24T19:54:18.500635946+08:00" level=info msg="skip loading plugin \"io.containerd.tracing.processor.v1.otlp\"..." error="skip plugin: tracing endpoint not configured" type=io.containerd.tracing.processor.v1
+time="2026-10-24T19:54:18.500642066+08:00" level=info msg="loading plugin \"io.containerd.internal.v1.tracing\"..." type=io.containerd.internal.v1
+time="2026-10-24T19:54:18.500649049+08:00" level=info msg="skip loading plugin \"io.containerd.internal.v1.tracing\"..." error="skip plugin: tracing endpoint not configured" type=io.containerd.internal.v1
+time="2026-10-24T19:54:18.500654592+08:00" level=info msg="loading plugin \"io.containerd.grpc.v1.healthcheck\"..." type=io.containerd.grpc.v1
+time="2026-10-24T19:54:18.500661974+08:00" level=info msg="loading plugin \"io.containerd.nri.v1.nri\"..." type=io.containerd.nri.v1
+time="2026-10-24T19:54:18.500669232+08:00" level=info msg="NRI interface is disabled by configuration."
+time="2026-10-24T19:54:18.500791738+08:00" level=info msg=serving... address=/tmp/rustdx-acceptance-20261024-TLDCn5/docker-exec/containerd/containerd-debug.sock
+time="2026-10-24T19:54:18.500824008+08:00" level=info msg=serving... address=/tmp/rustdx-acceptance-20261024-TLDCn5/docker-exec/containerd/containerd.sock.ttrpc
+time="2026-10-24T19:54:18.500848605+08:00" level=info msg=serving... address=/tmp/rustdx-acceptance-20261024-TLDCn5/docker-exec/containerd/containerd.sock
+time="2026-10-24T19:54:18.500858475+08:00" level=info msg="containerd successfully booted in 0.018295s"
+time="2026-10-24T19:54:19.474795321+08:00" level=info msg="OTEL tracing is not configured, using no-op tracer provider"
+time="2026-10-24T19:54:19.682899438+08:00" level=info msg="Loading containers: start."
+time="2026-10-24T19:54:19.685838208+08:00" level=info msg="Loading containers: done."
+time="2026-10-24T19:54:19.702267919+08:00" level=warning msg="WARNING: IPv4 forwarding is disabled"
+time="2026-10-24T19:54:19.702295045+08:00" level=info msg="Docker daemon" commit=4c9b3b0 containerd-snapshotter=false storage-driver=overlay2 version=27.5.1
+time="2026-10-24T19:54:19.702371063+08:00" level=info msg="Daemon has completed initialization"
+time="2026-10-24T19:54:19.724865442+08:00" level=info msg="API listen on /tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock"
+time="2026-10-24T19:54:34.742969590+08:00" level=warning msg="Error getting v2 registry: Get \"https://registry-1.docker.io/v2/\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"
+time="2026-10-24T19:54:34.743008702+08:00" level=info msg="Attempting next endpoint for pull after error: Get \"https://registry-1.docker.io/v2/\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"
+time="2026-10-24T19:54:34.744368155+08:00" level=error msg="Handler for POST /v1.47/images/create returned error: Get \"https://registry-1.docker.io/v2/\": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)"
+time="2026-10-24T19:54:54.585051849+08:00" level=warning msg="reference for unknown type: " digest="sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146" remote="docker.m.daocloud.io/clickhouse/clickhouse-server@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146"
+time="2026-10-24T19:57:49.289569625+08:00" level=warning msg="reference for unknown type: " digest="sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d" remote="docker.m.daocloud.io/library/mongo@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d"
+time="2026-10-24T19:59:00.905424582+08:00" level=error msg="Not continuing with pull after error: context canceled"
+time="2026-10-24T19:59:00.906176161+08:00" level=info msg="Layer sha256:bf0fdc4a1d877e864648ff39abca2e64e4f5ded0aa6c9249603048a45e3a0bda cleaned up"
+time="2026-10-24T19:59:00.906193817+08:00" level=info msg="Layer sha256:f27dceb4676bd4bbf497deb010745b5e094070e99fe85b4aa095a9fe0584b99a cleaned up"
+time="2026-10-24T19:59:00.953276559+08:00" level=info msg="Layer sha256:75841d563ac7f20f3c998e7c783188bc2dae030a036c8be1add697b36f91746f cleaned up"
+time="2026-10-24T19:59:00.953293111+08:00" level=info msg="Layer sha256:675e20f798d300c440877ac13f962368058c1b9de4dd7edbea211e57c3d44bd1 cleaned up"
+time="2026-10-24T19:59:00.953300607+08:00" level=info msg="Layer sha256:c13b1ce181e6ff490eeab6fd00907d7afa91a64bda072f27307c14c47d71ef90 cleaned up"
+time="2026-10-24T19:59:00.953305366+08:00" level=info msg="Layer sha256:e8bce0aabd687e9ee90e0bada33884f40b277196f72aac9934357472863a80ae cleaned up"
+time="2026-10-24T20:09:24.288067548+08:00" level=error msg="Not continuing with pull after error: context canceled"
+time="2026-10-24T20:09:24.297451544+08:00" level=info msg="Processing signal 'terminated'"
+time="2026-10-24T20:09:24.298072673+08:00" level=info msg="stopping event stream following graceful shutdown" error="<nil>" module=libcontainerd namespace=moby
+time="2026-10-24T20:09:24.298242368+08:00" level=info msg="Daemon shutdown complete"
+time="2026-10-24T20:09:24.298245461+08:00" level=info msg="stopping healthcheck following graceful shutdown" module=libcontainerd
+time="2026-10-24T20:09:24.298279878+08:00" level=info msg="stopping event stream following graceful shutdown" error="context canceled" module=libcontainerd namespace=plugins.moby
+time="2026-10-24T20:09:29.298420553+08:00" level=error msg="Error shutting down http server" error="context canceled"

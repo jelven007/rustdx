@@ -1,0 +1,18 @@
+   Compiling find-msvc-tools v0.1.15
+   Compiling shlex v2.0.1
+   Compiling vcpkg v0.2.15
+   Compiling pkg-config v0.3.34
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+   Compiling smallvec v1.16.3
+   Compiling fallible-iterator v0.3.0
+   Compiling fallible-streaming-iterator v0.1.9
+   Compiling cc v1.9.0
+   Compiling ring v0.17.14
+   Compiling libsqlite3-sys v0.38.2
+   Compiling rustls v0.23.43
+   Compiling rustls-webpki v0.103.15
+   Compiling ureq v3.4.0
+   Compiling jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/rustdx-cmd)
+   Compiling rusqlite v0.40.2
+   Compiling rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/rustdx-runner)
+    Finished `release` profile [optimized] target(s) in 39.80s

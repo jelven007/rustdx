@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "reason": "compiled historical collector binaries exceed GitHub ordinary Git single-file limit",
+  "operation": "retain existing bytes in original local paths; do not delete or rewrite historical evidence",
+  "ordinary_git_includes_binary_bytes": false,
+  "files": [
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/control-backup/releases/a-1792847266998288617-613409/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/control-backup/releases/a-1792847268797428377-613444/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live/releases/a-1792847266998288617-613409/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/live/releases/a-1792847268797428377-613444/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control/releases/a-1792847266998288617-613409/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/restored-control/releases/a-1792847268797428377-613444/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/control-backup/releases/a-1792847341693863806-615452/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/control-backup/releases/a-1792847343512932454-615487/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/live/releases/a-1792847341693863806-615452/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/live/releases/a-1792847343512932454-615487/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/restored-control/releases/a-1792847341693863806-615452/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    },
+    {
+      "path": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/restored-control/releases/a-1792847343512932454-615487/collector.bin",
+      "bytes": 138315760,
+      "sha256": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2"
+    }
+  ],
+  "full_preflight_archive_reference": "docs/testing/evidence/optimization-final-20261025/engineering-source.json"
+}

@@ -7,16 +7,14 @@ fleet.toml
 # 日志文件
 *.log
 rustdx.log
-rustdx-cmd/rustdx.log
+apps/rustdx-cli/rustdx.log
 
 # 数据文件
 *.csv
-!tests/fixtures/kline/*.expected.csv
-!tests/fixtures/protocol/*.expected.csv
-rustdx-cmd/stocks.csv
-rustdx-cmd/eastmoney.csv
-rustdx-cmd/factor.csv
-eastmoney.csv
+!crates/rustdx-core/tests/fixtures/kline/*.expected.csv
+!crates/rustdx-core/tests/fixtures/protocol/*.expected.csv
+apps/rustdx-cli/stocks.csv
+apps/rustdx-cli/factor.csv
 
 # 编辑器和IDE
 .vscode/
@@ -33,7 +31,7 @@ deploy/clickhouse/.env
 test_pytdx*.py
 
 # 测试快照
-tests/.struct_size.rs.pending-snap
+crates/rustdx-core/tests/.struct_size.rs.pending-snap
 *.pending-snap
 
 # 工作流和模板
@@ -41,8 +39,8 @@ tests/.struct_size.rs.pending-snap
 PR_TEMPLATE.md
 
 # 临时调试文件
-examples/*_debug.rs
-examples/*_raw.rs
+crates/rustdx-core/examples/*_debug.rs
+crates/rustdx-core/examples/*_raw.rs
 
 # 备份文件
 *.bak
@@ -54,9 +52,9 @@ hsjday.zip
 hsjday/
 *.manifest.json
 *.manifest.json.*.json
-fuzz/target/
-fuzz/corpus/
-fuzz/artifacts/
+tools/fuzz/target/
+tools/fuzz/corpus/
+tools/fuzz/artifacts/
 
 # 运行数据、报告与本地工具产物
 data/*
@@ -64,3 +62,13 @@ data/*
 reports/
 acceptance/
 .screenshots/
+
+# 本次工程迁移的有限检查日志作为固定验收证据提交。
+!docs/testing/evidence/project-restructure-20261024/checks/*.log
+
+# 17项优化的有限回归及独立包消费原始日志。
+!docs/testing/evidence/optimization-*/*.log
+!docs/testing/evidence/optimization-*/**/*.log
+
+# 历史演练的编译后二进制保留本地，Git提交保留单独路径/大小/SHA清单。
+docs/testing/evidence/acceptance-stage6-20261024/**/collector.bin

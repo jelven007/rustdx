@@ -1,0 +1,13 @@
+{
+  "records": [
+    {
+      "market_raw": 0,
+      "code_number_raw": 10,
+      "code": "000010",
+      "upper_price": 1.39,
+      "lower_price": 1.13,
+      "upper_bits": 1068624773,
+      "lower_bits": 1066443735
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-10-24T06:19:31.135534+00:00",
+  "date": "2026-10-24",
+  "kind": "live_wire_validation_with_unresolved_business_contracts",
+  "baseline": "eltdx 3.2.2",
+  "report": "docs/validation/LIVE_COMMAND_CONTRACT_VALIDATION_20261024.md",
+  "endpoints": [
+    "115.238.56.198:7709",
+    "180.153.18.170:7709"
+  ],
+  "captures": [
+    "115.238.56.198",
+    "180.153.18.170",
+    "115.238.56.198-archive",
+    "180.153.18.170-archive"
+  ],
+  "wire_frames": 564,
+  "directory_record_observations": 208684,
+  "command_frames": {
+    "0x000d": 4,
+    "0x044e": 8,
+    "0x044d": 136,
+    "0x0004": 4,
+    "0x054c": 4,
+    "0x052d": 24,
+    "0x0fb4": 60,
+    "0x0feb": 180,
+    "0x056a": 144
+  },
+  "record_observations": {
+    "0x052d": 1104,
+    "0x0fb4": 14400,
+    "0x0feb": 8640,
+    "0x056a": 16084
+  },
+  "recent_nonempty_response_count": 36,
+  "recent_nonempty_unique_symbol_dates": 12,
+  "recent_nonempty_request_dates": [
+    20260817,
+    20260818
+  ],
+  "recent_nonempty_transport_and_decode_verified": true,
+  "recent_requested_date_business_verified": false,
+  "recent_dated_control_mismatches": 24,
+  "recent_discrepancy_example": {
+    "symbol": "sz000001",
+    "requested_date": 20260817,
+    "recent_open": 11.01,
+    "recent_last_price": 11.13,
+    "dated_daily_open": 11.2,
+    "dated_daily_close": 11.1
+  },
+  "auction_historical_date_selection_verified": true,
+  "auction_actual_date_echo_present": false,
+  "auction_sign_counts": {
+    "1": 8252,
+    "-1": 7492,
+    "0": 340
+  },
+  "auction_direction_corroboration_samples": 12,
+  "auction_positive_buy_negative_sell_sample_corroborated": true,
+  "auction_side_mapping_synchronously_verified": false,
+  "cross_capture_comparison": {
+    "profiles_compared": 192,
+    "profiles_with_payload_differences": 8,
+    "differences": [
+      {
+        "opcode": "0x056a",
+        "request_body_hex": "010036303035313900000000030000000000000000000000f4010000",
+        "observations": [
+          {
+            "capture": "115.238.56.198",
+            "request_file": "frame-155.request.bin",
+            "payload_sha256": "9802d420b8cea24b09deda1102f696dbcb97580ef777c972bc96f175c0d9131a",
+            "payload_bytes": 3330
+          },
+          {
+            "capture": "180.153.18.170",
+            "request_file": "frame-155.request.bin",
+            "payload_sha256": "44769eb669c131642616a315058f919b216f389dca6ebf151c3c2f4fe32d912c",
+            "payload_bytes": 3330
+          }
+        ]
+      },
+      {
+        "opcode": "0x056a",
+        "request_body_hex": "01003630303531399f283501030000000000000000000000f4010000",
+        "observations": [
+          {
+            "capture": "115.238.56.198",
+            "request_file": "frame-150.request.bin",
+            "payload_sha256": "9802d420b8cea24b09deda1102f696dbcb97580ef777c972bc96f175c0d9131a",
+            "payload_bytes": 3330
+          },
+          {
+            "capture": "180.153.18.170",
+            "request_file": "frame-150.request.bin",
+            "payload_sha256": "44769eb669c131642616a315058f919b216f389dca6ebf151c3c2f4fe32d912c",
+            "payload_bytes": 3330
+          }
+        ]
+      },
+      {
+        "opcode": "0x056a",
+        "request_body_hex": "0100363030303030ce273501030000000000000000000000f4010000",
+        "observations": [
+          {
+            "capture": "115.238.56.198",
+            "request_file": "frame-133.request.bin",
+            "payload_sha256": "a42c28122129ed99f2b6dcff8ed70d53a3cc76c73debc4fa1d5d2dce9936fd22",
+            "payload_bytes": 2802
+          },
+          {
+            "capture": "180.153.18.170",
+            "request_file": "frame-133.request.bin",
+            "payload_sha256": "5aaa75c5a1aaf19eb44f344609a3e35e2fe40bf7871c5b761ed812b3be0ca330",
+            "payload_bytes": 2802
+          },
+          {
+            "capture": "115.238.56.198-archive",
+            "request_file": "frame-076.request.bin",
+            "payload_sha256": "5aaa75c5a1aaf19eb44f344609a3e35e2fe40bf7871c5b761ed812b3be0ca330",
+            "payload_bytes": 2802
+          },
+          {
+            "capture": "180.153.18.170-archive",
+            "request_file": "frame-076.request.bin",
+            "payload_sha256": "5aaa75c5a1aaf19eb44f344609a3e35e2fe40bf7871c5b761ed812b3be0ca330",
+            "payload_bytes": 2802
+          }
+        ]
+      },
+      {
+        "opcode": "0x0fb4",
+        "request_body_hex": "9e28350101363030303030",
+        "observations": [
+          {
+            "capture": "115.238.56.198",
+            "request_file": "frame-113.request.bin",
+            "payload_sha256": "ac8ef9d66280f7152be868d33736c7fcab309f10fbdf05a6afb4245a0e1cf627",
+            "payload_bytes": 980
+          },
+          {
+            "capture": "180.153.18.170",
+            "request_file": "frame-113.request.bin",
+            "payload_sha256": "56faf7d0c62f5813c7388ebb105972a2fd8e481bb9d5c96d492d1f6d69d0b609",
+            "payload_bytes": 980
+          }
+        ]
+      },
+      {
+        "opcode": "0x056a",
+        "request_body_hex": "0100363030353139ce273501030000000000000000000000f4010000",
+        "observations": [
+          {
+            "capture": "115.238.56.198",
+            "request_file": "frame-157.request.bin",
+            "payload_sha256": "4b0fa3e396215a1052534b9ed55dd498dc105c2c019d7714844be35b71ce2fb8",
+            "payload_bytes": 2530
+          },
+          {
+            "capture": "180.153.18.170",
+            "request_file": "frame-157.request.bin",
+            "payload_sha256": "0f63d4a8df5066cc8ecb147a0f7f6b6cbed62016a7ae8259473a2593a6098c86",
+            "payload_bytes": 2530
+          },
+          {
+            "capture": "115.238.56.198-archive",
+            "request_file": "frame-086.request.bin",
+            "payload_sha256": "0f63d4a8df5066cc8ecb147a0f7f6b6cbed62016a7ae8259473a2593a6098c86",
+            "payload_bytes": 2530
+          },
+          {
+            "capture": "180.153.18.170-archive",
+            "request_file": "frame-086.request.bin",
+            "payload_sha256": "0f63d4a8df5066cc8ecb147a0f7f6b6cbed62016a7ae8259473a2593a6098c86",
+            "payload_bytes": 2530
+          }
+        ]
+      },
+      {
+        "opcode": "0x056a",
+        "request_body_hex": "0100353130333030ce273501030000000000000000000000f4010000",
+        "observations": [
+          {
+            "capture": "115.238.56.198",
+            "request_file": "frame-181.request.bin",
+            "payload_sha256": "3c66259e0b19fd6c0b18aff7258ad051e988f765621265331de8abeaa301819c",
+            "payload_bytes": 3650
+          },
+          {
+            "capture": "180.153.18.170",
+            "request_file": "frame-181.request.bin",
+            "payload_sha256": "c1f0d8783e01374226b1323eac239d405c4ad3f4a5ba4fc999922ea521cd65dc",
+            "payload_bytes": 3650
+          },
+          {
+            "capture": "115.238.56.198-archive",
+            "request_file": "frame-096.request.bin",
+            "payload_sha256": "c1f0d8783e01374226b1323eac239d405c4ad3f4a5ba4fc999922ea521cd65dc",
+            "payload_bytes": 3650
+          },
+          {
+            "capture": "180.153.18.170-archive",
+            "request_file": "frame-096.request.bin",
+            "payload_sha256": "c1f0d8783e01374226b1323eac239d405c4ad3f4a5ba4fc999922ea521cd65dc",
+            "payload_bytes": 3650
+          }
+        ]
+      },
+      {
+        "opcode": "0x0feb",
+        "request_body_hex": "fed8cafe01353130333030",
+        "observations": [
+          {
+            "capture": "115.238.56.198-archive",
+            "request_file": "frame-095.request.bin",
+            "payload_sha256": "a146b611e6aa51b6159e3f257fc7a9611ca06c828a702bb7a4908c38d2c446ce",
+            "payload_bytes": 1367
+          },
+          {
+            "capture": "180.153.18.170-archive",
+            "request_file": "frame-095.request.bin",
+            "payload_sha256": "5f17cae40d708d9f7f2da2e4878129cc5f13bb0ce76d9c70bf31a5bbb5f75198",
+            "payload_bytes": 1367
+          }
+        ]
+      },
+      {
+        "opcode": "0x056a",
+        "request_body_hex": "0100363030303030d1273501030000000000000000000000f4010000",
+        "observations": [
+          {
+            "capture": "115.238.56.198-archive",
+            "request_file": "frame-077.request.bin",
+            "payload_sha256": "e858ff86a1a77c7eeb5a5eb94289ec3b703033d939d0c460b94318e8fd0d2090",
+            "payload_bytes": 2130
+          },
+          {
+            "capture": "180.153.18.170-archive",
+            "request_file": "frame-077.request.bin",
+            "payload_sha256": "c15a9bc75acf1b875ff97b6df70084d39f0c859d0e93b01df61af97d0fbd9173",
+            "payload_bytes": 2130
+          }
+        ]
+      }
+    ],
+    "policy": "Preserve node differences; no arbitrary canonical endpoint selected"
+  },
+  "quote_push": {
+    "verification": "passed",
+    "business_status": "market_closed",
+    "wire_frames_checked": 0,
+    "passive_requests": 0,
+    "live_trading_push_verified": false,
+    "scope": "Pre-network gate only; no baseline or push evidence."
+  },
+  "quote_push_next_trading_day_suggested_start": "2026-10-26T09:35:00+08:00",
+  "future_run_scheduled": false,
+  "engineering": {
+    "toolchain": "1.89.0",
+    "fmt": "passed",
+    "workspace_all_targets_all_features_clippy": "passed",
+    "clippy_deny_warnings": true,
+    "tests_passed": 44,
+    "tests_failed": 0,
+    "tests_ignored": 0,
+    "scope": "related protocol, subscription, boundary and acceptance-classifier tests; local simulation is not trading-hour evidence",
+    "logs": "docs/validation/evidence/recent-auction-contracts-20261024/checks"
+  },
+  "source_sha256": {
+    "examples/validate_recent_auction.rs": "f3a76ac538e9ec3ad47a9ec5fe2999479fbb482756029e253b127c197b7526ce",
+    "scripts/validation/verify_recent_auction.py": "abdb5e585dc3b86e2be4739b220443f625e633b8318c26a9abd0aa3987a21eb8",
+    "examples/validate_quote_push.rs": "5d17672bccb80b128a8d450db807507c0cd115a6b4d714d141cbf726ca0e6dce",
+    "scripts/validation/verify_quote_push.py": "846a3abc9dea7175a3ac8b3cb2b9c3d5e5e72931cec257dedffc107b042d7bbc",
+    "src/tcp/stock/recent_minutes.rs": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+    "src/tcp/stock/auctions.rs": "9f2f94931a5eb781bba9da8bd15ac4be86529ecf1eadc08b444251ecd27eace8",
+    "src/tcp/stock/quote_subscription.rs": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+    "src/tcp/stock/extended_quote.rs": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+    "src/tcp/frame.rs": "58b36ba4743884d912bf6b691c54a4b39c4a2dcb4a6d9152a8cf09b0e81dd3cd",
+    "tests/recent_minutes_boundaries.rs": "9ee4a223ace6df62f38a33f6237bbe5b26b74146885a9db51d361cb38eeb3550",
+    "tests/quote_subscription.rs": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5"
+  },
+  "remaining_contracts": [
+    "0feb actual historical date/selector versus dated controls",
+    "0547 live trading-hour unsolicited updates",
+    "056a contemporaneous signed-volume/explicit buy-sell side mapping"
+  ],
+  "all_requested_business_contracts_passed": false
+}

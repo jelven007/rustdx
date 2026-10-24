@@ -2,6 +2,11 @@
 
 模板用于 Linux/systemd 的本地 `.day` 采集与版本发布。实际代码仍是同步 I/O、有界线程和子进程；没有跨机协调、跨库事务或内置 Web 服务。模板未在目标 Linux 验收，资源数值是起始配置，须按实际负载调整。
 
+新增[少量TCP日线配置](../../config/runner/tcp-day.example.json)可由同一run入口执行，
+需按[来源合同](../../docs/development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)
+维护获取日、单位依据、点时范围和网络许可；此来源只取得本机模拟验证，
+模板的目标Linux验收仍未完成。
+
 ## 1. 准备与配置
 
 从同一提交使用 Rust1.89 或更新兼容版本构建：
@@ -41,10 +46,12 @@ ClickHouse 表使用普通 MergeTree，无 TTL、异步插入或替换合并；M
 
 为文件系统设置实际磁盘配额。采集工作目录和数据库证据各受配置预算监测；工作目录监测允许临时文件在扫描期间消失，最终封存会重计静止目录。周期监测不等于硬配额。示例首次运行预留空间须至少覆盖 workspace 加 `min_free_bytes`，还须为长期 release、账本、数据库证据和备份留容量。
 
+恢复前置和指标模板显式加--no-tcp-startup，避免本地账本管理依赖公共行情节点；数据库恢复回读仍连接所选目标。全局--timeout放在子命令前，run是否预热由Job/命令行明确配置。
+
 metrics命令可以原子写出 Prometheus textfile：
 
 ```sh
-rustdx-runner metrics --root /var/lib/rustdx \
+rustdx-runner --no-tcp-startup metrics --root /var/lib/rustdx \
   --output /var/lib/node_exporter/textfile_collector/rustdx.prom
 ```
 
@@ -69,9 +76,9 @@ unknown不会仅凭某一时刻行数正确自动转为 verified。运营核查�
 ## 5. 备份与隔离恢复
 
 ```sh
-rustdx-runner backup --root /var/lib/rustdx --destination /srv/backups/rustdx-001
-rustdx-runner restore --root /srv/backups/rustdx-001 --destination /srv/restore/rustdx-001
-rustdx-runner export --root /srv/restore/rustdx-001 --dataset a-share-day --version 1 \
+rustdx-runner --no-tcp-startup backup --root /var/lib/rustdx --destination /srv/backups/rustdx-001
+rustdx-runner --no-tcp-startup restore --root /srv/backups/rustdx-001 --destination /srv/restore/rustdx-001
+rustdx-runner --no-tcp-startup export --root /srv/restore/rustdx-001 --dataset a-share-day --version 1 \
   --from 2026-10-22 --through 2026-10-22 --output /srv/exports/restored.csv
 ```
 
@@ -79,4 +86,10 @@ rustdx-runner export --root /srv/restore/rustdx-001 --dataset a-share-day --vers
 
 这备份包含可重建数据的规范文件及控制账本，不是 ClickHouse/MongoDB 服务端数据卷或日志备份。恢复校验不连接数据库、不切换生产目录；数据库灾难恢复由数据库备份流程或明确的新命名空间/Job重建执行，再做精确验收。RTO/RPO、保留期、配额、Linux实际服务启动、数据库权限与长期负载必须在部署环境证明。
 
-MongoDB适配当前每个有界逻辑请求启动一次 mongosh，依次写入/回读512行；内存与请求大小有界，但进程启动和连接成本较高。1,200行模拟数据的本机服务验证不能代替全量吞吐量、稳定版本Linux或长期SLO验收。实施证据与尚未通过的门禁见[实施记录](../../docs/development/PRODUCTION_IMPLEMENTATION.md)。
+服务端全备恢复另按以下顺序编排：停止发布并确认无在途写请求，记录固定catalog/release边界；取得控制层备份与各数据库完整备份及摘要；在全新隔离数据目录恢复数据库和控制文件；逐版本核对文件/数据库全部键、字段、约束与索引。控制备份、数据库备份和对应版本必须属于已经静止的同一边界，不能因为各自备份成功就推导跨库一致性。恢复期间不要让自动调度启动新写入。
+
+[第六阶段演练](../../docs/archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)已在固定Linux镜像完成 ClickHouse `BACKUP/RESTORE DATABASE` 与 MongoDB BSON/metadata `mongodump/mongorestore --stopOnError`；旧容器停止后，另一组空目录恢复600只合成证券的两个版本，两库各2,400行全字段/元数据一致。重复恢复和非法写入拒绝后数据仍一致。[脚本](../../scripts/validation/verify_database_recovery.py)只创建私有loopback服务，可用于重复工程验收；不能指向生产目标。所测5.81秒是小范围新服务启动至核验耗时，未覆盖 MongoDB 物理卷/journal/oplog、持续写入、用户/角色权限和生产规模。
+
+生产恢复到新端点时，先按[应用接入约定](../../docs/development/APPLICATION_INTEGRATION.md)核查已归档目标身份。恢复控制文件不会自动重写原始请求证据或把收据指向另一库；端点迁移和业务切换须另外编排并验证。目标RPO/RTO与生产恢复通过状态继续按[验收矩阵](../../docs/testing/PRODUCTION_ACCEPTANCE.md)管理。
+
+MongoDB适配当前每个有界逻辑请求启动一次 mongosh，依次写入/回读512行；内存与请求大小有界，但进程启动和连接成本较高。1,200行模拟数据的本机服务验证不能代替全量吞吐量、稳定版本Linux或长期SLO验收。实施证据与尚未通过的门禁见[实施记录](../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。

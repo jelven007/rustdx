@@ -1,0 +1,104 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 11.61s
+[1m[32m     Running[0m tests/enhanced_history_transaction.rs (target/debug/deps/enhanced_history_transaction-f078acec616f83c8)
+
+running 10 tests
+test pinned_eltdx_request_and_response_layouts_match ... ok
+test classification_preserves_wire_order_and_prioritizes_status ... ok
+test legacy_and_enhanced_layouts_cannot_be_interchanged ... ok
+test offline_decoding_honors_cancellation ... ok
+test invalid_parameters_fail_before_io ... ok
+test offsets_advance_by_raw_count_and_do_not_wrap ... ok
+test malformed_payloads_fail_the_whole_page ... ok
+test client_replays_compressed_empty_and_legacy_pages_without_fallback ... ok
+test arbitrary_payloads_are_bounded_and_never_panic ... ok
+test real_frames_match_every_independently_decoded_field ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+[1m[32m     Running[0m tests/kline_decoders.rs (target/debug/deps/kline_decoders-596d9d34f0f7e466)
+
+running 4 tests
+test checked_request_rejects_inputs_without_panicking ... ok
+test request_preserves_explicit_period_market_and_volume_unit ... ok
+test malformed_responses_never_return_partial_or_stale_data ... ok
+test independent_pytdx_requests_and_all_decoded_fields_match ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/protocol_decoders.rs (target/debug/deps/protocol_decoders-935e9f3d5df2fd90)
+
+running 6 tests
+test tick_values_are_checked_and_unknown_direction_is_preserved ... ok
+test invalid_parameters_fail_without_panicking ... ok
+test response_identity_numeric_and_date_constraints ... ok
+test truncation_excess_trailing_and_stale_results_are_rejected ... ok
+test client_sends_checked_bytes_and_uses_the_independent_decoders ... ok
+test real_samples_match_independent_requests_and_all_fields ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+[1m[32m     Running[0m tests/reported_turnover.rs (target/debug/deps/reported_turnover-c5c4395ee0d14244)
+
+running 6 tests
+test amount_leaf_and_compatibility_mapping_handle_zero_low_and_invalid_codes ... ok
+test missing_profiles_dates_and_after_hours_are_unavailable_not_zero ... ok
+test mixed_sources_duplicate_bars_and_intraday_windows_are_checked ... ok
+test client_finds_requested_historical_day_and_enforces_budgets ... ok
+test frozen_source_amounts_keep_codes_scope_units_and_fractional_precision ... ok
+test client_reconnect_deadline_and_cancellation_never_return_partial_success ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+[1m[32m     Running[0m tests/trade_amount.rs (target/debug/deps/trade_amount-804049a21ed721a2)
+
+running 4 tests
+test unknown_units_nonexecutions_and_candidates_do_not_become_zero_totals ... ok
+test identity_and_explicit_share_units_are_checked ... ok
+test enhanced_dto_mutation_cannot_change_authoritative_amount ... ok
+test frozen_day_preserves_records_duplicates_and_estimates ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+[1m[32m     Running[0m tests/trade_amount_reconcile.rs (target/debug/deps/trade_amount_reconcile-31f929510c7ea7d1)
+
+running 5 tests
+test quantity_mismatch_and_duplicate_zero_prefix_report_diagnostics ... ok
+test page_request_order_is_reversed_but_duplicates_are_preserved ... ok
+test partial_unknown_candidate_date_and_scope_are_not_promoted ... ok
+test live_replay_checks_compatibility_adapter_and_same_connection_reconciliation ... ok
+test frozen_day_aligns_240_and_48_intervals_without_repairing_amounts ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+[1m[32m     Running[0m tests/trade_models.rs (target/debug/deps/trade_models-e09df8f6d18b4e23)
+
+running 7 tests
+test classification_prioritizes_status_and_preserves_unqualified_events ... ok
+test collection_advances_raw_count_and_preserves_identical_same_minute_rows ... ok
+test every_budget_or_error_stop_retains_partial_coverage ... ok
+test collection_rejects_mixed_queries_gaps_and_false_termination ... ok
+test raw_decoder_is_atomic_and_offsets_are_checked ... ok
+test real_fixtures_keep_raw_fields_and_legacy_output ... ok
+test live_pages_capture_sources_and_detect_same_endpoint_reconnection ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/transaction_pagination.rs (target/debug/deps/transaction_pagination-eb62cefc7f8dc6fe)
+
+running 12 tests
+test invalid_parameters_do_not_send_any_page ... ok
+test auto_reconnect_to_the_same_endpoint_cannot_mix_pages ... ok
+test page_limit_is_an_error_but_an_empty_first_page_completes_in_one_slot ... ok
+test malformed_later_page_propagates_instead_of_returning_the_first_page ... ok
+test raw_short_pages_continue_and_page_order_preserves_identical_ticks ... ok
+test identical_whole_pages_and_reversed_minute_order_are_not_normal_completion ... ok
+test record_budget_requires_an_empty_probe_even_at_the_exact_limit ... ok
+test u16_offset_boundary_allows_65535_but_never_wraps_or_truncates ... ok
+test pacing_cannot_extend_an_outer_operation_deadline ... ok
+test all_pages_share_one_deadline_and_honor_outer_cancellation ... ok
+test byte_budget_counts_all_payloads_including_discarded_empty_rechecks ... ok
+test empty_pages_are_rechecked_at_the_same_offset_without_reconnecting ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.22s
+

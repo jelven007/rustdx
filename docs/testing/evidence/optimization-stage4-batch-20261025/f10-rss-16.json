@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "command": [
+    "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/release/examples/batch_retention_probe",
+    "16"
+  ],
+  "interval_seconds": 0.1,
+  "scope": "Simultaneous sampled group/tree sums; short-lived children and peaks between samples can be missed. Disk values are logical file bytes at declared roots, not allocated blocks or external database storage.",
+  "samples": [
+    {
+      "elapsed_seconds": 0.07136916700000001,
+      "processes": 1,
+      "rss_bytes": 32768,
+      "fds": 3,
+      "threads": 1,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.16935045799999998,
+      "processes": 1,
+      "rss_bytes": 32768,
+      "fds": 3,
+      "threads": 1,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.277439583,
+      "processes": 1,
+      "rss_bytes": 32768,
+      "fds": 3,
+      "threads": 1,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.381468375,
+      "processes": 1,
+      "rss_bytes": 32768,
+      "fds": 3,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.48756995799999997,
+      "processes": 1,
+      "rss_bytes": 7847936,
+      "fds": 9,
+      "threads": 5,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.5932082080000001,
+      "processes": 1,
+      "rss_bytes": 7847936,
+      "fds": 9,
+      "threads": 5,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.6981724579999999,
+      "processes": 1,
+      "rss_bytes": 7847936,
+      "fds": 9,
+      "threads": 5,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.7885633750000001,
+      "processes": 1,
+      "rss_bytes": 0,
+      "fds": null,
+      "threads": null,
+      "disk_bytes": {}
+    }
+  ],
+  "peaks": {
+    "processes": 1,
+    "rss_bytes": 7847936,
+    "fds": 9,
+    "threads": 11,
+    "disk_bytes": {}
+  },
+  "sampling_errors": [],
+  "leader_pid": 50818,
+  "exit_code": 0,
+  "elapsed_seconds": 0.8151895420000002,
+  "missing_fd_samples": 1,
+  "missing_thread_samples": 1
+}

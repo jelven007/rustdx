@@ -1,0 +1,20 @@
+{
+  "records": [
+    {
+      "market_raw": 0,
+      "code_number_raw": 56,
+      "code": "000056",
+      "upper_price": 2.26,
+      "lower_price": 1.85,
+      "upper_bits": 1074832343,
+      "lower_bits": 1072483533
+    }
+  ],
+  "source": {
+    "opcode": 1106,
+    "endpoint": "115.238.56.198:7709",
+    "fetched_at": "2026-10-24T05:43:57.699313Z",
+    "connection_id": 1,
+    "metadata_generation": null
+  }
+}

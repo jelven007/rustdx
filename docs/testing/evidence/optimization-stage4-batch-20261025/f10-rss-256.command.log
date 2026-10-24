@@ -1,0 +1,1 @@
+{"inputs":256,"max_retained_bytes":8388608,"outcome":"budget_exhausted","rows_per_item":4096,"synthetic":true,"workers":2}

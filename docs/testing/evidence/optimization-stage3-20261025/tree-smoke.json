@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess; subprocess.run([\"python3\", \"-c\", \"import time; data=bytearray(8*1024*1024); time.sleep(0.6)\"])"
+  ],
+  "interval_seconds": 0.1,
+  "scope": "Simultaneous sampled group/tree sums; short-lived children and peaks between samples can be missed. Disk values are logical file bytes at declared roots, not allocated blocks or external database storage.",
+  "samples": [
+    {
+      "elapsed_seconds": 0.090013959,
+      "processes": 1,
+      "rss_bytes": 180224,
+      "fds": 3,
+      "threads": 1,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.31274716700000005,
+      "processes": 2,
+      "rss_bytes": 26361856,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.417029792,
+      "processes": 2,
+      "rss_bytes": 26361856,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.491348959,
+      "processes": 2,
+      "rss_bytes": 26361856,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.597453542,
+      "processes": 2,
+      "rss_bytes": 26361856,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.698215792,
+      "processes": 2,
+      "rss_bytes": 26361856,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    }
+  ],
+  "peaks": {
+    "processes": 2,
+    "rss_bytes": 26361856,
+    "fds": 6,
+    "threads": 2,
+    "disk_bytes": {}
+  },
+  "sampling_errors": [],
+  "leader_pid": 43568,
+  "exit_code": 0,
+  "elapsed_seconds": 0.6992875,
+  "missing_fd_samples": 0,
+  "missing_thread_samples": 0
+}

@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "mode": "preview_only",
+  "created_at": "2026-10-24T16:51:27.305400+00:00",
+  "root": "/tmp/rustdx-optimization-20261024/local-drill/live",
+  "ledger_schema": 3,
+  "ledger_counts": {
+    "jobs": 2,
+    "attempts": 2,
+    "releases": 2,
+    "publications": 2,
+    "events": 8
+  },
+  "policy": {
+    "retention_days": 30,
+    "all_registered_versions_and_evidence": "protected"
+  },
+  "scope": "live root plus explicitly supplied backups; undisclosed external copies are unknown",
+  "logical_bytes": 52362154,
+  "allocated_bytes": 53510144,
+  "free_bytes": 356031635456,
+  "buckets": {
+    "catalogs": {
+      "logical_bytes": 2158,
+      "allocated_bytes": 8192,
+      "files": 2
+    },
+    "controller.lock": {
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 1
+    },
+    "ledger.sqlite": {
+      "logical_bytes": 102400,
+      "allocated_bytes": 131072,
+      "files": 1
+    },
+    "releases": {
+      "logical_bytes": 52257596,
+      "allocated_bytes": 53370880,
+      "files": 288
+    }
+  },
+  "backups": [
+    {
+      "path": "/tmp/rustdx-optimization-20261024/local-drill/recovery/backup",
+      "created_at": "2026-10-24T16:21:46.565539+00:00",
+      "logical_bytes": 52416526,
+      "allocated_bytes": 53538816,
+      "files": 292
+    }
+  ],
+  "objects": [
+    {
+      "path": "catalogs/a-1792858878002682000-45573-1.json",
+      "status": "protected",
+      "reasons": [
+        "backup:/tmp/rustdx-optimization-20261024/local-drill/recovery/backup",
+        "catalog:optimization-drill:1"
+      ],
+      "age_days": 0.02081988969185185,
+      "logical_bytes": 1079,
+      "allocated_bytes": 4096,
+      "files": 1
+    },
+    {
+      "path": "catalogs/a-1792858888957957000-45769-2.json",
+      "status": "protected",
+      "reasons": [
+        "backup:/tmp/rustdx-optimization-20261024/local-drill/recovery/backup",
+        "catalog:optimization-drill:2"
+      ],
+      "age_days": 0.020697084856296295,
+      "logical_bytes": 1079,
+      "allocated_bytes": 4096,
+      "files": 1
+    },
+    {
+      "path": "controller.lock",
+      "status": "protected",
+      "reasons": [
+        "controller_or_unclassified_data"
+      ],
+      "age_days": 0.02094111019851852,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 1
+    },
+    {
+      "path": "ledger.sqlite",
+      "status": "protected",
+      "reasons": [
+        "backup:/tmp/rustdx-optimization-20261024/local-drill/recovery/backup",
+        "controller_or_unclassified_data"
+      ],
+      "age_days": 0.02069702194074074,
+      "logical_bytes": 102400,
+      "allocated_bytes": 131072,
+      "files": 1
+    },
+    {
+      "path": "releases/a-1792858878002682000-45573",
+      "status": "protected",
+      "reasons": [
+        "backup:/tmp/rustdx-optimization-20261024/local-drill/recovery/backup",
+        "catalog:optimization-drill:1",
+        "catalog_database:optimization-drill:1",
+        "ledger_release:released"
+      ],
+      "age_days": 0.020850787905185186,
+      "logical_bytes": 26128541,
+      "allocated_bytes": 26685440,
+      "files": 144
+    },
+    {
+      "path": "releases/a-1792858888957957000-45769",
+      "status": "protected",
+      "reasons": [
+        "backup:/tmp/rustdx-optimization-20261024/local-drill/recovery/backup",
+        "catalog:optimization-drill:2",
+        "catalog_database:optimization-drill:2",
+        "ledger_release:released"
+      ],
+      "age_days": 0.020726730364444446,
+      "logical_bytes": 26129055,
+      "allocated_bytes": 26685440,
+      "files": 144
+    }
+  ],
+  "candidate_bytes": 0,
+  "trend": null
+}

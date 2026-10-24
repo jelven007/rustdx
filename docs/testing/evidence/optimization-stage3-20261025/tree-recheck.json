@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess; subprocess.run([\"python3\", \"-c\", \"import time; data=bytearray(8*1024*1024); time.sleep(0.6)\"], start_new_session=True)"
+  ],
+  "interval_seconds": 0.1,
+  "scope": "Simultaneous sampled group/tree sums; short-lived children and peaks between samples can be missed. Disk values are logical file bytes at declared roots, not allocated blocks or external database storage.",
+  "samples": [
+    {
+      "elapsed_seconds": 0.258049917,
+      "processes": 1,
+      "rss_bytes": 32768,
+      "fds": 3,
+      "threads": 1,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.4676795,
+      "processes": 2,
+      "rss_bytes": 26198016,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.5570159170000001,
+      "processes": 2,
+      "rss_bytes": 26198016,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.6629395,
+      "processes": 2,
+      "rss_bytes": 26198016,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.77136475,
+      "processes": 2,
+      "rss_bytes": 26198016,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.872405334,
+      "processes": 2,
+      "rss_bytes": 26198016,
+      "fds": 6,
+      "threads": 2,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.951585542,
+      "processes": 1,
+      "rss_bytes": 0,
+      "fds": null,
+      "threads": null,
+      "disk_bytes": {}
+    }
+  ],
+  "peaks": {
+    "processes": 2,
+    "rss_bytes": 26198016,
+    "fds": 6,
+    "threads": 2,
+    "disk_bytes": {}
+  },
+  "sampling_errors": [],
+  "leader_pid": 47371,
+  "exit_code": 0,
+  "elapsed_seconds": 0.9921993750000001,
+  "missing_fd_samples": 1,
+  "missing_thread_samples": 1
+}

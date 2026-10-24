@@ -1,0 +1,1 @@
+INSERT INTO rustdx_recovery_3291b0df13ac4945bff839756d5e6b9a.bars (dataset_id,release_id,contract_version,date,market,code,instrument_class,open,high,low,close,amount_cny,volume_shares) SELECT * REPLACE(1.5 AS volume_shares) FROM rustdx_recovery_3291b0df13ac4945bff839756d5e6b9a.bars LIMIT 1

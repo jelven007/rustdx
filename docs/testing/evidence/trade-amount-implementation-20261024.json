@@ -1,0 +1,115 @@
+{
+  "generated_utc": "2026-10-24T06:04:03.279855+00:00",
+  "status": "implemented_and_validated",
+  "base_commit": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "scope": "Uncommitted trade amount implementation on the existing concurrent dirty worktree",
+  "rust_version": "1.89.0",
+  "edition": "2024",
+  "trade_amount_schema_version": 1,
+  "plan": "docs/development/TRADE_AMOUNT_SEMANTICS_FIX_PLAN_20261024.md",
+  "implementation": "docs/development/TRADE_AMOUNT_SEMANTICS_IMPLEMENTATION_20261024.md",
+  "completed_tasks": ["T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09", "T10"],
+  "frozen_evidence": {
+    "directory": "docs/validation/evidence/enhanced-history-amount-20261024",
+    "expected_results": "docs/validation/evidence/enhanced-history-amount-20261024/results.json",
+    "capture_sha256_verified_files": 66,
+    "expectations_generated_by_new_rust_code": false,
+    "new_live_external_capture_performed": false,
+    "raw_records": 4876,
+    "auction_snapshots": 87,
+    "regular_records": 4744,
+    "after_hours_records": 45,
+    "regular_quantity_lots": 478818,
+    "regular_estimated_amount_fen": "2791801083900",
+    "regular_estimated_amount_yuan": 27918010839,
+    "after_hours_estimated_amount_yuan": 11088603,
+    "daily_reported_amount_yuan": 27918479360,
+    "one_minute_reported_amount_yuan": 27918479958.875,
+    "five_minute_reported_amount_yuan": 27918479888,
+    "estimate_minus_minute_yuan": -469119.875,
+    "minute_minus_day_yuan": 598.875,
+    "estimate_minus_day_yuan": -468521,
+    "exact_one_minute_boundaries": 240,
+    "exact_five_minute_boundaries": 48,
+    "closing_volume_lots_preserved": 4094,
+    "closing_price_raw_fen_preserved": 61263,
+    "inferred_quantity_written_back": false,
+    "legacy_common_raw_fields_match": true
+  },
+  "checks": [
+    {
+      "command": "cargo +1.89.0 fmt --all -- --check",
+      "exit_code": 0,
+      "log": "trade-amount-implementation-20261024/format.log"
+    },
+    {
+      "command": "cargo +1.89.0 clippy --offline --workspace --all-targets --all-features --locked -- -D warnings",
+      "exit_code": 0,
+      "log": "trade-amount-implementation-20261024/clippy.log"
+    },
+    {
+      "command": "cargo +1.89.0 test --offline --locked --test trade_amount --test reported_turnover --test trade_amount_reconcile --test trade_models --test transaction_pagination --test enhanced_history_transaction --test protocol_decoders --test kline_decoders",
+      "exit_code": 0,
+      "passed": 52,
+      "failed": 0,
+      "new_amount_integration_tests": 15,
+      "log": "trade-amount-implementation-20261024/related-tests.log"
+    },
+    {
+      "command": "RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo +1.89.0 test --offline --workspace --all-features --locked",
+      "exit_code": 0,
+      "result_summaries": 54,
+      "harness_passed": 455,
+      "failed": 0,
+      "ignored": 24,
+      "external_integration_checks_skipped": true,
+      "passed_count_includes_external_tests_returning_early_via_environment_flag": true,
+      "log": "trade-amount-implementation-20261024/workspace-tests.log"
+    },
+    {
+      "command": "git diff --check -- src/tcp/stock/client.rs src/tcp/stock/kline_request.rs src/tcp/stock/mod.rs docs/release/MIGRATION.md tests/fixtures/README.md",
+      "exit_code": 0
+    }
+  ],
+  "boundary_validation": [
+    "Explicit units, mismatched security/date/protocol, unsupported instrument and empty evidence",
+    "Candidate opt-in, snapshots, unknown events, zero quantity versus unavailable amounts",
+    "Checked integer sum overflow and compensated summation with nonfinite failure",
+    "Mutable enhanced page DTO and transaction collection cannot change authoritative amounts",
+    "Binary32 zero, low values, original fractional values, NaN, infinities, negative values and truncation",
+    "Matching source profile, partial minute coverage, missing date, intraday sampling and unavailable Combined",
+    "Requested historical date pagination, page/record/byte budgets, reconnect, timeout and cancellation",
+    "Mixed source connections, request order reversal, duplicate preservation and unique quantity prefixes",
+    "Ambiguous zero-quantity prefixes, fractional source quantities and quantity mismatch diagnostics",
+    "Live same-connection frozen-frame replay and cross-connection reconciliation rejection"
+  ],
+  "limitations": [
+    "Estimates are not actual per-record execution turnover",
+    "SourceEnumerated does not certify exchange coverage or an immutable intraday snapshot",
+    "Turnover profile evidence is caller supplied and scoped to one security/date/endpoint",
+    "AfterHours and Combined have no independent vendor-reported total in version 1",
+    "Offline trade pages without live provenance can align quantity boundaries but do not acquire full scope availability",
+    "Encoding-step bounds require explicit assumptions and are not vendor error guarantees",
+    "Legacy K-line amount zero/low-value behavior is corrected; unrelated volume helper uses are not generalized"
+  ],
+  "source_sha256": {
+    "src/tcp/stock/trade_amount.rs": "a76087e5e105709af4bdb7acb517fc7e70a1f8dc20140220a7e9dba53fdf0780",
+    "src/tcp/stock/reported_turnover.rs": "5ecd132b7197fb578b8ba71c0504f78e4f2a6e6ea293f1685ed21c24a6a98b0b",
+    "src/tcp/stock/trade_amount_reconcile.rs": "6bb5385575fde4f74c0362896213e586efabfe457ab899d7758185714aaec9bc",
+    "src/tcp/stock/client/turnover.rs": "fcefc2f229051abcd5879ccccbb7596e78519568155f4f64ae469a73028647dd",
+    "src/tcp/stock/kline_request.rs": "c049ce4e857560be5eacb809fec7ba41566784e2b2c229fc295342b294b89a8f",
+    "src/tcp/stock/mod.rs": "fa2ea89cb3dd63ea964f2bd6033860c2ee3571660c5a6e189ca3cc21458cb5f1",
+    "src/tcp/stock/client.rs": "2f170d349ceec8e3ffce4fcb3615dd6afd8538a6fb857e47be856fc9af1ce8f2",
+    "tests/trade_amount.rs": "13e923ce439ea61d7bde2eb4397ab383263694d0a18ca8477af4487b2b432158",
+    "tests/reported_turnover.rs": "1912b672fe2a427232f07c4f9ced5055d2375568d94364f8a7ff6c5cd47ca91b",
+    "tests/trade_amount_reconcile.rs": "322af2343eee83dd748a940588748e1597e5d7237685712fdadebbf23bf799d3",
+    "tests/common/trade_amount.rs": "05cc69100fd1c13da3c2bde1264068a273cdca223ac3e9921910e0d225c1f9ae",
+    "examples/transaction_amount.rs": "fea4e38c6ebcdab7d7c7e86de6dbbb551d18605ad27590ade7b1d49bdefb9f09"
+  },
+  "log_sha256": {
+    "clippy.log": "ee2facb829cdc1aab13a94bfb47746c932d5f07050f5eb4d59c54e850198cf72",
+    "format.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "related-tests.log": "451ffd65ada738b977d8513ca2f0a97e7b0a684e33d511166561b4296337b66f",
+    "workspace-tests.log": "6b7247ae5be92e051442d24ba21dd62b2e74a6c627a710acfc7a83c43f762f04"
+  }
+}

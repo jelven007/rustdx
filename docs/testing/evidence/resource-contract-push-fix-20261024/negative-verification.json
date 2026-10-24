@@ -1,0 +1,42 @@
+[
+  {
+    "case": "incomplete_download",
+    "rejected": true,
+    "source": "modified_copy_synthetic"
+  },
+  {
+    "case": "candidate_value_changed",
+    "rejected": true,
+    "source": "modified_copy_synthetic"
+  },
+  {
+    "case": "missing_cfg_row",
+    "rejected": true,
+    "source": "modified_copy_synthetic"
+  },
+  {
+    "case": "declared_length_or_payload_corruption",
+    "rejected": true,
+    "source": "modified_copy_synthetic"
+  },
+  {
+    "case": "missing_final_symbol",
+    "rejected": true,
+    "source": "modified_copy_synthetic"
+  },
+  {
+    "case": "wrong_final_connection",
+    "rejected": true,
+    "source": "modified_copy_synthetic"
+  },
+  {
+    "case": "wrong_final_generation",
+    "rejected": true,
+    "source": "modified_copy_synthetic"
+  },
+  {
+    "case": "promote_closed_capture",
+    "rejected": true,
+    "source": "modified_copy_synthetic"
+  }
+]

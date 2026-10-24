@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/bytedance/Documents/rustdx/scripts/validation/verify_recent_minutes_date_selector.py", line 163, in <module>
+    main()
+  File "/Users/bytedance/Documents/rustdx/scripts/validation/verify_recent_minutes_date_selector.py", line 152, in main
+    result = check(args.directory)
+  File "/Users/bytedance/Documents/rustdx/scripts/validation/verify_recent_minutes_date_selector.py", line 87, in check
+    assert all(first[key]["payload"] == second[key]["payload"] for key in first)
+AssertionError

@@ -1,0 +1,167 @@
+{
+  "date": "2026-10-24",
+  "status": "implemented_local_unreleased",
+  "finance_scope": "Builtin evidence only sz000001 updated20260815 ten exact raw fields; others candidate/unknown or caller evidence",
+  "live_scope": "Single 115.238.56.198:7709 node, 2026-10-23 closed-session data, fetched 2026-10-24; no intraday or all-node validation",
+  "independent_source": "https://qt.gtimg.cn/q=sz000001,sz159915,sh510300,sh018003,sz101123",
+  "independent_sha256": "c0a46f21bc22dc96673d7eb621d53d487b15f0fa503d9267247e55be8663c60f",
+  "independent_source_note": "Independent vendor corroboration, not an exchange disclosure; four-decimal reference displayed to three decimals",
+  "live_directories": [
+    {
+      "as_of_date": "2026-10-24",
+      "fetched_at": "2026-10-24T03:54:39.007653Z",
+      "market": 0,
+      "securities": 24460,
+      "source_endpoint": "115.238.56.198:7709",
+      "unsupported": 0
+    },
+    {
+      "as_of_date": "2026-10-24",
+      "fetched_at": "2026-10-24T03:54:39.007653Z",
+      "market": 1,
+      "securities": 27711,
+      "source_endpoint": "115.238.56.198:7709",
+      "unsupported": 0
+    }
+  ],
+  "decimal_distribution": {
+    "2": 6980,
+    "3": 2631,
+    "4": 42560
+  },
+  "live_quote_records": 15,
+  "independent_checks": [
+    {
+      "symbol": "sz000001",
+      "decimal": 2,
+      "reference_timestamp": "20261023161500",
+      "tdx_fetched_at": "2026-10-24T03:54:39.163175Z",
+      "tdx_price": 11.2,
+      "reference_price": 11.2,
+      "tdx_volume_raw": 1448805.0,
+      "tolerance": 0.005,
+      "fields_compared": 15,
+      "max_abs_difference": 0.0,
+      "matched": true
+    },
+    {
+      "symbol": "sz159915",
+      "decimal": 3,
+      "reference_timestamp": "20261023161427",
+      "tdx_fetched_at": "2026-10-24T03:54:39.163175Z",
+      "tdx_price": 2.702,
+      "reference_price": 2.702,
+      "tdx_volume_raw": 76054209.0,
+      "tolerance": 0.0005,
+      "fields_compared": 15,
+      "max_abs_difference": 0.0,
+      "matched": true
+    },
+    {
+      "symbol": "sh510300",
+      "decimal": 3,
+      "reference_timestamp": "20261023161441",
+      "tdx_fetched_at": "2026-10-24T03:54:39.163175Z",
+      "tdx_price": 4.178,
+      "reference_price": 4.178,
+      "tdx_volume_raw": 37556082.0,
+      "tolerance": 0.0005,
+      "fields_compared": 15,
+      "max_abs_difference": 0.0,
+      "matched": true
+    },
+    {
+      "symbol": "sh018003",
+      "decimal": 4,
+      "reference_timestamp": "20261023161440",
+      "tdx_fetched_at": "2026-10-24T03:54:39.163175Z",
+      "tdx_price": 111.305,
+      "reference_price": 111.305,
+      "tdx_volume_raw": 500.0,
+      "tolerance": 0.0005,
+      "fields_compared": 15,
+      "max_abs_difference": 0.0,
+      "matched": true
+    },
+    {
+      "symbol": "sz101123",
+      "decimal": 4,
+      "reference_timestamp": "20261023161103",
+      "tdx_fetched_at": "2026-10-24T03:54:39.163175Z",
+      "tdx_price": 121.4613,
+      "reference_price": 121.461,
+      "tdx_volume_raw": 0.0,
+      "tolerance": 0.0005,
+      "fields_compared": 15,
+      "max_abs_difference": 0.0002999999999957481,
+      "matched": true
+    }
+  ],
+  "third_party_sdk_executed": false,
+  "engineering": {
+    "rust_version": "1.89.0",
+    "fmt_passed": true,
+    "clippy_all_targets_all_features_deny_warnings_passed": true,
+    "workspace_all_features_test_passed": true,
+    "test_result_summary": {
+      "passed": 359,
+      "failed": 0,
+      "ignored": 23
+    },
+    "test_suites": 41,
+    "new_semantics_precision_tests": 15,
+    "external_integration_skip": true,
+    "db_acceptance_enabled": false,
+    "test_count_note": "Cargo-reported totals include opt-in tests returning early; ignored/early return are not live acceptance",
+    "logs": {
+      "fmt": {
+        "file": "fmt.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "clippy": {
+        "file": "clippy.txt",
+        "sha256": "9db1174522ce5d9fe9fa465b7ac229a4ada4f9d95c2d5679c6506adbfaf0ccf8"
+      },
+      "workspace": {
+        "file": "workspace.txt",
+        "sha256": "b3a4fa7885972264da93a33871bbfa1022a523f8ec0dcdf00495d371fa123e57"
+      },
+      "targeted": {
+        "file": "targeted.txt",
+        "sha256": "bc76b233b94c90fea89b94e82c1a412f5db0fe335b291216949ccb77818479f4"
+      },
+      "live": {
+        "file": "live.txt",
+        "sha256": "de6afe4e762a46a1b1182a5a8dfd083ef57bd817e1eaa3a9c006863892764c46"
+      },
+      "live-active": {
+        "file": "live-active.txt",
+        "sha256": "ed31557e5d33f61e0fa8ed776bdf92fb568aa2a768096c00801f7a23e4b3649f"
+      },
+      "live-replay": {
+        "file": "live-replay.txt",
+        "sha256": "db25d61dd9574c3e5954e46cd2d973444130c3f95bbb73eedb52a96227bfae75"
+      }
+    }
+  },
+  "implementation_sha256": {
+    "src/tcp/stock/finance_raw.rs": "5f28520cd8404a031a946cdcd21e9c12f00553006df1c1b7ee955c7943576f41",
+    "src/tcp/stock/finance_semantics.rs": "e726ef9ef9acb7c4fa8bf72093b421dab6226641d1fa9ee6c967359bbba875fd",
+    "src/tcp/stock/price_scale.rs": "ff2e8969308054117f0ee030af97cdf7133fddc033645c86ebf6d6b523cacda5",
+    "src/tcp/stock/quote_metadata.rs": "dac5d2f925d152118547d68f6750d2ff1166d572f6f1a9f753d4e46ae50d5a4b",
+    "src/tcp/stock/requests.rs": "60b334d28a195748f01d5f123791dd2f9d950c122fa965691e47eb69c3b23fd5",
+    "src/tcp/stock/quotes.rs": "184755e6968f9c34e100303e474e93db2690ba9d73b2f1aa54e795ddb67762ba",
+    "src/tcp/stock/client.rs": "a210700c8c2b7c1c9e652a2dc0077b8710710f5a83b81ab406d1480128d9cf59",
+    "src/tcp/stock/finance_info.rs": "4f72188074dd37d444a1d981133d55b8687dd0b04543677bc612913390014399",
+    "src/tcp/stock/security_list.rs": "058892c122a3a976652bc8ae5bc799247ace59c14f5a0161cb1fed8f9ccd59a2",
+    "src/tcp/stock/validator.rs": "322aed0ad07d9f94c46be14c10e040f640b14d7864670b2d29e39bb3be1618a5",
+    "tests/finance_semantics.rs": "91003d1078a52ab820db015b9349297a7f0ab40f6339c349fa4d5692a8ec9bc0",
+    "tests/quote_precision.rs": "87ba9a5abfa4341a1c81277c2a578ea9efc08fc11ce1e0b715416485c2d82172",
+    "tests/protocol_decoders.rs": "0c42e5850db24e5202c2abc60ccf26a2388d203c5127c8e7a02c0d0f6f3a06cf",
+    "examples/capture_quote_precision.rs": "79314f079ed33d5315dbc9834632493da7ede76d3b52c294d4816b5fea43dbba",
+    "tests/fixtures/protocol/finance.semantic.expected.json": "b9ed7f8dd65824039dabce8695b51b45e294e05ee4b61a91edc9222cd9071b66",
+    "tests/fixtures/protocol/quotes.precision.expected.json": "796dcd04d86b0cef06e452e467c00121810c4eeb226e2b6ae6eb22ba74b6776c",
+    "Cargo.toml": "ddf1939fccb4b58d61fa3c8ad12ce4e031c8e6b9cd25f083e3e7726ae06990b2",
+    "Cargo.lock": "1577c41c40f9416e8166c2fa92aeef8770a9a9821c7aa225c4da1bd1cd3baacf"
+  }
+}

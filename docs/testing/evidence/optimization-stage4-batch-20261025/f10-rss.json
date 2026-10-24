@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "scripts/bench/measure_process_tree.py",
+        "--output",
+        "/tmp/rustdx-optimization-20261024/f10-rss-16.json",
+        "--interval",
+        "0.1",
+        "--timeout",
+        "30",
+        "--",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/release/examples/batch_retention_probe",
+        "16"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.062116792,
+      "log": "/tmp/rustdx-optimization-20261024/f10-rss-0.log"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/bench/measure_process_tree.py",
+        "--output",
+        "/tmp/rustdx-optimization-20261024/f10-rss-256.json",
+        "--interval",
+        "0.1",
+        "--timeout",
+        "30",
+        "--",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/release/examples/batch_retention_probe",
+        "256"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.281968958,
+      "log": "/tmp/rustdx-optimization-20261024/f10-rss-1.log"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/bench/measure_process_tree.py",
+        "--output",
+        "/tmp/rustdx-optimization-20261024/f10-rss-10000.json",
+        "--interval",
+        "0.1",
+        "--timeout",
+        "30",
+        "--",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/release/examples/batch_retention_probe",
+        "10000"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.2723572919999999,
+      "log": "/tmp/rustdx-optimization-20261024/f10-rss-2.log"
+    }
+  ]
+}

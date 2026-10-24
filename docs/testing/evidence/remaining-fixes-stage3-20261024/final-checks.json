@@ -1,0 +1,71 @@
+{
+  "reason": "ensure deadline regression actually spawns worker: 3s task less 1s reserve, whole-second CLI budget",
+  "checks": [
+    {
+      "label": "final-fmt",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "final-clippy",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--offline",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0
+    },
+    {
+      "label": "worker-regressions",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--offline",
+        "--locked"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "active_document_links": {
+    "targets": 620,
+    "missing": 0
+  },
+  "git_diff_check_exit": 0,
+  "files": [
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/final-fmt.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/final-clippy.txt",
+      "bytes": 273,
+      "sha256": "4567cb738d3bb2eeb4e87f0218b61d378c9a65ae0d00e36774bc2ff7791af94d"
+    },
+    {
+      "path": "docs/testing/evidence/remaining-fixes-stage3-20261024/worker-regressions.txt",
+      "bytes": 1973,
+      "sha256": "9ba5dc7d6183cb1fb41953f6b4e14c839d2cf09c1a88844133b39468d8eaa2f1"
+    }
+  ]
+}

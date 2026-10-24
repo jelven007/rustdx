@@ -1,0 +1,8 @@
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 0.22s
+[1m[32m     Running[0m tests/control_plane.rs (target/debug/deps/control_plane-9e1419a4eafc10a3)
+
+running 1 test
+test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 1.91s
+

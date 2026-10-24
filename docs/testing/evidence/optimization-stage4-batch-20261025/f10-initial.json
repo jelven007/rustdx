@@ -1,0 +1,31 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 1.118365333,
+      "log": "/tmp/rustdx-optimization-20261024/f10-initial-0.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--locked",
+        "-p",
+        "jelven-rustdx-complete",
+        "--lib",
+        "tcp::stock::client"
+      ],
+      "returncode": 101,
+      "elapsed_seconds": 17.045432375,
+      "log": "/tmp/rustdx-optimization-20261024/f10-initial-1.log"
+    }
+  ]
+}

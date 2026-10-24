@@ -95,7 +95,7 @@ def main():
     def run(output, workers, backend=None):
         work = scratch / output
         work.mkdir()
-        command = [str(binary), "--timeout", "1800", "day", str(source),
+        command = [str(binary), "--no-tcp-startup", "--timeout", "1800", "day", str(source),
                    "--workers", str(workers), "--report", "run.json"]
         if backend:
             command += ["-o", backend, "-t", database + ".bars", "--keep-csv"]

@@ -1,0 +1,469 @@
+{
+  "schema_version": 1,
+  "synthetic": false,
+  "origin": "Frozen live TCP captures; independently decoded Python stdlib expectations",
+  "independent_verifiers": [
+    "scripts/validation/verify_recent_auction.py",
+    "scripts/validation/verify_recent_minutes_boundaries.py"
+  ],
+  "server_trading_date_verified": false,
+  "scope": "Nonempty wire/field regression only; requested date is not server date evidence",
+  "fixtures": {
+    "115-238-56-198-7709-20260817-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:11.066420+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-044",
+      "sha256": {
+        "115-238-56-198-7709-20260817-0-000001.request.bin": "e54ee6c52b7ffc058f8fedb18f2b54a1645bf19ad3184f580b7b45d7055d8826",
+        "115-238-56-198-7709-20260817-0-000001.header.bin": "ef47a5fafc5dce2385cad267b1a6a42e5c3909e00a400d2eeb873bcb377531db",
+        "115-238-56-198-7709-20260817-0-000001.wire.bin": "813f36bf9e975a449891a3f1767392d219f3e90512173f1eb6001e6cf51eddc0",
+        "115-238-56-198-7709-20260817-0-000001.payload.bin": "0fd28f571f3be5a34e1f100d14f5ea51c36c131d68a33afea644db6640dd5f4b",
+        "115-238-56-198-7709-20260817-0-000001.expected.json": "fea63925e0c6afd182199220d1802fd83d925e8798ed59614547436b18b96c04"
+      }
+    },
+    "115-238-56-198-7709-20260818-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:11.405087+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-045",
+      "sha256": {
+        "115-238-56-198-7709-20260818-0-000001.request.bin": "a0fa120bd9f03ef523b2d4b362c70a66fc3868491b2348d7254066b6574f967e",
+        "115-238-56-198-7709-20260818-0-000001.header.bin": "9637f3c92bbe61def1d90b132287b3535b682e7ffe820e2a9d28aeda215416cd",
+        "115-238-56-198-7709-20260818-0-000001.wire.bin": "655c9f5bc3d6bda755ebf48cb717999dcc98b7fb8566f97920b14f3c51b641f4",
+        "115-238-56-198-7709-20260818-0-000001.payload.bin": "a5b3e3f0c30028d1cfad0c8e550acf26642357eadfed6fbafb9a166f7f291d61",
+        "115-238-56-198-7709-20260818-0-000001.expected.json": "07bc8543ce3f9d25b3bca68281e4ecbde35d098fa0d0880d7c76400f2b1827b4"
+      }
+    },
+    "115-238-56-198-7709-20260817-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:14.537564+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-054",
+      "sha256": {
+        "115-238-56-198-7709-20260817-0-000988.request.bin": "3202b7a261108649a6f5c88b84601fa6e8ab98bbce0493164a54744d4c9b24dc",
+        "115-238-56-198-7709-20260817-0-000988.header.bin": "40488a56a6e3dd633a625380a5d2fac7db70a41aafd617fb81227306ef68bdaa",
+        "115-238-56-198-7709-20260817-0-000988.wire.bin": "e585c51d221d367216d10fe915ecada600cb4ad2b75f2c315a5b1a88f0019fb6",
+        "115-238-56-198-7709-20260817-0-000988.payload.bin": "90b0a8492bd54865a167a204cfc6e0b6bd7148270a15415c42b931b877e090e4",
+        "115-238-56-198-7709-20260817-0-000988.expected.json": "2d9e02c8179a64c26329d48edb40aa194a4712e240a5be6d270cb3ad74fbb248"
+      }
+    },
+    "115-238-56-198-7709-20260818-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:14.876205+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-055",
+      "sha256": {
+        "115-238-56-198-7709-20260818-0-000988.request.bin": "98db32cb1770d6181f1d91999351671bf9e6b6bae281966ea483b6f848b632f7",
+        "115-238-56-198-7709-20260818-0-000988.header.bin": "bd35c46ab18a93dbed584650fb8952865b0d99881dfbb0a01aaff10b1743a4a2",
+        "115-238-56-198-7709-20260818-0-000988.wire.bin": "d7fd70069f2d806a2631cb4339b6e316f64aff712a9b6a74689cff8cf26626fc",
+        "115-238-56-198-7709-20260818-0-000988.payload.bin": "8ffb41a4ec7f8fd0178a8a7d99c780f6e11f07810844565770c397ea8e7a7695",
+        "115-238-56-198-7709-20260818-0-000988.expected.json": "25f8b7d7fa84644f8e077b41e0156039ccfc46245752ead93f4b3253cb177bb4"
+      }
+    },
+    "115-238-56-198-7709-20260817-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:18.060189+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-064",
+      "sha256": {
+        "115-238-56-198-7709-20260817-0-159915.request.bin": "f0b264ed67d913faccbba2a6248590fd63318fcfb79920c3717fa2e6e3186c4b",
+        "115-238-56-198-7709-20260817-0-159915.header.bin": "6dccaaf2d3a2341b4a82f41575e6c71834483f0d7981b8e02e9ba6280ce7c072",
+        "115-238-56-198-7709-20260817-0-159915.wire.bin": "9962c974c1114da183a85981699cff7e408b2a9cecfa1b95841f0543b0199da6",
+        "115-238-56-198-7709-20260817-0-159915.payload.bin": "2430bd62d91aa73e8529e78dc3385411c05751ce4d94090e3565e09be93ebc49",
+        "115-238-56-198-7709-20260817-0-159915.expected.json": "2bf010c98dca6dc8ea554f2a9e91b4a99479d71b90b23f2396f3d094e934f491"
+      }
+    },
+    "115-238-56-198-7709-20260818-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:18.401827+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-065",
+      "sha256": {
+        "115-238-56-198-7709-20260818-0-159915.request.bin": "719d3f07322d54d1e96435ead74d90120780a0596e5651a05ee2f2fa63b3d38f",
+        "115-238-56-198-7709-20260818-0-159915.header.bin": "81c5ab29c32b031d80d674b03a209a7fd7b792a1dcf32692b77dc1f9e9d61d33",
+        "115-238-56-198-7709-20260818-0-159915.wire.bin": "c3cd2f1d58c737b01f1258e6acb31b6dedbaeb15c69b52060b72d8435a21bfd2",
+        "115-238-56-198-7709-20260818-0-159915.payload.bin": "0db1c46a6c8eef7dda3d8906de99b47ba6532cc4d37f7b69e1c82e47ca223ba7",
+        "115-238-56-198-7709-20260818-0-159915.expected.json": "549e351989964f72f787024c480ecc69deaca3bfb6b61abe3d64a4002c0fb590"
+      }
+    },
+    "115-238-56-198-7709-20260817-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:21.579405+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-074",
+      "sha256": {
+        "115-238-56-198-7709-20260817-1-600000.request.bin": "89645bb355aa3ccd994252b5bd1c823ec8974702ced469ad20d3be13a5bf563a",
+        "115-238-56-198-7709-20260817-1-600000.header.bin": "e604e2239445cdbacea132588c837bcd44a7b3431e0ee9a3cefcc6722b70a601",
+        "115-238-56-198-7709-20260817-1-600000.wire.bin": "909fce091d11b00097129fe2d95b3d5e152d98cdc8a1367d85df8f061c477aa0",
+        "115-238-56-198-7709-20260817-1-600000.payload.bin": "35825864f9458b94d844fe388d1190d592499a207a1e4090efbfd3441df6797a",
+        "115-238-56-198-7709-20260817-1-600000.expected.json": "8c444b335ce3073469dc034e06ab0c0190087fdb9d722356f8a46e6b45d73211"
+      }
+    },
+    "115-238-56-198-7709-20260818-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:21.928480+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-075",
+      "sha256": {
+        "115-238-56-198-7709-20260818-1-600000.request.bin": "95598d96e4c56fc173eff7b38a5310c0cfed8bb44bb07e7be9623806509cfc4a",
+        "115-238-56-198-7709-20260818-1-600000.header.bin": "61016016d321ccd6fb053ee7944c80434d7566a9c6e3a5bc21fa11c905dfbfc4",
+        "115-238-56-198-7709-20260818-1-600000.wire.bin": "7ebe31607b635f0044f30b97da488e6b2f052de1ead293b15a716227f2a4b586",
+        "115-238-56-198-7709-20260818-1-600000.payload.bin": "d138612fc9abdae0a2c186a6c349b92fae4f7cc0175cef9ec869da5015ebc9d9",
+        "115-238-56-198-7709-20260818-1-600000.expected.json": "75c46bd0455f624aec33b7594579d0bdf4c210f5c529e294d39c5eb3b08fe0bb"
+      }
+    },
+    "115-238-56-198-7709-20260817-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:25.073090+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-084",
+      "sha256": {
+        "115-238-56-198-7709-20260817-1-600519.request.bin": "bef66d1d4337d138d8501134a5a5baaccb0434260a1a007248968103a73b5be8",
+        "115-238-56-198-7709-20260817-1-600519.header.bin": "5785a6ec999de0f2e92bebc57534963f2f8db455fa91d0039cae18daf0908c17",
+        "115-238-56-198-7709-20260817-1-600519.wire.bin": "0eac95772c8d96c3a2b17fb4136be47d4813c64121a2a41feec920730a17fa65",
+        "115-238-56-198-7709-20260817-1-600519.payload.bin": "4e8d316c2ba444058216632042333856333bb016ebb9e63d38c52e2db6f90188",
+        "115-238-56-198-7709-20260817-1-600519.expected.json": "929e72e7e2dcb4dbb8b45096d75be6b1ba222fec2cfe3d639b61e8bfc04647fc"
+      }
+    },
+    "115-238-56-198-7709-20260818-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:25.415627+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-085",
+      "sha256": {
+        "115-238-56-198-7709-20260818-1-600519.request.bin": "ab097be64b620398e96c3fd1a962c3661e81f7ef7de40ef4ad50539b5a92a234",
+        "115-238-56-198-7709-20260818-1-600519.header.bin": "f1d081cab7a931aa80b657ab643d36e407e80a49228d7475fdee275a20e33821",
+        "115-238-56-198-7709-20260818-1-600519.wire.bin": "25661a4a771bda899646d36f4182b2c955d415942f09b7fbd2c02077d422ddd9",
+        "115-238-56-198-7709-20260818-1-600519.payload.bin": "091a7081cd5bb7bf4e58a2d444a4c75bba5466e6008f27061c1eb5eb5547f0be",
+        "115-238-56-198-7709-20260818-1-600519.expected.json": "27350aa3608c4113d53801fb78d585b79695fb4cd64723727ea023f414758c70"
+      }
+    },
+    "115-238-56-198-7709-20260817-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:28.718301+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-094",
+      "sha256": {
+        "115-238-56-198-7709-20260817-1-510300.request.bin": "c684471cfbae75051b545a15a2f70ebe4a6cdca6263c73cba84ae254043def46",
+        "115-238-56-198-7709-20260817-1-510300.header.bin": "6777c48109dd57a0576db281af23bbd8ecc027ac2f45cd40d1caf08d7ee58a20",
+        "115-238-56-198-7709-20260817-1-510300.wire.bin": "e89b7d687f9c33c2d2503c5bcbff71ad80cf3d67b7b1609cea00ff8c0a97c410",
+        "115-238-56-198-7709-20260817-1-510300.payload.bin": "a711c4a88b3c5ca2d3f5ec1cfcb65912f8e50164b9d3ca1f0a55e74ac6516b05",
+        "115-238-56-198-7709-20260817-1-510300.expected.json": "5ee2adae617f136e0f68d8aca09f9d11402385441a0808db5121ff4a29c05dcc"
+      }
+    },
+    "115-238-56-198-7709-20260818-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "115.238.56.198:7709",
+      "received_at": "2026-10-24T06:11:29.076080+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/115.238.56.198-archive",
+      "source_frame": "frame-095",
+      "sha256": {
+        "115-238-56-198-7709-20260818-1-510300.request.bin": "928407338ab4d627b24808b006bf6df3edbe995afdc29fdddbc8c4f903fac09b",
+        "115-238-56-198-7709-20260818-1-510300.header.bin": "fddd75331058d3050db44e75b9562496d3caa0823d94d655dfde2585043e9721",
+        "115-238-56-198-7709-20260818-1-510300.wire.bin": "f8fd8cb14378cc6f25bf20e842dca098792bcf4b925363f67da06ff2b59ae847",
+        "115-238-56-198-7709-20260818-1-510300.payload.bin": "a146b611e6aa51b6159e3f257fc7a9611ca06c828a702bb7a4908c38d2c446ce",
+        "115-238-56-198-7709-20260818-1-510300.expected.json": "0a159d603810ea46add6363be0eb15022d44886986a8cc76f34fa9cf0453422d"
+      }
+    },
+    "180-153-18-170-7709-20260817-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:10.897213+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-044",
+      "sha256": {
+        "180-153-18-170-7709-20260817-0-000001.request.bin": "e54ee6c52b7ffc058f8fedb18f2b54a1645bf19ad3184f580b7b45d7055d8826",
+        "180-153-18-170-7709-20260817-0-000001.header.bin": "ef47a5fafc5dce2385cad267b1a6a42e5c3909e00a400d2eeb873bcb377531db",
+        "180-153-18-170-7709-20260817-0-000001.wire.bin": "813f36bf9e975a449891a3f1767392d219f3e90512173f1eb6001e6cf51eddc0",
+        "180-153-18-170-7709-20260817-0-000001.payload.bin": "0fd28f571f3be5a34e1f100d14f5ea51c36c131d68a33afea644db6640dd5f4b",
+        "180-153-18-170-7709-20260817-0-000001.expected.json": "fea63925e0c6afd182199220d1802fd83d925e8798ed59614547436b18b96c04"
+      }
+    },
+    "180-153-18-170-7709-20260818-0-000001": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000001",
+      "decimal": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:11.232384+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-045",
+      "sha256": {
+        "180-153-18-170-7709-20260818-0-000001.request.bin": "a0fa120bd9f03ef523b2d4b362c70a66fc3868491b2348d7254066b6574f967e",
+        "180-153-18-170-7709-20260818-0-000001.header.bin": "9637f3c92bbe61def1d90b132287b3535b682e7ffe820e2a9d28aeda215416cd",
+        "180-153-18-170-7709-20260818-0-000001.wire.bin": "655c9f5bc3d6bda755ebf48cb717999dcc98b7fb8566f97920b14f3c51b641f4",
+        "180-153-18-170-7709-20260818-0-000001.payload.bin": "a5b3e3f0c30028d1cfad0c8e550acf26642357eadfed6fbafb9a166f7f291d61",
+        "180-153-18-170-7709-20260818-0-000001.expected.json": "07bc8543ce3f9d25b3bca68281e4ecbde35d098fa0d0880d7c76400f2b1827b4"
+      }
+    },
+    "180-153-18-170-7709-20260817-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:14.396294+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-054",
+      "sha256": {
+        "180-153-18-170-7709-20260817-0-000988.request.bin": "3202b7a261108649a6f5c88b84601fa6e8ab98bbce0493164a54744d4c9b24dc",
+        "180-153-18-170-7709-20260817-0-000988.header.bin": "40488a56a6e3dd633a625380a5d2fac7db70a41aafd617fb81227306ef68bdaa",
+        "180-153-18-170-7709-20260817-0-000988.wire.bin": "e585c51d221d367216d10fe915ecada600cb4ad2b75f2c315a5b1a88f0019fb6",
+        "180-153-18-170-7709-20260817-0-000988.payload.bin": "90b0a8492bd54865a167a204cfc6e0b6bd7148270a15415c42b931b877e090e4",
+        "180-153-18-170-7709-20260817-0-000988.expected.json": "2d9e02c8179a64c26329d48edb40aa194a4712e240a5be6d270cb3ad74fbb248"
+      }
+    },
+    "180-153-18-170-7709-20260818-0-000988": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "000988",
+      "decimal": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:14.728258+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-055",
+      "sha256": {
+        "180-153-18-170-7709-20260818-0-000988.request.bin": "98db32cb1770d6181f1d91999351671bf9e6b6bae281966ea483b6f848b632f7",
+        "180-153-18-170-7709-20260818-0-000988.header.bin": "bd35c46ab18a93dbed584650fb8952865b0d99881dfbb0a01aaff10b1743a4a2",
+        "180-153-18-170-7709-20260818-0-000988.wire.bin": "d7fd70069f2d806a2631cb4339b6e316f64aff712a9b6a74689cff8cf26626fc",
+        "180-153-18-170-7709-20260818-0-000988.payload.bin": "8ffb41a4ec7f8fd0178a8a7d99c780f6e11f07810844565770c397ea8e7a7695",
+        "180-153-18-170-7709-20260818-0-000988.expected.json": "25f8b7d7fa84644f8e077b41e0156039ccfc46245752ead93f4b3253cb177bb4"
+      }
+    },
+    "180-153-18-170-7709-20260817-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:18.022264+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-064",
+      "sha256": {
+        "180-153-18-170-7709-20260817-0-159915.request.bin": "f0b264ed67d913faccbba2a6248590fd63318fcfb79920c3717fa2e6e3186c4b",
+        "180-153-18-170-7709-20260817-0-159915.header.bin": "6dccaaf2d3a2341b4a82f41575e6c71834483f0d7981b8e02e9ba6280ce7c072",
+        "180-153-18-170-7709-20260817-0-159915.wire.bin": "9962c974c1114da183a85981699cff7e408b2a9cecfa1b95841f0543b0199da6",
+        "180-153-18-170-7709-20260817-0-159915.payload.bin": "2430bd62d91aa73e8529e78dc3385411c05751ce4d94090e3565e09be93ebc49",
+        "180-153-18-170-7709-20260817-0-159915.expected.json": "2bf010c98dca6dc8ea554f2a9e91b4a99479d71b90b23f2396f3d094e934f491"
+      }
+    },
+    "180-153-18-170-7709-20260818-0-159915": {
+      "opcode": "0x0feb",
+      "market": 0,
+      "code": "159915",
+      "decimal": 3,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:18.357037+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-065",
+      "sha256": {
+        "180-153-18-170-7709-20260818-0-159915.request.bin": "719d3f07322d54d1e96435ead74d90120780a0596e5651a05ee2f2fa63b3d38f",
+        "180-153-18-170-7709-20260818-0-159915.header.bin": "81c5ab29c32b031d80d674b03a209a7fd7b792a1dcf32692b77dc1f9e9d61d33",
+        "180-153-18-170-7709-20260818-0-159915.wire.bin": "c3cd2f1d58c737b01f1258e6acb31b6dedbaeb15c69b52060b72d8435a21bfd2",
+        "180-153-18-170-7709-20260818-0-159915.payload.bin": "0db1c46a6c8eef7dda3d8906de99b47ba6532cc4d37f7b69e1c82e47ca223ba7",
+        "180-153-18-170-7709-20260818-0-159915.expected.json": "549e351989964f72f787024c480ecc69deaca3bfb6b61abe3d64a4002c0fb590"
+      }
+    },
+    "180-153-18-170-7709-20260817-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:21.567655+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-074",
+      "sha256": {
+        "180-153-18-170-7709-20260817-1-600000.request.bin": "89645bb355aa3ccd994252b5bd1c823ec8974702ced469ad20d3be13a5bf563a",
+        "180-153-18-170-7709-20260817-1-600000.header.bin": "e604e2239445cdbacea132588c837bcd44a7b3431e0ee9a3cefcc6722b70a601",
+        "180-153-18-170-7709-20260817-1-600000.wire.bin": "909fce091d11b00097129fe2d95b3d5e152d98cdc8a1367d85df8f061c477aa0",
+        "180-153-18-170-7709-20260817-1-600000.payload.bin": "35825864f9458b94d844fe388d1190d592499a207a1e4090efbfd3441df6797a",
+        "180-153-18-170-7709-20260817-1-600000.expected.json": "8c444b335ce3073469dc034e06ab0c0190087fdb9d722356f8a46e6b45d73211"
+      }
+    },
+    "180-153-18-170-7709-20260818-1-600000": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600000",
+      "decimal": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:21.904679+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-075",
+      "sha256": {
+        "180-153-18-170-7709-20260818-1-600000.request.bin": "95598d96e4c56fc173eff7b38a5310c0cfed8bb44bb07e7be9623806509cfc4a",
+        "180-153-18-170-7709-20260818-1-600000.header.bin": "61016016d321ccd6fb053ee7944c80434d7566a9c6e3a5bc21fa11c905dfbfc4",
+        "180-153-18-170-7709-20260818-1-600000.wire.bin": "7ebe31607b635f0044f30b97da488e6b2f052de1ead293b15a716227f2a4b586",
+        "180-153-18-170-7709-20260818-1-600000.payload.bin": "d138612fc9abdae0a2c186a6c349b92fae4f7cc0175cef9ec869da5015ebc9d9",
+        "180-153-18-170-7709-20260818-1-600000.expected.json": "75c46bd0455f624aec33b7594579d0bdf4c210f5c529e294d39c5eb3b08fe0bb"
+      }
+    },
+    "180-153-18-170-7709-20260817-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:25.039357+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-084",
+      "sha256": {
+        "180-153-18-170-7709-20260817-1-600519.request.bin": "bef66d1d4337d138d8501134a5a5baaccb0434260a1a007248968103a73b5be8",
+        "180-153-18-170-7709-20260817-1-600519.header.bin": "5785a6ec999de0f2e92bebc57534963f2f8db455fa91d0039cae18daf0908c17",
+        "180-153-18-170-7709-20260817-1-600519.wire.bin": "0eac95772c8d96c3a2b17fb4136be47d4813c64121a2a41feec920730a17fa65",
+        "180-153-18-170-7709-20260817-1-600519.payload.bin": "4e8d316c2ba444058216632042333856333bb016ebb9e63d38c52e2db6f90188",
+        "180-153-18-170-7709-20260817-1-600519.expected.json": "929e72e7e2dcb4dbb8b45096d75be6b1ba222fec2cfe3d639b61e8bfc04647fc"
+      }
+    },
+    "180-153-18-170-7709-20260818-1-600519": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "600519",
+      "decimal": 2,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:25.370902+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-085",
+      "sha256": {
+        "180-153-18-170-7709-20260818-1-600519.request.bin": "ab097be64b620398e96c3fd1a962c3661e81f7ef7de40ef4ad50539b5a92a234",
+        "180-153-18-170-7709-20260818-1-600519.header.bin": "f1d081cab7a931aa80b657ab643d36e407e80a49228d7475fdee275a20e33821",
+        "180-153-18-170-7709-20260818-1-600519.wire.bin": "25661a4a771bda899646d36f4182b2c955d415942f09b7fbd2c02077d422ddd9",
+        "180-153-18-170-7709-20260818-1-600519.payload.bin": "091a7081cd5bb7bf4e58a2d444a4c75bba5466e6008f27061c1eb5eb5547f0be",
+        "180-153-18-170-7709-20260818-1-600519.expected.json": "27350aa3608c4113d53801fb78d585b79695fb4cd64723727ea023f414758c70"
+      }
+    },
+    "180-153-18-170-7709-20260817-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "requested_date": 20260817,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:28.665708+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-094",
+      "sha256": {
+        "180-153-18-170-7709-20260817-1-510300.request.bin": "c684471cfbae75051b545a15a2f70ebe4a6cdca6263c73cba84ae254043def46",
+        "180-153-18-170-7709-20260817-1-510300.header.bin": "6777c48109dd57a0576db281af23bbd8ecc027ac2f45cd40d1caf08d7ee58a20",
+        "180-153-18-170-7709-20260817-1-510300.wire.bin": "e89b7d687f9c33c2d2503c5bcbff71ad80cf3d67b7b1609cea00ff8c0a97c410",
+        "180-153-18-170-7709-20260817-1-510300.payload.bin": "a711c4a88b3c5ca2d3f5ec1cfcb65912f8e50164b9d3ca1f0a55e74ac6516b05",
+        "180-153-18-170-7709-20260817-1-510300.expected.json": "5ee2adae617f136e0f68d8aca09f9d11402385441a0808db5121ff4a29c05dcc"
+      }
+    },
+    "180-153-18-170-7709-20260818-1-510300": {
+      "opcode": "0x0feb",
+      "market": 1,
+      "code": "510300",
+      "decimal": 3,
+      "requested_date": 20260818,
+      "records": 240,
+      "endpoint": "180.153.18.170:7709",
+      "received_at": "2026-10-24T06:11:29.022993+00:00",
+      "source_directory": "docs/validation/evidence/recent-auction-contracts-20261024/180.153.18.170-archive",
+      "source_frame": "frame-095",
+      "sha256": {
+        "180-153-18-170-7709-20260818-1-510300.request.bin": "928407338ab4d627b24808b006bf6df3edbe995afdc29fdddbc8c4f903fac09b",
+        "180-153-18-170-7709-20260818-1-510300.header.bin": "fddd75331058d3050db44e75b9562496d3caa0823d94d655dfde2585043e9721",
+        "180-153-18-170-7709-20260818-1-510300.wire.bin": "88325e92efc00e36cd20f06b45f60c63f1c325f57e26523869e8be50bed1151b",
+        "180-153-18-170-7709-20260818-1-510300.payload.bin": "5f17cae40d708d9f7f2da2e4878129cc5f13bb0ce76d9c70bf31a5bbb5f75198",
+        "180-153-18-170-7709-20260818-1-510300.expected.json": "0dcc8fedb94387f6a44a15827ee6eefbb34126013153a456000c576df013c6df"
+      }
+    }
+  }
+}

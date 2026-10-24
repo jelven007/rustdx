@@ -1,0 +1,22 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 9.06s
+[1m[32m     Running[0m tests/eltdx_330_commands.rs (target/debug/deps/eltdx_330_commands-c3bf09ca04f19346)
+
+running 14 tests
+test packed_amount_includes_zero_and_low_exponents ... ok
+test delisted_decode_rejects_bad_dates_prices_and_volume_without_panicking ... ok
+test delisted_verified_sample_has_integer_shares_milli_prices_and_raw_suffix ... ok
+test constructors_reject_lossy_or_overflowing_parameters ... ok
+test all_four_requests_match_complete_reference_bodies ... ok
+test metadata_and_directory_preserve_hash_offsets_and_legal_tail ... ok
+test text_chunks_check_declared_lengths_and_keep_partial_gbk_and_tail ... ok
+test zero_length_f10_sections_do_not_send_an_invalid_text_request ... ok
+test f10_reads_multiple_frames_before_decoding_a_split_chinese_character ... ok
+test delisted_offset_overflow_is_incomplete_and_batch_keeps_each_error ... ok
+test all_resource_and_full_archive_batches_use_the_bounded_pool_in_input_order ... ok
+test f10_short_chunks_continue_but_empty_and_exhausted_budgets_fail ... ok
+test delisted_short_pages_overlap_and_budgets_have_explicit_completion ... ok
+test replays_all_98_independently_verified_live_frames_without_network ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.78s
+

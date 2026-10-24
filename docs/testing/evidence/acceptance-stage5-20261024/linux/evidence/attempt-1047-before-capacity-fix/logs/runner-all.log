@@ -1,0 +1,71 @@
+   Compiling num-traits v0.2.19
+   Compiling regex-syntax v0.8.5
+   Compiling syn v2.0.100
+   Compiling getrandom v0.3.4
+   Compiling tempfile v3.27.0
+   Compiling chrono v0.4.40
+   Compiling regex-automata v0.4.9
+   Compiling argh_derive v0.1.13
+   Compiling trade_date_a v2026.0.0
+   Compiling jelven-rustdx-complete v1.12.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/crates/rustdx-core)
+   Compiling argh v0.1.13
+   Compiling regex v1.11.1
+   Compiling env_filter v0.1.3
+   Compiling env_logger v0.11.7
+   Compiling jelven-rustdx-cli v1.8.2 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/apps/rustdx-cli)
+   Compiling rustdx-runner v0.1.0 (/tmp/rustdx-acceptance-20261024-TLDCn5/source/apps/rustdx-runner)
+    Finished `test` profile [optimized + debuginfo] target(s) in 20.18s
+     Running unittests src/lib.rs (target/debug/deps/rustdx_runner-f89f109260031568)
+
+running 7 tests
+test database::tests::capacity_rejects_io_proof_entries_and_bytes_before_transmission ... ok
+test database::tests::full_contract_row_roundtrips_and_requires_every_field ... ok
+test database::tests::stable_key_readback_crosses_batch_and_partition_boundaries ... ok
+test database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants ... ok
+test database_process::tests::malformed_responses_retain_bounded_evidence ... ok
+test database_process::tests::one_process_handles_batches_and_requires_clean_exit ... ok
+test error_tests::cancellation_and_deadline_keep_their_category_through_stages_and_io_wrappers ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running unittests src/main.rs (target/debug/deps/rustdx_runner-5766614eac49a933)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/control_plane.rs (target/debug/deps/control_plane-f571706b48efc049)
+
+running 19 tests
+test all_explicitly_exempt_keys_publish_empty_partitions_without_a_collector ... ok
+test ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts ... ok
+test catalog_cas_preserves_previous_pointer_and_append_only_events ... ok
+test database_capacity_rejects_before_request_or_unknown_target ... 
+thread 'database_capacity_rejects_before_request_or_unknown_target' panicked at apps/rustdx-runner/tests/control_plane.rs:666:5:
+snapshot: source byte budget exceeded
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+test deduplication_and_one_active_attempt_survive_reopen ... ok
+test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ok
+test evidence_limits_path_traversal_and_controller_exclusion ... ok
+test explicit_worker_cancellation_is_not_reported_as_timeout ... ok
+test failed_publication_event_rolls_back_pointer_and_job_state ... ok
+test managed_deadline_kills_worker_and_recovery_does_not_rerun ... ok
+test real_cli_release_revision_missing_coverage_and_isolated_restore ... ok
+test real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence ... ok
+test runner_run_forwards_startup_pool_and_offline_setting_to_real_collector ... ok
+test strict_config_and_unknown_history_refuse_before_spawn ... ok
+test tcp_config_excludes_ambiguous_source_offline_and_historical_vintage ... ok
+test tcp_daily_release_revision_missing_keys_and_offline_recovery ... ok
+test tcp_explicitly_exempt_scope_publishes_without_contacting_the_source ... ok
+test tcp_runner_rejects_forged_csv_even_with_matching_report_digest ... ok
+test wal_backup_restore_and_corruption_detection ... ok
+
+failures:
+
+failures:
+    database_capacity_rejects_before_request_or_unknown_target
+
+test result: FAILED. 18 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.26s
+
+error: test failed, to rerun pass `-p rustdx-runner --test control_plane`

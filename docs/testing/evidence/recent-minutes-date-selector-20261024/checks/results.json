@@ -1,0 +1,61 @@
+[
+  {
+    "name": "format",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--all"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.0
+  },
+  {
+    "name": "format-check",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.501
+  },
+  {
+    "name": "targeted-tests",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "jelven-rustdx-complete",
+      "--offline",
+      "--locked",
+      "--test",
+      "recent_minutes_boundaries",
+      "--test",
+      "recent_minutes_fixtures",
+      "--test",
+      "command_boundaries",
+      "--test",
+      "protocol_7709_decoders"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 15.953
+  },
+  {
+    "name": "workspace-tests",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "--workspace",
+      "--offline",
+      "--locked"
+    ],
+    "exit_code": 101,
+    "elapsed_seconds": 90.262
+  }
+]

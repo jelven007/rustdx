@@ -1,0 +1,44 @@
+docker.m.daocloud.io/clickhouse/clickhouse-server@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146: Pulling from clickhouse/clickhouse-server
+55afa1ecc21d: Pulling fs layer
+1beb758f63bf: Pulling fs layer
+ef5876168356: Pulling fs layer
+5e13353a6cd1: Pulling fs layer
+15de63af15a5: Pulling fs layer
+5f02b616ff9e: Pulling fs layer
+044aecba0d93: Pulling fs layer
+472b5d1c319e: Pulling fs layer
+079634917510: Pulling fs layer
+079634917510: Waiting
+472b5d1c319e: Waiting
+5f02b616ff9e: Waiting
+5e13353a6cd1: Waiting
+044aecba0d93: Waiting
+15de63af15a5: Waiting
+ef5876168356: Verifying Checksum
+ef5876168356: Download complete
+5e13353a6cd1: Verifying Checksum
+5e13353a6cd1: Download complete
+15de63af15a5: Verifying Checksum
+15de63af15a5: Download complete
+1beb758f63bf: Verifying Checksum
+1beb758f63bf: Download complete
+5f02b616ff9e: Download complete
+044aecba0d93: Download complete
+079634917510: Verifying Checksum
+079634917510: Download complete
+55afa1ecc21d: Verifying Checksum
+55afa1ecc21d: Download complete
+55afa1ecc21d: Pull complete
+1beb758f63bf: Pull complete
+ef5876168356: Pull complete
+5e13353a6cd1: Pull complete
+15de63af15a5: Pull complete
+5f02b616ff9e: Pull complete
+044aecba0d93: Pull complete
+472b5d1c319e: Verifying Checksum
+472b5d1c319e: Download complete
+472b5d1c319e: Pull complete
+079634917510: Pull complete
+Digest: sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146
+Status: Downloaded newer image for docker.m.daocloud.io/clickhouse/clickhouse-server@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146
+docker.m.daocloud.io/clickhouse/clickhouse-server:25.8.33.6-alpine@sha256:87e0a5b72f5465b18eacca7c76850e7ff551c9795c50e451f5646299e5e24146

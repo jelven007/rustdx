@@ -1,0 +1,22 @@
+{
+  "old_pid": 536041,
+  "new_pid": 547562,
+  "command": [
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/dockerd",
+    "--host",
+    "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+    "--data-root",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-data",
+    "--exec-root",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-exec",
+    "--pidfile",
+    "/tmp/rustdx-acceptance-20261024-TLDCn5/docker.pid",
+    "--bridge=none",
+    "--iptables=false",
+    "--ip6tables=false",
+    "--ip-forward=false",
+    "--ip-masq=false"
+  ],
+  "reason": "cancel abandoned slow image stream before changing registry; same private cache and network isolation; docker helpers in PATH",
+  "containers_before": 0
+}

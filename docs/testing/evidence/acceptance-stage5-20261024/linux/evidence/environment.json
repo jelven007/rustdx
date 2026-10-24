@@ -1,0 +1,43 @@
+{
+  "recorded_at_utc": "2026-10-24T12:45:08.852330+00:00",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "os_release": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+  "uid": 0,
+  "source_sha256": "d080d6c1ed153150d10637f6dabbff2674baa8091b581f19da30bc64986f68cf",
+  "source_files": 1048,
+  "binary_profile": "debug; functional acceptance, not release performance measurement",
+  "binary_sha256": {
+    "rustdx": "c3785001955325b61c8c0b39d0c0a98ead6a37b3912fd4f9d4b99284427b9be2",
+    "rustdx-runner": "62be36f0f800d9e84799dba7361ae6dc088bd7120aa770979036de4d160e903e"
+  },
+  "tools": {
+    "rustc": {
+      "sha256": "c6ac0142c05a60b0f6c15e1a118bd5ac3bd04924cd6dc0c328f501c5f86e4142",
+      "version": "rustc 1.89.0 (29483883e 2025-08-04)"
+    },
+    "cargo": {
+      "sha256": "5b32bd53b8a08d8e206daed51f3fce40cdc0729038ff96bd0ca845596a2c1019",
+      "version": "cargo 1.89.0 (c24e10642 2025-06-23)"
+    }
+  },
+  "database_limits": "container inspect is authoritative; host network, loopback only, private daemon",
+  "source_reverified_after_execution": true,
+  "cargo_lock_sha256": "1486729477f09a15dd30d30f221c873dcab5f9d2e3873eb8ae9e3df71efd885e",
+  "integration_env": {
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1",
+    "RUSTDX_DB_ACCEPTANCE": "1",
+    "RUSTDX_TEST_CLI": "/tmp/rustdx-acceptance-20261024-TLDCn5/source/target/debug/rustdx",
+    "RUSTDX_TEST_CH_URL": "http://127.0.0.1:18123",
+    "RUSTDX_TEST_CH_USER": "default",
+    "RUSTDX_TEST_CH_PASSWORD": "",
+    "RUSTDX_TEST_MONGO_URI": "mongodb://127.0.0.1:27018",
+    "RUSTDX_TEST_MONGOSH": "/tmp/rustdx-acceptance-20261024-TLDCn5/bin/mongosh-2.5.10-linux-x64/bin/mongosh"
+  },
+  "github_actions": false,
+  "production_deployment": false,
+  "linux_raw_sys": {
+    "version": "0.12.1",
+    "sha256": "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53",
+    "matched_existing_cargo_lock": true
+  }
+}

@@ -1,0 +1,863 @@
+{
+  "path": "zhb.zip",
+  "chunks": [
+    {
+      "offset": 0,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:02.900948Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 30000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:03.046370Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 60000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:03.220125Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 90000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:03.341694Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 120000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:03.459106Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 150000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:03.577734Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 180000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:03.763564Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 210000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:03.883601Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 240000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:04.004949Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 270000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:04.131475Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 300000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:04.263983Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 330000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:04.381681Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 360000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:04.501195Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 390000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:04.617384Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 420000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:04.783603Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 450000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:04.900791Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 480000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:05.024030Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 510000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:05.141938Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 540000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:05.319929Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 570000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:05.509304Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 600000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:05.644510Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 630000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:05.844299Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 660000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:05.958942Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 690000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:06.078453Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 720000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:06.192430Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 750000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:06.370840Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 780000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:06.485245Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 810000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:06.607878Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 840000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:06.728275Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 870000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:06.886960Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 900000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:07.007512Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 930000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:07.133254Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 960000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:07.253866Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 990000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:07.407026Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1020000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:07.595079Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1050000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:07.719740Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1080000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:08.335846Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1110000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:09.202698Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1140000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:09.434903Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1170000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:09.997208Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1200000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:10.207391Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1230000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:10.753880Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1260000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:11.036869Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1290000,
+      "chunk_len": 30000,
+      "requested_size": 30000,
+      "header_raw": [
+        48,
+        117,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:11.221001Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    },
+    {
+      "offset": 1320000,
+      "chunk_len": 18014,
+      "requested_size": 30000,
+      "header_raw": [
+        94,
+        70,
+        0,
+        0
+      ],
+      "trailing_payload": [],
+      "source": {
+        "opcode": 1721,
+        "endpoint": "180.153.18.170:7709",
+        "fetched_at": "2026-10-24T14:44:11.441594Z",
+        "connection_id": 1,
+        "metadata_generation": null
+      }
+    }
+  ],
+  "response_bytes": 1338194,
+  "termination": "ShortChunk",
+  "complete": true
+}

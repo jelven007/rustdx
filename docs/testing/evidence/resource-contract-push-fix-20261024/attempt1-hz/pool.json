@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-24",
+  "tested_at": "2026-10-24T22:44:01.718376+08:00",
+  "completed_at": "2026-10-24T22:44:02.471316+08:00",
+  "results": [
+    {
+      "address": "115.238.56.198:7709",
+      "rounds": [
+        {
+          "tcp": {
+            "secs": 0,
+            "nanos": 64807333
+          },
+          "handshake": {
+            "secs": 0,
+            "nanos": 69688417
+          },
+          "heartbeat": {
+            "secs": 0,
+            "nanos": 69337000
+          },
+          "elapsed": {
+            "secs": 0,
+            "nanos": 204118750
+          },
+          "security_count": 24460,
+          "failure": null
+        },
+        {
+          "tcp": {
+            "secs": 0,
+            "nanos": 72397584
+          },
+          "handshake": {
+            "secs": 0,
+            "nanos": 163585791
+          },
+          "heartbeat": {
+            "secs": 0,
+            "nanos": 78255834
+          },
+          "elapsed": {
+            "secs": 0,
+            "nanos": 314324709
+          },
+          "security_count": 24460,
+          "failure": null
+        },
+        {
+          "tcp": {
+            "secs": 0,
+            "nanos": 72989167
+          },
+          "handshake": {
+            "secs": 0,
+            "nanos": 83583125
+          },
+          "heartbeat": {
+            "secs": 0,
+            "nanos": 77701084
+          },
+          "elapsed": {
+            "secs": 0,
+            "nanos": 234345292
+          },
+          "security_count": 24460,
+          "failure": null
+        }
+      ]
+    }
+  ],
+  "valid_nodes": [
+    "115.238.56.198:7709"
+  ]
+}

@@ -1,87 +1,88 @@
-# rustdx 开发说明
+# 开发说明
 
-更新日期：2026-10-23；第三轮结果见[优化记录](../history/OPTIMIZATION_ROUND3.md)，新增控制层见[实施记录](PRODUCTION_IMPLEMENTATION.md)。需求与变更追踪见[需求说明](../requirements/REQUIREMENTS.md)、[文档索引](../README.md)，模块关系见[架构评估](../architecture/PROJECT_ANALYSIS.md)，目录职责见[项目结构](../architecture/PROJECT_STRUCTURE.md)。
+更新日期：2026-10-24。遵循根AGENTS.md及rust-engineer规则，Rust 2024 / MSRV 1.89。产品采用同步I/O、有界线程；改变并发模型须有明确需求。目录职责见[项目结构](../architecture/PROJECT_STRUCTURE.md)。
 
-## 构建与验证
+## 1. 构建和日常检查
 
-使用Rust1.89及以上，edition2024。核心crate为 `jelven-rustdx-complete`，导入名 `rustdx_complete`；CLI为 `jelven-rustdx-cli`/`rustdx_cli`/`rustdx`；控制层为不发布crate `rustdx-runner`，库名`rustdx_runner`。保持阻塞I/O和有界线程，fuzz是独立workspace。
+以下命令从仓库根执行，使用已安装工具链；本机忽略的.cargo目录不是工程前置依赖。
 
 ```sh
-cargo build --workspace --all-targets --all-features --locked
-RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo test --workspace --all-features --locked
-cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+cargo +1.89.0 build --workspace --all-targets --all-features --locked
 cargo fmt --all -- --check
-RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo +1.89.0 test --workspace --all-features --locked
-cargo install --path rustdx-cmd --locked
-cargo run --example local_data -- tests/fixtures/tdx/sz000001.day sz000001
-cargo run -p jelven-rustdx-cli --example excel -- /path/to/list.xlsx sz
+cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo test --workspace --all-features --locked
+RUSTDOCFLAGS='-D warnings' cargo doc --workspace --no-deps --all-features --locked
+cargo install --path apps/rustdx-cli --locked
+cargo run -p jelven-rustdx-complete --example local_data
 ```
 
-外部案例由环境变量跳过，本地模拟服务仍执行。本机验证环境通过忽略的 `.cargo` 安装工具链；常规开发使用已有Cargo/Rust即可，不依赖该本机目录。完整验证口径、fuzz及性能复现见[验证方法](../validation/VALIDATION.md)，变量示例见[配置说明](../../config/README.md)。
+离线缓存齐全时加--offline；外部skip变量只控制测试，不控制业务启动。真实采样和数据库验收按[验证方法](../testing/VALIDATION.md)单独执行。Windows检查排除Unix runner，Linux/macOS检查完整工作区。
 
-excel示例读取调用方的本地名单，不依赖已不存在的assets/xlsx目录，也不隐式下载文件；缺工作表、空行或非法代码返回错误。实际名单导入使用day的`-l/-x/-e`参数。
+## 2. 源码定位
 
-## 源码导航
+| 修改领域 | 路径 | 重点回归 |
+| --- | --- | --- |
+| 核心协议与网络 | crates/rustdx-core/src/tcp、pool.rs、operation.rs | network_budget、tcp_cancel、tcp_startup、daily_ip_pool、reliability |
+| 行情接口与语义 | crates/rustdx-core/src/tcp/stock、client | eltdx_330_commands、protocol_decoders、finance_semantics、quote_precision、trade_models、transaction_pagination |
+| 订阅与新命令 | 同上quote_subscription、recent_minutes、company_info_request、delisted_bars | quote_subscription、recent_minutes_fixtures、command_boundaries、extended_queries |
+| 文件和计算 | crates/rustdx-core/src/file、data、calendar、limit、indicators.rs | file-day、fq、properties、规则/指标单测 |
+| CLI采集与导入 | apps/rustdx-cli/src/cmd、io、quality.rs、paths.rs | cli、day_streaming、cli_deadline、database_acceptance |
+| 单机版本发布 | apps/rustdx-runner/src | control_plane、wire_archive、tcp_startup |
+| 外部接口 | tests/integration | opt-in网络与数据库用例 |
 
-| 模块/文件 | 职责 |
-| --- | --- |
-| `src/tcp/mod.rs`、`reader.rs` | 受管socket、握手、完整帧、重试及有界解码 |
-| `src/tcp/governance.rs` | 进程配额、Deadline、端点轮换/冷却及网络统计 |
-| `src/pool.rs` | 连接借还、闲置连接和关闭；与TCP共享配额 |
-| `src/tcp/stock/client.rs` | 高层行情API，组装请求和结果 |
-| `src/tcp/stock/kline_request.rs`、`tests/kline_decoders.rs` | 私有参数的不可变请求、股票/指数独立checked解码、固定pytdx参考样本 |
-| `client/batch.rs`、`pagination.rs`、`adjustment.rs` | 批次调度、通用分页、价格复权 |
-| `src/data.rs`、`data/model.rs` | 市场/代码、单位/时间、CanonicalBar及口径类型 |
-| `src/calendar.rs`、`calendar/provider.rs` | 兼容日历、严格Provider及外部数据集 |
-| `src/limit.rs`、`limit/rules.rs` | 静态兼容接口、按日期选择规则和价格舍入 |
-| `src/file/day`、`file/lc`、`file/gbbq` | 文件解析、累计收益、checked入口和gbbq解密 |
-| `src/indicators.rs`、`cache.rs`、`atomic_file.rs` | 指标、可选缓存及同目录原子发布 |
-| `rustdx-cmd/src/cmd/day.rs`、`cmd/east.rs` | 参数、路径保护、来源获取和任务入口 |
-| `rustdx-cmd/src/io.rs`、`io/sinks.rs`、`io/schema.rs` | 有界解析管道、前因子、数据库写入/清理、ClickHouse表校验 |
-| `rustdx-cmd/src/io/streaming.rs`、`tests/day_streaming.rs` | 4096条分块、私有磁盘快照、日期归并、确定性及取消回归 |
-| `rustdx-cmd/src/quality.rs`、`paths.rs` | 质量报告、来源/输出证据、清单检查点及文件锁 |
-| `rustdx-cmd/src/download.rs`、`fetch_code.rs`、`eastmoney/mod.rs` | ZIP续传/缓存、交易所名单及快照分页 |
-| `tests/network_budget.rs`、`properties.rs`、`reliability.rs` | 预算/时限、属性及协议可靠性回归 |
-| `rustdx-cmd/tests/cli.rs`、`fuzz/fuzz_targets/checked_parsers.rs` | CLI端到端及不可信解析fuzz |
-| `src/tcp/evidence.rs`、`rustdx-cmd/src/tcp_evidence.rs` | 握手起完整帧observer、有界fsync/库存及checked重放 |
-| `rustdx-runner/src/`、`tests/control_plane.rs`、`tests/wire_archive.rs` | 严格Job、SQLite WAL、应有键、封存/目录CAS、版本隔离目标、固定版本消费和恢复 |
+核心API路径保持rustdx_complete，应用path依赖指向crates/rustdx-core。不要把根虚拟Cargo.toml作为库依赖。新固定样本就近放各crate/tests，工程级原始证据放docs/testing/evidence。
 
-## 接口与实现约束
+## 3. 代码约束
 
-### 行情与网络
+新请求优先使用参数私有的checked类型，构包和解码分别验证。截断、错身份、超数量、非法日期/数值返回错误；未知尾部按该命令契约保留，不假设所有命令都拒绝尾字节。旧兼容入口的panic边界不能被推广到新接口。
 
-优先使用Client或KlineBuilder::build_request；TCP市场0为深圳、1为上海。KlineRequest私有字段保证编码与参数一致，返回股票/指数不同类型的独立解码函数拒绝截断、尾随字节、超数量和非法日期/时间。Client单页、分页、批次及复权拉取使用新路径，避免请求对象预填结果及响应/结果复制。旧build返回Kline，旧Kline/IndexKline字段和parse保留，try_parse共用新解码；旧公开字段仍可能与发送字节不一致，直接构造仍可能panic。标准Symbol支持北交所不代表普通TCP协议支持北交所，禁止自动映射成深圳。
+证券身份保留market/code和前导零；字段单位、时间来源、价格口径与业务资格显式表达。财务value与candidate_value、TradeRecord与估算金额、requested_date与源日期分别处理。共同调用规则见[应用接入](APPLICATION_INTEGRATION.md)，签名与字段见[接口参考](../reference/COMMAND_API.md)。
 
-`configure_network`只允许首次初始化前调用；读取policy/stats也会初始化全局策略。主连接占用配额，批量查询需要额外容量。重连在旧许可内先关闭旧socket；批次结束释放批量池。不得用裸socket绕过预算后声称仍受进程上限保护。参数默认值、同步闭包不可抢占的限制见[NETWORK.md](../architecture/NETWORK.md)。
+NetworkPolicy在首次policy/stats/连接读取前配置；排队、预热、分页、重试、换站与空页复查消耗同一绝对deadline。同步计算和系统调用不能硬实时抢占；异步宿主使用有界阻塞工作线程。
 
-### 行情语义与规则
+所有权遵循结果类型：KlineData/IndexKlineData及其批量结果借用输入代码，跨线程/缓存持久化用拥有身份的模型。批量外层成功后继续逐项检查，分页集合检查complete/termination/atomic，订阅失效后显式重建。
 
-`CanonicalBar::from_kline`显式要求市场、周期、成交量单位和价格口径；`from_day`为原始日线；`from_lc`要求Symbol且只支持1/5分钟。BarSource覆盖通达信TCP/day/lc及Eastmoney；CLI的Day::to_canonical_with_calendar返回EastCanonicalBar，含标准原价日线、源UTC+8时间戳、源手单位、前收和可选收益指数。标准日线时点15:00与实际快照时间分开，市场、日期、已收盘和完整字段独立检查；采集任务另检查当前行情日。既有文件/TCP类型和CSV保持兼容，枚举消费者需处理新增Eastmoney分支。
+输入摘要和解析使用同一私有字节快照；原子文件发布前核实行数/键/范围。数据库unknown不自动重试，acknowledged后全字段精确回读，不用浮点容差替代数据库验收。
 
-标准量为股，day/lc文件源量为股，TCP A股日线与CSV量为手。TCP分钟周期、指数和其他品种须核实源单位，不能仅凭股票代码推断；旧Bar::from_kline只兼容A股日线手→股，其余用显式单位入口。`ReturnIndex`与`PriceMultiplier`要求正有限值；CSV `factor=0`适配为None。东财advance_return_index只接受ReturnIndex，CLI校验上一交易日基准后更新旧CSV factor，原始OHLC不改写。
+## 4. 变更流程与验证选择
 
-历史回测使用 `RuleContext`及 `rule_at/prices_at/status_at`，输入当日状态和上市交易日序号。日历覆盖与规则覆盖分别检查；填入新日历不自动扩展规则核实范围。静态规则、IPO例外和来源见[LIMIT_RULES.md](../requirements/LIMIT_RULES.md)。
+1. 确认受影响FR编号、调用方行为、兼容边界与恢复状态。
+2. 在所属crate实现，复用现有预算/取消/留证，不增加旁路连接或无界队列。
+3. 用独立来源或有意义的异常用例验证；固定真实样本保存来源/时间/参数/摘要。可逆低影响文档调整不增加重复实现的测试。
+4. 执行fmt、Clippy和相关回归；结构或共享基础变更执行完整workspace检查。
+5. 更新需求映射、方案、集成约定与受影响运营/运维文档；保存实际命令、退出码、跳过项和限制。
 
-### 文件、证据与数据库
+fuzz在tools/fuzz独立执行；基准显式指定核心包。复制冻结夹具后重解，避免改写已有原始证据。采样使用全新目录，不用“非空”证明完整性、日期或实际盘中推送。
 
-新不可信输入使用day/lc的 `try_from_bytes`、gbbq的 `Gbbq::try_from_chunk`及读取器 `try_to_vec`、协议 `Tdx::try_parse`。旧单条入口保留兼容，部分低层构造仍可能panic；checked边界不能因新增解析路径而绕过。
+```sh
+cd tools/fuzz
+cargo +nightly fuzz run checked_parsers --fuzz-dir . -- -max_total_time=30 -max_len=4096
+cargo +nightly fuzz run modern_parsers --fuzz-dir . -- -max_total_time=30 -max_len=65536
+```
 
-读取与摘要必须基于同一字节快照。单day32MiB、gbbq/前因子64MiB、日历1MiB；名单HTTP响应16MiB。day线程默认最多8、可选1–64，每线程结果通道容量1，只传磁盘CSV和元数据。day以4096条分块，质量检查及复权因子跨块连续；A股重复/逆序拒绝，非A股最多8路磁盘归并排序去重；同证券跨输入区间重叠拒绝发布。输出固定为目录参数顺序、文件名升序、文件内日期升序；切换线程数不改变CSV字节。质量详情每类64条，省略计数不改变校验结果。临时空间及元数据边界见[IMPORTS.md](../operations/IMPORTS.md)。
+modern_parsers首字节选择17种路径，覆盖044d目录、F10目录/内容、板块元数据、
+退市bar、副图两种布局、小图、近期分时、竞价、资金流、快照、分类报价、
+0547 XOR/游标解码、特殊涨跌幅、当日分时及外层解压。它只测试解码，不等同订阅网络状态序列fuzz；
+原checked_parsers覆盖文件和旧/增强逐笔/K线/财务。独立锁文件也须保留。
 
-`CollectionReport::start`在采集前持久化，`stage_artifact/published/begin_database/finish`保存关键检查点。每次先更新run_id归档，再更新最新清单，两文件不是一个事务。CSV先回读再记录摘要并原子提交；东财JSON直接序列化已经验证的行，不执行CSV回读。
+指标基准schema1记录1万/10万/100万行、20/200/2000窗口及批量/增量
+EMA/MACD五样本中位数，保留为观察。CI性能门禁另用
+`scripts/bench/run_indicator_comparison.py --baseline-ref <commit> --output /tmp/new-comparison`：
+固定Rust1.89、release参数、共同harness和依赖锁，归档实际f64输入；同机AB/BA
+交替七轮比较共同批量API，记录CPU/RAM、工具链、输入/源码/二进制SHA。
+schema2比较拒绝不同会话、环境和依赖、非法统计、输出摘要变化及默认1.5倍以上回退。
+新增增量API不套不存在的旧基线；计时不证明RSS、市场资格或生产吞吐。
 
-ClickHouse通过HTTP完整响应确认，INSERT附带query_id，单次操作300秒；版本由表默认服务端纳秒生成。MongoDB通过mongosh建立/核实唯一索引，mongoimport退出码确认，长驻mongosh逐批独立回读，MONGODB_URI配置连接。导入、回读单批及退出确认各最多300秒并受整任务deadline约束，超时终止并回收。管道工作线程使用容量1通道，主线程检查取消，响应不超过16MiB。回执后默认4096键一批（可配1–16384），精确比较全部导出字段，最后响应、EOF及进程退出码通过后才允许清理CSV。同机同目标锁覆盖前基准读取至验收完成。不要将unknown自动改成not_started，也不要删除待核对CSV。字段和恢复语义以[IMPORTS.md](../operations/IMPORTS.md)为准。
+CI独立contracts任务执行核心行为和Python故障回归、2.0/旧签名独立调用方、
+实际crate打包/安全解包及下游消费；包检查跳过重复workspace检查，只作为包门禁。
+远端检查归档绑定GitHub SHA；本地配置与验证不代表Actions已运行。
 
-### 指标与缓存
+runner的`pipeline/facts.rs`负责冻结事实校验和应有键遍历，`database/capacity.rs`
+负责发送前容量/回读预留；CLI `io/factors.rs`统一前因子输入/数据库读取校验。
+控制锁、账本状态与发布事务顺序继续在原编排入口集中表达。
 
-布林带采用双栈中心化矩聚合，每条数据入栈/转栈/出栈各一次；KDJ使用高低价单调队列。常规输入O(n)，窗口状态O(period)，输出O(n)。修改后对照独立公式和缺口/极端数值回归，不用逐位浮点相等验证方差。SMA极端累加溢出仍可能重算窗口。
+## 5. 工程交付
 
-KDJ采用 `alpha=2/(d_period+1)`、首个有效RSV初始化K/D；非有限缺口重置。缓存不由Client自动启用，缓存键应含市场、证券、周期、区间和版本；get_or_fetch闭包不能递归调用同一缓存。
+发布包自带README和许可证。检查实际包清单及解包编译，避免exclude漏掉src/data等源码。核心包与CLI依赖版本同步升级后，按[发布流程](../release/RELEASES.md)先核心后CLI。
 
-## 修改与交付
-
-runner使用独立[Job JSON](../../config/runner/job.example.json)，当前采集契约固定本地A股原价日线；worker只产私有文件，publisher处理新命名空间insert-only、全字段/完整release计数，再提交目录。核心TCP留证是可选接口，未自动接入day以外Job。SQLite依赖只位于runner，`env_clear`不构成同UID隔离；目标部署/权限/全量另验收。接口、16项回归和复现环境见[runner](../../rustdx-runner/README.md)、[实施证据](../validation/evidence/runner-implementation-20261023.json)。
-
-新增行为同步更新需求、方案、开发、验证和受影响运营/运维文档；不在多个文件重复完整专项定义。新增日期规则须补原始依据和边界用例，新增数据库写入须记录不确定阶段与恢复证据。
-
-本轮Cargo版本未提升，源码推送不等于crates.io发布；CLI path依赖在源码构建时读取本地优化核心库。分支合并、版本保留与实际发布门禁见[RELEASES.md](../release/RELEASES.md)。
+目录移动、删除和保全摘要见[迁移记录](../release/PROJECT_RESTRUCTURE.md)。源码构建通过不等于注册表发布、远端CI或目标生产通过。

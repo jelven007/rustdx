@@ -1,0 +1,31 @@
+{
+  "request": {
+    "symbol": {
+      "market": 0,
+      "code": "159915"
+    },
+    "requested_date": 20260814,
+    "selector": 4274706690
+  },
+  "requested_date": 20260814,
+  "server_trading_date": null,
+  "date_selector_raw": 4274706690,
+  "previous_close": 0.0,
+  "open_price": 0.0,
+  "previous_close_bits": 0,
+  "open_bits": 0,
+  "scale": {
+    "decimal": 3,
+    "divisor": 1000
+  },
+  "page": {
+    "records": [],
+    "source": {
+      "opcode": 4075,
+      "endpoint": "115.238.56.198:7709",
+      "fetched_at": "2026-10-24T06:11:17.715500Z",
+      "connection_id": 1,
+      "metadata_generation": 0
+    }
+  }
+}

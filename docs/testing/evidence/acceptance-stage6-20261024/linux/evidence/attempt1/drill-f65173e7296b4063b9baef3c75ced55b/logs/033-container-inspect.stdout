@@ -1,0 +1,250 @@
+[
+    {
+        "Id": "36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74",
+        "Created": "2026-10-24T13:07:44.862766382Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "mongod",
+            "--bind_ip",
+            "127.0.0.1",
+            "--port",
+            "38003",
+            "--wiredTigerCacheSizeGB",
+            "0.25"
+        ],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-24T13:07:44.877475089Z",
+            "FinishedAt": "2026-10-24T13:07:54.664228417Z"
+        },
+        "Image": "sha256:aba3018581e934f8ca714bda8f17e88910211ebfb1b96547824085985c884bf1",
+        "ResolvConfPath": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containers/36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74/resolv.conf",
+        "HostnamePath": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containers/36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74/hostname",
+        "HostsPath": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containers/36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74/hosts",
+        "LogPath": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/containers/36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74/36407d477bd08d05b72529290f58c8e44417d9749106e9e1c11f672057a2ab74-json.log",
+        "Name": "/rustdx_recovery_c460890aa1f94602bc3495fcbd7c77e2-mongo-original",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original/mongo-data:/data/db",
+                "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original/mongo-config:/data/configdb"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "host",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 1073741824,
+            "NanoCpus": 2000000000,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": [],
+            "BlkioDeviceReadBps": [],
+            "BlkioDeviceWriteBps": [],
+            "BlkioDeviceReadIOps": [],
+            "BlkioDeviceWriteIOps": [],
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": [],
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 2147483648,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": [],
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/ae88045a1408bcf6a5978c15c11d83f45237b91ac937378f6ddc62ca0c2b30b5-init/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/099af24582ff7e3bae708465df6fb1b91336b20ec9fec9aed3bf361d7e26929b/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/8c96ac1f5f0dd9e8d5101eff066f6d7cfccc7115c0bd09f84180d17ef77a84b8/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/94457ee24d5cfd3bfe699af8e3d5682f66a6fdb996d6fb9053e3af66ebaae11b/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/209d29616703ce9a92cc7fe93f707d73ceb2ab72001bb2c4ccab022b98a57d42/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/b401ee7096461c9b12366154da846b2b445278787e5c837b278604d683baed6c/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/38954082e2c7291492a10853ef7862072ed3a4f60ce80392de926714ff31bd1e/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/4a75637a51620faf5eee4d70b16da6e923be5d1ae4af1698a431bdbf5842c26a/diff:/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/4a093a416c94e5e5214106b6aae618d9719fb84f677b690912cb8a01f5d4be3e/diff",
+                "MergedDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/ae88045a1408bcf6a5978c15c11d83f45237b91ac937378f6ddc62ca0c2b30b5/merged",
+                "UpperDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/ae88045a1408bcf6a5978c15c11d83f45237b91ac937378f6ddc62ca0c2b30b5/diff",
+                "WorkDir": "/tmp/rustdx-recovery-20261024-19y2r7t3/docker-data/overlay2/ae88045a1408bcf6a5978c15c11d83f45237b91ac937378f6ddc62ca0c2b30b5/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original/mongo-data",
+                "Destination": "/data/db",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt1/drill-f65173e7296b4063b9baef3c75ced55b/original/mongo-config",
+                "Destination": "/data/configdb",
+                "Mode": "",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "ECS-DEV",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "27017/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.19",
+                "JSYAML_VERSION=3.13.1",
+                "JSYAML_CHECKSUM=662e32319bdd378e91f67578e56a34954b0a2e33aca11d70ab9f4826af24b941",
+                "MONGO_PACKAGE=mongodb-org",
+                "MONGO_REPO=repo.mongodb.org",
+                "MONGO_MAJOR=8.0",
+                "MONGO_VERSION=8.0.16",
+                "HOME=/data/db",
+                "GLIBC_TUNABLES=glibc.pthread.rseq=0"
+            ],
+            "Cmd": [
+                "mongod",
+                "--bind_ip",
+                "127.0.0.1",
+                "--port",
+                "38003",
+                "--wiredTigerCacheSizeGB",
+                "0.25"
+            ],
+            "Image": "docker.1ms.run/library/mongo:8.0.16@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d",
+            "Volumes": {
+                "/data/configdb": {},
+                "/data/db": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.version": "24.04"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "host": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "MacAddress": "",
+                    "DriverOpts": null,
+                    "NetworkID": "fe9868a6ffc355f4ba7f4bdb4785c92d137e8481a2c1d92e8ea0466e845f15a2",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": null
+                }
+            }
+        }
+    }
+]

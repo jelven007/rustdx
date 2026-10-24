@@ -1,0 +1,7 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling zopfli v0.8.3
+   Compiling flate2 v1.1.0
+   Compiling zip v2.4.2
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 10.51s

@@ -129,7 +129,7 @@ def main():
                     env["RUSTDX_VERIFY_BATCH_ROWS"] = str(args.batch_rows)
                 else:
                     env.pop("RUSTDX_VERIFY_BATCH_ROWS", None)
-                cmd = [str(binary), "--timeout", "3600", "day", str(source), "-o", backend,
+                cmd = [str(binary), "--no-tcp-startup", "--timeout", "3600", "day", str(source), "-o", backend,
                        "-t", table, "--workers", "4", "--keep-csv", "--report", "run.json"]
                 time_args = ["-l"] if platform.system() == "Darwin" else ["-v"]
                 start = time.perf_counter()

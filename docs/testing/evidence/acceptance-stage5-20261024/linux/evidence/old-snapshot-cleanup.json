@@ -1,0 +1,56 @@
+[
+  {
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+      "-H",
+      "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+      "stop",
+      "--time",
+      "10",
+      "rustdx-stage5-ch"
+    ],
+    "exit_code": 0,
+    "stdout": "rustdx-stage5-ch\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+      "-H",
+      "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+      "rm",
+      "-v",
+      "rustdx-stage5-ch"
+    ],
+    "exit_code": 0,
+    "stdout": "rustdx-stage5-ch\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+      "-H",
+      "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+      "stop",
+      "--time",
+      "10",
+      "rustdx-stage5-mongo"
+    ],
+    "exit_code": 0,
+    "stdout": "rustdx-stage5-mongo\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "/tmp/rustdx-acceptance-20261024-TLDCn5/infra/docker/docker",
+      "-H",
+      "unix:///tmp/rustdx-acceptance-20261024-TLDCn5/docker.sock",
+      "rm",
+      "-v",
+      "rustdx-stage5-mongo"
+    ],
+    "exit_code": 0,
+    "stdout": "rustdx-stage5-mongo\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,57 @@
+[package]
+name        = "jelven-rustdx-cli"
+version     = "2.0.0"
+edition     = "2024"
+rust-version = "1.89"
+license     = "MIT"
+build       = "build.rs"
+readme      = "README.md"
+description = "通达信日线数据采集命令行工具：day 文件、CSV 导出、ClickHouse/MongoDB 写入"
+repository  = "https://github.com/jelven007/rustdx"
+authors     = ["张路 <jelven@126.com>", "zjp <jiping_zhou@foxmail.com>"]
+exclude     = [
+                "assets", "examples", "benches", "tests", "rustdx.log", "*.csv",
+                "rustfmt.toml"
+              ]
+
+[lib]
+name = "rustdx_cli"
+path = "src/lib.rs"
+
+[dependencies]
+eyre = "0.6"
+argh = "0.1"
+csv  = "1.4"
+calamine = "0.36"
+serde_json = { version = "1", features = ["float_roundtrip"] }
+env_logger = "0.11"
+sha2 = "0.10"
+ctrlc = { version = "3.5", features = ["termination"] }
+
+log = { workspace = true }
+serde = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+
+[dependencies.rustdx-complete]
+package = "jelven-rustdx-complete"
+version  = "2.0.0"
+path = "../../crates/rustdx-core"
+
+[dependencies.ureq]
+version = "=3.4.0"
+default-features = false
+features = ["rustls"]
+
+[dependencies.zip]
+version = "2"
+default-features = false
+features = ["deflate"]
+
+[[bin]]
+name = "rustdx"
+path = "src/main.rs"
+
+[dev-dependencies]
+tempfile = "3"
+miniz_oxide = "0.9"

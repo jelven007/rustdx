@@ -1,0 +1,10 @@
+{
+  "command": [
+    "target/debug/examples/capture_resources",
+    "docs/testing/evidence/resource-contract-push-fix-20261024/live-hz",
+    "115.238.56.198:7709"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 10.44,
+  "integration_skip_env": true
+}

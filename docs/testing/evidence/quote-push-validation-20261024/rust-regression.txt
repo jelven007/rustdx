@@ -1,0 +1,98 @@
+    Blocking waiting for file lock on build directory
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx)
+    Finished `test` profile [optimized + debuginfo] target(s) in 21.04s
+     Running tests/command_boundaries.rs (target/debug/deps/command_boundaries-ae1671ae81d0de2c)
+
+running 10 tests
+test recent_minutes_request_date_and_symbol_bounds ... ok
+test recent_minutes_rejects_negative_header_prices_even_for_empty_series ... ok
+test recent_minutes_rejects_nonfinite_overflow_negative_and_truncated_fields ... ok
+test refresh_preserves_marker_candidate_limit ... ok
+test refresh_rejects_cursor_below_request_before_initial_baseline ... ok
+test refresh_checks_count_identity_duplicates_and_ambiguous_boundaries ... ok
+test refresh_accepts_zero_prices_and_depth_but_rejects_negative_values ... ok
+test recent_minutes_checks_counts_session_labels_and_zero_values ... ok
+test shared_quote_partition_accepts_eighty_snapshot_records ... ok
+test refresh_accepts_all_one_hundred_records_with_and_without_opaque_tails ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/extended_queries.rs (target/debug/deps/extended_queries-1bb4350450ccc66b)
+
+running 4 tests
+test auction_scan_rejects_repeated_page_instead_of_claiming_completion ... ok
+test scan_rejects_same_endpoint_reconnect_between_pages ... ok
+test bounded_batch_preserves_input_order_and_individual_decode_errors ... ok
+test special_scan_advances_by_returned_count_and_reports_record_budget ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/modern_commands.rs (target/debug/deps/modern_commands-2d36f0dcdd7d10b7)
+
+running 10 tests
+test directory_has_u32_offsets_full_name_ieee_prices_and_checked_pages ... ok
+test minute_precision_uses_metadata_for_two_three_and_four_decimals ... ok
+test today_minute_uses_first_point_bases_and_distinct_average_scale ... ok
+test enhanced_history_event_model_replays_real_wire_without_losing_new_slots ... ok
+test raw_extraction_stops_idle_worker_and_preserves_the_socket ... ok
+test client_defaults_load_new_directory_cache_and_only_use_0537_minutes ... ok
+test idle_failure_invalidates_and_next_request_reconnects_without_mixing_sessions ... ok
+test manual_heartbeat_returns_date_and_idle_worker_serializes_with_business ... ok
+test new_directory_short_pages_continue_but_early_empty_and_duplicate_fail ... ok
+test waiting_for_heartbeat_honors_business_deadline_and_drop_interrupts_worker ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+     Running tests/protocol_7709_decoders.rs (target/debug/deps/protocol_7709_decoders-556070d3ec4bdaad)
+
+running 11 tests
+test auxiliary_supports_i64_extremes_and_finite_float_pairs ... ok
+test recent_minute_deltas_are_relative_to_first_and_average_has_extra_scale ... ok
+test sparkline_validates_identity_and_capacity ... ok
+test limits_fixed_length_validation_and_negative_auction_direction ... ok
+test category_tail_and_sort_contract_are_independent ... ok
+test requests_encode_nine_distinct_opcodes_and_reserved_fields ... ok
+test money_flow_packed_buckets_allow_negative_amounts_and_keep_both_sets ... ok
+test snapshots_handle_missing_out_of_order_codes_and_preserve_tails ... ok
+test refresh_xor_is_distinct_from_snapshot_and_depth_is_complete ... ok
+test malformed_payloads_never_panic ... ok
+test independently_verified_live_frames_match_all_owned_records ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/quote_subscription.rs (target/debug/deps/quote_subscription-cd18eb5327d4e65d)
+
+running 21 tests
+test checked_query_rejects_wrong_message_identity ... ok
+test empty_first_refresh_keeps_baseline_pending_and_duplicate_is_not_accumulated ... ok
+test invalid_last_symbol_in_passive_page_never_partially_publishes_first_symbol ... ok
+test direct_poll_and_refresh_enforce_resident_memory_budget ... ok
+test initial_response_below_requested_cursor_invalidates_without_publishing ... ok
+test endpoint_revocation_and_operation_cancellation_close_the_subscription ... ok
+test malformed_push_prefix_compression_and_truncated_body_close_session ... ok
+test frame_and_byte_overflow_invalidate_and_release_connection ... ok
+test invalid_subscription_budgets_fail_before_opening_a_connection ... ok
+test local_poll_timeout_preserves_session_but_operation_deadline_closes_it ... ok
+test observer_failure_does_not_publish_push ... ok
+test mixed_valid_and_regressing_records_do_not_partially_publish_response_or_push ... ok
+test passive_duplicate_and_empty_frames_preserve_state_and_cursor_max_requires_rebuild ... ok
+test passive_multi_symbol_stream_completes_baseline_and_replaces_full_depth_without_requests ... ok
+test passive_updates_are_used_as_next_request_cursors_instead_of_resetting_baseline ... ok
+test passive_updates_reuse_message_id_without_refresh_or_heartbeat_writes ... ok
+test poll_preserves_partial_header_and_body_and_close_releases_permit ... ok
+test pushes_before_response_are_queued_with_two_budgets ... ok
+test rebuild_rejects_expired_metadata_before_reconnecting ... ok
+test rebuild_reopens_through_daily_pool_and_resets_cursors ... ok
+test wrong_opcode_and_cursor_regression_are_not_published ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+     Running unittests examples/validate_quote_push.rs (target/debug/examples/validate_quote_push-00827623755a50a7)
+
+running 3 tests
+test tests::acceptance_never_promotes_diagnostics_or_incomplete_observations ... ok
+test tests::strict_gate_rejects_weekend_holiday_lunch_close_and_crossing ... ok
+test tests::cursor_only_duplicate_and_opaque_tail_do_not_prove_market_changes ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

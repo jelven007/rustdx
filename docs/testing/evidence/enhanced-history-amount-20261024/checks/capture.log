@@ -1,0 +1,12 @@
+enhanced 0 1800
+enhanced 1800 1800
+enhanced 3600 1276
+enhanced 4876 0
+legacy 0 1800
+legacy 1800 1800
+legacy 3600 1276
+legacy 4876 0
+kline 8 480
+kline 0 96
+kline 9 3
+kline 4 3

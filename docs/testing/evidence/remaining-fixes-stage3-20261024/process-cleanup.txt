@@ -1,0 +1,10 @@
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 0.54s
+[1m[32m     Running[0m unittests src/lib.rs (target/debug/deps/rustdx_runner-d06275ef8815c181)
+
+running 3 tests
+test database_process::tests::malformed_responses_retain_bounded_evidence ... ok
+test database_process::tests::one_process_handles_batches_and_requires_clean_exit ... ok
+test database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.14s
+

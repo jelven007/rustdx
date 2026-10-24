@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "environment": "macOS-27.0.1-arm64-arm-64bit",
+  "toolchain": "Rust 1.89.0",
+  "workspace_statistics": {
+    "passed": 547,
+    "failed": 0,
+    "ignored": 27
+  },
+  "supplementary_tests": {
+    "new_fixture": 1,
+    "explicit_ignored_runner_tcp": 2
+  },
+  "skip_env": "RUSTDX_SKIP_INTEGRATION_TESTS=1",
+  "skip_limit": "Some live/database guards return early; workspace passed counts do not prove external services ran. Other ignored cases were not forced.",
+  "checks": [
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "-p",
+        "jelven-rustdx-cli",
+        "--bin",
+        "rustdx",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 20.692,
+      "integration_skip_env": true,
+      "label": "build",
+      "log": "checks/build.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/target/debug/rustdx",
+        "--timeout",
+        "180",
+        "--no-tcp-startup",
+        "tcp-day",
+        "--directory",
+        "/Users/bytedance/Documents/rustdx/docs/testing/evidence/tcp-day-volume-fix-20261024/live-115.238.56.198"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.911,
+      "integration_skip_env": true,
+      "label": "live-115",
+      "log": "checks/live-115.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/target/debug/rustdx",
+        "--timeout",
+        "180",
+        "--no-tcp-startup",
+        "tcp-day",
+        "--directory",
+        "/Users/bytedance/Documents/rustdx/docs/testing/evidence/tcp-day-volume-fix-20261024/live-180.153.18.170"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 3.015,
+      "integration_skip_env": true,
+      "label": "live-180",
+      "log": "checks/live-180.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 239.336,
+      "integration_skip_env": true,
+      "label": "tests",
+      "log": "checks/tests.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "jelven-rustdx-complete",
+        "--all-features",
+        "--test",
+        "daily_integer_shares",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 46.741,
+      "integration_skip_env": true,
+      "label": "daily-fixtures",
+      "log": "checks/daily-fixtures.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "tcp_daily_release_revision_missing_keys_and_offline_recovery",
+        "--locked",
+        "--offline",
+        "--",
+        "--ignored",
+        "--exact",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 36.732,
+      "integration_skip_env": true,
+      "label": "runner-tcp",
+      "log": "checks/runner-tcp.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "tcp_runner_rejects_forged_csv_even_with_matching_report_digest",
+        "--locked",
+        "--offline",
+        "--",
+        "--ignored",
+        "--exact",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.326,
+      "integration_skip_env": true,
+      "label": "runner-forged",
+      "log": "checks/runner-forged.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 46.182,
+      "integration_skip_env": true,
+      "label": "final-clippy",
+      "log": "checks/final-clippy.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.313,
+      "integration_skip_env": true,
+      "label": "fmt",
+      "log": "checks/fmt.log"
+    },
+    {
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "-p",
+        "jelven-rustdx-cli",
+        "--bin",
+        "rustdx",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 8.322,
+      "integration_skip_env": true,
+      "label": "final-build",
+      "log": "checks/final-build.log"
+    },
+    {
+      "command": [
+        "/tmp/rustdx-volume-check/rustdx-final",
+        "--timeout",
+        "180",
+        "--no-tcp-startup",
+        "tcp-day",
+        "--directory",
+        "/Users/bytedance/Documents/rustdx/docs/testing/evidence/tcp-day-volume-fix-20261024/final-live-115.238.56.198"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.541,
+      "integration_skip_env": true,
+      "label": "final-live-115",
+      "log": "checks/final-live-115.log"
+    },
+    {
+      "command": [
+        "/tmp/rustdx-volume-check/rustdx-final",
+        "--timeout",
+        "180",
+        "--no-tcp-startup",
+        "tcp-day",
+        "--directory",
+        "/Users/bytedance/Documents/rustdx/docs/testing/evidence/tcp-day-volume-fix-20261024/final-live-180.153.18.170"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 2.571,
+      "integration_skip_env": true,
+      "label": "final-live-180",
+      "log": "checks/final-live-180.log"
+    }
+  ]
+}

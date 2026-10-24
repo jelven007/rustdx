@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "scripts/release/preflight.py",
+        "--cargo",
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "--toolchain",
+        "1.89.0",
+        "--offline",
+        "--snapshot",
+        "--skip-workspace-checks",
+        "--output",
+        "/tmp/rustdx-optimization-20261024/package-audit"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 511.025065958,
+      "log": "/tmp/rustdx-optimization-20261024/packages-0.log"
+    }
+  ]
+}

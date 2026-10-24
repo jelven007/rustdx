@@ -1,0 +1,1700 @@
+{
+  "request": {
+    "symbol": {
+      "market": 0,
+      "code": "000001"
+    },
+    "kind": "BuySellStrength"
+  },
+  "page": {
+    "records": [
+      {
+        "IntegerPair": {
+          "index": 0,
+          "series_a": 3973,
+          "series_b": 9397
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 1,
+          "series_a": 6429,
+          "series_b": 8062
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 2,
+          "series_a": 26025,
+          "series_b": 2342
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 3,
+          "series_a": 13529,
+          "series_b": 3806
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 4,
+          "series_a": 40840,
+          "series_b": 4786
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 5,
+          "series_a": 36933,
+          "series_b": 6536
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 6,
+          "series_a": 34089,
+          "series_b": 5723
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 7,
+          "series_a": 34876,
+          "series_b": 5270
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 8,
+          "series_a": 36175,
+          "series_b": 6807
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 9,
+          "series_a": 36367,
+          "series_b": 7183
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 10,
+          "series_a": 17293,
+          "series_b": 7823
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 11,
+          "series_a": 30767,
+          "series_b": 7406
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 12,
+          "series_a": 38663,
+          "series_b": 8388
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 13,
+          "series_a": 37754,
+          "series_b": 8277
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 14,
+          "series_a": 43948,
+          "series_b": 5583
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 15,
+          "series_a": 37327,
+          "series_b": 4665
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 16,
+          "series_a": 36543,
+          "series_b": 4835
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 17,
+          "series_a": 38461,
+          "series_b": 7078
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 18,
+          "series_a": 22492,
+          "series_b": 6178
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 19,
+          "series_a": 21759,
+          "series_b": 5234
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 20,
+          "series_a": 21221,
+          "series_b": 9472
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 21,
+          "series_a": 13305,
+          "series_b": 8905
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 22,
+          "series_a": 6016,
+          "series_b": 8388
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 23,
+          "series_a": 17481,
+          "series_b": 7671
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 24,
+          "series_a": 27055,
+          "series_b": 3445
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 25,
+          "series_a": 24172,
+          "series_b": 5144
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 26,
+          "series_a": 27854,
+          "series_b": 3606
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 27,
+          "series_a": 28414,
+          "series_b": 3837
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 28,
+          "series_a": 30736,
+          "series_b": 3031
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 29,
+          "series_a": 26091,
+          "series_b": 5769
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 30,
+          "series_a": 30559,
+          "series_b": 3655
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 31,
+          "series_a": 27967,
+          "series_b": 8412
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 32,
+          "series_a": 30331,
+          "series_b": 6352
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 33,
+          "series_a": 32154,
+          "series_b": 7121
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 34,
+          "series_a": 33838,
+          "series_b": 6711
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 35,
+          "series_a": 31134,
+          "series_b": 13009
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 36,
+          "series_a": 28656,
+          "series_b": 14831
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 37,
+          "series_a": 20378,
+          "series_b": 10953
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 38,
+          "series_a": 38068,
+          "series_b": 7463
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 39,
+          "series_a": 20021,
+          "series_b": 12551
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 40,
+          "series_a": 19305,
+          "series_b": 12582
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 41,
+          "series_a": 21530,
+          "series_b": 12906
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 42,
+          "series_a": 19330,
+          "series_b": 18221
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 43,
+          "series_a": 21199,
+          "series_b": 17081
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 44,
+          "series_a": 21759,
+          "series_b": 17640
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 45,
+          "series_a": 32016,
+          "series_b": 16803
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 46,
+          "series_a": 22860,
+          "series_b": 21672
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 47,
+          "series_a": 22186,
+          "series_b": 18988
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 48,
+          "series_a": 30351,
+          "series_b": 19021
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 49,
+          "series_a": 31149,
+          "series_b": 18606
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 50,
+          "series_a": 22477,
+          "series_b": 18701
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 51,
+          "series_a": 6915,
+          "series_b": 14608
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 52,
+          "series_a": 7801,
+          "series_b": 15936
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 53,
+          "series_a": 7578,
+          "series_b": 17394
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 54,
+          "series_a": 3738,
+          "series_b": 13105
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 55,
+          "series_a": 3997,
+          "series_b": 14801
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 56,
+          "series_a": 5795,
+          "series_b": 16848
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 57,
+          "series_a": 4047,
+          "series_b": 16567
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 58,
+          "series_a": 3736,
+          "series_b": 16869
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 59,
+          "series_a": 6756,
+          "series_b": 15110
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 60,
+          "series_a": 7613,
+          "series_b": 14801
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 61,
+          "series_a": 7098,
+          "series_b": 16985
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 62,
+          "series_a": 8453,
+          "series_b": 13205
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 63,
+          "series_a": 7691,
+          "series_b": 14345
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 64,
+          "series_a": 5677,
+          "series_b": 9789
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 65,
+          "series_a": 3206,
+          "series_b": 10864
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 66,
+          "series_a": 5233,
+          "series_b": 8437
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 67,
+          "series_a": 5081,
+          "series_b": 6107
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 68,
+          "series_a": 5718,
+          "series_b": 6995
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 69,
+          "series_a": 5612,
+          "series_b": 5689
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 70,
+          "series_a": 5638,
+          "series_b": 7828
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 71,
+          "series_a": 4978,
+          "series_b": 8906
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 72,
+          "series_a": 4882,
+          "series_b": 10485
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 73,
+          "series_a": 5079,
+          "series_b": 11455
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 74,
+          "series_a": 5062,
+          "series_b": 13073
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 75,
+          "series_a": 4347,
+          "series_b": 10615
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 76,
+          "series_a": 5334,
+          "series_b": 10888
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 77,
+          "series_a": 5556,
+          "series_b": 10180
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 78,
+          "series_a": 6490,
+          "series_b": 13226
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 79,
+          "series_a": 6133,
+          "series_b": 12085
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 80,
+          "series_a": 6561,
+          "series_b": 13759
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 81,
+          "series_a": 4730,
+          "series_b": 18053
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 82,
+          "series_a": 4502,
+          "series_b": 16818
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 83,
+          "series_a": 3817,
+          "series_b": 15352
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 84,
+          "series_a": 3248,
+          "series_b": 16110
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 85,
+          "series_a": 4621,
+          "series_b": 14923
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 86,
+          "series_a": 5638,
+          "series_b": 14855
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 87,
+          "series_a": 4246,
+          "series_b": 19949
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 88,
+          "series_a": 6007,
+          "series_b": 19993
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 89,
+          "series_a": 5607,
+          "series_b": 19755
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 90,
+          "series_a": 7637,
+          "series_b": 20436
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 91,
+          "series_a": 3980,
+          "series_b": 20922
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 92,
+          "series_a": 5573,
+          "series_b": 21853
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 93,
+          "series_a": 5166,
+          "series_b": 22459
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 94,
+          "series_a": 5290,
+          "series_b": 21623
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 95,
+          "series_a": 6889,
+          "series_b": 19529
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 96,
+          "series_a": 8116,
+          "series_b": 16531
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 97,
+          "series_a": 7005,
+          "series_b": 17338
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 98,
+          "series_a": 5045,
+          "series_b": 15610
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 99,
+          "series_a": 5789,
+          "series_b": 17610
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 100,
+          "series_a": 7135,
+          "series_b": 14283
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 101,
+          "series_a": 7823,
+          "series_b": 15246
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 102,
+          "series_a": 6109,
+          "series_b": 18164
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 103,
+          "series_a": 5846,
+          "series_b": 19304
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 104,
+          "series_a": 6655,
+          "series_b": 16539
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 105,
+          "series_a": 8082,
+          "series_b": 13108
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 106,
+          "series_a": 8821,
+          "series_b": 13734
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 107,
+          "series_a": 8310,
+          "series_b": 14896
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 108,
+          "series_a": 9319,
+          "series_b": 14580
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 109,
+          "series_a": 9080,
+          "series_b": 17754
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 110,
+          "series_a": 9528,
+          "series_b": 18535
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 111,
+          "series_a": 10091,
+          "series_b": 16713
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 112,
+          "series_a": 9014,
+          "series_b": 16874
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 113,
+          "series_a": 8544,
+          "series_b": 16568
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 114,
+          "series_a": 6662,
+          "series_b": 18839
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 115,
+          "series_a": 7507,
+          "series_b": 19828
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 116,
+          "series_a": 5339,
+          "series_b": 21207
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 117,
+          "series_a": 6963,
+          "series_b": 20330
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 118,
+          "series_a": 6229,
+          "series_b": 18459
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 119,
+          "series_a": 7134,
+          "series_b": 17159
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 120,
+          "series_a": 2275,
+          "series_b": 17885
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 121,
+          "series_a": 3375,
+          "series_b": 20852
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 122,
+          "series_a": 3695,
+          "series_b": 17140
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 123,
+          "series_a": 4468,
+          "series_b": 14094
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 124,
+          "series_a": 3788,
+          "series_b": 20088
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 125,
+          "series_a": 8578,
+          "series_b": 13688
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 126,
+          "series_a": 4996,
+          "series_b": 14798
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 127,
+          "series_a": 8217,
+          "series_b": 10838
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 128,
+          "series_a": 7798,
+          "series_b": 14299
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 129,
+          "series_a": 10791,
+          "series_b": 11201
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 130,
+          "series_a": 12153,
+          "series_b": 9636
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 131,
+          "series_a": 11530,
+          "series_b": 9542
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 132,
+          "series_a": 10030,
+          "series_b": 13657
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 133,
+          "series_a": 11383,
+          "series_b": 8945
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 134,
+          "series_a": 8228,
+          "series_b": 13756
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 135,
+          "series_a": 9288,
+          "series_b": 12399
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 136,
+          "series_a": 10126,
+          "series_b": 17107
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 137,
+          "series_a": 9922,
+          "series_b": 12481
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 138,
+          "series_a": 7325,
+          "series_b": 16100
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 139,
+          "series_a": 10325,
+          "series_b": 15862
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 140,
+          "series_a": 10981,
+          "series_b": 13369
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 141,
+          "series_a": 10467,
+          "series_b": 12662
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 142,
+          "series_a": 11335,
+          "series_b": 10621
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 143,
+          "series_a": 10069,
+          "series_b": 6115
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 144,
+          "series_a": 9868,
+          "series_b": 6229
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 145,
+          "series_a": 8887,
+          "series_b": 7252
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 146,
+          "series_a": 8743,
+          "series_b": 5581
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 147,
+          "series_a": 9172,
+          "series_b": 6560
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 148,
+          "series_a": 8712,
+          "series_b": 7042
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 149,
+          "series_a": 10308,
+          "series_b": 5087
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 150,
+          "series_a": 10160,
+          "series_b": 4972
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 151,
+          "series_a": 16860,
+          "series_b": 7341
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 152,
+          "series_a": 16500,
+          "series_b": 5654
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 153,
+          "series_a": 22495,
+          "series_b": 6020
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 154,
+          "series_a": 25369,
+          "series_b": 5429
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 155,
+          "series_a": 25866,
+          "series_b": 6059
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 156,
+          "series_a": 26607,
+          "series_b": 5920
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 157,
+          "series_a": 29171,
+          "series_b": 5888
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 158,
+          "series_a": 32972,
+          "series_b": 4425
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 159,
+          "series_a": 32566,
+          "series_b": 4747
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 160,
+          "series_a": 35113,
+          "series_b": 5901
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 161,
+          "series_a": 26773,
+          "series_b": 4893
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 162,
+          "series_a": 39656,
+          "series_b": 3686
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 163,
+          "series_a": 32444,
+          "series_b": 4075
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 164,
+          "series_a": 35494,
+          "series_b": 5671
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 165,
+          "series_a": 44009,
+          "series_b": 5170
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 166,
+          "series_a": 46147,
+          "series_b": 5349
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 167,
+          "series_a": 36650,
+          "series_b": 4691
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 168,
+          "series_a": 39428,
+          "series_b": 4940
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 169,
+          "series_a": 38470,
+          "series_b": 3987
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 170,
+          "series_a": 48449,
+          "series_b": 3759
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 171,
+          "series_a": 45223,
+          "series_b": 4114
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 172,
+          "series_a": 36992,
+          "series_b": 3621
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 173,
+          "series_a": 29096,
+          "series_b": 6659
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 174,
+          "series_a": 39322,
+          "series_b": 3935
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 175,
+          "series_a": 42490,
+          "series_b": 4906
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 176,
+          "series_a": 38438,
+          "series_b": 4643
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 177,
+          "series_a": 40571,
+          "series_b": 6194
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 178,
+          "series_a": 41874,
+          "series_b": 6337
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 179,
+          "series_a": 40202,
+          "series_b": 6040
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 180,
+          "series_a": 50844,
+          "series_b": 5546
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 181,
+          "series_a": 49084,
+          "series_b": 6865
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 182,
+          "series_a": 48406,
+          "series_b": 6418
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 183,
+          "series_a": 49619,
+          "series_b": 6362
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 184,
+          "series_a": 45344,
+          "series_b": 7140
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 185,
+          "series_a": 37021,
+          "series_b": 7749
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 186,
+          "series_a": 39400,
+          "series_b": 6059
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 187,
+          "series_a": 29822,
+          "series_b": 5214
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 188,
+          "series_a": 30637,
+          "series_b": 5400
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 189,
+          "series_a": 42608,
+          "series_b": 6042
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 190,
+          "series_a": 35429,
+          "series_b": 6424
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 191,
+          "series_a": 37018,
+          "series_b": 9230
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 192,
+          "series_a": 39054,
+          "series_b": 8105
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 193,
+          "series_a": 41134,
+          "series_b": 7152
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 194,
+          "series_a": 39846,
+          "series_b": 8278
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 195,
+          "series_a": 45739,
+          "series_b": 5176
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 196,
+          "series_a": 43274,
+          "series_b": 8139
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 197,
+          "series_a": 47974,
+          "series_b": 6780
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 198,
+          "series_a": 46061,
+          "series_b": 7645
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 199,
+          "series_a": 34546,
+          "series_b": 7467
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 200,
+          "series_a": 36495,
+          "series_b": 7530
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 201,
+          "series_a": 38446,
+          "series_b": 7956
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 202,
+          "series_a": 46987,
+          "series_b": 8462
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 203,
+          "series_a": 49680,
+          "series_b": 8505
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 204,
+          "series_a": 49637,
+          "series_b": 6563
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 205,
+          "series_a": 45932,
+          "series_b": 8038
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 206,
+          "series_a": 44691,
+          "series_b": 8990
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 207,
+          "series_a": 48418,
+          "series_b": 6934
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 208,
+          "series_a": 49313,
+          "series_b": 6625
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 209,
+          "series_a": 49193,
+          "series_b": 5863
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 210,
+          "series_a": 48757,
+          "series_b": 7533
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 211,
+          "series_a": 48407,
+          "series_b": 7506
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 212,
+          "series_a": 48490,
+          "series_b": 8233
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 213,
+          "series_a": 48698,
+          "series_b": 9591
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 214,
+          "series_a": 49050,
+          "series_b": 10325
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 215,
+          "series_a": 49184,
+          "series_b": 13108
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 216,
+          "series_a": 51604,
+          "series_b": 13818
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 217,
+          "series_a": 55925,
+          "series_b": 12794
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 218,
+          "series_a": 55739,
+          "series_b": 12751
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 219,
+          "series_a": 54877,
+          "series_b": 10067
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 220,
+          "series_a": 39974,
+          "series_b": 10230
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 221,
+          "series_a": 40990,
+          "series_b": 11122
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 222,
+          "series_a": 53339,
+          "series_b": 11443
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 223,
+          "series_a": 52682,
+          "series_b": 10273
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 224,
+          "series_a": 55244,
+          "series_b": 11043
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 225,
+          "series_a": 54441,
+          "series_b": 10735
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 226,
+          "series_a": 51491,
+          "series_b": 13296
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 227,
+          "series_a": 50450,
+          "series_b": 12376
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 228,
+          "series_a": 49216,
+          "series_b": 10749
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 229,
+          "series_a": 52476,
+          "series_b": 12330
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 230,
+          "series_a": 49442,
+          "series_b": 12889
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 231,
+          "series_a": 49344,
+          "series_b": 10839
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 232,
+          "series_a": 46651,
+          "series_b": 8952
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 233,
+          "series_a": 42049,
+          "series_b": 10144
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 234,
+          "series_a": 42378,
+          "series_b": 8454
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 235,
+          "series_a": 38605,
+          "series_b": 7817
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 236,
+          "series_a": 34506,
+          "series_b": 10004
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 237,
+          "series_a": 0,
+          "series_b": 0
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 238,
+          "series_a": 0,
+          "series_b": 0
+        }
+      },
+      {
+        "IntegerPair": {
+          "index": 239,
+          "series_a": 46716,
+          "series_b": 10636
+        }
+      }
+    ],
+    "source": {
+      "opcode": 1307,
+      "endpoint": "115.238.56.198:7709",
+      "fetched_at": "2026-10-24T05:43:57.932275Z",
+      "connection_id": 1,
+      "metadata_generation": null
+    }
+  }
+}

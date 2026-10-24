@@ -1,0 +1,669 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-24T06:49:18.899215+00:00",
+  "scope": "26 registered protocol commands and current Rust Client/lower-layer DTO interfaces; read-only documentation task",
+  "command_count": 26,
+  "client_methods": 78,
+  "additional_client_methods": [
+    "history_trade_page_legacy",
+    "history_transaction_all_legacy",
+    "history_transaction_legacy",
+    "quote_metadata_status",
+    "quote_metadata_store",
+    "refresh_quote_metadata"
+  ],
+  "network_requests_in_this_task": 0,
+  "rust_source_modified_in_this_task": false,
+  "validation": {
+    "registered_command_sections": 26,
+    "example_count": 4,
+    "examples_compile_only": true,
+    "rust_toolchain": "1.89.0",
+    "cargo_check_offline": true,
+    "missing_reference_targets": 0,
+    "network_examples_executed": false
+  },
+  "source_snapshot": [
+    {
+      "path": "src/data/model.rs",
+      "sha256": "925afb198ccec4905d6cd9d53ec22498ec245145bf0e7fe38b789410bd5563a9",
+      "bytes": 6690
+    },
+    {
+      "path": "src/tcp/basic.rs",
+      "sha256": "2b22e893790bb2a06ae6d5d0e8fbbe5ad5b1373cbcf16e955b0ff6248748e7db",
+      "bytes": 7992
+    },
+    {
+      "path": "src/tcp/evidence.rs",
+      "sha256": "efc7c3da656c96c9df0146a1dd87756466bd57cd84c3f953422067447aebedec",
+      "bytes": 2207
+    },
+    {
+      "path": "src/tcp/governance.rs",
+      "sha256": "9cf367065d29203db43651cb51ae54372e77bcf24e26528ce13c2cecced54c82",
+      "bytes": 16884
+    },
+    {
+      "path": "src/tcp/heartbeat.rs",
+      "sha256": "f62681ee5e5b93aea53176c5ae5c77c0fb91925daf6a7aa023d90748cafb9fd0",
+      "bytes": 8898
+    },
+    {
+      "path": "src/tcp/ip/daily.rs",
+      "sha256": "5efbfe42e1764687b02399f6ab55fced212427a8c1430ffea41e2b82612962ee",
+      "bytes": 19761
+    },
+    {
+      "path": "src/tcp/mod.rs",
+      "sha256": "6618e3970f382290a97c0698c976d6e57847b9c6bb40da5ebe780b236d96400e",
+      "bytes": 35220
+    },
+    {
+      "path": "src/tcp/startup.rs",
+      "sha256": "80c36398648aba49c212491c3e911befeba2fc2813239c8c34ba4c4882f6077c",
+      "bytes": 8978
+    },
+    {
+      "path": "src/tcp/stock/auctions.rs",
+      "sha256": "9f2f94931a5eb781bba9da8bd15ac4be86529ecf1eadc08b444251ecd27eace8",
+      "bytes": 6210
+    },
+    {
+      "path": "src/tcp/stock/block_info.rs",
+      "sha256": "de12b358dfcca9b9a011545062aee7b525a6b1b3bbad9f1be181af34902248fb",
+      "bytes": 10408
+    },
+    {
+      "path": "src/tcp/stock/category_quotes.rs",
+      "sha256": "2e1b04585aa3fc93be4c6c074abef184c263782a57ec73b178876406851dbeba",
+      "bytes": 8001
+    },
+    {
+      "path": "src/tcp/stock/client.rs",
+      "sha256": "02e6d1ccec3c9b4bb9da9a30ee01ff5cb108bc76b25e74a9c3a2fed77866fa35",
+      "bytes": 47768
+    },
+    {
+      "path": "src/tcp/stock/client/extended_queries.rs",
+      "sha256": "a29184e55e55a8469f8b045870f08186f5577073415091f517c9e37fe3244385",
+      "bytes": 13621
+    },
+    {
+      "path": "src/tcp/stock/client/pagination.rs",
+      "sha256": "a3fa13923331ac4c0dac7c29bf9997e9870785449842a578da3757c90499e166",
+      "bytes": 3029
+    },
+    {
+      "path": "src/tcp/stock/client/transactions.rs",
+      "sha256": "505a293fb9934a224f8c054ef86e2b5a3c55e15517af4e830b464a733a491044",
+      "bytes": 15323
+    },
+    {
+      "path": "src/tcp/stock/client/turnover.rs",
+      "sha256": "fcefc2f229051abcd5879ccccbb7596e78519568155f4f64ae469a73028647dd",
+      "bytes": 6135
+    },
+    {
+      "path": "src/tcp/stock/client/version_330.rs",
+      "sha256": "e3d8be29a7ef15cb7ef8e4d31f7a8de476eeda91c6708f059f5831459483ecaa",
+      "bytes": 6713
+    },
+    {
+      "path": "src/tcp/stock/command_request.rs",
+      "sha256": "55c1c16c4d26c032c53a259534b325d362fdca96b9fd19ce80dacef1a80fae89",
+      "bytes": 7244
+    },
+    {
+      "path": "src/tcp/stock/company_info.rs",
+      "sha256": "13ef22447eb1f36ccfb0bb2df3d35d2c1b0419250ae560b36060504faa5c3732",
+      "bytes": 8306
+    },
+    {
+      "path": "src/tcp/stock/company_info_request.rs",
+      "sha256": "2f027625e9d29eb362056becf7c34c3f2ba3ad63915e1e547f762aa5409d336e",
+      "bytes": 10251
+    },
+    {
+      "path": "src/tcp/stock/delisted_bars.rs",
+      "sha256": "bf8464749826e40837c9071f6d8eaab10582f8e363ee1e8b96e56287fb26114a",
+      "bytes": 9845
+    },
+    {
+      "path": "src/tcp/stock/enhanced_history_transaction.rs",
+      "sha256": "cbc05050491909cfafcd59d25c88b286d1a9453422ae805fb91a99f8aea1c175",
+      "bytes": 13061
+    },
+    {
+      "path": "src/tcp/stock/extended_quote.rs",
+      "sha256": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+      "bytes": 8381
+    },
+    {
+      "path": "src/tcp/stock/finance_info.rs",
+      "sha256": "4f72188074dd37d444a1d981133d55b8687dd0b04543677bc612913390014399",
+      "bytes": 7345
+    },
+    {
+      "path": "src/tcp/stock/finance_raw.rs",
+      "sha256": "5f28520cd8404a031a946cdcd21e9c12f00553006df1c1b7ee955c7943576f41",
+      "bytes": 4010
+    },
+    {
+      "path": "src/tcp/stock/finance_semantics.rs",
+      "sha256": "e726ef9ef9acb7c4fa8bf72093b421dab6226641d1fa9ee6c967359bbba875fd",
+      "bytes": 11464
+    },
+    {
+      "path": "src/tcp/stock/history_minute_time.rs",
+      "sha256": "f4e1a9735bdfd6b6a0cf43a39f8204c1bb95987452c8ae78f6bfc9b8fc194a63",
+      "bytes": 6432
+    },
+    {
+      "path": "src/tcp/stock/history_transaction.rs",
+      "sha256": "91acc7b4bcdcd85f88d4a7677447e8326a50a45dfa29ebb24d9cc90509c720c7",
+      "bytes": 5815
+    },
+    {
+      "path": "src/tcp/stock/index_kline.rs",
+      "sha256": "0b4450e6bb27d7654a81d5817edb5a186691258d8032ee26186b3b00447fb798",
+      "bytes": 5724
+    },
+    {
+      "path": "src/tcp/stock/intraday_aux.rs",
+      "sha256": "a65b7ecfa25157d26e6d8296d05650977921cc96e9f5daba2a51159bd465d1b2",
+      "bytes": 3078
+    },
+    {
+      "path": "src/tcp/stock/kline.rs",
+      "sha256": "40857c59c5ff6aaa3156b164ccdb379b8656b5bb696dab89791e0aa9c0fd9376",
+      "bytes": 8170
+    },
+    {
+      "path": "src/tcp/stock/kline_request.rs",
+      "sha256": "c049ce4e857560be5eacb809fec7ba41566784e2b2c229fc295342b294b89a8f",
+      "bytes": 12027
+    },
+    {
+      "path": "src/tcp/stock/minute_time.rs",
+      "sha256": "43b17246c23a36e0039aa306d40abd57cb45458a985d22a5d59c22b9f720e722",
+      "bytes": 18955
+    },
+    {
+      "path": "src/tcp/stock/mod.rs",
+      "sha256": "60733c281c45d9767b0b262932025c01d155cfcb0617ae42661fec59b6b7ae7b",
+      "bytes": 11763
+    },
+    {
+      "path": "src/tcp/stock/money_flow.rs",
+      "sha256": "6c5ff4175ac3a344534220f842849f4012f5141471005a6542229280a2d725f9",
+      "bytes": 4931
+    },
+    {
+      "path": "src/tcp/stock/price_scale.rs",
+      "sha256": "ff2e8969308054117f0ee030af97cdf7133fddc033645c86ebf6d6b523cacda5",
+      "bytes": 964
+    },
+    {
+      "path": "src/tcp/stock/quote_metadata.rs",
+      "sha256": "dac5d2f925d152118547d68f6750d2ff1166d572f6f1a9f753d4e46ae50d5a4b",
+      "bytes": 9073
+    },
+    {
+      "path": "src/tcp/stock/quote_refresh.rs",
+      "sha256": "4f814bba48ff012c50b5d88b99230780ebb01b383f07d6edc15addb268ffb4d8",
+      "bytes": 3516
+    },
+    {
+      "path": "src/tcp/stock/quote_subscription.rs",
+      "sha256": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+      "bytes": 19073
+    },
+    {
+      "path": "src/tcp/stock/quotes.rs",
+      "sha256": "184755e6968f9c34e100303e474e93db2690ba9d73b2f1aa54e795ddb67762ba",
+      "bytes": 20836
+    },
+    {
+      "path": "src/tcp/stock/recent_minutes.rs",
+      "sha256": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+      "bytes": 4921
+    },
+    {
+      "path": "src/tcp/stock/reported_turnover.rs",
+      "sha256": "5ecd132b7197fb578b8ba71c0504f78e4f2a6e6ea293f1685ed21c24a6a98b0b",
+      "bytes": 19271
+    },
+    {
+      "path": "src/tcp/stock/requests.rs",
+      "sha256": "4147c5504984c17b1f2cdfe077824abc582d5fad91df2aefd72f773edf1dac57",
+      "bytes": 14260
+    },
+    {
+      "path": "src/tcp/stock/resource_metadata.rs",
+      "sha256": "19914c6f2a41955cac23c44893dc7d02ac06f16934865db4a2a898abc0d193b3",
+      "bytes": 2617
+    },
+    {
+      "path": "src/tcp/stock/security_directory.rs",
+      "sha256": "a9c3a584bca63423abef704ca2998eaa89dd45b35e6e3cb8e8f3b5d81534e4d3",
+      "bytes": 8407
+    },
+    {
+      "path": "src/tcp/stock/security_list.rs",
+      "sha256": "058892c122a3a976652bc8ae5bc799247ace59c14f5a0161cb1fed8f9ccd59a2",
+      "bytes": 6644
+    },
+    {
+      "path": "src/tcp/stock/snapshots.rs",
+      "sha256": "c70a054897c1b594ae161901bbe3b82e4ded54beddb05ef82b8d6b62065bbb8b",
+      "bytes": 2821
+    },
+    {
+      "path": "src/tcp/stock/sparkline.rs",
+      "sha256": "e0e32bb11253f85b272e8a327fd3ae0bb37145743d85b7d5a08c2620b3c7a740",
+      "bytes": 3361
+    },
+    {
+      "path": "src/tcp/stock/special_limits.rs",
+      "sha256": "78dd6d553871116848bff1c169ae72e60beb6cc6bdb2f895f24601f18fa54f79",
+      "bytes": 4079
+    },
+    {
+      "path": "src/tcp/stock/today_minute.rs",
+      "sha256": "6db7e3c8f385fd1e84266bde6712a148a07bef01cd88e129d3515684420021d0",
+      "bytes": 5367
+    },
+    {
+      "path": "src/tcp/stock/trade_amount.rs",
+      "sha256": "a76087e5e105709af4bdb7acb517fc7e70a1f8dc20140220a7e9dba53fdf0780",
+      "bytes": 21573
+    },
+    {
+      "path": "src/tcp/stock/trade_amount_reconcile.rs",
+      "sha256": "6bb5385575fde4f74c0362896213e586efabfe457ab899d7758185714aaec9bc",
+      "bytes": 11782
+    },
+    {
+      "path": "src/tcp/stock/trade_decode.rs",
+      "sha256": "dc55a8946fab4aa1fe070160de831bd574ad985b2953160bc35dc30622649817",
+      "bytes": 3804
+    },
+    {
+      "path": "src/tcp/stock/trade_models.rs",
+      "sha256": "fd6412d796a9b58ecf44077485f8f7706d811c9af15553c4641b4194f8364bfa",
+      "bytes": 23276
+    },
+    {
+      "path": "src/tcp/stock/transaction.rs",
+      "sha256": "c01e698d282b4a0401cbe6a00ceb108a8c6237e1c4ff77ef46ec7bb3113b8f38",
+      "bytes": 6372
+    },
+    {
+      "path": "src/tcp/stock/transaction_pagination.rs",
+      "sha256": "61edd4099b0a65e6a25d2a578042b1ac06a770c4d3bdc1d7f76cc460e2ed4e0d",
+      "bytes": 5466
+    },
+    {
+      "path": "src/tcp/stock/xdxr.rs",
+      "sha256": "4cfb7c8631cea23e5cbada55bece179a39ecd7dc9b6af202b434249931603a9b",
+      "bytes": 6728
+    }
+  ],
+  "commands": [
+    {
+      "opcode": "0x0004",
+      "title": "心跳与连接保活",
+      "client_methods": [
+        "heartbeat"
+      ],
+      "signatures": [
+        "pub fn heartbeat(&mut self) -> std::io::Result<crate::tcp::HeartbeatAck>"
+      ]
+    },
+    {
+      "opcode": "0x000d",
+      "title": "会话握手与客户端初始化",
+      "client_methods": [
+        "new",
+        "with_config",
+        "with_quote_metadata",
+        "reconnect",
+        "retry"
+      ],
+      "signatures": [
+        "pub fn new() -> std::io::Result<Self>",
+        "pub fn with_config(config: &TcpConfig) -> std::io::Result<Self>",
+        "pub fn with_quote_metadata( config: &TcpConfig, metadata: Arc<QuoteMetadataStore>, ) -> std::io::Result<Self>",
+        "pub fn reconnect(&mut self) -> std::io::Result<()>",
+        "pub fn retry<T>( &mut self, f: impl FnMut(&mut Tcp) -> std::io::Result<T>, attempts: usize, ) -> std::io::Result<T>"
+      ]
+    },
+    {
+      "opcode": "0x000f",
+      "title": "除权除息与股本变迁",
+      "client_methods": [
+        "xdxr"
+      ],
+      "signatures": [
+        "pub fn xdxr(&mut self, market: u16, code: &str) -> std::io::Result<Vec<super::XdxrData>>"
+      ]
+    },
+    {
+      "opcode": "0x0010",
+      "title": "基础财务快照",
+      "client_methods": [
+        "finance",
+        "finance_snapshot",
+        "finance_legacy"
+      ],
+      "signatures": [
+        "pub fn finance(&mut self, market: u16, code: &str) -> std::io::Result<FinanceSnapshot>",
+        "pub fn finance_snapshot( &mut self, market: u16, code: &str, ) -> std::io::Result<FinanceSnapshot>",
+        "pub fn finance_legacy(&mut self, market: u16, code: &str) -> std::io::Result<FinanceInfoData>"
+      ]
+    },
+    {
+      "opcode": "0x02c5",
+      "title": "板块文件元数据",
+      "client_methods": [
+        "block_metadata",
+        "block_metadata_batch"
+      ],
+      "signatures": [
+        "pub fn block_metadata(&mut self, filename: &str) -> io::Result<BlockMetadata>",
+        "pub fn block_metadata_batch( &self, filenames: &[&str], max_parallel: usize, ) -> io::Result<Vec<io::Result<BlockMetadata>>>"
+      ]
+    },
+    {
+      "opcode": "0x02cf",
+      "title": "F10 公司资料目录",
+      "client_methods": [
+        "company_info_directory",
+        "company_info_directory_batch",
+        "f10_categories"
+      ],
+      "signatures": [
+        "pub fn company_info_directory( &mut self, market: u16, code: &str, ) -> io::Result<CompanyInfoDirectory>",
+        "pub fn company_info_directory_batch( &self, stocks: &[(u16, &str)], max_parallel: usize, ) -> io::Result<Vec<io::Result<CompanyInfoDirectory>>>",
+        "pub fn f10_categories( &mut self, market: u16, code: &str, ) -> std::io::Result<Vec<CompanyInfoCategoryItem>>"
+      ]
+    },
+    {
+      "opcode": "0x02d0",
+      "title": "F10 栏目正文与完整资料",
+      "client_methods": [
+        "company_info_chunk",
+        "company_info_text",
+        "company_info_text_batch",
+        "f10",
+        "f10_with_options"
+      ],
+      "signatures": [
+        "pub fn company_info_chunk( &mut self, request: &CompanyInfoTextRequest, ) -> io::Result<CompanyInfoTextChunk>",
+        "pub fn company_info_text( &mut self, request: CompanyInfoTextRequest, options: CompanyInfoReadOptions, ) -> io::Result<CompanyInfoText>",
+        "pub fn company_info_text_batch( &self, requests: &[CompanyInfoTextRequest], options: CompanyInfoReadOptions, max_parallel: usize, ) -> io::Result<Vec<io::Result<CompanyInfoText>>>",
+        "pub fn f10(&mut self, market: u16, code: &str) -> std::io::Result<Vec<(String, String)>>",
+        "pub fn f10_with_options( &mut self, market: u16, code: &str, options: CompanyInfoReadOptions, ) -> io::Result<Vec<(String, String)>>"
+      ]
+    },
+    {
+      "opcode": "0x044d",
+      "title": "完整证券目录与交易精度",
+      "client_methods": [
+        "security_directory_page",
+        "security_directory",
+        "stocks",
+        "stocks_legacy"
+      ],
+      "signatures": [
+        "pub fn security_directory_page( &mut self, market: u16, start: u32, count: u16, ) -> std::io::Result<super::SecurityDirectoryPage>",
+        "pub fn security_directory( &mut self, market: u16, ) -> std::io::Result<Vec<super::SecurityDirectoryData>>",
+        "pub fn stocks(&mut self, market: u16) -> crate::Result<Vec<SecurityListData>>",
+        "pub fn stocks_legacy(&mut self, market: u16) -> crate::Result<Vec<SecurityListData>>"
+      ]
+    },
+    {
+      "opcode": "0x044e",
+      "title": "市场证券总数量",
+      "client_methods": [
+        "stock_count"
+      ],
+      "signatures": [
+        "pub fn stock_count(&mut self, market: u16) -> std::io::Result<u16>"
+      ]
+    },
+    {
+      "opcode": "0x0452",
+      "title": "服务端特殊涨跌停表",
+      "client_methods": [
+        "special_limits",
+        "special_limits_all"
+      ],
+      "signatures": [
+        "pub fn special_limits(&mut self, start: u16) -> io::Result<SpecialLimitPage>",
+        "pub fn special_limits_all( &mut self, options: CommandScanOptions, ) -> io::Result<SpecialLimitCollection>"
+      ]
+    },
+    {
+      "opcode": "0x051b",
+      "title": "分时副图双序列",
+      "client_methods": [
+        "intraday_aux",
+        "intraday_aux_batch"
+      ],
+      "signatures": [
+        "pub fn intraday_aux( &mut self, market: u16, code: &str, kind: IntradayAuxKind, ) -> io::Result<IntradayAuxSeries>",
+        "pub fn intraday_aux_batch( &self, stocks: &[(u16, &str)], kind: IntradayAuxKind, max_parallel: usize, ) -> io::Result<Vec<io::Result<IntradayAuxSeries>>>"
+      ]
+    },
+    {
+      "opcode": "0x052b",
+      "title": "退市证券不复权日线",
+      "client_methods": [
+        "delisted_bars",
+        "delisted_bars_scan",
+        "delisted_bars_all",
+        "delisted_bars_batch",
+        "delisted_bars_all_batch"
+      ],
+      "signatures": [
+        "pub fn delisted_bars( &mut self, market: u16, code: &str, start: u16, count: u16, ) -> io::Result<DelistedBarsPage>",
+        "pub fn delisted_bars_scan( &mut self, request: DelistedBarsRequest, options: CommandScanOptions, ) -> io::Result<DelistedBarsCollection>",
+        "pub fn delisted_bars_all( &mut self, market: u16, code: &str, options: CommandScanOptions, ) -> io::Result<DelistedBarsCollection>",
+        "pub fn delisted_bars_batch( &self, requests: &[DelistedBarsRequest], max_parallel: usize, ) -> io::Result<Vec<io::Result<DelistedBarsPage>>>",
+        "pub fn delisted_bars_all_batch( &self, stocks: &[(u16, &str)], options: CommandScanOptions, max_parallel: usize, ) -> io::Result<Vec<io::Result<DelistedBarsCollection>>>"
+      ]
+    },
+    {
+      "opcode": "0x052d",
+      "title": "普通证券/指数 K 线与本地复权",
+      "client_methods": [
+        "bars",
+        "index_bars",
+        "bars_range",
+        "index_bars_range",
+        "k",
+        "k_batch",
+        "bars_batch",
+        "k_adjusted",
+        "reported_turnover"
+      ],
+      "signatures": [
+        "pub fn bars<'a>( &mut self, market: u16, code: &'a str, category: u16, start: u16, count: u16, ) -> std::io::Result<Vec<super::KlineData<'a>>>",
+        "pub fn index_bars<'a>( &mut self, market: u16, code: &'a str, category: u16, start: u16, count: u16, ) -> std::io::Result<Vec<super::IndexKlineData<'a>>>",
+        "pub fn bars_range<'a>( &mut self, market: u16, code: &'a str, category: u16, begin: Option<u32>, end: Option<u32>, ) -> std::io::Result<Vec<super::KlineData<'a>>>",
+        "pub fn index_bars_range<'a>( &mut self, market: u16, code: &'a str, category: u16, begin: Option<u32>, end: Option<u32>, ) -> std::io::Result<Vec<super::IndexKlineData<'a>>>",
+        "pub fn k<'a>( &mut self, market: u16, code: &'a str, begin: Option<u32>, end: Option<u32>, ) -> std::io::Result<Vec<super::KlineData<'a>>>",
+        "pub fn k_batch<'a>( &self, stocks: &[(u16, &'a str)], begin: Option<u32>, end: Option<u32>, max_parallel: usize, ) -> std::io::Result<Vec<BatchKline<'a>>>",
+        "pub fn bars_batch<'a>( &self, stocks: &[(u16, &'a str)], category: u16, begin: Option<u32>, end: Option<u32>, max_parallel: usize, ) -> std::io::Result<Vec<BatchBars<'a>>>",
+        "pub fn k_adjusted<'a>( &mut self, market: u16, code: &'a str, adj: Adj, begin: Option<u32>, end: Option<u32>, ) -> std::io::Result<Vec<super::KlineData<'a>>>",
+        "pub fn reported_turnover( &mut self, market: u16, code: &str, date: u32, scope: TurnoverScope, options: TurnoverOptions, ) -> io::Result<TurnoverOutcome>"
+      ]
+    },
+    {
+      "opcode": "0x0537",
+      "title": "当日完整分时与兼容视图",
+      "client_methods": [
+        "minute_series",
+        "minute",
+        "minute_legacy"
+      ],
+      "signatures": [
+        "pub fn minute_series( &mut self, market: u16, code: &str, ) -> std::io::Result<super::TodayMinuteSeries>",
+        "pub fn minute(&mut self, market: u16, code: &str) -> std::io::Result<Vec<MinuteTimeData>>",
+        "pub fn minute_legacy( &mut self, market: u16, code: &str, ) -> std::io::Result<Vec<MinuteTimeData>>"
+      ]
+    },
+    {
+      "opcode": "0x053e",
+      "title": "五档行情快照",
+      "client_methods": [
+        "quotes",
+        "quotes_with_metadata"
+      ],
+      "signatures": [
+        "pub fn quotes(&mut self, stocks: &[(u16, &str)]) -> std::io::Result<Vec<QuoteData>>",
+        "pub fn quotes_with_metadata(&mut self, stocks: &[(u16, &str)]) -> std::io::Result<QuotePage>"
+      ]
+    },
+    {
+      "opcode": "0x0547",
+      "title": "游标刷新、主动推送与五档状态",
+      "client_methods": [
+        "subscribe_depth"
+      ],
+      "signatures": [
+        "pub fn subscribe_depth( &mut self, stocks: &[(u16, &str)], options: SubscriptionOptions, ) -> io::Result<QuoteSubscription>"
+      ]
+    },
+    {
+      "opcode": "0x054b",
+      "title": "服务端分类行情排行",
+      "client_methods": [
+        "category_quotes",
+        "category_quotes_all"
+      ],
+      "signatures": [
+        "pub fn category_quotes( &mut self, category: QuoteCategory, sort: QuoteSortField, options: CategoryQuoteOptions, ) -> io::Result<CategoryQuotePage>",
+        "pub fn category_quotes_all( &mut self, category: QuoteCategory, sort: QuoteSortField, page: CategoryQuoteOptions, scan: CommandScanOptions, ) -> io::Result<CategoryQuoteCollection>"
+      ]
+    },
+    {
+      "opcode": "0x054c",
+      "title": "一档基础快照与分片批量",
+      "client_methods": [
+        "snapshots",
+        "snapshots_batch"
+      ],
+      "signatures": [
+        "pub fn snapshots(&mut self, stocks: &[(u16, &str)]) -> io::Result<SnapshotPage>",
+        "pub fn snapshots_batch( &mut self, stocks: &[(u16, &str)], max_parallel: usize, ) -> io::Result<Vec<io::Result<SnapshotPage>>>"
+      ]
+    },
+    {
+      "opcode": "0x056a",
+      "title": "当日/历史竞价过程",
+      "client_methods": [
+        "auction_series",
+        "auction_series_all",
+        "auction_series_batch"
+      ],
+      "signatures": [
+        "pub fn auction_series( &mut self, market: u16, code: &str, date: Option<u32>, options: AuctionOptions, ) -> io::Result<AuctionSeries>",
+        "pub fn auction_series_all( &mut self, market: u16, code: &str, date: Option<u32>, page: AuctionOptions, scan: CommandScanOptions, ) -> io::Result<AuctionCollection>",
+        "pub fn auction_series_batch( &self, stocks: &[(u16, &str)], date: Option<u32>, options: AuctionOptions, max_parallel: usize, ) -> io::Result<Vec<io::Result<AuctionSeries>>>"
+      ]
+    },
+    {
+      "opcode": "0x06b9",
+      "title": "板块文件分块下载与成分解析",
+      "client_methods": [
+        "block"
+      ],
+      "signatures": [
+        "pub fn block(&mut self, block_file: &str) -> crate::Result<Vec<BlockRecord>>"
+      ]
+    },
+    {
+      "opcode": "0x0fb4",
+      "title": "指定日期历史分时兼容查询",
+      "client_methods": [
+        "history_minute"
+      ],
+      "signatures": [
+        "pub fn history_minute( &mut self, market: u16, code: &str, date: u32, ) -> std::io::Result<Vec<MinuteTimeData>>"
+      ]
+    },
+    {
+      "opcode": "0x0fc5",
+      "title": "当日原始成交事件与完整枚举",
+      "client_methods": [
+        "trade_page",
+        "transaction",
+        "transaction_all"
+      ],
+      "signatures": [
+        "pub fn trade_page( &mut self, market: u16, code: &str, start: u16, count: u16, ) -> std::io::Result<super::TradePage>",
+        "pub fn transaction( &mut self, market: u16, code: &str, start: u16, count: u16, ) -> std::io::Result<Vec<TransactionData>>",
+        "pub fn transaction_all( &mut self, market: u16, code: &str, options: TransactionPaginationOptions, ) -> io::Result<TransactionCollection>"
+      ]
+    },
+    {
+      "opcode": "0x0fc6",
+      "title": "增强历史成交事件",
+      "client_methods": [
+        "history_trade_page",
+        "history_transaction",
+        "enhanced_history_transaction",
+        "history_transaction_all",
+        "enhanced_history_transaction_all"
+      ],
+      "signatures": [
+        "pub fn history_trade_page( &mut self, market: u16, code: &str, date: u32, start: u16, count: u16, ) -> std::io::Result<super::TradePage>",
+        "pub fn history_transaction( &mut self, market: u16, code: &str, start: u16, count: u16, date: u32, ) -> std::io::Result<Vec<TransactionData>>",
+        "pub fn enhanced_history_transaction( &mut self, market: u16, code: &str, start: u16, count: u16, date: u32, ) -> std::io::Result<super::EnhancedHistoryTransactionPage>",
+        "pub fn history_transaction_all( &mut self, market: u16, code: &str, date: u32, options: TransactionPaginationOptions, ) -> io::Result<TransactionCollection>",
+        "pub fn enhanced_history_transaction_all( &mut self, market: u16, code: &str, date: u32, options: TransactionPaginationOptions, ) -> io::Result<TransactionCollection>"
+      ]
+    },
+    {
+      "opcode": "0x0fd1",
+      "title": "轻量价格走势图",
+      "client_methods": [
+        "sparkline",
+        "sparkline_batch"
+      ],
+      "signatures": [
+        "pub fn sparkline( &mut self, market: u16, code: &str, options: SparklineOptions, ) -> io::Result<SparklineSeries>",
+        "pub fn sparkline_batch( &self, stocks: &[(u16, &str)], options: SparklineOptions, max_parallel: usize, ) -> io::Result<Vec<io::Result<SparklineSeries>>>"
+      ]
+    },
+    {
+      "opcode": "0x0feb",
+      "title": "近期分时日期选择",
+      "client_methods": [
+        "recent_minutes",
+        "recent_minutes_batch"
+      ],
+      "signatures": [
+        "pub fn recent_minutes( &mut self, market: u16, code: &str, date: u32, ) -> io::Result<MinuteSeries>",
+        "pub fn recent_minutes_batch( &mut self, stocks: &[(u16, &str)], date: u32, max_parallel: usize, ) -> io::Result<Vec<io::Result<MinuteSeries>>>"
+      ]
+    },
+    {
+      "opcode": "0x0ffc",
+      "title": "日资金流向与分档净额",
+      "client_methods": [
+        "money_flow_daily",
+        "money_flow_daily_batch"
+      ],
+      "signatures": [
+        "pub fn money_flow_daily(&mut self, market: u16, code: &str) -> io::Result<MoneyFlowBlock>",
+        "pub fn money_flow_daily_batch( &self, stocks: &[(u16, &str)], max_parallel: usize, ) -> io::Result<Vec<io::Result<MoneyFlowBlock>>>"
+      ]
+    }
+  ],
+  "report": "docs/operations/RUSTDX_26_COMMAND_API_HANDBOOK_20261024.md",
+  "report_sha256": "6e4e71cfaba37c33e39b40601ee6d54880b28889cd510cbd677989d64dfab035"
+}

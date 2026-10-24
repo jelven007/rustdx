@@ -1,0 +1,32 @@
+{
+  "workspace-tests": {
+    "passed": 484,
+    "failed": 0,
+    "ignored": 9,
+    "measured": 0,
+    "filtered_out": 0,
+    "test_binaries_with_summary": 97,
+    "env_skips_are_not_counted_by_rust_harness": true,
+    "skip_lines": []
+  },
+  "doc-tests": {
+    "passed": 66,
+    "failed": 0,
+    "ignored": 18,
+    "measured": 0,
+    "filtered_out": 0,
+    "test_binaries_with_summary": 5,
+    "env_skips_are_not_counted_by_rust_harness": false,
+    "skip_lines": []
+  },
+  "runner-all": {
+    "passed": 31,
+    "failed": 0,
+    "ignored": 0,
+    "measured": 0,
+    "filtered_out": 0,
+    "test_binaries_with_summary": 6,
+    "env_skips_are_not_counted_by_rust_harness": false,
+    "skip_lines": []
+  }
+}

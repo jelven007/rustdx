@@ -1,0 +1,197 @@
+{
+  "method": "Independent Python stdlib offsets, 64-bit signed varints, IEEE bits, XOR and arithmetic; no SDK execution",
+  "endpoint": "115.238.56.198:7709",
+  "wire_frames_checked": 66,
+  "command_frames": {
+    "0x000d": 1,
+    "0x044e": 2,
+    "0x044d": 34,
+    "0x0452": 2,
+    "0x051b": 2,
+    "0x0fd1": 2,
+    "0x0feb": 6,
+    "0x056a": 5,
+    "0x0ffc": 2,
+    "0x054c": 1,
+    "0x053e": 1,
+    "0x054b": 5,
+    "0x0547": 3
+  },
+  "command_records": {
+    "0x0452": 2,
+    "0x051b": 480,
+    "0x0fd1": 122,
+    "0x0feb": 0,
+    "0x056a": 240,
+    "0x0ffc": 10,
+    "0x054c": 3,
+    "0x054b": 25,
+    "0x0547": 3
+  },
+  "directory_rows_checked": 52171,
+  "results": [
+    {
+      "name": "special-limits",
+      "opcode": "0x0452",
+      "records_checked": 1
+    },
+    {
+      "name": "special-limits-next",
+      "opcode": "0x0452",
+      "records_checked": 1
+    },
+    {
+      "name": "aux-0",
+      "opcode": "0x051b",
+      "records_checked": 240
+    },
+    {
+      "name": "aux-11",
+      "opcode": "0x051b",
+      "records_checked": 240
+    },
+    {
+      "name": "sparkline-20",
+      "opcode": "0x0fd1",
+      "records_checked": 61
+    },
+    {
+      "name": "sparkline-40",
+      "opcode": "0x0fd1",
+      "records_checked": 61
+    },
+    {
+      "name": "recent-20261022-000001",
+      "opcode": "0x0feb",
+      "records_checked": 0
+    },
+    {
+      "name": "recent-20261022-159915",
+      "opcode": "0x0feb",
+      "records_checked": 0
+    },
+    {
+      "name": "recent-20261023-000001",
+      "opcode": "0x0feb",
+      "records_checked": 0
+    },
+    {
+      "name": "recent-20261023-159915",
+      "opcode": "0x0feb",
+      "records_checked": 0
+    },
+    {
+      "name": "recent-20261024-000001",
+      "opcode": "0x0feb",
+      "records_checked": 0
+    },
+    {
+      "name": "recent-20261024-159915",
+      "opcode": "0x0feb",
+      "records_checked": 0
+    },
+    {
+      "name": "auction-history",
+      "opcode": "0x056a",
+      "records_checked": 80
+    },
+    {
+      "name": "auction-current",
+      "opcode": "0x056a",
+      "records_checked": 80
+    },
+    {
+      "name": "auction-page-0",
+      "opcode": "0x056a",
+      "records_checked": 40
+    },
+    {
+      "name": "auction-page-40",
+      "opcode": "0x056a",
+      "records_checked": 40
+    },
+    {
+      "name": "auction-page-80",
+      "opcode": "0x056a",
+      "records_checked": 0
+    },
+    {
+      "name": "money-0-000001",
+      "opcode": "0x0ffc",
+      "records_checked": 5
+    },
+    {
+      "name": "money-1-600519",
+      "opcode": "0x0ffc",
+      "records_checked": 5
+    },
+    {
+      "name": "snapshots",
+      "opcode": "0x054c",
+      "records_checked": 3
+    },
+    {
+      "name": "category-false",
+      "opcode": "0x054b",
+      "records_checked": 5
+    },
+    {
+      "name": "category-true",
+      "opcode": "0x054b",
+      "records_checked": 5
+    },
+    {
+      "name": "category-change-false",
+      "opcode": "0x054b",
+      "records_checked": 5
+    },
+    {
+      "name": "category-change-true",
+      "opcode": "0x054b",
+      "records_checked": 5
+    },
+    {
+      "name": "category-next",
+      "opcode": "0x054b",
+      "records_checked": 5
+    },
+    {
+      "name": "refresh-0",
+      "opcode": "0x0547",
+      "records_checked": 3
+    },
+    {
+      "name": "refresh-1",
+      "opcode": "0x0547",
+      "records_checked": 0
+    },
+    {
+      "name": "refresh-2",
+      "opcode": "0x0547",
+      "records_checked": 0
+    }
+  ],
+  "price_checks": [
+    {
+      "code": "000001",
+      "price": 11.2,
+      "matches_053e_and_0547": true
+    },
+    {
+      "code": "159915",
+      "price": 2.702,
+      "matches_053e_and_0547": true
+    },
+    {
+      "code": "510300",
+      "price": 4.178,
+      "matches_053e_and_0547": true
+    }
+  ],
+  "auction_pagination": [
+    40,
+    40,
+    0
+  ],
+  "scope": "Sampled parameters only; empty 0feb frames validate transport/header only; no trading-hour push or exchange-date proof"
+}

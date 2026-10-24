@@ -1,0 +1,29 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+    Checking md-5 v0.10.6
+    Checking jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+    Checking jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+error: octal-looking escape in a literal
+   --> crates/rustdx-core/tests/block_integrity.rs:124:11
+    |
+124 |         b"\000150983cd24fb0d6963f7d28e17f72".as_slice(),
+    |           ^^^^
+    |
+    = help: octal escapes are not supported, `\0` is always null
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#octal_escapes
+    = note: `-D clippy::octal-escapes` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::octal_escapes)]`
+help: if an octal escape is intended, use a hex escape instead
+    |
+124 -         b"\000150983cd24fb0d6963f7d28e17f72".as_slice(),
+124 +         b"\x00150983cd24fb0d6963f7d28e17f72".as_slice(),
+    |
+help: if a null escape is intended, disambiguate using
+    |
+124 |         b"\x0000150983cd24fb0d6963f7d28e17f72".as_slice(),
+    |            ++
+
+error: could not compile `jelven-rustdx-complete` (test "block_integrity") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

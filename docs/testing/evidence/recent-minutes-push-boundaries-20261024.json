@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "kind": "local_boundary_regression_and_scoped_live_gate",
+  "toolchain": "Rust 1.89.0 / edition 2024",
+  "includes_other_uncommitted_changes": true,
+  "validation": {
+    "fmt_all_check": "passed",
+    "clippy_workspace_all_targets_all_features_deny_warnings": "passed",
+    "workspace_all_features": {
+      "passed": 480,
+      "failed": 0,
+      "ignored": 24
+    },
+    "test_cases": {
+      "recent_minutes_boundaries": 5,
+      "quote_subscription": 21,
+      "command_boundaries": 10
+    },
+    "validate_quote_push_example_test_cases": 3,
+    "python_independent_self_tests": 3,
+    "external_database_and_old_live_tests": "RUSTDX_SKIP_INTEGRATION_TESTS=1 and existing ignore rules",
+    "checks_logs": "docs/validation/evidence/command-boundaries-20261024/recent-push-checks",
+    "commands": [
+      "cargo +1.89.0 fmt --all --check",
+      "cargo +1.89.0 clippy --workspace --all-targets --all-features --offline --locked -- -D warnings",
+      "cargo +1.89.0 test --workspace --all-features --offline --locked --no-fail-fast",
+      "cargo +1.89.0 test -p jelven-rustdx-complete --test quote_subscription --test recent_minutes_boundaries --example validate_quote_push --offline --locked",
+      "python3 scripts/validation/verify_recent_minutes_boundaries.py --self-test",
+      "python3 scripts/validation/verify_quote_push.py --self-test"
+    ]
+  },
+  "nonempty_fixture": {
+    "origin": "handwritten synthetic byte array in tests/recent_minutes_boundaries.rs",
+    "live_market_evidence": false,
+    "points": 4,
+    "full_synthetic_session_points": 240,
+    "supported_decimals": [
+      2,
+      3,
+      4
+    ]
+  },
+  "recent_live": {
+    "directory": "docs/validation/evidence/command-boundaries-20261024/recent-lite-115.238.56.198",
+    "endpoint": "115.238.56.198:7709",
+    "dates": [
+      20261019,
+      20261020,
+      20261021,
+      20261022,
+      20261023
+    ],
+    "symbols": [
+      [
+        0,
+        "000001"
+      ],
+      [
+        0,
+        "159915"
+      ],
+      [
+        1,
+        "510300"
+      ]
+    ],
+    "capture_exit_code": 2,
+    "verifier_exit_code": 2,
+    "independent_verification": {
+      "verification": "passed",
+      "live_nonempty_verified": false,
+      "business_status": "nonempty_not_verified",
+      "sample_frames_checked": 15,
+      "records_checked": 0,
+      "nonempty_symbols": [],
+      "scope": "Only sampled parameters; no server-date echo or full exchange session proof."
+    }
+  },
+  "push_live": {
+    "directory": "docs/validation/evidence/command-boundaries-20261024/push-session-gate",
+    "capture_exit_code": 2,
+    "independent_verification": {
+      "verification": "passed",
+      "business_status": "market_closed",
+      "wire_frames_checked": 0,
+      "passive_requests": 0,
+      "live_trading_push_verified": false,
+      "scope": "Pre-network gate only; no baseline or push evidence."
+    },
+    "next_suggested_beijing_start": "2026-10-26T09:35:00+08:00",
+    "acceptance": "Complete trading window, full same-connection baseline, zero passive requests, at least two changing strictly-advancing frames received after five-second guard"
+  },
+  "source_files_sha256": {
+    "src/tcp/stock/recent_minutes.rs": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+    "src/tcp/stock/quote_refresh.rs": "4f814bba48ff012c50b5d88b99230780ebb01b383f07d6edc15addb268ffb4d8",
+    "src/tcp/stock/quote_subscription.rs": "5dc067b0d81c1bec3ebfb1a6dc7cfb1aba7f2bffd621854aa981c2afd09b352a",
+    "src/tcp/stock/extended_quote.rs": "479ed7fc7e14f7f0ff4036d1e3e86f168fb6ef9aab0e9ce5bcab0c171d77a3c8",
+    "tests/recent_minutes_boundaries.rs": "9ee4a223ace6df62f38a33f6237bbe5b26b74146885a9db51d361cb38eeb3550",
+    "tests/quote_subscription.rs": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5",
+    "tests/command_boundaries.rs": "31e559e622c0037d96f57ee0b2589a722fcb9874acb6c37d3c44d5f90b9a4bf9",
+    "examples/capture_recent_minutes_boundaries.rs": "6c4954f1c9c4ca5b2fcbab6c3aed7d4aff1beccfbc45bf98dd073dd401e4fbad",
+    "examples/validate_quote_push.rs": "95b1a10ecab5aef9912024bf0a87883673797b51c23c7209c465c54be36e3160",
+    "scripts/validation/verify_recent_minutes_boundaries.py": "eeb651b0ab9d6eb5005c4c23fb9a4dce1235cc6a70660e38369f16a5613450f3",
+    "scripts/validation/verify_quote_push.py": "846a3abc9dea7175a3ac8b3cb2b9c3d5e5e72931cec257dedffc107b042d7bbc",
+    "docs/validation/RECENT_MINUTES_PUSH_BOUNDARIES_20261024.md": "4a8d9bea07c55f50ff7605472a7df3931072aefa99eb596aa3f178e213f7f57c"
+  },
+  "live_nonempty_0feb_verified": false,
+  "live_trading_hour_0547_push_verified": false,
+  "report": "docs/validation/RECENT_MINUTES_PUSH_BOUNDARIES_20261024.md"
+}

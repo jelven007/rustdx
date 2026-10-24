@@ -1,0 +1,19 @@
+{
+  "source_files": {
+    "tests/recent_minutes_fixtures.rs": "6690306cec391671dfa24433470934bcca100fd6a7300790e493b270012eb961",
+    "tests/recent_minutes_boundaries.rs": "9ee4a223ace6df62f38a33f6237bbe5b26b74146885a9db51d361cb38eeb3550",
+    "tests/quote_subscription.rs": "e8b1bc8215f905f1c1703cab1d3f8f0cccd9cbd9ac6da97e480e960b3e41b5a5",
+    "tests/command_boundaries.rs": "31e559e622c0037d96f57ee0b2589a722fcb9874acb6c37d3c44d5f90b9a4bf9",
+    "examples/validate_quote_push.rs": "5d17672bccb80b128a8d450db807507c0cd115a6b4d714d141cbf726ca0e6dce",
+    "scripts/validation/freeze_recent_minutes_fixtures.py": "f029e87e4644bc5871675750f73f733ab4698d30eb83640f1b3b2ad006dce8b5",
+    "scripts/validation/verify_recent_minutes_boundaries.py": "eeb651b0ab9d6eb5005c4c23fb9a4dce1235cc6a70660e38369f16a5613450f3",
+    "scripts/validation/verify_recent_auction.py": "abdb5e585dc3b86e2be4739b220443f625e633b8318c26a9abd0aa3987a21eb8",
+    "scripts/validation/verify_quote_push.py": "846a3abc9dea7175a3ac8b3cb2b9c3d5e5e72931cec257dedffc107b042d7bbc",
+    "tests/fixtures/recent_minutes_nonempty/manifest.json": "e56282a937c074087453db90beb59d3c60f67b8eb60aae46fc1ef04eb5dd44c9",
+    "docs/validation/NONEMPTY_FIXTURES_PUSH_WINDOW_20261024.md": "1ffe1e349efbe9d86279231c465913903967168ccf33840011273b8711db71bd"
+  },
+  "checks": {
+    "clippy.log": "854e1e34adf7dbd476b4730eb91343fd06cb5bf2ea55150f2e1fc79878449772",
+    "workspace-tests.log": "a225b15b226137ba1d1dbd73d70c584b823d559615b5a0448968012758fc1b2e"
+  }
+}

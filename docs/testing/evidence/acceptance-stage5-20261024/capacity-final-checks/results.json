@@ -1,0 +1,53 @@
+[
+  {
+    "name": "fmt",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "seconds": 0.718384666
+  },
+  {
+    "name": "capacity-test",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "-p",
+      "rustdx-runner",
+      "--test",
+      "control_plane",
+      "--offline",
+      "--locked",
+      "--",
+      "database_capacity_rejects_before_request_or_unknown_target",
+      "--include-ignored",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "seconds": 6.344987
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--offline",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "seconds": 1.802024084000001
+  }
+]

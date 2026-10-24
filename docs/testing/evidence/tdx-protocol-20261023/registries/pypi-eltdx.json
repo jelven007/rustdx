@@ -1,0 +1,63 @@
+{
+  "snapshot_transform": {
+    "date": "2026-10-24",
+    "representation": "filtered_derivative",
+    "original_sha256": "df45e73774d6e68b7ac673b0df5f913e875246b2adeb2fb7a7e0cc70dea7063c",
+    "source_url": "https://pypi.org/pypi/eltdx/json",
+    "retrieved_on": "2026-10-23",
+    "retained": "Package identity and source-distribution records used by the protocol research; description, wheel records and unrelated release metadata omitted."
+  },
+  "info": {
+    "name": "eltdx",
+    "version": "3.3.0",
+    "requires_python": ">=3.10",
+    "summary": "通达信 7709 行情与 7615 F10 资料 Python 客户端",
+    "project_urls": {
+      "Documentation": "https://electkismet.github.io/eltdx/",
+      "Issues": "https://github.com/electkismet/eltdx/issues",
+      "Source": "https://github.com/electkismet/eltdx"
+    }
+  },
+  "last_serial": 42538594,
+  "releases": {
+    "3.0.0": [
+      {
+        "filename": "eltdx-3.0.0.tar.gz",
+        "size": 682985,
+        "digests": {
+          "sha256": "91fda2eada13819bd2bb000ac24c13d42d35078f4d5167c931af350f6e398294"
+        },
+        "url": "https://files.pythonhosted.org/packages/17/fb/e9251010bd643d725e768939654a3b8bd161f6d2f0e8b17115b9a9262e11/eltdx-3.0.0.tar.gz",
+        "upload_time_iso_8601": "2026-08-16T13:10:36.055416Z",
+        "packagetype": "sdist",
+        "yanked": false
+      }
+    ],
+    "3.2.3": [
+      {
+        "filename": "eltdx-3.2.3.tar.gz",
+        "size": 862018,
+        "digests": {
+          "sha256": "8d6512bfa167e1efdd30edd86611b2917d9aa9db57ae5109a02f9f092db60886"
+        },
+        "url": "https://files.pythonhosted.org/packages/fa/bb/af50b369050d0963916ecbdab784c1d7da5a57b68515a8fee25beecc9cda/eltdx-3.2.3.tar.gz",
+        "upload_time_iso_8601": "2026-10-05T14:41:05.239741Z",
+        "packagetype": "sdist",
+        "yanked": false
+      }
+    ],
+    "3.3.0": [
+      {
+        "filename": "eltdx-3.3.0.tar.gz",
+        "size": 1107611,
+        "digests": {
+          "sha256": "16fad43e518618728a2ac5c0a5d0abf0a3bcce3ccb12daccec55d8fa912d9a9f"
+        },
+        "url": "https://files.pythonhosted.org/packages/ce/ed/d28b09bc33829a43169af4ba8929b41da4f71e9fde04caccec7ca48e76a4/eltdx-3.3.0.tar.gz",
+        "upload_time_iso_8601": "2026-10-21T11:23:18.481691Z",
+        "packagetype": "sdist",
+        "yanked": false
+      }
+    ]
+  }
+}

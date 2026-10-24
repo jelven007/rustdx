@@ -1,0 +1,2072 @@
+[
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/results.before-fixture-fix.json",
+    "packaged": "evidence/results.before-fixture-fix.json",
+    "bytes": 2850,
+    "sha256": "3b08e593ff899957f8817e16c13c62a0f22efe5dfbd5cdab36f7f34f526997ee"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/prebuild-result.json",
+    "packaged": "evidence/prebuild-result.json",
+    "bytes": 248,
+    "sha256": "13a43d2e7ec98fb9b76af53a1eb977d04dccfbed9e16307e01763a6ef75c49e1"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/test-statistics.json",
+    "packaged": "evidence/test-statistics.json",
+    "bytes": 705,
+    "sha256": "27689df098142d68b7b93b0da030b594a7bff6ec96c216dfe2c60c5b7bd01b7d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/old-snapshot-cleanup.json",
+    "packaged": "evidence/old-snapshot-cleanup.json",
+    "bytes": 1258,
+    "sha256": "2062c28d0ec74936315344ce55b65b85d9af1b53ac7bca963be51591e93a0080"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/faults.json",
+    "packaged": "evidence/faults.json",
+    "bytes": 23455,
+    "sha256": "293af8c3ff6f9abc89cbac5f8b8c1dc72b014ac30b04cffe0d9162ece9a92338"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/linux-dependency-transfer.json",
+    "packaged": "evidence/linux-dependency-transfer.json",
+    "bytes": 250,
+    "sha256": "c3162d947c1e7af07f9abb4d4a62c558d304537343de6ce46372073c865b39a7"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/supplementary-results.json",
+    "packaged": "evidence/supplementary-results.json",
+    "bytes": 514,
+    "sha256": "e6a375e84c65aee042d9c634872494271233f20d67970939d05564798df7eec3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/rustup-custom-toolchain.json",
+    "packaged": "evidence/rustup-custom-toolchain.json",
+    "bytes": 257,
+    "sha256": "bdeca0d240789274f759fa8f4cb16a7e3a4ac0181f135832d5242a71250b54c2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/completed.json",
+    "packaged": "evidence/completed.json",
+    "bytes": 68,
+    "sha256": "aa7c095512e6c9756774276f3a2a20091458aa77d8b4a55df4016d86f515c4dc"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/prebuild-linux-results.online-failed.json",
+    "packaged": "evidence/prebuild-linux-results.online-failed.json",
+    "bytes": 602,
+    "sha256": "380c44b991dae339dc2726c69ec652fc6b54f284c7a87afb9e1cd35fa483cf9b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/source-verified.json",
+    "packaged": "evidence/source-verified.json",
+    "bytes": 101,
+    "sha256": "f681617c237625282c95b0c57aefd4fbc2f2c75f67840e05c8ad52be93d08b12"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/containers.json",
+    "packaged": "evidence/containers.json",
+    "bytes": 21069,
+    "sha256": "5fb0eb320448a81e9cc3a87911dac45d379770976531a25a897d9c373a44a4c8"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/daemon-restart.json",
+    "packaged": "evidence/daemon-restart.json",
+    "bytes": 723,
+    "sha256": "1d23163071b6f982c98d6a088607f6913f3e721c1244f95753ed06356f72f4e6"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/cleanup.json",
+    "packaged": "evidence/cleanup.json",
+    "bytes": 34,
+    "sha256": "4e7c362367ae8d2816bb77a9661fb410cd93a0389db3aa1b37c48d4ef652da84"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/real-history.json",
+    "packaged": "evidence/real-history.json",
+    "bytes": 43766,
+    "sha256": "2001b012b826e53902e5d38a32faa29a0dbd2eaea5bf9cee7552f4befec318eb"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/images.json",
+    "packaged": "evidence/images.json",
+    "bytes": 7785,
+    "sha256": "312aad0d60dd1bdafa4797090d3d3aa87cd8fe13781677cc9c0aefede5bf0b04"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/containers.before-fixture-fix.json",
+    "packaged": "evidence/containers.before-fixture-fix.json",
+    "bytes": 21068,
+    "sha256": "97a80dcf5712f88215af554513adb9fe7779e1fc759bba9e157072bfadbcb3df"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/cleanup-audit.json",
+    "packaged": "evidence/cleanup-audit.json",
+    "bytes": 3835,
+    "sha256": "48cfc5023ae1d7131dfdcb3676e89548c956f8c321153f52420b8ec33831bb3a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/bootstrap-pull-failure.json",
+    "packaged": "evidence/bootstrap-pull-failure.json",
+    "bytes": 400,
+    "sha256": "85d588e3e5d13c5f62b174d5450321279a789bcbe19c8ae901415bfd8eb93ade"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/prebuild-linux-results.json",
+    "packaged": "evidence/prebuild-linux-results.json",
+    "bytes": 602,
+    "sha256": "bcdc3ff0448f0926c0dad517753b6fba4c7a0ad9a960feeceebc1ce0f8ead1ba"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/environment.json",
+    "packaged": "evidence/environment.json",
+    "bytes": 2280,
+    "sha256": "e106b35f3c771bb5e519a3ed99d46639c931ba9559e1288e955ec2324cd9933b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/registry-fallback.json",
+    "packaged": "evidence/registry-fallback.json",
+    "bytes": 306,
+    "sha256": "651867a1810258b82943d32479c68bec4d9d760540f02ffecc0803fe9c5f732d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/results.before-toolchain-link.json",
+    "packaged": "evidence/results.before-toolchain-link.json",
+    "bytes": 3084,
+    "sha256": "116c422a20315b4ab22d865723a63d12f0928f96e3597561d181be0f6bfc1d37"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/results.json",
+    "packaged": "evidence/results.json",
+    "bytes": 6616,
+    "sha256": "8f49d39ccd50840ab7ae6cd7893fe3001dfeff28784a0c105d42b7253404c3e3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/bulk.json",
+    "packaged": "evidence/bulk.json",
+    "bytes": 2606176,
+    "sha256": "53d1c131ca879aa9de198ca4da452abe3f97138dc1acd407db1e3801ac5264f0"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-pacing-failure/source-manifest.json",
+    "packaged": "evidence/pre-pacing-failure/source-manifest.json",
+    "bytes": 262890,
+    "sha256": "5dc5dacd6587df427048cdf53a8c0fe08ea763c29420c00349776fd40cbc6865"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-pacing-failure/source-verified.json",
+    "packaged": "evidence/pre-pacing-failure/source-verified.json",
+    "bytes": 101,
+    "sha256": "fdba38c5b74de7176fc4986c4c98c34994c91c7ba224457714dce7dda033c32d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-pacing-failure/run-controller.log",
+    "packaged": "evidence/pre-pacing-failure/run-controller.log",
+    "bytes": 481,
+    "sha256": "d1b71d6cc65d4f2145ba69fab95861724b7eedc76506c1de9f5f21153d0995a5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-pacing-failure/workspace-tests.log",
+    "packaged": "evidence/pre-pacing-failure/workspace-tests.log",
+    "bytes": 43252,
+    "sha256": "edcd3855d107af0e2924dac4ace6e3b68ba384aacd7c013a36e6fa7549c137c7"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-pacing-failure/results.json",
+    "packaged": "evidence/pre-pacing-failure/results.json",
+    "bytes": 3724,
+    "sha256": "41013947f084bf5783f7278ea694c52ae44f2b7de86b56e4195bfc94ac313b5c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/source-verified.json",
+    "packaged": "evidence/attempt-1047-shared-budget/source-verified.json",
+    "bytes": 101,
+    "sha256": "4c366bf336323eeda81d9dc7fd54388a987a750be8a54a4182a06060c2d82803"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/cleanup.json",
+    "packaged": "evidence/attempt-1047-shared-budget/cleanup.json",
+    "bytes": 34,
+    "sha256": "4e7c362367ae8d2816bb77a9661fb410cd93a0389db3aa1b37c48d4ef652da84"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/controller.log",
+    "packaged": "evidence/attempt-1047-shared-budget/controller.log",
+    "bytes": 520,
+    "sha256": "966ff7631aa07ea9d7ed109f4daca2eba87ecfb1d4196032589a0c0215feab9e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/results.json",
+    "packaged": "evidence/attempt-1047-shared-budget/results.json",
+    "bytes": 5053,
+    "sha256": "4fc8bf6c4d930c091e51f715d22fb7a56655625f249284fe22faa64f9ba29741"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/float-probe/server.log",
+    "packaged": "evidence/float-probe/server.log",
+    "bytes": 425,
+    "sha256": "300727269b30d12212212709c4c27a30c8f0707f23b03892a8edc9008478ae68"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/float-probe/rowbinary-results.json",
+    "packaged": "evidence/float-probe/rowbinary-results.json",
+    "bytes": 498,
+    "sha256": "28d7e2269d700de02f95f06505cdacf71e3ef28bbb56d98c9ee0327e367501b3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/float-probe/input.csv",
+    "packaged": "evidence/float-probe/input.csv",
+    "bytes": 98,
+    "sha256": "27ebcdbbbe3c2e61cdc49a9cdd72d99b47a12e51aa1dd214efccb34de58c59d1"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/float-probe/readback-0.csv",
+    "packaged": "evidence/float-probe/readback-0.csv",
+    "bytes": 132,
+    "sha256": "d4f2d75cb243242dd7ed8f7b9bcf12282560eed97b543cdf75277f816b9d12e2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/float-probe/results.json",
+    "packaged": "evidence/float-probe/results.json",
+    "bytes": 1647,
+    "sha256": "b50a2a33b2e13ae072b7ce53320c2be39fa687d8022bc8bd64a21067e6588a4e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/float-probe/readback-1.csv",
+    "packaged": "evidence/float-probe/readback-1.csv",
+    "bytes": 132,
+    "sha256": "d4f2d75cb243242dd7ed8f7b9bcf12282560eed97b543cdf75277f816b9d12e2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/source-verified.json",
+    "packaged": "evidence/attempt-1035/source-verified.json",
+    "bytes": 101,
+    "sha256": "cd650714ff27f0eff9373d583392f599fe3c54c2f638560c1e8e0f6156753590"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/cleanup.json",
+    "packaged": "evidence/attempt-1035/cleanup.json",
+    "bytes": 34,
+    "sha256": "4e7c362367ae8d2816bb77a9661fb410cd93a0389db3aa1b37c48d4ef652da84"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/controller.log",
+    "packaged": "evidence/attempt-1035/controller.log",
+    "bytes": 481,
+    "sha256": "d1b71d6cc65d4f2145ba69fab95861724b7eedc76506c1de9f5f21153d0995a5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/results.json",
+    "packaged": "evidence/attempt-1035/results.json",
+    "bytes": 3722,
+    "sha256": "c13d521dd21bc696e9b8e4b620d8c845d8a1606de9e2d8d22a7030345cc0f1cb"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/source-verified.json",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/source-verified.json",
+    "bytes": 101,
+    "sha256": "4ef76280336616a488f5f481bed9fcc2803faca4a40b6c024560438bd0b1eabd"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/cleanup.json",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/cleanup.json",
+    "bytes": 34,
+    "sha256": "4e7c362367ae8d2816bb77a9661fb410cd93a0389db3aa1b37c48d4ef652da84"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/controller.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/controller.log",
+    "bytes": 520,
+    "sha256": "966ff7631aa07ea9d7ed109f4daca2eba87ecfb1d4196032589a0c0215feab9e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/results.json",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/results.json",
+    "bytes": 5051,
+    "sha256": "a3a0b65bd8490e7c682632eded9934d38eaef21686f8fc831307ff6c052c4b5f"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/source-manifest.json",
+    "packaged": "evidence/pre-rowbinary-failure/source-manifest.json",
+    "bytes": 262720,
+    "sha256": "7db3045d3b240b1353441b7a257003dc1dd00f2d75d55071e144eccd3071122a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/source-verified.json",
+    "packaged": "evidence/pre-rowbinary-failure/source-verified.json",
+    "bytes": 101,
+    "sha256": "c16a1023985283c9e8d5fccf9c28e975436807fb2e65453db278448eef263b43"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/real-history.json",
+    "packaged": "evidence/pre-rowbinary-failure/real-history.json",
+    "bytes": 30839,
+    "sha256": "7b8971d62c99881a15f007dcdbf72c3cf84958b921e9985bed52a14a8db5b464"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/results.json",
+    "packaged": "evidence/pre-rowbinary-failure/results.json",
+    "bytes": 6134,
+    "sha256": "79701232642ec50ad30447839b08ebbb9c3af139ebd0237ff308c1df9f0d102a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/rustup-curl.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/rustup-curl.log",
+    "bytes": 548,
+    "sha256": "268e5c8554b7f9d04bd206ee22768f734293ab7ac21f67b47fe15f4fb74f0eee"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/dockerd-restart.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/dockerd-restart.log",
+    "bytes": 91,
+    "sha256": "587a54343e9b2cf2cc55c73287c8aeef2e03fea3c14ad067677f6e6d3f5d997e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/download-docker.tgz.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/download-docker.tgz.log",
+    "bytes": 446,
+    "sha256": "c84defeb704e76b4c73e9fac81c8d0efa9aa5829384a6fe4359811bff3e7d95a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/download-rustup-init.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/download-rustup-init.log",
+    "bytes": 7584,
+    "sha256": "9692cfca84cf07b9732d79cc36c5380d475a88990c4b2d6249296c5911aed8cf"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/dockerd-restarted.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/dockerd-restarted.log",
+    "bytes": 17931,
+    "sha256": "fc5d035aa701c06403d11cbc9c87bfeb57e9692a5c77f0d8845f078de90bf795"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/download-mongo-tools.tgz.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/download-mongo-tools.tgz.log",
+    "bytes": 12483,
+    "sha256": "470179f48eacb10e62bc573d4f99e94ce8de8f7606c70aa0171e2b12067ddb7d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/rustdx-stage5-ch.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/rustdx-stage5-ch.log",
+    "bytes": 425,
+    "sha256": "300727269b30d12212212709c4c27a30c8f0707f23b03892a8edc9008478ae68"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/start-clickhouse.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/start-clickhouse.log",
+    "bytes": 65,
+    "sha256": "010e52256214686960b41ad71463f352617ad544f0c61643405e1f087b18f240"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/pull-mongodb.daocloud.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/pull-mongodb.daocloud.log",
+    "bytes": 1083,
+    "sha256": "9778a1a00605a1fa28f871f85f2ff0830a80cc8423de17b6bfe127a1653da24b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/verify-docker-archive.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/verify-docker-archive.log",
+    "bytes": 148,
+    "sha256": "34b79a99c39d12fa1641a0f8024d5f40819f3dadee4a5d1e80993837c6340040"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/fetch-locked.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/fetch-locked.log",
+    "bytes": 1171,
+    "sha256": "bdb5609f95f7c4fd8b3de55286f8fa06259ed4cb79cc8eabd3a75e7e2e8874c9"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/prebuild-linux.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/prebuild-linux.log",
+    "bytes": 1607,
+    "sha256": "d5410463638fbcd0f29cdeb6ca8dfe9b5a83a60af4ebf3046e4ddea85e1b4c83"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/doc-tests.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/doc-tests.log",
+    "bytes": 9104,
+    "sha256": "b4ee875289dea4857501bb98c1127b148d2ad534903a310059f7c589ddcde4d7"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/build-offline.before-fixture-fix.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/build-offline.before-fixture-fix.log",
+    "bytes": 731,
+    "sha256": "5bae26719021feabb67aea2c15eee48c0d76fd06703964e19ba1d156943d405c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/fetch-linux-offline.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/fetch-linux-offline.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/version-mongoimport.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/version-mongoimport.log",
+    "bytes": 149,
+    "sha256": "979bcf37373557e8f854f5a9a04a156aeae008f4f51c089cb13d1701b54f324e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/pull-clickhouse-mirror.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/pull-clickhouse-mirror.log",
+    "bytes": 1723,
+    "sha256": "2aefbeb92f6195dc60b49cb90fdfaab72f9980dee2b66b9a52a0e354f2574218"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/fetch-linux.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/fetch-linux.log",
+    "bytes": 372,
+    "sha256": "245e89ca3fc5f95b9bd2b4058075cd40d9cf7ace9fa3a5f18a4d2fd9e8a4a0e5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/dockerd.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/dockerd.log",
+    "bytes": 14335,
+    "sha256": "2b832a5489ebf4b70ddd0c1ab4bcf6c1044d0e9991b4a45e0e15eeb259eb24c2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/fmt.before-toolchain-link.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/fmt.before-toolchain-link.log",
+    "bytes": 251,
+    "sha256": "8a1ef615d9804b2859d7f1d061b9f302fc43a0855f478e793809d01bf5bf2a78"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/mongo-protocol-offline.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/mongo-protocol-offline.log",
+    "bytes": 95,
+    "sha256": "c2afce0fec9a26159ec35a3e79cd308b33cec6265f5e7a56bc951f5edc675c64"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/runner-all.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/runner-all.log",
+    "bytes": 3283,
+    "sha256": "a7d9408e43d287cfe473318b83650e2c94b123a238e563a4e3299b88856b658d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/start-mongodb.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/start-mongodb.log",
+    "bytes": 65,
+    "sha256": "c18f445e844f42341187338b10c1d0e02c7324a61c0d75d15aa02a8923e4ab47"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/download-mongosh.tgz.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/download-mongosh.tgz.log",
+    "bytes": 7032,
+    "sha256": "4eecb80514f6f32e5b1534bf17b59ae18f3da594261d3c85e0eacc26182387e3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/fmt.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/fmt.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/prebuild.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/prebuild.log",
+    "bytes": 128,
+    "sha256": "0121e4ec8ec3ef5b3f0e3e461aa85d6e0a9c6bbd1afd3d916eeff462633a9950"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/strict-doc.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/strict-doc.log",
+    "bytes": 283,
+    "sha256": "901c3639992940163af5d2db203959a3d4876ade051c9e48d5ab2d84d220b296"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/provision-mongo.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/provision-mongo.log",
+    "bytes": 5,
+    "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/pull-mongodb.before-restart.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/pull-mongodb.before-restart.log",
+    "bytes": 1098,
+    "sha256": "097ae233eb9601d49c7aa0c6151b19a433d544011980ab814f3a779052becb56"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/version-mongosh.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/version-mongosh.log",
+    "bytes": 7,
+    "sha256": "e9b88bd81d48cfae942988fc44145c5d11927ac7238c278671f2cfd7dd15cdd3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/pull-clickhouse.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/pull-clickhouse.log",
+    "bytes": 173,
+    "sha256": "5ff3c854364b18016c58732ffe3ae0fad008c09d4a012938c4d376e84996efe3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/rustdx-stage5-mongo.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/rustdx-stage5-mongo.log",
+    "bytes": 178018,
+    "sha256": "280a96d68da706b5afe0af051d74e04c1707d673ea80eaf1f518f1917294abba"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/version-rust.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/version-rust.log",
+    "bytes": 36,
+    "sha256": "62b5c37aaa2182e71e4741c0b003df6fd1d30cdbc5d2f25ac17d1a42ecc2f02c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/clippy.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/clippy.log",
+    "bytes": 173,
+    "sha256": "4aeaa0c21cfe3e6ce1e7b6c24c4d2781b14671049b8fdaaa83f0472fc801a0a8"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/workspace-tests.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/workspace-tests.log",
+    "bytes": 57915,
+    "sha256": "355bf27e3954f3c580fa6d710d0d2566bff38e8af0585ee544d0054b8a519626"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/build-offline.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/build-offline.log",
+    "bytes": 173,
+    "sha256": "33cf6f3b060633d057a628bbde02cc1ef2ef4ce1cc03f99aa4fded435e357db2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/rustup.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/rustup.log",
+    "bytes": 532,
+    "sha256": "ef1147a24f62d557e35ad1c7a4e0d26f9671e7b4a8e022d14ee17590b6e4c54d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-shared-budget/logs/pull-mongodb.log",
+    "packaged": "evidence/attempt-1047-shared-budget/logs/pull-mongodb.log",
+    "bytes": 450,
+    "sha256": "cff317e8929bb219cdcada7f90b12c942ca8ccc70fb8b3979ab8ce737d39bcdc"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/rustup-curl.log",
+    "packaged": "evidence/attempt-1035/logs/rustup-curl.log",
+    "bytes": 548,
+    "sha256": "268e5c8554b7f9d04bd206ee22768f734293ab7ac21f67b47fe15f4fb74f0eee"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/dockerd-restart.log",
+    "packaged": "evidence/attempt-1035/logs/dockerd-restart.log",
+    "bytes": 91,
+    "sha256": "587a54343e9b2cf2cc55c73287c8aeef2e03fea3c14ad067677f6e6d3f5d997e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/download-docker.tgz.log",
+    "packaged": "evidence/attempt-1035/logs/download-docker.tgz.log",
+    "bytes": 446,
+    "sha256": "c84defeb704e76b4c73e9fac81c8d0efa9aa5829384a6fe4359811bff3e7d95a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/download-rustup-init.log",
+    "packaged": "evidence/attempt-1035/logs/download-rustup-init.log",
+    "bytes": 7584,
+    "sha256": "9692cfca84cf07b9732d79cc36c5380d475a88990c4b2d6249296c5911aed8cf"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/dockerd-restarted.log",
+    "packaged": "evidence/attempt-1035/logs/dockerd-restarted.log",
+    "bytes": 15243,
+    "sha256": "c78962206a7c87e3420e0abab534721c1813e1002d7caf8117245417e2064ae2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/download-mongo-tools.tgz.log",
+    "packaged": "evidence/attempt-1035/logs/download-mongo-tools.tgz.log",
+    "bytes": 12483,
+    "sha256": "470179f48eacb10e62bc573d4f99e94ce8de8f7606c70aa0171e2b12067ddb7d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/rustdx-stage5-ch.log",
+    "packaged": "evidence/attempt-1035/logs/rustdx-stage5-ch.log",
+    "bytes": 425,
+    "sha256": "300727269b30d12212212709c4c27a30c8f0707f23b03892a8edc9008478ae68"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/start-clickhouse.log",
+    "packaged": "evidence/attempt-1035/logs/start-clickhouse.log",
+    "bytes": 65,
+    "sha256": "b8b60edee219679b903a634e4c9a4231f445b062c9f396dfecf13e3a3fc56e3e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/pull-mongodb.daocloud.log",
+    "packaged": "evidence/attempt-1035/logs/pull-mongodb.daocloud.log",
+    "bytes": 1083,
+    "sha256": "9778a1a00605a1fa28f871f85f2ff0830a80cc8423de17b6bfe127a1653da24b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/verify-docker-archive.log",
+    "packaged": "evidence/attempt-1035/logs/verify-docker-archive.log",
+    "bytes": 148,
+    "sha256": "34b79a99c39d12fa1641a0f8024d5f40819f3dadee4a5d1e80993837c6340040"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/fetch-locked.log",
+    "packaged": "evidence/attempt-1035/logs/fetch-locked.log",
+    "bytes": 1171,
+    "sha256": "bdb5609f95f7c4fd8b3de55286f8fa06259ed4cb79cc8eabd3a75e7e2e8874c9"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/prebuild-linux.log",
+    "packaged": "evidence/attempt-1035/logs/prebuild-linux.log",
+    "bytes": 1607,
+    "sha256": "d5410463638fbcd0f29cdeb6ca8dfe9b5a83a60af4ebf3046e4ddea85e1b4c83"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/build-offline.before-fixture-fix.log",
+    "packaged": "evidence/attempt-1035/logs/build-offline.before-fixture-fix.log",
+    "bytes": 731,
+    "sha256": "5bae26719021feabb67aea2c15eee48c0d76fd06703964e19ba1d156943d405c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/fetch-linux-offline.log",
+    "packaged": "evidence/attempt-1035/logs/fetch-linux-offline.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/version-mongoimport.log",
+    "packaged": "evidence/attempt-1035/logs/version-mongoimport.log",
+    "bytes": 149,
+    "sha256": "979bcf37373557e8f854f5a9a04a156aeae008f4f51c089cb13d1701b54f324e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/pull-clickhouse-mirror.log",
+    "packaged": "evidence/attempt-1035/logs/pull-clickhouse-mirror.log",
+    "bytes": 1723,
+    "sha256": "2aefbeb92f6195dc60b49cb90fdfaab72f9980dee2b66b9a52a0e354f2574218"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/fetch-linux.log",
+    "packaged": "evidence/attempt-1035/logs/fetch-linux.log",
+    "bytes": 372,
+    "sha256": "245e89ca3fc5f95b9bd2b4058075cd40d9cf7ace9fa3a5f18a4d2fd9e8a4a0e5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/dockerd.log",
+    "packaged": "evidence/attempt-1035/logs/dockerd.log",
+    "bytes": 14335,
+    "sha256": "2b832a5489ebf4b70ddd0c1ab4bcf6c1044d0e9991b4a45e0e15eeb259eb24c2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/fmt.before-toolchain-link.log",
+    "packaged": "evidence/attempt-1035/logs/fmt.before-toolchain-link.log",
+    "bytes": 251,
+    "sha256": "8a1ef615d9804b2859d7f1d061b9f302fc43a0855f478e793809d01bf5bf2a78"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/mongo-protocol-offline.log",
+    "packaged": "evidence/attempt-1035/logs/mongo-protocol-offline.log",
+    "bytes": 95,
+    "sha256": "c2afce0fec9a26159ec35a3e79cd308b33cec6265f5e7a56bc951f5edc675c64"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/start-mongodb.log",
+    "packaged": "evidence/attempt-1035/logs/start-mongodb.log",
+    "bytes": 65,
+    "sha256": "959bb73bd6421bdecaafe72879ad784dad2943f69e26c58727325cbc0ac46952"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/download-mongosh.tgz.log",
+    "packaged": "evidence/attempt-1035/logs/download-mongosh.tgz.log",
+    "bytes": 7032,
+    "sha256": "4eecb80514f6f32e5b1534bf17b59ae18f3da594261d3c85e0eacc26182387e3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/fmt.log",
+    "packaged": "evidence/attempt-1035/logs/fmt.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/prebuild.log",
+    "packaged": "evidence/attempt-1035/logs/prebuild.log",
+    "bytes": 128,
+    "sha256": "0121e4ec8ec3ef5b3f0e3e461aa85d6e0a9c6bbd1afd3d916eeff462633a9950"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/pull-mongodb.before-restart.log",
+    "packaged": "evidence/attempt-1035/logs/pull-mongodb.before-restart.log",
+    "bytes": 1098,
+    "sha256": "097ae233eb9601d49c7aa0c6151b19a433d544011980ab814f3a779052becb56"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/version-mongosh.log",
+    "packaged": "evidence/attempt-1035/logs/version-mongosh.log",
+    "bytes": 7,
+    "sha256": "e9b88bd81d48cfae942988fc44145c5d11927ac7238c278671f2cfd7dd15cdd3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/pull-clickhouse.log",
+    "packaged": "evidence/attempt-1035/logs/pull-clickhouse.log",
+    "bytes": 173,
+    "sha256": "5ff3c854364b18016c58732ffe3ae0fad008c09d4a012938c4d376e84996efe3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/rustdx-stage5-mongo.log",
+    "packaged": "evidence/attempt-1035/logs/rustdx-stage5-mongo.log",
+    "bytes": 124098,
+    "sha256": "96eb62d92129f2825941cab281199fc80816d1923ee6a2dc412511788531f959"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/version-rust.log",
+    "packaged": "evidence/attempt-1035/logs/version-rust.log",
+    "bytes": 36,
+    "sha256": "62b5c37aaa2182e71e4741c0b003df6fd1d30cdbc5d2f25ac17d1a42ecc2f02c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/clippy.log",
+    "packaged": "evidence/attempt-1035/logs/clippy.log",
+    "bytes": 4059,
+    "sha256": "e8798a2af078be66b1c501e695cb0d2601ad63760eaabefc531d0ff3c6fb6f9e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/workspace-tests.log",
+    "packaged": "evidence/attempt-1035/logs/workspace-tests.log",
+    "bytes": 29672,
+    "sha256": "a17666dcfe3995550b6fa750f5b0133c2f0af649382a8d5d542fc1f03a1e2cd1"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/build-offline.log",
+    "packaged": "evidence/attempt-1035/logs/build-offline.log",
+    "bytes": 72,
+    "sha256": "4cf86278c1e6d659943a46a3d7e3da429ac15be90f0f17742e24ef85228e7d3e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/rustup.log",
+    "packaged": "evidence/attempt-1035/logs/rustup.log",
+    "bytes": 532,
+    "sha256": "ef1147a24f62d557e35ad1c7a4e0d26f9671e7b4a8e022d14ee17590b6e4c54d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1035/logs/pull-mongodb.log",
+    "packaged": "evidence/attempt-1035/logs/pull-mongodb.log",
+    "bytes": 450,
+    "sha256": "cff317e8929bb219cdcada7f90b12c942ca8ccc70fb8b3979ab8ce737d39bcdc"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/rustup-curl.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/rustup-curl.log",
+    "bytes": 548,
+    "sha256": "268e5c8554b7f9d04bd206ee22768f734293ab7ac21f67b47fe15f4fb74f0eee"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/dockerd-restart.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/dockerd-restart.log",
+    "bytes": 91,
+    "sha256": "587a54343e9b2cf2cc55c73287c8aeef2e03fea3c14ad067677f6e6d3f5d997e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/download-docker.tgz.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/download-docker.tgz.log",
+    "bytes": 446,
+    "sha256": "c84defeb704e76b4c73e9fac81c8d0efa9aa5829384a6fe4359811bff3e7d95a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/download-rustup-init.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/download-rustup-init.log",
+    "bytes": 7584,
+    "sha256": "9692cfca84cf07b9732d79cc36c5380d475a88990c4b2d6249296c5911aed8cf"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/dockerd-restarted.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/dockerd-restarted.log",
+    "bytes": 16587,
+    "sha256": "6429a6a3d69530e8227d048e32f3fc36b02e88fc1cec8482dc62746e733854c8"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/download-mongo-tools.tgz.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/download-mongo-tools.tgz.log",
+    "bytes": 12483,
+    "sha256": "470179f48eacb10e62bc573d4f99e94ce8de8f7606c70aa0171e2b12067ddb7d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/rustdx-stage5-ch.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/rustdx-stage5-ch.log",
+    "bytes": 425,
+    "sha256": "300727269b30d12212212709c4c27a30c8f0707f23b03892a8edc9008478ae68"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/start-clickhouse.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/start-clickhouse.log",
+    "bytes": 65,
+    "sha256": "20d52f79192a0158b3c8f4f171b7a0cf9d94d770e0c5dda06b64de8e6cccac19"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/pull-mongodb.daocloud.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/pull-mongodb.daocloud.log",
+    "bytes": 1083,
+    "sha256": "9778a1a00605a1fa28f871f85f2ff0830a80cc8423de17b6bfe127a1653da24b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/verify-docker-archive.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/verify-docker-archive.log",
+    "bytes": 148,
+    "sha256": "34b79a99c39d12fa1641a0f8024d5f40819f3dadee4a5d1e80993837c6340040"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/fetch-locked.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/fetch-locked.log",
+    "bytes": 1171,
+    "sha256": "bdb5609f95f7c4fd8b3de55286f8fa06259ed4cb79cc8eabd3a75e7e2e8874c9"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/prebuild-linux.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/prebuild-linux.log",
+    "bytes": 1607,
+    "sha256": "d5410463638fbcd0f29cdeb6ca8dfe9b5a83a60af4ebf3046e4ddea85e1b4c83"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/doc-tests.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/doc-tests.log",
+    "bytes": 9104,
+    "sha256": "cbf6fa47b7777d130941a7265db202f785f177aba9d1aa8149c32088451720d8"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/build-offline.before-fixture-fix.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/build-offline.before-fixture-fix.log",
+    "bytes": 731,
+    "sha256": "5bae26719021feabb67aea2c15eee48c0d76fd06703964e19ba1d156943d405c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/fetch-linux-offline.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/fetch-linux-offline.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/version-mongoimport.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/version-mongoimport.log",
+    "bytes": 149,
+    "sha256": "979bcf37373557e8f854f5a9a04a156aeae008f4f51c089cb13d1701b54f324e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/pull-clickhouse-mirror.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/pull-clickhouse-mirror.log",
+    "bytes": 1723,
+    "sha256": "2aefbeb92f6195dc60b49cb90fdfaab72f9980dee2b66b9a52a0e354f2574218"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/fetch-linux.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/fetch-linux.log",
+    "bytes": 372,
+    "sha256": "245e89ca3fc5f95b9bd2b4058075cd40d9cf7ace9fa3a5f18a4d2fd9e8a4a0e5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/dockerd.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/dockerd.log",
+    "bytes": 14335,
+    "sha256": "2b832a5489ebf4b70ddd0c1ab4bcf6c1044d0e9991b4a45e0e15eeb259eb24c2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/fmt.before-toolchain-link.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/fmt.before-toolchain-link.log",
+    "bytes": 251,
+    "sha256": "8a1ef615d9804b2859d7f1d061b9f302fc43a0855f478e793809d01bf5bf2a78"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/mongo-protocol-offline.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/mongo-protocol-offline.log",
+    "bytes": 95,
+    "sha256": "c2afce0fec9a26159ec35a3e79cd308b33cec6265f5e7a56bc951f5edc675c64"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/runner-all.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/runner-all.log",
+    "bytes": 3856,
+    "sha256": "bb9d7ba75d5a950b5c3595af8f426bc6320e07802208593e6b4b7ad3466b9d24"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/start-mongodb.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/start-mongodb.log",
+    "bytes": 65,
+    "sha256": "eae8d7ecf12d0c6565fa67b2bfb9834ae127367049251bc3ddd238070d072713"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/download-mongosh.tgz.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/download-mongosh.tgz.log",
+    "bytes": 7032,
+    "sha256": "4eecb80514f6f32e5b1534bf17b59ae18f3da594261d3c85e0eacc26182387e3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/fmt.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/fmt.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/prebuild.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/prebuild.log",
+    "bytes": 128,
+    "sha256": "0121e4ec8ec3ef5b3f0e3e461aa85d6e0a9c6bbd1afd3d916eeff462633a9950"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/strict-doc.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/strict-doc.log",
+    "bytes": 1178,
+    "sha256": "3ec85468d607816586d5761f71cb76e76a42e2f06d917afd0bb2419aca46b2a8"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/provision-mongo.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/provision-mongo.log",
+    "bytes": 5,
+    "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/pull-mongodb.before-restart.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/pull-mongodb.before-restart.log",
+    "bytes": 1098,
+    "sha256": "097ae233eb9601d49c7aa0c6151b19a433d544011980ab814f3a779052becb56"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/version-mongosh.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/version-mongosh.log",
+    "bytes": 7,
+    "sha256": "e9b88bd81d48cfae942988fc44145c5d11927ac7238c278671f2cfd7dd15cdd3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/pull-clickhouse.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/pull-clickhouse.log",
+    "bytes": 173,
+    "sha256": "5ff3c854364b18016c58732ffe3ae0fad008c09d4a012938c4d376e84996efe3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/rustdx-stage5-mongo.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/rustdx-stage5-mongo.log",
+    "bytes": 183190,
+    "sha256": "aa105b064c6943e8a66df81ee1778eeb8f11b3fec1cb2a38837a30f34f855ff4"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/version-rust.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/version-rust.log",
+    "bytes": 36,
+    "sha256": "62b5c37aaa2182e71e4741c0b003df6fd1d30cdbc5d2f25ac17d1a42ecc2f02c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/clippy.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/clippy.log",
+    "bytes": 72,
+    "sha256": "22e0df986057b9ba5be07526ac5fb348862a3dedef42108383cc3e088acbb889"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/workspace-tests.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/workspace-tests.log",
+    "bytes": 57814,
+    "sha256": "d809e559e8971d6f7ccf8823f02a4024a72ee8ef58b824699a616a3888b558dc"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/build-offline.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/build-offline.log",
+    "bytes": 72,
+    "sha256": "a5f4c585ee974ca44916ac30a98bbc189e067a7e0a6bc6d2e8d6bc525be724af"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/rustup.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/rustup.log",
+    "bytes": 532,
+    "sha256": "ef1147a24f62d557e35ad1c7a4e0d26f9671e7b4a8e022d14ee17590b6e4c54d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/attempt-1047-before-capacity-fix/logs/pull-mongodb.log",
+    "packaged": "evidence/attempt-1047-before-capacity-fix/logs/pull-mongodb.log",
+    "bytes": 450,
+    "sha256": "cff317e8929bb219cdcada7f90b12c942ca8ccc70fb8b3979ab8ce737d39bcdc"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/rustup-curl.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/rustup-curl.log",
+    "bytes": 548,
+    "sha256": "268e5c8554b7f9d04bd206ee22768f734293ab7ac21f67b47fe15f4fb74f0eee"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/bulk.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/bulk.log",
+    "bytes": 204,
+    "sha256": "312d2f3b8268fc1028fe3bcd3074afde0fe7892a300d310554297a59baea0466"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/real-history.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/real-history.log",
+    "bytes": 707,
+    "sha256": "8681e085ce0061c19a638388d9e93c0cd72d603ac801d56bd99f8137f4d327e2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/dockerd-restart.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/dockerd-restart.log",
+    "bytes": 91,
+    "sha256": "587a54343e9b2cf2cc55c73287c8aeef2e03fea3c14ad067677f6e6d3f5d997e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/download-docker.tgz.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/download-docker.tgz.log",
+    "bytes": 446,
+    "sha256": "c84defeb704e76b4c73e9fac81c8d0efa9aa5829384a6fe4359811bff3e7d95a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/download-rustup-init.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/download-rustup-init.log",
+    "bytes": 7584,
+    "sha256": "9692cfca84cf07b9732d79cc36c5380d475a88990c4b2d6249296c5911aed8cf"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/dockerd-restarted.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/dockerd-restarted.log",
+    "bytes": 21291,
+    "sha256": "30cd9b6881b63ae84db7754ef7dae04a41d483603312195bef24b2f0d69a920c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/download-mongo-tools.tgz.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/download-mongo-tools.tgz.log",
+    "bytes": 12483,
+    "sha256": "470179f48eacb10e62bc573d4f99e94ce8de8f7606c70aa0171e2b12067ddb7d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/rustdx-stage5-ch.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/rustdx-stage5-ch.log",
+    "bytes": 425,
+    "sha256": "300727269b30d12212212709c4c27a30c8f0707f23b03892a8edc9008478ae68"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/start-clickhouse.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/start-clickhouse.log",
+    "bytes": 65,
+    "sha256": "d1be054b1dbc2a86fb73f590e3157b58fddc85102381c4c49f765edc01c8c428"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/pull-mongodb.daocloud.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/pull-mongodb.daocloud.log",
+    "bytes": 1083,
+    "sha256": "9778a1a00605a1fa28f871f85f2ff0830a80cc8423de17b6bfe127a1653da24b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/verify-docker-archive.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/verify-docker-archive.log",
+    "bytes": 148,
+    "sha256": "34b79a99c39d12fa1641a0f8024d5f40819f3dadee4a5d1e80993837c6340040"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/fetch-locked.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/fetch-locked.log",
+    "bytes": 1171,
+    "sha256": "bdb5609f95f7c4fd8b3de55286f8fa06259ed4cb79cc8eabd3a75e7e2e8874c9"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/prebuild-linux.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/prebuild-linux.log",
+    "bytes": 1607,
+    "sha256": "d5410463638fbcd0f29cdeb6ca8dfe9b5a83a60af4ebf3046e4ddea85e1b4c83"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/doc-tests.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/doc-tests.log",
+    "bytes": 9104,
+    "sha256": "80b7aeefb0c8e7e3355b61b6aa35f4e2aa9e96b1af3ad40b90b887f0071b3470"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/build-offline.before-fixture-fix.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/build-offline.before-fixture-fix.log",
+    "bytes": 731,
+    "sha256": "5bae26719021feabb67aea2c15eee48c0d76fd06703964e19ba1d156943d405c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/fetch-linux-offline.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/fetch-linux-offline.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/version-mongoimport.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/version-mongoimport.log",
+    "bytes": 149,
+    "sha256": "979bcf37373557e8f854f5a9a04a156aeae008f4f51c089cb13d1701b54f324e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/pull-clickhouse-mirror.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/pull-clickhouse-mirror.log",
+    "bytes": 1723,
+    "sha256": "2aefbeb92f6195dc60b49cb90fdfaab72f9980dee2b66b9a52a0e354f2574218"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/fetch-linux.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/fetch-linux.log",
+    "bytes": 372,
+    "sha256": "245e89ca3fc5f95b9bd2b4058075cd40d9cf7ace9fa3a5f18a4d2fd9e8a4a0e5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/dockerd.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/dockerd.log",
+    "bytes": 14335,
+    "sha256": "2b832a5489ebf4b70ddd0c1ab4bcf6c1044d0e9991b4a45e0e15eeb259eb24c2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/fmt.before-toolchain-link.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/fmt.before-toolchain-link.log",
+    "bytes": 251,
+    "sha256": "8a1ef615d9804b2859d7f1d061b9f302fc43a0855f478e793809d01bf5bf2a78"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/mongo-protocol-offline.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/mongo-protocol-offline.log",
+    "bytes": 95,
+    "sha256": "c2afce0fec9a26159ec35a3e79cd308b33cec6265f5e7a56bc951f5edc675c64"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/runner-all.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/runner-all.log",
+    "bytes": 3762,
+    "sha256": "96ee48351baba3729e4b21c6c48e20e36c30847bcdfe16c5f2e337438a389985"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/start-mongodb.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/start-mongodb.log",
+    "bytes": 65,
+    "sha256": "2146020295caaf7a811d95d8125bf89e27334bb378ea89ef2ff16446dab92ba9"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/download-mongosh.tgz.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/download-mongosh.tgz.log",
+    "bytes": 7032,
+    "sha256": "4eecb80514f6f32e5b1534bf17b59ae18f3da594261d3c85e0eacc26182387e3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/fmt.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/fmt.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/prebuild.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/prebuild.log",
+    "bytes": 128,
+    "sha256": "0121e4ec8ec3ef5b3f0e3e461aa85d6e0a9c6bbd1afd3d916eeff462633a9950"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/strict-doc.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/strict-doc.log",
+    "bytes": 283,
+    "sha256": "32f28bea4b98b54294c491a888af658ba8405b5517ccbd482e70fef5b5834f15"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/provision-mongo.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/provision-mongo.log",
+    "bytes": 5,
+    "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/pull-mongodb.before-restart.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/pull-mongodb.before-restart.log",
+    "bytes": 1098,
+    "sha256": "097ae233eb9601d49c7aa0c6151b19a433d544011980ab814f3a779052becb56"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/version-mongosh.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/version-mongosh.log",
+    "bytes": 7,
+    "sha256": "e9b88bd81d48cfae942988fc44145c5d11927ac7238c278671f2cfd7dd15cdd3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/pull-clickhouse.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/pull-clickhouse.log",
+    "bytes": 173,
+    "sha256": "5ff3c854364b18016c58732ffe3ae0fad008c09d4a012938c4d376e84996efe3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/rustdx-stage5-mongo.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/rustdx-stage5-mongo.log",
+    "bytes": 339967,
+    "sha256": "9ba29aa2eba17f47f431bb647f9631f89657deb5d820e3b79d1030567ab452ae"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/version-rust.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/version-rust.log",
+    "bytes": 36,
+    "sha256": "62b5c37aaa2182e71e4741c0b003df6fd1d30cdbc5d2f25ac17d1a42ecc2f02c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/clippy.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/clippy.log",
+    "bytes": 173,
+    "sha256": "dcdbf762b2850a02d88e4dd989fa8bc2b94a182c07de96df5c62fd163c61a9ad"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/workspace-tests.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/workspace-tests.log",
+    "bytes": 57915,
+    "sha256": "23258309a2cf23b45edcbf6b8d94098ee971cdd2fa240183821c81e4e21cd715"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/faults.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/faults.log",
+    "bytes": 236,
+    "sha256": "9e5008c59e9de44b2f4f1c220a1f0b146a8be83a5da21ddeee051c0541e7fcf8"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/build-offline.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/build-offline.log",
+    "bytes": 173,
+    "sha256": "33cf6f3b060633d057a628bbde02cc1ef2ef4ce1cc03f99aa4fded435e357db2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/rustup.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/rustup.log",
+    "bytes": 532,
+    "sha256": "ef1147a24f62d557e35ad1c7a4e0d26f9671e7b4a8e022d14ee17590b6e4c54d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/logs/pull-mongodb.log",
+    "packaged": "evidence/pre-rowbinary-failure/logs/pull-mongodb.log",
+    "bytes": 450,
+    "sha256": "cff317e8929bb219cdcada7f90b12c942ca8ccc70fb8b3979ab8ce737d39bcdc"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/csv-one-worker/run.json.1792844923429043086-594900-0.json",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/csv-one-worker/run.json.1792844923429043086-594900-0.json",
+    "bytes": 87454,
+    "sha256": "56fa311c52b6f987c45080912f8eaf1647970ebf83817bf106fd27d8730283d9"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/csv-one-worker/run.json",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/csv-one-worker/run.json",
+    "bytes": 87454,
+    "sha256": "fd3437765aa6e6df40557a414d963a497e7c9b2d2907df81970213af8345a8e5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/csv-one-worker/cli.log",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/csv-one-worker/cli.log",
+    "bytes": 323,
+    "sha256": "4a9b0154b49770ee94bed9ea317644f64e66faae645f3d219e965c6145063d12"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/clickhouse-0/run.json",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/clickhouse-0/run.json",
+    "bytes": 87651,
+    "sha256": "f88e6c2c96230cf8f1cd9742c3c4835b7e1a5addb1cfb5112b0caeb072937d86"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/clickhouse-0/run.json.1792844932036441470-595087-0.json",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/clickhouse-0/run.json.1792844932036441470-595087-0.json",
+    "bytes": 87651,
+    "sha256": "d6bee0435458ae2d65b0a79f2407a8b8217fd1a5ff9d4d59b67c02d7610ba594"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/clickhouse-0/cli.log",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/clickhouse-0/cli.log",
+    "bytes": 465,
+    "sha256": "038b1f4391e17ce2b812545a121744908a13dbfc7d310264ee3b165cedf7cacb"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/csv-four-workers/run.json",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/csv-four-workers/run.json",
+    "bytes": 87508,
+    "sha256": "c654a4310029d9af58be068e3ed6e5bfe7dc9a645b67a109abed3aa9a9a9aecc"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/csv-four-workers/cli.log",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/csv-four-workers/cli.log",
+    "bytes": 323,
+    "sha256": "3ec1dd4f7694a6fcba3fb0d3b379f7caf1b9a23295bfbb997dbc401d3ab9ccfa"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/evidence/pre-rowbinary-failure/scratch/csv-four-workers/run.json.1792844930821342621-595064-0.json",
+    "packaged": "evidence/pre-rowbinary-failure/scratch/csv-four-workers/run.json.1792844930821342621-595064-0.json",
+    "bytes": 87506,
+    "sha256": "38eeae9df08106288774cfb6bb0f3491bf032b35c0c2b0a7a3cf301f92df4302"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/rustup-curl.log",
+    "packaged": "logs/rustup-curl.log",
+    "bytes": 548,
+    "sha256": "268e5c8554b7f9d04bd206ee22768f734293ab7ac21f67b47fe15f4fb74f0eee"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/bulk.log",
+    "packaged": "logs/bulk.log",
+    "bytes": 204,
+    "sha256": "0a7ba22e0b170396144783da9a61b1230a418fbbce9a02c6abbcfdb99e0d6149"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/real-history.log",
+    "packaged": "logs/real-history.log",
+    "bytes": 136,
+    "sha256": "978d8f1c8d3890064b96167add737c9225914ce2a14917ef5d339a22c85607c9"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/dockerd-restart.log",
+    "packaged": "logs/dockerd-restart.log",
+    "bytes": 91,
+    "sha256": "587a54343e9b2cf2cc55c73287c8aeef2e03fea3c14ad067677f6e6d3f5d997e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/download-docker.tgz.log",
+    "packaged": "logs/download-docker.tgz.log",
+    "bytes": 446,
+    "sha256": "c84defeb704e76b4c73e9fac81c8d0efa9aa5829384a6fe4359811bff3e7d95a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/download-rustup-init.log",
+    "packaged": "logs/download-rustup-init.log",
+    "bytes": 7584,
+    "sha256": "9692cfca84cf07b9732d79cc36c5380d475a88990c4b2d6249296c5911aed8cf"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/dockerd-restarted.log",
+    "packaged": "logs/dockerd-restarted.log",
+    "bytes": 24624,
+    "sha256": "9e62263c86c03776c0c05482e0b5e9bd9d666eeb3bf2a2ea7c7d2c94efdd35d3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/download-mongo-tools.tgz.log",
+    "packaged": "logs/download-mongo-tools.tgz.log",
+    "bytes": 12483,
+    "sha256": "470179f48eacb10e62bc573d4f99e94ce8de8f7606c70aa0171e2b12067ddb7d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/rustdx-stage5-ch.log",
+    "packaged": "logs/rustdx-stage5-ch.log",
+    "bytes": 425,
+    "sha256": "300727269b30d12212212709c4c27a30c8f0707f23b03892a8edc9008478ae68"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/start-clickhouse.log",
+    "packaged": "logs/start-clickhouse.log",
+    "bytes": 65,
+    "sha256": "ea503270e42e34da896b105ec7cb33da5b3bba719ffa0f0404c0e2d537e8c72b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/pull-mongodb.daocloud.log",
+    "packaged": "logs/pull-mongodb.daocloud.log",
+    "bytes": 1083,
+    "sha256": "9778a1a00605a1fa28f871f85f2ff0830a80cc8423de17b6bfe127a1653da24b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/verify-docker-archive.log",
+    "packaged": "logs/verify-docker-archive.log",
+    "bytes": 148,
+    "sha256": "34b79a99c39d12fa1641a0f8024d5f40819f3dadee4a5d1e80993837c6340040"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/fetch-locked.log",
+    "packaged": "logs/fetch-locked.log",
+    "bytes": 1171,
+    "sha256": "bdb5609f95f7c4fd8b3de55286f8fa06259ed4cb79cc8eabd3a75e7e2e8874c9"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/systemd-smoke.log",
+    "packaged": "logs/systemd-smoke.log",
+    "bytes": 236,
+    "sha256": "92f6f09988a3bde66f1e9b03fea1a5f3f9c74e1cdef970aa34e11a2ce3fe604d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/prebuild-linux.log",
+    "packaged": "logs/prebuild-linux.log",
+    "bytes": 1607,
+    "sha256": "d5410463638fbcd0f29cdeb6ca8dfe9b5a83a60af4ebf3046e4ddea85e1b4c83"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/doc-tests.log",
+    "packaged": "logs/doc-tests.log",
+    "bytes": 9104,
+    "sha256": "6cde7eed5d717bcba059b99d1f47d582c52c581a3f1dcb8dea72f73c4fb40980"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/build-offline.before-fixture-fix.log",
+    "packaged": "logs/build-offline.before-fixture-fix.log",
+    "bytes": 731,
+    "sha256": "5bae26719021feabb67aea2c15eee48c0d76fd06703964e19ba1d156943d405c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/fetch-linux-offline.log",
+    "packaged": "logs/fetch-linux-offline.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/version-mongoimport.log",
+    "packaged": "logs/version-mongoimport.log",
+    "bytes": 149,
+    "sha256": "979bcf37373557e8f854f5a9a04a156aeae008f4f51c089cb13d1701b54f324e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/pull-clickhouse-mirror.log",
+    "packaged": "logs/pull-clickhouse-mirror.log",
+    "bytes": 1723,
+    "sha256": "2aefbeb92f6195dc60b49cb90fdfaab72f9980dee2b66b9a52a0e354f2574218"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/fetch-linux.log",
+    "packaged": "logs/fetch-linux.log",
+    "bytes": 372,
+    "sha256": "245e89ca3fc5f95b9bd2b4058075cd40d9cf7ace9fa3a5f18a4d2fd9e8a4a0e5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/dockerd.log",
+    "packaged": "logs/dockerd.log",
+    "bytes": 14335,
+    "sha256": "2b832a5489ebf4b70ddd0c1ab4bcf6c1044d0e9991b4a45e0e15eeb259eb24c2"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/fmt.before-toolchain-link.log",
+    "packaged": "logs/fmt.before-toolchain-link.log",
+    "bytes": 251,
+    "sha256": "8a1ef615d9804b2859d7f1d061b9f302fc43a0855f478e793809d01bf5bf2a78"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/mongo-protocol-offline.log",
+    "packaged": "logs/mongo-protocol-offline.log",
+    "bytes": 95,
+    "sha256": "c2afce0fec9a26159ec35a3e79cd308b33cec6265f5e7a56bc951f5edc675c64"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/runner-all.log",
+    "packaged": "logs/runner-all.log",
+    "bytes": 3661,
+    "sha256": "49951eab3f7675501e49343490ede8be68ced8aebbe5aed1fdf3d79487dd3227"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/start-mongodb.log",
+    "packaged": "logs/start-mongodb.log",
+    "bytes": 65,
+    "sha256": "a8ceabbc341d9b4ce9da259efdc957ac276f1278940ce6018706daf06b651e1b"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/download-mongosh.tgz.log",
+    "packaged": "logs/download-mongosh.tgz.log",
+    "bytes": 7032,
+    "sha256": "4eecb80514f6f32e5b1534bf17b59ae18f3da594261d3c85e0eacc26182387e3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/fmt.log",
+    "packaged": "logs/fmt.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/prebuild.log",
+    "packaged": "logs/prebuild.log",
+    "bytes": 128,
+    "sha256": "0121e4ec8ec3ef5b3f0e3e461aa85d6e0a9c6bbd1afd3d916eeff462633a9950"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/strict-doc.log",
+    "packaged": "logs/strict-doc.log",
+    "bytes": 284,
+    "sha256": "d6896a9119219187ea0521c5ecbf2387328727a2adc55b1139ef4a7f1dc92505"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/provision-mongo.log",
+    "packaged": "logs/provision-mongo.log",
+    "bytes": 5,
+    "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/pull-mongodb.before-restart.log",
+    "packaged": "logs/pull-mongodb.before-restart.log",
+    "bytes": 1098,
+    "sha256": "097ae233eb9601d49c7aa0c6151b19a433d544011980ab814f3a779052becb56"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/version-mongosh.log",
+    "packaged": "logs/version-mongosh.log",
+    "bytes": 7,
+    "sha256": "e9b88bd81d48cfae942988fc44145c5d11927ac7238c278671f2cfd7dd15cdd3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/pull-clickhouse.log",
+    "packaged": "logs/pull-clickhouse.log",
+    "bytes": 173,
+    "sha256": "5ff3c854364b18016c58732ffe3ae0fad008c09d4a012938c4d376e84996efe3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/rustdx-stage5-mongo.log",
+    "packaged": "logs/rustdx-stage5-mongo.log",
+    "bytes": 442714,
+    "sha256": "902edcbb860ea90dbd6eac2a55c4429937ee7a40d47668854abf3e063001ad27"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/version-rust.log",
+    "packaged": "logs/version-rust.log",
+    "bytes": 36,
+    "sha256": "62b5c37aaa2182e71e4741c0b003df6fd1d30cdbc5d2f25ac17d1a42ecc2f02c"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/clippy.log",
+    "packaged": "logs/clippy.log",
+    "bytes": 183,
+    "sha256": "d0f385aef534b63d7ac31886e3c0df37534fba8e3e222b5205e997a0c6edbc62"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/workspace-tests.log",
+    "packaged": "logs/workspace-tests.log",
+    "bytes": 58283,
+    "sha256": "2b4f9281b382ec2257a5ecd9a54543994fbbe8cecb46d8609cf31287bf8d3204"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/faults.log",
+    "packaged": "logs/faults.log",
+    "bytes": 236,
+    "sha256": "9e5008c59e9de44b2f4f1c220a1f0b146a8be83a5da21ddeee051c0541e7fcf8"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/build-offline.log",
+    "packaged": "logs/build-offline.log",
+    "bytes": 183,
+    "sha256": "d9e9c0b4e2e72dd3edb45345ef364f9b7e8e1a8090b4ab26429eab00f7084f69"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/rustup.log",
+    "packaged": "logs/rustup.log",
+    "bytes": 532,
+    "sha256": "ef1147a24f62d557e35ad1c7a4e0d26f9671e7b4a8e022d14ee17590b6e4c54d"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/logs/pull-mongodb.log",
+    "packaged": "logs/pull-mongodb.log",
+    "bytes": 450,
+    "sha256": "cff317e8929bb219cdcada7f90b12c942ca8ccc70fb8b3979ab8ce737d39bcdc"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rust-std.log",
+    "packaged": "rust-mirror/rust-std.log",
+    "bytes": 7270,
+    "sha256": "6658b09d3f36592d4c507e28498c6829fa74993c774665147c4c4b1b79bb93fd"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rustfmt-preview.log",
+    "packaged": "rust-mirror/rustfmt-preview.log",
+    "bytes": 1582,
+    "sha256": "b2dbb3f3478b1291d3c45f4564fcbcda23af061ae3d569e448c9c51192bd5863"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/clippy-preview.log",
+    "packaged": "rust-mirror/clippy-preview.log",
+    "bytes": 1503,
+    "sha256": "a19b63d691f73baaa308f5d27111a498b119535febc5239861ca0d4deb4b8080"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/clippy-preview.install.log",
+    "packaged": "rust-mirror/clippy-preview.install.log",
+    "bytes": 183,
+    "sha256": "3d080a15aae3c92f3ed253aade95bb7fb567d6c89cbccb3d7d00a71521165326"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rust-std.install.log",
+    "packaged": "rust-mirror/rust-std.install.log",
+    "bytes": 204,
+    "sha256": "bb2fe8f94c5f2f9e961da9e3aac18be6a956323a965625d32e7494b0990003d1"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/cargo.install.log",
+    "packaged": "rust-mirror/cargo.install.log",
+    "bytes": 173,
+    "sha256": "8e94454a0f71ab40902c0206050b07d11c2e1f962682145e1908590d31bfb1d3"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/cargo.log",
+    "packaged": "rust-mirror/cargo.log",
+    "bytes": 2925,
+    "sha256": "4c44491203206a77218bb66dc1d1219f1adbce49338976df717496849c7676a8"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rustc.install.log",
+    "packaged": "rust-mirror/rustc.install.log",
+    "bytes": 173,
+    "sha256": "3909f4269f8c14b8f11ca1e6e4a657a8827e0b870bfb5cd9f09093266dfba350"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rust-std.final.log",
+    "packaged": "rust-mirror/rust-std.final.log",
+    "bytes": 2372,
+    "sha256": "9a03d670d39a5d312781c6e1639baebcdc5498aee907c67fb80a8747015eb663"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rustc.resume.log",
+    "packaged": "rust-mirror/rustc.resume.log",
+    "bytes": 4949,
+    "sha256": "de7339ad6aefb1bf318f74553aaf6a13cf717b7d1b760e0365ae54a4703880ea"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rustc.log",
+    "packaged": "rust-mirror/rustc.log",
+    "bytes": 7608,
+    "sha256": "59345bf65f356ef6ca7618cf838adc842c18a1e2bb15f12963d1c086db5be524"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rustc.final.504.log",
+    "packaged": "rust-mirror/rustc.final.504.log",
+    "bytes": 1077,
+    "sha256": "8fbe2c1400e4fdf1c4b2116d620bc576057b0381e6362a5992674919ae063389"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rust-std.resume.log",
+    "packaged": "rust-mirror/rust-std.resume.log",
+    "bytes": 1789,
+    "sha256": "2be24628469f68d5ec5521c91a5595180b04a16fd1c69514caaafd756af6f17e"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rustfmt-preview.install.log",
+    "packaged": "rust-mirror/rustfmt-preview.install.log",
+    "bytes": 185,
+    "sha256": "ed92ab29e9d9d4889e8466692cc5b981febf888084e9d9aff538737ea921417a"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rust-std.rejected.json",
+    "packaged": "rust-mirror/rust-std.rejected.json",
+    "bytes": 285,
+    "sha256": "02cbb4f13d46fdf3ed9a46d6ad07894731aa90c5dfbe70735d2c17ff6b95e518"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rustc.final.log",
+    "packaged": "rust-mirror/rustc.final.log",
+    "bytes": 6479,
+    "sha256": "75f39f90379a6bceb8e819dcbb68ab278426bc3e4f6127042ed96e4632f048e0"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-mirror/rustc.rejected.json",
+    "packaged": "rust-mirror/rustc.rejected.json",
+    "bytes": 285,
+    "sha256": "5df6adca153b5fc1651d19f71483c42af894357ba08a3fa23b30fe68cdb43e37"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/acceptance.xml",
+    "packaged": "acceptance.xml",
+    "bytes": 821,
+    "sha256": "2973e633854ef2dd45f217f04c49e08ff0f2f1919cf394f4e269a4153e887d37"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rust-installed.json",
+    "packaged": "rust-installed.json",
+    "bytes": 2214,
+    "sha256": "c31448e9567fc089d388a5e0257130f237e4bd73b180e58ec862ae56fe734484"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/bootstrap-result.json",
+    "packaged": "bootstrap-result.json",
+    "bytes": 1454,
+    "sha256": "c2e7947001c486519c4d75936fbd68fee514a0c683db941abcf56a349c3fb8b0"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/source-manifest.json",
+    "packaged": "source-manifest.json",
+    "bytes": 262890,
+    "sha256": "d9fe845482f2dff0354301356a5df33f374b8a09dc203c03a6d76509b062e8ba"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/official-subset-provenance.json",
+    "packaged": "official-subset-provenance.json",
+    "bytes": 23584,
+    "sha256": "8bf233a0cbd7c7e9526dc4207fea635e78faf4179089a4e5216d20d4b0d031ec"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/run.py",
+    "packaged": "run.py",
+    "bytes": 7386,
+    "sha256": "0f20f36d994075c422ee6c2696fdbfba270360f5faa477e5758199a81e8806ae"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/mirror-rust.py",
+    "packaged": "mirror-rust.py",
+    "bytes": 2842,
+    "sha256": "a7d9b2e976fba1ccd48c081f62377519fcda0e00a5ef3563d32c657ae62bb749"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/run-controller.log",
+    "packaged": "run-controller.log",
+    "bytes": 570,
+    "sha256": "eb9d25bb3d6f3ac20babb81948be51b837c56d4292d362459cdcb512c1735c03"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/audit-linux.py",
+    "packaged": "audit-linux.py",
+    "bytes": 6134,
+    "sha256": "f583792e1ecd87ca7c2dc3196c305a1cca889ace713be0359eabd5b8dab698d4"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/dockerd-controller.json",
+    "packaged": "dockerd-controller.json",
+    "bytes": 15,
+    "sha256": "3fef8fb1e34f6862ca0f5995703209379ac61920bbff3f5cbf9d08753748b927"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/bootstrap-controller.log",
+    "packaged": "bootstrap-controller.log",
+    "bytes": 1335,
+    "sha256": "344f29c3093954846e145b0f0e5eaf29c256c48cdab07e3236f86256e2595cdf"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/setup-controller.log",
+    "packaged": "setup-controller.log",
+    "bytes": 2040,
+    "sha256": "491e990a43b9ff4bf44e2148c7fbadce3038d16c78f9f3b6986c8aa459ce9893"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/prebuild-controller.log",
+    "packaged": "prebuild-controller.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/prebuild-linux-controller.log",
+    "packaged": "prebuild-linux-controller.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/cleanup-old-snapshot.log",
+    "packaged": "cleanup-old-snapshot.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/run-controller.daocloud.log",
+    "packaged": "run-controller.daocloud.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/docker-retry.log",
+    "packaged": "docker-retry.log",
+    "bytes": 5452,
+    "sha256": "cdef1da1d1ae794c2c7c3ae4d27e25728c0e4408159842b1179a727cedf88918"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/run-controller.rowbinary.log",
+    "packaged": "run-controller.rowbinary.log",
+    "bytes": 481,
+    "sha256": "d1b71d6cc65d4f2145ba69fab95861724b7eedc76506c1de9f5f21153d0995a5"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/rowbinary-run-controller.json",
+    "packaged": "rowbinary-run-controller.json",
+    "bytes": 101,
+    "sha256": "35beb6ff1d23ab3687683900a0cec416fdb265e2fc89eb7a9bb68a4910306f39"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/source-rowbinary-final-manifest.json",
+    "packaged": "source-rowbinary-final-manifest.json",
+    "bytes": 262890,
+    "sha256": "5dc5dacd6587df427048cdf53a8c0fe08ea763c29420c00349776fd40cbc6865"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/package-linux.py",
+    "packaged": "package-linux.py",
+    "bytes": 2686,
+    "sha256": "c8cdc501f00496180f96f3ea7e17cd7c7f563b0cdc02e5ad38b45f923ae92b33"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/run-controller.pacing.log",
+    "packaged": "run-controller.pacing.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/pacing-run-controller.json",
+    "packaged": "pacing-run-controller.json",
+    "bytes": 101,
+    "sha256": "f98552ba80f587b90dffb34ad2277575c3a04292513abd06511b1010eeb394be"
+  },
+  {
+    "original": "/tmp/rustdx-acceptance-20261024-TLDCn5/source-pacing-final-manifest.json",
+    "packaged": "source-pacing-final-manifest.json",
+    "bytes": 262890,
+    "sha256": "d9fe845482f2dff0354301356a5df33f374b8a09dc203c03a6d76509b062e8ba"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/clickhouse-0/run.json",
+    "packaged": "scratch/bulk/clickhouse-0/run.json",
+    "bytes": 395421,
+    "sha256": "26befb58e76d6af81e4b5c15801e7ddd29f996585451cdf23553326b49e00d61"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/clickhouse-0/cli.log",
+    "packaged": "scratch/bulk/clickhouse-0/cli.log",
+    "bytes": 1313,
+    "sha256": "b998cb2392fab7934dc90ad98a8e47730206ee3ce9f1af1a23ccc0ca6efa8a28"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/clickhouse-0/run.json.1792845647217565643-606655-0.json",
+    "packaged": "scratch/bulk/clickhouse-0/run.json.1792845647217565643-606655-0.json",
+    "bytes": 395421,
+    "sha256": "7010c482aceb674a13f6c7087eceadb35193f9253586490633590dac48aa75c3"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/clickhouse-1/run.json",
+    "packaged": "scratch/bulk/clickhouse-1/run.json",
+    "bytes": 395402,
+    "sha256": "e919fe6fd9c9cd7eeb7cc5ee28dc90447be344483046983b4f63f5401bb38288"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/clickhouse-1/cli.log",
+    "packaged": "scratch/bulk/clickhouse-1/cli.log",
+    "bytes": 1313,
+    "sha256": "c1247e535675288e1a3ad2e571b6df46bdaf91521b04b44a2a42dc74217228a9"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/clickhouse-1/run.json.1792845649794714242-606813-0.json",
+    "packaged": "scratch/bulk/clickhouse-1/run.json.1792845649794714242-606813-0.json",
+    "bytes": 395409,
+    "sha256": "84593c4bd45a74c60462058c0ae28bcba359f7388558b5ce04c26d3dd56f79c4"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/mongodb-1/run.json.1792845659712800612-606963-0.json",
+    "packaged": "scratch/bulk/mongodb-1/run.json.1792845659712800612-606963-0.json",
+    "bytes": 395399,
+    "sha256": "c48d88cf814908112c7937e90601c48fe74f11d9b4c8b8f31c33962c60533d3d"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/mongodb-1/run.json",
+    "packaged": "scratch/bulk/mongodb-1/run.json",
+    "bytes": 395393,
+    "sha256": "e7ede3ca1a84fa010fa6f9d5bb65144147b72638e4028ff2e1f1809e564a5aaf"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/mongodb-1/cli.log",
+    "packaged": "scratch/bulk/mongodb-1/cli.log",
+    "bytes": 1486,
+    "sha256": "ef1ba13098f5de006593a44d08116333ce931459a98c0bd7217d3f604309bdf8"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/mongodb-0/run.json",
+    "packaged": "scratch/bulk/mongodb-0/run.json",
+    "bytes": 395388,
+    "sha256": "2de8db88593f7880397c1a8afa7dec044c9ca7c998c862c43b5f1336da9e0e1a"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/mongodb-0/cli.log",
+    "packaged": "scratch/bulk/mongodb-0/cli.log",
+    "bytes": 1486,
+    "sha256": "868fce97af77e5ce77209fb04944167bdedfa1f0a80881cbf82041ea8d30ebdd"
+  },
+  {
+    "original": "/tmp/rustdx-readback-bench-541i1bbf/mongodb-0/run.json.1792845652423759220-606843-0.json",
+    "packaged": "scratch/bulk/mongodb-0/run.json.1792845652423759220-606843-0.json",
+    "bytes": 395388,
+    "sha256": "174ac266310469ae019fdb2d99061f7a60934e17242a0977f7022a4ea1f8b5ad"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_network_outage/run.json.1792845667644173277-607088-0.json",
+    "packaged": "scratch/faults/clickhouse_network_outage/run.json.1792845667644173277-607088-0.json",
+    "bytes": 53435,
+    "sha256": "3801603607f2454960be81e5a410255c2aaafd624c1ee4a123c3a25d93f583d6"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_network_outage/run.json",
+    "packaged": "scratch/faults/clickhouse_network_outage/run.json",
+    "bytes": 54049,
+    "sha256": "82721abb39a5cdf546b7641b2d6109973acaa5bb0044cd3aca40ff605a184d73"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_network_outage/fault.log",
+    "packaged": "scratch/faults/clickhouse_network_outage/fault.log",
+    "bytes": 396,
+    "sha256": "5119ef1f333ee965efea04674d7a478a111f36423e7579559d1972095cdfcb4e"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_network_outage/recovery.log",
+    "packaged": "scratch/faults/clickhouse_network_outage/recovery.log",
+    "bytes": 319,
+    "sha256": "d75fffcd3d39d77695e6675240d6b247fc56394941896e844128548a517c761b"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_network_outage/run.json.1792845667869427708-607109-0.json",
+    "packaged": "scratch/faults/clickhouse_network_outage/run.json.1792845667869427708-607109-0.json",
+    "bytes": 54049,
+    "sha256": "4ace3518fda94451e82ffaf44f05693a425c2a3499ad57586738ef6153af0ef8"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_network_outage/run.json",
+    "packaged": "scratch/faults/mongodb_network_outage/run.json",
+    "bytes": 54042,
+    "sha256": "b6196f13ccf7a83a9bbeeefce65e566814153011c4dab33fad3b50e85303a147"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_network_outage/run.json.1792845669906956531-607242-0.json",
+    "packaged": "scratch/faults/mongodb_network_outage/run.json.1792845669906956531-607242-0.json",
+    "bytes": 54035,
+    "sha256": "214fbfbf992ac67b25ed7262ac059c96ef41f5030537a6534320eed677e08043"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_network_outage/fault.log",
+    "packaged": "scratch/faults/mongodb_network_outage/fault.log",
+    "bytes": 765,
+    "sha256": "a032f06ab5b46b473e24015ff0b55e1aca5870eb7b4c1f00d62a0fd45da49131"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_network_outage/recovery.log",
+    "packaged": "scratch/faults/mongodb_network_outage/recovery.log",
+    "bytes": 489,
+    "sha256": "ed335e39abc88baa90d6d7b0e4641c7755c840160bcc7b797374eef0121edae6"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_network_outage/run.json.1792845668810270694-607158-0.json",
+    "packaged": "scratch/faults/mongodb_network_outage/run.json.1792845668810270694-607158-0.json",
+    "bytes": 53423,
+    "sha256": "ccfc5053c29f265ab6c23db91ad8b60221b872ddb45671f75efd8e09adaf1c64"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_sigkill/run.json.1792845668237062101-607123-0.json",
+    "packaged": "scratch/faults/clickhouse_sigkill/run.json.1792845668237062101-607123-0.json",
+    "bytes": 52557,
+    "sha256": "6f8f3fc548b8e73a15ac758404478d5f0cd8461d26777b82bbbe800e0c14f7d7"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_sigkill/run.json.1792845668442925887-607144-0.json",
+    "packaged": "scratch/faults/clickhouse_sigkill/run.json.1792845668442925887-607144-0.json",
+    "bytes": 54014,
+    "sha256": "bdba6c11a7c6b929fbe08f8c04f04bb558de4588d3c095e844bc0963c6a0e227"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_sigkill/run.json",
+    "packaged": "scratch/faults/clickhouse_sigkill/run.json",
+    "bytes": 54014,
+    "sha256": "9ebac469f16f748eea1c2d6860d0ef6bffb8fb2432307b03fa4d38441bec8416"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_sigkill/fault.log",
+    "packaged": "scratch/faults/clickhouse_sigkill/fault.log",
+    "bytes": 319,
+    "sha256": "f62982e435f0066ff7254e42009a3feb9a7a76eedfa3fd53678d77ee8a683337"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/clickhouse_sigkill/recovery.log",
+    "packaged": "scratch/faults/clickhouse_sigkill/recovery.log",
+    "bytes": 319,
+    "sha256": "f62982e435f0066ff7254e42009a3feb9a7a76eedfa3fd53678d77ee8a683337"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_sigkill/run.json",
+    "packaged": "scratch/faults/mongodb_sigkill/run.json",
+    "bytes": 53995,
+    "sha256": "3b8884635fd4dc97e1923ef149796fcb426f477c00b8a932cea4685439ae4974"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_sigkill/fault.log",
+    "packaged": "scratch/faults/mongodb_sigkill/fault.log",
+    "bytes": 564,
+    "sha256": "976313987dcb12cc9c476a2a978ad36e23b0c8bfaf1de23c15b6e90731002f9f"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_sigkill/recovery.log",
+    "packaged": "scratch/faults/mongodb_sigkill/recovery.log",
+    "bytes": 489,
+    "sha256": "91d0c24665383151b9b63f9c37d4b21da54aeb91ac8475a9ed7859e2c69b38c6"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_sigkill/run.json.1792845672067868683-607345-0.json",
+    "packaged": "scratch/faults/mongodb_sigkill/run.json.1792845672067868683-607345-0.json",
+    "bytes": 52529,
+    "sha256": "174e80242e0bf3372a5482b675ab07d6d01514ec1c1649e5d40e75bfd0db3471"
+  },
+  {
+    "original": "/tmp/rustdx-db-faults-rxggsxag/mongodb_sigkill/run.json.1792845673485746673-607446-0.json",
+    "packaged": "scratch/faults/mongodb_sigkill/run.json.1792845673485746673-607446-0.json",
+    "bytes": 54002,
+    "sha256": "269d00c060ed37d72041820f4a0e93f70104bebe3ab9faa6368912491dc20537"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/csv-one-worker/run.json.1792845676308729328-607596-0.json",
+    "packaged": "scratch/real-history/csv-one-worker/run.json.1792845676308729328-607596-0.json",
+    "bytes": 87461,
+    "sha256": "eea1a12b765d051fe710fa75c1ac3cc1ac8b88ee8c70d025e78567837d93b215"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/csv-one-worker/run.json",
+    "packaged": "scratch/real-history/csv-one-worker/run.json",
+    "bytes": 87461,
+    "sha256": "c86e5fb97d7038f31abe3bab80f8c4abba615921f67799ef37127180fd9e51d1"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/csv-one-worker/cli.log",
+    "packaged": "scratch/real-history/csv-one-worker/cli.log",
+    "bytes": 323,
+    "sha256": "756eac876c3e6e8f07d7a157cc112217d9689581c4e7ea743073cc56a2972f01"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/clickhouse-0/run.json.1792845684871282183-607629-0.json",
+    "packaged": "scratch/real-history/clickhouse-0/run.json.1792845684871282183-607629-0.json",
+    "bytes": 88230,
+    "sha256": "4b69506149d3eee3875e61397f3aa7d226c75c7f2e18a25a1a73f0cafd242148"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/clickhouse-0/run.json",
+    "packaged": "scratch/real-history/clickhouse-0/run.json",
+    "bytes": 88236,
+    "sha256": "833debc97864ef6a646c33fe7fe7bb1c5020278d2c3de15186e2c739a25ff430"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/clickhouse-0/cli.log",
+    "packaged": "scratch/real-history/clickhouse-0/cli.log",
+    "bytes": 323,
+    "sha256": "538f485d37a886b4ded86c33fe15aa6851ef3796ed4768b55bf80e49e1e5e23b"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/csv-four-workers/run.json",
+    "packaged": "scratch/real-history/csv-four-workers/run.json",
+    "bytes": 87485,
+    "sha256": "a3406f21374e50a00850ae82dd6f73e1c58847aa9cdafc87cf5b664bed900cd0"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/csv-four-workers/cli.log",
+    "packaged": "scratch/real-history/csv-four-workers/cli.log",
+    "bytes": 323,
+    "sha256": "f1269c1a92aa29446958772f3f11f77a60c97c5e6d6444aeb21c94a9d02ac259"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/csv-four-workers/run.json.1792845683657391174-607606-0.json",
+    "packaged": "scratch/real-history/csv-four-workers/run.json.1792845683657391174-607606-0.json",
+    "bytes": 87485,
+    "sha256": "123f0cfc35a4015c5fade4e10025a87f79419267193325e53acb51aa908b7a39"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/clickhouse-1/run.json.1792845715606901975-607967-0.json",
+    "packaged": "scratch/real-history/clickhouse-1/run.json.1792845715606901975-607967-0.json",
+    "bytes": 88205,
+    "sha256": "9eb1f7da9f410d8fa358baf330d84319bf05ad3e88b38be69ec379f3fdc63a81"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/clickhouse-1/run.json",
+    "packaged": "scratch/real-history/clickhouse-1/run.json",
+    "bytes": 88211,
+    "sha256": "32eb047de95705ba95e76be1a9c8c6878e44b651ee906b92310f17454166fd4d"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/clickhouse-1/cli.log",
+    "packaged": "scratch/real-history/clickhouse-1/cli.log",
+    "bytes": 323,
+    "sha256": "809b4e09daa5eb4837f313aaffaa8f092445d1309da1255f04d62ce2f5eb3da4"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/mongodb-1/run.json",
+    "packaged": "scratch/real-history/mongodb-1/run.json",
+    "bytes": 88220,
+    "sha256": "41c40ae1ba42114bb616146cdb37afcf660fac56133dd0cf4377435cc6b1a038"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/mongodb-1/cli.log",
+    "packaged": "scratch/real-history/mongodb-1/cli.log",
+    "bytes": 2024,
+    "sha256": "6aab7399036b28b8795bfb88d58e58ac5d36be1442792cebc7765d518bd2c678"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/mongodb-1/run.json.1792845821669906634-608563-0.json",
+    "packaged": "scratch/real-history/mongodb-1/run.json.1792845821669906634-608563-0.json",
+    "bytes": 88226,
+    "sha256": "cbff4d5156b7c5ccf010f7c0912730306ab4f8e4eaee1506368cfb87b565c1eb"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/mongodb-0/run.json",
+    "packaged": "scratch/real-history/mongodb-0/run.json",
+    "bytes": 88196,
+    "sha256": "f4dae046e459215536c0ae3a835c2f0761ff190e126ddc2982eb5c5b3dbf8588"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/mongodb-0/cli.log",
+    "packaged": "scratch/real-history/mongodb-0/cli.log",
+    "bytes": 2163,
+    "sha256": "42dfa392832b9008eac216acd095c94f14d68ab15ffdb7ef9d261f1ae72b1056"
+  },
+  {
+    "original": "/tmp/rustdx-real-day-brrv_lff/mongodb-0/run.json.1792845753234501331-608236-0.json",
+    "packaged": "scratch/real-history/mongodb-0/run.json.1792845753234501331-608236-0.json",
+    "bytes": 88196,
+    "sha256": "83b73606a7c7f3ecd23f3516b1ee9d251f60659ba5828d66d105e62a6f1f933b"
+  }
+]

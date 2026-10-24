@@ -1,0 +1,258 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-24",
+  "phase": "remaining fixes: date qualification and databases",
+  "environment": {
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "rust": "1.89.0",
+    "cwd": "/Users/bytedance/Documents/rustdx",
+    "real_database_services": false,
+    "node": "Electron embedded Node 22.21.1"
+  },
+  "head": "408e30eb172704070e384fb35fb0e56549a1fbc5",
+  "workspace_has_preexisting_changes": true,
+  "no_commits_or_publication": true,
+  "logs_directory": "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-remaining-8nvs1o4j",
+  "checks": {
+    "workspace": [
+      {
+        "name": "fmt",
+        "exit": 0,
+        "seconds": 1.06
+      },
+      {
+        "name": "fmt-check",
+        "exit": 0,
+        "seconds": 0.58
+      },
+      {
+        "name": "clippy",
+        "exit": 0,
+        "seconds": 19.83
+      },
+      {
+        "name": "tests",
+        "exit": 0,
+        "seconds": 164.99
+      },
+      {
+        "name": "doc-tests",
+        "exit": 0,
+        "seconds": 17.47
+      },
+      {
+        "name": "build-cli",
+        "exit": 0,
+        "seconds": 18.13
+      }
+    ],
+    "followup": [
+      {
+        "name": "fmt",
+        "exit": 0,
+        "seconds": 1.21
+      },
+      {
+        "name": "fmt-check",
+        "exit": 0,
+        "seconds": 0.61
+      },
+      {
+        "name": "clippy",
+        "exit": 0,
+        "seconds": 3.38
+      },
+      {
+        "name": "runner-tests",
+        "exit": 0,
+        "seconds": 5.77
+      },
+      {
+        "name": "credentials-test",
+        "exit": 0,
+        "seconds": 13.86
+      },
+      {
+        "name": "doc-tests",
+        "exit": 0,
+        "seconds": 14.06
+      },
+      {
+        "name": "build-cli",
+        "exit": 0,
+        "seconds": 0.57
+      }
+    ],
+    "final": [
+      {
+        "name": "fmt",
+        "exit": 0,
+        "seconds": 1.43
+      },
+      {
+        "name": "fmt-check",
+        "exit": 0,
+        "seconds": 0.55
+      },
+      {
+        "name": "clippy",
+        "exit": 0,
+        "seconds": 2.83
+      },
+      {
+        "name": "runner-final",
+        "exit": 0,
+        "seconds": 19.0
+      },
+      {
+        "name": "credentials-final",
+        "exit": 0,
+        "seconds": 2.48
+      },
+      {
+        "name": "rustdoc",
+        "exit": 0,
+        "seconds": 8.7
+      },
+      {
+        "name": "build-cli",
+        "exit": 0,
+        "seconds": 0.6
+      }
+    ],
+    "explicit_control_plane": [
+      {
+        "name": "real_cli_release_revision_missing_coverage_and_isolated_restore",
+        "exit": 0
+      },
+      {
+        "name": "ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts",
+        "exit": 0
+      },
+      {
+        "name": "database_capacity_rejects_before_request_or_unknown_target",
+        "exit": 0
+      },
+      {
+        "name": "durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined",
+        "exit": 0
+      },
+      {
+        "name": "runner_run_forwards_startup_pool_and_offline_setting_to_real_collector",
+        "exit": 0
+      }
+    ],
+    "js_protocol": {
+      "exit": 0,
+      "log_sha256": "62e5c59ce9523aa54048260fcf92b4f7d63937876e91cc474c7c9fe294d1c8c8"
+    }
+  },
+  "test_counts": {
+    "tests": {
+      "passed": 454,
+      "failed": 0,
+      "ignored": 6
+    },
+    "doc-tests": {
+      "passed": 66,
+      "failed": 0,
+      "ignored": 18
+    },
+    "runner-final": {
+      "passed": 19,
+      "failed": 0,
+      "ignored": 6
+    },
+    "credentials-final": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    }
+  },
+  "changes": [
+    {
+      "path": ".github/workflows/database-acceptance.yml",
+      "before_sha256": "db9a637adad996c4f18345f20fbe5f37f2caafb1e3a3480d705a72abbf5cdfc8",
+      "after_sha256": "b9a2ed86bc324307367ea53a1d1b6b51a269e04ff67166194afb8137cb6892d1"
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/mongo_readback.js",
+      "before_sha256": "cef4407ca3458654a6ec9a506fa99b75b76def261ef3600d26e4aa543bc9b720",
+      "after_sha256": "e7fd380bf36f9eca67108b7a8fc81b37642799a0797b792a80cc90f767401ccb"
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/mongo_readback.rs",
+      "before_sha256": "1d84599b197140db4431f65d980690c67a3c30caf40e496050720709d86c461f",
+      "after_sha256": "b34c7583efb9bdb5b3daab9bfe62f1f68a65433271788cf9323ff9098c793649"
+    },
+    {
+      "path": "apps/rustdx-cli/src/io/sinks.rs",
+      "before_sha256": "6a93a16065a6afe22ce7e2aab9827b7abb3ba910f93b3ef903ee9c14681aedf7",
+      "after_sha256": "a1703dfba2c095d81154c8f78aa3286d7b583f5c38419f1147d84f73a36318e0"
+    },
+    {
+      "path": "apps/rustdx-cli/tests/mongo_credentials.rs",
+      "after_sha256": "9b7ec1a28b182af476e4ef3db4db3f45f8e0a6a1c744e02d7c8015c55c667b17",
+      "created_this_phase": true
+    },
+    {
+      "path": "apps/rustdx-runner/src/database.rs",
+      "before_sha256": "8ffb7993aac074e1b0226aa2acc867e9ab761773248124d55790f63beadfa889",
+      "after_sha256": "bfe894c6561cf1bdc313f2b903eaec7bd469f16dd4ca40b12cd0be8987fbbae4"
+    },
+    {
+      "path": "apps/rustdx-runner/src/database_mongo.js",
+      "before_sha256": "0f524c24c26db95a15ec12ff249942a35846d85fcf0935b35f28760f0e7bdc0a",
+      "after_sha256": "a7672f3225fb3bfd89f04df51e4fc5b887c4d5d44700612a02a2e69d29193980"
+    },
+    {
+      "path": "apps/rustdx-runner/src/database_process.rs",
+      "after_sha256": "33445c94446123b74d6f2060878d6dd55315311c73c5e3e886cb3ec0adaaa8f9",
+      "created_this_phase": true
+    },
+    {
+      "path": "apps/rustdx-runner/src/lib.rs",
+      "before_sha256": "7f447d399a720bcc14bebc7e74364c36db65b7904c78606b24faa027f40e9840",
+      "after_sha256": "4f5db09f8c9daf3beb05ad1ac74b3ece7861054f7a33e7da681b87e673a2ea12"
+    },
+    {
+      "path": "apps/rustdx-runner/src/storage.rs",
+      "before_sha256": "46141d7ac8fb0b3f2f0a9a2f671f7b2feecbb75da1013f096400e343317e7197",
+      "after_sha256": "93c4338e39e26d72d7674aa228cc231ae747094b39126e7bf401ae3b84831d1e"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/control_plane.rs",
+      "before_sha256": "1579e9707f8cf9d6bc1684e1545b54c51e6c750dc68fefb622822ec62fae298e",
+      "after_sha256": "34480e259233bd903f7701d324b490acca1135333d591785df9c3085984cbbea"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/database_mongo_protocol.cjs",
+      "after_sha256": "1eb4de0e175c8b49e80c63d193d26e03b2fc53c14bfe6d3747fdeb686ae9d568",
+      "created_this_phase": true
+    },
+    {
+      "path": "crates/rustdx-core/src/tcp/stock/recent_minutes.rs",
+      "before_sha256": "503cae5edcf72bd0759ed517743244f3ae2d8db5b5fde9c07cef080d4663f9b1",
+      "after_sha256": "ad075e3e0d15bc378b0863990d6c554aa1406a36627c3467e23cf593fa99a1ea"
+    },
+    {
+      "path": "crates/rustdx-core/tests/recent_minutes_boundaries.rs",
+      "before_sha256": "9ee4a223ace6df62f38a33f6237bbe5b26b74146885a9db51d361cb38eeb3550",
+      "after_sha256": "d861022b380c90027ba5d61f9e427e34194ae2503b92eac9eb57c12964cac70e"
+    },
+    {
+      "path": "docs/development/APPLICATION_INTEGRATION.md",
+      "before_sha256": "b10438cd2f5f4a48b7f3d56b4f1945af504f9db6ab386f0db4d8106bc7bcdae4",
+      "after_sha256": "a78c42672d08f323376c17019b1aa7fc7abbfb4f53192e51874881fe2f622351"
+    }
+  ],
+  "remaining_boundaries": [
+    "0feb independent trading-date evidence",
+    "0547 passive intraday live push",
+    "official future-year calendar and point-in-time facts",
+    "target Linux and real database rerun",
+    "frozen source/release versions",
+    "worker supervision scans",
+    "other O09-O20 optimization items"
+  ]
+}

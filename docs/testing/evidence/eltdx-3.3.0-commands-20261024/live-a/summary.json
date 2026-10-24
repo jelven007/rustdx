@@ -1,0 +1,51 @@
+{
+  "captured_at": "2026-10-24T06:23:33.973336Z",
+  "endpoint": "115.238.56.198:7709",
+  "results": [
+    {
+      "decoded": true,
+      "name": "block-metadata"
+    },
+    {
+      "decoded": true,
+      "name": "f10-text-0-000001"
+    },
+    {
+      "decoded": true,
+      "name": "f10-directory-0-000001"
+    },
+    {
+      "decoded": true,
+      "name": "f10-text-1-600000"
+    },
+    {
+      "decoded": true,
+      "name": "f10-directory-1-600000"
+    },
+    {
+      "decoded": true,
+      "name": "delisted-one-0-000038"
+    },
+    {
+      "decoded": true,
+      "name": "delisted-all-0-000038"
+    },
+    {
+      "decoded": true,
+      "name": "delisted-one-0-002087"
+    },
+    {
+      "decoded": true,
+      "name": "delisted-all-0-002087"
+    },
+    {
+      "decoded": true,
+      "name": "delisted-one-1-600001"
+    },
+    {
+      "decoded": true,
+      "name": "delisted-all-1-600001"
+    }
+  ],
+  "scope": "Sampled archive and F10 responses on a non-trading day; no all-command or exchange completeness claim"
+}

@@ -1,0 +1,68 @@
+   Compiling jelven-rustdx-complete v1.12.2 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+   Compiling jelven-rustdx-cli v1.8.2 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+   Compiling rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+   Compiling tests-integration v1.1.0 (/Users/bytedance/Documents/rustdx/tests/integration)
+    Finished `test` profile [optimized + debuginfo] target(s) in 1m 26s
+     Running unittests src/lib.rs (target/debug/deps/rustdx_cli-bd5292315f713beb)
+
+running 5 tests
+test fetch_code::tests::stocklist_responses_are_bounded_and_read_errors_propagate ... ok
+test maintenance::tests::inclusive_warning_and_coverage_boundaries_do_not_extend_evidence ... ok
+test fetch_code::tests::sse_jsonp_is_structural_and_public_inputs_do_not_panic ... ok
+test observation::tests::concurrent_nested_spans_and_unwinding_keep_task_counters_separate ... ok
+test observation::tests::queued_temporary_bytes_release_on_drop_and_publication ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running unittests src/main.rs (target/debug/deps/rustdx-0909d1dada2adf3b)
+
+running 33 tests
+test download::tests::find_lday_dirs_empty_when_missing ... ok
+test download::tests::safe_join_rejects_traversal ... ok
+test download::tests::content_range_requires_exact_offset_and_length ... ok
+test cmd::data_check::tests::reference_disagreement_and_coverage_are_rejected ... ok
+test io::rowbinary::tests::adjusted_fields_reordering_and_signed_zero_are_preserved ... ok
+test io::rowbinary::tests::date_upper_bound_and_cancellation_are_enforced ... ok
+test io::rowbinary::tests::independent_bytes_and_small_reads_preserve_all_float_bits ... ok
+test io::rowbinary::tests::malformed_fields_and_unbounded_records_fail_before_encoding ... ok
+test io::test_insert_clickhouse ... FAILED
+test download::tests::zip_cached_logic ... ok
+test io::tests::clickhouse_schema_must_preserve_key_precision_and_import_versions ... ok
+test io::tests::clickhouse_rejects_error_status_late_exception_and_truncated_body ... ok
+test io::tests::excel_codes_keep_leading_zero_and_invalid_columns_fail ... ok
+test download::tests::http_resume_uses_validator_and_publishes_complete_archive ... ok
+test io::tests::previous_inputs_are_preserved_and_invalid_rows_fail ... ok
+test io::tests::table_names_cannot_be_sql ... ok
+test io::verify::tests::batch_and_mongo_response_limits_reject_invalid_input ... ok
+test io::verify::tests::independent_readback_detects_values_keys_duplicates_and_crosses_batches ... ok
+test io::mongo_readback::tests::deadline_cancellation_and_blocked_pipe_are_reaped ... ok
+test io::streaming::tests::chunk_carry_matches_whole_file_with_suspended_events ... ok
+test quality::tests::equities_are_strict_and_indexes_keep_source_anomalies_as_warnings ... ok
+test paths::tests::database_targets_coordinate_across_credentials_and_directories ... ok
+test paths::tests::aliases_and_concurrent_writers_are_rejected ... ok
+test download::tests::local_archives_have_isolated_cache_and_failure_preserves_extraction ... ok
+test io::mongo_readback::tests::persistent_process_checks_complete_response_eof_and_exit_status ... ok
+test io::sinks::tests::subprocess_failure_and_timeout_are_bounded ... ok
+test io::streaming::tests::multipass_merge_keeps_last_source_duplicate_and_bounds_diagnostics ... ok
+test io::tests::all_empty_collection_preserves_output_and_fails_report ... ok
+test io::tests::invalid_collection_preserves_last_success_and_records_failure ... ok
+test io::sinks::tests::late_database_error_leaves_durable_unknown_status_and_csv ... ok
+test io::sinks::tests::acknowledged_import_with_failed_readback_retains_csv_and_evidence ... ok
+test quality::tests::manifests_preserve_each_run_and_verify_published_evidence ... ok
+test io::tests::external_calendar_enables_strict_collection_without_guessing_dates ... ok
+
+failures:
+
+---- io::test_insert_clickhouse stdout ----
+Error: io: Connection refused
+
+Location:
+    apps/rustdx-cli/src/io.rs:404:20
+
+
+failures:
+    io::test_insert_clickhouse
+
+test result: FAILED. 32 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+
+error: test failed, to rerun pass `-p jelven-rustdx-cli --bin rustdx`

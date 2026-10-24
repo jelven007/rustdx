@@ -1,0 +1,33 @@
+docker.m.daocloud.io/library/mongo@sha256:4b58ebcb1dc7a7b4e84cd8ce9098d48764ae4478876898ff9551acf2ac4a6a6d: Pulling from library/mongo
+20043066d3d5: Pulling fs layer
+17fe099874f1: Pulling fs layer
+8ff060369d14: Pulling fs layer
+0bb99e130a79: Pulling fs layer
+7174617ee6e3: Pulling fs layer
+430d7dd85da4: Pulling fs layer
+edaea6857353: Pulling fs layer
+2a3db1edea82: Pulling fs layer
+0bb99e130a79: Waiting
+430d7dd85da4: Waiting
+7174617ee6e3: Waiting
+edaea6857353: Waiting
+2a3db1edea82: Waiting
+17fe099874f1: Download complete
+8ff060369d14: Verifying Checksum
+8ff060369d14: Download complete
+0bb99e130a79: Verifying Checksum
+0bb99e130a79: Download complete
+7174617ee6e3: Verifying Checksum
+7174617ee6e3: Download complete
+430d7dd85da4: Verifying Checksum
+430d7dd85da4: Download complete
+2a3db1edea82: Verifying Checksum
+2a3db1edea82: Download complete
+20043066d3d5: Verifying Checksum
+20043066d3d5: Download complete
+20043066d3d5: Pull complete
+17fe099874f1: Pull complete
+8ff060369d14: Pull complete
+0bb99e130a79: Pull complete
+7174617ee6e3: Pull complete
+430d7dd85da4: Pull complete

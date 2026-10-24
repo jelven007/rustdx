@@ -1,0 +1,16 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m   Compiling[0m jelven-rustdx-cli v2.0.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 42.81s
+[1m[32m     Running[0m tests/tcp_day.rs (/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/debug/deps/tcp_day-abb3a337331080cd)
+
+running 7 tests
+test frozen_v1_archives_replay_with_their_original_lossy_volume ... ok
+test an_enumerated_empty_tail_keeps_missing_dates_visible_to_runner ... ok
+test compressed_short_pages_replay_exact_fields_and_duplicate_boundaries ... ok
+test wire_receipt_and_orphan_file_changes_are_rejected_independently ... ok
+test closed_date_unit_evidence_scope_and_archive_budget_refuse_collection ... ok
+test total_reservations_csv_limit_failure_and_parent_deadline_never_complete ... ok
+test scheduled_scope_exceeds_32_with_bounded_parallelism_and_ordered_exact_replay ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.54s
+

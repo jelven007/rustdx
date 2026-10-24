@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "command": [
+    "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-project-review-20261022-5tyhz7ta/target/release/examples/batch_retention_probe",
+    "256"
+  ],
+  "interval_seconds": 0.1,
+  "scope": "Simultaneous sampled group/tree sums; short-lived children and peaks between samples can be missed. Disk values are logical file bytes at declared roots, not allocated blocks or external database storage.",
+  "samples": [
+    {
+      "elapsed_seconds": 0.069865708,
+      "processes": 1,
+      "rss_bytes": 6176768,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.17367449999999998,
+      "processes": 1,
+      "rss_bytes": 6668288,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.280426542,
+      "processes": 1,
+      "rss_bytes": 7143424,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.615385458,
+      "processes": 1,
+      "rss_bytes": 7798784,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.7109547079999999,
+      "processes": 1,
+      "rss_bytes": 8912896,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.784758208,
+      "processes": 1,
+      "rss_bytes": 9355264,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.903579958,
+      "processes": 1,
+      "rss_bytes": 10043392,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 0.9933738329999999,
+      "processes": 1,
+      "rss_bytes": 10469376,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.094105792,
+      "processes": 1,
+      "rss_bytes": 10911744,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.200371042,
+      "processes": 1,
+      "rss_bytes": 11583488,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.3088650419999999,
+      "processes": 1,
+      "rss_bytes": 12025856,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.406632667,
+      "processes": 1,
+      "rss_bytes": 12451840,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.514899625,
+      "processes": 1,
+      "rss_bytes": 13107200,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.6133914999999999,
+      "processes": 1,
+      "rss_bytes": 13549568,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.721542208,
+      "processes": 1,
+      "rss_bytes": 13991936,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.820889292,
+      "processes": 1,
+      "rss_bytes": 14663680,
+      "fds": 19,
+      "threads": 11,
+      "disk_bytes": {}
+    },
+    {
+      "elapsed_seconds": 1.906920625,
+      "processes": 1,
+      "rss_bytes": 0,
+      "fds": null,
+      "threads": null,
+      "disk_bytes": {}
+    }
+  ],
+  "peaks": {
+    "processes": 1,
+    "rss_bytes": 14663680,
+    "fds": 19,
+    "threads": 11,
+    "disk_bytes": {}
+  },
+  "sampling_errors": [],
+  "leader_pid": 51555,
+  "exit_code": 0,
+  "elapsed_seconds": 1.9309807079999999,
+  "missing_fd_samples": 1,
+  "missing_thread_samples": 1
+}

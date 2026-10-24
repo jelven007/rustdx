@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+    "+1.89.0",
+    "test",
+    "--workspace"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 105.999,
+  "integration_skip_env": true
+}
