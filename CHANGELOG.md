@@ -10,6 +10,7 @@
 - TCP日线及报文归档在所有平台同步文件内容，仅在Unix同步父目录，修复Windows采集返回拒绝访问；CI构建复用test profile并限制并行编译，避免保留重复的完整构建产物。
 - 心跳后台I/O按20毫秒重查停止信号，修复Windows关闭克隆socket后阻塞读取仍延迟Drop；原始socket提取等待当前完整心跳，并恢复正常读写超时。
 - Windows受管业务/心跳读写先按20毫秒就绪轮询重查取消和绝对期限，避免阻塞socket超时粒度延迟取消；所有平台保留取消/期限错误种类，读取超时设置到实际BufReader句柄，连接大小预算计入平台句柄和时钟布局。
+- ClickHouse HTTP测试服务先完整读取定长或分块请求再返回响应，避免提前关闭连接触发BrokenPipe，使数据库确认/失败回读回归稳定覆盖预期行为。
 
 逐项状态、检查和未验收范围见[优化执行记录](docs/development/OPTIMIZATION_PROGRESS.md)。
 

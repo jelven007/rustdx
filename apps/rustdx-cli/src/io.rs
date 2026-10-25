@@ -778,7 +778,7 @@ mod tests {
     pub(super) fn mock_http(
         response: &'static str,
     ) -> (ClickHouseConfig, std::thread::JoinHandle<String>) {
-        use std::io::Read;
+        use std::io::{BufRead, BufReader, Read};
         let listener = std::net::TcpListener::bind("127.0.0.1:0").unwrap();
         let cfg = ClickHouseConfig {
             url: format!(
@@ -799,8 +799,45 @@ mod tests {
                 socket.read_exact(&mut byte).unwrap();
                 header.push(byte[0]);
             }
+            let header = String::from_utf8(header).unwrap();
+            // Acknowledge only after consuming the upload. Closing with unread
+            // RowBinary chunks can reset the connection before the client sends EOF.
+            {
+                let mut reader = BufReader::new(&mut socket);
+                if header
+                    .lines()
+                    .any(|line| line.eq_ignore_ascii_case("transfer-encoding: chunked"))
+                {
+                    loop {
+                        let mut line = String::new();
+                        assert!(reader.read_line(&mut line).unwrap() > 0);
+                        let length = usize::from_str_radix(line.trim_end(), 16).unwrap();
+                        assert!(length <= 1024 * 1024);
+                        if length == 0 {
+                            // Consume the empty trailer section before responding.
+                            let mut trailer = String::new();
+                            reader.read_line(&mut trailer).unwrap();
+                            assert_eq!(trailer, "\r\n");
+                            break;
+                        }
+                        let mut chunk = vec![0; length];
+                        reader.read_exact(&mut chunk).unwrap();
+                        let mut end = [0; 2];
+                        reader.read_exact(&mut end).unwrap();
+                        assert_eq!(end, *b"\r\n");
+                    }
+                } else if let Some(length) = header.lines().find_map(|line| {
+                    let (name, value) = line.split_once(':')?;
+                    name.eq_ignore_ascii_case("content-length")
+                        .then(|| value.trim().parse::<usize>().unwrap())
+                }) {
+                    assert!(length <= 1024 * 1024);
+                    let mut body = vec![0; length];
+                    reader.read_exact(&mut body).unwrap();
+                }
+            }
             socket.write_all(response.as_bytes()).unwrap();
-            String::from_utf8(header).unwrap()
+            header
         });
         (cfg, server)
     }
