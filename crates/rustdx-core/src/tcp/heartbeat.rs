@@ -5,7 +5,7 @@ use super::{
 };
 use std::{
     io::{self, Read, Write},
-    net::{Shutdown, TcpStream},
+    net::{Shutdown, SocketAddr, TcpStream},
     sync::{
         Arc, Condvar, Mutex,
         atomic::{AtomicBool, Ordering},
@@ -102,6 +102,10 @@ impl IdleHeartbeat {
         observer: Option<Arc<dyn FrameObserver>>,
         pool: super::ip::IpPool,
     ) -> io::Result<Self> {
+        // Preserve the established connection's identity before duplicating
+        // handles. On Windows, peer_addr on a clone can fail despite successful
+        // frame I/O; pool revocation and bounded I/O still detect invalidation.
+        let endpoint = socket.peer_addr()?;
         let stop = Arc::new(Stop::default());
         let worker_stop = Arc::clone(&stop);
         let mut worker_socket = socket.try_clone()?;
@@ -128,17 +132,15 @@ impl IdleHeartbeat {
                                 if worker_stop.stopped.load(Ordering::Acquire) {
                                     break;
                                 }
-                                let endpoint = match worker_socket.peer_addr() {
-                                    Ok(endpoint) if pool.contains_current(endpoint) => endpoint,
-                                    _ => {
-                                        gate.failed.store(true, Ordering::Release);
-                                        let _ = worker_socket.shutdown(Shutdown::Both);
-                                        break;
-                                    }
-                                };
+                                if !pool.contains_current(endpoint) {
+                                    gate.failed.store(true, Ordering::Release);
+                                    let _ = worker_socket.shutdown(Shutdown::Both);
+                                    break;
+                                }
                                 let started = Instant::now();
                                 let result = exchange(
                                     &mut worker_socket,
+                                    endpoint,
                                     timeout,
                                     observer.as_deref(),
                                     &worker_stop.abort_io,
@@ -211,11 +213,11 @@ impl Drop for IdleHeartbeat {
 
 fn exchange(
     socket: &mut TcpStream,
+    endpoint: SocketAddr,
     timeout: Duration,
     observer: Option<&dyn FrameObserver>,
     abort_io: &AtomicBool,
 ) -> io::Result<()> {
-    let endpoint = socket.peer_addr()?;
     if let Some(observer) = observer {
         observer.observe(FrameEvent::Request {
             endpoint,
