@@ -1,0 +1,132 @@
+name: Database acceptance
+
+on:
+  push:
+    branches: [main]
+    paths: ["apps/rustdx-cli/**", "apps/rustdx-runner/**", "crates/rustdx-core/**", "Cargo.toml", "Cargo.lock", "scripts/validation/**", "scripts/bench/measure_database_readback.py", "deploy/**", ".github/workflows/database-acceptance.yml"]
+  pull_request:
+    paths: ["apps/rustdx-cli/**", "apps/rustdx-runner/**", "crates/rustdx-core/**", "Cargo.toml", "Cargo.lock", "scripts/validation/*database*.py", "scripts/bench/measure_database_readback.py", "deploy/**", ".github/workflows/database-acceptance.yml"]
+  workflow_dispatch:
+    inputs:
+      real_zip:
+        description: "Also download the official ZIP and verify 128 real historical files"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: database-acceptance-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  databases:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      CLICKHOUSE_URL: http://127.0.0.1:18123
+      MONGODB_URI: mongodb://127.0.0.1:27018
+      RUSTDX_DB_ACCEPTANCE: "1"
+      RUSTDX_SKIP_INTEGRATION_TESTS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.89.0"
+      - uses: swatinem/rust-cache@v2
+      - name: Install fixed MongoDB tools
+        shell: bash
+        run: |
+          tools_dir="$RUNNER_TEMP/rustdx-mongo-tools"
+          mkdir -p "$tools_dir"
+          curl --fail --location --retry 2 --max-time 180 \
+            https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2404-x86_64-100.12.2.tgz \
+            -o "$tools_dir/database-tools.tgz"
+          curl --fail --location --retry 2 --max-time 180 \
+            https://downloads.mongodb.com/compass/mongosh-2.5.10-linux-x64.tgz \
+            -o "$tools_dir/mongosh.tgz"
+          (
+            cd "$tools_dir"
+            sha256sum --check "$GITHUB_WORKSPACE/deploy/acceptance/tool-archives.sha256"
+          )
+          tar -xzf "$tools_dir/database-tools.tgz" -C "$tools_dir"
+          tar -xzf "$tools_dir/mongosh.tgz" -C "$tools_dir"
+          echo "$tools_dir/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin" >> "$GITHUB_PATH"
+          echo "$tools_dir/mongosh-2.5.10-linux-x64/bin" >> "$GITHUB_PATH"
+          sha256sum "$tools_dir/"*.tgz > "$tools_dir/archive-sha256.txt"
+      - name: Start digest-pinned databases
+        run: docker compose -f deploy/acceptance/compose.yml up --wait --wait-timeout 180
+      - name: Build and verify small-table constraints
+        run: |
+          cargo build -p jelven-rustdx-cli -p rustdx-runner --release --locked
+          cargo test -p jelven-rustdx-cli --test database_acceptance --locked -- --nocapture
+      - name: Provision isolated versioned runner targets
+        shell: bash
+        run: |
+          docker compose -f deploy/acceptance/compose.yml exec -T clickhouse \
+            clickhouse-client --multiquery < deploy/runner/clickhouse.sql
+          RUSTDX_ACCEPTANCE_MONGO_URI="$MONGODB_URI" mongosh --nodb --quiet --norc \
+            --eval 'const db=connect(process.env.RUSTDX_ACCEPTANCE_MONGO_URI); load("deploy/runner/mongodb.js");'
+          echo "RUSTDX_TEST_CLI=$GITHUB_WORKSPACE/target/release/rustdx" >> "$GITHUB_ENV"
+          echo "RUSTDX_TEST_CH_URL=$CLICKHOUSE_URL" >> "$GITHUB_ENV"
+          echo "RUSTDX_TEST_CH_USER=default" >> "$GITHUB_ENV"
+          echo "RUSTDX_TEST_CH_PASSWORD=" >> "$GITHUB_ENV"
+          echo "RUSTDX_TEST_MONGO_URI=$MONGODB_URI" >> "$GITHUB_ENV"
+          echo "RUSTDX_TEST_MONGOSH=$(command -v mongosh)" >> "$GITHUB_ENV"
+      - name: Runner publication, fixed versions, unknown writes and recovery
+        shell: bash
+        run: |
+          mkdir -p acceptance
+          set -o pipefail
+          node apps/rustdx-runner/tests/database_mongo_protocol.cjs | tee acceptance/runner-mongo-protocol.log
+          cargo test -p rustdx-runner --test administration --locked -- --nocapture
+          cargo test -p rustdx-runner --test control_plane --locked \
+            -- --include-ignored --nocapture --test-threads=1 | tee acceptance/runner-tests.log
+      - name: Repeated 65,536-row import and independent readback
+        run: python3 scripts/bench/measure_database_readback.py --binary target/release/rustdx --output acceptance/bulk.json
+      - name: TCP outage, lost acknowledgement, SIGKILL and recovery
+        run: python3 scripts/validation/verify_database_faults.py --binary target/release/rustdx --output acceptance/faults.json
+      - name: Native full backups and fresh database directory recovery
+        shell: bash
+        run: |
+          # Root reads the stopped private database files for the hash inventory.
+          sudo python3 scripts/validation/verify_database_recovery.py \
+            --cli "$GITHUB_WORKSPACE/target/release/rustdx" \
+            --runner "$GITHUB_WORKSPACE/target/release/rustdx-runner" \
+            --docker "$(command -v docker)" --mongosh "$(command -v mongosh)" \
+            --mongodump "$(command -v mongodump)" --mongorestore "$(command -v mongorestore)" \
+            --output "$GITHUB_WORKSPACE/acceptance/server-recovery/recovery.json"
+      - name: Optional real historical subset
+        if: github.event_name == 'workflow_dispatch' && inputs.real_zip
+        run: |
+          curl --fail --location --retry 2 --max-time 600 \
+            https://data.tdx.com.cn/vipdoc/hsjday.zip -o "$RUNNER_TEMP/hsjday.zip"
+          python3 scripts/validation/verify_real_day_database.py --binary target/release/rustdx \
+            --zip "$RUNNER_TEMP/hsjday.zip" --output acceptance/real-history.json
+      - name: Capture database logs
+        if: always()
+        run: |
+          mkdir -p acceptance
+          docker compose -f deploy/acceptance/compose.yml logs --no-color > acceptance/services.log
+      - name: Make private synthetic recovery evidence readable for upload
+        if: always()
+        run: |
+          if [ -d acceptance/server-recovery ]; then
+            sudo chmod -R a+rX -- acceptance/server-recovery
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: database-acceptance
+          path: |
+            acceptance/
+            /tmp/rustdx-readback-bench-*/
+            /tmp/rustdx-db-faults-*/
+            /tmp/rustdx-real-day-*/
+            ${{ runner.temp }}/rustdx-mongo-tools/archive-sha256.txt
+            !acceptance/server-recovery/**/original/**
+            !acceptance/server-recovery/**/restored/**
+      - name: Remove owned services and volumes
+        if: always()
+        run: docker compose -f deploy/acceptance/compose.yml down --volumes

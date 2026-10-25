@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "head": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "reviewed_at": "2026-10-24T22:27:40.269374+00:00",
+  "report": "docs/archive/architecture/SYSTEM_OPTIMIZATION_PLAN_20261025.md",
+  "report_sha256": "b1ac8cd7f71b9d89fa7bd8f23d859de9671680409833a01b2dbb76c713edef07",
+  "production_source_unchanged": true,
+  "local_checks": {
+    "rust_1_89_build": "passed",
+    "runner_lib_tests": 7,
+    "python_tests": 10
+  },
+  "findings": [
+    {
+      "id": "A01",
+      "status": "remote_failure_confirmed",
+      "evidence": "ci-121002606726.log"
+    },
+    {
+      "id": "A02",
+      "status": "alias_and_total_budget_reproduced",
+      "evidence": [
+        "admin-probes.json",
+        "backup-budget-probe.json"
+      ]
+    },
+    {
+      "id": "A03",
+      "status": "read_command_created_schema_3",
+      "evidence": "admin-probes.json"
+    },
+    {
+      "id": "A04",
+      "status": "relocated_historical_ledger_rejected_before_file_validation",
+      "evidence": "admin-probes.json"
+    },
+    {
+      "id": "A05",
+      "status": "default_fact_coverage_rejected",
+      "evidence": "data-status.json"
+    },
+    {
+      "id": "A06-A12",
+      "status": "source/configuration/size analysis or external scope; no production performance claim"
+    }
+  ],
+  "external_actions": "GitHub API reads only; no workflow dispatch, code fix, commit, push or deployment",
+  "limitations": [
+    "selected critical-path review, not complete manual line-by-line audit",
+    "no full-workspace/clippy rerun; prior byte-identical source checks cited separately",
+    "no live market or target database/production test",
+    "CI snapshot is time-specific; in-progress MSRV has no inferred outcome",
+    "private administrative directory and copied historical ledger probes are not market measurements"
+  ]
+}

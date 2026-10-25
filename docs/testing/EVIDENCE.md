@@ -1,6 +1,6 @@
 # 证据与固定样本管理
 
-更新日期：2026-10-24。证据用于证明明确源码、时点、环境和输入范围下的结论；摘要验证字节完整性，不证明公告或第三方返回的真实性。
+更新日期：2026-10-25。证据用于证明明确源码、时点、环境和输入范围下的结论；摘要验证字节完整性，不证明公告或第三方返回的真实性。
 
 ## 1. 位置与内容
 
@@ -29,3 +29,35 @@
 历史固定源码摘要用于当时源码复现；当前源码因修复而不同，应明确报告差异。对新源码执行行为验证另存结果，不改写历史基线。
 
 本次保全和工程检查结果见[verification.json](evidence/project-restructure-20261024/verification.json)。被删除文件记录原因，历史报告中的该链接可追溯至保留的实施结果和需求定义。
+
+## 4. 工程与历史材料分层
+
+`preflight.py`的scope1只打包工程输入，排除大型证据和旧project-review目录。
+就近小夹具仍支持离线测试；[来源清单](../../config/release/offline-fixtures.json)记录
+原始路径/摘要及新副本。98帧回放的大型日线JSON仅生成已断言字段的紧凑新夹具，
+独立原期望和所有旧字节保留；金融发行人PDF复制到核心夹具并保留原路径。
+
+```sh
+python3 scripts/release/evidence_manifest.py inventory \
+  --include-local-binaries --output /review/new-evidence.json
+python3 scripts/release/evidence_manifest.py verify \
+  --manifest /review/new-evidence.json --root /other/checkout \
+  --output /review/new-verification.json
+python3 scripts/release/evidence_manifest.py bundle \
+  --manifest /review/new-evidence.json \
+  --prefix docs/testing/evidence/system-review-20261025/ \
+  --archive /review/new-bundle.tar.gz --output /review/new-bundle.json
+```
+
+库存逐文件流式SHA-256；已提交原件同时核对HEAD的Git blob身份/模式，改变即拒绝，
+不刷新旧摘要。`verify`报告missing/changed和`ordinary_git/local_retained`可得性；
+获取方按manifest路径恢复后再校验，路径逃逸、符号链接和重复条目拒绝。
+`bundle`只生成新归档/分发清单，前后核对输入；没有删除、上传或对象存储迁移。
+
+历史12份超限collector继续按[原清单](evidence/optimization-source-delivery-20261025/local-binaries.json)
+在原路径本地保留。普通Git检出缺这些字节，须从保留方或完整历史包取得；
+`--include-local-binaries`可核对它们，未获取时不能声称完整第六阶段重放。
+远端对象存储地址、访问权限及退役日期尚未配置，不编造分发/保留承诺。
+
+`.gitattributes`继续禁止历史字节换行转换；摘要/检查清单及参考Rust/Python/TOML源码
+可审阅文本diff，大型原始材料仍按摘要审核。Git历史和冻结报告不裁剪。

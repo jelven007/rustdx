@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "scope": "selected breaking signatures, not a complete API diff",
+  "core_version": "2.0.0",
+  "core_manifest": "/private/tmp/rustdx-system-optimization-packages-fixed-20261025/unpacked/jelven-rustdx-complete-2.0.0/Cargo.toml",
+  "core_manifest_sha256": "4a7ed1f3abc239d3114ee44f938f7426f34a57f77f8cf08f965d8874e6cb3f88",
+  "cli_version": "2.0.0",
+  "lock_sha256": "358f83ea91811aa42456e5910fc6746421fa64bb02209d8cf874f0a467617b19",
+  "cases": [
+    {
+      "name": "current",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "run",
+        "--manifest-path",
+        "/private/tmp/rustdx-system-optimization-packages-fixed-20261025/signature-consumers/current/Cargo.toml",
+        "--offline"
+      ],
+      "expected_compile_success": true,
+      "exit_code": 0,
+      "expectation_met": true,
+      "elapsed_seconds": 0.959483334,
+      "source_sha256": "87906809c5273f102b9fdac9c964534b0f41820348eeb1eb7591fb84692004f3",
+      "log": "current.log",
+      "log_sha256": "ee89ae9e7a020fcc2404324644017a9af226869ce1cfada0dddee1dbf475e4e4"
+    },
+    {
+      "name": "legacy-calendar",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "check",
+        "--manifest-path",
+        "/private/tmp/rustdx-system-optimization-packages-fixed-20261025/signature-consumers/legacy-calendar/Cargo.toml",
+        "--offline",
+        "--message-format=json"
+      ],
+      "expected_compile_success": false,
+      "exit_code": 101,
+      "expectation_met": true,
+      "elapsed_seconds": 3.4391078329999996,
+      "source_sha256": "0391cd477f1e5712b89254d0a04349690c78d5f791207ef03afdf886fce86432",
+      "log": "legacy-calendar.log",
+      "log_sha256": "aa6380fd8366178dac05588060613148d1bda26b04cbce389b59823587cb8999"
+    },
+    {
+      "name": "legacy-heartbeat",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "check",
+        "--manifest-path",
+        "/private/tmp/rustdx-system-optimization-packages-fixed-20261025/signature-consumers/legacy-heartbeat/Cargo.toml",
+        "--offline",
+        "--message-format=json"
+      ],
+      "expected_compile_success": false,
+      "exit_code": 101,
+      "expectation_met": true,
+      "elapsed_seconds": 0.580716292,
+      "source_sha256": "7f3fc5ca8846cf4d720e0a83031d66343aaae9b2514659ca4b0c52d21fd9ddae",
+      "log": "legacy-heartbeat.log",
+      "log_sha256": "862324657e12c9b18746fa6561b83e20e7a8bbd756490059003c341f8fbca83e"
+    },
+    {
+      "name": "legacy-finance",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "check",
+        "--manifest-path",
+        "/private/tmp/rustdx-system-optimization-packages-fixed-20261025/signature-consumers/legacy-finance/Cargo.toml",
+        "--offline",
+        "--message-format=json"
+      ],
+      "expected_compile_success": false,
+      "exit_code": 101,
+      "expectation_met": true,
+      "elapsed_seconds": 0.3841476669999997,
+      "source_sha256": "850e4d943ca54a52270af371b9eb16b039ef0a0d17937e42b2d3573b3eed0a74",
+      "log": "legacy-finance.log",
+      "log_sha256": "6f152b432a6464834102bdaf10c0f2a657317c0672762cc90ddfc8961177e33b"
+    }
+  ],
+  "registry_verification": "not performed",
+  "toolchain": "cargo 1.89.0 (c24e10642 2025-06-23)",
+  "result": "passed"
+}

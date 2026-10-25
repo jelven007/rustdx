@@ -1,0 +1,8 @@
+{
+  "url": "https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2404-x86_64-100.12.2.tgz",
+  "file": "database-tools.tgz",
+  "bytes": 69683014,
+  "sha256": "9a756be92b1de0a2578eceb4483fb1ba3e2ebecb45820cd46977edbdb084506b",
+  "status": "downloaded",
+  "scope": "HTTPS vendor-origin archive bytes; not a signature assertion"
+}

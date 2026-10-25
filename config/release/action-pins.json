@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-10-25",
+  "verification": "Official repository ref and action metadata; workflow execution on new SHA pending.",
+  "actions": [
+    {
+      "action": "actions/checkout",
+      "sha": "d23441a48e516b6c34aea4fa41551a30e30af803",
+      "reference_at_verification": "v6",
+      "runtime": "node24",
+      "metadata_source": "https://raw.githubusercontent.com/actions/checkout/d23441a48e516b6c34aea4fa41551a30e30af803/action.yml",
+      "metadata_sha256": "d59219cb79590abdb877deaa14e3b65a00c05318bf5a6f3b989b9162b5d08c35"
+    },
+    {
+      "action": "actions/setup-python",
+      "sha": "ece7cb06caefa5fff74198d8649806c4678c61a1",
+      "reference_at_verification": "v6",
+      "runtime": "node24",
+      "metadata_source": "https://raw.githubusercontent.com/actions/setup-python/ece7cb06caefa5fff74198d8649806c4678c61a1/action.yml",
+      "metadata_sha256": "a95cf5ade72699eb8a044e77a74b1e127a223759f13c42a1068bb9cf918b8830"
+    },
+    {
+      "action": "actions/upload-artifact",
+      "sha": "b7c566a772e6b6bfb58ed0dc250532a479d7789f",
+      "reference_at_verification": "v6",
+      "runtime": "node24",
+      "metadata_source": "https://raw.githubusercontent.com/actions/upload-artifact/b7c566a772e6b6bfb58ed0dc250532a479d7789f/action.yml",
+      "metadata_sha256": "3760874f860e631be3d785d0589ade7cecb541eeac6f581989a814a2c99fc94f"
+    },
+    {
+      "action": "swatinem/rust-cache",
+      "sha": "e9d7b9f1e587218970671bac74e5511ed9506e6a",
+      "reference_at_verification": "v2",
+      "runtime": "node24",
+      "metadata_source": "https://api.github.com/repos/Swatinem/rust-cache/contents/action.yml?ref=e9d7b9f1e587218970671bac74e5511ed9506e6a",
+      "metadata_sha256": "0bf18e525796c2e43b4cccbc5c914e745de700a4e56735f53a8f1b0e6504aa2a"
+    },
+    {
+      "action": "dtolnay/rust-toolchain",
+      "sha": "683b588c487a69d01f6c6ddf40f036ff682cc2c8",
+      "reference_at_verification": "master",
+      "runtime": "composite",
+      "metadata_source": "https://raw.githubusercontent.com/dtolnay/rust-toolchain/683b588c487a69d01f6c6ddf40f036ff682cc2c8/action.yml",
+      "metadata_sha256": "ad8ad6383b6ce8c08579fc6f6a3fabd6a01f90b4007f65e2a5160944ba2988d4"
+    }
+  ]
+}

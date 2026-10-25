@@ -1,0 +1,8 @@
+{
+  "url": "https://downloads.mongodb.com/compass/mongosh-2.5.10-linux-x64.tgz",
+  "file": "mongosh.tgz",
+  "bytes": 87244320,
+  "sha256": "b9c003d80dbf20d2bb2ad097abe7997a5e2a6a349af96b8510c741570116fc79",
+  "status": "downloaded",
+  "scope": "HTTPS vendor-origin archive bytes; not a signature assertion"
+}

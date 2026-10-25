@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/tmp/rustdx-system-optimization-20261025/verify_isolated_engineering.py", line 43, in <module>
+    raise RuntimeError("isolated offline regression failed")
+RuntimeError: isolated offline regression failed

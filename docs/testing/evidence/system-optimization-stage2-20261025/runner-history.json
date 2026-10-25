@@ -1,0 +1,389 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "kind": "synthetic_history",
+  "jobs": 20000,
+  "observations": 20000,
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "binary_sha256": "abf711c9f5a56d0748d6e7cbc48351314c377d3d721b7de6caa57dd02c5a053f",
+  "work": "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07",
+  "measurements": {
+    "metrics": {
+      "samples": [
+        {
+          "seconds": 0.05855283300000025,
+          "rss_bytes": 11616256
+        },
+        {
+          "seconds": 0.02118729099999994,
+          "rss_bytes": 11649024
+        },
+        {
+          "seconds": 0.02058833399999971,
+          "rss_bytes": 11632640
+        },
+        {
+          "seconds": 0.020045582999999922,
+          "rss_bytes": 11649024
+        },
+        {
+          "seconds": 0.02100237500000013,
+          "rss_bytes": 11632640
+        },
+        {
+          "seconds": 0.020861791999999824,
+          "rss_bytes": 11616256
+        },
+        {
+          "seconds": 0.019963750000000058,
+          "rss_bytes": 11665408
+        },
+        {
+          "seconds": 0.020762583000000223,
+          "rss_bytes": 11632640
+        },
+        {
+          "seconds": 0.019820750000000054,
+          "rss_bytes": 11599872
+        },
+        {
+          "seconds": 0.02454400000000012,
+          "rss_bytes": 11632640
+        }
+      ],
+      "median_seconds": 0.020812187500000023,
+      "maximum_rss_bytes": 11665408
+    },
+    "status": {
+      "samples": [
+        {
+          "seconds": 0.020043583000000087,
+          "rss_bytes": 9568256
+        },
+        {
+          "seconds": 0.02447629200000012,
+          "rss_bytes": 9633792
+        },
+        {
+          "seconds": 0.12659320900000015,
+          "rss_bytes": 9568256
+        },
+        {
+          "seconds": 0.04397550000000017,
+          "rss_bytes": 9650176
+        },
+        {
+          "seconds": 0.037435374999999826,
+          "rss_bytes": 9568256
+        },
+        {
+          "seconds": 0.04847716600000007,
+          "rss_bytes": 9584640
+        },
+        {
+          "seconds": 0.036567374999999736,
+          "rss_bytes": 9617408
+        },
+        {
+          "seconds": 0.048562582999999826,
+          "rss_bytes": 9633792
+        },
+        {
+          "seconds": 0.03290799999999994,
+          "rss_bytes": 9617408
+        },
+        {
+          "seconds": 0.016370833999999945,
+          "rss_bytes": 9568256
+        }
+      ],
+      "median_seconds": 0.03700137499999978,
+      "maximum_rss_bytes": 9650176
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "migrate",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.03923587499999992,
+      "log": "initialize"
+    },
+    {
+      "command": [
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "migrate",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 1.4162339579999998,
+      "log": "migrate-history"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.05855283300000025,
+      "log": "metrics-0"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.02118729099999994,
+      "log": "metrics-1"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.02058833399999971,
+      "log": "metrics-2"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.020045582999999922,
+      "log": "metrics-3"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.02100237500000013,
+      "log": "metrics-4"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.020861791999999824,
+      "log": "metrics-5"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.019963750000000058,
+      "log": "metrics-6"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.020762583000000223,
+      "log": "metrics-7"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.019820750000000054,
+      "log": "metrics-8"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "metrics",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.02454400000000012,
+      "log": "metrics-9"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.020043583000000087,
+      "log": "status-0"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.02447629200000012,
+      "log": "status-1"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.12659320900000015,
+      "log": "status-2"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04397550000000017,
+      "log": "status-3"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.037435374999999826,
+      "log": "status-4"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04847716600000007,
+      "log": "status-5"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.036567374999999736,
+      "log": "status-6"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.048562582999999826,
+      "log": "status-7"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.03290799999999994,
+      "log": "status-8"
+    },
+    {
+      "command": [
+        "/usr/bin/time",
+        "-l",
+        "/private/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+        "status",
+        "--root",
+        "/var/folders/yb/0snj36811hvgc0snncqfqg080000gn/T/rustdx-runner-history-5fzvxw07/synthetic"
+      ],
+      "exit_code": 0,
+      "seconds": 0.016370833999999945,
+      "log": "status-9"
+    }
+  ],
+  "scope": "single-host CLI latency/RSS; not production workload or process-tree collection RSS"
+}

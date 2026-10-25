@@ -17,6 +17,8 @@ fi
 review_dir="$(mktemp -d "${TMPDIR:-/tmp}/rustdx-release-review.XXXXXX")"
 rmdir "$review_dir"
 python3 scripts/release/preflight.py --output "$review_dir"
+python3 scripts/release/release_gate.py --preflight "$review_dir/preflight.json" \
+    --output "$review_dir/release-manifest.json"
 cargo publish -p "$CORE" --dry-run --locked
 
 read -r -p "Publish $CORE and $CLI to crates.io? Type yes: " confirm
@@ -26,20 +28,28 @@ if [ "$confirm" != "yes" ]; then
 fi
 
 # Do not upload different bytes after an interactive wait.
-python3 - "$review_dir/preflight.json" <<'PY'
+python3 - "$review_dir/preflight.json" "$review_dir/release-manifest.json" <<'PY'
 import importlib.util
 import json
 import sys
 from pathlib import Path
+sys.path.insert(0, "scripts/release")
 spec = importlib.util.spec_from_file_location("preflight", "scripts/release/preflight.py")
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 report = json.loads(Path(sys.argv[1]).read_text())
+gate = json.loads(Path(sys.argv[2]).read_text())
 _, current = module.inventory()
-if not report["publication_qualified"] or current != report["source_sha256"] or module.git("status", "--porcelain=v1", "-z"):
+if not gate["publication_qualified"] or current != report["source_sha256"] or gate["head"] != report["head"] or module.git("status", "--porcelain=v1", "-z"):
     raise SystemExit("source changed or preflight incomplete; rerun the review")
+for package in report["packages"]:
+    if module.sha((Path(sys.argv[1]).parent / package["crate"]).read_bytes()) != package["sha256"]:
+        raise SystemExit("reviewed package changed")
 PY
 
+# Re-query reruns/cancellations after the interactive wait, before the first upload.
+python3 scripts/release/release_gate.py --preflight "$review_dir/preflight.json" \
+    --output "$review_dir/release-manifest-confirmed.json"
 cargo publish -p "$CORE" --locked
 echo "Published: https://crates.io/crates/$CORE"
 

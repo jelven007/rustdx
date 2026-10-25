@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "exit_code": 0,
+      "seconds": 1.324258959,
+      "log": "stage2-recheck-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "-p",
+        "jelven-rustdx-cli",
+        "-p",
+        "rustdx-runner",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 7.721215750000001,
+      "log": "stage2-recheck-1.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--test",
+        "administration",
+        "--test",
+        "control_plane",
+        "--locked",
+        "--offline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 24.543332792,
+      "log": "stage2-recheck-2.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 5.516920041999995,
+      "log": "stage2-recheck-3.log"
+    }
+  ]
+}

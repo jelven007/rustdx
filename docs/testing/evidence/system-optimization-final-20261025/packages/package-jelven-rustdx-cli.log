@@ -1,0 +1,19 @@
+[1m[33mwarning[0m[1m:[0m Patch `jelven-rustdx-complete v2.0.0 (/private/tmp/rustdx-system-optimization-packages-fixed-20261025/unpacked/jelven-rustdx-complete-2.0.0)` was not used in the crate graph.
+Perhaps you misspelled the source URL being patched.
+Possible URLs for `[patch.<URL>]`:
+    /private/tmp/rustdx-system-optimization-packages-fixed-20261025/package-workspace/crates/rustdx-core
+[1m[32m   Packaging[0m jelven-rustdx-cli v2.0.0 (/private/tmp/rustdx-system-optimization-packages-fixed-20261025/package-workspace/apps/rustdx-cli)
+[1m[33mwarning[0m[1m:[0m ignoring example `csv` as `examples/csv.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring example `excel` as `examples/excel.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring example `tcp_wire` as `examples/tcp_wire.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `calendar_datasets` as `tests/calendar_datasets.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `cli` as `tests/cli.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `cli_deadline` as `tests/cli_deadline.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `database_acceptance` as `tests/database_acceptance.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `day_streaming` as `tests/day_streaming.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `http_budget` as `tests/http_budget.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `maintenance_status` as `tests/maintenance_status.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `mongo_credentials` as `tests/mongo_credentials.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `tcp_day` as `tests/tcp_day.rs` is not included in the published package
+[1m[33mwarning[0m[1m:[0m ignoring test `tcp_startup` as `tests/tcp_startup.rs` is not included in the published package
+[1m[32m    Packaged[0m 31 files, 328.3KiB (88.0KiB compressed)

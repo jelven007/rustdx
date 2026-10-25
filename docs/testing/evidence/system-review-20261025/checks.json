@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "label": "build",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "-p",
+        "rustdx-runner",
+        "-p",
+        "jelven-rustdx-cli",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 38.4022405,
+      "log": "build.log"
+    },
+    {
+      "label": "python",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.1654077920000034,
+      "log": "python.log"
+    },
+    {
+      "label": "runner-lib",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 87.442165208,
+      "log": "runner-lib.log"
+    }
+  ]
+}

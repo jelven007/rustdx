@@ -1,0 +1,36 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "exit_code": 0,
+      "seconds": 4.841426583,
+      "log": "stage3-fixtures-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "jelven-rustdx-complete",
+        "--test",
+        "eltdx_330_commands",
+        "--test",
+        "enhanced_history_transaction",
+        "--test",
+        "trade_amount",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 101,
+      "seconds": 34.772200041999994,
+      "log": "stage3-fixtures-1.log"
+    }
+  ]
+}

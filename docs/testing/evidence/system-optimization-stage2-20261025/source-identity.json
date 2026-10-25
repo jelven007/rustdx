@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "base_commit": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "uncommitted": true,
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 6613,
+      "sha256": "0a19f163499817db770c9a25bbe6c0c8fd0cf77fb11e01d48ab8295fafca6cf1"
+    },
+    {
+      "path": ".github/workflows/data-coverage.yml",
+      "bytes": 972,
+      "sha256": "18a571026601d89ef592e18815f9c047e1a0928b35064ac20e4d5305c9761176"
+    },
+    {
+      "path": ".github/workflows/database-acceptance.yml",
+      "bytes": 6664,
+      "sha256": "f28b6cf59ac50564c95bd441cc171fd6db031f0c5b818494f251b0c19746c1ea"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 1404,
+      "sha256": "eaf490103dc6851757fe51a3ee6da388cb0510ab4f86f6438347c20470c3dffd"
+    },
+    {
+      "path": "Cargo.lock",
+      "bytes": 43661,
+      "sha256": "358f83ea91811aa42456e5910fc6746421fa64bb02209d8cf874f0a467617b19"
+    },
+    {
+      "path": "Cargo.toml",
+      "bytes": 645,
+      "sha256": "4d47b479225f8a85126cef336d03c7c51e5b59b51f4c910f8689ca444de98c33"
+    },
+    {
+      "path": "apps/rustdx-cli/src/tcp_day/acquisition.rs",
+      "bytes": 17647,
+      "sha256": "15ea0a93f81800fc0b9634cd946266f7503ac1c06f936657d120eaaf00c8b48f"
+    },
+    {
+      "path": "apps/rustdx-cli/src/tcp_day.rs",
+      "bytes": 24989,
+      "sha256": "a7cee1b1c87ae8e73bce26a5a4dfd09dfc930c44dc8cca8952a982cf1312618a"
+    },
+    {
+      "path": "apps/rustdx-runner/Cargo.toml",
+      "bytes": 884,
+      "sha256": "cca6f073de9f2526cd3d4e6bd849d89116a098a94c40f1a7b3ec3692fac12a06"
+    },
+    {
+      "path": "apps/rustdx-runner/README.md",
+      "bytes": 15705,
+      "sha256": "2ce4bc89bc4392a04c2d658f4e0eeb50645135f69986203af7aa541cc9c396ff"
+    },
+    {
+      "path": "apps/rustdx-runner/src/config.rs",
+      "bytes": 11327,
+      "sha256": "740783b4d47f1bb0136a7e6a7d5b21d4f9d98ca602202a14ace7f5b51a47a3ef"
+    },
+    {
+      "path": "apps/rustdx-runner/src/consumer.rs",
+      "bytes": 12021,
+      "sha256": "791f1ba7b9e51f79a1f30699848be09edab3807471b62d108f21164e61bdc794"
+    },
+    {
+      "path": "apps/rustdx-runner/src/database/capacity.rs",
+      "bytes": 4986,
+      "sha256": "2f8820db1d2b7bafca4027c26c5a837082f8d7dfe4a9c86dfdca57139ecb4940"
+    },
+    {
+      "path": "apps/rustdx-runner/src/database.rs",
+      "bytes": 50466,
+      "sha256": "6b45ad2bb0ab09c7635e5331d372e16e1b8b54ee30de9a6aa2f767350ca5d66d"
+    },
+    {
+      "path": "apps/rustdx-runner/src/database_mongo.js",
+      "bytes": 3029,
+      "sha256": "a7672f3225fb3bfd89f04df51e4fc5b887c4d5d44700612a02a2e69d29193980"
+    },
+    {
+      "path": "apps/rustdx-runner/src/database_process.rs",
+      "bytes": 10965,
+      "sha256": "2e18a9135903b6a226a00b59f621ebb992373dd4170780d9e8931ec101f0f447"
+    },
+    {
+      "path": "apps/rustdx-runner/src/ledger.rs",
+      "bytes": 22632,
+      "sha256": "a02250aa20385957b4e34218c86a5658876f9d5cb5cb32b0e3e27e751e7d8991"
+    },
+    {
+      "path": "apps/rustdx-runner/src/lib.rs",
+      "bytes": 3529,
+      "sha256": "1234fa1a529414733c21a97722ddb7635b38f30fc3abdd6ae8b59a53fe5c8260"
+    },
+    {
+      "path": "apps/rustdx-runner/src/main.rs",
+      "bytes": 10878,
+      "sha256": "76d02becb1cae045a49aba0e646aa06b6ef5a191ac7179ffad5fa39f63b12df7"
+    },
+    {
+      "path": "apps/rustdx-runner/src/model.rs",
+      "bytes": 2307,
+      "sha256": "8dbd4b8879c88e6278936243ff7b5e7fb7d221e7942be68099eda90167baf62c"
+    },
+    {
+      "path": "apps/rustdx-runner/src/observations.rs",
+      "bytes": 7936,
+      "sha256": "17eb834f578da902ece10ef4d012a047fffd93479db964fea852ade7fc9dc093"
+    },
+    {
+      "path": "apps/rustdx-runner/src/ops.rs",
+      "bytes": 28107,
+      "sha256": "27af3542d6f05959f1b2fa8f663c5e873eaa2964c8a1ea4f4d713e5f97849794"
+    },
+    {
+      "path": "apps/rustdx-runner/src/pipeline/facts.rs",
+      "bytes": 3203,
+      "sha256": "e2b305833f63def2f47cf222594b824b6b183f105982ff988862fcbd33af0fdf"
+    },
+    {
+      "path": "apps/rustdx-runner/src/pipeline/plan.rs",
+      "bytes": 7101,
+      "sha256": "643b6d27b51a3828f35c3afc0600d50863f13c58387f425a476c72c65eabb43f"
+    },
+    {
+      "path": "apps/rustdx-runner/src/pipeline.rs",
+      "bytes": 41501,
+      "sha256": "6218d4a7ad30db4f99b9a786563f83fc1f08fa75f1fb4e4ac4511f77d4ba0f84"
+    },
+    {
+      "path": "apps/rustdx-runner/src/storage.rs",
+      "bytes": 16116,
+      "sha256": "5a31974fa92e9d358eab440b409bdc55dab842efe954fbbf6ef284310aaec21f"
+    },
+    {
+      "path": "apps/rustdx-runner/src/supervisor.rs",
+      "bytes": 9777,
+      "sha256": "e488634f2847b48e968017058bdf472abaa23e93d2e876ccba663e4e4bdc9794"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/administration.rs",
+      "bytes": 5967,
+      "sha256": "229b801d36ce09da83158446e142121a5e6b119d9652a1b8881e22a4db6032bf"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/control_plane.rs",
+      "bytes": 54720,
+      "sha256": "3881aadd2c14586c917dcaf2a0376ce8cdf85eea5b85b4c1c0ae6753e87e50fb"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/database_mongo_protocol.cjs",
+      "bytes": 4499,
+      "sha256": "1eb4de0e175c8b49e80c63d193d26e03b2fc53c14bfe6d3747fdeb686ae9d568"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/tcp_startup.rs",
+      "bytes": 300,
+      "sha256": "b8fa6d5f6ed690eadc057915b2a94096c65a4e29670bc01515dcd83d6796f344"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/wire_archive.rs",
+      "bytes": 8001,
+      "sha256": "2a4dad96bc1026c19ec35ce413c8176dc1b12403d225a5c231b2005d95b8a5e7"
+    },
+    {
+      "path": "crates/rustdx-core/src/operation.rs",
+      "bytes": 7341,
+      "sha256": "119a4ddbf8bb64f3824a73ed2d5a4a303e452ca713b44cc5660b3a5be815129a"
+    },
+    {
+      "path": "deploy/runner/README.md",
+      "bytes": 11301,
+      "sha256": "8d0ac9f901dfe723f4e3cd4fffbad2a2dcf65036804850d48d1b60c4c73ec38c"
+    },
+    {
+      "path": "docs/archive/development/SYSTEM_OPTIMIZATION_STAGE2_20261025.md",
+      "bytes": 4790,
+      "sha256": "1e6cf8ca611072c457dfbce90b1f9eef71603770858a76309b91724fbc152e93"
+    },
+    {
+      "path": "docs/development/APPLICATION_INTEGRATION.md",
+      "bytes": 38103,
+      "sha256": "df74f46e9d5d33398d9fbc3fca50b661b3faeeaa10043ad75d9da375fbe4241c"
+    },
+    {
+      "path": "docs/development/SYSTEM_OPTIMIZATION_PROGRESS.md",
+      "bytes": 3710,
+      "sha256": "d288662e93f2e24aec84d8e83b81e1e6f068ff89d03dbec1bd67f6b3629ffc03"
+    },
+    {
+      "path": "scripts/README.md",
+      "bytes": 9682,
+      "sha256": "d598100161d99031457cfe604b3c1d1a0f9666cb1fafeee240ffb5681229b850"
+    },
+    {
+      "path": "scripts/bench/measure_runner_history.py",
+      "bytes": 5598,
+      "sha256": "d6613cb91058319977e1334387811629e230c461fcfb785c0315b61039d31688"
+    },
+    {
+      "path": "scripts/ops/retention_preview.py",
+      "bytes": 17958,
+      "sha256": "44117bd93d3baf4a0c251651f85364258cf763ab47ec4b78fab8b48d684cc2bf"
+    },
+    {
+      "path": "scripts/validation/tests/test_consumption_and_facts.py",
+      "bytes": 4304,
+      "sha256": "f7516ab47b17f0d42bbb696897540611db6ec1638495f0348011dccb1a44d402"
+    },
+    {
+      "path": "scripts/validation/tests/test_fact_maintenance.py",
+      "bytes": 2794,
+      "sha256": "e801101408260ba2cc07f26ada96a45456fd49722e55a547e52136548d58cf44"
+    },
+    {
+      "path": "scripts/validation/tests/test_indicator_comparison.py",
+      "bytes": 3016,
+      "sha256": "36c2c1f921446fc060b6de49e8d1b0e4e5ca0bc12061f96f7aa15f72d7a52675"
+    },
+    {
+      "path": "scripts/validation/tests/test_retention_preview.py",
+      "bytes": 10106,
+      "sha256": "83e563573251375af5d9e9c5e516c654aee749ba8a276908081816c18ae27c3f"
+    }
+  ]
+}

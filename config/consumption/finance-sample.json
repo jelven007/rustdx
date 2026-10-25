@@ -34,7 +34,8 @@
       },
       "authority": [
         {
-          "path": "docs/testing/evidence/finance-quote-semantics-20261024/pingan-bank-2026-h1-summary.pdf",
+          "path": "crates/rustdx-core/tests/fixtures/protocol/pingan-bank-2026-h1-summary.pdf",
+          "original_path": "docs/testing/evidence/finance-quote-semantics-20261024/pingan-bank-2026-h1-summary.pdf",
           "sha256": "6047496bb254ad7e7e335d50d6daa606e46bd7b8bb0b18a35d9276d7d33b6220"
         }
       ]

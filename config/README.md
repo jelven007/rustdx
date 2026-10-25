@@ -2,8 +2,8 @@
 
 本目录保存无凭据示例及版本化参考日历。CLI读取进程环境和命令行，**不会自动加载runtime.env或Job JSON**。新增runner通过`run --config`显式读取严格JSON，配置职责相互独立。
 
-runner可选[少量TCP日线Job](runner/tcp-day.example.json)，与本地day目录互斥。
-全零摘要、示例路径和日期须替换为实际维护材料；最多32只排序唯一沪深A股，
+runner可选[TCP日线Job](runner/tcp-day.example.json)，与本地day目录互斥。
+全零摘要、示例路径和日期须替换为实际维护材料；新冻结计划最多10000只排序唯一沪深A股，
 source_as_of/planned_date为实际北京时间采集日，through早于该日。
 单位材料按SHA存放facts目录，真实性另审核。来源和报告单位约定见
 [应用接入](../docs/development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)。
@@ -57,3 +57,8 @@ rustdx --no-tcp-startup data-status --calendar config/calendars/sse-2026.json --
 [runner/job.example.json](runner/job.example.json)是当前本地A股原价日线契约的严格配置，字段包含根目录/CLI、来源与策略修订、日期、完整事实、源/工作空间/行数/期限预算及可选数据库目标。所有路径为绝对路径；全零公告摘要必须替换为实际SHA-256，不能直接作为真实事实执行。`database_targets: []`只发布文件，多目标须全部精确verified。
 
 [runner/publisher.env.example](runner/publisher.env.example)只给出变量名，实际凭据由密钥管理注入。JSON不含凭据值，worker清空继承环境；清空环境不构成同UID权限隔离。Job文件须由维护流程原子更新，定时器反复执行相同身份只去重，不自动制造次日Job/事实。详细格式/命令见[runner](../apps/rustdx-runner/README.md)，DBA、systemd和恢复见[部署说明](../deploy/runner/README.md)。
+
+[acceptance/task-matrix.json](acceptance/task-matrix.json)与[部署验收模板](acceptance/deployment.example.json)
+用于独立任务/目标证据准入，不是runner Job配置；默认Unknown拒绝，方法见[任务准入](../docs/testing/TASK_ADMISSION.md)。
+[release/gates.json](release/gates.json)和[Action清单](release/action-pins.json)固定同SHA发布要求，
+[offline-fixtures.json](release/offline-fixtures.json)记录工程包所需小夹具的历史来源及摘要。

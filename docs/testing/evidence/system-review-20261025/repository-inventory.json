@@ -1,0 +1,32 @@
+{
+  "head": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "tracked_groups": {
+    "other": {
+      "files": 1039,
+      "bytes": 16209637
+    },
+    "evidence": {
+      "files": 24719,
+      "bytes": 724341038
+    }
+  },
+  "components": [
+    {
+      "directory": "crates/rustdx-core/src",
+      "files": 98,
+      "lines": 29864
+    },
+    {
+      "directory": "apps/rustdx-cli/src",
+      "files": 24,
+      "lines": 7830
+    },
+    {
+      "directory": "apps/rustdx-runner/src",
+      "files": 14,
+      "lines": 5115
+    }
+  ],
+  "git_objects": "count: 0\nsize: 0 bytes\nin-pack: 10685\npacks: 2\nsize-pack: 116.27 MiB\nprune-packable: 0\ngarbage: 0\nsize-garbage: 0 bytes\n",
+  "scope": "tracked file logical bytes, not allocated disk/RSS; source lines include inline tests/comments"
+}

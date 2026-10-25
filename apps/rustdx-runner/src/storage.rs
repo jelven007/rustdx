@@ -186,6 +186,7 @@ pub fn copy_new(source: &Path, destination: &Path, limit: u64) -> Result<(String
 
 pub struct RootLock {
     _file: File,
+    root: PathBuf,
 }
 
 impl RootLock {
@@ -202,8 +203,49 @@ impl RootLock {
                 "controller already running or lock unavailable: {e}"
             ))
         })?;
-        Ok(Self { _file: file })
+        Ok(Self {
+            _file: file,
+            root: root.canonicalize()?,
+        })
     }
+
+    pub(crate) fn covers(&self, path: &Path) -> Result<()> {
+        if path
+            .parent()
+            .ok_or_else(|| invalid("ledger has no parent"))?
+            .canonicalize()?
+            != self.root
+        {
+            return Err(invalid("controller lock belongs to another root"));
+        }
+        Ok(())
+    }
+}
+
+/// Resolve an existing source and the parent of a new destination before any write.
+/// Parent aliases and `..` cannot place an ostensibly external copy inside source.
+pub(crate) fn isolated_destination(source: &Path, destination: &Path) -> Result<PathBuf> {
+    let source = source.canonicalize()?;
+    let name = destination
+        .file_name()
+        .ok_or_else(|| invalid("destination requires a filename"))?;
+    if destination
+        .components()
+        .any(|c| matches!(c, Component::ParentDir))
+    {
+        return Err(invalid("destination parent traversal is forbidden"));
+    }
+    let parent = destination
+        .parent()
+        .ok_or_else(|| invalid("destination has no parent"))?
+        .canonicalize()?;
+    let target = parent.join(name);
+    if target.starts_with(&source) || fs::symlink_metadata(&target).is_ok() {
+        return Err(invalid(
+            "destination must be new and outside the source root",
+        ));
+    }
+    Ok(target)
 }
 
 /// Counts regular files without following symlinks and caps filesystem traversal.
@@ -219,11 +261,97 @@ pub(crate) struct TreeUsage {
     pub entries: u64,
 }
 
+/// Advisory accounting after inputs stop changing. Final reconciliation still scans everything.
+pub(crate) struct WorkspaceMeter {
+    root: PathBuf,
+    fixed: TreeUsage,
+    dynamic: Vec<String>,
+}
+
+fn path_usage(path: &Path) -> Result<TreeUsage> {
+    let metadata = match fs::symlink_metadata(path) {
+        Ok(metadata) => metadata,
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(TreeUsage::default()),
+        Err(e) => return Err(e.into()),
+    };
+    let mut usage = if metadata.is_dir() {
+        tree_usage(path)?
+    } else if metadata.is_file() {
+        TreeUsage {
+            bytes: metadata.len(),
+            entries: 0,
+        }
+    } else {
+        return Err(invalid("workspace contains symlink or special file"));
+    };
+    usage.entries += 1;
+    Ok(usage)
+}
+
+fn add_usage(total: &mut TreeUsage, usage: TreeUsage) -> Result<()> {
+    total.bytes = total
+        .bytes
+        .checked_add(usage.bytes)
+        .ok_or_else(|| invalid("size overflow"))?;
+    total.entries = total
+        .entries
+        .checked_add(usage.entries)
+        .ok_or_else(|| invalid("entry overflow"))?;
+    if total.entries > MAX_TREE_ENTRIES {
+        return Err(invalid("workspace entry budget exceeded"));
+    }
+    Ok(())
+}
+
+impl WorkspaceMeter {
+    pub(crate) fn new(root: &Path, dynamic: &[&str]) -> Result<Self> {
+        let mut fixed = TreeUsage::default();
+        for entry in fs::read_dir(root)? {
+            let entry = entry?;
+            if !dynamic.iter().any(|name| entry.file_name() == *name) {
+                add_usage(&mut fixed, path_usage(&entry.path())?)?;
+            }
+        }
+        Ok(Self {
+            root: root.into(),
+            fixed,
+            dynamic: dynamic.iter().map(|name| (*name).into()).collect(),
+        })
+    }
+
+    pub(crate) fn sample(&self, max_bytes: u64) -> Result<TreeUsage> {
+        rustdx_complete::operation::check().map_err(crate::Error::from)?;
+        let mut usage = self.fixed;
+        for name in &self.dynamic {
+            add_usage(&mut usage, path_usage(&self.root.join(name))?)?;
+        }
+        if usage.bytes > max_bytes {
+            return Err(invalid("normalization exceeds workspace budget"));
+        }
+        Ok(usage)
+    }
+
+    pub(crate) fn reconcile(&self, max_bytes: u64) -> Result<()> {
+        let estimated = self.sample(max_bytes)?;
+        let actual = tree_usage(&self.root)?;
+        if actual.bytes > max_bytes
+            || actual.bytes != estimated.bytes
+            || actual.entries != estimated.entries
+        {
+            return Err(invalid(
+                "stationary workspace differs from normalization accounting",
+            ));
+        }
+        Ok(())
+    }
+}
+
 pub(crate) fn tree_usage(root: &Path) -> Result<TreeUsage> {
     let mut stack = vec![root.to_owned()];
     let mut entries = 0_u64;
     let mut bytes = 0_u64;
     while let Some(path) = stack.pop() {
+        rustdx_complete::operation::check().map_err(crate::Error::from)?;
         // Workers atomically rename/remove private staging files while this
         // approximate monitor runs. Only disappeared entries are benign;
         // quotas provide the hard limit and sealing recounts a stationary tree.
@@ -235,6 +363,9 @@ pub(crate) fn tree_usage(root: &Path) -> Result<TreeUsage> {
         for entry in directory {
             let entry = entry?;
             entries += 1;
+            if entries.is_multiple_of(4096) {
+                rustdx_complete::operation::check().map_err(crate::Error::from)?;
+            }
             if entries > MAX_TREE_ENTRIES {
                 return Err(invalid("workspace entry budget exceeded"));
             }
@@ -279,4 +410,72 @@ pub fn free_bytes(root: &Path) -> Result<u64> {
 #[cfg(not(unix))]
 pub fn free_bytes(_root: &Path) -> Result<u64> {
     Err(invalid("runner capacity checks require Unix"))
+}
+
+#[cfg(test)]
+mod meter_tests {
+    use super::*;
+    use std::time::Instant;
+
+    #[test]
+    fn dynamic_meter_counts_sqlite_journal_and_disappearing_files_and_reconciles() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path();
+        private_directory(&root.join("raw")).unwrap();
+        write_new(&root.join("raw/input"), b"fixed").unwrap();
+        let meter = WorkspaceMeter::new(
+            root,
+            &["normalization.sqlite", "normalization.sqlite-journal"],
+        )
+        .unwrap();
+        let db = rusqlite::Connection::open(root.join("normalization.sqlite")).unwrap();
+        db.execute_batch(
+            "PRAGMA journal_mode=DELETE; CREATE TABLE data(v BLOB); BEGIN;
+            INSERT INTO data VALUES(zeroblob(1048576));",
+        )
+        .unwrap();
+        assert!(root.join("normalization.sqlite-journal").exists());
+        assert_eq!(
+            meter.sample(u64::MAX).unwrap().bytes,
+            tree_bytes(root).unwrap()
+        );
+        assert!(meter.sample(1024).is_err());
+        db.execute_batch("COMMIT;").unwrap();
+        assert!(!root.join("normalization.sqlite-journal").exists());
+        meter.reconcile(u64::MAX).unwrap();
+        drop(db);
+        fs::remove_file(root.join("normalization.sqlite")).unwrap();
+        meter.reconcile(5).unwrap();
+        // An unclassified addition cannot evade the stationary final scan.
+        write_new(&root.join("unexpected"), b"x").unwrap();
+        assert!(meter.reconcile(u64::MAX).is_err());
+    }
+
+    #[test]
+    fn dynamic_meter_avoids_rescanning_fixed_file_history() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path();
+        private_directory(&root.join("raw")).unwrap();
+        for n in 0..2000 {
+            fs::write(root.join("raw").join(n.to_string()), [0; 64]).unwrap();
+        }
+        fs::write(root.join("normalization.sqlite"), [0; 4096]).unwrap();
+        let meter = WorkspaceMeter::new(root, &["normalization.sqlite"]).unwrap();
+        let start = Instant::now();
+        for _ in 0..100 {
+            assert_eq!(tree_bytes(root).unwrap(), 132096);
+        }
+        let full = start.elapsed();
+        let start = Instant::now();
+        for _ in 0..100 {
+            assert_eq!(meter.sample(u64::MAX).unwrap().bytes, 132096);
+        }
+        let sampled = start.elapsed();
+        meter.reconcile(132096).unwrap();
+        println!(
+            "fixed_files=2000 samples=100 full_scan_micros={} dynamic_sample_micros={}",
+            full.as_micros(),
+            sampled.as_micros()
+        );
+    }
 }

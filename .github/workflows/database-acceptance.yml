@@ -1,8 +1,9 @@
 name: Database acceptance
 
 on:
+  push:
+    branches: [main]
   pull_request:
-    paths: ["apps/rustdx-cli/**", "apps/rustdx-runner/**", "crates/rustdx-core/**", "Cargo.toml", "Cargo.lock", "scripts/validation/*database*.py", "scripts/bench/measure_database_readback.py", "deploy/**", ".github/workflows/database-acceptance.yml"]
   workflow_dispatch:
     inputs:
       real_zip:
@@ -13,21 +14,26 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: database-acceptance-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   databases:
+    name: Database acceptance
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     env:
       CLICKHOUSE_URL: http://127.0.0.1:18123
       MONGODB_URI: mongodb://127.0.0.1:27018
       RUSTDX_DB_ACCEPTANCE: "1"
       RUSTDX_SKIP_INTEGRATION_TESTS: "1"
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@master
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6, Node 24
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
         with:
           toolchain: "1.89.0"
-      - uses: swatinem/rust-cache@v2
+      - uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
       - name: Install fixed MongoDB tools
         shell: bash
         run: |
@@ -39,6 +45,10 @@ jobs:
           curl --fail --location --retry 2 --max-time 180 \
             https://downloads.mongodb.com/compass/mongosh-2.5.10-linux-x64.tgz \
             -o "$tools_dir/mongosh.tgz"
+          (
+            cd "$tools_dir"
+            sha256sum --check "$GITHUB_WORKSPACE/deploy/acceptance/tool-archives.sha256"
+          )
           tar -xzf "$tools_dir/database-tools.tgz" -C "$tools_dir"
           tar -xzf "$tools_dir/mongosh.tgz" -C "$tools_dir"
           echo "$tools_dir/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin" >> "$GITHUB_PATH"
@@ -69,6 +79,7 @@ jobs:
           mkdir -p acceptance
           set -o pipefail
           node apps/rustdx-runner/tests/database_mongo_protocol.cjs | tee acceptance/runner-mongo-protocol.log
+          cargo test -p rustdx-runner --test administration --locked -- --nocapture
           cargo test -p rustdx-runner --test control_plane --locked \
             -- --include-ignored --nocapture --test-threads=1 | tee acceptance/runner-tests.log
       - name: Repeated 65,536-row import and independent readback
@@ -103,10 +114,10 @@ jobs:
           if [ -d acceptance/server-recovery ]; then
             sudo chmod -R a+rX -- acceptance/server-recovery
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6, Node 24
         if: always()
         with:
-          name: database-acceptance
+          name: database-acceptance-${{ github.sha }}
           path: |
             acceptance/
             /tmp/rustdx-readback-bench-*/

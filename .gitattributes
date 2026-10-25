@@ -1,5 +1,13 @@
 # Frozen evidence is reviewed by recorded hashes; preserve bytes on every platform.
 docs/testing/evidence/** -text -diff -whitespace
 project-review-20261022/** -text -diff -whitespace
+# Bounded reports and reference source are reviewable without newline conversion.
+docs/testing/evidence/**/summary.json diff
+docs/testing/evidence/**/inventory.json diff
+docs/testing/evidence/**/checks.json diff
+docs/testing/evidence/**/completion.json diff
+docs/testing/evidence/**/*.rs diff
+docs/testing/evidence/**/*.py diff
+docs/testing/evidence/**/*.toml diff
 crates/rustdx-core/tests/fixtures/** -text
 apps/rustdx-cli/tests/fixtures/** -text

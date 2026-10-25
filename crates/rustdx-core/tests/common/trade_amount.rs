@@ -4,8 +4,7 @@ use std::{num::NonZeroU64, path::Path};
 
 pub const DATE: u32 = 20261023;
 pub fn evidence_path() -> std::path::PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../docs/testing/evidence/enhanced-history-amount-20261024")
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/trade-amount")
 }
 pub fn source() -> TurnoverSource {
     TurnoverSource::archived(

@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "head": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "dirty": true,
+  "scope": "stage1 identity; future refactoring separately recorded",
+  "files": [
+    {
+      "path": "crates/rustdx-core/src/operation.rs",
+      "bytes": 7341,
+      "sha256": "119a4ddbf8bb64f3824a73ed2d5a4a303e452ca713b44cc5660b3a5be815129a"
+    },
+    {
+      "path": "apps/rustdx-runner/src/storage.rs",
+      "bytes": 10600,
+      "sha256": "2da91cca3effbf820daf8601a1713d1730e8a846b5853aa1ff2619dc88ecc44b"
+    },
+    {
+      "path": "apps/rustdx-runner/src/ledger.rs",
+      "bytes": 19703,
+      "sha256": "d000757cd8b883f1399f0954a23729e98f221e078dfc8078d8c659785dc50012"
+    },
+    {
+      "path": "apps/rustdx-runner/src/ops.rs",
+      "bytes": 20019,
+      "sha256": "d845010270850a12789c6c4d17892138874d7a8e8ac8a707ad45da97048b9779"
+    },
+    {
+      "path": "apps/rustdx-runner/src/pipeline.rs",
+      "bytes": 40038,
+      "sha256": "3f0c38b808251247cca5a890f9b9862576cd58913cb1d9817780449a0c5572d3"
+    },
+    {
+      "path": "apps/rustdx-runner/src/consumer.rs",
+      "bytes": 10839,
+      "sha256": "fdea8dc7c238314d8db18a951814c23051b0569c25df5032ffa713aa816271c7"
+    },
+    {
+      "path": "apps/rustdx-runner/src/main.rs",
+      "bytes": 9340,
+      "sha256": "b906e75a762ccb6e037d55dea5133e6119093ebd56927feac3d4b6af60610153"
+    },
+    {
+      "path": "apps/rustdx-runner/tests/administration.rs",
+      "bytes": 4036,
+      "sha256": "3e7259c08b85e9b4cc2e0331d7066f46bc612474a682153e58e16d4ad5bf6131"
+    },
+    {
+      "path": "scripts/ops/retention_preview.py",
+      "bytes": 17955,
+      "sha256": "a9059c01e702ce9037c440f3c7f69af2564d05de6289f83e75777f4c6a083779"
+    },
+    {
+      "path": "scripts/validation/audit_fact_maintenance.py",
+      "bytes": 5969,
+      "sha256": "5fd8fc2938f3608105a0c3ae5cdef0b6cc1b7513d2160b36024b49bd148b2159"
+    },
+    {
+      "path": "scripts/validation/tests/test_fact_maintenance.py",
+      "bytes": 2794,
+      "sha256": "e801101408260ba2cc07f26ada96a45456fd49722e55a547e52136548d58cf44"
+    },
+    {
+      "path": "scripts/validation/tests/test_retention_preview.py",
+      "bytes": 10106,
+      "sha256": "83e563573251375af5d9e9c5e516c654aee749ba8a276908081816c18ae27c3f"
+    },
+    {
+      "path": "config/maintenance/facts.example.json",
+      "bytes": 1805,
+      "sha256": "2d8e6f26a993f4bb79ac656e2412d789642b148d5439ad05fc22b0355016a04e"
+    },
+    {
+      "path": "deploy/acceptance/tool-archives.sha256",
+      "bytes": 163,
+      "sha256": "9ef087b0308712a8e5b86532fd51c2ff45690b0281da07b204979b16c76b9512"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 6613,
+      "sha256": "0a19f163499817db770c9a25bbe6c0c8fd0cf77fb11e01d48ab8295fafca6cf1"
+    },
+    {
+      "path": ".github/workflows/database-acceptance.yml",
+      "bytes": 6664,
+      "sha256": "f28b6cf59ac50564c95bd441cc171fd6db031f0c5b818494f251b0c19746c1ea"
+    },
+    {
+      "path": ".github/workflows/data-coverage.yml",
+      "bytes": 972,
+      "sha256": "18a571026601d89ef592e18815f9c047e1a0928b35064ac20e4d5305c9761176"
+    },
+    {
+      "path": "Cargo.toml",
+      "bytes": 645,
+      "sha256": "4d47b479225f8a85126cef336d03c7c51e5b59b51f4c910f8689ca444de98c33"
+    },
+    {
+      "path": "Cargo.lock",
+      "bytes": 43661,
+      "sha256": "358f83ea91811aa42456e5910fc6746421fa64bb02209d8cf874f0a467617b19"
+    }
+  ]
+}

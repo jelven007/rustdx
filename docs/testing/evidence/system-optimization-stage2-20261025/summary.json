@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "stage": "A06-A09",
+  "checks": "stage2-final.json",
+  "measurements": [
+    "readback_rows=1200 dates=2 baseline_requests=8 reuse_requests=7 baseline_bytes=364404 reuse_bytes=363430 baseline_micros=320527 reuse_micros=358046 csv_sha256=2551d267b5703936e5e59ac635f339e197184913f781e2470d3261d1e4741897",
+    "fixed_files=2000 samples=100 full_scan_micros=813412 dynamic_sample_micros=304",
+    "history=20000 legacy_observation_micros=51510 projection_micros=69 plans=[\"SCAN j USING INDEX jobs_by_created\", \"CORRELATED SCALAR SUBQUERY 1\", \"SEARCH a USING COVERING INDEX attempts_by_job (job=?)\"]",
+    "test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.27s",
+    "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s",
+    "test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 22.80s"
+  ],
+  "real_databases_revalidated": false,
+  "frozen_history_modified": false,
+  "remaining": "A10-A12, whole-workspace and package validation"
+}

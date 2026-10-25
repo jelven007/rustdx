@@ -1,0 +1,4 @@
+Error: 数据覆盖需要维护；请按data-check流程核实更新，不能仅延长截止日期
+
+Location:
+    apps/rustdx-cli/src/cmd/data_status.rs:92:13

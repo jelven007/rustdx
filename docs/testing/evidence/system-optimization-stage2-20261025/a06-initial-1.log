@@ -1,0 +1,15 @@
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 6.00s
+[1m[32m     Running[0m unittests src/lib.rs (/tmp/rustdx-system-review-20261025/target/debug/deps/rustdx_runner-6042ee3cca75928d)
+
+running 7 tests
+test database::capacity::tests::capacity_rejects_io_proof_entries_and_bytes_before_transmission ... ok
+test error_tests::cancellation_and_deadline_keep_their_category_through_stages_and_io_wrappers ... ok
+test database::tests::full_contract_row_roundtrips_and_requires_every_field ... ok
+test database_process::tests::malformed_responses_retain_bounded_evidence ... ok
+test database_process::tests::one_process_handles_batches_and_requires_clean_exit ... ok
+test database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants ... ok
+test database::tests::stable_key_readback_crosses_batch_and_partition_boundaries ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+

@@ -1,0 +1,27 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m   Compiling[0m jelven-rustdx-cli v2.0.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 30.14s
+[1m[32m     Running[0m tests/administration.rs (/tmp/rustdx-system-review-20261025/target/debug/deps/administration-022a1216484b5012)
+
+running 4 tests
+test readonly_sees_committed_wal_while_writer_holds_lock ... ok
+test backup_and_restore_reject_parent_aliases_and_traversal_before_writing ... ok
+test readonly_requires_existing_current_schema_and_never_initializes ... ok
+test total_backup_and_restore_budgets_include_completion_files ... FAILED
+
+failures:
+
+---- total_backup_and_restore_budgets_include_completion_files stdout ----
+
+thread 'total_backup_and_restore_budgets_include_completion_files' panicked at apps/rustdx-runner/tests/administration.rs:96:52:
+called `Result::unwrap()` on an `Err` value: Invalid("restored validation files exceed total byte budget")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    total_backup_and_restore_budgets_include_completion_files
+
+test result: FAILED. 3 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p rustdx-runner --test administration`

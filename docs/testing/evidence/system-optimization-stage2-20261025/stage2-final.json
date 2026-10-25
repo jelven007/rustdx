@@ -1,0 +1,108 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "exit_code": 0,
+      "seconds": 1.2119632500000002,
+      "log": "stage2-final-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "-p",
+        "jelven-rustdx-cli",
+        "-p",
+        "rustdx-runner",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 4.429557582999999,
+      "log": "stage2-final-1.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--test",
+        "administration",
+        "--locked",
+        "--offline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 19.907408125,
+      "log": "stage2-final-2.log"
+    },
+    {
+      "command": [
+        "env",
+        "RUSTDX_TEST_CLI=/tmp/rustdx-system-review-20261025/target/debug/rustdx",
+        "RUSTDX_TEST_CH_USER=default",
+        "RUSTDX_TEST_CH_PASSWORD=",
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--locked",
+        "--offline",
+        "--",
+        "--include-ignored",
+        "--skip",
+        "real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 28.650748874999998,
+      "log": "stage2-final-3.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.018977416999995,
+      "log": "stage2-final-4.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 3.9103554590000016,
+      "log": "stage2-final-5.log"
+    }
+  ]
+}

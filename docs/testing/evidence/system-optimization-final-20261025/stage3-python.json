@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 2.441423209,
+      "log": "stage3-python-0.log"
+    },
+    {
+      "command": [
+        "bash",
+        "-n",
+        "scripts/release/publish.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.022546167000000228,
+      "log": "stage3-python-1.log"
+    }
+  ]
+}

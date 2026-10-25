@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "scripts/validation/audit_task_admission.py",
+      "--request",
+      "config/acceptance/deployment.example.json",
+      "--evidence-root",
+      "/Users/bytedance/Documents/rustdx",
+      "--output",
+      "/tmp/rustdx-system-optimization-20261025/template-admission.json"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "log": "stage3-denial-0.log"
+  },
+  {
+    "command": [
+      "/Library/Developer/CommandLineTools/usr/bin/python3",
+      "scripts/release/release_gate.py",
+      "--preflight",
+      "/tmp/rustdx-system-optimization-20261025/dirty-preflight.json",
+      "--output",
+      "/tmp/rustdx-system-optimization-20261025/dirty-release-manifest.json"
+    ],
+    "exit_code": 1,
+    "expected_exit_code": 1,
+    "log": "stage3-denial-1.log"
+  }
+]

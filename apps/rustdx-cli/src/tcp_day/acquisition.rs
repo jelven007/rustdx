@@ -1,5 +1,6 @@
 //! Reservation-based windows. Workers return counts, never queued decoded rows.
 use std::{
+    collections::BTreeMap,
     fs::{self, File, OpenOptions},
     io::{self, Write},
     path::Path,
@@ -83,16 +84,30 @@ struct Budget {
 }
 
 impl Budget {
-    fn window(&self, request: &Request, count: usize) -> io::Result<Vec<Grant>> {
+    fn slot_limits(&self, request: &Request, count: usize) -> BTreeMap<&'static str, usize> {
         let source = &request.source;
-        let slots = count
-            .min((self.raw / source.max_raw_rows as u64).min(8) as usize)
-            .min(
+        BTreeMap::from([
+            ("requested", count),
+            (
+                "raw_rows",
+                (self.raw / source.max_raw_rows as u64).min(8) as usize,
+            ),
+            (
+                "payload_bytes",
                 (self.payload / (source.max_payload_bytes as u64 + FINAL_PAGE_RESERVE)).min(8)
                     as usize,
-            )
-            .min((self.archive / (receipt_reserve(request) + 1024)).min(8) as usize)
-            .min(self.wire / 4);
+            ),
+            (
+                "archive_bytes",
+                (self.archive / (receipt_reserve(request) + 1024)).min(8) as usize,
+            ),
+            ("wire_records", self.wire / 4),
+        ])
+    }
+
+    fn window(&self, request: &Request, count: usize) -> io::Result<Vec<Grant>> {
+        let limits = self.slot_limits(request, count);
+        let slots = limits.values().copied().min().unwrap_or(0);
         if slots == 0 {
             return Err(invalid(
                 "TCP total acquisition budget cannot reserve another security",
@@ -129,6 +144,80 @@ impl Budget {
 
 fn receipt_reserve(request: &Request) -> u64 {
     (request.source.max_raw_rows as u64 * 512 + 65536).min(JSON_LIMIT)
+}
+
+/// The same initial reservation calculation used by collection. No network or disk writes.
+#[derive(Debug, Serialize)]
+pub struct ReservationPlan {
+    pub max_parallel: usize,
+    pub effective_parallel: usize,
+    pub slot_limits: BTreeMap<&'static str, usize>,
+    pub limiting_budgets: Vec<&'static str>,
+    pub securities: usize,
+    pub raw_rows_per_security: u64,
+    pub payload_reserve_per_security: u64,
+    pub archive_reserve_per_security: u64,
+    pub minimum_collection_wire_records: u64,
+    pub maximum_collection_requests: u64,
+    pub worst_case_raw_rows: u64,
+    pub worst_case_payload_bytes: u64,
+    pub worst_case_budget_gaps: Vec<&'static str>,
+    pub deadline_seconds: u64,
+}
+
+pub fn reservation_plan(request: &Request, connection_limit: usize) -> io::Result<ReservationPlan> {
+    request.validate()?;
+    let schedule = Schedule::for_request(request);
+    let budget = Budget {
+        raw: schedule.max_raw_rows,
+        payload: schedule.max_payload_bytes,
+        archive: request.max_archive_bytes,
+        wire: request.source.max_wire_records,
+    };
+    let mut slot_limits = budget.slot_limits(request, schedule.max_parallel);
+    slot_limits.insert("connections", connection_limit);
+    slot_limits.insert("securities", request.codes.len());
+    let effective_parallel = slot_limits.values().copied().min().unwrap_or(0);
+    let limiting_budgets = slot_limits
+        .iter()
+        .filter_map(|(label, count)| (*count == effective_parallel).then_some(*label))
+        .collect();
+    let securities = request.codes.len() as u64;
+    let raw_rows_per_security = request.source.max_raw_rows as u64;
+    let payload_reserve_per_security = request.source.max_payload_bytes as u64 + FINAL_PAGE_RESERVE;
+    let archive_reserve_per_security = receipt_reserve(request) + 1024;
+    let worst_case_raw_rows = securities * raw_rows_per_security;
+    let worst_case_payload_bytes = securities * payload_reserve_per_security;
+    let mut worst_case_budget_gaps = Vec::new();
+    if worst_case_raw_rows > budget.raw {
+        worst_case_budget_gaps.push("raw_rows");
+    }
+    if worst_case_payload_bytes > budget.payload {
+        worst_case_budget_gaps.push("payload_bytes");
+    }
+    if securities * archive_reserve_per_security > budget.archive {
+        worst_case_budget_gaps.push("receipt_archive_reservations");
+    }
+    let maximum_collection_requests = securities * (1 + 2 * request.source.max_pages as u64);
+    if maximum_collection_requests * 2 > budget.wire as u64 {
+        worst_case_budget_gaps.push("wire_records");
+    }
+    Ok(ReservationPlan {
+        max_parallel: schedule.max_parallel,
+        effective_parallel,
+        slot_limits,
+        limiting_budgets,
+        securities: request.codes.len(),
+        raw_rows_per_security,
+        payload_reserve_per_security,
+        archive_reserve_per_security,
+        minimum_collection_wire_records: securities * 4,
+        maximum_collection_requests,
+        worst_case_raw_rows,
+        worst_case_payload_bytes,
+        worst_case_budget_gaps,
+        deadline_seconds: schedule.timeout_seconds,
+    })
 }
 
 fn fetch(

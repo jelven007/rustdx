@@ -270,8 +270,8 @@ fn offline_decoding_honors_cancellation() {
 
 #[test]
 fn real_frames_match_every_independently_decoded_field() {
-    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../docs/testing/evidence/enhanced-history-0fc6-20261024");
+    let root =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/enhanced-history");
     for (start, count, snapshots, opening, after_hours) in [
         (0, 1800, 19, 0, 45),
         (1800, 1800, 0, 0, 0),

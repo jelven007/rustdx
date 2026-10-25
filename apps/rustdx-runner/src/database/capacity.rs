@@ -20,19 +20,12 @@ pub(super) struct Capacity {
 }
 
 impl Capacity {
-    pub(super) fn estimate(
-        rows: u64,
-        row_bytes: u64,
-        partition_batches: u64,
-        partitions: u64,
-    ) -> Result<Self> {
+    pub(super) fn estimate(rows: u64, row_bytes: u64) -> Result<Self> {
         let batches = rows.div_ceil(BATCH as u64);
-        // Initial inserts, verification, one recovery verification and one
-        // complete consumer readback, with preflight/count/terminal queries.
+        // Initial inserts, verification and one recovery verification.
+        // Consumer readbacks have a separate namespace and per-session budget.
         let operations = batches
             .checked_mul(3)
-            .and_then(|v| v.checked_add(partition_batches))
-            .and_then(|v| v.checked_add(partitions.checked_mul(2)?))
             .and_then(|v| v.checked_add(8))
             .ok_or_else(|| invalid("database operation forecast overflow"))?;
         let proof_bytes = operations
@@ -96,9 +89,9 @@ mod tests {
 
     #[test]
     fn capacity_rejects_io_proof_entries_and_bytes_before_transmission() {
-        let small = Capacity::estimate(1200, 400_000, 4, 2).unwrap();
+        let small = Capacity::estimate(1200, 400_000).unwrap();
         assert_eq!(small.batches, 3);
-        assert_eq!(small.operations, 25);
+        assert_eq!(small.operations, 17);
         assert!(
             small
                 .check(0, storage::TreeUsage::default(), 256 * 1024 * 1024)
@@ -128,7 +121,7 @@ mod tests {
         );
         // The former INSERT-only upper bound cannot fit proof/recovery budgets.
         assert!(
-            Capacity::estimate(12_798_976, 0, 24_998, 1)
+            Capacity::estimate(12_798_976, 0)
                 .unwrap()
                 .check(0, storage::TreeUsage::default(), u64::MAX)
                 .is_err()
@@ -139,13 +132,13 @@ mod tests {
             entries: small.evidence_entries,
         };
         assert!(small.check(0, used, 2 * small.evidence_bytes - 1).is_err());
-        assert!(Capacity::estimate(u64::MAX, u64::MAX, 1, 1).is_err());
-        // Per-day export opens a session per partition, including empty days.
+        assert!(Capacity::estimate(u64::MAX, u64::MAX).is_err());
+        // Empty partitions do not generate per-day publication queries.
         assert!(
-            Capacity::estimate(0, 0, 0, 30_000)
+            Capacity::estimate(0, 0)
                 .unwrap()
                 .check(0, storage::TreeUsage::default(), u64::MAX)
-                .is_err()
+                .is_ok()
         );
     }
 }

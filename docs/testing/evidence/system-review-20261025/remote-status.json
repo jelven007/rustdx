@@ -1,0 +1,22 @@
+{
+  "commit": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "mode": "read-only",
+  "requests": [
+    {
+      "path": "/actions/runs?head_sha=47045cd554de2f3237a7f2f2821146b47807c43b&per_page=30",
+      "file": "actions-runs.json",
+      "result": "passed"
+    },
+    {
+      "path": "/actions/runs/40137692144/jobs?per_page=100",
+      "file": "actions-jobs-40137692144.json",
+      "result": "passed"
+    },
+    {
+      "path": "/commits/47045cd554de2f3237a7f2f2821146b47807c43b/check-runs?per_page=100",
+      "file": "check-runs.json",
+      "result": "passed"
+    }
+  ],
+  "result": "passed"
+}

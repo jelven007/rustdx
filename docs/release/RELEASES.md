@@ -1,6 +1,6 @@
 # 源码与软件包交付
 
-更新日期：2026-10-24。当前工作区使用核心/CLI 2.0.0（未发布）与runner0.1.0；已发布1.x是历史内容。主版本迁移和本地包验证不构成提交、推送、部署或注册表发布。
+更新日期：2026-10-25。当前工作区使用核心/CLI 2.0.0（未发布）与runner0.1.0；已发布1.x是历史内容。主版本迁移和本地包验证不构成提交、推送、部署或注册表发布。
 
 ## 1. 交付单位与身份
 
@@ -26,10 +26,14 @@
 CLI验证使用解包核心的本地patch；正式CLI注册表验证在核心索引可见后执行。
 离线CLI打包也在隔离工作区使用该patch并生成审核锁文件；源Cargo.lock不改动。
 源码文件清单、HEAD/dirty/lock摘要、固定顺序/时间的源码归档与包/检查摘要
-写入`preflight.json`；归档包含已跟踪忽略文件及未跟踪非忽略文件。
+写入schema2的`preflight.json`。工程scope1排除`docs/testing/evidence/`和
+`project-review-20261022/`，其他跟踪及非忽略新文件均计入；历史证据另行核验。
+离线回归所需小样本在所属crate，来源/原摘要与派生范围见
+[夹具清单](../../config/release/offline-fixtures.json)。工程归档不承诺完整历史演练。
 
 审核未提交工作区可加`--snapshot --offline`，无需提交；
-产物明确`publication_qualified=false`。`--skip-workspace-checks`只做包审核，
+产物明确`publication_qualified=false`。完整干净本机检查仅设置`local_gate_passed`；
+正式资格由下述同SHA远端门禁授予。`--skip-workspace-checks`只做包审核，
 同样不满足正式门禁。工具不上传包、不生成提交；源码归档可重建内容身份，
 不宣称二进制位级可复现或注册表同版本已更新。生成器要求输出在仓库外，
 开始/结束及实际发布确认后重新核对源码，变动则拒绝继续。
@@ -42,6 +46,22 @@ CI的contracts任务同时执行源码调用方和上述实际解包消费；MSR
 格式/Clippy及性能任务分别保留，各产物名称绑定实际GitHub SHA。
 Actions须推送后实际核对结果，本机验证不能代替远端执行。
 
+完整本机预检还执行Python、严格Rustdoc及CLI/runner发布构建，记录二进制摘要。
+可用`--build-cache /external/cargo-target`复用编译缓存；审核crate和发布二进制复制到
+新output，实际源码/包核对照常执行，缓存路径写入报告，不授予二进制位级可复现结论。
+`release_gate.py --preflight /review/preflight.json --output /review/release-manifest.json`
+通过`gh api`读取[必需门禁](../../config/release/gates.json)，要求当前干净HEAD的
+最新push/手工运行、三平台、MSRV、质量、消费者/包、fuzz、性能和数据库任务全部成功。
+重跑失败/取消/遗漏任一平台均拒绝；PR合并SHA不能代替当前提交。再下载当前SHA的
+contracts制品，核对preflight身份、实际两crate字节摘要及清单。
+离线`--snapshot-runs`只审核记录，始终不授予发布资格。
+
+Action官方ref和运行时元信息固定在[工具清单](../../config/release/action-pins.json)，
+Node24及最低runner要求需在目标Actions环境满足；新SHA远端执行尚待取得。
+Mongo工具解压前按`deploy/acceptance/tool-archives.sha256`检查，数据库镜像digest
+及上述配置摘要进入release manifest。manifest记录本地patch范围和注册表待验证状态。
+数据库CI监听所有main推送/PR，避免发布提交因仅修改文档而没有同SHA结果。
+
 ## 3. 源码交付与历史引用
 
 提交应只包含本次已核实工作，不回滚已有未提交修改。推送、合并或发布按任务实际授权执行；本次结构整理不自动操作远端引用。远端CI结果须实际核实，不由本机结果推导。
@@ -53,11 +73,13 @@ Actions须推送后实际核对结果，本机验证不能代替远端执行。
 ## 4. 正式软件包发布
 
 1. 提升核心/CLI版本及CLI注册表依赖，更新CHANGELOG和[行为迁移](MIGRATION.md)状态。
-2. 完成工程、实际包清单和注册表dry-run门禁，确认源码与最终上传包一致。
+2. 完成工程、同SHA远端门禁、实际包清单和核心注册表dry-run，确认源码与最终上传包一致。
 3. 按scripts/release/publish.sh先核心后CLI，等待核心索引可见。
 4. 核实注册表版本、CLI依赖、包内源码/许可证及校验和，记录发布结果。
 
-发布脚本包含交互确认，需要实际发布任务及凭据；它不替代完整MSRV/all-features/独立验收。runner不发布到crates.io。目录整理没有运行实际publish。
+发布脚本在确认前完成本机及远端门禁，确认后重新核对源码/审核包，并重查最新远端结果。
+核心上传并等待索引可见后，CLI不使用本地patch执行注册表dry-run，再上传。
+实际发布仍须另有任务授权与凭据，runner不发布到crates.io；本轮没有运行实际publish。
 
 ## 5. 本次迁移交付
 

@@ -1,16 +1,19 @@
 //! SQLite is local control state, never a distributed lease.
 use std::{path::Path, time::Duration};
 
-use rusqlite::{Connection, OptionalExtension, TransactionBehavior, params};
+use rusqlite::{Connection, OpenFlags, OptionalExtension, TransactionBehavior, params};
 
 use crate::{
     Error, Result, invalid,
     model::{Evidence, JobStatus, Pointer, RecoveryAttempt},
+    storage::RootLock,
 };
 
 pub struct Ledger {
     pub(crate) connection: Connection,
 }
+
+pub const SCHEMA_VERSION: i64 = 4;
 
 pub(crate) fn unsigned(row: &rusqlite::Row<'_>, index: usize) -> rusqlite::Result<u64> {
     let value: i64 = row.get(index)?;
@@ -28,14 +31,58 @@ fn signed(value: u64) -> Result<i64> {
 }
 
 impl Ledger {
+    /// Compatibility writer opening. Initialization/migration holds the controller lock.
+    /// Long-running writers should retain a RootLock and use `open_writer`.
     pub fn open(path: &Path) -> Result<Self> {
+        let lock = RootLock::acquire(
+            path.parent()
+                .ok_or_else(|| invalid("ledger has no parent"))?,
+        )?;
+        Self::open_writer(path, &lock)
+    }
+
+    /// Open an existing ledger without creating, changing journal mode or migrating.
+    /// SQLite may require its WAL shared-memory file; this is not an immutable snapshot.
+    pub fn open_existing_readonly(path: &Path) -> Result<Self> {
+        Self::open_readonly(path, false)
+    }
+
+    /// Restore validates the prior schema without migrating frozen backup bytes.
+    pub(crate) fn open_backup_readonly(path: &Path) -> Result<Self> {
+        Self::open_readonly(path, true)
+    }
+
+    fn open_readonly(path: &Path, previous_backup: bool) -> Result<Self> {
+        if !std::fs::symlink_metadata(path)?.is_file() {
+            return Err(invalid("ledger must be an existing regular file"));
+        }
+        let connection = Connection::open_with_flags(path, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
+        connection.busy_timeout(Duration::from_secs(5))?;
+        connection.execute_batch("PRAGMA foreign_keys=ON; PRAGMA query_only=ON;")?;
+        let version: i64 = connection.query_row("PRAGMA user_version", [], |r| r.get(0))?;
+        if version != SCHEMA_VERSION && !(previous_backup && version == 3) {
+            return Err(invalid(format!(
+                "ledger schema {version} requires explicit migrate; current schema is {SCHEMA_VERSION}"
+            )));
+        }
+        Ok(Self { connection })
+    }
+
+    /// The caller keeps this root's lock through all state-changing operations.
+    pub fn open_writer(path: &Path, lock: &RootLock) -> Result<Self> {
+        lock.covers(path)?;
+        if let Ok(metadata) = std::fs::symlink_metadata(path)
+            && !metadata.is_file()
+        {
+            return Err(invalid("ledger must be a regular file"));
+        }
         let connection = Connection::open(path)?;
         connection.busy_timeout(Duration::from_secs(5))?;
         connection.execute_batch(
             "PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;",
         )?;
         let version: i64 = connection.query_row("PRAGMA user_version", [], |r| r.get(0))?;
-        if version > 3 {
+        if version > SCHEMA_VERSION {
             return Err(invalid("ledger schema is newer than this runner"));
         }
         if version == 0 {
@@ -100,6 +147,37 @@ impl Ledger {
                 PRAGMA user_version=3; COMMIT;",
             )?;
         }
+        if version < 4 {
+            let tx = connection.unchecked_transaction()?;
+            tx.execute_batch(
+                "CREATE TABLE observation_counters(
+                    owner TEXT NOT NULL CHECK(owner IN ('worker','controller')),
+                    field TEXT NOT NULL CHECK(field IN ('records_complete','records_failed',
+                        'records_unavailable','requests','request_failures','empty_responses',
+                        'acquisition_timeouts','queue_wait_micros')),
+                    total INTEGER NOT NULL CHECK(typeof(total)='integer' AND total>=0),
+                    PRIMARY KEY(owner,field));
+                 CREATE TABLE observation_stages(
+                    owner TEXT NOT NULL CHECK(owner IN ('worker','controller')),
+                    stage TEXT NOT NULL CHECK(stage IN ('source','download','extract','snapshot',
+                        'parse','sort','write','readback')),
+                    calls INTEGER NOT NULL CHECK(typeof(calls)='integer' AND calls>=0),
+                    failures INTEGER NOT NULL CHECK(typeof(failures)='integer' AND failures>=0),
+                    completed_seconds REAL NOT NULL CHECK(completed_seconds>=0),
+                    PRIMARY KEY(owner,stage));
+                 CREATE INDEX attempts_by_job ON attempts(job);
+                 CREATE INDEX jobs_by_created ON jobs(created DESC);
+                 CREATE TRIGGER immutable_observations_update
+                    BEFORE UPDATE ON attempt_observations BEGIN
+                    SELECT RAISE(ABORT,'observations are append-only'); END;
+                 CREATE TRIGGER immutable_observations_delete
+                    BEFORE DELETE ON attempt_observations BEGIN
+                    SELECT RAISE(ABORT,'observations are append-only'); END;",
+            )?;
+            crate::observations::rebuild(&tx)?;
+            tx.pragma_update(None, "user_version", SCHEMA_VERSION)?;
+            tx.commit()?;
+        }
         Ok(Self { connection })
     }
 
@@ -118,10 +196,24 @@ impl Ledger {
         if text.len() > 1024 * 1024 {
             return Err(invalid("observation record exceeds 1MiB"));
         }
-        self.connection.execute(
+        let contribution = crate::observations::Totals::contribution(owner, payload)?;
+        let tx = self.connection.unchecked_transaction()?;
+        tx.execute(
             "INSERT INTO attempt_observations VALUES(?1,?2,?3,?4)",
             params![attempt, owner, text, crate::now()],
         )?;
+        contribution.apply(&tx)?;
+        tx.commit()?;
+        Ok(())
+    }
+
+    /// Rebuild the projection atomically from the retained raw observations.
+    pub fn rebuild_observation_metrics(&mut self) -> Result<()> {
+        let tx = self
+            .connection
+            .transaction_with_behavior(TransactionBehavior::Immediate)?;
+        crate::observations::rebuild(&tx)?;
+        tx.commit()?;
         Ok(())
     }
 
@@ -389,6 +481,41 @@ impl Ledger {
             |r| r.get(0),
         )?;
         Ok(serde_json::from_str(&text)?)
+    }
+
+    /// Original roots are audit metadata; restoring never rewrites frozen paths.
+    pub(crate) fn original_roots(&self) -> Result<Vec<String>> {
+        let mut roots = std::collections::BTreeSet::new();
+        let mut query = self
+            .connection
+            .prepare("SELECT id,directory FROM attempts")?;
+        let mut rows = query.query([])?;
+        while let Some(row) = rows.next()? {
+            let id: String = row.get(0)?;
+            crate::config::identifier(&id)?;
+            let directory: String = row.get(1)?;
+            let path = Path::new(&directory);
+            if !path.is_absolute()
+                || path.file_name().is_none_or(|name| name != id.as_str())
+                || path
+                    .parent()
+                    .and_then(Path::file_name)
+                    .is_none_or(|name| name != "attempts")
+                || path
+                    .components()
+                    .any(|c| matches!(c, std::path::Component::ParentDir))
+            {
+                return Err(invalid(
+                    "historical attempt path is not an absolute attempts/id path",
+                ));
+            }
+            let root = path
+                .parent()
+                .and_then(Path::parent)
+                .ok_or_else(|| invalid("attempt root missing"))?;
+            roots.insert(root.to_string_lossy().into_owned());
+        }
+        Ok(roots.into_iter().collect())
     }
 
     pub fn unfinished(&self) -> Result<Vec<RecoveryAttempt>> {

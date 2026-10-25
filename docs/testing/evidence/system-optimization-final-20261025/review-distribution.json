@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "head": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "files": [
+    {
+      "path": "docs/testing/evidence/system-review-20261025/actions-jobs-40137692144.json",
+      "bytes": 26403,
+      "sha256": "581284840c53c156950c4b733e6421808f51fd8f4e4eab721871b2cf8e086a2e",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/actions-runs.json",
+      "bytes": 14068,
+      "sha256": "6c95884167f29665a9dcb554cbd1a3525b5fe09fbca069094941503dc407d1db",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/admin-probes.json",
+      "bytes": 2063,
+      "sha256": "7ed6c148d558b8f41b8bce124625d4e082c1c76517c5b31b4e75debbec39ea0d",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/backup-budget-probe.json",
+      "bytes": 618,
+      "sha256": "becfac909fa571dc60adaccf30bea28dc8ceea72bf18f8455c90f96d22ad7ff4",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/backup-via-alias.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/backup-via-alias.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/build.log",
+      "bytes": 5541,
+      "sha256": "bf3896259f3603612f93c166fd892941416813f8865e626c349f6c2884393bf4",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/check-runs.json",
+      "bytes": 29883,
+      "sha256": "f00cdfe0b38143e1ffc72c3f82d0f16ae2ecb3848eb77e145013b464c1ffe829",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/checks.json",
+      "bytes": 1038,
+      "sha256": "7ddad12a0b7e29297104abaf75c011327ddaf12148f92c439afe548142fce24d",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/ci-121002606726.json",
+      "bytes": 1162,
+      "sha256": "e05463f35e3e3843819b255107d59d7496b7be4dd2cd4db1ca197cba9c37282a",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/ci-121002606726.log",
+      "bytes": 121871,
+      "sha256": "08972a87d8ae644ff39380d37e4c11f00ed86d3b13549faeb22b9090ca7a1eb3",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/ci-121002606786.json",
+      "bytes": 1131,
+      "sha256": "be2150598a09c94fba8a2256f4940a707b3137c1cac1ca45a71ebca73f5f1d87",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/ci-121002606786.log",
+      "bytes": 58720,
+      "sha256": "00584c6d2110c4b9bf4c431b6f7ada93c6ecc7884b72a2cfab9d88d5aee95fdb",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/ci-details-status.json",
+      "bytes": 465,
+      "sha256": "6119bb4751ab72cb3ec7f9654118cf48d5e117e646e3f70198e3e2ede615c466",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/ci-final-jobs.json",
+      "bytes": 27867,
+      "sha256": "478a7f8cd6634c7e5315a70083abce25d47e1aa76084e0b189f7c8762b9e6037",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/ci-final-run.json",
+      "bytes": 13123,
+      "sha256": "543f332598a8a4906e7a330e1a05d376935c568204b24ba2037edc9a487c11ef",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/ci-final-summary.json",
+      "bytes": 1967,
+      "sha256": "09fab3e7944d9d191e43dc400c9376a38ae7b6c2202d0f08c7b5a77b2e44ce80",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/data-status-command.json",
+      "bytes": 291,
+      "sha256": "ec925f801fa6a08035b6c0e9dece89fc1f47cef6e8aee9799688625ae33dfecf",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/data-status.json",
+      "bytes": 991,
+      "sha256": "f2b04ceaa89157905dcbfc9ebf65983ee51e241d59ece3852fb92e25d04e0f2a",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/data-status.stderr",
+      "bytes": 159,
+      "sha256": "38a99ba6dfc0f45cb62e3cb255a1787d86167fde8dae0fcd6ed1bfb37fab90af",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/data-status.stdout",
+      "bytes": 992,
+      "sha256": "31d56c6c012129cd900e1ed1cd36147bdacbcfa359fb2aa3d06b6ce614bb8eee",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/inventory.json",
+      "bytes": 4661,
+      "sha256": "25dd84252aea4d220687710e2896a34e09440f1c6dc6a78289d3130a24cb6b0d",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/python.log",
+      "bytes": 1119,
+      "sha256": "8a4beede576bdee2e4c3b407ad21088e62593404778c2fe16972345636c9ca03",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/remote-status.json",
+      "bytes": 598,
+      "sha256": "47b0556f03b9542d0d285fd52c09016da19fb48884e96ac1f27873ca3b4bbb68",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/repository-inventory.json",
+      "bytes": 791,
+      "sha256": "c804e984c39d785321a64081461cf86ad31a14df149b4094d9d6e568d6a01c6d",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/reservation-analysis.json",
+      "bytes": 379,
+      "sha256": "cc562414a4f62a4219be80bc83db00905e23b490caa4bb84d0b44e938bf152a0",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/runner-lib.log",
+      "bytes": 5851,
+      "sha256": "bd533ef1ee3e937fbdb715b23dbd4723f7dcdbc0e87754ab27ecda9bd5ff5231",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/source-identity.json",
+      "bytes": 27038,
+      "sha256": "a3bdbf6cd00093db71a1753ebde7940c6bba231d6c6f92caf4487d0a327b9c1c",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/status-creates-ledger.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/status-creates-ledger.stdout",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "availability": "ordinary_git"
+    },
+    {
+      "path": "docs/testing/evidence/system-review-20261025/summary.json",
+      "bytes": 1822,
+      "sha256": "952d49fd70b907fa7fbdc39d3c704f8722546ef290a62de152fef4c3a3e6f0a4",
+      "availability": "ordinary_git"
+    }
+  ],
+  "files_sha256": "ef084f19f294e41c82f692d348d27988d3f984eab4cb6adc9b970f57a4a585df",
+  "frozen_head_bytes": "verified",
+  "local_binaries_included": true,
+  "local_binaries_declared": 12,
+  "local_binaries_reference": "docs/testing/evidence/optimization-source-delivery-20261025/local-binaries.json",
+  "remote_object_store": "not configured",
+  "retention": "Existing Git history and local originals retained; no migration or deletion performed.",
+  "archive": {
+    "bytes": 62905,
+    "sha256": "5a75a25c9e539e3aefa463ab730d8e7056647d0119149f0f989261bedc5d3ede",
+    "prefix": "docs/testing/evidence/system-review-20261025/"
+  }
+}

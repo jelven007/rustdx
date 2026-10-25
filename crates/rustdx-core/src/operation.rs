@@ -168,27 +168,51 @@ mod tests {
     use super::*;
 
     #[test]
-    fn absolute_deadline_and_worker_cancellation() {
-        let task = OperationContext::new(Duration::from_millis(60), None).unwrap();
+    fn absolute_deadline_is_not_refreshed() {
+        let mut task = OperationContext::new(Duration::from_secs(60), None).unwrap();
+        let deadline = task.deadline;
         let _guard = task.enter();
-        sleep(Duration::from_millis(40)).unwrap();
-        assert!(timeout(Duration::from_secs(10)).unwrap() < Duration::from_millis(30));
+        assert!(timeout(Duration::from_secs(120)).unwrap() <= Duration::from_secs(60));
+        assert_eq!(OperationContext::current().unwrap().deadline, deadline);
+        drop(_guard);
+        // Inject an already expired deadline; no scheduler timing assumption.
+        task.deadline = Instant::now();
+        let _guard = task.enter();
+        assert_eq!(check().unwrap_err().kind(), io::ErrorKind::TimedOut);
+        assert_eq!(
+            sleep(Duration::ZERO).unwrap_err().kind(),
+            io::ErrorKind::TimedOut
+        );
+    }
+
+    #[test]
+    fn worker_cancellation_after_entering_context() {
+        let task = OperationContext::new(Duration::from_secs(60), None).unwrap();
+        let (ready_tx, ready_rx) = std::sync::mpsc::channel();
+        let (cancel_tx, cancel_rx) = std::sync::mpsc::channel();
         let worker = task.clone();
         let thread = std::thread::spawn(move || {
             let _guard = worker.enter();
+            check().unwrap();
+            ready_tx.send(()).unwrap();
+            cancel_rx.recv_timeout(Duration::from_secs(10)).unwrap();
             sleep(Duration::from_secs(10)).unwrap_err().kind()
         });
+        ready_rx.recv_timeout(Duration::from_secs(10)).unwrap();
         task.cancel();
+        cancel_tx.send(()).unwrap();
         assert_eq!(thread.join().unwrap(), io::ErrorKind::Interrupted);
     }
 
     #[test]
     fn scopes_restore_and_expiry_is_not_refreshed() {
-        let task = OperationContext::new(Duration::from_millis(5), None).unwrap();
+        let mut task = OperationContext::new(Duration::from_secs(60), None).unwrap();
+        task.deadline = Instant::now();
         let guard = task.enter();
-        let nested = OperationContext::new(Duration::from_secs(10), None).unwrap();
+        let nested = OperationContext::new(Duration::from_secs(120), None).unwrap();
         let inner = nested.enter();
-        assert!(sleep(Duration::from_millis(15)).is_err());
+        assert_eq!(OperationContext::current().unwrap().deadline, task.deadline);
+        assert!(check().is_err());
         drop(inner);
         assert_eq!(check().unwrap_err().kind(), io::ErrorKind::TimedOut);
         drop(guard);

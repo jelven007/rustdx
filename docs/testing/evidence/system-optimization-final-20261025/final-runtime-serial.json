@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "env",
+        "RUSTDX_TEST_CLI=/tmp/rustdx-system-review-20261025/target/debug/rustdx",
+        "RUSTDX_TEST_CH_USER=default",
+        "RUSTDX_TEST_CH_PASSWORD=",
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "--include-ignored",
+        "--skip",
+        "real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "seconds": 44.438334000000005,
+      "log": "final-runtime-serial-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "--release",
+        "-p",
+        "jelven-rustdx-cli",
+        "-p",
+        "rustdx-runner",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 138.83339695799998,
+      "log": "final-runtime-serial-1.log"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+# TYPE rustdx_jobs gauge
+rustdx_jobs{state="failed"} 20000
+# TYPE rustdx_events_total counter
+rustdx_events_total 0
+# TYPE rustdx_unfinished_attempts gauge
+rustdx_unfinished_attempts 0
+# TYPE rustdx_publication_timestamp_seconds gauge
+# TYPE rustdx_metrics_timestamp_seconds gauge
+rustdx_metrics_timestamp_seconds 1792883434
+# Persisted per-process records; unavailable workers are not zero-network samples.
+rustdx_observed_acquisition_timeouts_total{owner="worker"} 60000
+rustdx_observed_empty_responses_total{owner="worker"} 20000
+rustdx_observed_queue_wait_micros_total{owner="worker"} 2400000
+rustdx_observed_records_complete_total{owner="worker"} 20000
+rustdx_observed_request_failures_total{owner="worker"} 40000
+rustdx_observed_requests_total{owner="worker"} 180000
+rustdx_stage_calls_total{owner="worker",stage="parse"} 40000
+rustdx_stage_failures_total{owner="worker",stage="parse"} 20000
+rustdx_stage_completed_seconds_total{owner="worker",stage="parse"} 40000
+# TYPE rustdx_observation_missing_records gauge
+rustdx_observation_missing_records{owner="worker"} 0
+rustdx_observation_missing_records{owner="controller"} 20000
+# TYPE rustdx_root_free_bytes gauge
+rustdx_root_free_bytes 358127316992

@@ -1,0 +1,9 @@
+[
+  {
+    "job_id": "fixture",
+    "dataset_id": "fixture",
+    "state": "quarantined",
+    "attempts": 1,
+    "detail": "synthetic"
+  }
+]

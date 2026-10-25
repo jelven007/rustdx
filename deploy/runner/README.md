@@ -2,9 +2,9 @@
 
 模板用于 Linux/systemd 的本地 `.day` 采集与版本发布。实际代码仍是同步 I/O、有界线程和子进程；没有跨机协调、跨库事务或内置 Web 服务。模板未在目标 Linux 验收，资源数值是起始配置，须按实际负载调整。
 
-新增[少量TCP日线配置](../../config/runner/tcp-day.example.json)可由同一run入口执行，
+新增[TCP日线配置](../../config/runner/tcp-day.example.json)可由同一run入口执行，
 需按[来源合同](../../docs/development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)
-维护获取日、单位依据、点时范围和网络许可；此来源只取得本机模拟验证，
+维护获取日、单位依据、点时范围和网络许可；此来源已有明确两节点/3证券/24条独立样本，
 模板的目标Linux验收仍未完成。
 
 ## 1. 准备与配置
@@ -92,4 +92,10 @@ rustdx-runner --no-tcp-startup export --root /srv/restore/rustdx-001 --dataset a
 
 生产恢复到新端点时，先按[应用接入约定](../../docs/development/APPLICATION_INTEGRATION.md)核查已归档目标身份。恢复控制文件不会自动重写原始请求证据或把收据指向另一库；端点迁移和业务切换须另外编排并验证。目标RPO/RTO与生产恢复通过状态继续按[验收矩阵](../../docs/testing/PRODUCTION_ACCEPTANCE.md)管理。
 
-MongoDB适配当前每个有界逻辑请求启动一次 mongosh，依次写入/回读512行；内存与请求大小有界，但进程启动和连接成本较高。1,200行模拟数据的本机服务验证不能代替全量吞吐量、稳定版本Linux或长期SLO验收。实施证据与尚未通过的门禁见[实施记录](../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。
+MongoDB按目标/release复用mongosh会话，每请求至多512行；固定catalog数据库导出也按release复用会话，独立查询审计不追加发布账本。`consumer-audit`不包含在控制层备份中，部署方须另定审计保留期限、总磁盘配额及采集方式；当前留存预览保护该目录，不自动删除。升级到schema4前保存旧备份，执行`migrate`，必要时用`rebuild-metrics`从原观测重建汇总；schema3备份可原样恢复后显式迁移。运行前可执行只读`plan`核对应有键和有效并发。
+
+1,200行工程模拟和单次20,000条指标历史测量不能代替全量吞吐量、稳定Linux或长期SLO验收。当前消费/计量合同见[runner说明](../../apps/rustdx-runner/README.md)，已取得的历史及目标环境限制见[实施记录](../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。
+
+生产准入使用[任务/部署验收合同](../../docs/testing/TASK_ADMISSION.md)绑定实际目标、同源码二进制、
+配置/事实、资源硬限额、全键字段、权限、持续负载与批准的RPO/RTO。默认模板退出1，
+分钟/快照/订阅没有runner任务入口；本机工程通过不代替这些目标证据。

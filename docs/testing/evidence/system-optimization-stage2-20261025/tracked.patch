@@ -1,0 +1,2889 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 3b24e9c..62c411d 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -12,10 +12,16 @@ env:
+ permissions:
+   contents: read
+ 
++concurrency:
++  group: ci-${{ github.workflow }}-${{ github.ref }}
++  cancel-in-progress: true
++
+ jobs:
+   test:
+-    name: Build / Test / Clippy
++    name: Build / Test
++    timeout-minutes: 30
+     strategy:
++      fail-fast: false
+       matrix:
+         include:
+           - os: ubuntu-latest
+@@ -54,14 +60,26 @@ jobs:
+           --include-ignored
+           --skip real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence
+ 
+-      - name: Clippy (deny warnings)
+-        run: cargo clippy --workspace ${{ matrix.package_args }} --all-targets --all-features --locked -- -D warnings
+-
+-      - name: Format check
+-        run: cargo fmt --all -- --check
++  quality:
++    name: Format / Clippy / Documentation
++    runs-on: ubuntu-latest
++    timeout-minutes: 25
++    steps:
++      - uses: actions/checkout@v4
++      - uses: dtolnay/rust-toolchain@master
++        with:
++          toolchain: "1.89.0"
++          components: clippy, rustfmt
++      - uses: swatinem/rust-cache@v2
++      - run: cargo fmt --all -- --check
++      - run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
++      - run: cargo doc --workspace --all-features --no-deps --locked
++        env:
++          RUSTDOCFLAGS: "-D warnings"
+ 
+   msrv:
+     runs-on: ubuntu-latest
++    timeout-minutes: 30
+     steps:
+       - uses: actions/checkout@v4
+       - uses: dtolnay/rust-toolchain@master
+@@ -73,6 +91,7 @@ jobs:
+   contracts:
+     name: Behavior / Consumers / Packages
+     runs-on: ubuntu-latest
++    timeout-minutes: 30
+     steps:
+       - uses: actions/checkout@v4
+       - uses: dtolnay/rust-toolchain@master
+@@ -107,6 +126,7 @@ jobs:
+ 
+   fuzz:
+     runs-on: ubuntu-latest
++    timeout-minutes: 20
+     steps:
+       - uses: actions/checkout@v4
+       - uses: dtolnay/rust-toolchain@nightly
+@@ -124,6 +144,7 @@ jobs:
+   performance:
+     name: Same-host indicator regression
+     runs-on: ubuntu-latest
++    timeout-minutes: 20
+     steps:
+       - uses: actions/checkout@v4
+         with:
+diff --git a/.github/workflows/data-coverage.yml b/.github/workflows/data-coverage.yml
+index 065d817..e11a18d 100644
+--- a/.github/workflows/data-coverage.yml
++++ b/.github/workflows/data-coverage.yml
+@@ -11,6 +11,7 @@ permissions:
+ jobs:
+   coverage:
+     runs-on: ubuntu-latest
++    timeout-minutes: 15
+     steps:
+       - uses: actions/checkout@v4
+       - uses: dtolnay/rust-toolchain@master
+@@ -19,8 +20,13 @@ jobs:
+       - uses: swatinem/rust-cache@v2
+       - name: Check evidence horizon
+         run: cargo run --locked -p jelven-rustdx-cli -- --no-tcp-startup data-status --warn-days 90 --report data-coverage.json --strict
++      - name: Audit maintenance responsibilities and declared evidence
++        if: always()
++        run: python3 scripts/validation/audit_fact_maintenance.py --registry config/maintenance/facts.example.json --evidence-root . --output fact-maintenance.json
+       - uses: actions/upload-artifact@v4
+         if: always()
+         with:
+           name: data-coverage
+-          path: data-coverage.json
++          path: |
++            data-coverage.json
++            fact-maintenance.json
+diff --git a/.github/workflows/database-acceptance.yml b/.github/workflows/database-acceptance.yml
+index 555ba58..8d8214d 100644
+--- a/.github/workflows/database-acceptance.yml
++++ b/.github/workflows/database-acceptance.yml
+@@ -1,6 +1,9 @@
+ name: Database acceptance
+ 
+ on:
++  push:
++    branches: [main]
++    paths: ["apps/rustdx-cli/**", "apps/rustdx-runner/**", "crates/rustdx-core/**", "Cargo.toml", "Cargo.lock", "scripts/validation/**", "scripts/bench/measure_database_readback.py", "deploy/**", ".github/workflows/database-acceptance.yml"]
+   pull_request:
+     paths: ["apps/rustdx-cli/**", "apps/rustdx-runner/**", "crates/rustdx-core/**", "Cargo.toml", "Cargo.lock", "scripts/validation/*database*.py", "scripts/bench/measure_database_readback.py", "deploy/**", ".github/workflows/database-acceptance.yml"]
+   workflow_dispatch:
+@@ -13,10 +16,14 @@ on:
+ permissions:
+   contents: read
+ 
++concurrency:
++  group: database-acceptance-${{ github.ref }}
++  cancel-in-progress: false
++
+ jobs:
+   databases:
+     runs-on: ubuntu-24.04
+-    timeout-minutes: 25
++    timeout-minutes: 35
+     env:
+       CLICKHOUSE_URL: http://127.0.0.1:18123
+       MONGODB_URI: mongodb://127.0.0.1:27018
+@@ -39,6 +46,10 @@ jobs:
+           curl --fail --location --retry 2 --max-time 180 \
+             https://downloads.mongodb.com/compass/mongosh-2.5.10-linux-x64.tgz \
+             -o "$tools_dir/mongosh.tgz"
++          (
++            cd "$tools_dir"
++            sha256sum --check "$GITHUB_WORKSPACE/deploy/acceptance/tool-archives.sha256"
++          )
+           tar -xzf "$tools_dir/database-tools.tgz" -C "$tools_dir"
+           tar -xzf "$tools_dir/mongosh.tgz" -C "$tools_dir"
+           echo "$tools_dir/mongodb-database-tools-ubuntu2404-x86_64-100.12.2/bin" >> "$GITHUB_PATH"
+@@ -69,6 +80,7 @@ jobs:
+           mkdir -p acceptance
+           set -o pipefail
+           node apps/rustdx-runner/tests/database_mongo_protocol.cjs | tee acceptance/runner-mongo-protocol.log
++          cargo test -p rustdx-runner --test administration --locked -- --nocapture
+           cargo test -p rustdx-runner --test control_plane --locked \
+             -- --include-ignored --nocapture --test-threads=1 | tee acceptance/runner-tests.log
+       - name: Repeated 65,536-row import and independent readback
+diff --git a/apps/rustdx-cli/src/tcp_day.rs b/apps/rustdx-cli/src/tcp_day.rs
+index 5336940..7787a46 100644
+--- a/apps/rustdx-cli/src/tcp_day.rs
++++ b/apps/rustdx-cli/src/tcp_day.rs
+@@ -27,7 +27,7 @@ use sha2::{Digest, Sha256};
+ use crate::tcp_evidence::visit_records;
+ 
+ mod acquisition;
+-pub use acquisition::{Schedule, verify_archive_budget};
++pub use acquisition::{ReservationPlan, Schedule, reservation_plan, verify_archive_budget};
+ 
+ pub const SOURCE_CONTRACT: &str = "a-share/tcp-052b/day/raw/cny/integer-shares/v2";
+ pub const LEGACY_SOURCE_CONTRACT: &str = "a-share/tcp-052d/day/raw/cny/lots-100-shares/v1";
+diff --git a/apps/rustdx-cli/src/tcp_day/acquisition.rs b/apps/rustdx-cli/src/tcp_day/acquisition.rs
+index e1aca02..33f8b04 100644
+--- a/apps/rustdx-cli/src/tcp_day/acquisition.rs
++++ b/apps/rustdx-cli/src/tcp_day/acquisition.rs
+@@ -1,5 +1,6 @@
+ //! Reservation-based windows. Workers return counts, never queued decoded rows.
+ use std::{
++    collections::BTreeMap,
+     fs::{self, File, OpenOptions},
+     io::{self, Write},
+     path::Path,
+@@ -83,16 +84,30 @@ struct Budget {
+ }
+ 
+ impl Budget {
+-    fn window(&self, request: &Request, count: usize) -> io::Result<Vec<Grant>> {
++    fn slot_limits(&self, request: &Request, count: usize) -> BTreeMap<&'static str, usize> {
+         let source = &request.source;
+-        let slots = count
+-            .min((self.raw / source.max_raw_rows as u64).min(8) as usize)
+-            .min(
++        BTreeMap::from([
++            ("requested", count),
++            (
++                "raw_rows",
++                (self.raw / source.max_raw_rows as u64).min(8) as usize,
++            ),
++            (
++                "payload_bytes",
+                 (self.payload / (source.max_payload_bytes as u64 + FINAL_PAGE_RESERVE)).min(8)
+                     as usize,
+-            )
+-            .min((self.archive / (receipt_reserve(request) + 1024)).min(8) as usize)
+-            .min(self.wire / 4);
++            ),
++            (
++                "archive_bytes",
++                (self.archive / (receipt_reserve(request) + 1024)).min(8) as usize,
++            ),
++            ("wire_records", self.wire / 4),
++        ])
++    }
++
++    fn window(&self, request: &Request, count: usize) -> io::Result<Vec<Grant>> {
++        let limits = self.slot_limits(request, count);
++        let slots = limits.values().copied().min().unwrap_or(0);
+         if slots == 0 {
+             return Err(invalid(
+                 "TCP total acquisition budget cannot reserve another security",
+@@ -131,6 +146,80 @@ fn receipt_reserve(request: &Request) -> u64 {
+     (request.source.max_raw_rows as u64 * 512 + 65536).min(JSON_LIMIT)
+ }
+ 
++/// The same initial reservation calculation used by collection. No network or disk writes.
++#[derive(Debug, Serialize)]
++pub struct ReservationPlan {
++    pub max_parallel: usize,
++    pub effective_parallel: usize,
++    pub slot_limits: BTreeMap<&'static str, usize>,
++    pub limiting_budgets: Vec<&'static str>,
++    pub securities: usize,
++    pub raw_rows_per_security: u64,
++    pub payload_reserve_per_security: u64,
++    pub archive_reserve_per_security: u64,
++    pub minimum_collection_wire_records: u64,
++    pub maximum_collection_requests: u64,
++    pub worst_case_raw_rows: u64,
++    pub worst_case_payload_bytes: u64,
++    pub worst_case_budget_gaps: Vec<&'static str>,
++    pub deadline_seconds: u64,
++}
++
++pub fn reservation_plan(request: &Request, connection_limit: usize) -> io::Result<ReservationPlan> {
++    request.validate()?;
++    let schedule = Schedule::for_request(request);
++    let budget = Budget {
++        raw: schedule.max_raw_rows,
++        payload: schedule.max_payload_bytes,
++        archive: request.max_archive_bytes,
++        wire: request.source.max_wire_records,
++    };
++    let mut slot_limits = budget.slot_limits(request, schedule.max_parallel);
++    slot_limits.insert("connections", connection_limit);
++    slot_limits.insert("securities", request.codes.len());
++    let effective_parallel = slot_limits.values().copied().min().unwrap_or(0);
++    let limiting_budgets = slot_limits
++        .iter()
++        .filter_map(|(label, count)| (*count == effective_parallel).then_some(*label))
++        .collect();
++    let securities = request.codes.len() as u64;
++    let raw_rows_per_security = request.source.max_raw_rows as u64;
++    let payload_reserve_per_security = request.source.max_payload_bytes as u64 + FINAL_PAGE_RESERVE;
++    let archive_reserve_per_security = receipt_reserve(request) + 1024;
++    let worst_case_raw_rows = securities * raw_rows_per_security;
++    let worst_case_payload_bytes = securities * payload_reserve_per_security;
++    let mut worst_case_budget_gaps = Vec::new();
++    if worst_case_raw_rows > budget.raw {
++        worst_case_budget_gaps.push("raw_rows");
++    }
++    if worst_case_payload_bytes > budget.payload {
++        worst_case_budget_gaps.push("payload_bytes");
++    }
++    if securities * archive_reserve_per_security > budget.archive {
++        worst_case_budget_gaps.push("receipt_archive_reservations");
++    }
++    let maximum_collection_requests = securities * (1 + 2 * request.source.max_pages as u64);
++    if maximum_collection_requests * 2 > budget.wire as u64 {
++        worst_case_budget_gaps.push("wire_records");
++    }
++    Ok(ReservationPlan {
++        max_parallel: schedule.max_parallel,
++        effective_parallel,
++        slot_limits,
++        limiting_budgets,
++        securities: request.codes.len(),
++        raw_rows_per_security,
++        payload_reserve_per_security,
++        archive_reserve_per_security,
++        minimum_collection_wire_records: securities * 4,
++        maximum_collection_requests,
++        worst_case_raw_rows,
++        worst_case_payload_bytes,
++        worst_case_budget_gaps,
++        deadline_seconds: schedule.timeout_seconds,
++    })
++}
++
+ fn fetch(
+     raw: &Path,
+     request: &Request,
+diff --git a/apps/rustdx-runner/README.md b/apps/rustdx-runner/README.md
+index acab674..1392ba0 100644
+--- a/apps/rustdx-runner/README.md
++++ b/apps/rustdx-runner/README.md
+@@ -1,6 +1,6 @@
+ # rustdx-runner
+ 
+-Rust2024 / MSRV1.89 的同步单机生产控制层。采集支持明确的本地 `.day` 目录或少量证券的显式 TCP 日线来源，数据契约固定为 A 股、日线、原价、人民币元及股；worker生成私有文件，发布者完成业务覆盖和可选数据库验收后推进SQLite中的目录指针。该crate版本0.1.0，不发布到crates.io。
++Rust2024 / MSRV1.89 的同步单机生产控制层。采集支持明确的本地 `.day` 目录或有总预算的显式 TCP 日线来源，数据契约固定为 A 股、日线、原价、人民币元及股；worker生成私有文件，发布者完成业务覆盖和可选数据库验收后推进SQLite中的目录指针。该crate版本0.1.0，不发布到crates.io。
+ 
+ ## 发布链路
+ 
+@@ -21,6 +21,7 @@ Rust2024 / MSRV1.89 的同步单机生产控制层。采集支持明确的本地
+ ```sh
+ cargo +1.89.0 build -p jelven-rustdx-cli -p rustdx-runner
+ rustdx-runner run --config /etc/rustdx/job.json
++rustdx-runner migrate --root /var/lib/rustdx
+ rustdx-runner status --root /var/lib/rustdx
+ rustdx-runner metrics --root /var/lib/rustdx
+ rustdx-runner metrics --root /var/lib/rustdx --output /srv/metrics/rustdx.prom
+@@ -38,9 +39,17 @@ rustdx-runner restore --root /srv/backups/rustdx-001 --destination /srv/restore/
+ 
+ 配置入口为[严格Job JSON](../../config/runner/job.example.json)；数据库由DBA预建[表/索引](../../deploy/runner/README.md)，运行期只查询/插入，不执行DDL、upsert或删除。凭据使用JSON中指定的`RUSTDX_`环境变量，worker清空继承环境。ClickHouse使用普通MergeTree，MongoDB使用完整唯一索引；不复用旧平面表。
+ 
++`status/metrics/catalog`及文件消费只打开已有账本，不创建或迁移。空目录和不兼容schema返回错误；初始化/迁移使用`migrate`，写入/迁移由根目录控制锁排他保护。库调用方用`Ledger::open_existing_readonly`查询，持有`RootLock`后用`open_writer`写入；旧`open`在初始化/迁移期间自行取得锁。SQLite只读连接仍可能需要WAL/shm辅助文件，不是不可变快照；严格零写巡检采用留存工具的私有WAL快照。
++
+ 数据库回读按 `(contract_version,date,market,code,instrument_class)` 完整键继续，dataset/release 为索引的相等前缀；单日读取加日期过滤。MongoDB每目标会话复用一个mongosh，每请求确认query_id，结束时检查EOF与退出状态；半帧、超限、取消和超时终止整个进程组。全字段比较、release总数与终止空查询继续防止缺键、多余键和重复数据被接受。
+ 
+-首次数据库请求前按封存行数与JSON字节计量预测I/O、证明文件、总证据字节和条目数，为发布、一次恢复及一次完整消费回读预留空间；全部目标共同检查release证据目录，不满足预算则在写入前拒绝。预测另存 `database/<release>/capacity-*.json`。50,000次I/O、200,000目录条目、32MiB证明文件上限仍有效；后续重复恢复或消费继续受剩余预算限制。会话内增量计量，启动与结束完整对账；冻结配置不再每请求重新加载。
++首次数据库请求前按封存行数与JSON字节预测发布及一次恢复的I/O、证明和证据预算，全部目标共同检查release目录，不满足则在写入前拒绝。预测另存`database/<release>/capacity-*.json`。发布命名空间仍限制50,000次I/O、200,000目录条目及32MiB证明；重复恢复受剩余预算限制。消费查询使用独立命名空间，不再消耗发布`target_io`。
++
++`PinnedDataset`内部catalog及release清单固定，只提供`catalog()`共享只读访问。一次数据库导出按release复用会话，在日期顺序输出时逐键逐字段核对，每日终止空页仍检查，结束时每release检查一次完整总数。查询凭据写入`consumer-audit/q-<timestamp>-<pid>/<release>/<target>`；每请求保存request/response及SHA收据，只有全部回读核验成功才写`verified.json`，它不表示CSV已经原子提交。独立会话最多50,000次请求、200,000条目，字节上限取所选release冻结`max_workspace_bytes`的最小值；不取得控制锁，不修改账本。查询审计不随控制层备份复制，留存预览暂整体保护该目录，保留期限和总磁盘硬配额由部署方另行制定；不自动删除。
++
++账本当前schema4。`migrate`在根锁内从原观测重建指标汇总并增加Job时间/Attempt归属索引；原JSON记录保留且只追加。`metrics`读取汇总，unavailable与缺失记录分别报告。`rustdx-runner rebuild-metrics --root /var/lib/rustdx`在事务内重建，异常或溢出回滚；原schema3备份可原字节恢复，恢复后须显式`migrate`才能运行当前查询。迁移前保留原备份，回退使用旧二进制与旧备份，不手改版本号。
++
++归一化在输入固定后只计量SQLite/journal/WAL/shm、coverage及partitions等变化部分；最终完整扫描与摘要封存继续执行，`release.json`也计入总字节预算。
+ 
+ runner本地day及管理命令默认不启动行情TCP。--tcp-warmup显式测量初始池、
+ 建立TCP客户端并验证0004心跳；TCP来源自行核验冻结节点。三轮、8并发、阶段3秒，
+@@ -56,6 +65,8 @@ run的严格JSON可设置`"no_tcp_startup": true`，也可使用命令行开关
+ 
+ 备份持有同一控制锁，拒绝活动/不明确worker，使用SQLite在线备份API取得已提交WAL内容，同时复制候选、release、catalog和数据库请求/响应。只有最后写出的`backup.json`存在且所有摘要通过，备份才完整。恢复要求全新隔离目录，检查库存摘要、SQLite完整性/外键、全部release、历史目录引用和数据库证据，最终写出`restore-validated.json`；恢复操作本身不连接数据库、不自动切换生产目录，入口默认离线。这不是数据库服务端数据卷备份。
+ 
++备份/恢复解析已有父目录的实际路径，拒绝目标落入源目录或包含`..`；`max_bytes`包含清单/完成标记。新SQLite备份为独立DELETE模式快照，恢复校验无需额外WAL。恢复标记记录`original_roots`，历史账本绝对路径保持原字节；留存预览据此映射`attempts/<id>`，并验证Receipt的proof及其I/O摘要，不改写旧证据。
++
+ ## TCP留证接口
+ 
+ 核心库`Tcp::with_config_and_observer`接受同步`FrameObserver`，从首次握手起记录请求及解压前完整帧，重连保留observer；回调失败使请求失败。CLI库`tcp_evidence::FrameArchive`提供限额、fsync及SHA-256库存，`load_response/replay`核查请求并调用checked解码。示例：
+@@ -71,6 +82,8 @@ cargo run -p jelven-rustdx-cli --example tcp_wire -- replay /archive 3
+ 
+ [TCP配置示例](../../config/runner/tcp-day.example.json)使用`tcp_day`与空`day_directories`；两种来源互斥。更换示例日期、端点、路径和全零摘要后运行。新冻结计划支持最多10000只排序唯一沪深A股，`workers.min(8)`为默认窗口并行度；`tcp_day_schedule`可显式设置总原始行、解压正文、期限及并行度。启动每个窗口前预留全部预算，受共享网络许可约束；余量不足减小窗口或失败。旧无schedule请求保持串行和32只上限。端点按独立IP池真实三轮探测后使用，不回退通用初始池；Job身份包含来源合同、端点和单位依据摘要。
+ 
++先执行`rustdx-runner plan --config /path/to/job.json --max-keys 10000 --network-limit 8`。预检只读取显式输入与磁盘容量，不初始化root、账本或网络许可目录；列出全部应有键的计数/摘要、有上限的键样本、事实/固定输入字节、初始有效并发及原行/正文/归档/wire限制。`can_start=false`输出报告后退出1；Unknown事实直接拒绝。最坏情况预算缺口单列，初始可启动不等于完整历史可完成。请求数上界仅包括逐证券采集握手/分页，探测另计；期限是中断上限，不是成功耗时预测。执行仍重新冻结并核验事实和预算。
++
+ `source_as_of=planned_date`须等于实际北京时间采集日，`through`必须早于它。该策略只接收已经结束的日期，不支持当天收盘后特例或历史时点回溯；历史bar是今天主站提供的版本。新采集来源为`a-share/tcp-052b/day/raw/cny/integer-shares/v2`，请求/收据schema2，股量直接来自052b整数股数，金额按binary32人民币元解码。`volume_evidence_sha256`引用facts目录中的单位材料，随日历/公告冻结；摘要只证明材料一致，仍须维护者独立审核范围与原价口径。旧052d来源v1仅支持原字段离线重放。单位、日期及来源合同见[应用接入](../../docs/development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)。
+ 
+ worker调用`rustdx --no-tcp-startup tcp-day --directory <candidate>`，此全局开关只跳过通用预热；TCP采集仍探测配置端点并使用受管许可。runner配置`no_tcp_startup=true`则拒绝TCP Job。父进程和worker不保留无用预热socket。
+diff --git a/apps/rustdx-runner/src/consumer.rs b/apps/rustdx-runner/src/consumer.rs
+index 84f3a3e..1437fa6 100644
+--- a/apps/rustdx-runner/src/consumer.rs
++++ b/apps/rustdx-runner/src/consumer.rs
+@@ -159,12 +159,13 @@ pub fn read_partition(
+ 
+ pub struct PinnedDataset {
+     root: PathBuf,
+-    pub catalog: Catalog,
++    catalog: Catalog,
++    manifests: BTreeMap<String, ReleaseManifest>,
+ }
+ 
+ impl PinnedDataset {
+     pub fn open(root: &Path, dataset: &str, version: Option<u64>) -> Result<Self> {
+-        let ledger = Ledger::open(&root.join("ledger.sqlite"))?;
++        let ledger = Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?;
+         let catalog = pipeline::fixed_catalog(root, &ledger, dataset, version)?
+             .ok_or_else(|| invalid("dataset/catalog has not been published"))?;
+         let mut manifests: BTreeMap<String, ReleaseManifest> = BTreeMap::new();
+@@ -211,9 +212,14 @@ impl PinnedDataset {
+         Ok(Self {
+             root: root.into(),
+             catalog,
++            manifests,
+         })
+     }
+ 
++    pub fn catalog(&self) -> &Catalog {
++        &self.catalog
++    }
++
+     pub fn export(
+         &self,
+         from: NaiveDate,
+@@ -235,10 +241,10 @@ impl PinnedDataset {
+         target: &str,
+     ) -> Result<u64> {
+         crate::config::identifier(target)?;
+-        let _lock = storage::RootLock::acquire(&self.root)?;
+         self.export_from(from, through, output, max_rows, max_bytes, Some(target))
+     }
+ 
++    #[allow(clippy::too_many_arguments)]
+     fn export_from(
+         &self,
+         from: NaiveDate,
+@@ -283,7 +289,49 @@ impl PinnedDataset {
+             });
+         writer.write_record(COLUMNS)?;
+         let mut rows = 0_u64;
+-        let ledger = Ledger::open(&self.root.join("ledger.sqlite"))?;
++        let mut sessions = BTreeMap::new();
++        let audit = if let Some(target) = target {
++            let releases: std::collections::BTreeSet<_> = self
++                .catalog
++                .partitions
++                .range(from..=through)
++                .map(|(_, p)| p.release_id.as_str())
++                .collect();
++            let mut budget = u64::MAX;
++            for release in &releases {
++                let manifest = self
++                    .manifests
++                    .get(*release)
++                    .ok_or_else(|| invalid("missing pinned release"))?;
++                // Fail before any database requests if a selected release lacks this target.
++                self.catalog
++                    .database_releases
++                    .get(*release)
++                    .and_then(|r| r.iter().find(|r| r.target.id() == target))
++                    .ok_or_else(|| invalid("target absent from released version"))?;
++                budget = budget.min(crate::database::readback_budget(&self.root, manifest)?);
++            }
++            let audit = crate::database::QueryAudit::new(&self.root, budget)?;
++            for release in releases {
++                let manifest = self
++                    .manifests
++                    .get(release)
++                    .ok_or_else(|| invalid("missing pinned release"))?;
++                let receipt = self
++                    .catalog
++                    .database_releases
++                    .get(release)
++                    .and_then(|r| r.iter().find(|r| r.target.id() == target))
++                    .ok_or_else(|| invalid("missing pinned receipt"))?;
++                sessions.insert(
++                    release,
++                    crate::database::ReadSession::new(&self.root, manifest, receipt, &audit),
++                );
++            }
++            Some(audit)
++        } else {
++            None
++        };
+         for partition in self
+             .catalog
+             .partitions
+@@ -298,23 +346,21 @@ impl PinnedDataset {
+                 writer.serialize(row)?;
+                 Ok(())
+             };
+-            if let Some(target) = target {
+-                let manifest = pipeline::release_manifest(
+-                    &self.root,
+-                    &ledger.release_evidence(&partition.release_id)?,
+-                )?;
+-                crate::database::read_verified_partition(
+-                    &self.root,
+-                    &ledger,
+-                    &manifest,
+-                    partition.date,
+-                    target,
+-                    &mut visit,
+-                )?;
++            if target.is_some() {
++                sessions
++                    .get(partition.release_id.as_str())
++                    .ok_or_else(|| invalid("missing release read session"))?
++                    .read_partition(partition.date, &mut visit)?;
+             } else {
+                 read_partition(&self.root, partition, &mut visit)?;
+             }
+         }
++        for session in sessions.values() {
++            session.finish()?;
++        }
++        if let Some(audit) = audit {
++            audit.finish()?;
++        }
+         writer.flush()?;
+         drop(writer);
+         rustdx_complete::operation::check().map_err(Error::from)?;
+diff --git a/apps/rustdx-runner/src/database.rs b/apps/rustdx-runner/src/database.rs
+index b5dd4de..8cf74a4 100644
+--- a/apps/rustdx-runner/src/database.rs
++++ b/apps/rustdx-runner/src/database.rs
+@@ -1,9 +1,9 @@
+ //! Insert-only versioned targets. A missing write acknowledgement is never retried.
+ use std::{
+-    cell::RefCell,
++    cell::{Cell, RefCell},
+     fs::{File, OpenOptions},
+     io::Read,
+-    path::Path,
++    path::{Path, PathBuf},
+     process::Command,
+     rc::Rc,
+     time::Duration,
+@@ -68,7 +68,7 @@ pub struct Receipt {
+ 
+ struct Session<'a> {
+     root: &'a Path,
+-    ledger: &'a Ledger,
++    audit: Audit<'a>,
+     release: &'a str,
+     target: &'a DatabaseTarget,
+     mongo: RefCell<Option<Process>>,
+@@ -76,6 +76,73 @@ struct Session<'a> {
+     usage: Rc<RefCell<storage::TreeUsage>>,
+ }
+ 
++enum Audit<'a> {
++    Publication(&'a Ledger),
++    Consumer {
++        directory: PathBuf,
++        sequence: Rc<Cell<u64>>,
++    },
++}
++
++/// Independent, bounded readback evidence. It never appends to the publication ledger.
++pub(crate) struct QueryAudit {
++    directory: PathBuf,
++    sequence: Rc<Cell<u64>>,
++    usage: Rc<RefCell<storage::TreeUsage>>,
++    max_bytes: u64,
++}
++
++impl QueryAudit {
++    pub(crate) fn new(root: &Path, max_bytes: u64) -> Result<Self> {
++        let parent = root.join("consumer-audit");
++        storage::private_directory(&parent)?;
++        let directory = parent.join(format!(
++            "q-{}-{}",
++            chrono::Utc::now()
++                .timestamp_nanos_opt()
++                .ok_or_else(|| invalid("timestamp overflow"))?,
++            std::process::id()
++        ));
++        // Never share a namespace, even if two callers obtain the same timestamp.
++        std::fs::create_dir(&directory)?;
++        storage::private_directory(&directory)?;
++        let bytes = serde_json::to_vec(&json!({
++            "schema_version":1,"kind":"consumer_readback","max_bytes":max_bytes,
++            "max_requests":IO_LIMIT,"started_at":crate::now()
++        }))?;
++        if bytes.len() as u64 + RESPONSE_LIMIT * 7 + 8192 > max_bytes {
++            return Err(invalid(
++                "consumer audit budget cannot cover a bounded response",
++            ));
++        }
++        storage::write_new(&directory.join("session.json"), &bytes)?;
++        Ok(Self {
++            directory,
++            sequence: Rc::new(Cell::new(0)),
++            usage: Rc::new(RefCell::new(storage::TreeUsage {
++                bytes: bytes.len() as u64,
++                entries: 1,
++            })),
++            max_bytes,
++        })
++    }
++
++    pub(crate) fn finish(&self) -> Result<()> {
++        let actual = storage::tree_usage(&self.directory)?;
++        let bytes = serde_json::to_vec(&json!({
++            "schema_version":1,"readback_verified_at":crate::now(),
++            "requests":self.sequence.get(),"evidence_bytes":actual.bytes
++        }))?;
++        if actual.bytes.saturating_add(bytes.len() as u64) > self.max_bytes
++            || actual.entries + 1 > storage::MAX_TREE_ENTRIES
++        {
++            return Err(invalid("consumer audit budget exhausted at reconciliation"));
++        }
++        storage::write_new(&self.directory.join("verified.json"), &bytes)?;
++        Ok(())
++    }
++}
++
+ fn check() -> Result<()> {
+     rustdx_complete::operation::check().map_err(Error::from)
+ }
+@@ -126,7 +193,11 @@ impl Session<'_> {
+             process.finish()?;
+         }
+         // Reconcile a stationary evidence tree at the session boundary.
+-        let actual = storage::tree_usage(&self.root.join("database").join(self.release))?;
++        let directory = match &self.audit {
++            Audit::Publication(_) => self.root.join("database").join(self.release),
++            Audit::Consumer { directory, .. } => directory.clone(),
++        };
++        let actual = storage::tree_usage(&directory)?;
+         if actual.bytes > self.max_workspace_bytes {
+             return Err(invalid(
+                 "database evidence budget exhausted at reconciliation",
+@@ -138,19 +209,29 @@ impl Session<'_> {
+ 
+     fn exchange(&self, payload: &Value, write: bool) -> Result<Vec<u8>> {
+         check()?;
+-        let sequence: i64 = self.ledger.connection.query_row(
+-            "SELECT coalesce(max(sequence),0)+1 FROM target_io WHERE release=?1 AND target=?2",
+-            params![self.release, self.target.id()],
+-            |r| r.get(0),
+-        )?;
++        let sequence = match &self.audit {
++            Audit::Publication(ledger) => ledger.connection.query_row(
++                "SELECT coalesce(max(sequence),0)+1 FROM target_io WHERE release=?1 AND target=?2",
++                params![self.release, self.target.id()],
++                |r| r.get::<_, i64>(0),
++            )?,
++            Audit::Consumer { sequence, .. } => {
++                let next = sequence.get().saturating_add(1);
++                if next > IO_LIMIT {
++                    return Err(invalid("consumer session I/O record limit exceeded"));
++                }
++                sequence.set(next);
++                next as i64
++            }
++        };
+         if !(1..=IO_LIMIT as i64).contains(&sequence) {
+             return Err(invalid("database I/O record limit exceeded"));
+         }
+-        let directory = self
+-            .root
+-            .join("database")
+-            .join(self.release)
+-            .join(self.target.id());
++        let directory = match &self.audit {
++            Audit::Publication(_) => self.root.join("database").join(self.release),
++            Audit::Consumer { directory, .. } => directory.join(self.release),
++        }
++        .join(self.target.id());
+         storage::private_directory(&directory)?;
+         let usage = *self.usage.borrow();
+         if usage.bytes.saturating_add(RESPONSE_LIMIT * 7 + 4096) > self.max_workspace_bytes
+@@ -165,7 +246,14 @@ impl Session<'_> {
+                 .ok_or_else(|| invalid("timestamp overflow"))?,
+             std::process::id()
+         ));
+-        let query_id = format!("{}-{}-{sequence}", self.release, self.target.id());
++        let namespace = match &self.audit {
++            Audit::Publication(_) => self.release,
++            Audit::Consumer { directory, .. } => directory
++                .file_name()
++                .and_then(|n| n.to_str())
++                .ok_or_else(|| invalid("invalid audit namespace"))?,
++        };
++        let query_id = format!("{namespace}-{}-{sequence}", self.target.id());
+         let request = json!({"query_id":query_id,"is_write":write,"payload":payload});
+         let bytes = serde_json::to_vec(&request)?;
+         if bytes.len() as u64 > RESPONSE_LIMIT {
+@@ -180,16 +268,20 @@ impl Session<'_> {
+         }
+         let request_evidence = storage::evidence(self.root, &request_path, RESPONSE_LIMIT)?;
+         // This durable intent precedes spawn/transmit. A crash cannot silently turn into a retry.
+-        self.ledger.connection.execute(
+-            "INSERT INTO target_io VALUES(?1,?2,?3,?4,?5,NULL)",
+-            params![
+-                self.release,
+-                self.target.id(),
+-                sequence,
+-                write,
+-                serde_json::to_string(&request_evidence)?
+-            ],
+-        )?;
++        if let Audit::Publication(ledger) = &self.audit {
++            ledger.connection.execute(
++                "INSERT INTO target_io VALUES(?1,?2,?3,?4,?5,NULL)",
++                params![
++                    self.release,
++                    self.target.id(),
++                    sequence,
++                    write,
++                    serde_json::to_string(&request_evidence)?
++                ],
++            )?;
++        } else if write {
++            return Err(invalid("consumer audit cannot transmit writes"));
++        }
+         let response_path = base.with_extension("response");
+         let response = match self.target {
+             DatabaseTarget::Clickhouse {
+@@ -296,15 +388,26 @@ impl Session<'_> {
+             usage.bytes = usage.bytes.saturating_add(evidence.bytes);
+             usage.entries += 1;
+         }
+-        self.ledger.connection.execute(
+-            "UPDATE target_io SET response=?4 WHERE release=?1 AND target=?2 AND sequence=?3",
+-            params![
+-                self.release,
+-                self.target.id(),
+-                sequence,
+-                serde_json::to_string(&evidence)?
+-            ],
+-        )?;
++        if let Audit::Publication(ledger) = &self.audit {
++            ledger.connection.execute(
++                "UPDATE target_io SET response=?4 WHERE release=?1 AND target=?2 AND sequence=?3",
++                params![
++                    self.release,
++                    self.target.id(),
++                    sequence,
++                    serde_json::to_string(&evidence)?
++                ],
++            )?;
++        } else {
++            let receipt = serde_json::to_vec(&json!({
++                "schema_version":1,"release":self.release,"target":self.target.id(),
++                "sequence":sequence,"request":request_evidence,"response":evidence
++            }))?;
++            storage::write_new(&base.with_extension("receipt.json"), &receipt)?;
++            let mut usage = self.usage.borrow_mut();
++            usage.bytes = usage.bytes.saturating_add(receipt.len() as u64);
++            usage.entries += 1;
++        }
+         Ok(response)
+     }
+ 
+@@ -402,6 +505,17 @@ impl Session<'_> {
+         manifest: &ReleaseManifest,
+         date: Option<chrono::NaiveDate>,
+         mut visitor: impl FnMut(CanonicalRow) -> Result<()>,
++    ) -> Result<u64> {
++        let verified = self.verify_partition_rows(manifest, date, &mut visitor)?;
++        self.verify_total(manifest)?;
++        Ok(verified)
++    }
++
++    fn verify_partition_rows(
++        &self,
++        manifest: &ReleaseManifest,
++        date: Option<chrono::NaiveDate>,
++        mut visitor: impl FnMut(CanonicalRow) -> Result<()>,
+     ) -> Result<u64> {
+         let mut batch = Vec::with_capacity(BATCH);
+         let mut after = None;
+@@ -439,16 +553,27 @@ impl Session<'_> {
+         if !batch.is_empty() {
+             verify(&mut batch)?;
+         }
+-        let total = manifest.partitions.values().map(|p| p.rows).sum::<u64>();
+-        if self.count(manifest)? != total
+-            || !self.fetch(manifest, after.as_ref(), date, 1)?.is_empty()
+-        {
++        if !self.fetch(manifest, after.as_ref(), date, 1)?.is_empty() {
+             return Err(invalid(
+                 "release has missing, duplicate or extra database keys",
+             ));
+         }
+         Ok(verified)
+     }
++
++    fn verify_total(&self, manifest: &ReleaseManifest) -> Result<()> {
++        let total = manifest
++            .partitions
++            .values()
++            .try_fold(0_u64, |n, p| n.checked_add(p.rows))
++            .ok_or_else(|| invalid("release row total overflow"))?;
++        if self.count(manifest)? != total {
++            return Err(invalid(
++                "release has missing, duplicate or extra database keys",
++            ));
++        }
++        Ok(())
++    }
+ }
+ 
+ pub fn prepare(
+@@ -497,17 +622,7 @@ pub fn prepare(
+                 Ok(())
+             })?;
+         }
+-        let partition_batches = manifest
+-            .partitions
+-            .values()
+-            .try_fold(0_u64, |n, p| n.checked_add(p.rows.div_ceil(BATCH as u64)))
+-            .ok_or_else(|| invalid("partition batch forecast overflow"))?;
+-        let capacity = Capacity::estimate(
+-            rows,
+-            row_bytes,
+-            partition_batches,
+-            manifest.partitions.len() as u64,
+-        )?;
++        let capacity = Capacity::estimate(rows, row_bytes)?;
+         let mut forecast = existing;
+         for target in &config.database_targets {
+             let used: u64 = ledger.connection.query_row(
+@@ -537,7 +652,7 @@ pub fn prepare(
+         let bytes = serde_json::to_vec(&json!({
+             "schema_version":1,"release":manifest.release_id,"per_target":capacity,
+             "targets":config.database_targets.len(),"recovery":recovery,
+-            "reserve":"publication, one recovery and one complete consumer readback",
++            "reserve":"publication and one recovery; consumer readbacks use independent query audits",
+             "checked_at":crate::now(),
+         }))?;
+         storage::write_new(&path, &bytes)?;
+@@ -557,7 +672,7 @@ pub fn prepare(
+             .optional()?;
+         let session = Session {
+             root,
+-            ledger,
++            audit: Audit::Publication(ledger),
+             release: &manifest.release_id,
+             target,
+             mongo: RefCell::new(None),
+@@ -729,25 +844,13 @@ pub fn read_verified(
+         .into_iter()
+         .find(|r| r.target.id() == target_id)
+         .ok_or_else(|| invalid("target absent from released version"))?;
+-    let session = Session {
+-        root,
+-        ledger,
+-        release: &manifest.release_id,
+-        target: &receipt.target,
+-        mongo: RefCell::new(None),
+-        max_workspace_bytes: Config::load(
+-            &root
+-                .join("releases")
+-                .join(&manifest.release_id)
+-                .join("job.json"),
+-        )?
+-        .max_workspace_bytes,
+-        usage: Rc::new(RefCell::new(storage::tree_usage(
+-            &root.join("database").join(&manifest.release_id),
+-        )?)),
+-    };
+-    let rows = session.verify(manifest, None, visitor)?;
++    let audit = QueryAudit::new(root, readback_budget(root, manifest)?)?;
++    let session = ReadSession::new(root, manifest, &receipt, &audit);
++    let rows = session
++        .session
++        .verify_partition_rows(manifest, None, visitor)?;
+     session.finish()?;
++    audit.finish()?;
+     Ok(rows)
+ }
+ 
+@@ -766,28 +869,75 @@ pub fn read_verified_partition(
+         .into_iter()
+         .find(|r| r.target.id() == target_id)
+         .ok_or_else(|| invalid("target absent from released version"))?;
+-    let session = Session {
+-        root,
+-        ledger,
+-        release: &manifest.release_id,
+-        target: &receipt.target,
+-        mongo: RefCell::new(None),
+-        max_workspace_bytes: Config::load(
+-            &root
+-                .join("releases")
+-                .join(&manifest.release_id)
+-                .join("job.json"),
+-        )?
+-        .max_workspace_bytes,
+-        usage: Rc::new(RefCell::new(storage::tree_usage(
+-            &root.join("database").join(&manifest.release_id),
+-        )?)),
+-    };
+-    let rows = session.verify(manifest, Some(date), visitor)?;
++    let audit = QueryAudit::new(root, readback_budget(root, manifest)?)?;
++    let session = ReadSession::new(root, manifest, &receipt, &audit);
++    let rows = session.read_partition(date, visitor)?;
+     session.finish()?;
++    audit.finish()?;
+     Ok(rows)
+ }
+ 
++pub(crate) fn readback_budget(root: &Path, manifest: &ReleaseManifest) -> Result<u64> {
++    Ok(Config::load(
++        &root
++            .join("releases")
++            .join(&manifest.release_id)
++            .join("job.json"),
++    )?
++    .max_workspace_bytes)
++}
++
++pub(crate) struct ReadSession<'a> {
++    session: Session<'a>,
++    manifest: &'a ReleaseManifest,
++}
++
++impl<'a> ReadSession<'a> {
++    pub(crate) fn new(
++        root: &'a Path,
++        manifest: &'a ReleaseManifest,
++        receipt: &'a Receipt,
++        audit: &QueryAudit,
++    ) -> Self {
++        Self {
++            session: Session {
++                root,
++                audit: Audit::Consumer {
++                    directory: audit.directory.clone(),
++                    sequence: Rc::clone(&audit.sequence),
++                },
++                release: &manifest.release_id,
++                target: &receipt.target,
++                mongo: RefCell::new(None),
++                max_workspace_bytes: audit.max_bytes,
++                usage: Rc::clone(&audit.usage),
++            },
++            manifest,
++        }
++    }
++
++    pub(crate) fn read_partition(
++        &self,
++        date: chrono::NaiveDate,
++        visitor: impl FnMut(CanonicalRow) -> Result<()>,
++    ) -> Result<u64> {
++        if !self.manifest.partitions.contains_key(&date) {
++            return Err(invalid("date absent from release"));
++        }
++        self.session
++            .verify_partition_rows(self.manifest, Some(date), visitor)
++    }
++
++    pub(crate) fn finish(&self) -> Result<()> {
++        self.session.verify_total(self.manifest)?;
++        // QueryAudit reconciles the shared tree once, after every release has finished.
++        if let Some(mut process) = self.session.mongo.borrow_mut().take() {
++            process.finish()?;
++        }
++        Ok(())
++    }
++}
++
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+@@ -885,6 +1035,11 @@ mod tests {
+             user_env: "PATH".into(),
+             password_env: "PATH".into(),
+         };
++        let mut expected_csv = csv::Writer::from_writer(Vec::new());
++        for row in &all {
++            expected_csv.serialize(&row.bar).unwrap();
++        }
++        let expected_hash = storage::sha256(&expected_csv.into_inner().unwrap());
+         // Independently expect cursor positions, rather than parsing our SQL
+         // to generate its own oracle. Day two starts at its own first key.
+         let server = std::thread::spawn(move || {
+@@ -892,12 +1047,33 @@ mod tests {
+                 (0, 512, None, None),
+                 (512, 512, Some(511), None),
+                 (1024, 176, Some(1023), None),
+-                (1200, 0, None, None),
+                 (1200, 0, Some(1199), None),
++                (1200, 0, None, None),
+                 (600, 512, None, Some("2026-07-07")),
+                 (1112, 88, Some(1111), Some("2026-07-07")),
++                (1200, 0, Some(1199), Some("2026-07-07")),
+                 (1200, 0, None, None),
++                // Baseline: each day finishes its own session and release count.
++                (0, 512, None, Some("2026-07-06")),
++                (512, 88, Some(511), Some("2026-07-06")),
++                (600, 0, Some(599), Some("2026-07-06")),
++                (1200, 0, None, None),
++                (600, 512, None, Some("2026-07-07")),
++                (1112, 88, Some(1111), Some("2026-07-07")),
+                 (1200, 0, Some(1199), Some("2026-07-07")),
++                (1200, 0, None, None),
++                // A single consumer session: two partition tails, one release count.
++                (0, 512, None, Some("2026-07-06")),
++                (512, 88, Some(511), Some("2026-07-06")),
++                (600, 0, Some(599), Some("2026-07-06")),
++                (600, 512, None, Some("2026-07-07")),
++                (1112, 88, Some(1111), Some("2026-07-07")),
++                (1200, 0, Some(1199), Some("2026-07-07")),
++                (1200, 0, None, None),
++                // An extra tail key must fail, even when every expected row matched.
++                (0, 512, None, Some("2026-07-06")),
++                (512, 88, Some(511), Some("2026-07-06")),
++                (599, 1, Some(599), Some("2026-07-06")),
+             ];
+             for (start, n, after, date) in cases {
+                 let (mut socket, _) = listener.accept().unwrap();
+@@ -957,7 +1133,7 @@ mod tests {
+         });
+         let session = Session {
+             root,
+-            ledger: &ledger,
++            audit: Audit::Publication(&ledger),
+             release,
+             target: &target,
+             mongo: RefCell::new(None),
+@@ -973,6 +1149,66 @@ mod tests {
+             600
+         );
+         session.finish().unwrap();
++        ledger
++            .connection
++            .execute("UPDATE target_io SET sequence=50000 WHERE sequence=9", [])
++            .unwrap();
++        let receipt = Receipt {
++            target: target.clone(),
++            proof: evidence_for_test(),
++        };
++        let baseline_start = std::time::Instant::now();
++        let mut baseline_bytes = 0;
++        for date in [manifest.from, manifest.through] {
++            let audit = QueryAudit::new(root, 256 * 1024 * 1024).unwrap();
++            let reader = ReadSession::new(root, &manifest, &receipt, &audit);
++            reader.read_partition(date, |_| Ok(())).unwrap();
++            reader.finish().unwrap();
++            audit.finish().unwrap();
++            assert_eq!(audit.sequence.get(), 4);
++            baseline_bytes += storage::tree_bytes(&audit.directory).unwrap();
++        }
++        let baseline_elapsed = baseline_start.elapsed();
++        let reuse_start = std::time::Instant::now();
++        let audit = QueryAudit::new(root, 256 * 1024 * 1024).unwrap();
++        let reader = ReadSession::new(root, &manifest, &receipt, &audit);
++        let mut exported = Vec::new();
++        for date in [manifest.from, manifest.through] {
++            assert_eq!(
++                reader
++                    .read_partition(date, |bar| {
++                        exported.push(bar);
++                        Ok(())
++                    })
++                    .unwrap(),
++                600
++            );
++        }
++        reader.finish().unwrap();
++        audit.finish().unwrap();
++        let reuse_elapsed = reuse_start.elapsed();
++        assert_eq!(exported.len(), 1200);
++        let mut actual_csv = csv::Writer::from_writer(Vec::new());
++        for row in &exported {
++            actual_csv.serialize(row).unwrap();
++        }
++        assert_eq!(
++            storage::sha256(&actual_csv.into_inner().unwrap()),
++            expected_hash
++        );
++        assert_eq!(audit.sequence.get(), 7);
++        assert!(audit.directory.join("verified.json").exists());
++        println!(
++            "readback_rows=1200 dates=2 baseline_requests=8 reuse_requests=7 \
++            baseline_bytes={baseline_bytes} reuse_bytes={} baseline_micros={} reuse_micros={} csv_sha256={expected_hash}",
++            storage::tree_bytes(&audit.directory).unwrap(),
++            baseline_elapsed.as_micros(),
++            reuse_elapsed.as_micros()
++        );
++        let failed_audit = QueryAudit::new(root, 256 * 1024 * 1024).unwrap();
++        let reader = ReadSession::new(root, &manifest, &receipt, &failed_audit);
++        assert!(reader.read_partition(manifest.from, |_| Ok(())).is_err());
++        assert!(!failed_audit.directory.join("verified.json").exists());
+         server.join().unwrap();
+         assert_eq!(
+             ledger
+@@ -985,6 +1221,19 @@ mod tests {
+                 .unwrap(),
+             9
+         );
++        let exhausted = QueryAudit::new(root, 256 * 1024 * 1024).unwrap();
++        exhausted.sequence.set(IO_LIMIT);
++        let reader = ReadSession::new(root, &manifest, &receipt, &exhausted);
++        assert!(reader.read_partition(manifest.from, |_| Ok(())).is_err());
++        assert!(QueryAudit::new(root, RESPONSE_LIMIT).is_err());
++    }
++
++    fn evidence_for_test() -> Evidence {
++        Evidence {
++            path: "unused".into(),
++            bytes: 0,
++            sha256: "0".repeat(64),
++        }
+     }
+ 
+     #[test]
+diff --git a/apps/rustdx-runner/src/database/capacity.rs b/apps/rustdx-runner/src/database/capacity.rs
+index 1a1aede..aa8d3ed 100644
+--- a/apps/rustdx-runner/src/database/capacity.rs
++++ b/apps/rustdx-runner/src/database/capacity.rs
+@@ -20,19 +20,12 @@ pub(super) struct Capacity {
+ }
+ 
+ impl Capacity {
+-    pub(super) fn estimate(
+-        rows: u64,
+-        row_bytes: u64,
+-        partition_batches: u64,
+-        partitions: u64,
+-    ) -> Result<Self> {
++    pub(super) fn estimate(rows: u64, row_bytes: u64) -> Result<Self> {
+         let batches = rows.div_ceil(BATCH as u64);
+-        // Initial inserts, verification, one recovery verification and one
+-        // complete consumer readback, with preflight/count/terminal queries.
++        // Initial inserts, verification and one recovery verification.
++        // Consumer readbacks have a separate namespace and per-session budget.
+         let operations = batches
+             .checked_mul(3)
+-            .and_then(|v| v.checked_add(partition_batches))
+-            .and_then(|v| v.checked_add(partitions.checked_mul(2)?))
+             .and_then(|v| v.checked_add(8))
+             .ok_or_else(|| invalid("database operation forecast overflow"))?;
+         let proof_bytes = operations
+@@ -96,9 +89,9 @@ mod tests {
+ 
+     #[test]
+     fn capacity_rejects_io_proof_entries_and_bytes_before_transmission() {
+-        let small = Capacity::estimate(1200, 400_000, 4, 2).unwrap();
++        let small = Capacity::estimate(1200, 400_000).unwrap();
+         assert_eq!(small.batches, 3);
+-        assert_eq!(small.operations, 25);
++        assert_eq!(small.operations, 17);
+         assert!(
+             small
+                 .check(0, storage::TreeUsage::default(), 256 * 1024 * 1024)
+@@ -128,7 +121,7 @@ mod tests {
+         );
+         // The former INSERT-only upper bound cannot fit proof/recovery budgets.
+         assert!(
+-            Capacity::estimate(12_798_976, 0, 24_998, 1)
++            Capacity::estimate(12_798_976, 0)
+                 .unwrap()
+                 .check(0, storage::TreeUsage::default(), u64::MAX)
+                 .is_err()
+@@ -139,13 +132,13 @@ mod tests {
+             entries: small.evidence_entries,
+         };
+         assert!(small.check(0, used, 2 * small.evidence_bytes - 1).is_err());
+-        assert!(Capacity::estimate(u64::MAX, u64::MAX, 1, 1).is_err());
+-        // Per-day export opens a session per partition, including empty days.
++        assert!(Capacity::estimate(u64::MAX, u64::MAX).is_err());
++        // Empty partitions do not generate per-day publication queries.
+         assert!(
+-            Capacity::estimate(0, 0, 0, 30_000)
++            Capacity::estimate(0, 0)
+                 .unwrap()
+                 .check(0, storage::TreeUsage::default(), u64::MAX)
+-                .is_err()
++                .is_ok()
+         );
+     }
+ }
+diff --git a/apps/rustdx-runner/src/ledger.rs b/apps/rustdx-runner/src/ledger.rs
+index 4a0ca0f..25599ce 100644
+--- a/apps/rustdx-runner/src/ledger.rs
++++ b/apps/rustdx-runner/src/ledger.rs
+@@ -1,17 +1,20 @@
+ //! SQLite is local control state, never a distributed lease.
+ use std::{path::Path, time::Duration};
+ 
+-use rusqlite::{Connection, OptionalExtension, TransactionBehavior, params};
++use rusqlite::{Connection, OpenFlags, OptionalExtension, TransactionBehavior, params};
+ 
+ use crate::{
+     Error, Result, invalid,
+     model::{Evidence, JobStatus, Pointer, RecoveryAttempt},
++    storage::RootLock,
+ };
+ 
+ pub struct Ledger {
+     pub(crate) connection: Connection,
+ }
+ 
++pub const SCHEMA_VERSION: i64 = 4;
++
+ pub(crate) fn unsigned(row: &rusqlite::Row<'_>, index: usize) -> rusqlite::Result<u64> {
+     let value: i64 = row.get(index)?;
+     u64::try_from(value).map_err(|error| {
+@@ -28,14 +31,58 @@ fn signed(value: u64) -> Result<i64> {
+ }
+ 
+ impl Ledger {
++    /// Compatibility writer opening. Initialization/migration holds the controller lock.
++    /// Long-running writers should retain a RootLock and use `open_writer`.
+     pub fn open(path: &Path) -> Result<Self> {
++        let lock = RootLock::acquire(
++            path.parent()
++                .ok_or_else(|| invalid("ledger has no parent"))?,
++        )?;
++        Self::open_writer(path, &lock)
++    }
++
++    /// Open an existing ledger without creating, changing journal mode or migrating.
++    /// SQLite may require its WAL shared-memory file; this is not an immutable snapshot.
++    pub fn open_existing_readonly(path: &Path) -> Result<Self> {
++        Self::open_readonly(path, false)
++    }
++
++    /// Restore validates the prior schema without migrating frozen backup bytes.
++    pub(crate) fn open_backup_readonly(path: &Path) -> Result<Self> {
++        Self::open_readonly(path, true)
++    }
++
++    fn open_readonly(path: &Path, previous_backup: bool) -> Result<Self> {
++        if !std::fs::symlink_metadata(path)?.is_file() {
++            return Err(invalid("ledger must be an existing regular file"));
++        }
++        let connection = Connection::open_with_flags(path, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
++        connection.busy_timeout(Duration::from_secs(5))?;
++        connection.execute_batch("PRAGMA foreign_keys=ON; PRAGMA query_only=ON;")?;
++        let version: i64 = connection.query_row("PRAGMA user_version", [], |r| r.get(0))?;
++        if version != SCHEMA_VERSION && !(previous_backup && version == 3) {
++            return Err(invalid(format!(
++                "ledger schema {version} requires explicit migrate; current schema is {SCHEMA_VERSION}"
++            )));
++        }
++        Ok(Self { connection })
++    }
++
++    /// The caller keeps this root's lock through all state-changing operations.
++    pub fn open_writer(path: &Path, lock: &RootLock) -> Result<Self> {
++        lock.covers(path)?;
++        if let Ok(metadata) = std::fs::symlink_metadata(path)
++            && !metadata.is_file()
++        {
++            return Err(invalid("ledger must be a regular file"));
++        }
+         let connection = Connection::open(path)?;
+         connection.busy_timeout(Duration::from_secs(5))?;
+         connection.execute_batch(
+             "PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;",
+         )?;
+         let version: i64 = connection.query_row("PRAGMA user_version", [], |r| r.get(0))?;
+-        if version > 3 {
++        if version > SCHEMA_VERSION {
+             return Err(invalid("ledger schema is newer than this runner"));
+         }
+         if version == 0 {
+@@ -100,6 +147,37 @@ impl Ledger {
+                 PRAGMA user_version=3; COMMIT;",
+             )?;
+         }
++        if version < 4 {
++            let tx = connection.unchecked_transaction()?;
++            tx.execute_batch(
++                "CREATE TABLE observation_counters(
++                    owner TEXT NOT NULL CHECK(owner IN ('worker','controller')),
++                    field TEXT NOT NULL CHECK(field IN ('records_complete','records_failed',
++                        'records_unavailable','requests','request_failures','empty_responses',
++                        'acquisition_timeouts','queue_wait_micros')),
++                    total INTEGER NOT NULL CHECK(typeof(total)='integer' AND total>=0),
++                    PRIMARY KEY(owner,field));
++                 CREATE TABLE observation_stages(
++                    owner TEXT NOT NULL CHECK(owner IN ('worker','controller')),
++                    stage TEXT NOT NULL CHECK(stage IN ('source','download','extract','snapshot',
++                        'parse','sort','write','readback')),
++                    calls INTEGER NOT NULL CHECK(typeof(calls)='integer' AND calls>=0),
++                    failures INTEGER NOT NULL CHECK(typeof(failures)='integer' AND failures>=0),
++                    completed_seconds REAL NOT NULL CHECK(completed_seconds>=0),
++                    PRIMARY KEY(owner,stage));
++                 CREATE INDEX attempts_by_job ON attempts(job);
++                 CREATE INDEX jobs_by_created ON jobs(created DESC);
++                 CREATE TRIGGER immutable_observations_update
++                    BEFORE UPDATE ON attempt_observations BEGIN
++                    SELECT RAISE(ABORT,'observations are append-only'); END;
++                 CREATE TRIGGER immutable_observations_delete
++                    BEFORE DELETE ON attempt_observations BEGIN
++                    SELECT RAISE(ABORT,'observations are append-only'); END;",
++            )?;
++            crate::observations::rebuild(&tx)?;
++            tx.pragma_update(None, "user_version", SCHEMA_VERSION)?;
++            tx.commit()?;
++        }
+         Ok(Self { connection })
+     }
+ 
+@@ -118,10 +196,24 @@ impl Ledger {
+         if text.len() > 1024 * 1024 {
+             return Err(invalid("observation record exceeds 1MiB"));
+         }
+-        self.connection.execute(
++        let contribution = crate::observations::Totals::contribution(owner, payload)?;
++        let tx = self.connection.unchecked_transaction()?;
++        tx.execute(
+             "INSERT INTO attempt_observations VALUES(?1,?2,?3,?4)",
+             params![attempt, owner, text, crate::now()],
+         )?;
++        contribution.apply(&tx)?;
++        tx.commit()?;
++        Ok(())
++    }
++
++    /// Rebuild the projection atomically from the retained raw observations.
++    pub fn rebuild_observation_metrics(&mut self) -> Result<()> {
++        let tx = self
++            .connection
++            .transaction_with_behavior(TransactionBehavior::Immediate)?;
++        crate::observations::rebuild(&tx)?;
++        tx.commit()?;
+         Ok(())
+     }
+ 
+@@ -391,6 +483,41 @@ impl Ledger {
+         Ok(serde_json::from_str(&text)?)
+     }
+ 
++    /// Original roots are audit metadata; restoring never rewrites frozen paths.
++    pub(crate) fn original_roots(&self) -> Result<Vec<String>> {
++        let mut roots = std::collections::BTreeSet::new();
++        let mut query = self
++            .connection
++            .prepare("SELECT id,directory FROM attempts")?;
++        let mut rows = query.query([])?;
++        while let Some(row) = rows.next()? {
++            let id: String = row.get(0)?;
++            crate::config::identifier(&id)?;
++            let directory: String = row.get(1)?;
++            let path = Path::new(&directory);
++            if !path.is_absolute()
++                || path.file_name().is_none_or(|name| name != id.as_str())
++                || path
++                    .parent()
++                    .and_then(Path::file_name)
++                    .is_none_or(|name| name != "attempts")
++                || path
++                    .components()
++                    .any(|c| matches!(c, std::path::Component::ParentDir))
++            {
++                return Err(invalid(
++                    "historical attempt path is not an absolute attempts/id path",
++                ));
++            }
++            let root = path
++                .parent()
++                .and_then(Path::parent)
++                .ok_or_else(|| invalid("attempt root missing"))?;
++            roots.insert(root.to_string_lossy().into_owned());
++        }
++        Ok(roots.into_iter().collect())
++    }
++
+     pub fn unfinished(&self) -> Result<Vec<RecoveryAttempt>> {
+         let mut query = self.connection.prepare(
+             "SELECT id,job,state,directory,pid FROM attempts
+diff --git a/apps/rustdx-runner/src/lib.rs b/apps/rustdx-runner/src/lib.rs
+index eb5951b..899c9f9 100644
+--- a/apps/rustdx-runner/src/lib.rs
++++ b/apps/rustdx-runner/src/lib.rs
+@@ -7,6 +7,7 @@ pub mod database;
+ mod database_process;
+ pub mod ledger;
+ pub mod model;
++mod observations;
+ pub mod ops;
+ pub mod pipeline;
+ pub mod storage;
+diff --git a/apps/rustdx-runner/src/main.rs b/apps/rustdx-runner/src/main.rs
+index 74da0bf..a5b91c8 100644
+--- a/apps/rustdx-runner/src/main.rs
++++ b/apps/rustdx-runner/src/main.rs
+@@ -8,7 +8,7 @@ use rustdx_runner::{
+ #[derive(FromArgs)]
+ /// Single-host production collection, immutable publication and recovery.
+ struct Args {
+-    /// run, recover, status, metrics, catalog, export, backup or restore
++    /// run, plan, migrate, rebuild-metrics, recover, status, metrics, catalog, export, backup or restore
+     #[argh(positional)]
+     action: String,
+     /// strict JSON job configuration (run)
+@@ -41,6 +41,9 @@ struct Args {
+     /// export row budget
+     #[argh(option, default = "10000000")]
+     max_rows: u64,
++    /// maximum expected-key samples in an offline plan (1..100000)
++    #[argh(option, default = "10000")]
++    max_keys: usize,
+     /// unfinished attempt to quarantine after investigation
+     #[argh(option)]
+     attempt: Option<String>,
+@@ -125,6 +128,9 @@ fn run() -> Result<()> {
+     if !matches!(
+         args.action.as_str(),
+         "run"
++            | "plan"
++            | "migrate"
++            | "rebuild-metrics"
+             | "recover"
+             | "quarantine"
+             | "backup"
+@@ -137,9 +143,29 @@ fn run() -> Result<()> {
+     ) {
+         return Err(Error::Invalid("unknown action".into()));
+     }
+-    if args.action == "run" {
++    if matches!(args.action.as_str(), "run" | "plan") {
+         let mut config = Config::load(&required(args.config.clone(), "config")?)?;
+         config.no_tcp_startup |= args.no_tcp_startup;
++        if args.action == "plan" {
++            if args.tcp_warmup {
++                return Err(Error::Invalid(
++                    "offline plan cannot request TCP warmup".into(),
++                ));
++            }
++            let operation = rustdx_complete::operation::OperationContext::new(
++                Duration::from_secs(args.timeout),
++                args.cancel_file.clone(),
++            )?;
++            let _scope = operation.enter();
++            let plan = pipeline::preflight_plan(&config, args.network_limit, args.max_keys)?;
++            println!("{}", serde_json::to_string_pretty(&plan)?);
++            if plan["can_start"] != true {
++                return Err(Error::Invalid(
++                    "offline plan has explicit start blockers".into(),
++                ));
++            }
++            return Ok(());
++        }
+         if config.no_tcp_startup && args.tcp_warmup {
+             return Err(Error::Invalid(
+                 "tcp-warmup conflicts with config.no_tcp_startup".into(),
+@@ -170,6 +196,19 @@ fn run() -> Result<()> {
+     let _scope = operation.enter();
+     initialize_network(&args, args.tcp_warmup)?;
+     match args.action.as_str() {
++        "migrate" => {
++            let lock = rustdx_runner::storage::RootLock::acquire(&root)?;
++            Ledger::open_writer(&root.join("ledger.sqlite"), &lock)?;
++            println!("{}", serde_json::json!({"status":"migrated"}));
++        }
++        "rebuild-metrics" => {
++            // Require an existing current ledger; rebuilding is not an initialization command.
++            Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?;
++            let lock = rustdx_runner::storage::RootLock::acquire(&root)?;
++            Ledger::open_writer(&root.join("ledger.sqlite"), &lock)?
++                .rebuild_observation_metrics()?;
++            println!("{}", serde_json::json!({"status":"rebuilt"}));
++        }
+         "recover" => println!(
+             "{}",
+             serde_json::to_string_pretty(&pipeline::recover(&root)?)?
+@@ -191,10 +230,14 @@ fn run() -> Result<()> {
+         )?,
+         "status" => println!(
+             "{}",
+-            serde_json::to_string_pretty(&Ledger::open(&root.join("ledger.sqlite"))?.statuses()?)?
++            serde_json::to_string_pretty(
++                &Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?.statuses()?
++            )?
+         ),
+         "metrics" => {
+-            let mut text = ops::metrics(&Ledger::open(&root.join("ledger.sqlite"))?)?;
++            let mut text = ops::metrics(&Ledger::open_existing_readonly(
++                &root.join("ledger.sqlite"),
++            )?)?;
+             text.push_str(&format!(
+                 "# TYPE rustdx_root_free_bytes gauge\nrustdx_root_free_bytes {}\n",
+                 rustdx_runner::storage::free_bytes(&root)?
+@@ -211,7 +254,7 @@ fn run() -> Result<()> {
+             }
+         }
+         "catalog" => {
+-            let ledger = Ledger::open(&root.join("ledger.sqlite"))?;
++            let ledger = Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?;
+             println!(
+                 "{}",
+                 serde_json::to_string_pretty(&pipeline::fixed_catalog(
+@@ -242,7 +285,7 @@ fn run() -> Result<()> {
+             };
+             println!(
+                 "{}",
+-                serde_json::json!({"catalog_version":pinned.catalog.version,"rows":rows})
++                serde_json::json!({"catalog_version":pinned.catalog().version,"rows":rows})
+             );
+         }
+         _ => return Err(Error::Invalid("unknown action".into())),
+diff --git a/apps/rustdx-runner/src/ops.rs b/apps/rustdx-runner/src/ops.rs
+index 01cbc4f..4e576ec 100644
+--- a/apps/rustdx-runner/src/ops.rs
++++ b/apps/rustdx-runner/src/ops.rs
+@@ -53,16 +53,40 @@ fn copy_tree(
+     Ok(())
+ }
+ 
++fn forecast_tree(root: &Path, relative: &Path, files: &mut Vec<Evidence>) -> Result<()> {
++    for entry in fs::read_dir(root.join(relative))? {
++        rustdx_complete::operation::check().map_err(crate::Error::from)?;
++        let entry = entry?;
++        let path = relative.join(entry.file_name());
++        let metadata = fs::symlink_metadata(entry.path())?;
++        if metadata.is_dir() {
++            forecast_tree(root, &path, files)?;
++        } else if metadata.is_file() {
++            files.push(Evidence {
++                path: path
++                    .to_str()
++                    .ok_or_else(|| invalid("non UTF8 backup path"))?
++                    .into(),
++                sha256: "0".repeat(64),
++                bytes: metadata.len(),
++            });
++            if files.len() > storage::MAX_TREE_ENTRIES as usize {
++                return Err(invalid("backup file count exceeded"));
++            }
++        } else {
++            return Err(invalid("backup refuses symlinks and special files"));
++        }
++    }
++    Ok(())
++}
++
+ /// Holds the same controller lock as collection/publication. SQLite's online API
+ /// includes committed WAL content; copying only ledger.sqlite would be incorrect.
+ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
++    let destination = storage::isolated_destination(root, destination)?;
++    let destination = destination.as_path();
+     let _lock = storage::RootLock::acquire(root)?;
+-    if destination.exists() || destination.starts_with(root) {
+-        return Err(invalid(
+-            "backup destination must be new and outside the live root",
+-        ));
+-    }
+-    let ledger = Ledger::open(&root.join("ledger.sqlite"))?;
++    let ledger = Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?;
+     if ledger
+         .unfinished()?
+         .iter()
+@@ -72,6 +96,47 @@ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
+             "recover active/ambiguous workers before taking a consistent backup",
+         ));
+     }
++    // Predict the inventory using fixed-length SHA values. The same timestamp
++    // and exact file sizes are reused after copying, so its size is reserved.
++    let pages: u64 = ledger
++        .connection
++        .query_row("PRAGMA page_count", [], |r| crate::ledger::unsigned(r, 0))?;
++    let page_size: u64 = ledger
++        .connection
++        .query_row("PRAGMA page_size", [], |r| crate::ledger::unsigned(r, 0))?;
++    let db_bytes = pages
++        .checked_mul(page_size)
++        .ok_or_else(|| invalid("backup SQLite size overflow"))?;
++    let mut forecast = Inventory {
++        schema_version: 1,
++        created_at: crate::now(),
++        files: vec![Evidence {
++            path: "ledger.sqlite".into(),
++            sha256: "0".repeat(64),
++            bytes: db_bytes,
++        }],
++    };
++    for name in ["attempts", "releases", "catalogs", "database"] {
++        if root.join(name).exists() {
++            forecast_tree(root, Path::new(name), &mut forecast.files)?;
++        }
++    }
++    forecast.files.sort_by(|a, b| a.path.cmp(&b.path));
++    let inventory_bytes = serde_json::to_vec_pretty(&forecast)?.len() as u64;
++    let copied_bytes = forecast
++        .files
++        .iter()
++        .try_fold(0_u64, |n, f| n.checked_add(f.bytes))
++        .ok_or_else(|| invalid("backup size overflow"))?;
++    if inventory_bytes > MAX_JSON
++        || copied_bytes
++            .checked_add(inventory_bytes)
++            .is_none_or(|n| n > max_bytes)
++    {
++        return Err(invalid(
++            "backup total budget cannot cover SQLite, files and inventory",
++        ));
++    }
+     fs::create_dir(destination)?;
+     storage::private_directory(destination)?;
+     let mut target = rusqlite::Connection::open(destination.join("ledger.sqlite"))?;
+@@ -79,7 +144,12 @@ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
+         let backup = Backup::new(&ledger.connection, &mut target)?;
+         loop {
+             rustdx_complete::operation::check().map_err(crate::Error::from)?;
+-            match backup.step(128)? {
++            let result = backup.step(128)?;
++            if fs::metadata(destination.join("ledger.sqlite"))?.len() > max_bytes - inventory_bytes
++            {
++                return Err(invalid("SQLite backup byte budget exceeded"));
++            }
++            match result {
+                 StepResult::Done => break,
+                 StepResult::More => {}
+                 StepResult::Busy | StepResult::Locked => {
+@@ -89,10 +159,16 @@ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
+             }
+         }
+     }
++    // The completed online snapshot has no independent WAL. Store it in DELETE
++    // mode so later readonly validation needs no unbudgeted shm/WAL files.
++    target.execute_batch("PRAGMA journal_mode=DELETE;")?;
+     drop(target);
+     fs::File::open(destination.join("ledger.sqlite"))?.sync_all()?;
+     let db = storage::evidence(destination, &destination.join("ledger.sqlite"), max_bytes)?;
+-    let mut remaining = max_bytes - db.bytes;
++    if db.bytes != db_bytes {
++        return Err(invalid("SQLite backup differs from reserved page count"));
++    }
++    let mut remaining = max_bytes - inventory_bytes - db.bytes;
+     let mut files = vec![db];
+     for name in ["attempts", "releases", "catalogs", "database"] {
+         if root.join(name).exists() {
+@@ -109,12 +185,21 @@ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
+     files.sort_by(|a, b| a.path.cmp(&b.path));
+     let inventory = Inventory {
+         schema_version: 1,
+-        created_at: crate::now(),
++        created_at: forecast.created_at,
+         files,
+     };
+     let bytes = serde_json::to_vec_pretty(&inventory)?;
+-    if bytes.len() as u64 > MAX_JSON {
+-        return Err(invalid("backup inventory exceeds JSON budget"));
++    if bytes.len() as u64 > inventory_bytes
++        || inventory
++            .files
++            .iter()
++            .map(|f| (&f.path, f.bytes))
++            .ne(forecast.files.iter().map(|f| (&f.path, f.bytes)))
++        || storage::tree_bytes(destination)?.saturating_add(bytes.len() as u64) > max_bytes
++    {
++        return Err(invalid(
++            "backup inventory or source differs from reserved budget",
++        ));
+     }
+     storage::write_new(&destination.join("backup.json"), &bytes)?;
+     storage::sync_directory(destination)?;
+@@ -122,11 +207,8 @@ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
+ }
+ 
+ pub fn restore(source: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
+-    if destination.exists() || destination.starts_with(source) {
+-        return Err(invalid(
+-            "restore destination must be a new isolated directory",
+-        ));
+-    }
++    let destination = storage::isolated_destination(source, destination)?;
++    let destination = destination.as_path();
+     let inventory: Inventory = serde_json::from_slice(&storage::read_limited(
+         &source.join("backup.json"),
+         MAX_JSON,
+@@ -135,7 +217,15 @@ pub fn restore(source: &Path, destination: &Path, max_bytes: u64) -> Result<()>
+         return Err(invalid("unsupported backup inventory"));
+     }
+     let mut paths = std::collections::BTreeSet::new();
+-    let mut remaining = max_bytes;
++    let original = Ledger::open_backup_readonly(&storage::safe_join(source, "ledger.sqlite")?)?
++        .original_roots()?;
++    let marker = serde_json::to_vec_pretty(
++        &serde_json::json!({"schema_version":1,"validated_at":crate::now(),
++            "backup_created_at":inventory.created_at,"original_roots":original}),
++    )?;
++    let mut remaining = max_bytes
++        .checked_sub(marker.len() as u64)
++        .ok_or_else(|| invalid("restore budget cannot cover completion marker"))?;
+     for file in &inventory.files {
+         if !paths.insert(&file.path) || file.bytes > remaining {
+             return Err(invalid(
+@@ -150,6 +240,7 @@ pub fn restore(source: &Path, destination: &Path, max_bytes: u64) -> Result<()>
+     }
+     fs::create_dir(destination)?;
+     storage::private_directory(destination)?;
++    let _restore_lock = storage::RootLock::acquire(destination)?;
+     for file in &inventory.files {
+         let path = Path::new(&file.path);
+         // Validate paths before any mkdir or write at the destination.
+@@ -166,17 +257,17 @@ pub fn restore(source: &Path, destination: &Path, max_bytes: u64) -> Result<()>
+             storage::freeze_tree(&entry?.path())?;
+         }
+     }
+-    storage::write_new(
+-        &destination.join("restore-validated.json"),
+-        &serde_json::to_vec_pretty(
+-            &serde_json::json!({"schema_version":1,"validated_at":crate::now(),"backup_created_at":inventory.created_at}),
+-        )?,
+-    )?;
++    if storage::tree_bytes(destination)?.saturating_add(marker.len() as u64) > max_bytes {
++        return Err(invalid(
++            "restored validation files exceed total byte budget",
++        ));
++    }
++    storage::write_new(&destination.join("restore-validated.json"), &marker)?;
+     Ok(())
+ }
+ 
+ pub fn validate_restore(root: &Path) -> Result<()> {
+-    let ledger = Ledger::open(&root.join("ledger.sqlite"))?;
++    let ledger = Ledger::open_backup_readonly(&root.join("ledger.sqlite"))?;
+     let integrity: String = ledger
+         .connection
+         .query_row("PRAGMA integrity_check", [], |r| r.get(0))?;
+@@ -298,10 +389,34 @@ pub fn metrics(ledger: &Ledger) -> Result<String> {
+         chrono::Utc::now().timestamp()
+     ));
+     text.push_str(&observation_metrics(ledger)?);
++    let attempts: u64 = ledger
++        .connection
++        .query_row("SELECT count(*) FROM attempts", [], |r| {
++            crate::ledger::unsigned(r, 0)
++        })?;
++    text.push_str("# TYPE rustdx_observation_missing_records gauge\n");
++    for owner in ["worker", "controller"] {
++        let recorded: u64 = ledger.connection.query_row(
++            "SELECT coalesce(sum(total),0) FROM observation_counters
++             WHERE owner=?1 AND field IN ('records_complete','records_failed','records_unavailable')",
++            [owner], |r| crate::ledger::unsigned(r, 0),
++        )?;
++        let missing = attempts.checked_sub(recorded).ok_or_else(|| {
++            invalid("observation projection exceeds attempt history; rebuild metrics")
++        })?;
++        text.push_str(&format!(
++            "rustdx_observation_missing_records{{owner=\"{owner}\"}} {missing}\n"
++        ));
++    }
+     Ok(text)
+ }
+ 
+ fn observation_metrics(ledger: &Ledger) -> Result<String> {
++    Ok(crate::observations::Totals::load(&ledger.connection)?.render())
++}
++
++#[cfg(test)]
++fn legacy_observation_metrics(ledger: &Ledger) -> Result<String> {
+     use std::collections::BTreeMap;
+     let mut totals: BTreeMap<(String, String), u64> = BTreeMap::new();
+     let mut stages: BTreeMap<(String, String), (u64, u64, f64)> = BTreeMap::new();
+@@ -401,3 +516,174 @@ fn observation_metrics(ledger: &Ledger) -> Result<String> {
+     }
+     Ok(text)
+ }
++
++#[cfg(test)]
++mod observation_tests {
++    use super::*;
++    use serde_json::json;
++    use std::time::Instant;
++
++    #[test]
++    fn projection_matches_legacy_scan_and_rebuild_for_large_history() {
++        let temp = tempfile::tempdir().unwrap();
++        let path = temp.path().join("ledger.sqlite");
++        let ledger = Ledger::open(&path).unwrap();
++        // Exercise migration from the old raw-only schema, preserving its payload bytes.
++        ledger
++            .connection
++            .execute_batch(
++                "DROP TABLE observation_counters; DROP TABLE observation_stages;
++             DROP INDEX attempts_by_job; DROP INDEX jobs_by_created;
++             DROP TRIGGER immutable_observations_update;
++             DROP TRIGGER immutable_observations_delete; PRAGMA user_version=3;",
++            )
++            .unwrap();
++        let tx = ledger.connection.unchecked_transaction().unwrap();
++        let record = json!({"schema_version":1,"status":"complete",
++            "network":{"requests":9,"request_failures":2,"empty_responses":1,
++                "acquisition_timeouts":3,"queue_wait_micros":120},
++            "observations":{"stages":{"parse":{"calls":2,"failures":1,"completed_span_ms":2000.0}}}});
++        let text = serde_json::to_string(&record).unwrap();
++        for n in 0..20_000 {
++            let id = format!("j{n}");
++            tx.execute(
++                "INSERT INTO jobs VALUES(?1,'d','{}','failed',?2,'')",
++                rusqlite::params![id, crate::now()],
++            )
++            .unwrap();
++            tx.execute(
++                "INSERT INTO attempts(id,job,state,directory,started) VALUES(?1,?1,'failed',?1,?2)",
++                rusqlite::params![id, crate::now()],
++            )
++            .unwrap();
++            let payload = match n % 3 {
++                0 => text.clone(),
++                1 => text.replace("\"complete\"", "\"failed\""),
++                _ => "{\"schema_version\":1,\"status\":\"unavailable\"}".into(),
++            };
++            tx.execute(
++                "INSERT INTO attempt_observations VALUES(?1,'worker',?2,?3)",
++                rusqlite::params![id, payload, crate::now()],
++            )
++            .unwrap();
++        }
++        tx.commit().unwrap();
++        drop(ledger);
++        let mut ledger = Ledger::open(&path).unwrap();
++        let start = Instant::now();
++        let legacy = legacy_observation_metrics(&ledger).unwrap();
++        let legacy_elapsed = start.elapsed();
++        let start = Instant::now();
++        let projected = observation_metrics(&ledger).unwrap();
++        let projection_elapsed = start.elapsed();
++        assert_eq!(projected, legacy);
++        ledger.rebuild_observation_metrics().unwrap();
++        assert_eq!(observation_metrics(&ledger).unwrap(), legacy);
++        // Duplicate raw insertion rolls back both raw and projected changes.
++        assert!(ledger.record_observations("j0", "worker", &record).is_err());
++        assert_eq!(observation_metrics(&ledger).unwrap(), legacy);
++        assert!(
++            ledger
++                .connection
++                .execute("DELETE FROM attempt_observations WHERE attempt='j0'", [])
++                .is_err()
++        );
++        let mut query = ledger
++            .connection
++            .prepare(
++                "EXPLAIN QUERY PLAN SELECT j.id,j.dataset,j.state,
++                (SELECT count(*) FROM attempts a WHERE a.job=j.id),j.detail
++             FROM jobs j ORDER BY j.created DESC LIMIT 1000",
++            )
++            .unwrap();
++        let plans = query
++            .query_map([], |r| r.get::<_, String>(3))
++            .unwrap()
++            .collect::<std::result::Result<Vec<_>, _>>()
++            .unwrap();
++        assert!(plans.iter().any(|p| p.contains("jobs_by_created")));
++        assert!(plans.iter().any(|p| p.contains("attempts_by_job")));
++        assert!(!plans.iter().any(|p| p.contains("TEMP B-TREE")));
++        println!(
++            "history=20000 legacy_observation_micros={} projection_micros={} plans={plans:?}",
++            legacy_elapsed.as_micros(),
++            projection_elapsed.as_micros()
++        );
++    }
++
++    #[test]
++    fn projection_overflow_and_invalid_records_leave_raw_history_unchanged() {
++        let temp = tempfile::tempdir().unwrap();
++        let mut ledger = Ledger::open(&temp.path().join("ledger.sqlite")).unwrap();
++        ledger.register("j", "d", "{}").unwrap();
++        ledger.begin_attempt("j", "a", Path::new("a")).unwrap();
++        let record = json!({"schema_version":1,"status":"complete",
++            "network":{"requests":1,"request_failures":0,"empty_responses":0,
++                "acquisition_timeouts":0,"queue_wait_micros":0}});
++        ledger
++            .connection
++            .execute(
++                "INSERT INTO observation_counters VALUES('worker','requests',?1)",
++                [i64::MAX],
++            )
++            .unwrap();
++        assert!(ledger.record_observations("a", "worker", &record).is_err());
++        assert!(
++            ledger
++                .record_observations("a", "worker", &json!({"status":"complete"}))
++                .is_err()
++        );
++        let count: i64 = ledger
++            .connection
++            .query_row("SELECT count(*) FROM attempt_observations", [], |r| {
++                r.get(0)
++            })
++            .unwrap();
++        assert_eq!(count, 0);
++        let count: i64 = ledger
++            .connection
++            .query_row("SELECT count(*) FROM observation_counters", [], |r| {
++                r.get(0)
++            })
++            .unwrap();
++        assert_eq!(count, 1);
++    }
++
++    #[test]
++    fn invalid_historical_record_rolls_back_schema_and_projection_migration() {
++        let temp = tempfile::tempdir().unwrap();
++        let path = temp.path().join("ledger.sqlite");
++        let mut ledger = Ledger::open(&path).unwrap();
++        ledger.register("j", "d", "{}").unwrap();
++        ledger.begin_attempt("j", "a", Path::new("a")).unwrap();
++        ledger.connection.execute_batch(
++            "DROP TABLE observation_counters; DROP TABLE observation_stages;
++             DROP INDEX attempts_by_job; DROP INDEX jobs_by_created;
++             DROP TRIGGER immutable_observations_update; DROP TRIGGER immutable_observations_delete;
++             INSERT INTO attempt_observations VALUES('a','worker','{}','old'); PRAGMA user_version=3;",
++        ).unwrap();
++        drop(ledger);
++        assert!(Ledger::open(&path).is_err());
++        let db = rusqlite::Connection::open(&path).unwrap();
++        assert_eq!(
++            db.query_row("PRAGMA user_version", [], |r| r.get::<_, i64>(0))
++                .unwrap(),
++            3
++        );
++        assert_eq!(
++            db.query_row("SELECT payload FROM attempt_observations", [], |r| r
++                .get::<_, String>(0))
++                .unwrap(),
++            "{}"
++        );
++        assert_eq!(
++            db.query_row(
++                "SELECT count(*) FROM sqlite_master WHERE name='observation_counters'",
++                [],
++                |r| r.get::<_, i64>(0),
++            )
++            .unwrap(),
++            0
++        );
++    }
++}
+diff --git a/apps/rustdx-runner/src/pipeline.rs b/apps/rustdx-runner/src/pipeline.rs
+index 9506137..86f815c 100644
+--- a/apps/rustdx-runner/src/pipeline.rs
++++ b/apps/rustdx-runner/src/pipeline.rs
+@@ -26,7 +26,9 @@ use crate::{
+ };
+ 
+ mod facts;
++mod plan;
+ use facts::{Facts, load as facts, visit_expected};
++pub use plan::preflight_plan;
+ 
+ fn check() -> Result<()> {
+     rustdx_complete::operation::check().map_err(Error::from)
+@@ -374,6 +376,19 @@ fn normalize(
+     report: &CliReport,
+     release: &str,
+ ) -> Result<BTreeMap<NaiveDate, Partition>> {
++    let meter = storage::WorkspaceMeter::new(
++        directory,
++        &[
++            "normalization.sqlite",
++            "normalization.sqlite-journal",
++            "normalization.sqlite-wal",
++            "normalization.sqlite-shm",
++            "coverage.csv",
++            "partitions",
++            "cancel",
++        ],
++    )?;
++    meter.sample(config.max_workspace_bytes)?;
+     let database = directory.join("normalization.sqlite");
+     let mut db = Connection::open(&database)?;
+     db.execute_batch(
+@@ -383,6 +398,7 @@ fn normalize(
+             PRIMARY KEY(date,code)) WITHOUT ROWID;",
+     )?;
+     let tx = db.transaction()?;
++    let mut expected_count = 0_u64;
+     visit_expected(config, facts, |date, code, state| {
+         let state = match state {
+             TradingState::Trading => "trading",
+@@ -393,6 +409,10 @@ fn normalize(
+             "INSERT INTO expected VALUES(?1,?2,?3)",
+             params![date.to_string(), code, state],
+         )?;
++        expected_count += 1;
++        if expected_count.is_multiple_of(4096) {
++            meter.sample(config.max_workspace_bytes)?;
++        }
+         Ok(())
+     })?;
+     let mut reader = csv::ReaderBuilder::new().from_path(directory.join("collected.csv"))?;
+@@ -403,6 +423,9 @@ fn normalize(
+         if count > config.max_rows {
+             return Err(invalid("collected CSV exceeds row budget"));
+         }
++        if count.is_multiple_of(4096) {
++            meter.sample(config.max_workspace_bytes)?;
++        }
+         let row = row?;
+         if row.date < config.from || row.date > config.through {
+             if config.tcp_day.is_some() {
+@@ -449,11 +472,6 @@ fn normalize(
+                 volume
+             ],
+         )?;
+-        if count.is_multiple_of(4096)
+-            && storage::tree_bytes(directory)? > config.max_workspace_bytes
+-        {
+-            return Err(invalid("normalization exceeds workspace budget"));
+-        }
+     }
+     if count != report.artifact.rows {
+         return Err(invalid("independent CSV row count differs from manifest"));
+@@ -483,6 +501,7 @@ fn normalize(
+         }
+         rustdx_cli::tcp_day::verify_archive_budget(&directory.join("raw"), &request)?;
+         for code in &request.codes {
++            meter.sample(config.max_workspace_bytes)?;
+             for row in rustdx_cli::tcp_day::replay_security(
+                 &directory.join("raw").join(code),
+                 &request,
+@@ -524,6 +543,7 @@ fn normalize(
+             let mut remaining = length;
+             while remaining != 0 {
+                 check()?;
++                meter.sample(config.max_workspace_bytes)?;
+                 let size = remaining.min(buffer.len() as u64) as usize;
+                 source.read_exact(&mut buffer[..size])?;
+                 for chunk in buffer[..size].as_chunks::<32>().0 {
+@@ -564,6 +584,7 @@ fn normalize(
+         }
+     }
+     drop(lookup);
++    meter.sample(config.max_workspace_bytes)?;
+     let normalized_rows = tx.query_row("SELECT count(*) FROM bars", [], |r| {
+         crate::ledger::unsigned(r, 0)
+     })?;
+@@ -590,16 +611,24 @@ fn normalize(
+         )));
+     }
+     tx.commit()?;
++    meter.sample(config.max_workspace_bytes)?;
+     storage::private_directory(&directory.join("partitions"))?;
+     let mut coverage = csv::Writer::from_writer(fs::File::create(directory.join("coverage.csv"))?);
+     coverage.write_record(["date", "code", "state"])?;
+     let mut query = db.prepare("SELECT date,code,state FROM expected ORDER BY date,code")?;
+     let mut rows = query.query([])?;
++    let mut coverage_count = 0_u64;
+     while let Some(row) = rows.next()? {
+         check()?;
+         coverage.write_record([row.get::<_, String>(0)?, row.get(1)?, row.get(2)?])?;
++        coverage_count += 1;
++        if coverage_count.is_multiple_of(4096) {
++            coverage.flush()?;
++            meter.sample(config.max_workspace_bytes)?;
++        }
+     }
+     coverage.flush()?;
++    meter.sample(config.max_workspace_bytes)?;
+     drop(rows);
+     drop(query);
+     let mut partitions = BTreeMap::new();
+@@ -615,7 +644,7 @@ fn normalize(
+         let mut query =
+             db.prepare("SELECT code,market,o,h,l,c,a,v FROM bars WHERE date=?1 ORDER BY code")?;
+         let mut rows = query.query([date.to_string()])?;
+-        let mut count = 0;
++        let mut count = 0_u64;
+         while let Some(row) = rows.next()? {
+             check()?;
+             writer.write_record([
+@@ -631,8 +660,13 @@ fn normalize(
+                 row.get::<_, f64>(7)?.to_string(),
+             ])?;
+             count += 1;
++            if count.is_multiple_of(4096) {
++                writer.flush()?;
++                meter.sample(config.max_workspace_bytes)?;
++            }
+         }
+         writer.flush()?;
++        meter.sample(config.max_workspace_bytes)?;
+         let exemptions: u64 = db.query_row(
+             "SELECT count(*) FROM expected WHERE date=?1 AND state!='trading'",
+             [date.to_string()],
+@@ -654,6 +688,7 @@ fn normalize(
+     }
+     drop(db);
+     fs::remove_file(database)?;
++    meter.reconcile(config.max_workspace_bytes)?;
+     Ok(partitions)
+ }
+ 
+@@ -717,10 +752,14 @@ fn seal(
+         files,
+         partitions,
+     };
+-    storage::write_new(
+-        &directory.join("release.json"),
+-        &serde_json::to_vec_pretty(&manifest)?,
+-    )?;
++    let bytes = serde_json::to_vec_pretty(&manifest)?;
++    if bytes.len() as u64 > MAX_JSON
++        || storage::tree_bytes(directory)?.saturating_add(bytes.len() as u64)
++            > config.max_workspace_bytes
++    {
++        return Err(invalid("complete sealed release exceeds final byte budget"));
++    }
++    storage::write_new(&directory.join("release.json"), &bytes)?;
+     let destination = config.root.join("releases").join(attempt);
+     fs::rename(directory, &destination)?;
+     // macOS requires write permission on a directory while moving its parent.
+@@ -897,11 +936,11 @@ pub fn publish(root: &Path, ledger: &mut Ledger, release: &str) -> Result<Pointe
+ 
+ pub fn execute(config: &Config, context: &OperationContext) -> Result<Option<Pointer>> {
+     config.validate()?;
+-    let _lock = storage::RootLock::acquire(&config.root)?;
++    let lock = storage::RootLock::acquire(&config.root)?;
+     for name in ["attempts", "releases", "catalogs"] {
+         storage::private_directory(&config.root.join(name))?;
+     }
+-    let mut ledger = Ledger::open(&config.root.join("ledger.sqlite"))?;
++    let mut ledger = Ledger::open_writer(&config.root.join("ledger.sqlite"), &lock)?;
+     if !ledger.unfinished()?.is_empty() {
+         return Err(invalid(
+             "unfinished attempts require recover before starting another worker",
+@@ -1015,8 +1054,8 @@ pub fn execute(config: &Config, context: &OperationContext) -> Result<Option<Poi
+ 
+ /// Returns actions, retaining live/ambiguous workers instead of risking PID reuse.
+ pub fn recover(root: &Path) -> Result<Vec<String>> {
+-    let _lock = storage::RootLock::acquire(root)?;
+-    let mut ledger = Ledger::open(&root.join("ledger.sqlite"))?;
++    let lock = storage::RootLock::acquire(root)?;
++    let mut ledger = Ledger::open_writer(&root.join("ledger.sqlite"), &lock)?;
+     let mut actions = Vec::new();
+     for attempt in ledger.unfinished()? {
+         if attempt.pid.is_some_and(supervisor::process_group_alive) {
+@@ -1066,8 +1105,8 @@ pub fn quarantine(root: &Path, attempt_id: &str, reason: &str) -> Result<()> {
+     if reason.trim().is_empty() || reason.len() > 4096 {
+         return Err(invalid("quarantine requires a 1–4096 byte reason"));
+     }
+-    let _lock = storage::RootLock::acquire(root)?;
+-    let mut ledger = Ledger::open(&root.join("ledger.sqlite"))?;
++    let lock = storage::RootLock::acquire(root)?;
++    let mut ledger = Ledger::open_writer(&root.join("ledger.sqlite"), &lock)?;
+     let attempt = ledger
+         .unfinished()?
+         .into_iter()
+diff --git a/apps/rustdx-runner/src/pipeline/facts.rs b/apps/rustdx-runner/src/pipeline/facts.rs
+index 111b140..8d4a89e 100644
+--- a/apps/rustdx-runner/src/pipeline/facts.rs
++++ b/apps/rustdx-runner/src/pipeline/facts.rs
+@@ -20,10 +20,31 @@ pub(super) struct Facts {
+ }
+ 
+ pub(super) fn load(config: &Config, directory: &Path) -> Result<Facts> {
+-    let calendar: CalendarDataset = serde_json::from_slice(&storage::read_limited(
++    load_paths(
++        config,
+         &directory.join("calendar.json"),
+-        MAX_JSON,
+-    )?)?;
++        &directory.join("history.json"),
++        &directory.join("universe.json"),
++    )
++}
++
++pub(super) fn load_config(config: &Config) -> Result<Facts> {
++    load_paths(
++        config,
++        &config.calendar,
++        &config.security_history,
++        &config.universe,
++    )
++}
++
++fn load_paths(
++    config: &Config,
++    calendar_path: &Path,
++    history_path: &Path,
++    universe_path: &Path,
++) -> Result<Facts> {
++    let calendar: CalendarDataset =
++        serde_json::from_slice(&storage::read_limited(calendar_path, MAX_JSON)?)?;
+     let calendar = HolidayCalendar::try_from(calendar).map_err(|e| invalid(e.to_string()))?;
+     calendar
+         .check_range(config.from)
+@@ -31,20 +52,16 @@ pub(super) fn load(config: &Config, directory: &Path) -> Result<Facts> {
+     calendar
+         .check_range(config.through)
+         .map_err(|e| invalid(e.to_string()))?;
+-    let history: SecurityHistoryDataset = serde_json::from_slice(&storage::read_limited(
+-        &directory.join("history.json"),
+-        MAX_JSON,
+-    )?)?;
++    let history: SecurityHistoryDataset =
++        serde_json::from_slice(&storage::read_limited(history_path, MAX_JSON)?)?;
+     if history.checked_through < config.through || history.checked_through > config.planned_date {
+         return Err(invalid(
+             "security history verification cutoff does not cover planned range",
+         ));
+     }
+     let history = SecurityHistory::try_from(history).map_err(|e| invalid(e.to_string()))?;
+-    let universe: Universe = serde_json::from_slice(&storage::read_limited(
+-        &directory.join("universe.json"),
+-        MAX_JSON,
+-    )?)?;
++    let universe: Universe =
++        serde_json::from_slice(&storage::read_limited(universe_path, MAX_JSON)?)?;
+     universe.validate(config)?;
+     Ok(Facts {
+         calendar,
+diff --git a/apps/rustdx-runner/src/storage.rs b/apps/rustdx-runner/src/storage.rs
+index 4b9a167..37058f2 100644
+--- a/apps/rustdx-runner/src/storage.rs
++++ b/apps/rustdx-runner/src/storage.rs
+@@ -186,6 +186,7 @@ pub fn copy_new(source: &Path, destination: &Path, limit: u64) -> Result<(String
+ 
+ pub struct RootLock {
+     _file: File,
++    root: PathBuf,
+ }
+ 
+ impl RootLock {
+@@ -202,8 +203,49 @@ impl RootLock {
+                 "controller already running or lock unavailable: {e}"
+             ))
+         })?;
+-        Ok(Self { _file: file })
++        Ok(Self {
++            _file: file,
++            root: root.canonicalize()?,
++        })
+     }
++
++    pub(crate) fn covers(&self, path: &Path) -> Result<()> {
++        if path
++            .parent()
++            .ok_or_else(|| invalid("ledger has no parent"))?
++            .canonicalize()?
++            != self.root
++        {
++            return Err(invalid("controller lock belongs to another root"));
++        }
++        Ok(())
++    }
++}
++
++/// Resolve an existing source and the parent of a new destination before any write.
++/// Parent aliases and `..` cannot place an ostensibly external copy inside source.
++pub(crate) fn isolated_destination(source: &Path, destination: &Path) -> Result<PathBuf> {
++    let source = source.canonicalize()?;
++    let name = destination
++        .file_name()
++        .ok_or_else(|| invalid("destination requires a filename"))?;
++    if destination
++        .components()
++        .any(|c| matches!(c, Component::ParentDir))
++    {
++        return Err(invalid("destination parent traversal is forbidden"));
++    }
++    let parent = destination
++        .parent()
++        .ok_or_else(|| invalid("destination has no parent"))?
++        .canonicalize()?;
++    let target = parent.join(name);
++    if target.starts_with(&source) || fs::symlink_metadata(&target).is_ok() {
++        return Err(invalid(
++            "destination must be new and outside the source root",
++        ));
++    }
++    Ok(target)
+ }
+ 
+ /// Counts regular files without following symlinks and caps filesystem traversal.
+@@ -219,11 +261,97 @@ pub(crate) struct TreeUsage {
+     pub entries: u64,
+ }
+ 
++/// Advisory accounting after inputs stop changing. Final reconciliation still scans everything.
++pub(crate) struct WorkspaceMeter {
++    root: PathBuf,
++    fixed: TreeUsage,
++    dynamic: Vec<String>,
++}
++
++fn path_usage(path: &Path) -> Result<TreeUsage> {
++    let metadata = match fs::symlink_metadata(path) {
++        Ok(metadata) => metadata,
++        Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(TreeUsage::default()),
++        Err(e) => return Err(e.into()),
++    };
++    let mut usage = if metadata.is_dir() {
++        tree_usage(path)?
++    } else if metadata.is_file() {
++        TreeUsage {
++            bytes: metadata.len(),
++            entries: 0,
++        }
++    } else {
++        return Err(invalid("workspace contains symlink or special file"));
++    };
++    usage.entries += 1;
++    Ok(usage)
++}
++
++fn add_usage(total: &mut TreeUsage, usage: TreeUsage) -> Result<()> {
++    total.bytes = total
++        .bytes
++        .checked_add(usage.bytes)
++        .ok_or_else(|| invalid("size overflow"))?;
++    total.entries = total
++        .entries
++        .checked_add(usage.entries)
++        .ok_or_else(|| invalid("entry overflow"))?;
++    if total.entries > MAX_TREE_ENTRIES {
++        return Err(invalid("workspace entry budget exceeded"));
++    }
++    Ok(())
++}
++
++impl WorkspaceMeter {
++    pub(crate) fn new(root: &Path, dynamic: &[&str]) -> Result<Self> {
++        let mut fixed = TreeUsage::default();
++        for entry in fs::read_dir(root)? {
++            let entry = entry?;
++            if !dynamic.iter().any(|name| entry.file_name() == *name) {
++                add_usage(&mut fixed, path_usage(&entry.path())?)?;
++            }
++        }
++        Ok(Self {
++            root: root.into(),
++            fixed,
++            dynamic: dynamic.iter().map(|name| (*name).into()).collect(),
++        })
++    }
++
++    pub(crate) fn sample(&self, max_bytes: u64) -> Result<TreeUsage> {
++        rustdx_complete::operation::check().map_err(crate::Error::from)?;
++        let mut usage = self.fixed;
++        for name in &self.dynamic {
++            add_usage(&mut usage, path_usage(&self.root.join(name))?)?;
++        }
++        if usage.bytes > max_bytes {
++            return Err(invalid("normalization exceeds workspace budget"));
++        }
++        Ok(usage)
++    }
++
++    pub(crate) fn reconcile(&self, max_bytes: u64) -> Result<()> {
++        let estimated = self.sample(max_bytes)?;
++        let actual = tree_usage(&self.root)?;
++        if actual.bytes > max_bytes
++            || actual.bytes != estimated.bytes
++            || actual.entries != estimated.entries
++        {
++            return Err(invalid(
++                "stationary workspace differs from normalization accounting",
++            ));
++        }
++        Ok(())
++    }
++}
++
+ pub(crate) fn tree_usage(root: &Path) -> Result<TreeUsage> {
+     let mut stack = vec![root.to_owned()];
+     let mut entries = 0_u64;
+     let mut bytes = 0_u64;
+     while let Some(path) = stack.pop() {
++        rustdx_complete::operation::check().map_err(crate::Error::from)?;
+         // Workers atomically rename/remove private staging files while this
+         // approximate monitor runs. Only disappeared entries are benign;
+         // quotas provide the hard limit and sealing recounts a stationary tree.
+@@ -235,6 +363,9 @@ pub(crate) fn tree_usage(root: &Path) -> Result<TreeUsage> {
+         for entry in directory {
+             let entry = entry?;
+             entries += 1;
++            if entries.is_multiple_of(4096) {
++                rustdx_complete::operation::check().map_err(crate::Error::from)?;
++            }
+             if entries > MAX_TREE_ENTRIES {
+                 return Err(invalid("workspace entry budget exceeded"));
+             }
+@@ -280,3 +411,71 @@ pub fn free_bytes(root: &Path) -> Result<u64> {
+ pub fn free_bytes(_root: &Path) -> Result<u64> {
+     Err(invalid("runner capacity checks require Unix"))
+ }
++
++#[cfg(test)]
++mod meter_tests {
++    use super::*;
++    use std::time::Instant;
++
++    #[test]
++    fn dynamic_meter_counts_sqlite_journal_and_disappearing_files_and_reconciles() {
++        let temp = tempfile::tempdir().unwrap();
++        let root = temp.path();
++        private_directory(&root.join("raw")).unwrap();
++        write_new(&root.join("raw/input"), b"fixed").unwrap();
++        let meter = WorkspaceMeter::new(
++            root,
++            &["normalization.sqlite", "normalization.sqlite-journal"],
++        )
++        .unwrap();
++        let db = rusqlite::Connection::open(root.join("normalization.sqlite")).unwrap();
++        db.execute_batch(
++            "PRAGMA journal_mode=DELETE; CREATE TABLE data(v BLOB); BEGIN;
++            INSERT INTO data VALUES(zeroblob(1048576));",
++        )
++        .unwrap();
++        assert!(root.join("normalization.sqlite-journal").exists());
++        assert_eq!(
++            meter.sample(u64::MAX).unwrap().bytes,
++            tree_bytes(root).unwrap()
++        );
++        assert!(meter.sample(1024).is_err());
++        db.execute_batch("COMMIT;").unwrap();
++        assert!(!root.join("normalization.sqlite-journal").exists());
++        meter.reconcile(u64::MAX).unwrap();
++        drop(db);
++        fs::remove_file(root.join("normalization.sqlite")).unwrap();
++        meter.reconcile(5).unwrap();
++        // An unclassified addition cannot evade the stationary final scan.
++        write_new(&root.join("unexpected"), b"x").unwrap();
++        assert!(meter.reconcile(u64::MAX).is_err());
++    }
++
++    #[test]
++    fn dynamic_meter_avoids_rescanning_fixed_file_history() {
++        let temp = tempfile::tempdir().unwrap();
++        let root = temp.path();
++        private_directory(&root.join("raw")).unwrap();
++        for n in 0..2000 {
++            fs::write(root.join("raw").join(n.to_string()), [0; 64]).unwrap();
++        }
++        fs::write(root.join("normalization.sqlite"), [0; 4096]).unwrap();
++        let meter = WorkspaceMeter::new(root, &["normalization.sqlite"]).unwrap();
++        let start = Instant::now();
++        for _ in 0..100 {
++            assert_eq!(tree_bytes(root).unwrap(), 132096);
++        }
++        let full = start.elapsed();
++        let start = Instant::now();
++        for _ in 0..100 {
++            assert_eq!(meter.sample(u64::MAX).unwrap().bytes, 132096);
++        }
++        let sampled = start.elapsed();
++        meter.reconcile(132096).unwrap();
++        println!(
++            "fixed_files=2000 samples=100 full_scan_micros={} dynamic_sample_micros={}",
++            full.as_micros(),
++            sampled.as_micros()
++        );
++    }
++}
+diff --git a/apps/rustdx-runner/tests/control_plane.rs b/apps/rustdx-runner/tests/control_plane.rs
+index 78dc743..e263a5f 100644
+--- a/apps/rustdx-runner/tests/control_plane.rs
++++ b/apps/rustdx-runner/tests/control_plane.rs
+@@ -412,6 +412,116 @@ fn write_day(source: &Path, dates: &[u32], close: u32) {
+     fs::write(source.join("sh600000.day"), bytes).unwrap();
+ }
+ 
++#[test]
++fn offline_plan_reports_expected_keys_missing_inputs_and_archive_limited_parallelism() {
++    let temp = TempDir::new().unwrap();
++    let cli = temp.path().join("fake-collector");
++    fs::write(&cli, b"SYNTHETIC; planning must never execute this file").unwrap();
++    let mut config = fixture(temp.path(), &cli);
++    let plan = pipeline::preflight_plan(&config, 8, 1).unwrap();
++    assert_eq!(plan["expected_keys"]["total"], 2);
++    assert_eq!(plan["expected_keys"]["trading"], 2);
++    assert_eq!(plan["expected_keys"]["truncated"], true);
++    assert_eq!(plan["can_start"], true);
++    assert!(!config.root.exists());
++    let config_path = temp.path().join("plan-job.json");
++    fs::write(&config_path, serde_json::to_vec(&config).unwrap()).unwrap();
++    let permits = temp.path().join("must-not-initialize-network");
++    let result = std::process::Command::new(env!("CARGO_BIN_EXE_rustdx-runner"))
++        .args(["plan", "--config"])
++        .arg(&config_path)
++        .arg("--network-dir")
++        .arg(&permits)
++        .output()
++        .unwrap();
++    assert!(
++        result.status.success(),
++        "{}",
++        String::from_utf8_lossy(&result.stderr)
++    );
++    assert_eq!(
++        serde_json::from_slice::<serde_json::Value>(&result.stdout).unwrap()["expected_keys"]["total"],
++        2
++    );
++    assert!(!permits.exists());
++    assert!(!config.root.exists());
++    let full = pipeline::preflight_plan(&config, 8, 2).unwrap();
++    assert_eq!(
++        plan["expected_keys"]["all_keys_jsonl_sha256"],
++        full["expected_keys"]["all_keys_jsonl_sha256"]
++    );
++    fs::remove_file(config.day_directories[0].join("sh600000.day")).unwrap();
++    assert_eq!(
++        pipeline::preflight_plan(&config, 8, 1).unwrap()["can_start"],
++        false
++    );
++
++    let mut universe: serde_json::Value =
++        serde_json::from_slice(&fs::read(&config.universe).unwrap()).unwrap();
++    let mut member = universe["members"][0].clone();
++    member["code"] = json!("sh600001");
++    universe["members"].as_array_mut().unwrap().push(member);
++    fs::write(&config.universe, serde_json::to_vec(&universe).unwrap()).unwrap();
++    let mut history: serde_json::Value =
++        serde_json::from_slice(&fs::read(&config.security_history).unwrap()).unwrap();
++    let mut interval = history["intervals"][0].clone();
++    interval["code"] = json!("sh600001");
++    history["intervals"].as_array_mut().unwrap().push(interval);
++    fs::write(
++        &config.security_history,
++        serde_json::to_vec(&history).unwrap(),
++    )
++    .unwrap();
++    config.day_directories.clear();
++    config.no_tcp_startup = false;
++    config.max_source_bytes = 64 * 1024 * 1024;
++    config.planned_date = "2026-07-08".parse().unwrap();
++    config.source_as_of = config.planned_date;
++    config.tcp_day = Some(rustdx_cli::tcp_day::Source {
++        endpoint: "127.0.0.1:9".parse().unwrap(),
++        volume_evidence_sha256: config.calendar_source_sha256.clone(),
++        page_size: 800,
++        max_pages: 128,
++        max_raw_rows: 65536,
++        max_payload_bytes: 16 * 1024 * 1024,
++        max_wire_records: 20000,
++    });
++    config.tcp_day_schedule = Some(rustdx_cli::tcp_day::Schedule {
++        max_parallel: 2,
++        timeout_seconds: 50,
++        max_raw_rows: 1000000,
++        max_payload_bytes: 64 * 1024 * 1024,
++    });
++    let plan = pipeline::preflight_plan(&config, 8, 10).unwrap();
++    assert_eq!(plan["expected_keys"]["total"], 4);
++    assert_eq!(plan["tcp"]["effective_parallel"], 1);
++    assert!(
++        plan["tcp"]["limiting_budgets"]
++            .as_array()
++            .unwrap()
++            .contains(&json!("archive_bytes"))
++    );
++    assert_eq!(plan["tcp"]["minimum_collection_wire_records"], 8);
++    assert!(!config.root.exists());
++    config.max_source_bytes = 1024;
++    assert_eq!(
++        pipeline::preflight_plan(&config, 8, 10).unwrap()["can_start"],
++        false
++    );
++    history["intervals"][1]["end"] = json!("2026-07-06");
++    fs::write(
++        &config.security_history,
++        serde_json::to_vec(&history).unwrap(),
++    )
++    .unwrap();
++    assert!(
++        pipeline::preflight_plan(&config, 8, 10)
++            .unwrap_err()
++            .to_string()
++            .contains("Unknown")
++    );
++}
++
+ #[test]
+ fn strict_config_and_unknown_history_refuse_before_spawn() {
+     let temp = TempDir::new().unwrap();
+@@ -917,7 +1027,7 @@ fn real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence(
+     PinnedDataset::open(&restored, &config.dataset_id, Some(1)).unwrap();
+     // DBA-only corruption deliberately appends data to an already released namespace.
+     let release = &pinned
+-        .catalog
++        .catalog()
+         .partitions
+         .values()
+         .next()
+@@ -1121,7 +1231,7 @@ fn tcp_explicitly_exempt_scope_publishes_without_contacting_the_source() {
+     let pinned =
+         rustdx_runner::consumer::PinnedDataset::open(&config.root, "synthetic", Some(1)).unwrap();
+     let release = pinned
+-        .catalog
++        .catalog()
+         .partitions
+         .values()
+         .next()
+@@ -1167,7 +1277,7 @@ fn tcp_daily_release_revision_missing_keys_and_offline_recovery() {
+     let pinned =
+         rustdx_runner::consumer::PinnedDataset::open(&config.root, "synthetic", Some(1)).unwrap();
+     let release = pinned
+-        .catalog
++        .catalog()
+         .partitions
+         .values()
+         .next()
+diff --git a/crates/rustdx-core/src/operation.rs b/crates/rustdx-core/src/operation.rs
+index 6474dd9..54f28dd 100644
+--- a/crates/rustdx-core/src/operation.rs
++++ b/crates/rustdx-core/src/operation.rs
+@@ -168,27 +168,51 @@ mod tests {
+     use super::*;
+ 
+     #[test]
+-    fn absolute_deadline_and_worker_cancellation() {
+-        let task = OperationContext::new(Duration::from_millis(60), None).unwrap();
++    fn absolute_deadline_is_not_refreshed() {
++        let mut task = OperationContext::new(Duration::from_secs(60), None).unwrap();
++        let deadline = task.deadline;
+         let _guard = task.enter();
+-        sleep(Duration::from_millis(40)).unwrap();
+-        assert!(timeout(Duration::from_secs(10)).unwrap() < Duration::from_millis(30));
++        assert!(timeout(Duration::from_secs(120)).unwrap() <= Duration::from_secs(60));
++        assert_eq!(OperationContext::current().unwrap().deadline, deadline);
++        drop(_guard);
++        // Inject an already expired deadline; no scheduler timing assumption.
++        task.deadline = Instant::now();
++        let _guard = task.enter();
++        assert_eq!(check().unwrap_err().kind(), io::ErrorKind::TimedOut);
++        assert_eq!(
++            sleep(Duration::ZERO).unwrap_err().kind(),
++            io::ErrorKind::TimedOut
++        );
++    }
++
++    #[test]
++    fn worker_cancellation_after_entering_context() {
++        let task = OperationContext::new(Duration::from_secs(60), None).unwrap();
++        let (ready_tx, ready_rx) = std::sync::mpsc::channel();
++        let (cancel_tx, cancel_rx) = std::sync::mpsc::channel();
+         let worker = task.clone();
+         let thread = std::thread::spawn(move || {
+             let _guard = worker.enter();
++            check().unwrap();
++            ready_tx.send(()).unwrap();
++            cancel_rx.recv_timeout(Duration::from_secs(10)).unwrap();
+             sleep(Duration::from_secs(10)).unwrap_err().kind()
+         });
++        ready_rx.recv_timeout(Duration::from_secs(10)).unwrap();
+         task.cancel();
++        cancel_tx.send(()).unwrap();
+         assert_eq!(thread.join().unwrap(), io::ErrorKind::Interrupted);
+     }
+ 
+     #[test]
+     fn scopes_restore_and_expiry_is_not_refreshed() {
+-        let task = OperationContext::new(Duration::from_millis(5), None).unwrap();
++        let mut task = OperationContext::new(Duration::from_secs(60), None).unwrap();
++        task.deadline = Instant::now();
+         let guard = task.enter();
+-        let nested = OperationContext::new(Duration::from_secs(10), None).unwrap();
++        let nested = OperationContext::new(Duration::from_secs(120), None).unwrap();
+         let inner = nested.enter();
+-        assert!(sleep(Duration::from_millis(15)).is_err());
++        assert_eq!(OperationContext::current().unwrap().deadline, task.deadline);
++        assert!(check().is_err());
+         drop(inner);
+         assert_eq!(check().unwrap_err().kind(), io::ErrorKind::TimedOut);
+         drop(guard);
+diff --git a/deploy/runner/README.md b/deploy/runner/README.md
+index 810364c..2ebac72 100644
+--- a/deploy/runner/README.md
++++ b/deploy/runner/README.md
+@@ -92,4 +92,6 @@ rustdx-runner --no-tcp-startup export --root /srv/restore/rustdx-001 --dataset a
+ 
+ 生产恢复到新端点时，先按[应用接入约定](../../docs/development/APPLICATION_INTEGRATION.md)核查已归档目标身份。恢复控制文件不会自动重写原始请求证据或把收据指向另一库；端点迁移和业务切换须另外编排并验证。目标RPO/RTO与生产恢复通过状态继续按[验收矩阵](../../docs/testing/PRODUCTION_ACCEPTANCE.md)管理。
+ 
+-MongoDB适配当前每个有界逻辑请求启动一次 mongosh，依次写入/回读512行；内存与请求大小有界，但进程启动和连接成本较高。1,200行模拟数据的本机服务验证不能代替全量吞吐量、稳定版本Linux或长期SLO验收。实施证据与尚未通过的门禁见[实施记录](../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。
++MongoDB按目标/release复用mongosh会话，每请求至多512行；固定catalog数据库导出也按release复用会话，独立查询审计不追加发布账本。`consumer-audit`不包含在控制层备份中，部署方须另定审计保留期限、总磁盘配额及采集方式；当前留存预览保护该目录，不自动删除。升级到schema4前保存旧备份，执行`migrate`，必要时用`rebuild-metrics`从原观测重建汇总；schema3备份可原样恢复后显式迁移。运行前可执行只读`plan`核对应有键和有效并发。
++
++1,200行工程模拟和单次20,000条指标历史测量不能代替全量吞吐量、稳定Linux或长期SLO验收。当前消费/计量合同见[runner说明](../../apps/rustdx-runner/README.md)，已取得的历史及目标环境限制见[实施记录](../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。
+diff --git a/docs/README.md b/docs/README.md
+index 155128f..7b64d8b 100644
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -4,6 +4,8 @@
+ 
+ 当前17项可实施工程已迭代处理，见[优化执行进度](development/OPTIMIZATION_PROGRESS.md)和[最终检查与限制](archive/development/OPTIMIZATION_FINAL_20261025.md)。包括checked正确性、离线默认、2.0迁移、具体结果/字段资格、事实巡检、持久指标、批量预算、10000证券有界日线计划、留存预览、CI与职责拆分；实盘窗口、未来官方事实和目标生产仍按证据范围判定。
+ 
++后续A01–A12按[系统优化方案](archive/architecture/SYSTEM_OPTIMIZATION_PLAN_20261025.md)执行，最新状态见[本轮记录](development/SYSTEM_OPTIMIZATION_PROGRESS.md)。新修复和验证另留证，不更新旧冻结摘要。
++
+ 剩余验收最新进展：[通用300字节资源/统计ZIP合同与推送门禁修复](archive/development/RESOURCE_CONTRACT_PUSH_ACCEPTANCE_FIX_20261024.md)、[板块完整MD5/严格解析修复与两节点全文件对照](archive/development/BLOCK_FILE_INTEGRITY_FIX_20261024.md)、[TCP日线整数股数修复与两节点24条全字段精确对照](archive/development/TCP_DAILY_INTEGER_SHARES_FIX_20261024.md)、[0feb日期编码修复与两节点同日对照](archive/development/RECENT_MINUTES_DATE_SELECTOR_FIX_20261024.md)；此前的[第六阶段/两库原生全备与空目录恢复](archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)及[第五阶段/RowBinary精度修复、固定数据库与真实TCP对照](archive/development/REMAINING_ACCEPTANCE_STAGE5_20261024.md)继续保留。
+ 旧0feb“8月请求取回6月数据”已定位为ordinal编码错误；修复样本、合成数据恢复与固定数据库环境分别留证，通用日期资格、真实市场完整性和目标生产门禁继续单独判定。
+ 
+diff --git a/docs/development/APPLICATION_INTEGRATION.md b/docs/development/APPLICATION_INTEGRATION.md
+index 4dbd85b..a6fafc4 100644
+--- a/docs/development/APPLICATION_INTEGRATION.md
++++ b/docs/development/APPLICATION_INTEGRATION.md
+@@ -270,4 +270,12 @@ runner输出仍使用`a-share/day/raw/cny/shares/v1`，新采集输入合同为`
+ 
+ 消费会话固定dataset及catalog版本，数据库导出选择该版本归档的目标ID和release身份；控制层restore校验文件/账本和请求证据，不连接或恢复数据库服务端。恢复后文件导出成功不能单独证明数据库恢复成功，必须分别读取所需历史版本并精确核对全部键、字段及行数。
+ 
++查询使用已有账本只读打开，不初始化/迁移；迁移和写入持控制锁，空root不是有效的空数据集。备份/恢复目标以已有父目录实际路径检查隔离，清单和完成标记计入总字节预算。恢复账本的原Attempt路径作为审计事实保留；新的`restore-validated.json.original_roots`把逻辑定位映射到当前`attempts/<id>`，留存预览验证该映射及数据库proof原字节。恢复不会通过改写旧路径、摘要或Receipt来适配新root。
++
++`PinnedDataset.catalog()`返回固定目录的共享只读引用，清单保留在会话内。一次导出按release复用数据库会话，按目录日期顺序精确比较全部键/字段，每个日期验证终止空页，结束时每release检查完整总数。查询审计使用独立`consumer-audit`会话目录及SHA收据，至多50,000请求、200,000条目，字节上限为选中release冻结workspace预算最小值；不追加发布`target_io`。完成标记只证明回读核验，CSV仍须原子提交。审计总磁盘配额/保留期另定，控制层备份不复制它，当前预览保护该目录。
++
++账本schema4把原观测与可重建计数/阶段汇总在同一事务写入；metrics区分失败、unavailable及缺失记录。旧schema3备份可原字节恢复，但当前查询要求显式`migrate`；迁移异常回滚，`rebuild-metrics`在根锁内重建。不要通过改写历史JSON或只降低schema号回退。归一化输入固定后只检查变化部分，最终静止树完整核对及release摘要/清单预算仍执行。
++
++`plan --config`只读现有事实/源/磁盘，不启动网络、创建root或迁移账本；输出应有键总数/摘要和有上限样本、初始有效并发及限制项、已知最小固定输入字节、最坏预留缺口和中断期限。初始可启动不保证源历史可枚举完整，Unknown仍拒绝；运行时重新冻结。该计划不授予分钟、快照或订阅资格。
++
+ 归档的数据库目标包含端点、库/表/集合及凭据环境变量名。restore不会自动替换端点或修改原始收据；目标迁移时须按原身份核查恢复编排，不能改冻结请求/收据或摘要来指向另一库。第六阶段在相同loopback端点/命名空间、另一组全新数据目录原生恢复后，固定v1/v2与原文件精确一致；生产新端点迁移未据此通过。执行方法和范围见[部署恢复](../../deploy/runner/README.md#5-备份与隔离恢复)及[原生恢复验收](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)。
+diff --git a/docs/operations/DATA_MAINTENANCE.md b/docs/operations/DATA_MAINTENANCE.md
+index da33a06..f73a789 100644
+--- a/docs/operations/DATA_MAINTENANCE.md
++++ b/docs/operations/DATA_MAINTENANCE.md
+@@ -32,3 +32,11 @@ rustdx --no-tcp-startup data-status --as-of 2026-10-24 --calendar config/calenda
+ 新增只读计划巡检`scripts/validation/audit_point_in_time_facts.py --config job.json --calendar-reference reference.json --output new-audit.json`：按job应有证券和交易日检查点时名单、状态缺口、重叠区间、数据截止、公告原文件摘要及独立日历逐日一致。Unknown使结果incomplete并非零退出；输出只证明声明范围的完整性和字节一致，名单的全市场真实性与公告语义仍由维护者复核。它不下载公告、不续期日历、不替换配置，也不覆盖旧输出。
+ 
+ 维护闭环依次为取得完整公告并存摘要命名原文件、整理候选日历/名单/上市退市与ST/停复牌区间、独立来源复核、执行data-check及job巡检、由新source/policy revision发布、最后固定版本回读。每次保留来源截止、核实日期、证据版本和巡检结果；新增年度公告未取得前保持OutOfRange。2027接入继续使用交易所年度公告与独立交易所日历对照，不能以周一至周五或国务院调休表代替交易安排。
++
++责任与复核巡检使用`audit_fact_maintenance.py --registry REGISTRY --evidence-root ORIGINALS --output NEW.json`。
++登记规则、年度日历、上市/退市、ST/停复牌和点时名单五类；每类指定维护角色、独立复核角色、
++升级责任角色、声明范围、核实覆盖和下次复核日。证据条目包含相对路径、HTTPS来源、
++published/checked与SHA-256；来源不足、摘要变化、复核到期及覆盖不足返回attention_required并退出1。
++角色须由运营方落实到实际负责人，脚本不向他人发送通知，也不续期或发布事实。
++仓库的[登记示例](../../config/maintenance/facts.example.json)明确未核实、无证据，不作为真实全市场材料；
++现有覆盖工作流保存缺口报告，直到部署方填写并独立核对资料。它不替代data-check与应有键审计。
+diff --git a/scripts/README.md b/scripts/README.md
+index baed79c..084c782 100644
+--- a/scripts/README.md
++++ b/scripts/README.md
+@@ -14,6 +14,7 @@
+ | bench/measure_process_tree.py | 同时采样进程组/后代RSS、FD、线程、进程数及声明目录逻辑字节 | Python3、ps及macOS lsof或Linux /proc；仅运行显式命令，保留缺失采样和日志 |
+ | validation/verify_consumption_fields.py | 必需财务字段矩阵与raw_bits/发行人证据摘要核验 | Python3 stdlib；固定矩阵或调用方新矩阵，默认无网络，不扩大旧资格 |
+ | validation/audit_point_in_time_facts.py | job应有日期/证券、点时状态缺口、区间重叠、公告摘要和独立日历核验 | Python3 stdlib；只读配置与原文件，Unknown非零退出，不续期事实 |
++| validation/audit_fact_maintenance.py | 五类事实维护责任、独立复核、证据字节和下次复核日巡检 | Python3 stdlib；缺口退出1并保留报告，不发通知、不续期、不替代语义/应有键审核 |
+ | validation/verify_local_recovery.py | 新目录一致性备份/隔离恢复、固定catalog版本全CSV字节比较 | Python3及runner；读取明确root，备份到新目录，不代表数据库原生恢复 |
+ | validation/verify_database_recovery.py | 两个runner版本、两库原生全备与全新数据目录恢复、全字段/索引/约束核对及失败保护 | Linux、同源码CLI/runner、Docker及mongosh/mongodump/mongorestore；固定digest、自建loopback容器，保留原生备份和逐命令证据 |
+ | validation/verify_kline_pytdx.py | K线独立期望重解 | Python3、six、指定固定pytdx源码 |
+@@ -56,3 +57,5 @@ report默认保存到`${TMPDIR:-/tmp}/rustdx-reports`，可通过RUSTDX_REPORT_D
+ 测量完整参数见各Python脚本`--help`。day内存对比必须分别构建到独立target目录，不能传相同二进制。数据库脚本以随机私有数据库运行并删除自有表，不接受生产表名；仍需显式选择隔离服务，完整前置条件见[数据库验收](../docs/testing/DATABASE_ACCEPTANCE.md)。
+ 
+ 发布脚本只在正式发包任务使用，本次目录整理没有运行。全all-features/MSRV/fuzz门禁另见[开发说明](../docs/development/DEVELOPMENT.md)及[版本交付](../docs/release/RELEASES.md)。
++
++`bench/measure_runner_history.py --binary /absolute/rustdx-runner --output /external/history.json`在新的私有临时root构造20,000条合成Job/观测、显式迁移schema3→4，再测量metrics/status的CLI耗时和RSS；保留样本和日志，不使用业务root，不代表生产采集进程树内存。runner的`plan --config /absolute/job.json`提供不联网的应有键/初始并发预检，合同见[应用接入](../docs/development/APPLICATION_INTEGRATION.md)。
+diff --git a/scripts/ops/retention_preview.py b/scripts/ops/retention_preview.py
+index 630142c..0347731 100644
+--- a/scripts/ops/retention_preview.py
++++ b/scripts/ops/retention_preview.py
+@@ -123,7 +123,7 @@ def locked_ledger(root):
+                 db.execute("PRAGMA query_only=ON")
+                 db.execute("BEGIN")
+                 version = db.execute("PRAGMA user_version").fetchone()[0]
+-                if version not in (1, 2, 3):
++                if version not in (1, 2, 3, 4):
+                     raise ValueError("unsupported ledger schema")
+                 active = db.execute(
+                     "SELECT count(*) FROM attempts WHERE state IN "
+@@ -137,8 +137,11 @@ def locked_ledger(root):
+ 
+ 
+ def preview(root, backups=(), retention_days=30, max_files=200000, max_bytes=1 << 40, previous=None):
+-    root = Path(root).absolute()
+-    backups = sorted(Path(p).absolute() for p in backups)
++    regular(Path(root), directory=True)
++    root = Path(root).resolve(strict=True)
++    for path in backups:
++        regular(Path(path), directory=True)
++    backups = sorted(Path(p).resolve(strict=True) for p in backups)
+     if len(set(backups)) != len(backups) or any(p == root or root in p.parents or p in root.parents for p in backups):
+         raise ValueError("backups must be unique and outside the live root")
+     if not math.isfinite(retention_days) or retention_days < 0 or max_files <= 0 or max_bytes <= 0:
+@@ -147,18 +150,54 @@ def preview(root, backups=(), retention_days=30, max_files=200000, max_bytes=1 <
+     dependencies = defaultdict(set)
+     now = datetime.now(timezone.utc)
+     backup_reports = []
++    relocations = []
+ 
+     def protect(path, reason):
+         safe(root, path)
+         dependencies[path].add(reason)
+ 
++    def proof(evidence, release, target=None):
++        path = verify(root, evidence)
++        data = read_json(path)
++        if data.get("schema_version") != 1 or data.get("release") != release or (
++                target is not None and data.get("target") != target):
++            raise ValueError("database proof identity differs")
++        if not isinstance(data.get("io"), list):
++            raise ValueError("database proof I/O list missing")
++        protect(evidence["path"], "database_verification_proof")
++        for pair in data["io"]:
++            if not isinstance(pair, list) or len(pair) != 2:
++                raise ValueError("invalid database proof I/O pair")
++            for text in pair:
++                if text is not None:
++                    item = json.loads(text)
++                    verify(root, item)
++                    protect(item["path"], "database_proof_io")
++
+     with locked_ledger(root) as (db, version):
+         files = scan.tree(root)
++        restore_path = root / "restore-validated.json"
++        restore = read_json(restore_path) if restore_path.exists() else None
++        if restore is not None and restore.get("schema_version") != 1:
++            raise ValueError("unsupported restore marker")
++        original_roots = restore.get("original_roots") if restore else None
++        legacy_original = set()
+         for identifier, directory, state in db.execute("SELECT id,directory,state FROM attempts"):
+-            relative = Path(directory).relative_to(root).as_posix()
+-            if relative != "attempts/" + identifier:
+-                raise ValueError("attempt directory differs from controller scope")
++            relative = "attempts/" + identifier
++            safe(root, relative)
++            original = Path(directory)
++            if (not original.is_absolute() or original.parts[-2:] != ("attempts", identifier)
++                    or ".." in original.parts):
++                raise ValueError("attempt directory must be an absolute attempts/id path")
++            if original.resolve() != root / relative:
++                origin = str(original.parent.parent)
++                if restore is None or (original_roots is not None and origin not in original_roots):
++                    raise ValueError("attempt relocation lacks a matching restore marker")
++                legacy_original.add(origin)
++                relocations.append({"original": directory, "logical": relative})
+             protect(relative, "ledger_attempt:" + state)
++        if original_roots is None and len(legacy_original) > 1:
++            raise ValueError("legacy restore contains ambiguous original roots")
+         for identifier, text, state in db.execute("SELECT id,manifest,state FROM releases"):
+             evidence = json.loads(text)
+             manifest_path = verify(root, evidence)
+@@ -182,14 +221,14 @@ def preview(root, backups=(), retention_days=30, max_files=200000, max_bytes=1 <
+             for release, receipts in catalog.get("database_releases", {}).items():
+                 protect("releases/" + release, f"catalog_database:{dataset}:{version_number}")
+                 for receipt in receipts:
+-                    # Receipt structure can evolve; referenced evidence is also in target_io.
+-                    for key in ("request", "response", "evidence"):
+-                        if isinstance(receipt.get(key), dict) and "path" in receipt[key]:
+-                            verify(root, receipt[key])
+-                            protect(receipt[key]["path"], "catalog_database_receipt")
++                    proof(receipt["proof"], release, receipt["target"])
+         if version >= 2:
+-            for release, identifier in db.execute("SELECT release,id FROM targets"):
++            for release, identifier, spec, state, text in db.execute("SELECT release,id,spec,state,proof FROM targets"):
+                 protect("releases/" + release, "database_target:" + identifier)
++                if state == "verified" and text is None:
++                    raise ValueError("verified database target has no proof")
++                if text is not None:
++                    proof(json.loads(text), release, json.loads(spec))
+             for release, identifier, request, response in db.execute("SELECT release,target,request,response FROM target_io"):
+                 for text in (request, response):
+                     if text is not None:
+@@ -266,6 +305,7 @@ def preview(root, backups=(), retention_days=30, max_files=200000, max_bytes=1 <
+             "logical_bytes": logical, "allocated_bytes": allocated,
+             "free_bytes": space.f_bavail * space.f_frsize,
+             "buckets": dict(buckets), "backups": backup_reports, "objects": entries,
++            "relocations": relocations,
+             "candidate_bytes": sum(e["logical_bytes"] for e in entries if e["status"] == "candidate_review"),
+             "trend": None,
+         }
+diff --git a/scripts/validation/tests/test_retention_preview.py b/scripts/validation/tests/test_retention_preview.py
+index 205e601..a1d4ba2 100644
+--- a/scripts/validation/tests/test_retention_preview.py
++++ b/scripts/validation/tests/test_retention_preview.py
+@@ -36,7 +36,7 @@ class RetentionTests(unittest.TestCase):
+             CREATE TABLE attempts(id TEXT,directory TEXT,state TEXT,pid INTEGER);
+             CREATE TABLE releases(id TEXT,manifest TEXT,state TEXT);
+             CREATE TABLE publications(dataset TEXT,version INTEGER,pointer TEXT);
+-            CREATE TABLE targets(release TEXT,id TEXT);
++            CREATE TABLE targets(release TEXT,id TEXT,spec TEXT,state TEXT,proof TEXT);
+             CREATE TABLE target_io(release TEXT,target TEXT,request TEXT,response TEXT);
+         """)
+         for number in (1, 2):
+@@ -64,7 +64,7 @@ class RetentionTests(unittest.TestCase):
+         db.execute("INSERT INTO attempts VALUES(?,?,?,NULL)", ("failed1", str(attempt), "failed"))
+         (root / "database/release1").mkdir(parents=True)
+         (root / "database/release1/receipt.json").write_text('{"verified":true}')
+-        db.execute("INSERT INTO targets VALUES('release1','db')")
++        db.execute("INSERT INTO targets VALUES('release1','db','{}','acknowledged',NULL)")
+         db.execute("INSERT INTO target_io VALUES('release1','db',?,NULL)",
+                    (json.dumps(evidence(root, "database/release1/receipt.json")),))
+         db.commit()
+@@ -153,6 +153,51 @@ class RetentionTests(unittest.TestCase):
+             self.assertEqual(snapshot(root), before)
+             db.close()
+ 
++    def test_restored_paths_are_mapped_without_changing_historical_ledger(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            base = Path(temporary)
++            old, restored = base / "old", base / "restored"
++            old.mkdir()
++            self.fixture(old)
++            shutil.copytree(old, restored)
++            with self.assertRaises(ValueError):
++                preview.preview(restored)
++            (restored / "restore-validated.json").write_text(json.dumps({
++                "schema_version": 1, "original_roots": [str(old)]}))
++            shutil.rmtree(old)
++            before = snapshot(restored)
++            result = preview.preview(restored)
++            self.assertEqual(result["relocations"][0]["logical"], "attempts/failed1")
++            self.assertEqual(snapshot(restored), before)
++            marker = restored / "restore-validated.json"
++            marker.write_text('{"schema_version":1,"original_roots":["/wrong"]}')
++            with self.assertRaises(ValueError):
++                preview.preview(restored)
++
++    def test_real_proof_field_is_verified_in_catalog_and_targets(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            self.fixture(root)
++            path = root / "database/release1/proof.json"
++            path.write_text(json.dumps({"schema_version": 1, "release": "release1",
++                                       "target": {}, "io": []}))
++            item = evidence(root, "database/release1/proof.json")
++            db = sqlite3.connect(root / "ledger.sqlite")
++            db.execute("UPDATE targets SET state='verified',proof=?", (json.dumps(item),))
++            catalog = root / "catalogs/data/1.json"
++            data = json.loads(catalog.read_text())
++            data["database_releases"] = {"release1": [{"target": {}, "proof": item}]}
++            catalog.write_text(json.dumps(data))
++            db.execute("UPDATE publications SET pointer=? WHERE version=1",
++                       (json.dumps({"manifest": evidence(root, "catalogs/data/1.json")}),))
++            db.commit()
++            self.assertEqual(preview.preview(root)["mode"], "preview_only")
++            # Tampering with only the proof was formerly missed by target_io checks.
++            path.write_text('{"tampered":true}')
++            with self.assertRaises(ValueError):
++                preview.preview(root)
++            db.close()
++
+ 
+ if __name__ == "__main__":
+     unittest.main()

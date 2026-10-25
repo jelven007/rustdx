@@ -365,6 +365,7 @@ SLA、生产吞吐、P95告警值、完整进程树内存、磁盘余量、RPO/R
 | FR-13、FR-15至FR-18 | `crates/rustdx-core/src/tcp/evidence.rs`、`apps/rustdx-cli/src/tcp_evidence.rs`、`apps/rustdx-runner/`、`config/runner/`、`deploy/runner/` | [组件实施](../archive/development/PRODUCTION_IMPLEMENTATION.md)、[第五阶段Linux复验](../archive/development/REMAINING_ACCEPTANCE_STAGE5_20261024.md)、[第六阶段备份恢复](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)、control_plane/wire_archive及[初始组件证据](../testing/evidence/runner-implementation-20261023.json) |
 | FR-03、FR-04、FR-07、FR-13、FR-15至FR-18 | `apps/rustdx-cli/src/tcp_day.rs`、`tcp_day/acquisition.rs`、`apps/rustdx-runner/src/{config,pipeline,supervisor}.rs` | [来源消费合同](../development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)、[有界调度与留存](../archive/development/OPTIMIZATION_ACQUISITION_RETENTION_20261025.md)；40证券80行模拟，真实全市场/分钟仍待验 |
 | FR-09至FR-13、FR-15至FR-18 | `scripts/bench/`、`scripts/release/`、`.github/workflows/ci.yml`、`pipeline/facts.rs`、`database/capacity.rs`、`io/factors.rs` | [17项执行记录](../development/OPTIMIZATION_PROGRESS.md)；同机性能、独立包消费及职责拆分回归，远端CI未运行 |
+| FR-01、FR-02、FR-04、FR-06、FR-10、FR-11、FR-13至FR-18 | `operation.rs`、runner只读/迁移/恢复/消费/汇总/计量/plan、`scripts/release/`、`scripts/validation/audit_task_admission.py` | [A01–A12最终工程验证](../archive/development/SYSTEM_OPTIMIZATION_FINAL_20261025.md)、[任务准入](../testing/TASK_ADMISSION.md)；新SHA远端门禁、真实事实/两库和目标生产仍待验收 |
 
 截至2026-10-24，证据层级如下；目录迁移与第五阶段新取得的外部验证分别留证：
 

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "contract_reference": "docs/development/APPLICATION_INTEGRATION.md",
+  "acceptance_reference": "docs/testing/PRODUCTION_ACCEPTANCE.md",
+  "tasks": {
+    "runner_day": {
+      "runner_entry": true,
+      "contract": "a-share/day/raw/cny/shares/v1",
+      "required_qualifications": ["security_identity", "date", "price_unit", "volume_unit", "amount_unit", "expected_keys", "finality"],
+      "open_boundaries": ["actual scope facts", "target deployment and sustained load"],
+      "historical_reference": {
+        "path": "docs/testing/evidence/tcp-day-volume-fix-20261024/independent.json",
+        "sha256": "6231e28cff20c604488a893440ffa511c870e35a7d1ee525a449c9af2e04fddb",
+        "scope": "Two nodes, three securities, four ended dates; 24 rows. Does not qualify a new scope."
+      }
+    },
+    "minute_bar": {
+      "runner_entry": false,
+      "contract": null,
+      "required_qualifications": ["security_identity", "date", "price_unit", "volume_unit", "amount_unit", "expected_keys", "finality", "minute_labels"],
+      "open_boundaries": ["separate runner task and release contract", "0feb result-bound date reference", "volume and synthetic time-label qualification"],
+      "historical_reference": {
+        "path": "docs/testing/evidence/recent-minutes-date-selector-20261024/date-selector-verification.json",
+        "sha256": "c1fee8905805fecdf17b65ab5722908cbbf01ee20d80656159156c1a7ecf6fe9",
+        "scope": "Specific six-security/six-date price comparisons; no general quantity/date qualification."
+      }
+    },
+    "snapshot": {
+      "runner_entry": false,
+      "contract": null,
+      "required_qualifications": ["security_identity", "date", "price_unit", "volume_unit", "amount_unit", "expected_keys", "observed_window", "metadata_freshness"],
+      "open_boundaries": ["separate runner task and release contract", "complete keys in stated sampling window", "no atomic exchange snapshot claim"]
+    },
+    "subscription_0547": {
+      "runner_entry": false,
+      "contract": null,
+      "required_qualifications": ["security_identity", "date", "price_unit", "volume_unit", "amount_unit", "expected_keys", "observed_window", "metadata_freshness", "all_keys_synchronized", "passive_push_window"],
+      "open_boundaries": ["separate runner task and release contract", "actual intraday passive push", "disconnect/overflow and all-key recovery"],
+      "historical_reference": {
+        "path": "docs/testing/evidence/resource-contract-push-fix-20261024/summary.json",
+        "sha256": "6e826c66aec0eed10feda4fb3327792332a4290c42a4c217ad15f2a54a8dcc87",
+        "scope": "Engineering/off-hours gate only; not a real intraday push acceptance."
+      }
+    }
+  },
+  "required_reports": ["target_smoke", "fact_coverage", "field_semantics", "full_readback", "fault_recovery", "resources", "access_controls", "backup_recovery", "sustained_load"],
+  "required_faults": ["stop_restart", "lost_acknowledgement", "worker_interruption", "catalog_failure_after_seal", "fixed_old_version_read"],
+  "resource_limits": ["process_tree_rss_bytes", "fds", "threads", "disk_bytes", "stage_latency_ms"],
+  "load_measurements": ["duration_seconds", "completed_jobs", "failed_jobs"],
+  "approval_meaning": "Reviewed evidence envelope consistency only; does not execute deployment or upgrade runtime qualification getters."
+}

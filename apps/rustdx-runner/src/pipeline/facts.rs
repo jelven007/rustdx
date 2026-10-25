@@ -20,10 +20,31 @@ pub(super) struct Facts {
 }
 
 pub(super) fn load(config: &Config, directory: &Path) -> Result<Facts> {
-    let calendar: CalendarDataset = serde_json::from_slice(&storage::read_limited(
+    load_paths(
+        config,
         &directory.join("calendar.json"),
-        MAX_JSON,
-    )?)?;
+        &directory.join("history.json"),
+        &directory.join("universe.json"),
+    )
+}
+
+pub(super) fn load_config(config: &Config) -> Result<Facts> {
+    load_paths(
+        config,
+        &config.calendar,
+        &config.security_history,
+        &config.universe,
+    )
+}
+
+fn load_paths(
+    config: &Config,
+    calendar_path: &Path,
+    history_path: &Path,
+    universe_path: &Path,
+) -> Result<Facts> {
+    let calendar: CalendarDataset =
+        serde_json::from_slice(&storage::read_limited(calendar_path, MAX_JSON)?)?;
     let calendar = HolidayCalendar::try_from(calendar).map_err(|e| invalid(e.to_string()))?;
     calendar
         .check_range(config.from)
@@ -31,20 +52,16 @@ pub(super) fn load(config: &Config, directory: &Path) -> Result<Facts> {
     calendar
         .check_range(config.through)
         .map_err(|e| invalid(e.to_string()))?;
-    let history: SecurityHistoryDataset = serde_json::from_slice(&storage::read_limited(
-        &directory.join("history.json"),
-        MAX_JSON,
-    )?)?;
+    let history: SecurityHistoryDataset =
+        serde_json::from_slice(&storage::read_limited(history_path, MAX_JSON)?)?;
     if history.checked_through < config.through || history.checked_through > config.planned_date {
         return Err(invalid(
             "security history verification cutoff does not cover planned range",
         ));
     }
     let history = SecurityHistory::try_from(history).map_err(|e| invalid(e.to_string()))?;
-    let universe: Universe = serde_json::from_slice(&storage::read_limited(
-        &directory.join("universe.json"),
-        MAX_JSON,
-    )?)?;
+    let universe: Universe =
+        serde_json::from_slice(&storage::read_limited(universe_path, MAX_JSON)?)?;
     universe.validate(config)?;
     Ok(Facts {
         calendar,

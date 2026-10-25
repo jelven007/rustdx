@@ -1,0 +1,28 @@
+{
+  "command": [
+    "/tmp/rustdx-system-review-20261025/target/debug/rustdx-runner",
+    "--no-tcp-startup",
+    "backup",
+    "--root",
+    "/tmp/rustdx-system-review-20261025/empty-admin-root",
+    "--destination",
+    "/tmp/rustdx-system-review-20261025/exact-budget-backup",
+    "--max-bytes",
+    "94208"
+  ],
+  "exit_code": 0,
+  "budget_bytes": 94208,
+  "actual_bytes": 94451,
+  "files": [
+    {
+      "path": "backup.json",
+      "bytes": 243
+    },
+    {
+      "path": "ledger.sqlite",
+      "bytes": 94208
+    }
+  ],
+  "stderr": "",
+  "scope": "new private empty administrative ledger; no production data"
+}

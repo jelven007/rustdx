@@ -1,0 +1,9 @@
+{
+  "input": "config/runner/tcp-day.example.json",
+  "calculation": "source-level upper bound before subtracting fact bytes; not throughput measurement",
+  "configured_parallel": 2,
+  "receipt_reserve_per_security": 33554432,
+  "archive_limit": 67108864,
+  "max_slots_from_archive_reservation": 1,
+  "comment": "actual per-request archive budget also subtracts archived facts"
+}

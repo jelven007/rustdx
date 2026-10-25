@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "local administrative fixtures and loopback; no live market/target production",
+  "administration_tests": 4,
+  "control_plane_tests": 20,
+  "real_database_test_excluded": 1,
+  "operation_tests": 3,
+  "python_tests": 14,
+  "cli_boundary_commands": 7,
+  "clippy": "workspace all-targets/all-features and final runner check passed",
+  "yaml": "three workflows parsed; no remote run of new source",
+  "restored_retention": "original root unavailable; logical attempt mapping verified",
+  "corrected_failure": "tight restore discovered unbudgeted SQLite auxiliary files; independent DELETE snapshot fixed it",
+  "external": [
+    "real facts and 2027 calendar remain missing",
+    "role template requires actual deployment ownership",
+    "Linux database acceptance/new workflow execution",
+    "signed vendor archive verification not claimed"
+  ]
+}

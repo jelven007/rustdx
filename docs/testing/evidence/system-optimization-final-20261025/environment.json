@@ -1,0 +1,22 @@
+{
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "cargo": "cargo 1.89.0 (c24e10642 2025-06-23)",
+  "rustc": "rustc 1.89.0 (29483883e 2025-08-04)\nbinary: rustc\ncommit-hash: 29483883eed69d5fb4db01964cdf2af4d86e9cb2\ncommit-date: 2025-08-04\nhost: aarch64-apple-darwin\nrelease: 1.89.0\nLLVM version: 20.1.7\n",
+  "offline": true,
+  "RUSTDX_SKIP_INTEGRATION_TESTS": "1",
+  "binaries": [
+    {
+      "name": "rustdx",
+      "path": "/tmp/rustdx-system-review-20261025/target/release/rustdx",
+      "bytes": 6376416,
+      "sha256": "157a27ab185be2d969464d97e83e257659e6416d284acd213a95d86be7a9878a"
+    },
+    {
+      "name": "rustdx-runner",
+      "path": "/tmp/rustdx-system-review-20261025/target/release/rustdx-runner",
+      "bytes": 5879024,
+      "sha256": "051bec0cb5bcbcf7aba62d2ba2cfff8e44dd6b437d1ef0d36b9355c4c28800d9"
+    }
+  ]
+}

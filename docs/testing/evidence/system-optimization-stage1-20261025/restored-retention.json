@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "mode": "preview_only",
+  "created_at": "2026-10-24T22:54:47.783044+00:00",
+  "root": "/private/tmp/rustdx-system-optimization-20261025/admin-regression/restored",
+  "ledger_schema": 3,
+  "ledger_counts": {
+    "jobs": 1,
+    "attempts": 1,
+    "releases": 0,
+    "publications": 0,
+    "events": 0
+  },
+  "policy": {
+    "retention_days": 30,
+    "all_registered_versions_and_evidence": "protected"
+  },
+  "scope": "live root plus explicitly supplied backups; undisclosed external copies are unknown",
+  "logical_bytes": 94479,
+  "allocated_bytes": 102400,
+  "free_bytes": 358254817280,
+  "buckets": {
+    "attempts": {
+      "logical_bytes": 37,
+      "allocated_bytes": 4096,
+      "files": 1
+    },
+    "controller.lock": {
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 1
+    },
+    "ledger.sqlite": {
+      "logical_bytes": 94208,
+      "allocated_bytes": 94208,
+      "files": 1
+    },
+    "restore-validated.json": {
+      "logical_bytes": 234,
+      "allocated_bytes": 4096,
+      "files": 1
+    }
+  },
+  "backups": [],
+  "objects": [
+    {
+      "path": "attempts/fixture",
+      "status": "protected",
+      "reasons": [
+        "ledger_attempt:quarantined"
+      ],
+      "age_days": 4.040148148148148e-07,
+      "logical_bytes": 37,
+      "allocated_bytes": 4096,
+      "files": 1
+    },
+    {
+      "path": "controller.lock",
+      "status": "protected",
+      "reasons": [
+        "controller_or_unclassified_data"
+      ],
+      "age_days": 4.135525925925926e-07,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "files": 1
+    },
+    {
+      "path": "ledger.sqlite",
+      "status": "protected",
+      "reasons": [
+        "controller_or_unclassified_data"
+      ],
+      "age_days": 3.2981333333333333e-07,
+      "logical_bytes": 94208,
+      "allocated_bytes": 94208,
+      "files": 1
+    },
+    {
+      "path": "restore-validated.json",
+      "status": "protected",
+      "reasons": [
+        "controller_or_unclassified_data"
+      ],
+      "age_days": 2.0589333333333335e-07,
+      "logical_bytes": 234,
+      "allocated_bytes": 4096,
+      "files": 1
+    }
+  ],
+  "relocations": [
+    {
+      "original": "/tmp/rustdx-system-optimization-20261025/admin-regression/live/attempts/fixture",
+      "logical": "attempts/fixture"
+    }
+  ],
+  "candidate_bytes": 0,
+  "trend": null
+}

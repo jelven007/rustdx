@@ -1,0 +1,31 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "command": [
+        "env",
+        "RUSTDOCFLAGS=-D warnings",
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "doc",
+        "--workspace",
+        "--all-features",
+        "--no-deps",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 12.768926459,
+      "log": "final-isolated-0.log"
+    },
+    {
+      "command": [
+        "python3",
+        "/tmp/rustdx-system-optimization-20261025/verify_isolated_engineering.py"
+      ],
+      "exit_code": 1,
+      "seconds": 226.168687166,
+      "log": "final-isolated-1.log"
+    }
+  ]
+}

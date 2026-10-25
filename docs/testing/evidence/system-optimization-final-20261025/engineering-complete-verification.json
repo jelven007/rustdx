@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "source_sha256": "1036ff0e6d633a1c74dc61e662bd12f7e794805d7ed1bcd1673b06607d053897",
+  "historical_evidence_present": false,
+  "required_inputs": [
+    "config/acceptance/task-matrix.json",
+    "config/acceptance/deployment.example.json",
+    "deploy/acceptance/tool-archives.sha256"
+  ],
+  "rust_inputs_identical_to_full_checked_archive": true,
+  "rust_full_log": "isolated-fixed-0.log",
+  "rust_full_snapshot": "540896fcbb3d7749b0b378faa0db2e6101f5bc697144436666d888e9c86e117e",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "directory": "/Users/bytedance/Documents/rustdx",
+      "exit_code": 0,
+      "seconds": 4.808937333000001,
+      "log": "complete-python-root.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "directory": "/tmp/rustdx-system-optimization-20261025/isolated-engineering-fixed",
+      "exit_code": 0,
+      "seconds": 2.648633459000001,
+      "log": "complete-python-isolated.log"
+    }
+  ]
+}

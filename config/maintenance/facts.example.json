@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {"id": "exchange-rules", "category": "rules", "scope": "沪深京适用制度及生效公告", "owner_role": "data-operations", "reviewer_role": "market-rules-review", "escalation_role": "operations-lead", "qualification": "unverified", "reviewed_on": null, "checked_through": null, "next_review": null, "evidence": []},
+    {"id": "annual-calendar", "category": "calendar", "scope": "完整交易所年度休市安排及独立逐日参考", "owner_role": "data-operations", "reviewer_role": "calendar-review", "escalation_role": "operations-lead", "qualification": "unverified", "reviewed_on": null, "checked_through": null, "next_review": null, "evidence": []},
+    {"id": "listing-history", "category": "listing_delisting", "scope": "声明证券范围的上市、退市及状态区间", "owner_role": "data-operations", "reviewer_role": "security-history-review", "escalation_role": "operations-lead", "qualification": "unverified", "reviewed_on": null, "checked_through": null, "next_review": null, "evidence": []},
+    {"id": "trading-state-history", "category": "st_suspension", "scope": "声明证券范围的ST、停复牌及实施日期", "owner_role": "data-operations", "reviewer_role": "security-history-review", "escalation_role": "operations-lead", "qualification": "unverified", "reviewed_on": null, "checked_through": null, "next_review": null, "evidence": []},
+    {"id": "point-in-time-universe", "category": "universe", "scope": "声明历史日期范围的应有名单，不使用当前名单替代过去名单", "owner_role": "data-operations", "reviewer_role": "universe-review", "escalation_role": "operations-lead", "qualification": "unverified", "reviewed_on": null, "checked_through": null, "next_review": null, "evidence": []}
+  ]
+}

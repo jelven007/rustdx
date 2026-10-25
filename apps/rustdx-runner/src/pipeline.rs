@@ -26,7 +26,9 @@ use crate::{
 };
 
 mod facts;
+mod plan;
 use facts::{Facts, load as facts, visit_expected};
+pub use plan::preflight_plan;
 
 fn check() -> Result<()> {
     rustdx_complete::operation::check().map_err(Error::from)
@@ -374,6 +376,19 @@ fn normalize(
     report: &CliReport,
     release: &str,
 ) -> Result<BTreeMap<NaiveDate, Partition>> {
+    let meter = storage::WorkspaceMeter::new(
+        directory,
+        &[
+            "normalization.sqlite",
+            "normalization.sqlite-journal",
+            "normalization.sqlite-wal",
+            "normalization.sqlite-shm",
+            "coverage.csv",
+            "partitions",
+            "cancel",
+        ],
+    )?;
+    meter.sample(config.max_workspace_bytes)?;
     let database = directory.join("normalization.sqlite");
     let mut db = Connection::open(&database)?;
     db.execute_batch(
@@ -383,6 +398,7 @@ fn normalize(
             PRIMARY KEY(date,code)) WITHOUT ROWID;",
     )?;
     let tx = db.transaction()?;
+    let mut expected_count = 0_u64;
     visit_expected(config, facts, |date, code, state| {
         let state = match state {
             TradingState::Trading => "trading",
@@ -393,6 +409,10 @@ fn normalize(
             "INSERT INTO expected VALUES(?1,?2,?3)",
             params![date.to_string(), code, state],
         )?;
+        expected_count += 1;
+        if expected_count.is_multiple_of(4096) {
+            meter.sample(config.max_workspace_bytes)?;
+        }
         Ok(())
     })?;
     let mut reader = csv::ReaderBuilder::new().from_path(directory.join("collected.csv"))?;
@@ -402,6 +422,9 @@ fn normalize(
         count += 1;
         if count > config.max_rows {
             return Err(invalid("collected CSV exceeds row budget"));
+        }
+        if count.is_multiple_of(4096) {
+            meter.sample(config.max_workspace_bytes)?;
         }
         let row = row?;
         if row.date < config.from || row.date > config.through {
@@ -449,11 +472,6 @@ fn normalize(
                 volume
             ],
         )?;
-        if count.is_multiple_of(4096)
-            && storage::tree_bytes(directory)? > config.max_workspace_bytes
-        {
-            return Err(invalid("normalization exceeds workspace budget"));
-        }
     }
     if count != report.artifact.rows {
         return Err(invalid("independent CSV row count differs from manifest"));
@@ -483,6 +501,7 @@ fn normalize(
         }
         rustdx_cli::tcp_day::verify_archive_budget(&directory.join("raw"), &request)?;
         for code in &request.codes {
+            meter.sample(config.max_workspace_bytes)?;
             for row in rustdx_cli::tcp_day::replay_security(
                 &directory.join("raw").join(code),
                 &request,
@@ -524,6 +543,7 @@ fn normalize(
             let mut remaining = length;
             while remaining != 0 {
                 check()?;
+                meter.sample(config.max_workspace_bytes)?;
                 let size = remaining.min(buffer.len() as u64) as usize;
                 source.read_exact(&mut buffer[..size])?;
                 for chunk in buffer[..size].as_chunks::<32>().0 {
@@ -564,6 +584,7 @@ fn normalize(
         }
     }
     drop(lookup);
+    meter.sample(config.max_workspace_bytes)?;
     let normalized_rows = tx.query_row("SELECT count(*) FROM bars", [], |r| {
         crate::ledger::unsigned(r, 0)
     })?;
@@ -590,16 +611,24 @@ fn normalize(
         )));
     }
     tx.commit()?;
+    meter.sample(config.max_workspace_bytes)?;
     storage::private_directory(&directory.join("partitions"))?;
     let mut coverage = csv::Writer::from_writer(fs::File::create(directory.join("coverage.csv"))?);
     coverage.write_record(["date", "code", "state"])?;
     let mut query = db.prepare("SELECT date,code,state FROM expected ORDER BY date,code")?;
     let mut rows = query.query([])?;
+    let mut coverage_count = 0_u64;
     while let Some(row) = rows.next()? {
         check()?;
         coverage.write_record([row.get::<_, String>(0)?, row.get(1)?, row.get(2)?])?;
+        coverage_count += 1;
+        if coverage_count.is_multiple_of(4096) {
+            coverage.flush()?;
+            meter.sample(config.max_workspace_bytes)?;
+        }
     }
     coverage.flush()?;
+    meter.sample(config.max_workspace_bytes)?;
     drop(rows);
     drop(query);
     let mut partitions = BTreeMap::new();
@@ -615,7 +644,7 @@ fn normalize(
         let mut query =
             db.prepare("SELECT code,market,o,h,l,c,a,v FROM bars WHERE date=?1 ORDER BY code")?;
         let mut rows = query.query([date.to_string()])?;
-        let mut count = 0;
+        let mut count = 0_u64;
         while let Some(row) = rows.next()? {
             check()?;
             writer.write_record([
@@ -631,8 +660,13 @@ fn normalize(
                 row.get::<_, f64>(7)?.to_string(),
             ])?;
             count += 1;
+            if count.is_multiple_of(4096) {
+                writer.flush()?;
+                meter.sample(config.max_workspace_bytes)?;
+            }
         }
         writer.flush()?;
+        meter.sample(config.max_workspace_bytes)?;
         let exemptions: u64 = db.query_row(
             "SELECT count(*) FROM expected WHERE date=?1 AND state!='trading'",
             [date.to_string()],
@@ -654,6 +688,7 @@ fn normalize(
     }
     drop(db);
     fs::remove_file(database)?;
+    meter.reconcile(config.max_workspace_bytes)?;
     Ok(partitions)
 }
 
@@ -717,10 +752,14 @@ fn seal(
         files,
         partitions,
     };
-    storage::write_new(
-        &directory.join("release.json"),
-        &serde_json::to_vec_pretty(&manifest)?,
-    )?;
+    let bytes = serde_json::to_vec_pretty(&manifest)?;
+    if bytes.len() as u64 > MAX_JSON
+        || storage::tree_bytes(directory)?.saturating_add(bytes.len() as u64)
+            > config.max_workspace_bytes
+    {
+        return Err(invalid("complete sealed release exceeds final byte budget"));
+    }
+    storage::write_new(&directory.join("release.json"), &bytes)?;
     let destination = config.root.join("releases").join(attempt);
     fs::rename(directory, &destination)?;
     // macOS requires write permission on a directory while moving its parent.
@@ -897,11 +936,11 @@ pub fn publish(root: &Path, ledger: &mut Ledger, release: &str) -> Result<Pointe
 
 pub fn execute(config: &Config, context: &OperationContext) -> Result<Option<Pointer>> {
     config.validate()?;
-    let _lock = storage::RootLock::acquire(&config.root)?;
+    let lock = storage::RootLock::acquire(&config.root)?;
     for name in ["attempts", "releases", "catalogs"] {
         storage::private_directory(&config.root.join(name))?;
     }
-    let mut ledger = Ledger::open(&config.root.join("ledger.sqlite"))?;
+    let mut ledger = Ledger::open_writer(&config.root.join("ledger.sqlite"), &lock)?;
     if !ledger.unfinished()?.is_empty() {
         return Err(invalid(
             "unfinished attempts require recover before starting another worker",
@@ -1015,8 +1054,8 @@ pub fn execute(config: &Config, context: &OperationContext) -> Result<Option<Poi
 
 /// Returns actions, retaining live/ambiguous workers instead of risking PID reuse.
 pub fn recover(root: &Path) -> Result<Vec<String>> {
-    let _lock = storage::RootLock::acquire(root)?;
-    let mut ledger = Ledger::open(&root.join("ledger.sqlite"))?;
+    let lock = storage::RootLock::acquire(root)?;
+    let mut ledger = Ledger::open_writer(&root.join("ledger.sqlite"), &lock)?;
     let mut actions = Vec::new();
     for attempt in ledger.unfinished()? {
         if attempt.pid.is_some_and(supervisor::process_group_alive) {
@@ -1066,8 +1105,8 @@ pub fn quarantine(root: &Path, attempt_id: &str, reason: &str) -> Result<()> {
     if reason.trim().is_empty() || reason.len() > 4096 {
         return Err(invalid("quarantine requires a 1–4096 byte reason"));
     }
-    let _lock = storage::RootLock::acquire(root)?;
-    let mut ledger = Ledger::open(&root.join("ledger.sqlite"))?;
+    let lock = storage::RootLock::acquire(root)?;
+    let mut ledger = Ledger::open_writer(&root.join("ledger.sqlite"), &lock)?;
     let attempt = ledger
         .unfinished()?
         .into_iter()

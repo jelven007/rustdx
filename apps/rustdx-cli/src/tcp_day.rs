@@ -27,7 +27,7 @@ use sha2::{Digest, Sha256};
 use crate::tcp_evidence::visit_records;
 
 mod acquisition;
-pub use acquisition::{Schedule, verify_archive_budget};
+pub use acquisition::{ReservationPlan, Schedule, reservation_plan, verify_archive_budget};
 
 pub const SOURCE_CONTRACT: &str = "a-share/tcp-052b/day/raw/cny/integer-shares/v2";
 pub const LEGACY_SOURCE_CONTRACT: &str = "a-share/tcp-052d/day/raw/cny/lots-100-shares/v1";

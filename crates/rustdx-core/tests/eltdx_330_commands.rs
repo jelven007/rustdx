@@ -557,8 +557,8 @@ fn delisted_offset_overflow_is_incomplete_and_batch_keeps_each_error() {
 
 #[test]
 fn replays_all_98_independently_verified_live_frames_without_network() {
-    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../docs/testing/evidence/eltdx-3.3.0-commands-20261024");
+    let root =
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/eltdx-330-replay");
     let mut total = 0;
     let mut bars_count = 0;
     for name in ["live-a", "live-b"] {

@@ -1,0 +1,32 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "exit_code": 0,
+      "seconds": 4.746908416999999,
+      "log": "stage1-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "administration",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 101,
+      "seconds": 30.86811675,
+      "log": "stage1-1.log"
+    }
+  ]
+}

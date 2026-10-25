@@ -32,3 +32,11 @@ rustdx --no-tcp-startup data-status --as-of 2026-10-24 --calendar config/calenda
 新增只读计划巡检`scripts/validation/audit_point_in_time_facts.py --config job.json --calendar-reference reference.json --output new-audit.json`：按job应有证券和交易日检查点时名单、状态缺口、重叠区间、数据截止、公告原文件摘要及独立日历逐日一致。Unknown使结果incomplete并非零退出；输出只证明声明范围的完整性和字节一致，名单的全市场真实性与公告语义仍由维护者复核。它不下载公告、不续期日历、不替换配置，也不覆盖旧输出。
 
 维护闭环依次为取得完整公告并存摘要命名原文件、整理候选日历/名单/上市退市与ST/停复牌区间、独立来源复核、执行data-check及job巡检、由新source/policy revision发布、最后固定版本回读。每次保留来源截止、核实日期、证据版本和巡检结果；新增年度公告未取得前保持OutOfRange。2027接入继续使用交易所年度公告与独立交易所日历对照，不能以周一至周五或国务院调休表代替交易安排。
+
+责任与复核巡检使用`audit_fact_maintenance.py --registry REGISTRY --evidence-root ORIGINALS --output NEW.json`。
+登记规则、年度日历、上市/退市、ST/停复牌和点时名单五类；每类指定维护角色、独立复核角色、
+升级责任角色、声明范围、核实覆盖和下次复核日。证据条目包含相对路径、HTTPS来源、
+published/checked与SHA-256；来源不足、摘要变化、复核到期及覆盖不足返回attention_required并退出1。
+角色须由运营方落实到实际负责人，脚本不向他人发送通知，也不续期或发布事实。
+仓库的[登记示例](../../config/maintenance/facts.example.json)明确未核实、无证据，不作为真实全市场材料；
+现有覆盖工作流保存缺口报告，直到部署方填写并独立核对资料。它不替代data-check与应有键审计。

@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "exit_code": 0,
+      "seconds": 1.3618552499999999,
+      "log": "a07-initial-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--test",
+        "administration",
+        "--test",
+        "control_plane",
+        "--locked",
+        "--offline",
+        "--",
+        "--skip",
+        "real_database_targets_verify_readback_restore_and_reject_extra_keys",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 25.06004875,
+      "log": "a07-initial-1.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "-p",
+        "rustdx-runner",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 2.8456152500000016,
+      "log": "a07-initial-2.log"
+    }
+  ]
+}

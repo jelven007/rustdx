@@ -60,7 +60,7 @@ tools/fuzz/artifacts/
 data/*
 !data/README.md
 reports/
-acceptance/
+/acceptance/
 .screenshots/
 
 # 本次工程迁移的有限检查日志作为固定验收证据提交。
@@ -69,6 +69,9 @@ acceptance/
 # 17项优化的有限回归及独立包消费原始日志。
 !docs/testing/evidence/optimization-*/*.log
 !docs/testing/evidence/optimization-*/**/*.log
+!docs/testing/evidence/system-review-*/*.log
+!docs/testing/evidence/system-optimization-*/*.log
+!docs/testing/evidence/system-optimization-*/**/*.log
 
 # 历史演练的编译后二进制保留本地，Git提交保留单独路径/大小/SHA清单。
 docs/testing/evidence/acceptance-stage6-20261024/**/collector.bin

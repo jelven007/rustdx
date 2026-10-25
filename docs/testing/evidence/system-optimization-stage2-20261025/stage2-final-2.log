@@ -1,0 +1,34 @@
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 15.41s
+[1m[32m     Running[0m unittests src/lib.rs (/tmp/rustdx-system-review-20261025/target/debug/deps/rustdx_runner-6042ee3cca75928d)
+
+running 12 tests
+test database::capacity::tests::capacity_rejects_io_proof_entries_and_bytes_before_transmission ... ok
+test error_tests::cancellation_and_deadline_keep_their_category_through_stages_and_io_wrappers ... ok
+test database::tests::full_contract_row_roundtrips_and_requires_every_field ... ok
+test database_process::tests::malformed_responses_retain_bounded_evidence ... ok
+test ops::observation_tests::projection_overflow_and_invalid_records_leave_raw_history_unchanged ... ok
+test storage::meter_tests::dynamic_meter_counts_sqlite_journal_and_disappearing_files_and_reconciles ... ok
+test ops::observation_tests::invalid_historical_record_rolls_back_schema_and_projection_migration ... ok
+test database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants ... ok
+test database_process::tests::one_process_handles_batches_and_requires_clean_exit ... ok
+readback_rows=1200 dates=2 baseline_requests=8 reuse_requests=7 baseline_bytes=364404 reuse_bytes=363430 baseline_micros=320527 reuse_micros=358046 csv_sha256=2551d267b5703936e5e59ac635f339e197184913f781e2470d3261d1e4741897
+test database::tests::stable_key_readback_crosses_batch_and_partition_boundaries ... ok
+fixed_files=2000 samples=100 full_scan_micros=813412 dynamic_sample_micros=304
+test storage::meter_tests::dynamic_meter_avoids_rescanning_fixed_file_history ... ok
+history=20000 legacy_observation_micros=51510 projection_micros=69 plans=["SCAN j USING INDEX jobs_by_created", "CORRELATED SCALAR SUBQUERY 1", "SEARCH a USING COVERING INDEX attempts_by_job (job=?)"]
+test ops::observation_tests::projection_matches_legacy_scan_and_rebuild_for_large_history ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.27s
+
+[1m[32m     Running[0m tests/administration.rs (/tmp/rustdx-system-review-20261025/target/debug/deps/administration-022a1216484b5012)
+
+running 5 tests
+test readonly_sees_committed_wal_while_writer_holds_lock ... ok
+test backup_and_restore_reject_parent_aliases_and_traversal_before_writing ... ok
+test readonly_requires_existing_current_schema_and_never_initializes ... ok
+test prior_schema_backup_restores_unchanged_and_requires_explicit_migration ... ok
+test total_backup_and_restore_budgets_include_completion_files ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+

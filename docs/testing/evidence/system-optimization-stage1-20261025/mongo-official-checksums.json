@@ -1,0 +1,10 @@
+[
+  {
+    "url": "https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2404-x86_64-100.12.2.tgz.sha256",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "url": "https://downloads.mongodb.com/compass/mongosh-2.5.10-linux-x64.tgz.sha256",
+    "error": "HTTP Error 403: Forbidden"
+  }
+]

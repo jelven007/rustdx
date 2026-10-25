@@ -1,0 +1,35 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 34.05s
+[1m[32m     Running[0m tests/eltdx_330_commands.rs (/tmp/rustdx-system-review-20261025/target/debug/deps/eltdx_330_commands-98856b5e75c4404d)
+
+running 14 tests
+test delisted_verified_sample_has_integer_shares_milli_prices_and_raw_suffix ... ok
+test daily_amount_preserves_binary32_leading_bit_zero_and_subnormals ... ok
+test delisted_decode_rejects_bad_dates_prices_and_volume_without_panicking ... ok
+test constructors_reject_lossy_or_overflowing_parameters ... ok
+test all_four_requests_match_complete_reference_bodies ... ok
+test metadata_and_directory_preserve_hash_offsets_and_legal_tail ... ok
+test text_chunks_check_declared_lengths_and_keep_partial_gbk_and_tail ... ok
+test zero_length_f10_sections_do_not_send_an_invalid_text_request ... ok
+test f10_reads_multiple_frames_before_decoding_a_split_chinese_character ... ok
+test delisted_offset_overflow_is_incomplete_and_batch_keeps_each_error ... ok
+test all_resource_and_full_archive_batches_use_the_bounded_pool_in_input_order ... ok
+test f10_short_chunks_continue_but_empty_and_exhausted_budgets_fail ... ok
+test delisted_short_pages_overlap_and_budgets_have_explicit_completion ... ok
+test replays_all_98_independently_verified_live_frames_without_network ... FAILED
+
+failures:
+
+---- replays_all_98_independently_verified_live_frames_without_network stdout ----
+
+thread 'replays_all_98_independently_verified_live_frames_without_network' panicked at crates/rustdx-core/tests/eltdx_330_commands.rs:642:30:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    replays_all_98_independently_verified_live_frames_without_network
+
+test result: FAILED. 13 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p jelven-rustdx-complete --test eltdx_330_commands`

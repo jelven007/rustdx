@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "scripts/release/evidence_manifest.py",
+        "inventory",
+        "--include-local-binaries",
+        "--output",
+        "/tmp/rustdx-system-optimization-20261025/evidence-custody.json"
+      ],
+      "exit_code": 0,
+      "seconds": 294.094871959,
+      "log": "final-evidence-0.log"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/release/evidence_manifest.py",
+        "verify",
+        "--manifest",
+        "/tmp/rustdx-system-optimization-20261025/evidence-custody.json",
+        "--output",
+        "/tmp/rustdx-system-optimization-20261025/evidence-verified.json"
+      ],
+      "exit_code": 0,
+      "seconds": 156.78587191600002,
+      "log": "final-evidence-1.log"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/release/evidence_manifest.py",
+        "bundle",
+        "--manifest",
+        "/tmp/rustdx-system-optimization-20261025/evidence-custody.json",
+        "--prefix",
+        "docs/testing/evidence/system-review-20261025/",
+        "--archive",
+        "/tmp/rustdx-system-optimization-20261025/review-evidence.tar.gz",
+        "--output",
+        "/tmp/rustdx-system-optimization-20261025/review-distribution.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.25630662499997925,
+      "log": "final-evidence-2.log"
+    }
+  ]
+}

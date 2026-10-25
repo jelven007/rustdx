@@ -1,0 +1,10 @@
+{
+  "result": "passed",
+  "commands": 7,
+  "relocations": [
+    {
+      "original": "/tmp/rustdx-system-optimization-20261025/admin-regression/live/attempts/fixture",
+      "logical": "attempts/fixture"
+    }
+  ]
+}

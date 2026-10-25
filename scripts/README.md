@@ -14,6 +14,9 @@
 | bench/measure_process_tree.py | 同时采样进程组/后代RSS、FD、线程、进程数及声明目录逻辑字节 | Python3、ps及macOS lsof或Linux /proc；仅运行显式命令，保留缺失采样和日志 |
 | validation/verify_consumption_fields.py | 必需财务字段矩阵与raw_bits/发行人证据摘要核验 | Python3 stdlib；固定矩阵或调用方新矩阵，默认无网络，不扩大旧资格 |
 | validation/audit_point_in_time_facts.py | job应有日期/证券、点时状态缺口、区间重叠、公告摘要和独立日历核验 | Python3 stdlib；只读配置与原文件，Unknown非零退出，不续期事实 |
+| validation/audit_fact_maintenance.py | 五类事实维护责任、独立复核、证据字节和下次复核日巡检 | Python3 stdlib；缺口退出1并保留报告，不发通知、不续期、不替代语义/应有键审核 |
+| validation/audit_task_admission.py | 四类任务独立准入与同身份目标验收封套核验 | Python3 stdlib；Unknown/缺入口/字段/全键/目标资源/恢复缺口拒绝，不执行部署 |
+| validation/check_documentation.py | 当前文档本地链接/锚点及FR-01至FR-18核验 | Python3 stdlib；遍历前排除历史证据、归档及target，不改旧文档 |
 | validation/verify_local_recovery.py | 新目录一致性备份/隔离恢复、固定catalog版本全CSV字节比较 | Python3及runner；读取明确root，备份到新目录，不代表数据库原生恢复 |
 | validation/verify_database_recovery.py | 两个runner版本、两库原生全备与全新数据目录恢复、全字段/索引/约束核对及失败保护 | Linux、同源码CLI/runner、Docker及mongosh/mongodump/mongorestore；固定digest、自建loopback容器，保留原生备份和逐命令证据 |
 | validation/verify_kline_pytdx.py | K线独立期望重解 | Python3、six、指定固定pytdx源码 |
@@ -37,6 +40,9 @@
 | validation/verify_database_faults.py | 自有代理断连、SIGKILL及恢复 | 真实隔离两库；只影响自有任务，随机私有库结束删除 |
 | release/publish.sh | 两crate发布门禁及实际发布 | Cargo凭据；脚本确认后先核心再CLI |
 | release/preflight.py | 源码归档/身份及解包下游预检 | Python3、Rust1.89/Cargo；默认干净树，--snapshot允许审核未提交源码；不上传或提交 |
+| release/source_scope.py | scope1工程文件身份 | 排除大型历史证据；就近离线夹具保留 |
+| release/evidence_manifest.py | 历史原件库存、获取校验及可选分发包 | Python3 stdlib/Git；核对冻结HEAD与12份本地collector，无删除/上传 |
+| release/release_gate.py | 干净HEAD最新三平台/MSRV/质量/两库等结果及实际包制品门禁 | gh只读API；离线记录不授予发布资格，发布脚本确认前后调用 |
 | release/check_consumers.py | 独立新2.0调用方运行与旧日历/心跳/财务E0308预期失败 | Python3、Rust1.89/Cargo；支持源码或实际解包核心，输出目录在仓库外；只覆盖已声明破坏性签名 |
 
 ```sh
@@ -56,3 +62,5 @@ report默认保存到`${TMPDIR:-/tmp}/rustdx-reports`，可通过RUSTDX_REPORT_D
 测量完整参数见各Python脚本`--help`。day内存对比必须分别构建到独立target目录，不能传相同二进制。数据库脚本以随机私有数据库运行并删除自有表，不接受生产表名；仍需显式选择隔离服务，完整前置条件见[数据库验收](../docs/testing/DATABASE_ACCEPTANCE.md)。
 
 发布脚本只在正式发包任务使用，本次目录整理没有运行。全all-features/MSRV/fuzz门禁另见[开发说明](../docs/development/DEVELOPMENT.md)及[版本交付](../docs/release/RELEASES.md)。
+
+`bench/measure_runner_history.py --binary /absolute/rustdx-runner --output /external/history.json`在新的私有临时root构造20,000条合成Job/观测、显式迁移schema3→4，再测量metrics/status的CLI耗时和RSS；保留样本和日志，不使用业务root，不代表生产采集进程树内存。runner的`plan --config /absolute/job.json`提供不联网的应有键/初始并发预检，合同见[应用接入](../docs/development/APPLICATION_INTEGRATION.md)。

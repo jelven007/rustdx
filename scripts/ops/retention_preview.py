@@ -123,7 +123,7 @@ def locked_ledger(root):
                 db.execute("PRAGMA query_only=ON")
                 db.execute("BEGIN")
                 version = db.execute("PRAGMA user_version").fetchone()[0]
-                if version not in (1, 2, 3):
+                if version not in (1, 2, 3, 4):
                     raise ValueError("unsupported ledger schema")
                 active = db.execute(
                     "SELECT count(*) FROM attempts WHERE state IN "
@@ -137,8 +137,11 @@ def locked_ledger(root):
 
 
 def preview(root, backups=(), retention_days=30, max_files=200000, max_bytes=1 << 40, previous=None):
-    root = Path(root).absolute()
-    backups = sorted(Path(p).absolute() for p in backups)
+    regular(Path(root), directory=True)
+    root = Path(root).resolve(strict=True)
+    for path in backups:
+        regular(Path(path), directory=True)
+    backups = sorted(Path(p).resolve(strict=True) for p in backups)
     if len(set(backups)) != len(backups) or any(p == root or root in p.parents or p in root.parents for p in backups):
         raise ValueError("backups must be unique and outside the live root")
     if not math.isfinite(retention_days) or retention_days < 0 or max_files <= 0 or max_bytes <= 0:
@@ -147,18 +150,54 @@ def preview(root, backups=(), retention_days=30, max_files=200000, max_bytes=1 <
     dependencies = defaultdict(set)
     now = datetime.now(timezone.utc)
     backup_reports = []
+    relocations = []
 
     def protect(path, reason):
         safe(root, path)
         dependencies[path].add(reason)
 
+    def proof(evidence, release, target=None):
+        path = verify(root, evidence)
+        data = read_json(path)
+        if data.get("schema_version") != 1 or data.get("release") != release or (
+                target is not None and data.get("target") != target):
+            raise ValueError("database proof identity differs")
+        if not isinstance(data.get("io"), list):
+            raise ValueError("database proof I/O list missing")
+        protect(evidence["path"], "database_verification_proof")
+        for pair in data["io"]:
+            if not isinstance(pair, list) or len(pair) != 2:
+                raise ValueError("invalid database proof I/O pair")
+            for text in pair:
+                if text is not None:
+                    item = json.loads(text)
+                    verify(root, item)
+                    protect(item["path"], "database_proof_io")
+
     with locked_ledger(root) as (db, version):
         files = scan.tree(root)
+        restore_path = root / "restore-validated.json"
+        restore = read_json(restore_path) if restore_path.exists() else None
+        if restore is not None and restore.get("schema_version") != 1:
+            raise ValueError("unsupported restore marker")
+        original_roots = restore.get("original_roots") if restore else None
+        legacy_original = set()
         for identifier, directory, state in db.execute("SELECT id,directory,state FROM attempts"):
-            relative = Path(directory).relative_to(root).as_posix()
-            if relative != "attempts/" + identifier:
-                raise ValueError("attempt directory differs from controller scope")
+            relative = "attempts/" + identifier
+            safe(root, relative)
+            original = Path(directory)
+            if (not original.is_absolute() or original.parts[-2:] != ("attempts", identifier)
+                    or ".." in original.parts):
+                raise ValueError("attempt directory must be an absolute attempts/id path")
+            if original.resolve() != root / relative:
+                origin = str(original.parent.parent)
+                if restore is None or (original_roots is not None and origin not in original_roots):
+                    raise ValueError("attempt relocation lacks a matching restore marker")
+                legacy_original.add(origin)
+                relocations.append({"original": directory, "logical": relative})
             protect(relative, "ledger_attempt:" + state)
+        if original_roots is None and len(legacy_original) > 1:
+            raise ValueError("legacy restore contains ambiguous original roots")
         for identifier, text, state in db.execute("SELECT id,manifest,state FROM releases"):
             evidence = json.loads(text)
             manifest_path = verify(root, evidence)
@@ -182,14 +221,14 @@ def preview(root, backups=(), retention_days=30, max_files=200000, max_bytes=1 <
             for release, receipts in catalog.get("database_releases", {}).items():
                 protect("releases/" + release, f"catalog_database:{dataset}:{version_number}")
                 for receipt in receipts:
-                    # Receipt structure can evolve; referenced evidence is also in target_io.
-                    for key in ("request", "response", "evidence"):
-                        if isinstance(receipt.get(key), dict) and "path" in receipt[key]:
-                            verify(root, receipt[key])
-                            protect(receipt[key]["path"], "catalog_database_receipt")
+                    proof(receipt["proof"], release, receipt["target"])
         if version >= 2:
-            for release, identifier in db.execute("SELECT release,id FROM targets"):
+            for release, identifier, spec, state, text in db.execute("SELECT release,id,spec,state,proof FROM targets"):
                 protect("releases/" + release, "database_target:" + identifier)
+                if state == "verified" and text is None:
+                    raise ValueError("verified database target has no proof")
+                if text is not None:
+                    proof(json.loads(text), release, json.loads(spec))
             for release, identifier, request, response in db.execute("SELECT release,target,request,response FROM target_io"):
                 for text in (request, response):
                     if text is not None:
@@ -266,6 +305,7 @@ def preview(root, backups=(), retention_days=30, max_files=200000, max_bytes=1 <
             "logical_bytes": logical, "allocated_bytes": allocated,
             "free_bytes": space.f_bavail * space.f_frsize,
             "buckets": dict(buckets), "backups": backup_reports, "objects": entries,
+            "relocations": relocations,
             "candidate_bytes": sum(e["logical_bytes"] for e in entries if e["status"] == "candidate_review"),
             "trend": None,
         }

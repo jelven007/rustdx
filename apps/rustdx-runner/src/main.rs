@@ -8,7 +8,7 @@ use rustdx_runner::{
 #[derive(FromArgs)]
 /// Single-host production collection, immutable publication and recovery.
 struct Args {
-    /// run, recover, status, metrics, catalog, export, backup or restore
+    /// run, plan, migrate, rebuild-metrics, recover, status, metrics, catalog, export, backup or restore
     #[argh(positional)]
     action: String,
     /// strict JSON job configuration (run)
@@ -41,6 +41,9 @@ struct Args {
     /// export row budget
     #[argh(option, default = "10000000")]
     max_rows: u64,
+    /// maximum expected-key samples in an offline plan (1..100000)
+    #[argh(option, default = "10000")]
+    max_keys: usize,
     /// unfinished attempt to quarantine after investigation
     #[argh(option)]
     attempt: Option<String>,
@@ -125,6 +128,9 @@ fn run() -> Result<()> {
     if !matches!(
         args.action.as_str(),
         "run"
+            | "plan"
+            | "migrate"
+            | "rebuild-metrics"
             | "recover"
             | "quarantine"
             | "backup"
@@ -137,9 +143,29 @@ fn run() -> Result<()> {
     ) {
         return Err(Error::Invalid("unknown action".into()));
     }
-    if args.action == "run" {
+    if matches!(args.action.as_str(), "run" | "plan") {
         let mut config = Config::load(&required(args.config.clone(), "config")?)?;
         config.no_tcp_startup |= args.no_tcp_startup;
+        if args.action == "plan" {
+            if args.tcp_warmup {
+                return Err(Error::Invalid(
+                    "offline plan cannot request TCP warmup".into(),
+                ));
+            }
+            let operation = rustdx_complete::operation::OperationContext::new(
+                Duration::from_secs(args.timeout),
+                args.cancel_file.clone(),
+            )?;
+            let _scope = operation.enter();
+            let plan = pipeline::preflight_plan(&config, args.network_limit, args.max_keys)?;
+            println!("{}", serde_json::to_string_pretty(&plan)?);
+            if plan["can_start"] != true {
+                return Err(Error::Invalid(
+                    "offline plan has explicit start blockers".into(),
+                ));
+            }
+            return Ok(());
+        }
         if config.no_tcp_startup && args.tcp_warmup {
             return Err(Error::Invalid(
                 "tcp-warmup conflicts with config.no_tcp_startup".into(),
@@ -170,6 +196,19 @@ fn run() -> Result<()> {
     let _scope = operation.enter();
     initialize_network(&args, args.tcp_warmup)?;
     match args.action.as_str() {
+        "migrate" => {
+            let lock = rustdx_runner::storage::RootLock::acquire(&root)?;
+            Ledger::open_writer(&root.join("ledger.sqlite"), &lock)?;
+            println!("{}", serde_json::json!({"status":"migrated"}));
+        }
+        "rebuild-metrics" => {
+            // Require an existing current ledger; rebuilding is not an initialization command.
+            Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?;
+            let lock = rustdx_runner::storage::RootLock::acquire(&root)?;
+            Ledger::open_writer(&root.join("ledger.sqlite"), &lock)?
+                .rebuild_observation_metrics()?;
+            println!("{}", serde_json::json!({"status":"rebuilt"}));
+        }
         "recover" => println!(
             "{}",
             serde_json::to_string_pretty(&pipeline::recover(&root)?)?
@@ -191,10 +230,14 @@ fn run() -> Result<()> {
         )?,
         "status" => println!(
             "{}",
-            serde_json::to_string_pretty(&Ledger::open(&root.join("ledger.sqlite"))?.statuses()?)?
+            serde_json::to_string_pretty(
+                &Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?.statuses()?
+            )?
         ),
         "metrics" => {
-            let mut text = ops::metrics(&Ledger::open(&root.join("ledger.sqlite"))?)?;
+            let mut text = ops::metrics(&Ledger::open_existing_readonly(
+                &root.join("ledger.sqlite"),
+            )?)?;
             text.push_str(&format!(
                 "# TYPE rustdx_root_free_bytes gauge\nrustdx_root_free_bytes {}\n",
                 rustdx_runner::storage::free_bytes(&root)?
@@ -211,7 +254,7 @@ fn run() -> Result<()> {
             }
         }
         "catalog" => {
-            let ledger = Ledger::open(&root.join("ledger.sqlite"))?;
+            let ledger = Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?;
             println!(
                 "{}",
                 serde_json::to_string_pretty(&pipeline::fixed_catalog(
@@ -242,7 +285,7 @@ fn run() -> Result<()> {
             };
             println!(
                 "{}",
-                serde_json::json!({"catalog_version":pinned.catalog.version,"rows":rows})
+                serde_json::json!({"catalog_version":pinned.catalog().version,"rows":rows})
             );
         }
         _ => return Err(Error::Invalid("unknown action".into())),

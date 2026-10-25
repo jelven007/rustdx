@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-10-24T22:21:24.223698+00:00",
+  "head_sha": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "html_url": "https://github.com/jelven007/rustdx/actions/runs/40137692144",
+  "status": "in_progress",
+  "conclusion": null,
+  "jobs": [
+    {
+      "id": 121002606543,
+      "name": "msrv",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/jelven007/rustdx/actions/runs/40137692144/job/121002606543"
+    },
+    {
+      "id": 121002606726,
+      "name": "Build / Test / Clippy (macos-latest)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/jelven007/rustdx/actions/runs/40137692144/job/121002606726"
+    },
+    {
+      "id": 121002606753,
+      "name": "Build / Test / Clippy (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/jelven007/rustdx/actions/runs/40137692144/job/121002606753"
+    },
+    {
+      "id": 121002606779,
+      "name": "fuzz",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/jelven007/rustdx/actions/runs/40137692144/job/121002606779"
+    },
+    {
+      "id": 121002606786,
+      "name": "Build / Test / Clippy (windows-latest, --exclude rustdx-runner)",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/jelven007/rustdx/actions/runs/40137692144/job/121002606786"
+    },
+    {
+      "id": 121002606992,
+      "name": "Behavior / Consumers / Packages",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/jelven007/rustdx/actions/runs/40137692144/job/121002606992"
+    },
+    {
+      "id": 121002607023,
+      "name": "Same-host indicator regression",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/jelven007/rustdx/actions/runs/40137692144/job/121002607023"
+    }
+  ]
+}

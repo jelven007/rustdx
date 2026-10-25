@@ -12,10 +12,16 @@ env:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    name: Build / Test / Clippy
+    name: Build / Test (${{ matrix.os }})
+    timeout-minutes: 30
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
@@ -27,15 +33,16 @@ jobs:
             package_args: "--exclude rustdx-runner"
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6, Node 24
 
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
         with:
+          toolchain: stable
           components: clippy, rustfmt
 
       - name: Rust cache
-        uses: swatinem/rust-cache@v2
+        uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
 
       - name: Build (all targets)
         run: cargo build --workspace ${{ matrix.package_args }} --all-targets --all-features --locked
@@ -54,32 +61,47 @@ jobs:
           --include-ignored
           --skip real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence
 
-      - name: Clippy (deny warnings)
-        run: cargo clippy --workspace ${{ matrix.package_args }} --all-targets --all-features --locked -- -D warnings
-
-      - name: Format check
-        run: cargo fmt --all -- --check
-
-  msrv:
+  quality:
+    name: Format / Clippy / Documentation
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@master
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
         with:
           toolchain: "1.89.0"
-      - uses: swatinem/rust-cache@v2
+          components: clippy, rustfmt
+      - uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-targets --all-features --locked -- -D warnings
+      - run: cargo doc --workspace --all-features --no-deps --locked
+        env:
+          RUSTDOCFLAGS: "-D warnings"
+      - run: python3 scripts/validation/check_documentation.py
+
+  msrv:
+    name: MSRV 1.89
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
+        with:
+          toolchain: "1.89.0"
+      - uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
       - run: cargo test --workspace --all-features --locked
 
   contracts:
     name: Behavior / Consumers / Packages
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@master
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
         with:
           toolchain: "1.89.0"
-      - uses: swatinem/rust-cache@v2
-      - uses: actions/setup-python@v5
+      - uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6, Node 24
         with:
           python-version: "3.12"
       - name: Pool, cache, calendar and adjustment behavior regressions
@@ -92,7 +114,7 @@ jobs:
         run: >-
           python3 scripts/release/preflight.py
           --output "$RUNNER_TEMP/package-preflight" --skip-workspace-checks
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6, Node 24
         if: always()
         with:
           name: contracts-${{ github.sha }}
@@ -106,11 +128,15 @@ jobs:
             ${{ runner.temp }}/package-preflight/signature-consumers/*.log
 
   fuzz:
+    name: Parser fuzz
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@nightly
-      - uses: swatinem/rust-cache@v2
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
+        with:
+          toolchain: nightly
+      - uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
         with:
           workspaces: tools/fuzz
       - run: cargo install cargo-fuzz --locked
@@ -124,17 +150,18 @@ jobs:
   performance:
     name: Same-host indicator regression
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@master
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
         with:
           toolchain: "1.89.0"
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.12"
-      - uses: swatinem/rust-cache@v2
+      - uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
       - name: Compare shared batch APIs against base commit on this runner
         env:
           BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
@@ -147,7 +174,7 @@ jobs:
       - name: Indicator benchmark observation
         if: always()
         run: cargo bench -p jelven-rustdx-complete --bench indicators --locked > indicator-benchmark.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: always()
         with:
           name: indicator-benchmark-${{ github.sha }}

@@ -1,0 +1,12 @@
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 17.83s
+[1m[32m     Running[0m tests/administration.rs (/tmp/rustdx-system-review-20261025/target/debug/deps/administration-022a1216484b5012)
+
+running 4 tests
+test readonly_sees_committed_wal_while_writer_holds_lock ... ok
+test backup_and_restore_reject_parent_aliases_and_traversal_before_writing ... ok
+test readonly_requires_existing_current_schema_and_never_initializes ... ok
+test total_backup_and_restore_budgets_include_completion_files ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+

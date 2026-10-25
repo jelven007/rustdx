@@ -1,0 +1,39 @@
+[1m[32m   Compiling[0m libc v0.2.191
+[1m[32m   Compiling[0m getrandom v0.3.4
+[1m[32m   Compiling[0m zerocopy v0.8.63
+[1m[32m   Compiling[0m num-traits v0.2.19
+[1m[32m   Compiling[0m serde_json v1.0.140
+[1m[32m   Compiling[0m syn v2.0.100
+[1m[32m   Compiling[0m log v0.4.34
+[1m[32m   Compiling[0m flate2 v1.1.0
+[1m[32m   Compiling[0m linked-hash-map v0.5.6
+[1m[32m   Compiling[0m unarray v0.1.4
+[1m[32m   Compiling[0m regex-syntax v0.8.5
+[1m[32m   Compiling[0m bitflags v2.13.2
+[1m[32m   Compiling[0m zopfli v0.8.3
+[1m[32m   Compiling[0m lazy_static v1.5.1
+[1m[32m   Compiling[0m similar v2.7.0
+[1m[32m   Compiling[0m zip v2.4.2
+[1m[32m   Compiling[0m chrono v0.4.40
+[1m[32m   Compiling[0m console v0.15.11
+[1m[32m   Compiling[0m rand_core v0.9.5
+[1m[32m   Compiling[0m pin-project-internal v1.1.10
+[1m[32m   Compiling[0m rand v0.9.5
+[1m[32m   Compiling[0m rand_xorshift v0.4.0
+[1m[32m   Compiling[0m pin-project v1.1.10
+[1m[32m   Compiling[0m ppv-lite86 v0.2.21
+[1m[32m   Compiling[0m trade_date_a v2026.0.0
+[1m[32m   Compiling[0m rand_chacha v0.9.0
+[1m[32m   Compiling[0m insta v1.42.2
+[1m[32m   Compiling[0m proptest v1.8.0
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 31.17s
+[1m[32m     Running[0m unittests src/lib.rs (/tmp/rustdx-system-review-20261025/target/debug/deps/rustdx_complete-823e092937ee1e1f)
+
+running 3 tests
+test operation::tests::scopes_restore_and_expiry_is_not_refreshed ... ok
+test operation::tests::absolute_deadline_is_not_refreshed ... ok
+test operation::tests::worker_cancellation_after_entering_context ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 196 filtered out; finished in 0.00s
+

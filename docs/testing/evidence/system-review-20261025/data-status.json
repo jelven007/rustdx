@@ -1,0 +1,40 @@
+{
+  "as_of": "2026-10-25",
+  "attention_required": true,
+  "coverage": [
+    {
+      "dataset": "calendar",
+      "remaining_days": 67,
+      "scope": "declared_range",
+      "status": "due",
+      "symbols": null,
+      "symbols_with_state": null,
+      "through": "2026-12-31",
+      "version": "trade_date_a/2026.0"
+    },
+    {
+      "dataset": "rules",
+      "remaining_days": -3,
+      "scope": "review_horizon_not_rule_expiration",
+      "status": "unverified",
+      "symbols": null,
+      "symbols_with_state": null,
+      "through": "2026-10-22",
+      "version": "exchange-rules/2026-07-06"
+    },
+    {
+      "dataset": "security",
+      "remaining_days": null,
+      "scope": "no_market_coverage_claim",
+      "status": "missing",
+      "symbols": null,
+      "symbols_with_state": null,
+      "through": null,
+      "version": null
+    }
+  ],
+  "schema_version": 1,
+  "sources": [],
+  "update_command": "rustdx data-check calendar|security <candidate> ...",
+  "warn_days": 90
+}

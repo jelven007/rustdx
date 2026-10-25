@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/tmp/rustdx-system-review-20261025/target/debug/rustdx",
+    "--no-tcp-startup",
+    "data-status",
+    "--warn-days",
+    "90",
+    "--report",
+    "/tmp/rustdx-system-review-20261025/data-status.json",
+    "--strict"
+  ],
+  "exit_code": 1,
+  "seconds": 0.814306958
+}

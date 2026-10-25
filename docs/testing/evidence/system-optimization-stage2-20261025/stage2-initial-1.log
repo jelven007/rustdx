@@ -1,0 +1,16 @@
+[1m[32m   Compiling[0m jelven-rustdx-cli v2.0.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[0m[1m[38;5;9merror[E0689][0m[0m[1m: can't call method `is_multiple_of` on ambiguous numeric type `{integer}`[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mapps/rustdx-runner/src/pipeline.rs:663:22[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m663[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            if count.is_multiple_of(4096) {[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                      [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;14mhelp[0m[0m: you must specify a type for this binding, like `i32`[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m647[0m[0m [0m[0m[1m[38;5;12m| [0m[0m        let mut count[0m[0m[38;5;10m: i32[0m[0m = 0;[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                      [0m[0m[38;5;10m+++++[0m
+
+[0m[1mFor more information about this error, try `rustc --explain E0689`.[0m
+[1m[31merror[0m[1m:[0m could not compile `rustdx-runner` (lib) due to 1 previous error
+[1m[33mwarning[0m[1m:[0m build failed, waiting for other jobs to finish...

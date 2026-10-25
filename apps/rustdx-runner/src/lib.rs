@@ -7,6 +7,7 @@ pub mod database;
 mod database_process;
 pub mod ledger;
 pub mod model;
+mod observations;
 pub mod ops;
 pub mod pipeline;
 pub mod storage;

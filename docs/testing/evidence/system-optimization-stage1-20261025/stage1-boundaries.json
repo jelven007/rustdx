@@ -1,0 +1,88 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all"
+      ],
+      "exit_code": 0,
+      "seconds": 1.1784748329999999,
+      "log": "stage1-boundaries-0.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "-p",
+        "rustdx-runner",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 4.306619208,
+      "log": "stage1-boundaries-1.log"
+    },
+    {
+      "command": [
+        "python3",
+        "/tmp/rustdx-system-optimization-20261025/admin_recheck.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.9768871250000002,
+      "log": "stage1-boundaries-2.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "administration",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 18.689378417,
+      "log": "stage1-boundaries-3.log"
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.7771034170000028,
+      "log": "stage1-boundaries-4.log"
+    },
+    {
+      "command": [
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "-p",
+        "rustdx-runner",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 9.125049249999996,
+      "log": "stage1-boundaries-5.log"
+    }
+  ]
+}

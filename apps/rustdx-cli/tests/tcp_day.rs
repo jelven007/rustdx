@@ -168,8 +168,7 @@ fn an_enumerated_empty_tail_keeps_missing_dates_visible_to_runner() {
 
 #[test]
 fn frozen_v1_archives_replay_with_their_original_lossy_volume() {
-    let base = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("../../docs/testing/evidence/acceptance-stage5-20261024");
+    let base = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/tcp-day-legacy");
     for name in ["tcp-live-0", "tcp-live-1"] {
         let directory = base.join(name);
         let request = Request::load(&directory.join("tcp-request.json")).unwrap();

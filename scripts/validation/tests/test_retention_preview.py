@@ -36,7 +36,7 @@ class RetentionTests(unittest.TestCase):
             CREATE TABLE attempts(id TEXT,directory TEXT,state TEXT,pid INTEGER);
             CREATE TABLE releases(id TEXT,manifest TEXT,state TEXT);
             CREATE TABLE publications(dataset TEXT,version INTEGER,pointer TEXT);
-            CREATE TABLE targets(release TEXT,id TEXT);
+            CREATE TABLE targets(release TEXT,id TEXT,spec TEXT,state TEXT,proof TEXT);
             CREATE TABLE target_io(release TEXT,target TEXT,request TEXT,response TEXT);
         """)
         for number in (1, 2):
@@ -64,7 +64,7 @@ class RetentionTests(unittest.TestCase):
         db.execute("INSERT INTO attempts VALUES(?,?,?,NULL)", ("failed1", str(attempt), "failed"))
         (root / "database/release1").mkdir(parents=True)
         (root / "database/release1/receipt.json").write_text('{"verified":true}')
-        db.execute("INSERT INTO targets VALUES('release1','db')")
+        db.execute("INSERT INTO targets VALUES('release1','db','{}','acknowledged',NULL)")
         db.execute("INSERT INTO target_io VALUES('release1','db',?,NULL)",
                    (json.dumps(evidence(root, "database/release1/receipt.json")),))
         db.commit()
@@ -151,6 +151,51 @@ class RetentionTests(unittest.TestCase):
             result = preview.preview(root)
             self.assertEqual(result["ledger_counts"]["events"], 1)
             self.assertEqual(snapshot(root), before)
+            db.close()
+
+    def test_restored_paths_are_mapped_without_changing_historical_ledger(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            old, restored = base / "old", base / "restored"
+            old.mkdir()
+            self.fixture(old)
+            shutil.copytree(old, restored)
+            with self.assertRaises(ValueError):
+                preview.preview(restored)
+            (restored / "restore-validated.json").write_text(json.dumps({
+                "schema_version": 1, "original_roots": [str(old)]}))
+            shutil.rmtree(old)
+            before = snapshot(restored)
+            result = preview.preview(restored)
+            self.assertEqual(result["relocations"][0]["logical"], "attempts/failed1")
+            self.assertEqual(snapshot(restored), before)
+            marker = restored / "restore-validated.json"
+            marker.write_text('{"schema_version":1,"original_roots":["/wrong"]}')
+            with self.assertRaises(ValueError):
+                preview.preview(restored)
+
+    def test_real_proof_field_is_verified_in_catalog_and_targets(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            self.fixture(root)
+            path = root / "database/release1/proof.json"
+            path.write_text(json.dumps({"schema_version": 1, "release": "release1",
+                                       "target": {}, "io": []}))
+            item = evidence(root, "database/release1/proof.json")
+            db = sqlite3.connect(root / "ledger.sqlite")
+            db.execute("UPDATE targets SET state='verified',proof=?", (json.dumps(item),))
+            catalog = root / "catalogs/data/1.json"
+            data = json.loads(catalog.read_text())
+            data["database_releases"] = {"release1": [{"target": {}, "proof": item}]}
+            catalog.write_text(json.dumps(data))
+            db.execute("UPDATE publications SET pointer=? WHERE version=1",
+                       (json.dumps({"manifest": evidence(root, "catalogs/data/1.json")}),))
+            db.commit()
+            self.assertEqual(preview.preview(root)["mode"], "preview_only")
+            # Tampering with only the proof was formerly missed by target_io checks.
+            path.write_text('{"tampered":true}')
+            with self.assertRaises(ValueError):
+                preview.preview(root)
             db.close()
 
 

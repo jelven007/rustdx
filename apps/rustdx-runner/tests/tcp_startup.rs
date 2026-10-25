@@ -7,5 +7,6 @@ fn runner_is_offline_by_default_and_explicit_warmup_is_governed() {
         env!("CARGO_BIN_EXE_rustdx-runner"),
         &["status", "--root", "."],
         "[]",
+        &["migrate", "--root", "."],
     );
 }

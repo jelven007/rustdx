@@ -1,6 +1,6 @@
 # rustdx-runner
 
-Rust2024 / MSRV1.89 的同步单机生产控制层。采集支持明确的本地 `.day` 目录或少量证券的显式 TCP 日线来源，数据契约固定为 A 股、日线、原价、人民币元及股；worker生成私有文件，发布者完成业务覆盖和可选数据库验收后推进SQLite中的目录指针。该crate版本0.1.0，不发布到crates.io。
+Rust2024 / MSRV1.89 的同步单机生产控制层。采集支持明确的本地 `.day` 目录或有总预算的显式 TCP 日线来源，数据契约固定为 A 股、日线、原价、人民币元及股；worker生成私有文件，发布者完成业务覆盖和可选数据库验收后推进SQLite中的目录指针。该crate版本0.1.0，不发布到crates.io。
 
 ## 发布链路
 
@@ -21,6 +21,7 @@ Rust2024 / MSRV1.89 的同步单机生产控制层。采集支持明确的本地
 ```sh
 cargo +1.89.0 build -p jelven-rustdx-cli -p rustdx-runner
 rustdx-runner run --config /etc/rustdx/job.json
+rustdx-runner migrate --root /var/lib/rustdx
 rustdx-runner status --root /var/lib/rustdx
 rustdx-runner metrics --root /var/lib/rustdx
 rustdx-runner metrics --root /var/lib/rustdx --output /srv/metrics/rustdx.prom
@@ -38,9 +39,17 @@ rustdx-runner restore --root /srv/backups/rustdx-001 --destination /srv/restore/
 
 配置入口为[严格Job JSON](../../config/runner/job.example.json)；数据库由DBA预建[表/索引](../../deploy/runner/README.md)，运行期只查询/插入，不执行DDL、upsert或删除。凭据使用JSON中指定的`RUSTDX_`环境变量，worker清空继承环境。ClickHouse使用普通MergeTree，MongoDB使用完整唯一索引；不复用旧平面表。
 
+`status/metrics/catalog`及文件消费只打开已有账本，不创建或迁移。空目录和不兼容schema返回错误；初始化/迁移使用`migrate`，写入/迁移由根目录控制锁排他保护。库调用方用`Ledger::open_existing_readonly`查询，持有`RootLock`后用`open_writer`写入；旧`open`在初始化/迁移期间自行取得锁。SQLite只读连接仍可能需要WAL/shm辅助文件，不是不可变快照；严格零写巡检采用留存工具的私有WAL快照。
+
 数据库回读按 `(contract_version,date,market,code,instrument_class)` 完整键继续，dataset/release 为索引的相等前缀；单日读取加日期过滤。MongoDB每目标会话复用一个mongosh，每请求确认query_id，结束时检查EOF与退出状态；半帧、超限、取消和超时终止整个进程组。全字段比较、release总数与终止空查询继续防止缺键、多余键和重复数据被接受。
 
-首次数据库请求前按封存行数与JSON字节计量预测I/O、证明文件、总证据字节和条目数，为发布、一次恢复及一次完整消费回读预留空间；全部目标共同检查release证据目录，不满足预算则在写入前拒绝。预测另存 `database/<release>/capacity-*.json`。50,000次I/O、200,000目录条目、32MiB证明文件上限仍有效；后续重复恢复或消费继续受剩余预算限制。会话内增量计量，启动与结束完整对账；冻结配置不再每请求重新加载。
+首次数据库请求前按封存行数与JSON字节预测发布及一次恢复的I/O、证明和证据预算，全部目标共同检查release目录，不满足则在写入前拒绝。预测另存`database/<release>/capacity-*.json`。发布命名空间仍限制50,000次I/O、200,000目录条目及32MiB证明；重复恢复受剩余预算限制。消费查询使用独立命名空间，不再消耗发布`target_io`。
+
+`PinnedDataset`内部catalog及release清单固定，只提供`catalog()`共享只读访问。一次数据库导出按release复用会话，在日期顺序输出时逐键逐字段核对，每日终止空页仍检查，结束时每release检查一次完整总数。查询凭据写入`consumer-audit/q-<timestamp>-<pid>/<release>/<target>`；每请求保存request/response及SHA收据，只有全部回读核验成功才写`verified.json`，它不表示CSV已经原子提交。独立会话最多50,000次请求、200,000条目，字节上限取所选release冻结`max_workspace_bytes`的最小值；不取得控制锁，不修改账本。查询审计不随控制层备份复制，留存预览暂整体保护该目录，保留期限和总磁盘硬配额由部署方另行制定；不自动删除。
+
+账本当前schema4。`migrate`在根锁内从原观测重建指标汇总并增加Job时间/Attempt归属索引；原JSON记录保留且只追加。`metrics`读取汇总，unavailable与缺失记录分别报告。`rustdx-runner rebuild-metrics --root /var/lib/rustdx`在事务内重建，异常或溢出回滚；原schema3备份可原字节恢复，恢复后须显式`migrate`才能运行当前查询。迁移前保留原备份，回退使用旧二进制与旧备份，不手改版本号。
+
+归一化在输入固定后只计量SQLite/journal/WAL/shm、coverage及partitions等变化部分；最终完整扫描与摘要封存继续执行，`release.json`也计入总字节预算。
 
 runner本地day及管理命令默认不启动行情TCP。--tcp-warmup显式测量初始池、
 建立TCP客户端并验证0004心跳；TCP来源自行核验冻结节点。三轮、8并发、阶段3秒，
@@ -56,6 +65,8 @@ run的严格JSON可设置`"no_tcp_startup": true`，也可使用命令行开关�
 
 备份持有同一控制锁，拒绝活动/不明确worker，使用SQLite在线备份API取得已提交WAL内容，同时复制候选、release、catalog和数据库请求/响应。只有最后写出的`backup.json`存在且所有摘要通过，备份才完整。恢复要求全新隔离目录，检查库存摘要、SQLite完整性/外键、全部release、历史目录引用和数据库证据，最终写出`restore-validated.json`；恢复操作本身不连接数据库、不自动切换生产目录，入口默认离线。这不是数据库服务端数据卷备份。
 
+备份/恢复解析已有父目录的实际路径，拒绝目标落入源目录或包含`..`；`max_bytes`包含清单/完成标记。新SQLite备份为独立DELETE模式快照，恢复校验无需额外WAL。恢复标记记录`original_roots`，历史账本绝对路径保持原字节；留存预览据此映射`attempts/<id>`，并验证Receipt的proof及其I/O摘要，不改写旧证据。
+
 ## TCP留证接口
 
 核心库`Tcp::with_config_and_observer`接受同步`FrameObserver`，从首次握手起记录请求及解压前完整帧，重连保留observer；回调失败使请求失败。CLI库`tcp_evidence::FrameArchive`提供限额、fsync及SHA-256库存，`load_response/replay`核查请求并调用checked解码。示例：
@@ -70,6 +81,8 @@ cargo run -p jelven-rustdx-cli --example tcp_wire -- replay /archive 3
 ## TCP日线Job
 
 [TCP配置示例](../../config/runner/tcp-day.example.json)使用`tcp_day`与空`day_directories`；两种来源互斥。更换示例日期、端点、路径和全零摘要后运行。新冻结计划支持最多10000只排序唯一沪深A股，`workers.min(8)`为默认窗口并行度；`tcp_day_schedule`可显式设置总原始行、解压正文、期限及并行度。启动每个窗口前预留全部预算，受共享网络许可约束；余量不足减小窗口或失败。旧无schedule请求保持串行和32只上限。端点按独立IP池真实三轮探测后使用，不回退通用初始池；Job身份包含来源合同、端点和单位依据摘要。
+
+先执行`rustdx-runner plan --config /path/to/job.json --max-keys 10000 --network-limit 8`。预检只读取显式输入与磁盘容量，不初始化root、账本或网络许可目录；列出全部应有键的计数/摘要、有上限的键样本、事实/固定输入字节、初始有效并发及原行/正文/归档/wire限制。`can_start=false`输出报告后退出1；Unknown事实直接拒绝。最坏情况预算缺口单列，初始可启动不等于完整历史可完成。请求数上界仅包括逐证券采集握手/分页，探测另计；期限是中断上限，不是成功耗时预测。执行仍重新冻结并核验事实和预算。
 
 `source_as_of=planned_date`须等于实际北京时间采集日，`through`必须早于它。该策略只接收已经结束的日期，不支持当天收盘后特例或历史时点回溯；历史bar是今天主站提供的版本。新采集来源为`a-share/tcp-052b/day/raw/cny/integer-shares/v2`，请求/收据schema2，股量直接来自052b整数股数，金额按binary32人民币元解码。`volume_evidence_sha256`引用facts目录中的单位材料，随日历/公告冻结；摘要只证明材料一致，仍须维护者独立审核范围与原价口径。旧052d来源v1仅支持原字段离线重放。单位、日期及来源合同见[应用接入](../../docs/development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)。
 

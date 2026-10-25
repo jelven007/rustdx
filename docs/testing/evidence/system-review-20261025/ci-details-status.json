@@ -1,0 +1,26 @@
+[
+  {
+    "job": 121002606726,
+    "kind": "annotations",
+    "result": "passed",
+    "file": "ci-121002606726.json"
+  },
+  {
+    "job": 121002606726,
+    "kind": "log",
+    "result": "passed",
+    "file": "ci-121002606726.log"
+  },
+  {
+    "job": 121002606786,
+    "kind": "annotations",
+    "result": "passed",
+    "file": "ci-121002606786.json"
+  },
+  {
+    "job": 121002606786,
+    "kind": "log",
+    "result": "passed",
+    "file": "ci-121002606786.log"
+  }
+]

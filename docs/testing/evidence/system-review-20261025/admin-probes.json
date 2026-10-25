@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "scope": "current binary; temporary administrative directories and byte-identical archived ledger copy; no market performance claim",
+  "binary_sha256": "d0981f0ce85d216675efcf830e27582837b3d728019f011d660c127f68c10a36",
+  "cases": [
+    {
+      "name": "status-creates-ledger",
+      "args": [
+        "status",
+        "--root",
+        "/tmp/rustdx-system-review-20261025/empty-admin-root"
+      ],
+      "exit_code": 0,
+      "seconds": 9.744766459000001,
+      "stdout": "[]\n",
+      "stderr": "",
+      "before_files": [],
+      "after_files": [
+        "ledger.sqlite"
+      ],
+      "ledger_schema": 3
+    },
+    {
+      "name": "backup-via-alias",
+      "args": [
+        "backup",
+        "--root",
+        "/tmp/rustdx-system-review-20261025/empty-admin-root",
+        "--destination",
+        "/tmp/rustdx-system-review-20261025/alias-to-admin-root/nested-backup",
+        "--max-bytes",
+        "10485760"
+      ],
+      "exit_code": 0,
+      "seconds": 0.34432395900000046,
+      "stdout": "",
+      "stderr": "",
+      "actual_destination": "/private/tmp/rustdx-system-review-20261025/empty-admin-root/nested-backup",
+      "actual_root": "/private/tmp/rustdx-system-review-20261025/empty-admin-root",
+      "destination_is_inside_root": true
+    },
+    {
+      "name": "retention-relocated-historical-ledger",
+      "original": "docs/testing/evidence/acceptance-stage6-20261024/linux/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/restored-control/ledger.sqlite",
+      "original_sha256": "8a4c8d6cef8dae83c50e158d66efe810185b1e1a4f3f3e3f9b7c6955e2c4448c",
+      "copy_sha256": "8a4c8d6cef8dae83c50e158d66efe810185b1e1a4f3f3e3f9b7c6955e2c4448c",
+      "result": "rejected",
+      "error": "'/tmp/rustdx-recovery-20261024-19y2r7t3/evidence/attempt2/drill-22899f2df3614042ace7099b6df486aa/live/attempts/a-1792847341693863806-615452' is not in the subpath of '/tmp/rustdx-system-review-20261025/relocated-history' OR one path is relative and the other is absolute.",
+      "error_type": "ValueError"
+    }
+  ]
+}

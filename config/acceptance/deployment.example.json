@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "task_type": "runner_day",
+  "contract": "a-share/day/raw/cny/shares/v1",
+  "scope": {"markets": "unknown", "securities": "unknown", "date_range": "unknown", "required_fields": "unknown"},
+  "expected_key_set": {"count": null, "sha256": null},
+  "expected_keys": "unknown",
+  "time_basis": "unknown",
+  "finality": "unknown",
+  "source_revision_rule": "unknown",
+  "disconnect_policy": "unknown",
+  "overflow_policy": "unknown",
+  "version_rule": "unknown",
+  "identity": {
+    "source_commit": null,
+    "dependency_lock_sha256": null,
+    "config_sha256": null,
+    "binaries": {"rustdx": null, "rustdx-runner": null},
+    "target_id": "unknown",
+    "platform": "unknown",
+    "database_versions": "unknown",
+    "tool_versions": "unknown",
+    "facts_versions": "unknown"
+  },
+  "limits": {
+    "process_tree_rss_bytes": null,
+    "fds": null,
+    "threads": null,
+    "disk_bytes": null,
+    "stage_latency_ms": null,
+    "rpo_seconds": null,
+    "rto_seconds": null,
+    "minimum_load_seconds": null
+  },
+  "evidence": []
+}

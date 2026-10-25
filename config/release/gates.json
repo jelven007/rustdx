@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "workflows": {
+    "ci.yml": [
+      "Build / Test (ubuntu-latest)",
+      "Build / Test (macos-latest)",
+      "Build / Test (windows-latest)",
+      "Format / Clippy / Documentation",
+      "MSRV 1.89",
+      "Behavior / Consumers / Packages",
+      "Parser fuzz",
+      "Same-host indicator regression"
+    ],
+    "database-acceptance.yml": ["Database acceptance"]
+  },
+  "events": ["push", "workflow_dispatch"],
+  "artifact": "contracts-{sha}",
+  "package_names": ["jelven-rustdx-complete", "jelven-rustdx-cli"]
+}

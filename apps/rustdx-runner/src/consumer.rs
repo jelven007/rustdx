@@ -159,12 +159,13 @@ pub fn read_partition(
 
 pub struct PinnedDataset {
     root: PathBuf,
-    pub catalog: Catalog,
+    catalog: Catalog,
+    manifests: BTreeMap<String, ReleaseManifest>,
 }
 
 impl PinnedDataset {
     pub fn open(root: &Path, dataset: &str, version: Option<u64>) -> Result<Self> {
-        let ledger = Ledger::open(&root.join("ledger.sqlite"))?;
+        let ledger = Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?;
         let catalog = pipeline::fixed_catalog(root, &ledger, dataset, version)?
             .ok_or_else(|| invalid("dataset/catalog has not been published"))?;
         let mut manifests: BTreeMap<String, ReleaseManifest> = BTreeMap::new();
@@ -211,7 +212,12 @@ impl PinnedDataset {
         Ok(Self {
             root: root.into(),
             catalog,
+            manifests,
         })
+    }
+
+    pub fn catalog(&self) -> &Catalog {
+        &self.catalog
     }
 
     pub fn export(
@@ -235,10 +241,10 @@ impl PinnedDataset {
         target: &str,
     ) -> Result<u64> {
         crate::config::identifier(target)?;
-        let _lock = storage::RootLock::acquire(&self.root)?;
         self.export_from(from, through, output, max_rows, max_bytes, Some(target))
     }
 
+    #[allow(clippy::too_many_arguments)]
     fn export_from(
         &self,
         from: NaiveDate,
@@ -283,7 +289,49 @@ impl PinnedDataset {
             });
         writer.write_record(COLUMNS)?;
         let mut rows = 0_u64;
-        let ledger = Ledger::open(&self.root.join("ledger.sqlite"))?;
+        let mut sessions = BTreeMap::new();
+        let audit = if let Some(target) = target {
+            let releases: std::collections::BTreeSet<_> = self
+                .catalog
+                .partitions
+                .range(from..=through)
+                .map(|(_, p)| p.release_id.as_str())
+                .collect();
+            let mut budget = u64::MAX;
+            for release in &releases {
+                let manifest = self
+                    .manifests
+                    .get(*release)
+                    .ok_or_else(|| invalid("missing pinned release"))?;
+                // Fail before any database requests if a selected release lacks this target.
+                self.catalog
+                    .database_releases
+                    .get(*release)
+                    .and_then(|r| r.iter().find(|r| r.target.id() == target))
+                    .ok_or_else(|| invalid("target absent from released version"))?;
+                budget = budget.min(crate::database::readback_budget(&self.root, manifest)?);
+            }
+            let audit = crate::database::QueryAudit::new(&self.root, budget)?;
+            for release in releases {
+                let manifest = self
+                    .manifests
+                    .get(release)
+                    .ok_or_else(|| invalid("missing pinned release"))?;
+                let receipt = self
+                    .catalog
+                    .database_releases
+                    .get(release)
+                    .and_then(|r| r.iter().find(|r| r.target.id() == target))
+                    .ok_or_else(|| invalid("missing pinned receipt"))?;
+                sessions.insert(
+                    release,
+                    crate::database::ReadSession::new(&self.root, manifest, receipt, &audit),
+                );
+            }
+            Some(audit)
+        } else {
+            None
+        };
         for partition in self
             .catalog
             .partitions
@@ -298,22 +346,20 @@ impl PinnedDataset {
                 writer.serialize(row)?;
                 Ok(())
             };
-            if let Some(target) = target {
-                let manifest = pipeline::release_manifest(
-                    &self.root,
-                    &ledger.release_evidence(&partition.release_id)?,
-                )?;
-                crate::database::read_verified_partition(
-                    &self.root,
-                    &ledger,
-                    &manifest,
-                    partition.date,
-                    target,
-                    &mut visit,
-                )?;
+            if target.is_some() {
+                sessions
+                    .get(partition.release_id.as_str())
+                    .ok_or_else(|| invalid("missing release read session"))?
+                    .read_partition(partition.date, &mut visit)?;
             } else {
                 read_partition(&self.root, partition, &mut visit)?;
             }
+        }
+        for session in sessions.values() {
+            session.finish()?;
+        }
+        if let Some(audit) = audit {
+            audit.finish()?;
         }
         writer.flush()?;
         drop(writer);

@@ -46,11 +46,24 @@ fn finish(mut child: ChildGuard, timeout: Duration) -> Output {
     child.0.take().unwrap().wait_with_output().unwrap()
 }
 
-pub fn verify(binary: &str, action: &[&str], expected_stdout: &str) {
+pub fn verify(binary: &str, action: &[&str], expected_stdout: &str, setup: &[&str]) {
     let name = Path::new(binary).file_name().unwrap().to_str().unwrap();
     let directory =
         std::env::temp_dir().join(format!("rustdx-startup-{name}-{}", std::process::id()));
     fs::create_dir_all(&directory).unwrap();
+    if !setup.is_empty() {
+        let initialized = command(binary, &directory)
+            .env("RUSTDX_TCP_INITIAL_IPS", "invalid")
+            .arg("--no-tcp-startup")
+            .args(setup)
+            .output()
+            .unwrap();
+        assert!(
+            initialized.status.success(),
+            "{}",
+            String::from_utf8_lossy(&initialized.stderr)
+        );
+    }
     let good = Server::new(Mode::Good);
     let flaky = Server::new(Mode::Flaky);
     let refused = TcpListener::bind("127.0.0.1:0").unwrap();

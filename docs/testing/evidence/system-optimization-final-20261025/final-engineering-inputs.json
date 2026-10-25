@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "/tmp/rustdx-system-optimization-20261025/verify_engineering_inputs.py"
+      ],
+      "exit_code": 0,
+      "seconds": 17.873125375,
+      "log": "final-engineering-inputs-0.log"
+    }
+  ]
+}

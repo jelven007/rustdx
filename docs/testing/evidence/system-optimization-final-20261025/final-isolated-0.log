@@ -1,0 +1,8 @@
+[1m[32m    Checking[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m Documenting[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/crates/rustdx-core)
+[1m[32m    Checking[0m jelven-rustdx-cli v2.0.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[1m[32m Documenting[0m jelven-rustdx-cli v2.0.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-cli)
+[1m[32m Documenting[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/apps/rustdx-runner)
+[1m[32m Documenting[0m tests-integration v1.1.0 (/Users/bytedance/Documents/rustdx/tests/integration)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 12.62s
+[1m[32m   Generated[0m ]8;;file://cm9027fwhg/tmp/rustdx-system-review-20261025/target/doc/rustdx_cli/index.html\/tmp/rustdx-system-review-20261025/target/doc/rustdx_cli/index.html]8;;\ and 4 other files

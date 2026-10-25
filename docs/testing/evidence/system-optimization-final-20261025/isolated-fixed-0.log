@@ -1,0 +1,1348 @@
+[1m[36m    Blocking[0m waiting for file lock on package cache
+[1m[32m   Compiling[0m cfg-if v1.0.0
+[1m[32m   Compiling[0m proc-macro2 v1.0.94
+[1m[32m   Compiling[0m unicode-ident v1.0.18
+[1m[32m   Compiling[0m libc v0.2.191
+[1m[32m   Compiling[0m memchr v2.7.4
+[1m[32m   Compiling[0m serde_core v1.0.229
+[1m[32m   Compiling[0m log v0.4.34
+[1m[32m   Compiling[0m version_check v0.9.5
+[1m[32m   Compiling[0m serde v1.0.229
+[1m[32m   Compiling[0m crc32fast v1.5.1
+[1m[32m   Compiling[0m typenum v1.20.1
+[1m[32m   Compiling[0m bitflags v2.13.2
+[1m[32m   Compiling[0m adler2 v2.0.0
+[1m[32m   Compiling[0m autocfg v1.4.0
+[1m[32m   Compiling[0m zlib-rs v0.4.2
+[1m[32m   Compiling[0m itoa v1.0.15
+[1m[32m   Compiling[0m generic-array v0.14.7
+[1m[32m   Compiling[0m once_cell v1.21.1
+[1m[32m   Compiling[0m miniz_oxide v0.8.5
+[1m[32m   Compiling[0m hashbrown v0.15.2
+[1m[32m   Compiling[0m equivalent v1.0.2
+[1m[32m   Compiling[0m bumpalo v3.20.3
+[1m[32m   Compiling[0m regex-syntax v0.8.5
+[1m[32m   Compiling[0m num-traits v0.2.19
+[1m[32m   Compiling[0m simd-adler32 v0.3.10
+[1m[32m   Compiling[0m quote v1.0.40
+[1m[32m   Compiling[0m indexmap v2.8.0
+[1m[32m   Compiling[0m zopfli v0.8.3
+[1m[32m   Compiling[0m syn v3.0.4
+[1m[32m   Compiling[0m syn v2.0.100
+[1m[32m   Compiling[0m libz-rs-sys v0.4.2
+[1m[32m   Compiling[0m block-buffer v0.10.4
+[1m[32m   Compiling[0m crypto-common v0.1.7
+[1m[32m   Compiling[0m encoding_rs v0.8.35
+[1m[32m   Compiling[0m flate2 v1.1.0
+[1m[32m   Compiling[0m core-foundation-sys v0.8.7
+[1m[32m   Compiling[0m thiserror v2.0.20
+[1m[32m   Compiling[0m digest v0.10.7
+[1m[32m   Compiling[0m zip v2.4.2
+[1m[32m   Compiling[0m serde_json v1.0.140
+[1m[32m   Compiling[0m ryu v1.0.20
+[1m[32m   Compiling[0m iana-time-zone v0.1.62
+[1m[32m   Compiling[0m md-5 v0.10.6
+[1m[32m   Compiling[0m csv-core v0.1.12
+[1m[32m   Compiling[0m miniz_oxide v0.9.1
+[1m[32m   Compiling[0m getrandom v0.3.4
+[1m[32m   Compiling[0m zerocopy v0.8.63
+[1m[32m   Compiling[0m console v0.15.11
+[1m[32m   Compiling[0m similar v2.7.0
+[1m[32m   Compiling[0m csv v1.4.0
+[1m[32m   Compiling[0m linked-hash-map v0.5.6
+[1m[32m   Compiling[0m serde_derive v1.0.229
+[1m[32m   Compiling[0m thiserror-impl v2.0.20
+[1m[32m   Compiling[0m displaydoc v0.2.7
+[1m[32m   Compiling[0m rand_core v0.9.5
+[1m[32m   Compiling[0m rand v0.9.5
+[1m[32m   Compiling[0m rand_xorshift v0.4.0
+[1m[32m   Compiling[0m unarray v0.1.4
+[1m[32m   Compiling[0m lazy_static v1.5.1
+[1m[32m   Compiling[0m shlex v2.0.1
+[1m[32m   Compiling[0m pin-project-internal v1.1.10
+[1m[32m   Compiling[0m find-msvc-tools v0.1.15
+[1m[32m   Compiling[0m objc2 v0.6.5
+[1m[32m   Compiling[0m cc v1.9.0
+[1m[32m   Compiling[0m zeroize v1.9.0
+[1m[32m   Compiling[0m getrandom v0.2.15
+[1m[32m   Compiling[0m rustls-pki-types v1.15.1
+[1m[32m   Compiling[0m aho-corasick v1.1.3
+[1m[32m   Compiling[0m cfg_aliases v0.2.2
+[1m[32m   Compiling[0m untrusted v0.9.0
+[1m[32m   Compiling[0m httparse v1.10.1
+[1m[32m   Compiling[0m chrono v0.4.40
+[1m[32m   Compiling[0m pin-project v1.1.10
+[1m[32m   Compiling[0m rustversion v1.0.20
+[1m[32m   Compiling[0m objc2-encode v4.1.0
+[1m[32m   Compiling[0m nix v0.31.3
+[1m[32m   Compiling[0m regex-automata v0.4.9
+[1m[32m   Compiling[0m insta v1.42.2
+[1m[32m   Compiling[0m ppv-lite86 v0.2.21
+[1m[32m   Compiling[0m ring v0.17.14
+[1m[32m   Compiling[0m rand_chacha v0.9.0
+[1m[32m   Compiling[0m bytes v1.12.1
+[1m[32m   Compiling[0m utf8parse v0.2.2
+[1m[32m   Compiling[0m rustls v0.23.43
+[1m[32m   Compiling[0m proptest v1.8.0
+[1m[32m   Compiling[0m anstyle-parse v0.2.6
+[1m[32m   Compiling[0m trade_date_a v2026.0.0
+[1m[32m   Compiling[0m http v1.5.0
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/private/tmp/rustdx-system-optimization-20261025/isolated-engineering-fixed/crates/rustdx-core)
+[1m[32m   Compiling[0m block2 v0.6.2
+[1m[32m   Compiling[0m regex v1.11.1
+[1m[32m   Compiling[0m typed-path v0.12.3
+[1m[32m   Compiling[0m is_terminal_polyfill v1.70.1
+[1m[32m   Compiling[0m argh_shared v0.1.13
+[1m[32m   Compiling[0m eyre v0.6.12
+[1m[32m   Compiling[0m base64 v0.23.1
+[1m[32m   Compiling[0m colorchoice v1.0.3
+[1m[32m   Compiling[0m anstyle-query v1.1.2
+[1m[32m   Compiling[0m debug_unsafe v0.1.4
+[1m[32m   Compiling[0m subtle v2.6.1
+[1m[32m   Compiling[0m anstyle v1.0.10
+[1m[32m   Compiling[0m ureq-proto v0.6.1
+[1m[32m   Compiling[0m atoi_simd v0.18.1
+[1m[32m   Compiling[0m anstream v0.6.18
+[1m[32m   Compiling[0m argh_derive v0.1.13
+[1m[32m   Compiling[0m env_filter v0.1.3
+[1m[32m   Compiling[0m zip v8.6.0
+[1m[32m   Compiling[0m dispatch2 v0.3.1
+[1m[32m   Compiling[0m webpki-roots v1.0.9
+[1m[32m   Compiling[0m codepage v0.1.2
+[1m[32m   Compiling[0m quick-xml v0.41.0
+[1m[32m   Compiling[0m cpufeatures v0.2.17
+[1m[32m   Compiling[0m byteorder v1.5.0
+[1m[32m   Compiling[0m jelven-rustdx-cli v2.0.0 (/private/tmp/rustdx-system-optimization-20261025/isolated-engineering-fixed/apps/rustdx-cli)
+[1m[32m   Compiling[0m rust-fuzzy-search v0.1.1
+[1m[32m   Compiling[0m indenter v0.3.3
+[1m[32m   Compiling[0m percent-encoding v2.3.1
+[1m[32m   Compiling[0m fast-float2 v0.2.4
+[1m[32m   Compiling[0m utf8-zero v0.8.1
+[1m[32m   Compiling[0m jiff v0.2.5
+[1m[32m   Compiling[0m rustls-webpki v0.103.15
+[1m[32m   Compiling[0m calamine v0.36.1
+[1m[32m   Compiling[0m argh v0.1.13
+[1m[32m   Compiling[0m sha2 v0.10.9
+[1m[32m   Compiling[0m ctrlc v3.5.2
+[1m[32m   Compiling[0m rustix v1.1.5
+[1m[32m   Compiling[0m errno v0.3.14
+[1m[32m   Compiling[0m fastrand v2.5.0
+[1m[32m   Compiling[0m vcpkg v0.2.15
+[1m[32m   Compiling[0m pkg-config v0.3.34
+[1m[32m   Compiling[0m fallible-iterator v0.3.0
+[1m[32m   Compiling[0m fallible-streaming-iterator v0.1.9
+[1m[32m   Compiling[0m smallvec v1.16.3
+[1m[32m   Compiling[0m proc-macro-error-attr2 v2.0.0
+[1m[32m   Compiling[0m unicode-width v0.2.2
+[1m[32m   Compiling[0m heck v0.5.0
+[1m[32m   Compiling[0m bytecount v0.6.8
+[1m[32m   Compiling[0m fnv v1.0.7
+[1m[32m   Compiling[0m libsqlite3-sys v0.38.2
+[1m[32m   Compiling[0m papergrid v0.18.0
+[1m[32m   Compiling[0m testing_table v0.3.0
+[1m[32m   Compiling[0m proc-macro-error2 v2.0.1
+[1m[32m   Compiling[0m tabled_derive v0.11.0
+[1m[32m   Compiling[0m env_logger v0.11.7
+[1m[32m   Compiling[0m tempfile v3.27.0
+[1m[32m   Compiling[0m ureq v3.4.0
+[1m[32m   Compiling[0m tabled v0.21.0
+[1m[32m   Compiling[0m tests-integration v1.1.0 (/private/tmp/rustdx-system-optimization-20261025/isolated-engineering-fixed/tests/integration)
+[1m[32m   Compiling[0m rusqlite v0.40.2
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/private/tmp/rustdx-system-optimization-20261025/isolated-engineering-fixed/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 3m 58s
+[1m[32m     Running[0m unittests src/lib.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/rustdx_cli-9bd0e7eff5fb0a0b)
+
+running 5 tests
+test fetch_code::tests::sse_jsonp_is_structural_and_public_inputs_do_not_panic ... ok
+test fetch_code::tests::stocklist_responses_are_bounded_and_read_errors_propagate ... ok
+test maintenance::tests::inclusive_warning_and_coverage_boundaries_do_not_extend_evidence ... ok
+test observation::tests::concurrent_nested_spans_and_unwinding_keep_task_counters_separate ... ok
+test observation::tests::queued_temporary_bytes_release_on_drop_and_publication ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+[1m[32m     Running[0m unittests src/main.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/rustdx-60e34f9222af02e5)
+
+running 33 tests
+test download::tests::find_lday_dirs_empty_when_missing ... ok
+test download::tests::safe_join_rejects_traversal ... ok
+test download::tests::content_range_requires_exact_offset_and_length ... ok
+test cmd::data_check::tests::reference_disagreement_and_coverage_are_rejected ... ok
+test io::rowbinary::tests::adjusted_fields_reordering_and_signed_zero_are_preserved ... ok
+test io::rowbinary::tests::date_upper_bound_and_cancellation_are_enforced ... ok
+test io::rowbinary::tests::independent_bytes_and_small_reads_preserve_all_float_bits ... ok
+test io::rowbinary::tests::malformed_fields_and_unbounded_records_fail_before_encoding ... ok
+test io::test_insert_clickhouse ... ok
+test download::tests::zip_cached_logic ... ok
+test io::factors::tests::previous_inputs_are_preserved_and_invalid_rows_fail ... ok
+test io::tests::clickhouse_schema_must_preserve_key_precision_and_import_versions ... ok
+test io::tests::clickhouse_rejects_error_status_late_exception_and_truncated_body ... ok
+test io::mongo_readback::tests::deadline_cancellation_and_blocked_pipe_are_reaped ... ok
+test io::tests::excel_codes_keep_leading_zero_and_invalid_columns_fail ... ok
+test io::tests::table_names_cannot_be_sql ... ok
+test io::verify::tests::batch_and_mongo_response_limits_reject_invalid_input ... ok
+test download::tests::http_resume_uses_validator_and_publishes_complete_archive ... ok
+test io::verify::tests::independent_readback_detects_values_keys_duplicates_and_crosses_batches ... ok
+test io::mongo_readback::tests::persistent_process_checks_complete_response_eof_and_exit_status ... ok
+test quality::tests::equities_are_strict_and_indexes_keep_source_anomalies_as_warnings ... ok
+test io::sinks::tests::subprocess_failure_and_timeout_are_bounded ... ok
+test paths::tests::database_targets_coordinate_across_credentials_and_directories ... ok
+test paths::tests::aliases_and_concurrent_writers_are_rejected ... ok
+test io::streaming::tests::chunk_carry_matches_whole_file_with_suspended_events ... ok
+test download::tests::local_archives_have_isolated_cache_and_failure_preserves_extraction ... ok
+test io::streaming::tests::multipass_merge_keeps_last_source_duplicate_and_bounds_diagnostics ... ok
+test io::tests::all_empty_collection_preserves_output_and_fails_report ... ok
+test io::tests::invalid_collection_preserves_last_success_and_records_failure ... ok
+test io::sinks::tests::late_database_error_leaves_durable_unknown_status_and_csv ... ok
+test io::sinks::tests::acknowledged_import_with_failed_readback_retains_csv_and_evidence ... ok
+test quality::tests::manifests_preserve_each_run_and_verify_published_evidence ... ok
+test io::tests::external_calendar_enables_strict_collection_without_guessing_dates ... ok
+
+test result: ok. 33 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.65s
+
+[1m[32m     Running[0m tests/calendar_datasets.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/calendar_datasets-ac8e721d16a09190)
+
+running 1 test
+test exchange_2026_datasets_match_each_other_and_builtin_every_day ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/cli.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/cli-69e3116cc94c2198)
+
+running 5 tests
+test help_and_invalid_output_finish_without_network ... ok
+test conflicting_outputs_fail_before_network_or_input_changes ... ok
+test failed_database_import_keeps_csv_and_marks_report_failed ... ok
+test csv_collection_and_strict_gap_protect_previous_output ... ok
+test invalid_readback_batch_preserves_output_before_database_access ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.03s
+
+[1m[32m     Running[0m tests/cli_deadline.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/cli_deadline-436888ebf3cf5c3e)
+
+running 1 test
+test full_command_deadline_and_cancellation_preserve_previous_output ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.66s
+
+[1m[32m     Running[0m tests/database_acceptance.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/database_acceptance-b01a91dff0757328)
+
+running 1 test
+test real_databases_verify_all_keys_updates_and_constraints ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/day_streaming.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/day_streaming-33e8aadced5ab64c)
+
+running 3 tests
+test cancellation_unblocks_ordered_workers_and_cleans_spools ... ok
+test local_zip_source_observations_survive_report_creation_after_extraction ... ok
+test worker_counts_are_byte_identical_and_late_errors_preserve_output ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.65s
+
+[1m[32m     Running[0m tests/http_budget.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/http_budget-cd2ebd892e87d927)
+
+running 1 test
+test slow_progress_does_not_refresh_deadline_and_idle_body_can_be_cancelled ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.00s
+
+[1m[32m     Running[0m tests/maintenance_status.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/maintenance_status-215ff736de1cba2f)
+
+running 1 test
+test status_strict_failure_still_publishes_reviewable_report ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+[1m[32m     Running[0m tests/mongo_credentials.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/mongo_credentials-ee3e162b94c888dd)
+
+running 1 test
+test authenticated_uri_stays_out_of_argv_and_private_config_is_removed ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.85s
+
+[1m[32m     Running[0m tests/tcp_day.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/tcp_day-568308d8d9962c82)
+
+running 7 tests
+test frozen_v1_archives_replay_with_their_original_lossy_volume ... ok
+test an_enumerated_empty_tail_keeps_missing_dates_visible_to_runner ... ok
+test compressed_short_pages_replay_exact_fields_and_duplicate_boundaries ... ok
+test wire_receipt_and_orphan_file_changes_are_rejected_independently ... ok
+test closed_date_unit_evidence_scope_and_archive_budget_refuse_collection ... ok
+test total_reservations_csv_limit_failure_and_parent_deadline_never_complete ... ok
+test scheduled_scope_exceeds_32_with_bounded_parallelism_and_ordered_exact_replay ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.82s
+
+[1m[32m     Running[0m tests/tcp_startup.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/tcp_startup-661360e721732a46)
+
+running 1 test
+test cli_is_offline_by_default_and_explicit_warmup_is_governed ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.34s
+
+[1m[32m     Running[0m unittests examples/csv.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/csv-d8ba52abf7c80dc6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/excel.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/excel-0b511b4d0992ae33)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/tcp_wire.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/tcp_wire-928e440b36f171df)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests src/lib.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/rustdx_complete-9569d87d01eec127)
+
+running 199 tests
+test builder::tests::explicit_symbols_preserve_exchange_and_reject_unverified_mapping ... ok
+test builder::tests::test_builder_basic ... ok
+test builder::tests::test_builder_auto_market ... ok
+test builder::tests::test_builder_convenience_methods ... ok
+test builder::tests::invalid_builder_inputs_return_errors ... ok
+test builder::tests::test_builder_missing_code ... ok
+test builder::tests::test_builder_defaults ... ok
+test bytes_helper::tests::overflowing_and_truncated_offsets_keep_legacy_zero_fallback ... ok
+test builder::tests::test_builder_chain ... ok
+test builder::tests::test_builder_count_too_large ... ok
+test cache::tests::checked_reentry_reports_error_and_preserves_fetch_errors ... ok
+test cache::tests::incremental_bytes_and_shared_views_survive_replacement_and_eviction ... ok
+test cache::tests::file_cache_process_writer ... ok
+test cache::tests::test_cache_manager ... ok
+test cache::tests::test_memory_cache_basic ... ok
+test cache::tests::test_memory_cache_clear ... ok
+test cache::tests::test_get_or_fetch ... ok
+test cache::tests::concurrent_fetch_is_coalesced ... ok
+test cache::tests::test_memory_cache_expiry ... ok
+test calendar::provider::tests::strict_navigation_propagates_coverage_boundaries ... ok
+test calendar::provider::tests::external_calendar_uses_declared_holidays_and_rejects_invalid_datasets ... ok
+test cache::tests::test_memory_cache_remove ... ok
+test calendar::tests::known_holidays_navigation_and_lists_keep_their_values ... ok
+test calendar::tests::all_entry_points_reject_unknown_dates_without_fallback ... ok
+test calendar::tests::market_hours_and_preopen_rule ... ok
+test data::model::tests::adapters_keep_market_period_and_volume ... ok
+test data::tests::symbols_and_units_are_explicit ... ok
+test error::tests::test_error_chain ... ok
+test error::tests::test_error_conversion ... ok
+test error::tests::test_error_display ... ok
+test error::tests::test_indicator_error_display ... ok
+test error::tests::test_tcp_error_display ... ok
+test error::tests::test_validation_error_display ... ok
+test file::gbbq::fq::tests::local_beijing_events_use_the_local_market_tag ... ok
+test file::day::fq::tests::byte_wrappers_reject_wrong_events_and_incremental_baselines ... ok
+test file::gbbq::fq::tests::rejects_mixed_or_invalid_daily_symbols ... ok
+test file::gbbq::fq::tests::rejects_foreign_events_even_when_category_or_date_would_be_filtered ... ok
+test file::gbbq::fq::tests::suspended_events_match_full_and_incremental_series ... ok
+test indicators::incremental::tests::checked_parameters_reject_empty_input_and_accept_large_periods ... ok
+test indicators::incremental::tests::published_recurrence_has_known_values_and_explicit_histogram_scale ... ok
+test indicators::tests::indicator_gaps_preserve_alignment_and_recover ... ok
+test indicators::tests::monotonic_kdj_matches_scanned_windows_including_invalid_bars ... ok
+test indicators::incremental::tests::chunks_gaps_and_checkpoint_replay_preserve_the_same_state ... ok
+test indicators::tests::rolling_values_match_reference_and_recover_after_gaps ... ok
+test indicators::tests::test_bollinger_bands ... ok
+test indicators::tests::test_ema ... ok
+test indicators::tests::test_empty_data ... ok
+test indicators::tests::test_kdj ... ok
+test indicators::tests::test_rsi ... ok
+test indicators::tests::test_macd ... ok
+test indicators::tests::test_rsi_extreme_cases ... ok
+test indicators::tests::test_single_value ... ok
+test indicators::tests::rolling_bands_match_centered_reference_and_recover_from_overflow ... ok
+test indicators::tests::test_sma ... ok
+test limit::history::tests::gaps_overlaps_and_single_day_stages_are_explicit ... ok
+test limit::tests::board_of_by_prefix ... ok
+test limit::tests::half_cent_prices_round_up_for_both_directions ... ok
+test limit::tests::is_st_name_detection ... ok
+test limit::tests::limit_prices_by_board_and_st ... ok
+test limit::tests::limit_prices_invalid_preclose ... ok
+test limit::tests::limit_prices_main_10pct ... ok
+test limit::tests::limit_status_classification ... ok
+test limit::tests::limit_up_streak_counts_recent_seals ... ok
+test operation::tests::absolute_deadline_is_not_refreshed ... ok
+test limit::rules::tests::effective_dates_and_st_rules ... ok
+test limit::rules::tests::ipo_and_transfer_are_distinct ... ok
+test limit::tests::board_as_str_roundtrip_meaning ... ok
+test operation::tests::scopes_restore_and_expiry_is_not_refreshed ... ok
+test pool::tests::invalid_configuration ... ok
+test pool::tests::reservation_releases_on_unwind_and_poisoned_cleanup_does_not_panic ... ok
+test operation::tests::worker_cancellation_after_entering_context ... ok
+test pool::tests::cleanup_does_not_move_borrowed_connections ... ok
+test tcp::basic::connection ... ok
+test tcp::basic::malformed_count_clears_previous_result_without_panicking ... ok
+test cache::tests::checked_wait_cancellation_does_not_need_lock_release ... ok
+test tcp::governance::tests::endpoint_rotation_and_failure_cooldown ... ok
+test pool::tests::reuse_wait_and_close ... ok
+test tcp::helper::check_datetime_price_vol_amount ... ok
+test tcp::helper::tests::datetime_ord_is_chronological ... ok
+test tcp::ip::capabilities::tests::heartbeat_does_not_qualify_special_commands_and_failure_revokes_observation ... ok
+test tcp::governance::tests::bounded_budget_releases_and_wakes_waiters ... ok
+test tcp::ip::daily::tests::crud_is_shared_atomic_and_never_admits_an_untested_address ... ok
+test tcp::ip::daily::tests::empty_pool_and_unapproved_preferences_fail_without_falling_back_to_seeds ... ok
+test tcp::ip::daily::tests::publishing_a_batch_cannot_restore_addresses_removed_during_probing ... ok
+test tcp::ip::daily::tests::scheduler_uses_beijing_nine_and_expires_yesterdays_pool ... ok
+test cache::tests::checked_fetch_rejects_late_success_and_inherits_parent_budget ... ok
+test tcp::ip::tests::check_all_stock_ips ... ok
+test tcp::ip::tests::first_server_is_connectable ... ok
+test tcp::reader::tests::rejects_truncated_and_overlong_values ... ok
+test tcp::stock::block_info::tests::parse_block_content_two_blocks ... ok
+test tcp::stock::block_info::tests::parse_truncated_returns_empty ... ok
+test tcp::stock::block_info::tests::test_meta_send_bytes ... ok
+test tcp::stock::client::bar_range::tests::conflicting_duplicate_and_nonprogress_are_rejected ... ok
+test tcp::stock::client::bar_range::tests::limits_and_legacy_short_page_are_explicitly_incomplete ... ok
+test pool::tests::occupied_pool_observes_cancellation_without_a_returned_connection ... ok
+test pool::tests::waiting_uses_nested_parent_deadline_and_close_wakes_all ... ok
+test tcp::stock::client::bar_range::tests::short_pages_continue_with_raw_offsets_and_record_duplicate_boundaries ... ok
+test tcp::stock::client::batch::tests::queued_batches_have_a_deadline ... ok
+test cache::tests::checked_wait_times_out_for_same_key_and_stripe_collision ... ok
+test tcp::stock::client::batch_budget::tests::capacity_raw_payload_and_error_storage_are_charged ... ok
+test tcp::stock::client::batch_budget::tests::slots_are_budgeted_before_allocation_and_rows_stop_collection ... ok
+test tcp::stock::client::extended_queries::tests::aggregate_stops_scheduling_on_exhaustion_and_keeps_item_order_and_errors ... ok
+test tcp::governance::tests::observations_use_a_bounded_nearest_rank_window_and_shared_policy_agrees ... ok
+test tcp::stock::client::stream::tests::total_budgets_stop_before_delivery_and_item_failures_are_retained ... ok
+test tcp::stock::client::tests::adjusted_multipliers_cash_and_rights ... ok
+test tcp::stock::client::tests::adjusted_multipliers_no_xdxr ... ok
+test tcp::stock::client::tests::adjusted_multipliers_split ... ok
+test tcp::stock::client::tests::adjusted_multipliers_suspended_xdxr_day ... ok
+test tcp::stock::client::tests::adjustment_anchors_first_bar_and_chains_suspension_events ... ok
+test tcp::stock::client::tests::ex_right_reference_rounds_to_fen ... ok
+test tcp::stock::client::tests::k_range_retain_logic ... ok
+test tcp::stock::client::stream::tests::callback_failure_deadline_and_cancellation_stop_delivery ... ok
+test tcp::stock::client::tests::today_yyyymmdd_format ... ok
+test tcp::stock::client::transactions::tests::current_day_date_change_is_rejected_but_history_keeps_its_explicit_date ... ok
+test tcp::stock::command_request::scan_source_tests::scans_reject_endpoint_connection_and_shanghai_day_changes ... ok
+test tcp::stock::company_info::tests::parse_category ... ok
+test tcp::stock::company_info::tests::test_category_new ... ok
+test tcp::stock::company_info::tests::test_content_new ... ok
+test tcp::stock::finance_info::tests::test_connection ... ok
+test tcp::stock::finance_info::tests::test_finance_info_invalid_code - should panic ... ok
+test tcp::stock::finance_info::tests::test_finance_info_new ... ok
+test tcp::stock::finance_info::tests::test_finance_info_new_shanghai ... ok
+test tcp::stock::finance_info::tests::test_finance_info_send_bytes ... ok
+test tcp::stock::history_minute_time::tests::parse_legacy_format ... ok
+test tcp::stock::history_minute_time::tests::parse_truncated_returns_empty ... ok
+test tcp::stock::history_minute_time::tests::test_invalid_code - should panic ... ok
+test tcp::stock::history_minute_time::tests::test_new ... ok
+test tcp::stock::history_transaction::tests::parse_two_ticks ... ok
+test tcp::stock::history_transaction::tests::test_invalid_code - should panic ... ok
+test tcp::stock::history_transaction::tests::test_new ... ok
+test tcp::stock::index_kline::tests::parse_truncated_no_panic ... ok
+test tcp::stock::index_kline::tests::test_invalid_code - should panic ... ok
+test tcp::stock::index_kline::tests::test_new_send_bytes ... ok
+test tcp::stock::kline::connection ... ok
+test tcp::stock::kline::day_new_modify ... ok
+test tcp::stock::kline::parse ... ok
+test tcp::stock::minute_time::tests::locate_data_block_finds_unique_start ... ok
+test tcp::stock::minute_time::tests::locate_data_block_insufficient_vars ... ok
+test tcp::stock::minute_time::tests::locate_data_block_requires_full_consumption ... ok
+test tcp::stock::minute_time::tests::parse_invalid_price_returns_empty ... ok
+test tcp::stock::minute_time::tests::parse_legacy_format ... ok
+test tcp::stock::minute_time::tests::parse_new_protocol ... ok
+test tcp::stock::minute_time::tests::parse_new_protocol_code_mismatch_returns_empty ... ok
+test tcp::stock::minute_time::tests::parse_new_protocol_shanghai ... ok
+test tcp::stock::minute_time::tests::parse_truncated_returns_empty ... ok
+test tcp::stock::minute_time::tests::test_connection ... ok
+test tcp::stock::minute_time::tests::test_minute_time_invalid_code - should panic ... ok
+test tcp::stock::minute_time::tests::test_minute_time_new ... ok
+test tcp::stock::minute_time::tests::test_minute_time_new_shanghai ... ok
+test tcp::stock::minute_time::tests::test_minute_time_send_bytes ... ok
+test tcp::stock::quote_metadata::tests::shared_generations_preserve_old_readers_and_replace_only_one_market ... ok
+test tcp::stock::quotes::tests::parse_full_response ... ok
+test tcp::stock::quotes::tests::test_security_quotes_default ... ok
+test tcp::stock::quotes::tests::test_security_quotes_empty - should panic ... ok
+test tcp::stock::quotes::tests::test_security_quotes_new ... ok
+test tcp::stock::quotes::tests::test_servertime_string ... ok
+test tcp::stock::recent_minutes::date_tests::all_public_acquisition_and_value_changes_invalidate_the_binding ... ok
+test tcp::stock::recent_minutes::date_tests::unverified_and_mismatched_controls_are_rejected ... ok
+test tcp::stock::reported_turnover::tests::compensated_sum_retains_small_terms_and_rejects_nonfinite_results ... ok
+test tcp::stock::security_list::tests::test_connection ... ok
+test tcp::stock::security_list::tests::test_security_list_new ... ok
+test tcp::stock::security_list::tests::test_security_list_new_with_start ... ok
+test tcp::stock::security_list::tests::test_security_list_send_bytes ... ok
+test tcp::stock::security_list::tests::test_security_list_send_bytes_with_params ... ok
+test tcp::stock::tests::stocks_collects_pages_in_order ... ok
+test cache::tests::test_file_cache_expiry ... ok
+test tcp::stock::trade_amount::tests::overflow_is_an_error_not_a_wrapped_amount ... ok
+test tcp::stock::trade_models::tests::source_checks_do_not_merge_endpoints_or_local_calendar_days ... ok
+test tcp::stock::transaction::tests::test_connection ... ok
+test tcp::stock::transaction::tests::test_transaction_invalid_code - should panic ... ok
+test tcp::stock::transaction::tests::test_transaction_new ... ok
+test tcp::stock::transaction::tests::test_transaction_new_with_start ... ok
+test tcp::stock::transaction::tests::test_transaction_send_bytes ... ok
+test tcp::stock::tests::stocks_rejects_incomplete_duplicate_and_excess_pages ... ok
+test tcp::stock::validator::tests::continuity_checks_single_missing_day_duplicates_and_holidays ... ok
+test tcp::stock::client::stream::tests::slow_first_item_bounds_prefetch_and_preserves_errors_in_input_order ... ok
+test tcp::stock::validator::tests::test_detect_anomalies_empty ... ok
+test cache::tests::test_file_cache ... ok
+test tcp::stock::validator::tests::test_detect_anomalies_insufficient_data ... ok
+test tcp::stock::validator::tests::test_detect_anomalies_logic_error ... ok
+test tcp::stock::validator::tests::test_detect_anomalies_price_spike ... ok
+test tcp::stock::validator::tests::test_finance_consistency_invalid ... ok
+test tcp::stock::validator::tests::test_finance_consistency_normal ... ok
+test tcp::ip::coordinator::tests::independent_pools_share_slots_and_waiting_inherits_cancellation ... ok
+test tcp::stock::validator::tests::test_kline_data_invalid ... ok
+test tcp::stock::validator::tests::test_kline_data_validatable ... ok
+test tcp::stock::validator::tests::test_validate_kline_continuity_empty ... ok
+test tcp::stock::validator::tests::test_validate_kline_continuity_missing_dates ... ok
+test tcp::stock::validator::tests::test_validate_kline_continuity_normal ... ok
+test tcp::stock::validator::tests::test_validate_kline_continuity_single ... ok
+test tcp::stock::xdxr::connection ... ok
+test tcp::stock::xdxr::xdxrdata_parse ... ok
+test cache::tests::capacity_and_file_keys_do_not_alias ... ok
+test tcp::ip::probe::tests::slow_headers_and_silent_heartbeat_obey_the_whole_stage_deadline ... ok
+test cache::tests::file_total_budget_replacement_expiry_and_stale_staging_are_governed ... ok
+test tcp::stock::client::tests::overlapping_batches_wait_and_preserve_results_when_pool_size_changes ... ok
+test tcp::stock::client::bar_range::tests::network_short_page_and_empty_confirmation_keep_one_session ... ok
+test cache::tests::independent_processes_share_one_file_capacity_limit ... ok
+test tcp::stock::client::bar_range::tests::reconnect_invalidates_the_source_even_when_endpoint_is_unchanged ... ok
+
+test result: ok. 199 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.09s
+
+[1m[32m     Running[0m tests/adj_field_probe.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/adj_field_probe-0328f9f56ab38ad8)
+
+running 1 test
+test probe_kline_adj_field ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/auto_reconnect.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/auto_reconnect-c8febafb54e28e2f)
+
+running 2 tests
+test tcp_auto_reconnect_after_shutdown ... ok
+test tcp_no_auto_reconnect_fails_after_shutdown ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/bars_range_live.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/bars_range_live-b87796d9da3ed269)
+
+running 6 tests
+test bars_batch_matches_single ... ok
+test bars_range_5m_ordered_deduped_in_window ... ok
+test bars_single_page_ascending ... ok
+test k_day_ascending_contract ... ok
+test recheck_empty_config_no_regression ... ok
+test index_bars_range_day_contract ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/block_integrity.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/block_integrity-e3a13e2832054cf8)
+
+running 10 tests
+test metadata_verifies_known_md5_and_rejects_length_and_same_length_corruption ... ok
+test strict_decoder_rejects_malformed_layout_and_member_fields_without_partial_success ... ok
+test captured_full_file_matches_independent_md5_and_all_record_fields ... ok
+test download_rejects_correct_length_content_with_wrong_md5 ... ok
+test download_rejects_short_chunk ... ok
+test download_rejects_reconnect_between_metadata_and_content ... ok
+test full_download_checks_multichunk_ranges_digest_raw_headers_and_sources ... ok
+test high_level_entries_reject_md5_valid_but_malformed_file_and_preserve_error_kind ... ok
+test empty_and_invalid_metadata_never_trigger_chunk_download ... ok
+test whole_download_respects_outer_deadline_across_chunks ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+[1m[32m     Running[0m tests/command_boundaries.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/command_boundaries-1cf2aba3eef80f19)
+
+running 10 tests
+test recent_minutes_request_date_and_symbol_bounds ... ok
+test recent_minutes_rejects_negative_header_prices_even_for_empty_series ... ok
+test recent_minutes_rejects_nonfinite_overflow_negative_and_truncated_fields ... ok
+test refresh_preserves_marker_candidate_limit ... ok
+test refresh_checks_count_identity_duplicates_and_ambiguous_boundaries ... ok
+test refresh_rejects_cursor_below_request_before_initial_baseline ... ok
+test refresh_accepts_zero_prices_and_depth_but_rejects_negative_values ... ok
+test recent_minutes_checks_counts_session_labels_and_zero_values ... ok
+test shared_quote_partition_accepts_eighty_snapshot_records ... ok
+test refresh_accepts_all_one_hundred_records_with_and_without_opaque_tails ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/comprehensive_test.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/comprehensive_test-7862329b7a0908a1)
+
+running 12 tests
+test generate_test_report ... ok
+test test_01_security_quotes_single ... ok
+test test_06_minute_time_data ... ok
+test test_02_security_quotes_batch ... ok
+test test_04_kline_data ... ok
+test test_03_index_quotes ... ok
+test test_05_finance_info ... ok
+test test_07_transaction_data ... ok
+test test_09_five_level_quotes ... ok
+test test_08_security_list ... ok
+test test_10_finance_classification_codes ... ok
+test test_11_concept_stocks ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/daily_integer_shares.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/daily_integer_shares-04092c85b4bf0033)
+
+running 1 test
+test listed_daily_wire_matches_all_official_fields_on_two_endpoints ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+[1m[32m     Running[0m tests/daily_ip_pool.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/daily_ip_pool-955df1078456843d)
+
+running 4 tests
+test bootstrap_is_shared_and_starts_only_one_background_measurement ... ok
+test removal_and_update_revoke_live_and_idle_connections_without_admitting_untested_nodes ... ok
+test actual_probe_connections_are_bounded_to_eight_and_cover_every_node_three_times ... ok
+test filters_a_flaky_and_refused_node_and_ranks_only_three_round_successes ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+
+[1m[32m     Running[0m tests/eltdx_330_commands.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/eltdx_330_commands-0d0dff5bded2f471)
+
+running 14 tests
+test delisted_verified_sample_has_integer_shares_milli_prices_and_raw_suffix ... ok
+test all_four_requests_match_complete_reference_bodies ... ok
+test daily_amount_preserves_binary32_leading_bit_zero_and_subnormals ... ok
+test metadata_and_directory_preserve_hash_offsets_and_legal_tail ... ok
+test delisted_decode_rejects_bad_dates_prices_and_volume_without_panicking ... ok
+test constructors_reject_lossy_or_overflowing_parameters ... ok
+test text_chunks_check_declared_lengths_and_keep_partial_gbk_and_tail ... ok
+test zero_length_f10_sections_do_not_send_an_invalid_text_request ... ok
+test f10_reads_multiple_frames_before_decoding_a_split_chinese_character ... ok
+test delisted_offset_overflow_is_incomplete_and_batch_keeps_each_error ... ok
+test all_resource_and_full_archive_batches_use_the_bounded_pool_in_input_order ... ok
+test f10_short_chunks_continue_but_empty_and_exhausted_budgets_fail ... ok
+test delisted_short_pages_overlap_and_budgets_have_explicit_completion ... ok
+test replays_all_98_independently_verified_live_frames_without_network ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.36s
+
+[1m[32m     Running[0m tests/enhanced_history_transaction.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/enhanced_history_transaction-e8b0e4b304061d61)
+
+running 10 tests
+test classification_preserves_wire_order_and_prioritizes_status ... ok
+test invalid_parameters_fail_before_io ... ok
+test legacy_and_enhanced_layouts_cannot_be_interchanged ... ok
+test offline_decoding_honors_cancellation ... ok
+test offsets_advance_by_raw_count_and_do_not_wrap ... ok
+test pinned_eltdx_request_and_response_layouts_match ... ok
+test malformed_payloads_fail_the_whole_page ... ok
+test client_replays_compressed_empty_and_legacy_pages_without_fallback ... ok
+test arbitrary_payloads_are_bounded_and_never_panic ... ok
+test real_frames_match_every_independently_decoded_field ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+[1m[32m     Running[0m tests/extended_queries.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/extended_queries-d3bae54a38153e7c)
+
+running 4 tests
+test auction_scan_rejects_repeated_page_instead_of_claiming_completion ... ok
+test scan_rejects_same_endpoint_reconnect_between_pages ... ok
+test bounded_batch_preserves_input_order_and_individual_decode_errors ... ok
+test special_scan_advances_by_returned_count_and_reports_record_budget ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/file-day.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/file_day-36196d25589943b4)
+
+running 1 test
+test day ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+[1m[32m     Running[0m tests/finance_semantics.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/finance_semantics-8add982f62d7ace8)
+
+running 6 tests
+test evidence_is_scoped_to_symbol_update_and_each_field ... ok
+test consumption_requires_every_declared_field_and_the_bound_report_period ... ok
+test caller_evidence_can_verify_other_symbols_and_negative_financial_values ... ok
+test issuer_evidence_verifies_ten_fields_with_float32_and_disclosure_tolerances ... ok
+test every_slot_is_lossless_and_candidates_require_explicit_access ... ok
+test malformed_records_fail_and_clear_state_while_zero_dates_remain_unknown ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/fq.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/fq-ed0f6d8ed3997c37)
+
+running 1 test
+test day_sz000001 ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+[1m[32m     Running[0m tests/k_batch_adjusted.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/k_batch_adjusted-7e721b5ba7d954c3)
+
+running 4 tests
+test tcp_k_adjusted_qfq_hfq ... ok
+test tcp_k_batch_empty_and_order ... ok
+test tcp_k_batch_matches_k ... ok
+test tcp_k_adjusted_range ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/kline_decoders.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/kline_decoders-e13420e7f11e2ac5)
+
+running 5 tests
+test checked_request_rejects_inputs_without_panicking ... ok
+test request_preserves_explicit_period_market_and_volume_unit ... ok
+test canonical_provenance_preserves_category_aliases_page_and_decoder ... ok
+test malformed_responses_never_return_partial_or_stale_data ... ok
+test independent_pytdx_requests_and_all_decoded_fields_match ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+[1m[32m     Running[0m tests/minute_time_live.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/minute_time_live-37ea86e5f5ff64c4)
+
+running 2 tests
+test minute_time_live_matches_history ... ok
+test minute_time_live_multi_server ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/modern_commands.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/modern_commands-80af03741fae9578)
+
+running 10 tests
+test minute_precision_uses_metadata_for_two_three_and_four_decimals ... ok
+test directory_has_u32_offsets_full_name_ieee_prices_and_checked_pages ... ok
+test today_minute_uses_first_point_bases_and_distinct_average_scale ... ok
+test enhanced_history_event_model_replays_real_wire_without_losing_new_slots ... ok
+test raw_extraction_stops_idle_worker_and_preserves_the_socket ... ok
+test client_defaults_load_new_directory_cache_and_only_use_0537_minutes ... ok
+test idle_failure_invalidates_and_next_request_reconnects_without_mixing_sessions ... ok
+test manual_heartbeat_returns_date_and_idle_worker_serializes_with_business ... ok
+test new_directory_short_pages_continue_but_early_empty_and_duplicate_fail ... ok
+test waiting_for_heartbeat_honors_business_deadline_and_drop_interrupts_worker ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+[1m[32m     Running[0m tests/network_budget.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/network_budget-c11a3b82909a8cd1)
+
+running 1 test
+test managed_connections_share_capacity_and_absolute_deadlines ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+[1m[32m     Running[0m tests/properties.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/properties-712b6473db7384eb)
+
+running 4 tests
+test checked_binary_entrypoints_never_panic ... ok
+test bands_match_independent_two_pass_formula ... ok
+test kdj_is_invariant_to_positive_price_scale ... ok
+test checked_gbbq_matches_legacy_on_real_fixture_and_decode_is_idempotent ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+[1m[32m     Running[0m tests/protocol_7709_decoders.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/protocol_7709_decoders-a7f1097d502497fd)
+
+running 11 tests
+test auxiliary_supports_i64_extremes_and_finite_float_pairs ... ok
+test recent_minute_deltas_are_relative_to_first_and_average_has_extra_scale ... ok
+test requests_encode_nine_distinct_opcodes_and_reserved_fields ... ok
+test limits_fixed_length_validation_and_negative_auction_direction ... ok
+test category_tail_and_sort_contract_are_independent ... ok
+test refresh_xor_is_distinct_from_snapshot_and_depth_is_complete ... ok
+test money_flow_packed_buckets_allow_negative_amounts_and_keep_both_sets ... ok
+test snapshots_handle_missing_out_of_order_codes_and_preserve_tails ... ok
+test sparkline_validates_identity_and_capacity ... ok
+test malformed_payloads_never_panic ... ok
+test independently_verified_live_frames_match_all_owned_records ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+[1m[32m     Running[0m tests/protocol_decoders.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/protocol_decoders-ebb28163834dcf11)
+
+running 6 tests
+test invalid_parameters_fail_without_panicking ... ok
+test tick_values_are_checked_and_unknown_direction_is_preserved ... ok
+test response_identity_numeric_and_date_constraints ... ok
+test truncation_excess_trailing_and_stale_results_are_rejected ... ok
+test client_sends_checked_bytes_and_uses_the_independent_decoders ... ok
+test real_samples_match_independent_requests_and_all_fields ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+[1m[32m     Running[0m tests/quote_precision.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/quote_precision-a5de0f8fc1540919)
+
+running 10 tests
+test preserved_real_two_decimal_sample_matches_all_historical_fields ... ok
+test wide_integer_sums_zero_prices_and_missing_identity_are_preserved ... ok
+test live_mixed_precision_frame_matches_independent_closed_session_prices ... ok
+test mixed_decimals_scale_every_price_once_and_preserve_nonprice_fields ... ok
+test missing_unsupported_duplicate_and_truncated_input_fail_without_fallback ... ok
+test immutable_generations_and_exchange_day_freshness_do_not_mix ... ok
+test live_request_rejects_stale_future_and_missing_precision_before_sending ... ok
+test multi_market_refresh_does_not_publish_successful_half_on_second_market_failure ... ok
+test client_cold_load_hot_cache_missing_precision_and_failed_refresh ... ok
+test nested_operation_deadline_bounds_cold_loading_and_does_not_publish_partial_cache ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+[1m[32m     Running[0m tests/quote_subscription.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/quote_subscription-c740541449eaf96c)
+
+running 22 tests
+test checked_query_rejects_wrong_message_identity ... ok
+test frame_and_byte_overflow_invalidate_and_release_connection ... ok
+test direct_poll_and_refresh_enforce_resident_memory_budget ... ok
+test invalid_last_symbol_in_passive_page_never_partially_publishes_first_symbol ... ok
+test local_poll_timeout_preserves_session_but_operation_deadline_closes_it ... ok
+test initial_response_below_requested_cursor_invalidates_without_publishing ... ok
+test endpoint_revocation_and_operation_cancellation_close_the_subscription ... ok
+test invalid_subscription_budgets_fail_before_opening_a_connection ... ok
+test empty_first_refresh_keeps_baseline_pending_and_duplicate_is_not_accumulated ... ok
+test malformed_push_prefix_compression_and_truncated_body_close_session ... ok
+test mixed_valid_and_regressing_records_do_not_partially_publish_response_or_push ... ok
+test observer_failure_does_not_publish_push ... ok
+test overflow_rebuild_requires_every_symbol_before_business_consumption ... ok
+test passive_duplicate_and_empty_frames_preserve_state_and_cursor_max_requires_rebuild ... ok
+test passive_multi_symbol_stream_completes_baseline_and_replaces_full_depth_without_requests ... ok
+test passive_updates_are_used_as_next_request_cursors_instead_of_resetting_baseline ... ok
+test passive_updates_reuse_message_id_without_refresh_or_heartbeat_writes ... ok
+test poll_preserves_partial_header_and_body_and_close_releases_permit ... ok
+test pushes_before_response_are_queued_with_two_budgets ... ok
+test rebuild_rejects_expired_metadata_before_reconnecting ... ok
+test rebuild_reopens_through_daily_pool_and_resets_cursors ... ok
+test wrong_opcode_and_cursor_regression_are_not_published ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+[1m[32m     Running[0m tests/recent_minutes_boundaries.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/recent_minutes_boundaries-2afd512c1f473b6e)
+
+running 7 tests
+test nonempty_requires_symbol_precision_and_preserves_leap_date_selector ... ok
+test date_selector_preserves_calendar_boundaries_and_does_not_repeat_legacy_offset ... ok
+test requested_weekend_and_out_of_window_dates_never_qualify_cached_data ... ok
+test fixed_nonempty_bytes_preserve_signed_deltas_zero_volume_and_unknown_date ... ok
+test nonempty_rejects_overflow_negative_values_bad_floats_and_extra_bytes ... ok
+test full_session_respects_lunch_boundary_point_limit_and_all_supported_scales ... ok
+test nonempty_compressed_wire_replay_and_mismatched_identity_do_not_hide_errors ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+[1m[32m     Running[0m tests/recent_minutes_fixtures.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/recent_minutes_fixtures-c12323edbfee98cc)
+
+running 4 tests
+test nonempty_live_stock_and_etf_bodies_replay_through_checked_network_entry ... ok
+test nonempty_live_payload_truncations_never_return_a_partial_series ... ok
+test twenty_four_nonempty_live_frames_match_5760_independent_expected_records ... ok
+test corrected_selectors_replay_72_live_series_with_17280_independent_records ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.56s
+
+[1m[32m     Running[0m tests/reliability.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/reliability-8ec8a67a5bfbeaf0)
+
+running 6 tests
+test incremental_factor_preserves_previous_state_without_events ... ok
+test kline_recovers_after_empty_and_malformed_responses ... ok
+test rejects_every_truncated_quote_prefix_without_panic ... ok
+test invalid_client_inputs_return_errors ... ok
+test reconnects_once_after_truncated_body ... ok
+test reconnect_handshake_failure_consumes_one_attempt_and_can_recover ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+[1m[32m     Running[0m tests/reported_turnover.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/reported_turnover-a92961355110b02e)
+
+running 6 tests
+test amount_leaf_and_compatibility_mapping_handle_zero_low_and_invalid_codes ... ok
+test client_finds_requested_historical_day_and_enforces_budgets ... ok
+test missing_profiles_dates_and_after_hours_are_unavailable_not_zero ... ok
+test mixed_sources_duplicate_bars_and_intraday_windows_are_checked ... ok
+test frozen_source_amounts_keep_codes_scope_units_and_fractional_precision ... ok
+test client_reconnect_deadline_and_cancellation_never_return_partial_success ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+[1m[32m     Running[0m tests/resource_contract.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/resource_contract-cd1483ce6dbf927e)
+
+running 7 tests
+test path_ranges_and_declared_length_are_checked_and_tails_are_not_file_bytes ... ok
+test stats_preserve_raw_slots_headers_and_missing_numbers_without_inventing_verified_units ... ok
+test stats_reject_crc_corruption_bad_gbk_duplicate_keys_and_hidden_duplicate_members ... ok
+test stats_entry_refuses_a_budget_prefix_even_if_that_prefix_is_a_valid_zip ... ok
+test full_download_observes_short_or_empty_chunk_and_retains_source_and_tail ... ok
+test byte_chunk_and_response_budgets_never_claim_a_complete_file ... ok
+test reconnect_and_outer_deadline_cannot_deliver_a_successful_file ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+[1m[32m     Running[0m tests/response_identity.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/response_identity-ae1f1bcd97448820)
+
+running 9 tests
+test offline_replay_matches_identity_before_decompression ... ok
+test handshake_and_daily_probes_reject_invalid_identity ... ok
+test header_only_and_raw_frame_calls_reject_identity_without_retrying ... ok
+test idle_heartbeat_invalidates_on_mismatched_identity ... ok
+test captured_extended_response_headers_match_the_shared_replay_contract ... ok
+test legacy_queries_reject_mismatched_identity_with_valid_payloads ... ok
+test invalid_responses_are_not_returned_to_the_connection_pool ... ok
+test truncated_bad_frame_is_an_identity_failure_not_a_retryable_transport_error ... ok
+test observer_retains_bad_frame_and_reports_failure_before_success_stats ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+[1m[32m     Running[0m tests/shared_network.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/shared_network-8ab142a95f265c72)
+
+running 2 tests
+test shared_child ... ok
+
+running 1 test
+test independent_processes_share_a_slot_and_crash_releases_it ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+[1m[32m     Running[0m tests/struct_size.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/struct_size-85fec318d0904d5f)
+
+running 1 test
+test tcp ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+[1m[32m     Running[0m tests/tcp.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/tcp-207dffca38889919)
+
+running 2 tests
+test tcp_security_list ... ok
+test tcp_security_count ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/tcp_cancel.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/tcp_cancel-dd2b77ddb67ff7e5)
+
+running 1 test
+test idle_tcp_response_is_cancelled_before_request_timeout ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
+[1m[32m     Running[0m tests/tcp_startup.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/tcp_startup-c1df68a0514089f1)
+
+running 2 tests
+test process_startup_is_idempotent_hands_off_the_client_and_yields_a_single_permit ... ok
+test full_measurement_and_refresh_lock_obey_deadline_and_worker_cancellation ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+[1m[32m     Running[0m tests/trade_amount.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/trade_amount-991ea99e2f62aea0)
+
+running 4 tests
+test identity_and_explicit_share_units_are_checked ... ok
+test unknown_units_nonexecutions_and_candidates_do_not_become_zero_totals ... ok
+test enhanced_dto_mutation_cannot_change_authoritative_amount ... ok
+test frozen_day_preserves_records_duplicates_and_estimates ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+[1m[32m     Running[0m tests/trade_amount_reconcile.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/trade_amount_reconcile-7337c83f02b13227)
+
+running 5 tests
+test page_request_order_is_reversed_but_duplicates_are_preserved ... ok
+test quantity_mismatch_and_duplicate_zero_prefix_report_diagnostics ... ok
+test partial_unknown_candidate_date_and_scope_are_not_promoted ... ok
+test live_replay_checks_compatibility_adapter_and_same_connection_reconciliation ... ok
+test frozen_day_aligns_240_and_48_intervals_without_repairing_amounts ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+[1m[32m     Running[0m tests/trade_models.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/trade_models-0582af710343eedc)
+
+running 7 tests
+test every_budget_or_error_stop_retains_partial_coverage ... ok
+test raw_decoder_is_atomic_and_offsets_are_checked ... ok
+test collection_rejects_mixed_queries_gaps_and_false_termination ... ok
+test collection_advances_raw_count_and_preserves_identical_same_minute_rows ... ok
+test classification_prioritizes_status_and_preserves_unqualified_events ... ok
+test real_fixtures_keep_raw_fields_and_legacy_output ... ok
+test live_pages_capture_sources_and_detect_same_endpoint_reconnection ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+[1m[32m     Running[0m tests/transaction_pagination.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/transaction_pagination-a57ebe576332e34c)
+
+running 12 tests
+test invalid_parameters_do_not_send_any_page ... ok
+test auto_reconnect_to_the_same_endpoint_cannot_mix_pages ... ok
+test malformed_later_page_propagates_instead_of_returning_the_first_page ... ok
+test page_limit_is_an_error_but_an_empty_first_page_completes_in_one_slot ... ok
+test raw_short_pages_continue_and_page_order_preserves_identical_ticks ... ok
+test identical_whole_pages_and_reversed_minute_order_are_not_normal_completion ... ok
+test record_budget_requires_an_empty_probe_even_at_the_exact_limit ... ok
+test u16_offset_boundary_allows_65535_but_never_wraps_or_truncates ... ok
+test all_pages_share_one_deadline_and_honor_outer_cancellation ... ok
+test pacing_cannot_extend_an_outer_operation_deadline ... ok
+test byte_budget_counts_all_payloads_including_discarded_empty_rechecks ... ok
+test empty_pages_are_rechecked_at_the_same_offset_without_reconnecting ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.23s
+
+[1m[32m     Running[0m benches/indicators.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/indicators-612a60e0cfc9632a)
+{"arch":"aarch64","measurements":[{"median_ns":485291,"name":"sma_rsi","period":20,"rows":10000},{"median_ns":512750,"name":"bands_kdj","period":20,"rows":10000},{"median_ns":328000,"name":"sma_rsi","period":200,"rows":10000},{"median_ns":570250,"name":"bands_kdj","period":200,"rows":10000},{"median_ns":317042,"name":"sma_rsi","period":2000,"rows":10000},{"median_ns":491708,"name":"bands_kdj","period":2000,"rows":10000},{"median_ns":196917,"name":"ema_macd_batch","period":0,"rows":10000},{"median_ns":59541,"name":"macd_stream","period":0,"rows":10000},{"median_ns":3908875,"name":"sma_rsi","period":20,"rows":100000},{"median_ns":6128083,"name":"bands_kdj","period":20,"rows":100000},{"median_ns":3764292,"name":"sma_rsi","period":200,"rows":100000},{"median_ns":6164125,"name":"bands_kdj","period":200,"rows":100000},{"median_ns":3440584,"name":"sma_rsi","period":2000,"rows":100000},{"median_ns":6081042,"name":"bands_kdj","period":2000,"rows":100000},{"median_ns":1189500,"name":"ema_macd_batch","period":0,"rows":100000},{"median_ns":599750,"name":"macd_stream","period":0,"rows":100000},{"median_ns":37820875,"name":"sma_rsi","period":20,"rows":1000000},{"median_ns":101842167,"name":"bands_kdj","period":20,"rows":1000000},{"median_ns":38528291,"name":"sma_rsi","period":200,"rows":1000000},{"median_ns":59321500,"name":"bands_kdj","period":200,"rows":1000000},{"median_ns":37622542,"name":"sma_rsi","period":2000,"rows":1000000},{"median_ns":58346417,"name":"bands_kdj","period":2000,"rows":1000000},{"median_ns":14238625,"name":"ema_macd_batch","period":0,"rows":1000000},{"median_ns":6827583,"name":"macd_stream","period":0,"rows":1000000}],"os":"macos","samples_per_measurement":5,"schema_version":1,"statistic":"median","synthetic":true}
+[1m[32m     Running[0m unittests examples/batch_retention_probe.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/batch_retention_probe-7ed4996032c76610)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/capture_eltdx_330_commands.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/capture_eltdx_330_commands-3fa0ed08bcb0d7a0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/capture_enhanced_history_transaction.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/capture_enhanced_history_transaction-9d3902b7b1871641)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/capture_modern_commands.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/capture_modern_commands-27572d420b72d0cd)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/capture_nine_commands.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/capture_nine_commands-a0d033beebf9f7fb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/capture_quote_precision.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/capture_quote_precision-7c60900370493306)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/capture_recent_minutes_boundaries.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/capture_recent_minutes_boundaries-85f28b785949349c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/capture_resources.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/capture_resources-6324838164a3631d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/debug_raw_data.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/debug_raw_data-7deb1c9743a5933a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/local_data.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/local_data-468d6d1cc9030820)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/metadata_hot_path.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/metadata_hot_path-c8eb63cf6b122f83)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/production_smoke.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/production_smoke-a015a02b8a60954e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/protocol_capture.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/protocol_capture-523559ce0c47dac0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/reliable_client.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/reliable_client-d42feef984b10f6c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/shared_quote_metadata.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/shared_quote_metadata-284d6898d7b1882a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/stream_bars.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/stream_bars-3d7bbc3b71f43071)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_builder.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_builder-12c890ee2ee227ff)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_cache.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_cache-30d3f11861ad3f9f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_chinese_encoding.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_chinese_encoding-9b2ce881ebe5a5f0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_concept_query.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_concept_query-0a180ebabf66c76e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_connection.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_connection-718eef022746818b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_connection_pool.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_connection_pool-1dddb5c3879eee9f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_data_validation.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_data_validation-f6fcff52f0767d75)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_error_handling.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_error_handling-8b9455598e3c616d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_finance_info.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_finance_info-704e47dc363133ee)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_five_level_quotes.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_five_level_quotes-d1d8de656693b954)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_index_quotes.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_index_quotes-737fe7bf0c62d990)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_index_quotes_debug.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_index_quotes_debug-a9a2c546db226372)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_industry_info.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_industry_info-eb9447622ac7bb3a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_minute_time.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_minute_time-eddd96e1416b31e5)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_prev_day.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_prev_day-0d3d471583097c6d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_readme_examples.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_readme_examples-8dc42e5b3729b9ab)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_security_list.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_security_list-852f8a7557b8f7e8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_security_quotes.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_security_quotes-22e0277be176eaf2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_security_quotes_debug.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_security_quotes_debug-c0ec3494528ea944)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_security_quotes_raw.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_security_quotes_raw-27c5bd6eee64ac24)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_tcp_connection.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_tcp_connection-71b242ba3bbcf61f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_technical_indicators.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_technical_indicators-4c21ba3449a31ca8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_trading_calendar.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_trading_calendar-d1cc7760263d2c66)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/test_transaction.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/test_transaction-c10fe60102cf11ba)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/transaction_all.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/transaction_all-98f30b55582199c4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/transaction_amount.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/transaction_amount-a1d55a8a21ea5f10)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/validate_enhanced_history_day.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/validate_enhanced_history_day-6afc4ee6ef54cf22)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/validate_quote_push.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/validate_quote_push-bf5cde2b63441ad9)
+
+running 6 tests
+test tests::acceptance_never_promotes_diagnostics_or_incomplete_observations ... ok
+test tests::exact_session_endpoints_and_utc_to_beijing_conversion_are_checked ... ok
+test tests::strict_gate_rejects_weekend_holiday_lunch_close_and_crossing ... ok
+test tests::guard_boundary_and_old_queued_notification_do_not_corrupt_the_reference ... ok
+test tests::cursor_only_duplicate_and_opaque_tail_do_not_prove_market_changes ... ok
+test tests::synthetic_trading_window_requires_two_post_guard_changes_not_duplicate_frames ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests examples/validate_recent_auction.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/examples/validate_recent_auction-542a952d41e53feb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m unittests src/lib.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/rustdx_runner-62af4ec49424761c)
+
+running 12 tests
+test error_tests::cancellation_and_deadline_keep_their_category_through_stages_and_io_wrappers ... ok
+test database::tests::full_contract_row_roundtrips_and_requires_every_field ... ok
+test database::capacity::tests::capacity_rejects_io_proof_entries_and_bytes_before_transmission ... ok
+test ops::observation_tests::projection_overflow_and_invalid_records_leave_raw_history_unchanged ... ok
+test database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants ... ok
+test database_process::tests::malformed_responses_retain_bounded_evidence ... ok
+test storage::meter_tests::dynamic_meter_counts_sqlite_journal_and_disappearing_files_and_reconciles ... ok
+test ops::observation_tests::invalid_historical_record_rolls_back_schema_and_projection_migration ... ok
+test database_process::tests::one_process_handles_batches_and_requires_clean_exit ... ok
+test database::tests::stable_key_readback_crosses_batch_and_partition_boundaries ... ok
+test ops::observation_tests::projection_matches_legacy_scan_and_rebuild_for_large_history ... ok
+test storage::meter_tests::dynamic_meter_avoids_rescanning_fixed_file_history ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.31s
+
+[1m[32m     Running[0m unittests src/main.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/rustdx_runner-8fa334a9a59837e7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/administration.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/administration-b90be4cf77469688)
+
+running 5 tests
+test readonly_sees_committed_wal_while_writer_holds_lock ... ok
+test backup_and_restore_reject_parent_aliases_and_traversal_before_writing ... ok
+test readonly_requires_existing_current_schema_and_never_initializes ... ok
+test prior_schema_backup_restores_unchanged_and_requires_explicit_migration ... ok
+test total_backup_and_restore_budgets_include_completion_files ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+[1m[32m     Running[0m tests/control_plane.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/control_plane-20c79d2bf951b54e)
+
+running 22 tests
+test ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts ... ignored, requires RUSTDX_TEST_CLI and RUSTDX_TEST_CH_USER/PASSWORD
+test database_capacity_rejects_before_request_or_unknown_target ... ignored, requires RUSTDX_TEST_CLI; uses no database service
+test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ignored, requires RUSTDX_TEST_CLI
+test local_run_and_collector_are_offline_without_an_explicit_warmup ... ignored, requires RUSTDX_TEST_CLI pointing to the built current CLI
+test real_cli_release_revision_missing_coverage_and_isolated_restore ... ignored, requires RUSTDX_TEST_CLI pointing at the built rustdx executable
+test real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence ... ignored, requires provisioned isolated ClickHouse/MongoDB and RUSTDX_TEST_* settings
+test scheduled_tcp_scope_publishes_only_after_all_expected_keys_match ... ignored, requires RUSTDX_TEST_CLI; synthetic 40-security loopback scope
+test tcp_daily_release_revision_missing_keys_and_offline_recovery ... ignored, requires RUSTDX_TEST_CLI; loopback synthetic TCP, no external service
+test evidence_limits_path_traversal_and_controller_exclusion ... ok
+test tcp_runner_rejects_forged_csv_even_with_matching_report_digest ... ignored, requires RUSTDX_TEST_CLI and /usr/bin/python3; loopback synthetic TCP
+test tcp_config_excludes_ambiguous_source_offline_and_historical_vintage ... ok
+test deduplication_and_one_active_attempt_survive_reopen ... ok
+test persisted_worker_statistics_survive_reopen_and_missing_records_are_not_zero_samples ... ok
+test catalog_cas_preserves_previous_pointer_and_append_only_events ... ok
+test failed_publication_event_rolls_back_pointer_and_job_state ... ok
+test explicit_worker_cancellation_is_not_reported_as_timeout ... ok
+test strict_config_and_unknown_history_refuse_before_spawn ... ok
+test wal_backup_restore_and_corruption_detection ... ok
+test all_explicitly_exempt_keys_publish_empty_partitions_without_a_collector ... ok
+test tcp_explicitly_exempt_scope_publishes_without_contacting_the_source ... ok
+test offline_plan_reports_expected_keys_missing_inputs_and_archive_limited_parallelism ... ok
+test managed_deadline_kills_worker_and_recovery_does_not_rerun ... ok
+
+test result: ok. 13 passed; 0 failed; 9 ignored; 0 measured; 0 filtered out; finished in 2.26s
+
+[1m[32m     Running[0m tests/tcp_startup.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/tcp_startup-0aa03630f05a0ffb)
+
+running 1 test
+test runner_is_offline_by_default_and_explicit_warmup_is_governed ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.63s
+
+[1m[32m     Running[0m tests/wire_archive.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/wire_archive-1ebad0c792b3522b)
+
+running 4 tests
+test replay_rejects_mismatched_identity_before_mutating_the_parser ... ok
+test exhausted_archive_refuses_handshake_before_any_request_transmission ... ok
+test compressed_wire_archive_survives_reconnect_and_replays_checked_parser ... ok
+test invalid_compression_is_archived_and_truncated_response_is_marked_failed ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+[1m[32m     Running[0m unittests src/lib.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/tests_integration-ebb8168a1efcea53)
+
+running 1 test
+test fetch_code::offical_stocks ... ignored, 联网更新数据
+
+test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/stocklist.rs (/tmp/rustdx-system-optimization-20261025/isolated-target-fixed/debug/deps/stocklist-b4eff54797de3f07)
+
+running 2 tests
+test head ... ok
+test stocklist ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

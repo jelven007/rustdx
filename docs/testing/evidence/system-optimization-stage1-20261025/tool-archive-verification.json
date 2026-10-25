@@ -1,0 +1,14 @@
+[
+  {
+    "file": "database-tools.tgz",
+    "sha256": "9a756be92b1de0a2578eceb4483fb1ba3e2ebecb45820cd46977edbdb084506b",
+    "bytes": 69683014,
+    "verified": true
+  },
+  {
+    "file": "mongosh.tgz",
+    "sha256": "b9c003d80dbf20d2bb2ad097abe7997a5e2a6a349af96b8510c741570116fc79",
+    "bytes": 87244320,
+    "verified": true
+  }
+]

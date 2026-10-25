@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "status": "engineering_completed",
+  "publication_qualified": false,
+  "baseline_head": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "current_source_sha256": "5ff47d56487b7f995d5597f84f71fc6d697df4436571ee9be7aea2bfbc7c9a1f",
+  "checked_source_sha256": "1036ff0e6d633a1c74dc61e662bd12f7e794805d7ed1bcd1673b06607d053897",
+  "tests": {
+    "workspace_passed": 534,
+    "workspace_ignored": 10,
+    "doc_passed": 57,
+    "doc_ignored": 18,
+    "python_passed": 22,
+    "control_plane_passed": 21,
+    "real_database_case_excluded": 1,
+    "isolated_rust_passed": 534,
+    "isolated_python_passed": 22,
+    "counts_overlap": true
+  },
+  "engineering_archive": {
+    "file": "engineering-source.tar.gz",
+    "sha256": "45a32336c7d246fb157a3a52018b37d8ad331615adf7a3fd26b9292f52f07a80",
+    "input_files": 1562,
+    "input_bytes": 25283831,
+    "archive_bytes": 7129771
+  },
+  "historical_evidence": {
+    "files": 24920,
+    "bytes": 2386717373,
+    "local_collectors": 12,
+    "frozen_head_bytes_verified": true,
+    "verification": "evidence-verified.json"
+  },
+  "packages": [
+    {
+      "name": "jelven-rustdx-complete",
+      "sha256": "c67d191d6002e54b40645958e88576b3639a6c2a1d9ff0a4e7d1cd31e7b09979",
+      "checked_source_and_license_files": 100
+    },
+    {
+      "name": "jelven-rustdx-cli",
+      "sha256": "ae72f9ecebc84324b7e2da0806fd9d4a38cb114d87f80b1fca215c31dc184605",
+      "checked_source_and_license_files": 27
+    }
+  ],
+  "binaries": [
+    {
+      "name": "rustdx",
+      "path": "/tmp/rustdx-system-review-20261025/target/release/rustdx",
+      "bytes": 6376416,
+      "sha256": "157a27ab185be2d969464d97e83e257659e6416d284acd213a95d86be7a9878a"
+    },
+    {
+      "name": "rustdx-runner",
+      "path": "/tmp/rustdx-system-review-20261025/target/release/rustdx-runner",
+      "bytes": 5879024,
+      "sha256": "051bec0cb5bcbcf7aba62d2ba2cfff8e44dd6b437d1ef0d36b9355c4c28800d9"
+    }
+  ],
+  "required_jobs": [
+    "final-workspace-fixed",
+    "final-evidence",
+    "final-packages-fixed",
+    "final-runtime-serial",
+    "final-engineering-inputs"
+  ],
+  "retained_failures": [
+    "compact fixture missing pages",
+    "startup status assumed implicit ledger creation",
+    "isolated acceptance configuration ignored",
+    "parallel cold-build CLI worker deadline"
+  ],
+  "external_pending": [
+    "actual facts and 2027 official calendar",
+    "new committed SHA remote CI",
+    "current-source real databases",
+    "target deployment/ACL/hard quotas/sustained load/RPO/RTO",
+    "new runner task implementations",
+    "registry publication",
+    "object store migration"
+  ],
+  "actions_not_performed": [
+    "project commit/push",
+    "registry upload",
+    "production deployment",
+    "historical deletion",
+    "messages to others"
+  ]
+}

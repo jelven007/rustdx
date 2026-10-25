@@ -1,9 +1,9 @@
 //! Insert-only versioned targets. A missing write acknowledgement is never retried.
 use std::{
-    cell::RefCell,
+    cell::{Cell, RefCell},
     fs::{File, OpenOptions},
     io::Read,
-    path::Path,
+    path::{Path, PathBuf},
     process::Command,
     rc::Rc,
     time::Duration,
@@ -68,12 +68,79 @@ pub struct Receipt {
 
 struct Session<'a> {
     root: &'a Path,
-    ledger: &'a Ledger,
+    audit: Audit<'a>,
     release: &'a str,
     target: &'a DatabaseTarget,
     mongo: RefCell<Option<Process>>,
     max_workspace_bytes: u64,
     usage: Rc<RefCell<storage::TreeUsage>>,
+}
+
+enum Audit<'a> {
+    Publication(&'a Ledger),
+    Consumer {
+        directory: PathBuf,
+        sequence: Rc<Cell<u64>>,
+    },
+}
+
+/// Independent, bounded readback evidence. It never appends to the publication ledger.
+pub(crate) struct QueryAudit {
+    directory: PathBuf,
+    sequence: Rc<Cell<u64>>,
+    usage: Rc<RefCell<storage::TreeUsage>>,
+    max_bytes: u64,
+}
+
+impl QueryAudit {
+    pub(crate) fn new(root: &Path, max_bytes: u64) -> Result<Self> {
+        let parent = root.join("consumer-audit");
+        storage::private_directory(&parent)?;
+        let directory = parent.join(format!(
+            "q-{}-{}",
+            chrono::Utc::now()
+                .timestamp_nanos_opt()
+                .ok_or_else(|| invalid("timestamp overflow"))?,
+            std::process::id()
+        ));
+        // Never share a namespace, even if two callers obtain the same timestamp.
+        std::fs::create_dir(&directory)?;
+        storage::private_directory(&directory)?;
+        let bytes = serde_json::to_vec(&json!({
+            "schema_version":1,"kind":"consumer_readback","max_bytes":max_bytes,
+            "max_requests":IO_LIMIT,"started_at":crate::now()
+        }))?;
+        if bytes.len() as u64 + RESPONSE_LIMIT * 7 + 8192 > max_bytes {
+            return Err(invalid(
+                "consumer audit budget cannot cover a bounded response",
+            ));
+        }
+        storage::write_new(&directory.join("session.json"), &bytes)?;
+        Ok(Self {
+            directory,
+            sequence: Rc::new(Cell::new(0)),
+            usage: Rc::new(RefCell::new(storage::TreeUsage {
+                bytes: bytes.len() as u64,
+                entries: 1,
+            })),
+            max_bytes,
+        })
+    }
+
+    pub(crate) fn finish(&self) -> Result<()> {
+        let actual = storage::tree_usage(&self.directory)?;
+        let bytes = serde_json::to_vec(&json!({
+            "schema_version":1,"readback_verified_at":crate::now(),
+            "requests":self.sequence.get(),"evidence_bytes":actual.bytes
+        }))?;
+        if actual.bytes.saturating_add(bytes.len() as u64) > self.max_bytes
+            || actual.entries + 1 > storage::MAX_TREE_ENTRIES
+        {
+            return Err(invalid("consumer audit budget exhausted at reconciliation"));
+        }
+        storage::write_new(&self.directory.join("verified.json"), &bytes)?;
+        Ok(())
+    }
 }
 
 fn check() -> Result<()> {
@@ -126,7 +193,11 @@ impl Session<'_> {
             process.finish()?;
         }
         // Reconcile a stationary evidence tree at the session boundary.
-        let actual = storage::tree_usage(&self.root.join("database").join(self.release))?;
+        let directory = match &self.audit {
+            Audit::Publication(_) => self.root.join("database").join(self.release),
+            Audit::Consumer { directory, .. } => directory.clone(),
+        };
+        let actual = storage::tree_usage(&directory)?;
         if actual.bytes > self.max_workspace_bytes {
             return Err(invalid(
                 "database evidence budget exhausted at reconciliation",
@@ -138,19 +209,29 @@ impl Session<'_> {
 
     fn exchange(&self, payload: &Value, write: bool) -> Result<Vec<u8>> {
         check()?;
-        let sequence: i64 = self.ledger.connection.query_row(
-            "SELECT coalesce(max(sequence),0)+1 FROM target_io WHERE release=?1 AND target=?2",
-            params![self.release, self.target.id()],
-            |r| r.get(0),
-        )?;
+        let sequence = match &self.audit {
+            Audit::Publication(ledger) => ledger.connection.query_row(
+                "SELECT coalesce(max(sequence),0)+1 FROM target_io WHERE release=?1 AND target=?2",
+                params![self.release, self.target.id()],
+                |r| r.get::<_, i64>(0),
+            )?,
+            Audit::Consumer { sequence, .. } => {
+                let next = sequence.get().saturating_add(1);
+                if next > IO_LIMIT {
+                    return Err(invalid("consumer session I/O record limit exceeded"));
+                }
+                sequence.set(next);
+                next as i64
+            }
+        };
         if !(1..=IO_LIMIT as i64).contains(&sequence) {
             return Err(invalid("database I/O record limit exceeded"));
         }
-        let directory = self
-            .root
-            .join("database")
-            .join(self.release)
-            .join(self.target.id());
+        let directory = match &self.audit {
+            Audit::Publication(_) => self.root.join("database").join(self.release),
+            Audit::Consumer { directory, .. } => directory.join(self.release),
+        }
+        .join(self.target.id());
         storage::private_directory(&directory)?;
         let usage = *self.usage.borrow();
         if usage.bytes.saturating_add(RESPONSE_LIMIT * 7 + 4096) > self.max_workspace_bytes
@@ -165,7 +246,14 @@ impl Session<'_> {
                 .ok_or_else(|| invalid("timestamp overflow"))?,
             std::process::id()
         ));
-        let query_id = format!("{}-{}-{sequence}", self.release, self.target.id());
+        let namespace = match &self.audit {
+            Audit::Publication(_) => self.release,
+            Audit::Consumer { directory, .. } => directory
+                .file_name()
+                .and_then(|n| n.to_str())
+                .ok_or_else(|| invalid("invalid audit namespace"))?,
+        };
+        let query_id = format!("{namespace}-{}-{sequence}", self.target.id());
         let request = json!({"query_id":query_id,"is_write":write,"payload":payload});
         let bytes = serde_json::to_vec(&request)?;
         if bytes.len() as u64 > RESPONSE_LIMIT {
@@ -180,16 +268,20 @@ impl Session<'_> {
         }
         let request_evidence = storage::evidence(self.root, &request_path, RESPONSE_LIMIT)?;
         // This durable intent precedes spawn/transmit. A crash cannot silently turn into a retry.
-        self.ledger.connection.execute(
-            "INSERT INTO target_io VALUES(?1,?2,?3,?4,?5,NULL)",
-            params![
-                self.release,
-                self.target.id(),
-                sequence,
-                write,
-                serde_json::to_string(&request_evidence)?
-            ],
-        )?;
+        if let Audit::Publication(ledger) = &self.audit {
+            ledger.connection.execute(
+                "INSERT INTO target_io VALUES(?1,?2,?3,?4,?5,NULL)",
+                params![
+                    self.release,
+                    self.target.id(),
+                    sequence,
+                    write,
+                    serde_json::to_string(&request_evidence)?
+                ],
+            )?;
+        } else if write {
+            return Err(invalid("consumer audit cannot transmit writes"));
+        }
         let response_path = base.with_extension("response");
         let response = match self.target {
             DatabaseTarget::Clickhouse {
@@ -296,15 +388,26 @@ impl Session<'_> {
             usage.bytes = usage.bytes.saturating_add(evidence.bytes);
             usage.entries += 1;
         }
-        self.ledger.connection.execute(
-            "UPDATE target_io SET response=?4 WHERE release=?1 AND target=?2 AND sequence=?3",
-            params![
-                self.release,
-                self.target.id(),
-                sequence,
-                serde_json::to_string(&evidence)?
-            ],
-        )?;
+        if let Audit::Publication(ledger) = &self.audit {
+            ledger.connection.execute(
+                "UPDATE target_io SET response=?4 WHERE release=?1 AND target=?2 AND sequence=?3",
+                params![
+                    self.release,
+                    self.target.id(),
+                    sequence,
+                    serde_json::to_string(&evidence)?
+                ],
+            )?;
+        } else {
+            let receipt = serde_json::to_vec(&json!({
+                "schema_version":1,"release":self.release,"target":self.target.id(),
+                "sequence":sequence,"request":request_evidence,"response":evidence
+            }))?;
+            storage::write_new(&base.with_extension("receipt.json"), &receipt)?;
+            let mut usage = self.usage.borrow_mut();
+            usage.bytes = usage.bytes.saturating_add(receipt.len() as u64);
+            usage.entries += 1;
+        }
         Ok(response)
     }
 
@@ -403,6 +506,17 @@ impl Session<'_> {
         date: Option<chrono::NaiveDate>,
         mut visitor: impl FnMut(CanonicalRow) -> Result<()>,
     ) -> Result<u64> {
+        let verified = self.verify_partition_rows(manifest, date, &mut visitor)?;
+        self.verify_total(manifest)?;
+        Ok(verified)
+    }
+
+    fn verify_partition_rows(
+        &self,
+        manifest: &ReleaseManifest,
+        date: Option<chrono::NaiveDate>,
+        mut visitor: impl FnMut(CanonicalRow) -> Result<()>,
+    ) -> Result<u64> {
         let mut batch = Vec::with_capacity(BATCH);
         let mut after = None;
         let mut verified = 0;
@@ -439,15 +553,26 @@ impl Session<'_> {
         if !batch.is_empty() {
             verify(&mut batch)?;
         }
-        let total = manifest.partitions.values().map(|p| p.rows).sum::<u64>();
-        if self.count(manifest)? != total
-            || !self.fetch(manifest, after.as_ref(), date, 1)?.is_empty()
-        {
+        if !self.fetch(manifest, after.as_ref(), date, 1)?.is_empty() {
             return Err(invalid(
                 "release has missing, duplicate or extra database keys",
             ));
         }
         Ok(verified)
+    }
+
+    fn verify_total(&self, manifest: &ReleaseManifest) -> Result<()> {
+        let total = manifest
+            .partitions
+            .values()
+            .try_fold(0_u64, |n, p| n.checked_add(p.rows))
+            .ok_or_else(|| invalid("release row total overflow"))?;
+        if self.count(manifest)? != total {
+            return Err(invalid(
+                "release has missing, duplicate or extra database keys",
+            ));
+        }
+        Ok(())
     }
 }
 
@@ -497,17 +622,7 @@ pub fn prepare(
                 Ok(())
             })?;
         }
-        let partition_batches = manifest
-            .partitions
-            .values()
-            .try_fold(0_u64, |n, p| n.checked_add(p.rows.div_ceil(BATCH as u64)))
-            .ok_or_else(|| invalid("partition batch forecast overflow"))?;
-        let capacity = Capacity::estimate(
-            rows,
-            row_bytes,
-            partition_batches,
-            manifest.partitions.len() as u64,
-        )?;
+        let capacity = Capacity::estimate(rows, row_bytes)?;
         let mut forecast = existing;
         for target in &config.database_targets {
             let used: u64 = ledger.connection.query_row(
@@ -537,7 +652,7 @@ pub fn prepare(
         let bytes = serde_json::to_vec(&json!({
             "schema_version":1,"release":manifest.release_id,"per_target":capacity,
             "targets":config.database_targets.len(),"recovery":recovery,
-            "reserve":"publication, one recovery and one complete consumer readback",
+            "reserve":"publication and one recovery; consumer readbacks use independent query audits",
             "checked_at":crate::now(),
         }))?;
         storage::write_new(&path, &bytes)?;
@@ -557,7 +672,7 @@ pub fn prepare(
             .optional()?;
         let session = Session {
             root,
-            ledger,
+            audit: Audit::Publication(ledger),
             release: &manifest.release_id,
             target,
             mongo: RefCell::new(None),
@@ -729,25 +844,13 @@ pub fn read_verified(
         .into_iter()
         .find(|r| r.target.id() == target_id)
         .ok_or_else(|| invalid("target absent from released version"))?;
-    let session = Session {
-        root,
-        ledger,
-        release: &manifest.release_id,
-        target: &receipt.target,
-        mongo: RefCell::new(None),
-        max_workspace_bytes: Config::load(
-            &root
-                .join("releases")
-                .join(&manifest.release_id)
-                .join("job.json"),
-        )?
-        .max_workspace_bytes,
-        usage: Rc::new(RefCell::new(storage::tree_usage(
-            &root.join("database").join(&manifest.release_id),
-        )?)),
-    };
-    let rows = session.verify(manifest, None, visitor)?;
+    let audit = QueryAudit::new(root, readback_budget(root, manifest)?)?;
+    let session = ReadSession::new(root, manifest, &receipt, &audit);
+    let rows = session
+        .session
+        .verify_partition_rows(manifest, None, visitor)?;
     session.finish()?;
+    audit.finish()?;
     Ok(rows)
 }
 
@@ -766,26 +869,73 @@ pub fn read_verified_partition(
         .into_iter()
         .find(|r| r.target.id() == target_id)
         .ok_or_else(|| invalid("target absent from released version"))?;
-    let session = Session {
-        root,
-        ledger,
-        release: &manifest.release_id,
-        target: &receipt.target,
-        mongo: RefCell::new(None),
-        max_workspace_bytes: Config::load(
-            &root
-                .join("releases")
-                .join(&manifest.release_id)
-                .join("job.json"),
-        )?
-        .max_workspace_bytes,
-        usage: Rc::new(RefCell::new(storage::tree_usage(
-            &root.join("database").join(&manifest.release_id),
-        )?)),
-    };
-    let rows = session.verify(manifest, Some(date), visitor)?;
+    let audit = QueryAudit::new(root, readback_budget(root, manifest)?)?;
+    let session = ReadSession::new(root, manifest, &receipt, &audit);
+    let rows = session.read_partition(date, visitor)?;
     session.finish()?;
+    audit.finish()?;
     Ok(rows)
+}
+
+pub(crate) fn readback_budget(root: &Path, manifest: &ReleaseManifest) -> Result<u64> {
+    Ok(Config::load(
+        &root
+            .join("releases")
+            .join(&manifest.release_id)
+            .join("job.json"),
+    )?
+    .max_workspace_bytes)
+}
+
+pub(crate) struct ReadSession<'a> {
+    session: Session<'a>,
+    manifest: &'a ReleaseManifest,
+}
+
+impl<'a> ReadSession<'a> {
+    pub(crate) fn new(
+        root: &'a Path,
+        manifest: &'a ReleaseManifest,
+        receipt: &'a Receipt,
+        audit: &QueryAudit,
+    ) -> Self {
+        Self {
+            session: Session {
+                root,
+                audit: Audit::Consumer {
+                    directory: audit.directory.clone(),
+                    sequence: Rc::clone(&audit.sequence),
+                },
+                release: &manifest.release_id,
+                target: &receipt.target,
+                mongo: RefCell::new(None),
+                max_workspace_bytes: audit.max_bytes,
+                usage: Rc::clone(&audit.usage),
+            },
+            manifest,
+        }
+    }
+
+    pub(crate) fn read_partition(
+        &self,
+        date: chrono::NaiveDate,
+        visitor: impl FnMut(CanonicalRow) -> Result<()>,
+    ) -> Result<u64> {
+        if !self.manifest.partitions.contains_key(&date) {
+            return Err(invalid("date absent from release"));
+        }
+        self.session
+            .verify_partition_rows(self.manifest, Some(date), visitor)
+    }
+
+    pub(crate) fn finish(&self) -> Result<()> {
+        self.session.verify_total(self.manifest)?;
+        // QueryAudit reconciles the shared tree once, after every release has finished.
+        if let Some(mut process) = self.session.mongo.borrow_mut().take() {
+            process.finish()?;
+        }
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -885,6 +1035,11 @@ mod tests {
             user_env: "PATH".into(),
             password_env: "PATH".into(),
         };
+        let mut expected_csv = csv::Writer::from_writer(Vec::new());
+        for row in &all {
+            expected_csv.serialize(&row.bar).unwrap();
+        }
+        let expected_hash = storage::sha256(&expected_csv.into_inner().unwrap());
         // Independently expect cursor positions, rather than parsing our SQL
         // to generate its own oracle. Day two starts at its own first key.
         let server = std::thread::spawn(move || {
@@ -892,12 +1047,33 @@ mod tests {
                 (0, 512, None, None),
                 (512, 512, Some(511), None),
                 (1024, 176, Some(1023), None),
-                (1200, 0, None, None),
                 (1200, 0, Some(1199), None),
+                (1200, 0, None, None),
                 (600, 512, None, Some("2026-07-07")),
                 (1112, 88, Some(1111), Some("2026-07-07")),
-                (1200, 0, None, None),
                 (1200, 0, Some(1199), Some("2026-07-07")),
+                (1200, 0, None, None),
+                // Baseline: each day finishes its own session and release count.
+                (0, 512, None, Some("2026-07-06")),
+                (512, 88, Some(511), Some("2026-07-06")),
+                (600, 0, Some(599), Some("2026-07-06")),
+                (1200, 0, None, None),
+                (600, 512, None, Some("2026-07-07")),
+                (1112, 88, Some(1111), Some("2026-07-07")),
+                (1200, 0, Some(1199), Some("2026-07-07")),
+                (1200, 0, None, None),
+                // A single consumer session: two partition tails, one release count.
+                (0, 512, None, Some("2026-07-06")),
+                (512, 88, Some(511), Some("2026-07-06")),
+                (600, 0, Some(599), Some("2026-07-06")),
+                (600, 512, None, Some("2026-07-07")),
+                (1112, 88, Some(1111), Some("2026-07-07")),
+                (1200, 0, Some(1199), Some("2026-07-07")),
+                (1200, 0, None, None),
+                // An extra tail key must fail, even when every expected row matched.
+                (0, 512, None, Some("2026-07-06")),
+                (512, 88, Some(511), Some("2026-07-06")),
+                (599, 1, Some(599), Some("2026-07-06")),
             ];
             for (start, n, after, date) in cases {
                 let (mut socket, _) = listener.accept().unwrap();
@@ -957,7 +1133,7 @@ mod tests {
         });
         let session = Session {
             root,
-            ledger: &ledger,
+            audit: Audit::Publication(&ledger),
             release,
             target: &target,
             mongo: RefCell::new(None),
@@ -973,6 +1149,66 @@ mod tests {
             600
         );
         session.finish().unwrap();
+        ledger
+            .connection
+            .execute("UPDATE target_io SET sequence=50000 WHERE sequence=9", [])
+            .unwrap();
+        let receipt = Receipt {
+            target: target.clone(),
+            proof: evidence_for_test(),
+        };
+        let baseline_start = std::time::Instant::now();
+        let mut baseline_bytes = 0;
+        for date in [manifest.from, manifest.through] {
+            let audit = QueryAudit::new(root, 256 * 1024 * 1024).unwrap();
+            let reader = ReadSession::new(root, &manifest, &receipt, &audit);
+            reader.read_partition(date, |_| Ok(())).unwrap();
+            reader.finish().unwrap();
+            audit.finish().unwrap();
+            assert_eq!(audit.sequence.get(), 4);
+            baseline_bytes += storage::tree_bytes(&audit.directory).unwrap();
+        }
+        let baseline_elapsed = baseline_start.elapsed();
+        let reuse_start = std::time::Instant::now();
+        let audit = QueryAudit::new(root, 256 * 1024 * 1024).unwrap();
+        let reader = ReadSession::new(root, &manifest, &receipt, &audit);
+        let mut exported = Vec::new();
+        for date in [manifest.from, manifest.through] {
+            assert_eq!(
+                reader
+                    .read_partition(date, |bar| {
+                        exported.push(bar);
+                        Ok(())
+                    })
+                    .unwrap(),
+                600
+            );
+        }
+        reader.finish().unwrap();
+        audit.finish().unwrap();
+        let reuse_elapsed = reuse_start.elapsed();
+        assert_eq!(exported.len(), 1200);
+        let mut actual_csv = csv::Writer::from_writer(Vec::new());
+        for row in &exported {
+            actual_csv.serialize(row).unwrap();
+        }
+        assert_eq!(
+            storage::sha256(&actual_csv.into_inner().unwrap()),
+            expected_hash
+        );
+        assert_eq!(audit.sequence.get(), 7);
+        assert!(audit.directory.join("verified.json").exists());
+        println!(
+            "readback_rows=1200 dates=2 baseline_requests=8 reuse_requests=7 \
+            baseline_bytes={baseline_bytes} reuse_bytes={} baseline_micros={} reuse_micros={} csv_sha256={expected_hash}",
+            storage::tree_bytes(&audit.directory).unwrap(),
+            baseline_elapsed.as_micros(),
+            reuse_elapsed.as_micros()
+        );
+        let failed_audit = QueryAudit::new(root, 256 * 1024 * 1024).unwrap();
+        let reader = ReadSession::new(root, &manifest, &receipt, &failed_audit);
+        assert!(reader.read_partition(manifest.from, |_| Ok(())).is_err());
+        assert!(!failed_audit.directory.join("verified.json").exists());
         server.join().unwrap();
         assert_eq!(
             ledger
@@ -985,6 +1221,19 @@ mod tests {
                 .unwrap(),
             9
         );
+        let exhausted = QueryAudit::new(root, 256 * 1024 * 1024).unwrap();
+        exhausted.sequence.set(IO_LIMIT);
+        let reader = ReadSession::new(root, &manifest, &receipt, &exhausted);
+        assert!(reader.read_partition(manifest.from, |_| Ok(())).is_err());
+        assert!(QueryAudit::new(root, RESPONSE_LIMIT).is_err());
+    }
+
+    fn evidence_for_test() -> Evidence {
+        Evidence {
+            path: "unused".into(),
+            bytes: 0,
+            sha256: "0".repeat(64),
+        }
     }
 
     #[test]

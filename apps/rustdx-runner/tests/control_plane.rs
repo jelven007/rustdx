@@ -413,6 +413,116 @@ fn write_day(source: &Path, dates: &[u32], close: u32) {
 }
 
 #[test]
+fn offline_plan_reports_expected_keys_missing_inputs_and_archive_limited_parallelism() {
+    let temp = TempDir::new().unwrap();
+    let cli = temp.path().join("fake-collector");
+    fs::write(&cli, b"SYNTHETIC; planning must never execute this file").unwrap();
+    let mut config = fixture(temp.path(), &cli);
+    let plan = pipeline::preflight_plan(&config, 8, 1).unwrap();
+    assert_eq!(plan["expected_keys"]["total"], 2);
+    assert_eq!(plan["expected_keys"]["trading"], 2);
+    assert_eq!(plan["expected_keys"]["truncated"], true);
+    assert_eq!(plan["can_start"], true);
+    assert!(!config.root.exists());
+    let config_path = temp.path().join("plan-job.json");
+    fs::write(&config_path, serde_json::to_vec(&config).unwrap()).unwrap();
+    let permits = temp.path().join("must-not-initialize-network");
+    let result = std::process::Command::new(env!("CARGO_BIN_EXE_rustdx-runner"))
+        .args(["plan", "--config"])
+        .arg(&config_path)
+        .arg("--network-dir")
+        .arg(&permits)
+        .output()
+        .unwrap();
+    assert!(
+        result.status.success(),
+        "{}",
+        String::from_utf8_lossy(&result.stderr)
+    );
+    assert_eq!(
+        serde_json::from_slice::<serde_json::Value>(&result.stdout).unwrap()["expected_keys"]["total"],
+        2
+    );
+    assert!(!permits.exists());
+    assert!(!config.root.exists());
+    let full = pipeline::preflight_plan(&config, 8, 2).unwrap();
+    assert_eq!(
+        plan["expected_keys"]["all_keys_jsonl_sha256"],
+        full["expected_keys"]["all_keys_jsonl_sha256"]
+    );
+    fs::remove_file(config.day_directories[0].join("sh600000.day")).unwrap();
+    assert_eq!(
+        pipeline::preflight_plan(&config, 8, 1).unwrap()["can_start"],
+        false
+    );
+
+    let mut universe: serde_json::Value =
+        serde_json::from_slice(&fs::read(&config.universe).unwrap()).unwrap();
+    let mut member = universe["members"][0].clone();
+    member["code"] = json!("sh600001");
+    universe["members"].as_array_mut().unwrap().push(member);
+    fs::write(&config.universe, serde_json::to_vec(&universe).unwrap()).unwrap();
+    let mut history: serde_json::Value =
+        serde_json::from_slice(&fs::read(&config.security_history).unwrap()).unwrap();
+    let mut interval = history["intervals"][0].clone();
+    interval["code"] = json!("sh600001");
+    history["intervals"].as_array_mut().unwrap().push(interval);
+    fs::write(
+        &config.security_history,
+        serde_json::to_vec(&history).unwrap(),
+    )
+    .unwrap();
+    config.day_directories.clear();
+    config.no_tcp_startup = false;
+    config.max_source_bytes = 64 * 1024 * 1024;
+    config.planned_date = "2026-07-08".parse().unwrap();
+    config.source_as_of = config.planned_date;
+    config.tcp_day = Some(rustdx_cli::tcp_day::Source {
+        endpoint: "127.0.0.1:9".parse().unwrap(),
+        volume_evidence_sha256: config.calendar_source_sha256.clone(),
+        page_size: 800,
+        max_pages: 128,
+        max_raw_rows: 65536,
+        max_payload_bytes: 16 * 1024 * 1024,
+        max_wire_records: 20000,
+    });
+    config.tcp_day_schedule = Some(rustdx_cli::tcp_day::Schedule {
+        max_parallel: 2,
+        timeout_seconds: 50,
+        max_raw_rows: 1000000,
+        max_payload_bytes: 64 * 1024 * 1024,
+    });
+    let plan = pipeline::preflight_plan(&config, 8, 10).unwrap();
+    assert_eq!(plan["expected_keys"]["total"], 4);
+    assert_eq!(plan["tcp"]["effective_parallel"], 1);
+    assert!(
+        plan["tcp"]["limiting_budgets"]
+            .as_array()
+            .unwrap()
+            .contains(&json!("archive_bytes"))
+    );
+    assert_eq!(plan["tcp"]["minimum_collection_wire_records"], 8);
+    assert!(!config.root.exists());
+    config.max_source_bytes = 1024;
+    assert_eq!(
+        pipeline::preflight_plan(&config, 8, 10).unwrap()["can_start"],
+        false
+    );
+    history["intervals"][1]["end"] = json!("2026-07-06");
+    fs::write(
+        &config.security_history,
+        serde_json::to_vec(&history).unwrap(),
+    )
+    .unwrap();
+    assert!(
+        pipeline::preflight_plan(&config, 8, 10)
+            .unwrap_err()
+            .to_string()
+            .contains("Unknown")
+    );
+}
+
+#[test]
 fn strict_config_and_unknown_history_refuse_before_spawn() {
     let temp = TempDir::new().unwrap();
     let mut config = fixture(temp.path(), Path::new("/not-needed"));
@@ -917,7 +1027,7 @@ fn real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence(
     PinnedDataset::open(&restored, &config.dataset_id, Some(1)).unwrap();
     // DBA-only corruption deliberately appends data to an already released namespace.
     let release = &pinned
-        .catalog
+        .catalog()
         .partitions
         .values()
         .next()
@@ -1121,7 +1231,7 @@ fn tcp_explicitly_exempt_scope_publishes_without_contacting_the_source() {
     let pinned =
         rustdx_runner::consumer::PinnedDataset::open(&config.root, "synthetic", Some(1)).unwrap();
     let release = pinned
-        .catalog
+        .catalog()
         .partitions
         .values()
         .next()
@@ -1167,7 +1277,7 @@ fn tcp_daily_release_revision_missing_keys_and_offline_recovery() {
     let pinned =
         rustdx_runner::consumer::PinnedDataset::open(&config.root, "synthetic", Some(1)).unwrap();
     let release = pinned
-        .catalog
+        .catalog()
         .partitions
         .values()
         .next()

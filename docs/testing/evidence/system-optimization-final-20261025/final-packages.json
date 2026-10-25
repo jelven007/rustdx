@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "scripts/release/preflight.py",
+        "--output",
+        "/tmp/rustdx-system-optimization-packages-20261025",
+        "--snapshot",
+        "--offline",
+        "--skip-workspace-checks",
+        "--cargo",
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo"
+      ],
+      "exit_code": 0,
+      "seconds": 145.482692625,
+      "log": "final-packages-0.log"
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation.py",
+        "--output",
+        "/tmp/rustdx-system-optimization-20261025/documentation-final.json"
+      ],
+      "exit_code": 0,
+      "seconds": 10.21796387500001,
+      "log": "final-packages-1.log"
+    }
+  ]
+}

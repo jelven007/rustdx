@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "scripts/release/preflight.py",
+        "--output",
+        "/tmp/rustdx-system-optimization-packages-fixed-20261025",
+        "--snapshot",
+        "--offline",
+        "--skip-workspace-checks",
+        "--cargo",
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "--build-cache",
+        "/tmp/rustdx-system-optimization-packages-20261025/target"
+      ],
+      "exit_code": 0,
+      "seconds": 286.544420917,
+      "log": "final-packages-fixed-0.log"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-25",
+  "required_through": "2026-10-25",
+  "status": "attention_required",
+  "missing_categories": [],
+  "entries": [
+    {
+      "id": "exchange-rules",
+      "category": "rules",
+      "owner_role": "data-operations",
+      "reviewer_role": "market-rules-review",
+      "escalation_role": "operations-lead",
+      "scope": "沪深京适用制度及生效公告",
+      "status": "attention_required",
+      "issues": [
+        "independent_review_missing",
+        "independent_source_missing",
+        "review_dates_missing_or_invalid",
+        "coverage_insufficient"
+      ],
+      "evidence": [],
+      "checked_through": null,
+      "next_review": null
+    },
+    {
+      "id": "annual-calendar",
+      "category": "calendar",
+      "owner_role": "data-operations",
+      "reviewer_role": "calendar-review",
+      "escalation_role": "operations-lead",
+      "scope": "完整交易所年度休市安排及独立逐日参考",
+      "status": "attention_required",
+      "issues": [
+        "independent_review_missing",
+        "independent_source_missing",
+        "review_dates_missing_or_invalid",
+        "coverage_insufficient"
+      ],
+      "evidence": [],
+      "checked_through": null,
+      "next_review": null
+    },
+    {
+      "id": "listing-history",
+      "category": "listing_delisting",
+      "owner_role": "data-operations",
+      "reviewer_role": "security-history-review",
+      "escalation_role": "operations-lead",
+      "scope": "声明证券范围的上市、退市及状态区间",
+      "status": "attention_required",
+      "issues": [
+        "independent_review_missing",
+        "independent_source_missing",
+        "review_dates_missing_or_invalid",
+        "coverage_insufficient"
+      ],
+      "evidence": [],
+      "checked_through": null,
+      "next_review": null
+    },
+    {
+      "id": "trading-state-history",
+      "category": "st_suspension",
+      "owner_role": "data-operations",
+      "reviewer_role": "security-history-review",
+      "escalation_role": "operations-lead",
+      "scope": "声明证券范围的ST、停复牌及实施日期",
+      "status": "attention_required",
+      "issues": [
+        "independent_review_missing",
+        "independent_source_missing",
+        "review_dates_missing_or_invalid",
+        "coverage_insufficient"
+      ],
+      "evidence": [],
+      "checked_through": null,
+      "next_review": null
+    },
+    {
+      "id": "point-in-time-universe",
+      "category": "universe",
+      "owner_role": "data-operations",
+      "reviewer_role": "universe-review",
+      "escalation_role": "operations-lead",
+      "scope": "声明历史日期范围的应有名单，不使用当前名单替代过去名单",
+      "status": "attention_required",
+      "issues": [
+        "independent_review_missing",
+        "independent_source_missing",
+        "review_dates_missing_or_invalid",
+        "coverage_insufficient"
+      ],
+      "evidence": [],
+      "checked_through": null,
+      "next_review": null
+    }
+  ],
+  "scope": "Declared responsibilities and pinned bytes only; independent semantic/point-in-time audit remains required.",
+  "action": "No notification, publication, evidence rewriting or deadline renewal performed."
+}

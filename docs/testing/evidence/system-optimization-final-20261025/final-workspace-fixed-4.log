@@ -1,0 +1,105 @@
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 0.96s
+[1m[32m   Doc-tests[0m rustdx_cli
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m   Doc-tests[0m rustdx_complete
+
+running 73 tests
+test crates/rustdx-core/src/builder.rs - builder (line 14) - compile ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::daily (line 295) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::code (line 94) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::count (line 204) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::min1 (line 360) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::min30 (line 321) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::min5 (line 347) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::category (line 164) ... ok
+test crates/rustdx-core/src/cache.rs - cache (line 14) - compile ... ok
+test crates/rustdx-core/src/cache.rs - cache::Cache (line 669) - compile ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::market (line 133) ... ok
+test crates/rustdx-core/src/cache.rs - cache::Cache<B>::get_or_fetch (line 837) - compile ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder (line 47) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::start (line 184) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::monthly (line 386) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::build (line 225) ... ok
+test crates/rustdx-core/src/cache.rs - cache::Cache<FileCache>::file (line 977) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::symbol (line 107) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::weekly (line 373) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::new (line 71) ... ok
+test crates/rustdx-core/src/file/gbbq/mod.rs - file::gbbq::Gbbq::category (line 40) ... ignored
+test crates/rustdx-core/src/cache.rs - cache::Cache<B>::new (line 754) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::build_request (line 239) ... ok
+test crates/rustdx-core/src/cache.rs - cache::MemoryCache::new (line 179) ... ok
+test crates/rustdx-core/src/cache.rs - cache::Cache<MemoryCache>::memory (line 956) ... ok
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::min60 (line 308) ... ok
+test crates/rustdx-core/src/cache.rs - cache::FileCache::new (line 351) ... ok
+test crates/rustdx-core/src/indicators.rs - indicators (line 19) ... ok
+test crates/rustdx-core/src/lib.rs - limit (line 35) ... ignored
+test crates/rustdx-core/src/tcp/ip.rs - tcp::ip::check_alive (line 82) - compile ... ok
+test crates/rustdx-core/src/tcp/ip.rs - tcp::ip::check_alive_by_rtt (line 137) - compile ... ok
+test crates/rustdx-core/src/calendar.rs - calendar (line 4) ... ok
+test crates/rustdx-core/src/tcp/ip/daily.rs - tcp::ip::daily::IpPool (line 50) - compile ... ok
+test crates/rustdx-core/src/tcp/mod.rs - tcp::Tcp::reconnect (line 391) ... ignored
+test crates/rustdx-core/src/tcp/mod.rs - tcp::Tcp::retry (line 470) ... ignored
+test crates/rustdx-core/src/tcp/startup.rs - tcp::startup::initialize (line 63) - compile ... ok
+test crates/rustdx-core/src/tcp/stock/block_info.rs - tcp::stock::block_info::get_block_info (line 195) ... ignored
+test crates/rustdx-core/src/tcp/stock/client.rs - tcp::stock::client (line 6) ... ignored
+test crates/rustdx-core/src/tcp/stock/client.rs - tcp::stock::client::Client::enhanced_history_transaction (line 666) - compile ... ok
+test crates/rustdx-core/src/tcp/stock/client.rs - tcp::stock::client::Client::k_batch (line 340) ... ignored
+test crates/rustdx-core/src/tcp/stock/client/transactions.rs - tcp::stock::client::transactions::Client::history_transaction_all (line 63) - compile ... ok
+test crates/rustdx-core/src/tcp/stock/client/transactions.rs - tcp::stock::client::transactions::Client::transaction_all (line 31) - compile ... ok
+test crates/rustdx-core/src/tcp/stock/company_info.rs - tcp::stock::company_info::CompanyInfoCategory (line 20) ... ignored
+test crates/rustdx-core/src/tcp/stock/finance_info.rs - tcp::stock::finance_info::FinanceInfo (line 11) ... ignored
+test crates/rustdx-core/src/tcp/stock/history_minute_time.rs - tcp::stock::history_minute_time::HistoryMinuteTime (line 14) ... ignored
+test crates/rustdx-core/src/tcp/stock/history_transaction.rs - tcp::stock::history_transaction::HistoryTransaction (line 13) ... ignored
+test crates/rustdx-core/src/tcp/stock/index_kline.rs - tcp::stock::index_kline::IndexKline (line 10) ... ignored
+test crates/rustdx-core/src/builder.rs - builder::KlineBuilder<'a>::min15 (line 334) ... ok
+test crates/rustdx-core/src/tcp/stock/minute_time.rs - tcp::stock::minute_time::MinuteTime (line 12) ... ignored
+test crates/rustdx-core/src/indicators.rs - indicators::macd (line 228) ... ok
+test crates/rustdx-core/src/tcp/stock/mod.rs - tcp::stock::stocks (line 223) ... ignored
+test crates/rustdx-core/src/tcp/stock/quotes.rs - tcp::stock::quotes::SecurityQuotes (line 13) ... ignored
+test crates/rustdx-core/src/error.rs - error (line 14) ... ok
+test crates/rustdx-core/src/tcp/stock/security_list.rs - tcp::stock::security_list::SecurityList (line 12) ... ignored
+test crates/rustdx-core/src/indicators.rs - indicators::ema (line 170) ... ok
+test crates/rustdx-core/src/indicators.rs - indicators::kdj (line 573) ... ok
+test crates/rustdx-core/src/tcp/stock/transaction.rs - tcp::stock::transaction::Transaction (line 12) ... ignored
+test crates/rustdx-core/src/indicators.rs - indicators::bollinger_bands (line 474) ... ok
+test crates/rustdx-core/src/tcp/stock/validator.rs - tcp::stock::validator (line 17) ... ignored
+test crates/rustdx-core/src/tcp/stock/mod.rs - tcp::stock::market_of (line 200) ... ok
+test crates/rustdx-core/src/indicators.rs - indicators::rsi (line 297) ... ok
+test crates/rustdx-core/src/indicators.rs - indicators::sma (line 60) ... ok
+test crates/rustdx-core/src/cache.rs - cache::FileCache (line 308) ... ok
+test crates/rustdx-core/src/cache.rs - cache::MemoryCache (line 117) ... ok
+test crates/rustdx-core/src/tcp/stock/trade_amount.rs - tcp::stock::trade_amount::TradeAmountContext (line 34) ... ok
+test crates/rustdx-core/src/tcp/stock/enhanced_history_transaction.rs - tcp::stock::enhanced_history_transaction::EnhancedHistoryTransactionRequest (line 23) ... ok
+test crates/rustdx-core/src/tcp/stock/validator.rs - tcp::stock::validator::validate_finance_consistency (line 228) ... ok
+test crates/rustdx-core/src/tcp/stock/kline_request.rs - tcp::stock::kline_request::KlineRequest (line 16) ... ok
+test crates/rustdx-core/src/tcp/stock/trade_models.rs - tcp::stock::trade_models::TradeCollection (line 485) ... ok
+test crates/rustdx-core/src/tcp/stock/transaction_pagination.rs - tcp::stock::transaction_pagination::TransactionPaginationOptions (line 10) ... ok
+test crates/rustdx-core/src/tcp/stock/requests.rs - tcp::stock::requests::QuotesRequest (line 42) ... ok
+test crates/rustdx-core/src/tcp/stock/validator.rs - tcp::stock::validator::detect_anomalies (line 353) ... ok
+test crates/rustdx-core/src/tcp/stock/validator.rs - tcp::stock::validator::validate_kline_continuity (line 140) ... ok
+
+test result: ok. 55 passed; 0 failed; 18 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+
+running 2 tests
+test crates/rustdx-core/src/tcp/stock/kline_request.rs - tcp::stock::kline_request::KlineRequest (line 23) - compile fail ... ok
+test crates/rustdx-core/src/tcp/stock/requests.rs - tcp::stock::requests::QuotesRequest (line 49) - compile fail ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+[1m[32m   Doc-tests[0m rustdx_runner
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m   Doc-tests[0m tests_integration
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

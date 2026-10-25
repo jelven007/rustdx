@@ -1,0 +1,15 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "command": [
+        "python3",
+        "/tmp/rustdx-system-optimization-20261025/verify_isolated_engineering.py",
+        "fixed"
+      ],
+      "exit_code": 1,
+      "seconds": 340.960304417,
+      "log": "final-isolated-fixed-0.log"
+    }
+  ]
+}

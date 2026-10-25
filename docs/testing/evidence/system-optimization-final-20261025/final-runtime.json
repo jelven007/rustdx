@@ -1,0 +1,30 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "command": [
+        "env",
+        "RUSTDX_TEST_CLI=/tmp/rustdx-system-review-20261025/target/debug/rustdx",
+        "RUSTDX_TEST_CH_USER=default",
+        "RUSTDX_TEST_CH_PASSWORD=",
+        ".cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "--include-ignored",
+        "--skip",
+        "real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence"
+      ],
+      "exit_code": 101,
+      "seconds": 106.381298833,
+      "log": "final-runtime-0.log"
+    }
+  ]
+}

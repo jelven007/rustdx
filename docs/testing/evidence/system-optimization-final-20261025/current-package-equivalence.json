@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "checked_preflight_source_sha256": "540896fcbb3d7749b0b378faa0db2e6101f5bc697144436666d888e9c86e117e",
+  "current_engineering_source_sha256": "1036ff0e6d633a1c74dc61e662bd12f7e794805d7ed1bcd1673b06607d053897",
+  "packages": [
+    {
+      "name": "jelven-rustdx-complete",
+      "sha256": "c67d191d6002e54b40645958e88576b3639a6c2a1d9ff0a4e7d1cd31e7b09979",
+      "checked_source_and_license_files": 100
+    },
+    {
+      "name": "jelven-rustdx-cli",
+      "sha256": "ae72f9ecebc84324b7e2da0806fd9d4a38cb114d87f80b1fca215c31dc184605",
+      "checked_source_and_license_files": 27
+    }
+  ],
+  "publication_qualified": false,
+  "meaning": "Original successful package/consumer audit retained. Current production src, README and license bytes equal actual crates; added engineering inputs are checked separately."
+}

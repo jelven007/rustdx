@@ -1,0 +1,49 @@
+{
+  "scope": "synthetic isolated administration; no market/data authenticity claim",
+  "result": "passed",
+  "commands": [
+    {
+      "name": "admin-status-missing",
+      "exit_code": 1,
+      "expected_success": false,
+      "log": "admin-status-missing.log"
+    },
+    {
+      "name": "admin-migrate",
+      "exit_code": 0,
+      "expected_success": true,
+      "log": "admin-migrate.log"
+    },
+    {
+      "name": "admin-status-existing",
+      "exit_code": 0,
+      "expected_success": true,
+      "log": "admin-status-existing.log"
+    },
+    {
+      "name": "admin-backup-alias",
+      "exit_code": 1,
+      "expected_success": false,
+      "log": "admin-backup-alias.log"
+    },
+    {
+      "name": "admin-backup-small",
+      "exit_code": 1,
+      "expected_success": false,
+      "log": "admin-backup-small.log"
+    },
+    {
+      "name": "admin-backup",
+      "exit_code": 0,
+      "expected_success": true,
+      "log": "admin-backup.log"
+    },
+    {
+      "name": "admin-restore",
+      "exit_code": 0,
+      "expected_success": true,
+      "log": "admin-restore.log"
+    }
+  ],
+  "restored_retention": "restored-retention.json"
+}

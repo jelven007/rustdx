@@ -7,10 +7,13 @@ import io
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tarfile
 import time
+
+from source_scope import EXCLUDED_PREFIXES, SCOPE_VERSION, inventory as engineering_inventory
 
 ROOT = Path(__file__).resolve().parents[2]
 PACKAGES = {
@@ -28,30 +31,7 @@ def git(*args):
 
 
 def inventory():
-    paths = set(git("ls-files", "-z").split(b"\0"))
-    paths.update(git("ls-files", "--others", "--exclude-standard", "-z").split(b"\0"))
-    records = []
-    for raw in sorted(paths):
-        if not raw:
-            continue
-        name = os.fsdecode(raw)
-        path = ROOT / name
-        if path.is_symlink():
-            data = os.fsencode(os.readlink(path))
-            kind = "symlink"
-        elif path.is_file():
-            data = path.read_bytes()
-            kind = "file"
-        elif not path.exists():
-            continue  # Tracked deletions are explicitly present in git status.
-        else:
-            raise RuntimeError(f"unsupported source entry: {name}")
-        records.append({
-            "path": name, "kind": kind, "bytes": len(data), "sha256": sha(data),
-            "executable": bool(path.lstat().st_mode & 0o111),
-        })
-    canonical = json.dumps(records, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode()
-    return records, sha(canonical)
+    return engineering_inventory(ROOT)
 
 
 def source_archive(records, output):
@@ -110,6 +90,7 @@ def main():
     parser.add_argument("--offline", action="store_true")
     parser.add_argument("--cargo", default="cargo")
     parser.add_argument("--toolchain", default="1.89.0")
+    parser.add_argument("--build-cache", type=Path, help="optional external Cargo target cache; reviewed packages are copied into output")
     parser.add_argument("--skip-workspace-checks", action="store_true", help="package-only audit; not a release gate")
     args = parser.parse_args()
     output = args.output.resolve()
@@ -121,13 +102,19 @@ def main():
         parser.error("formal release requires a clean working tree; use --snapshot for a review artifact")
     records, fingerprint = inventory()
     report = {
-        "schema_version": 1, "head": git("rev-parse", "HEAD").decode().strip(),
+        "schema_version": 2, "head": git("rev-parse", "HEAD").decode().strip(),
+        "source_scope_version": SCOPE_VERSION, "excluded_prefixes": EXCLUDED_PREFIXES,
+        "historical_evidence_verification": "separate evidence_manifest.py; not performed by package preflight",
         "dirty": bool(status), "git_status_hex": status.hex(), "source_sha256": fingerprint,
         "lock_sha256": sha((ROOT / "Cargo.lock").read_bytes()), "files": records, "checks": [],
         "publication_qualified": False, "registry_verification": "not performed",
         "binary_reproducibility": "not claimed",
     }
-    env = dict(os.environ, RUSTDX_SKIP_INTEGRATION_TESTS="1", CARGO_TARGET_DIR=str(output / "target"))
+    build_target = args.build_cache.resolve() if args.build_cache else output / "target"
+    if build_target == ROOT or ROOT in build_target.parents:
+        parser.error("build cache must be outside the repository")
+    report["build_target"] = str(build_target)
+    env = dict(os.environ, RUSTDX_SKIP_INTEGRATION_TESTS="1", CARGO_TARGET_DIR=str(build_target))
     cargo = [args.cargo, f"+{args.toolchain}"]
     locked = ["--locked"] + (["--offline"] if args.offline else [])
     try:
@@ -140,8 +127,24 @@ def main():
                 ("clippy", cargo + ["clippy", "--workspace", "--all-targets", "--all-features"] + locked + ["--", "-D", "warnings"]),
                 ("tests", cargo + ["test", "--workspace", "--all-targets", "--all-features"] + locked),
                 ("doctests", cargo + ["test", "--workspace", "--doc", "--all-features"] + locked),
+                ("strict-docs", cargo + ["doc", "--workspace", "--all-features", "--no-deps"] + locked),
+                ("python", [sys.executable, "-m", "unittest", "discover", "-s", "scripts/validation/tests", "-v"]),
+                ("documentation-navigation", [sys.executable, "scripts/validation/check_documentation.py"]),
+                ("release-binaries", cargo + ["build", "--release", "-p", "jelven-rustdx-cli", "-p", "rustdx-runner"] + locked),
             ]:
-                run(command, output, label, report["checks"], env)
+                check_env = dict(env, RUSTDOCFLAGS="-D warnings") if label == "strict-docs" else env
+                run(command, output, label, report["checks"], check_env)
+            report["binaries"] = [
+                {"name": name, "path": f"target/release/{name}",
+                 "sha256": sha((build_target / "release" / name).read_bytes()),
+                 "bytes": (build_target / "release" / name).stat().st_size,
+                 "platform": sys.platform}
+                for name in ["rustdx", "rustdx-runner"]
+            ]
+            if args.build_cache:
+                (output / "target/release").mkdir(parents=True)
+                for name in ["rustdx", "rustdx-runner"]:
+                    shutil.copy2(build_target / "release" / name, output / "target/release" / name)
         extracted = {}
         package_reports = []
         for package, relative in PACKAGES.items():
@@ -168,10 +171,15 @@ def main():
                 report["staging_lock_sha256"] = sha((package_root / "Cargo.lock").read_bytes())
             run(cargo + ["package", "-p", package, "--allow-dirty", "--no-verify"] + locked + package_patch,
                 output, f"package-{package}", report["checks"], env, cwd=package_root)
-            crates = list((output / "target/package").glob(f"{package}-*.crate"))
+            crates = list((build_target / "package").glob(f"{package}-*.crate"))
             if len(crates) != 1:
                 raise RuntimeError(f"expected one package for {package}")
             crate = crates[0]
+            if args.build_cache:
+                destination = output / "target/package" / crate.name
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(crate, destination)
+                crate = destination
             directory = extract_package(crate, output / "unpacked")
             # Cargo.toml is normalized; every production source and embedded resource must match.
             listing = sorted(p.relative_to(directory).as_posix() for p in directory.rglob("*") if p.is_file())
@@ -226,7 +234,9 @@ def main():
         if fingerprint != final_fingerprint or status != git("status", "--porcelain=v1", "-z"):
             raise RuntimeError("source or Git status changed during preflight")
         report["local_package_verification"] = "passed; CLI uses extracted core patch, not registry core"
-        report["publication_qualified"] = not status and not args.skip_workspace_checks
+        report["local_gate_passed"] = not status and not args.skip_workspace_checks
+        # Remote current-SHA checks are verified separately immediately before upload.
+        report["publication_qualified"] = False
         report["result"] = "passed"
     except (RuntimeError, OSError, subprocess.CalledProcessError) as error:
         report["result"] = "failed"

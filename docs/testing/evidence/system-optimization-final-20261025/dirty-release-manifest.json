@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "publication_qualified": false,
+  "checked_at": "2026-10-24T23:27:11.513222+00:00",
+  "issues": [
+    "local full preflight and clean current commit are required"
+  ],
+  "registry_verification": "pending core upload, index visibility and CLI registry dry-run",
+  "head": "47045cd554de2f3237a7f2f2821146b47807c43b",
+  "source_sha256": "d7ca0dd34555c41e29d8310e621779f5538ed7f97c9e39e62fbdb486d229663d",
+  "repository": "jelven007/rustdx",
+  "preflight_sha256": "1fffb35728f5025548e9ffd881b90faacb9274ba4b7a2c03aed3f48bb130014b",
+  "result": "not_qualified"
+}
