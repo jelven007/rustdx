@@ -104,6 +104,9 @@ fn server(
     let handle = std::thread::spawn(move || {
         for _ in 0..connections {
             let (mut socket, _) = listener.accept().unwrap();
+            // Exercise fragmented reads without adding Nagle/delayed-ACK
+            // latency to the independently configured heartbeat deadlines.
+            socket.set_nodelay(true).unwrap();
             socket
                 .set_read_timeout(Some(Duration::from_secs(2)))
                 .unwrap();

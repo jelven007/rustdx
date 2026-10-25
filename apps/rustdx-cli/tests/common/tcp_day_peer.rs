@@ -102,6 +102,9 @@ impl Peer {
                 workers.push(std::thread::spawn(move || {
                     let mut business = false;
                     stream.set_nonblocking(false).unwrap();
+                    // Keep the explicit test delay, without a delayed-ACK wait
+                    // between the separately written frame header and body.
+                    stream.set_nodelay(true).unwrap();
                     stream
                         .set_read_timeout(Some(Duration::from_secs(3)))
                         .unwrap();
