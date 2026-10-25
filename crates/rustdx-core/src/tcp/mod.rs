@@ -43,6 +43,8 @@ pub mod helper;
 pub use evidence::{FrameEvent, FrameObserver, decode_frame, decode_response};
 pub mod ip;
 pub(crate) mod reader;
+#[cfg(windows)]
+mod socket_poll;
 
 pub mod startup;
 pub mod stock;
@@ -309,19 +311,30 @@ impl Tcp {
         })
     }
 
-    fn retry_poll(&self, error: &std::io::Error) -> bool {
-        crate::operation::OperationContext::current().is_some()
+    fn retry_poll(&self, error: &std::io::Error) -> Result<bool> {
+        if crate::operation::OperationContext::current().is_some()
             && matches!(
                 error.kind(),
                 std::io::ErrorKind::TimedOut | std::io::ErrorKind::WouldBlock
             )
-            && self.io_timeout().is_ok()
+        {
+            // A poll waking after cancellation/expiry must return the task's
+            // terminal error, rather than leaking the socket's timeout kind.
+            self.io_timeout()?;
+            Ok(true)
+        } else {
+            Ok(false)
+        }
     }
 
     fn read_exact_deadline(&mut self, body: &mut [u8]) -> Result<()> {
         let mut offset = 0;
         while offset < body.len() {
-            self.stream.set_read_timeout(Some(self.poll_timeout()?))?;
+            self.buffer
+                .get_ref()
+                .set_read_timeout(Some(self.poll_timeout()?))?;
+            #[cfg(windows)]
+            socket_poll::readable(self.buffer.get_ref(), || self.poll_timeout())?;
             match self.buffer.read(&mut body[offset..]) {
                 Ok(0) => {
                     return Err(std::io::Error::new(
@@ -331,7 +344,7 @@ impl Tcp {
                 }
                 Ok(n) => offset += n,
                 Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
-                Err(error) if self.retry_poll(&error) => continue,
+                Err(error) if self.retry_poll(&error)? => continue,
                 Err(error) => return Err(error),
             }
         }
@@ -612,11 +625,13 @@ impl Tcp {
         let mut offset = 0;
         while offset < send.len() {
             self.stream.set_write_timeout(Some(self.poll_timeout()?))?;
+            #[cfg(windows)]
+            socket_poll::writable(&self.stream, || self.poll_timeout())?;
             match self.stream.write(&send[offset..]) {
                 Ok(0) => return Err(std::io::ErrorKind::WriteZero.into()),
                 Ok(n) => offset += n,
                 Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
-                Err(error) if self.retry_poll(&error) => continue,
+                Err(error) if self.retry_poll(&error)? => continue,
                 Err(error) => return Err(error),
             }
         }

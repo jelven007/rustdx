@@ -274,6 +274,8 @@ fn write_until(
     let mut offset = 0;
     while offset < bytes.len() {
         socket.set_write_timeout(Some(io_poll_timeout(deadline, abort_io)?))?;
+        #[cfg(windows)]
+        super::socket_poll::writable(socket, || io_poll_timeout(deadline, abort_io))?;
         match socket.write(&bytes[offset..]) {
             Ok(0) => return Err(io::ErrorKind::WriteZero.into()),
             Ok(n) => offset += n,
@@ -302,6 +304,8 @@ fn read_until(
     let mut offset = 0;
     while offset < bytes.len() {
         socket.set_read_timeout(Some(io_poll_timeout(deadline, abort_io)?))?;
+        #[cfg(windows)]
+        super::socket_poll::readable(socket, || io_poll_timeout(deadline, abort_io))?;
         match socket.read(&mut bytes[offset..]) {
             Ok(0) => return Err(io::ErrorKind::UnexpectedEof.into()),
             Ok(n) => offset += n,

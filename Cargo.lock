@@ -672,6 +672,7 @@ dependencies = [
  "serde_json",
  "thiserror",
  "trade_date_a",
+ "windows-sys 0.61.2",
  "zip 2.4.2",
 ]
 

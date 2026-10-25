@@ -3,7 +3,7 @@ use rustdx_complete::{
     tcp::{Tcp, TcpConfig},
 };
 use std::{
-    io::{Read, Write},
+    io::{ErrorKind, Read, Write},
     net::TcpListener,
     time::{Duration, Instant},
 };
@@ -13,6 +13,14 @@ mod ip_pool_test;
 
 #[test]
 fn idle_tcp_response_is_cancelled_before_request_timeout() {
+    // Run sequentially: both scenarios verify that the global permit returns
+    // to zero, and neither cancellation nor expiry may be reported as peer EOF.
+    for cancel in [true, false] {
+        idle_response_returns_before_peer_closes(cancel);
+    }
+}
+
+fn idle_response_returns_before_peer_closes(cancel: bool) {
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
     let config = TcpConfig {
         ip: Some(listener.local_addr().unwrap()),
@@ -37,18 +45,35 @@ fn idle_tcp_response_is_cancelled_before_request_timeout() {
         socket.read_exact(&mut request).unwrap();
         std::thread::sleep(Duration::from_millis(600));
     });
-    let context = OperationContext::new(Duration::from_secs(5), None).unwrap();
-    let _guard = context.enter();
+    let timeout = if cancel {
+        Duration::from_secs(5)
+    } else {
+        Duration::from_millis(50)
+    };
     let mut tcp = Tcp::with_config(&config).unwrap();
+    let context = OperationContext::new(timeout, None).unwrap();
+    let _guard = context.enter();
     let signal = context.clone();
-    let cancel = std::thread::spawn(move || {
-        std::thread::sleep(Duration::from_millis(50));
-        signal.cancel();
+    let cancellation = cancel.then(|| {
+        std::thread::spawn(move || {
+            std::thread::sleep(Duration::from_millis(50));
+            signal.cancel();
+        })
     });
     let start = Instant::now();
-    assert!(tcp.heartbeat().is_err());
+    let error = tcp.heartbeat().unwrap_err();
+    assert_eq!(
+        error.kind(),
+        if cancel {
+            ErrorKind::Interrupted
+        } else {
+            ErrorKind::TimedOut
+        }
+    );
     assert!(start.elapsed() < Duration::from_millis(400));
-    cancel.join().unwrap();
+    if let Some(cancellation) = cancellation {
+        cancellation.join().unwrap();
+    }
     drop(tcp);
     server.join().unwrap();
     assert_eq!(rustdx_complete::tcp::network_stats().active, 0);

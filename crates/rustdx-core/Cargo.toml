@@ -26,6 +26,9 @@ encoding_rs = { version = "0.8", features = ["fast-gb-hanzi-encode"] }
 md-5 = "0.10"
 zip = { version = "=2.4.2", default-features = false, features = ["deflate"] }
 
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Networking_WinSock"] }
+
 [dev-dependencies]
 insta = "1"
 csv = "1"
