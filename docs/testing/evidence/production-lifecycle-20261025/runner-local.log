@@ -1,0 +1,50 @@
+[1m[32m   Compiling[0m ring v0.17.14
+[1m[32m   Compiling[0m num-traits v0.2.19
+[1m[32m   Compiling[0m regex-syntax v0.8.5
+[1m[32m   Compiling[0m syn v2.0.100
+[1m[32m   Compiling[0m libsqlite3-sys v0.38.2
+[1m[32m   Compiling[0m getrandom v0.3.4
+[1m[32m   Compiling[0m chrono v0.4.40
+[1m[32m   Compiling[0m regex-automata v0.4.9
+[1m[32m   Compiling[0m tempfile v3.27.0
+[1m[32m   Compiling[0m trade_date_a v2026.0.0
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/.worktrees/production-lifecycle-20261025/crates/rustdx-core)
+[1m[32m   Compiling[0m argh_derive v0.1.13
+[1m[32m   Compiling[0m regex v1.11.1
+[1m[32m   Compiling[0m argh v0.1.13
+[1m[32m   Compiling[0m env_filter v0.1.3
+[1m[32m   Compiling[0m env_logger v0.11.7
+[1m[32m   Compiling[0m rustls v0.23.43
+[1m[32m   Compiling[0m rustls-webpki v0.103.15
+[1m[32m   Compiling[0m ureq v3.4.0
+[1m[32m   Compiling[0m jelven-rustdx-cli v2.0.0 (/Users/bytedance/Documents/rustdx/.worktrees/production-lifecycle-20261025/apps/rustdx-cli)
+[1m[32m   Compiling[0m rusqlite v0.40.2
+[1m[32m   Compiling[0m rustdx-runner v0.1.0 (/Users/bytedance/Documents/rustdx/.worktrees/production-lifecycle-20261025/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 55.59s
+[1m[32m     Running[0m tests/control_plane.rs (/tmp/rustdx-system-optimization-20261025/target/debug/deps/control_plane-725de938ece2f353)
+
+running 21 tests
+test evidence_limits_path_traversal_and_controller_exclusion ... ok
+test catalog_cas_preserves_previous_pointer_and_append_only_events ... ok
+test deduplication_and_one_active_attempt_survive_reopen ... ok
+test failed_publication_event_rolls_back_pointer_and_job_state ... ok
+test explicit_worker_cancellation_is_not_reported_as_timeout ... ok
+test tcp_config_excludes_ambiguous_source_offline_and_historical_vintage ... ok
+test strict_config_and_unknown_history_refuse_before_spawn ... ok
+test persisted_worker_statistics_survive_reopen_and_missing_records_are_not_zero_samples ... ok
+test all_explicitly_exempt_keys_publish_empty_partitions_without_a_collector ... ok
+test offline_plan_reports_expected_keys_missing_inputs_and_archive_limited_parallelism ... ok
+test tcp_explicitly_exempt_scope_publishes_without_contacting_the_source ... ok
+test wal_backup_restore_and_corruption_detection ... ok
+test managed_deadline_kills_worker_and_recovery_does_not_rerun ... ok
+test tcp_runner_rejects_forged_csv_even_with_matching_report_digest ... ok
+test database_capacity_rejects_before_request_or_unknown_target ... ok
+test ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts ... ok
+test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ok
+test local_run_and_collector_are_offline_without_an_explicit_warmup ... ok
+test tcp_daily_release_revision_missing_keys_and_offline_recovery ... ok
+test real_cli_release_revision_missing_coverage_and_isolated_restore ... ok
+test scheduled_tcp_scope_publishes_only_after_all_expected_keys_match ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 18.74s
+

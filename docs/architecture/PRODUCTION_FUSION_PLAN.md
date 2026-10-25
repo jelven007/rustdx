@@ -1,5 +1,9 @@
 # rustdx 生产技术方案
 
+<!-- lifecycle:registry -->
+读者：开发/运维；责任：架构维护者。源码核验：2026-10-25；每90日及发布状态或部署拓扑变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 版本：3.0；2026-10-24。方案对应当前单机实现，按[需求](../requirements/REQUIREMENTS.md)追踪。拟扩展能力集中在第8节，不将设计目标表述为已验收结果。
 
 ## 1. 系统职责与工程组织
@@ -75,7 +79,7 @@ unknown、确认丢失或目标尚未开始时，recover不自动INSERT。核查
 
 多目标写入不构成跨库事务。某目标失败时，其他目标可能已有数据，但目录保持旧版本。普通INSERT权限无法阻止凭据持有者向封存release追加，部署须约束外部写入；数据库导出仍检查完整范围。
 
-CLI恢复状态以[导入约定](../operations/IMPORTS.md)为准；runner现场步骤以[运维手册](../runbooks/RUNBOOK.md)及[部署恢复](../../deploy/runner/README.md)为准。
+CLI恢复状态以[导入约定](../operations/IMPORTS.md)为准；runner现场步骤以[运维手册](../runbooks/RUNBOOK.md)及[部署恢复](../../deploy/production/runner/README.md)为准。
 
 ## 6. 资源、观测和部署
 
@@ -106,3 +110,13 @@ CLI恢复状态以[导入约定](../operations/IMPORTS.md)为准；runner现场�
 | G5 多主机 | 当前未实现 | 明确外部协调、失效写入隔离、故障模型后实施并验证 |
 
 验收结果与限制统一维护在[当前验收矩阵](../testing/PRODUCTION_ACCEPTANCE.md)。目录落位见[项目结构](PROJECT_STRUCTURE.md)，历史组件实现证据见[实施记录](../archive/development/PRODUCTION_IMPLEMENTATION.md)。
+
+## 9. 交付与维护设计
+
+当前工程拓扑以[目录职责](PROJECT_STRUCTURE.md)和[ADR-0001](decisions/0001-production-boundaries.md)为准。生产配置与隔离验收明确分开，runtime模板不自动加载；数据库身份、事实版本和数据目录不受源码版本递增控制。
+
+CI从独立任务PR检查开始；合入main后先同步VERSION、自有元数据、两个锁文件和当前文档，再对同一提交执行三平台、MSRV、质量、数据库、fuzz、性能及包消费检查。全部成功才创建v标签，随后原子维护最近三个history源码引用。部署必须固定经过核验的提交/二进制、Job/事实和配置修订，不能只记相同版本号。
+
+故障影响分为源/解析、采集产物、数据库写入、目录发布、下游消费与备份恢复。失败保留最后检查点及旧正式目录；DB unknown不得自动重写，多目标不构成跨库事务。监控字段以OBSERVABILITY为准，恢复动作以RUNBOOK为准，应用消费规则仅在APPLICATION_INTEGRATION定义。
+
+扩展前先验证当前单机容量和恢复证据。引入新来源、分钟契约、实时服务或多机协调时，新增ADR与应有键、失效写入隔离和预算验证；现有目录不为未批准组件预留空实现。

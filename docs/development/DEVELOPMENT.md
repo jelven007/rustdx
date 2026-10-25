@@ -1,6 +1,10 @@
 # 开发说明
 
-更新日期：2026-10-24。遵循根AGENTS.md及rust-engineer规则，Rust 2024 / MSRV 1.89。产品采用同步I/O、有界线程；改变并发模型须有明确需求。目录职责见[项目结构](../architecture/PROJECT_STRUCTURE.md)。
+<!-- lifecycle:registry -->
+读者：开发者；责任：开发维护者。源码核验：2026-10-25；每90日及工具链、检查或构建入口变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
+更新日期：2026-10-25。遵循根AGENTS.md及rust-engineer规则，Rust 2024 / MSRV 1.89。产品采用同步I/O、有界线程；改变并发模型须有明确需求。目录职责见[项目结构](../architecture/PROJECT_STRUCTURE.md)。
 
 ## 1. 构建和日常检查
 
@@ -85,4 +89,14 @@ runner的`pipeline/facts.rs`负责冻结事实校验和应有键遍历，`databa
 
 发布包自带README和许可证。检查实际包清单及解包编译，避免exclude漏掉src/data等源码。核心包与CLI依赖版本同步升级后，按[发布流程](../release/RELEASES.md)先核心后CLI。
 
-目录移动、删除和保全摘要见[迁移记录](../release/PROJECT_RESTRUCTURE.md)。源码构建通过不等于注册表发布、远端CI或目标生产通过。
+目录移动、删除和保全摘要见[迁移记录](../archive/release/PROJECT_RESTRUCTURE_20261024.md)。源码构建通过不等于注册表发布、远端CI或目标生产通过。
+
+## 6. 任务与文档交付流程
+
+每项任务建立独立分支和工作目录，先合入最新main以继承版本；开发、提交和功能分支推送不改号。记录受影响FR、源码边界、消费方和失败状态，在同一PR更新[追踪矩阵](../requirements/TRACEABILITY.md)及[文档登记](../../config/documentation/registry.json)。
+
+示例从core/examples/{usage,capture,validation,diagnostics}查找，Cargo名称保持原值。新示例必须在Cargo.toml显式注册。生产DB/systemd在deploy/production，隔离实验在deploy/acceptance；env模板在config/runtime。目录/脚本路径改变同步迁移说明，禁止修改旧报告或摘要来让新检查通过。
+
+执行`python3 scripts/validation/check_documentation.py`、`python3 scripts/validation/check_documentation_lifecycle.py`和`python3 scripts/release/versioning.py check`；共享结构变更再执行全workspace及真实包解包消费。PR检查完成后合入main，CI先同步版本并重新检查同一提交，再创建标签。发布包上传是独立步骤，源码版本号不证明crates.io存在同版本。
+
+新增自有Cargo/前端元数据登记versions.json；新增关键文档登记读者、责任、权威输入、核验日期、周期和变更触发器。当前文档保存稳定文件名，完成专项结果归archive，原始输入/日志归testing/evidence。留存源码三个history引用不裁剪运行归档或备份。

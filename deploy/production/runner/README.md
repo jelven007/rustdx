@@ -1,9 +1,13 @@
 # 单机 runner 部署与恢复
 
+<!-- lifecycle:registry -->
+读者：部署/值守；责任：运维维护者。源码核验2026-10-25，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../../docs/development/DOCUMENTATION_GOVERNANCE.md)。
+<!-- /lifecycle -->
+
 模板用于 Linux/systemd 的本地 `.day` 采集与版本发布。实际代码仍是同步 I/O、有界线程和子进程；没有跨机协调、跨库事务或内置 Web 服务。模板未在目标 Linux 验收，资源数值是起始配置，须按实际负载调整。
 
-新增[TCP日线配置](../../config/runner/tcp-day.example.json)可由同一run入口执行，
-需按[来源合同](../../docs/development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)
+新增[TCP日线配置](../../../config/runner/tcp-day.example.json)可由同一run入口执行，
+需按[来源合同](../../../docs/development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)
 维护获取日、单位依据、点时范围和网络许可；此来源已有明确两节点/3证券/24条独立样本，
 模板的目标Linux验收仍未完成。
 
@@ -17,7 +21,7 @@ cargo +1.89.0 build --release -p jelven-rustdx-cli -p rustdx-runner
 
 部署人员安装两个二进制至 `/opt/rustdx/bin/`，记录 Git 提交和二进制 SHA-256，创建专用 `rustdx` 用户及其持久根目录 `/var/lib/rustdx`。根目录必须使用支持文件锁、SQLite WAL、原子 rename 和目录 fsync 的本地持久 Unix 文件系统；不要放在共享 NFS 上。
 
-复制 [Job 示例](../../config/runner/job.example.json) 到 `/etc/rustdx/job.json`。替换路径、日期、资源预算、来源修订及日历原始证据摘要；示例中的全零摘要必须替换为实际值。日历、证券历史、点时名单及其公告原字节由数据维护流程提供，项目不会生成真实全市场状态。`facts/` 中原字节以小写 SHA-256 命名。路径和字节摘要都须与维护数据一致。
+复制 [Job 示例](../../../config/runner/job.example.json) 到 `/etc/rustdx/job.json`。替换路径、日期、资源预算、来源修订及日历原始证据摘要；示例中的全零摘要必须替换为实际值。日历、证券历史、点时名单及其公告原字节由数据维护流程提供，项目不会生成真实全市场状态。`facts/` 中原字节以小写 SHA-256 命名。路径和字节摘要都须与维护数据一致。
 
 每个 Job 明确 `planned_date`、`source_as_of`、日期范围、`policy_revision` 和 `source_revision`。修订已发布日期时，`source_revision` 必须增加，`source_as_of` 不能降低。扩展历史所用日历须覆盖完整目录。`database_targets: []` 表示只发布文件目录；配置多个目标时，全部验收通过才推进唯一目录指针。
 
@@ -29,14 +33,14 @@ cargo +1.89.0 build --release -p jelven-rustdx-cli -p rustdx-runner
 
 ```sh
 mongosh --nodb --quiet --norc --eval \
-  'db = connect(process.env.RUSTDX_DBA_MONGO_URI); load("deploy/runner/mongodb.js");'
+  'db = connect(process.env.RUSTDX_DBA_MONGO_URI); load("deploy/production/runner/mongodb.js");'
 ```
 
 ClickHouse 表使用普通 MergeTree，无 TTL、异步插入或替换合并；MongoDB 使用 simple collation 和全部契约维度的完整唯一索引。运行期不执行 DDL，不使用 upsert、FINAL 或删除旧数据。每行包含 dataset、release、契约及日期/市场/代码/品种；契约明确日线、原价、人民币元及股。
 
 发布账号仅拥有目标表/集合的 SELECT/find 和 INSERT/insert；消费者使用独立只读账号。DDL、索引、更新、删除和归档清理属于受控 DBA 流程，不向普通发布账号授予。不要与非受管写入者共享发布凭据；实现通过受管发布流程保持版本隔离，数据库的 INSERT 权限本身仍能被持有者用于向任意 release 追加数据。
 
-`/etc/rustdx/publisher.env` 由部署密钥管理注入，按 [变量示例](../../config/runner/publisher.env.example) 命名，仅 root/服务管理器可读。JSON、账本请求和 mongosh argv 不包含凭据值；ClickHouse 使用认证头，MongoDB URI通过私有进程环境传递，mongosh stderr不进入公开日志。worker通过 `env_clear` 只取得固定 PATH 和私有网络目录。
+`/etc/rustdx/publisher.env` 由部署密钥管理注入，按 [变量示例](../../../config/runtime/publisher.env.example) 命名，仅 root/服务管理器可读。JSON、账本请求和 mongosh argv 不包含凭据值；ClickHouse 使用认证头，MongoDB URI通过私有进程环境传递，mongosh stderr不进入公开日志。worker通过 `env_clear` 只取得固定 PATH 和私有网络目录。
 
 当前子进程仍与控制层使用同一 OS 用户；清空环境防止继承凭据，但不构成对恶意同 UID 程序的权限隔离。更严格的 worker/publisher 身份、存储 ACL 和网络隔离须在目标部署编排并单独验收，不能仅凭这些 systemd 模板宣称已经实现。
 
@@ -88,14 +92,14 @@ rustdx-runner --no-tcp-startup export --root /srv/restore/rustdx-001 --dataset a
 
 服务端全备恢复另按以下顺序编排：停止发布并确认无在途写请求，记录固定catalog/release边界；取得控制层备份与各数据库完整备份及摘要；在全新隔离数据目录恢复数据库和控制文件；逐版本核对文件/数据库全部键、字段、约束与索引。控制备份、数据库备份和对应版本必须属于已经静止的同一边界，不能因为各自备份成功就推导跨库一致性。恢复期间不要让自动调度启动新写入。
 
-[第六阶段演练](../../docs/archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)已在固定Linux镜像完成 ClickHouse `BACKUP/RESTORE DATABASE` 与 MongoDB BSON/metadata `mongodump/mongorestore --stopOnError`；旧容器停止后，另一组空目录恢复600只合成证券的两个版本，两库各2,400行全字段/元数据一致。重复恢复和非法写入拒绝后数据仍一致。[脚本](../../scripts/validation/verify_database_recovery.py)只创建私有loopback服务，可用于重复工程验收；不能指向生产目标。所测5.81秒是小范围新服务启动至核验耗时，未覆盖 MongoDB 物理卷/journal/oplog、持续写入、用户/角色权限和生产规模。
+[第六阶段演练](../../../docs/archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)已在固定Linux镜像完成 ClickHouse `BACKUP/RESTORE DATABASE` 与 MongoDB BSON/metadata `mongodump/mongorestore --stopOnError`；旧容器停止后，另一组空目录恢复600只合成证券的两个版本，两库各2,400行全字段/元数据一致。重复恢复和非法写入拒绝后数据仍一致。[脚本](../../../scripts/validation/verify_database_recovery.py)只创建私有loopback服务，可用于重复工程验收；不能指向生产目标。所测5.81秒是小范围新服务启动至核验耗时，未覆盖 MongoDB 物理卷/journal/oplog、持续写入、用户/角色权限和生产规模。
 
-生产恢复到新端点时，先按[应用接入约定](../../docs/development/APPLICATION_INTEGRATION.md)核查已归档目标身份。恢复控制文件不会自动重写原始请求证据或把收据指向另一库；端点迁移和业务切换须另外编排并验证。目标RPO/RTO与生产恢复通过状态继续按[验收矩阵](../../docs/testing/PRODUCTION_ACCEPTANCE.md)管理。
+生产恢复到新端点时，先按[应用接入约定](../../../docs/development/APPLICATION_INTEGRATION.md)核查已归档目标身份。恢复控制文件不会自动重写原始请求证据或把收据指向另一库；端点迁移和业务切换须另外编排并验证。目标RPO/RTO与生产恢复通过状态继续按[验收矩阵](../../../docs/testing/PRODUCTION_ACCEPTANCE.md)管理。
 
 MongoDB按目标/release复用mongosh会话，每请求至多512行；固定catalog数据库导出也按release复用会话，独立查询审计不追加发布账本。`consumer-audit`不包含在控制层备份中，部署方须另定审计保留期限、总磁盘配额及采集方式；当前留存预览保护该目录，不自动删除。升级到schema4前保存旧备份，执行`migrate`，必要时用`rebuild-metrics`从原观测重建汇总；schema3备份可原样恢复后显式迁移。运行前可执行只读`plan`核对应有键和有效并发。
 
-1,200行工程模拟和单次20,000条指标历史测量不能代替全量吞吐量、稳定Linux或长期SLO验收。当前消费/计量合同见[runner说明](../../apps/rustdx-runner/README.md)，已取得的历史及目标环境限制见[实施记录](../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。
+1,200行工程模拟和单次20,000条指标历史测量不能代替全量吞吐量、稳定Linux或长期SLO验收。当前消费/计量合同见[runner说明](../../../apps/rustdx-runner/README.md)，已取得的历史及目标环境限制见[实施记录](../../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。
 
-生产准入使用[任务/部署验收合同](../../docs/testing/TASK_ADMISSION.md)绑定实际目标、同源码二进制、
+生产准入使用[任务/部署验收合同](../../../docs/testing/TASK_ADMISSION.md)绑定实际目标、同源码二进制、
 配置/事实、资源硬限额、全键字段、权限、持续负载与批准的RPO/RTO。默认模板退出1，
 分钟/快照/订阅没有runner任务入口；本机工程通过不代替这些目标证据。

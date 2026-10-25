@@ -1,0 +1,2 @@
+[1m[31merror[0m[1m:[0m the lock file /Users/bytedance/Documents/rustdx/.worktrees/production-lifecycle-20261025/tools/fuzz/Cargo.lock needs to be updated but --locked was passed to prevent this
+If you want to try to generate the lock file without accessing the network, remove the --locked flag and use --offline instead.

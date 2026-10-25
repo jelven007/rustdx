@@ -1,10 +1,16 @@
 # 外部应用调用约定
 
+<!-- lifecycle:registry -->
+读者：应用集成者；责任：API维护者。源码核验：2026-10-25；每90日及跨接口消费合同变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
+当前源码版本：<!-- version:project -->2.0.0<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+
 更新日期：2026-10-24。适用于应用通过 `rustdx_complete::tcp::stock::Client`、checked 请求及公开结果模型使用本仓库核心库。逐命令签名、返回字段和具体参数上限见[26命令接口手册](../reference/COMMAND_API.md)，已解析/候选/未知字段及证据范围见[字段解析状态](../reference/RESPONSE_FIELD_SEMANTICS.md)；本页定义跨接口的调用和消费规则。
 
-当前核心包为已发布的 `jelven-rustdx-complete 2.0.0`，Rust 导入名为 `rustdx_complete`，最低 Rust 1.89、edition 2024。注册表可使用精确依赖 `version = "=2.0.0"`，发布源码与包摘要见[发布记录](../release/PUBLICATION_20261025.md)。集成应用固定源码提交、源码摘要、依赖锁文件和所用接口版本，更新时检查[迁移说明](../release/MIGRATION.md)。
+已发布的历史核心包为 `jelven-rustdx-complete 2.0.0`，Rust 导入名为 `rustdx_complete`，最低 Rust 1.89、edition 2024。注册表可使用精确依赖 `version = "=2.0.0"`，发布源码与包摘要见[发布记录](../archive/release/PUBLICATION_20261025.md)。集成应用固定源码提交、源码摘要、依赖锁文件和所用接口版本，更新时检查[迁移说明](../release/MIGRATION.md)。
 
-源码path依赖使用 `/path/to/rustdx/crates/rustdx-core`；根目录现在是虚拟Cargo工作区。目录升级、安装和验证入口见[目录迁移](../release/PROJECT_RESTRUCTURE.md)。以下六类规则继续作为所有外部调用方的共同契约。
+源码path依赖使用 `/path/to/rustdx/crates/rustdx-core`；根目录现在是虚拟Cargo工作区。目录升级、安装和验证入口见[目录迁移](../archive/release/PROJECT_RESTRUCTURE_20261024.md)。以下六类规则继续作为所有外部调用方的共同契约。
 
 ## 1. 证券身份与市场范围
 
@@ -118,7 +124,7 @@ DTO序列化不等于原始证据归档。`CommandPage.raw_payload`、`DelistedB
 
 `KlineData<'a>/IndexKlineData<'a>/BatchKline<'a>/BatchBars<'a>` 的代码借用输入字符串，输入生命周期必须覆盖结果使用期。应用跨线程存储、缓存或持久化时应采用拥有证券身份的自有模型或明确的标准化模型，不把全部Client结果视为完全owned。
 
-多Client应用可按业务进程生命周期持有`Arc<QuoteMetadataStore>`，先预热全部所需市场，再用`with_quote_metadata`共享，见[示例](../../crates/rustdx-core/examples/shared_quote_metadata.rs)。借用查找不分配临时代码String；每市场刷新原子替换该市场，其他市场及旧Arc读者保留原世代。跨日仍拒绝过期目录，进程间Store不共享。
+多Client应用可按业务进程生命周期持有`Arc<QuoteMetadataStore>`，先预热全部所需市场，再用`with_quote_metadata`共享，见[示例](../../crates/rustdx-core/examples/usage/shared_quote_metadata.rs)。借用查找不分配临时代码String；每市场刷新原子替换该市场，其他市场及旧Arc读者保留原世代。跨日仍拒绝过期目录，进程间Store不共享。
 
 ## 5. 0547订阅与推送状态
 
@@ -283,4 +289,4 @@ runner输出仍使用`a-share/day/raw/cny/shares/v1`，新采集输入合同为`
 
 `plan --config`只读现有事实/源/磁盘，不启动网络、创建root或迁移账本；输出应有键总数/摘要和有上限样本、初始有效并发及限制项、已知最小固定输入字节、最坏预留缺口和中断期限。初始可启动不保证源历史可枚举完整，Unknown仍拒绝；运行时重新冻结。该计划不授予分钟、快照或订阅资格。
 
-归档的数据库目标包含端点、库/表/集合及凭据环境变量名。restore不会自动替换端点或修改原始收据；目标迁移时须按原身份核查恢复编排，不能改冻结请求/收据或摘要来指向另一库。第六阶段在相同loopback端点/命名空间、另一组全新数据目录原生恢复后，固定v1/v2与原文件精确一致；生产新端点迁移未据此通过。执行方法和范围见[部署恢复](../../deploy/runner/README.md#5-备份与隔离恢复)及[原生恢复验收](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)。
+归档的数据库目标包含端点、库/表/集合及凭据环境变量名。restore不会自动替换端点或修改原始收据；目标迁移时须按原身份核查恢复编排，不能改冻结请求/收据或摘要来指向另一库。第六阶段在相同loopback端点/命名空间、另一组全新数据目录原生恢复后，固定v1/v2与原文件精确一致；生产新端点迁移未据此通过。执行方法和范围见[部署恢复](../../deploy/production/runner/README.md#5-备份与隔离恢复)及[原生恢复验收](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)。

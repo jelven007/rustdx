@@ -1,0 +1,4 @@
+     Locking 71 packages to latest Rust 1.89.0 compatible versions
+   Compiling rustdx-consumer-current v0.0.0 (/private/tmp/rustdx-version-policy-20261025/synced-preflight/signature-consumers/current)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.77s
+     Running `/private/tmp/rustdx-system-optimization-20261025/target/debug/rustdx-consumer-current`

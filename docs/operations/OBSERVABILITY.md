@@ -1,5 +1,9 @@
 # 采集阶段观测
 
+<!-- lifecycle:registry -->
+读者：值守/运营；责任：运维维护者。源码核验：2026-10-25；每30日及指标、阈值或告警变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 更新日期：2026-10-24。本文定义统计范围；运营人员按业务名单和日期判断可用性，运维人员按[运维手册](../runbooks/RUNBOOK.md)设置告警和恢复。生产阈值依据目标环境和批准SLO维护。
 
 当前schema7在day清单中保留schema6引入的`observations`及`freshness`，不改变CSV列或数据库逻辑键。`rustdx_cli::observation`提供可克隆的每任务观测对象、线程作用域、失败自动计数的RAII阶段及临时文件写入包装；解析工作线程显式进入同一任务，不使用进程全局阶段计数。
@@ -25,7 +29,7 @@
 
 回归检查包含同任务并发和嵌套时间并集、其他任务隔离、panic/失败RAII释放、临时文件跨线程排队与发布释放、1/4/8线程CSV字节一致、跨块质量失败、取消清理，以及本地ZIP解压观测跨清单创建承接。
 
-新增runner可从SQLite账本导出结构化状态和Prometheus textfile，包含Job状态、未结束Attempt、事件、发布时间、指标刷新时点与剩余磁盘。`metrics --output`原子替换；它不把CLI阶段P95合并为跨任务P95，也不把自然日发布时间差当交易日覆盖。systemd指标timer及告警只是部署模板，阈值须结合实际Job预算/日历与批准SLO；字段/命令和接入步骤见[runner部署](../../deploy/runner/README.md)。本机回归不提供长期生产P95或SLO。
+新增runner可从SQLite账本导出结构化状态和Prometheus textfile，包含Job状态、未结束Attempt、事件、发布时间、指标刷新时点与剩余磁盘。`metrics --output`原子替换；它不把CLI阶段P95合并为跨任务P95，也不把自然日发布时间差当交易日覆盖。systemd指标timer及告警只是部署模板，阈值须结合实际Job预算/日历与批准SLO；字段/命令和接入步骤见[runner部署](../../deploy/production/runner/README.md)。本机回归不提供长期生产P95或SLO。
 
 runner现在为collector设置私有`RUSTDX_TASK_OBSERVATIONS`路径与attempt身份。CLI成功、业务失败或协作取消退出时原子保存本进程网络计数和任务阶段；runner核对attempt并记录监督进程PID后写入SQLite schema3的`attempt_observations`，兼容collector包装器启动的CLI子进程。独立metrics进程累加这些持久记录，以owner=worker/controller区分；controller请求计数取任务前后差值，进程峰值/P95不当作任务值。SIGKILL或未进入主逻辑的worker保存unavailable记录，不能当零请求；不把metrics进程的NetworkStats代入worker，也不合并各任务的P95。controller记录在发布事务前持久化，发布成败读取账本状态。
 

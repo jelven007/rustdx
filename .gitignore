@@ -21,7 +21,7 @@ apps/rustdx-cli/factor.csv
 .idea/
 .env
 config/runtime.env
-deploy/clickhouse/.env
+deploy/production/clickhouse/.env
 *.swp
 *.swo
 *~
@@ -39,8 +39,8 @@ crates/rustdx-core/tests/.struct_size.rs.pending-snap
 PR_TEMPLATE.md
 
 # 临时调试文件
-crates/rustdx-core/examples/*_debug.rs
-crates/rustdx-core/examples/*_raw.rs
+crates/rustdx-core/examples/diagnostics/*_debug.rs
+crates/rustdx-core/examples/diagnostics/*_raw.rs
 
 # 备份文件
 *.bak
@@ -62,6 +62,7 @@ data/*
 reports/
 /acceptance/
 .screenshots/
+/.worktrees/
 
 # 本次工程迁移的有限检查日志作为固定验收证据提交。
 !docs/testing/evidence/project-restructure-20261024/checks/*.log
@@ -72,6 +73,12 @@ reports/
 !docs/testing/evidence/system-review-*/*.log
 !docs/testing/evidence/system-optimization-*/*.log
 !docs/testing/evidence/system-optimization-*/**/*.log
+!docs/testing/evidence/version-policy-*/*.log
+!docs/testing/evidence/version-policy-*/**/*.log
 
 # 历史演练的编译后二进制保留本地，Git提交保留单独路径/大小/SHA清单。
 docs/testing/evidence/acceptance-stage6-20261024/**/collector.bin
+
+config/runtime/*.env
+!docs/testing/evidence/production-lifecycle-*/*.log
+!docs/testing/evidence/production-lifecycle-*/**/*.log

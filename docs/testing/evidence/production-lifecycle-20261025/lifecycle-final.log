@@ -1,0 +1,1 @@
+{"schema_version": 1, "status": "passed", "checked_on": "2026-10-25", "documents": 34, "issues": [], "scope": "Static lifecycle and cadence; source-change semantics require PR review."}

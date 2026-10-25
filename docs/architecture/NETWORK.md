@@ -1,5 +1,9 @@
 # 受管 TCP/HTTP 的任务与连接预算
 
+<!-- lifecycle:registry -->
+读者：开发/集成者；责任：网络及协议维护者。源码核验2026-10-25，每90日及网络预算、取消或许可规则变化复核，治理见[登记](../development/DOCUMENTATION_GOVERNANCE.md)。
+<!-- /lifecycle -->
+
 更新日期：2026-10-24；包含任务/共享资源和进程默认启动初始化，尚未发布新crate版本。开发调用见[DEVELOPMENT.md](../development/DEVELOPMENT.md)，网络排障与部署限制见[RUNBOOK.md](../runbooks/RUNBOOK.md)，实际服务及观测证据见[NEXT_OPTIMIZATION.md](../archive/history/NEXT_OPTIMIZATION.md)。
 
 `Tcp::new/with_config`、Client 主连接和 ConnectionPool 都使用同一进程预算，默认最多8条，包含正在建立、借出、空闲和重连的连接。重连先 shutdown 旧 socket，在原许可内握手；失败连接及丢弃的池槽位释放许可。同一 Client 的批次通过有界等待串行化，批次内固定 worker 并行，批次完成不保留连接，防止空闲批量池占住其他 Client 的配额。

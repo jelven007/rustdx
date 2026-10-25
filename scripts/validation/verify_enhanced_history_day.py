@@ -18,7 +18,7 @@ WORKSPACE = Path(__file__).resolve().parents[2]
 KLINE_DECODER = workspace_path("docs/testing/evidence/kline-volume-20261024/validate.py")
 FIELDS = ["time_minutes", "price_acc_raw", "volume", "order_count", "status_raw", "reserved_raw"]
 SOURCES = [
-    "crates/rustdx-core/examples/validate_enhanced_history_day.rs",
+    "crates/rustdx-core/examples/validation/validate_enhanced_history_day.rs",
     "scripts/validation/verify_enhanced_history_day.py",
     "scripts/validation/verify_enhanced_history_transaction.py",
     "crates/rustdx-core/src/tcp/stock/enhanced_history_transaction.rs",

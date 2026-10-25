@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-25T00:51:17.311207+00:00",
+  "source_base": "15de10993cb9411476363fa2eb81cf35a962eacc",
+  "branch": "codex/version-policy-20261025",
+  "local_version": "2.0.0",
+  "simulated_ci_version": "2.0.1",
+  "local_checks": [
+    {
+      "name": "python",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-25T00:41:46.155314+00:00",
+      "log": "python.log"
+    },
+    {
+      "name": "versions",
+      "command": [
+        "python3",
+        "scripts/release/versioning.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-25T00:42:05.111102+00:00",
+      "log": "versions.log"
+    },
+    {
+      "name": "documentation",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation.py"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-25T00:42:05.243390+00:00",
+      "log": "documentation.log"
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-25T00:42:05.634742+00:00",
+      "log": "fmt.log"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-25T00:42:09.197844+00:00",
+      "log": "clippy.log"
+    },
+    {
+      "name": "tests",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-25T00:42:43.875112+00:00",
+      "log": "tests.log"
+    },
+    {
+      "name": "consumers",
+      "command": [
+        "python3",
+        "scripts/release/check_consumers.py",
+        "--output",
+        "/tmp/rustdx-version-policy-20261025/source-consumers",
+        "--cargo",
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "started_at": "2026-10-25T00:47:56.660087+00:00",
+      "log": "consumers.log"
+    }
+  ],
+  "rust_tests": {
+    "passed": 585,
+    "failed": 0,
+    "ignored": 28
+  },
+  "python_tests": 31,
+  "final_version_regressions": 8,
+  "actionlint": {
+    "version": "1.7.12",
+    "exit_code": 0
+  },
+  "synced_fuzz_packages": {
+    "jelven-rustdx-complete": "2.0.1",
+    "rustdx-fuzz": "2.0.1"
+  },
+  "synced_package_preflight": "passed",
+  "scope": "Local checks and private Git/2.0.1 synchronization simulation only; not remote main execution or publication",
+  "remote_main_version_execution": "pending PR merge",
+  "publication_qualified": false,
+  "files": [
+    {
+      "path": "actionlint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "clippy.log",
+      "bytes": 5060,
+      "sha256": "fc1981305009dd3bc546955552db347c4bed72f6e168043ffebfe4ba20b298f8"
+    },
+    {
+      "path": "documentation.log",
+      "bytes": 201,
+      "sha256": "cc7ab3ac4fa8d60d4d8c3ab7b4f3928bc9c3eb08b6314ef9ffbda89e64e60f23"
+    },
+    {
+      "path": "fmt.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local-checks.json",
+      "bytes": 2091,
+      "sha256": "75d6fd99cc9428965fc03996678c93487d2416a82e9c83af7ab310551f104f14"
+    },
+    {
+      "path": "python.log",
+      "bytes": 3193,
+      "sha256": "2f18a887ac63d4bbb55212dc67d0f5dcee0c1b4965df2cdedff38c9a9033b972"
+    },
+    {
+      "path": "source-consumers/consumers.json",
+      "bytes": 3331,
+      "sha256": "d5a4dc971e01ab778f4fe03dbd4407c01e7efc22d02a46e0aa2c2b03548c51f5"
+    },
+    {
+      "path": "source-consumers/current.log",
+      "bytes": 1864,
+      "sha256": "59b497127626b92878a4f372807769ddd539babbd5246a92db28d3b01e154687"
+    },
+    {
+      "path": "source-consumers/legacy-calendar.log",
+      "bytes": 57082,
+      "sha256": "e467d0bd205828ffe5e65477e8e24031005239461b8eba7ab9785cff797e02c2"
+    },
+    {
+      "path": "source-consumers/legacy-finance.log",
+      "bytes": 55490,
+      "sha256": "1bd7d189c7258a5c04085562be96db11d0567e2384235a92cb420d824dd62fd6"
+    },
+    {
+      "path": "source-consumers/legacy-heartbeat.log",
+      "bytes": 55510,
+      "sha256": "97bb5023d347179b1a5a67103ad8fcc7ea315483484aaef887a9e3d32037b04d"
+    },
+    {
+      "path": "synced-fuzz-metadata.log",
+      "bytes": 1821,
+      "sha256": "842a4b3eb9ee6cdb2e5f6045e9a4d17d6209c1ab94fe6ec7c5c137916a39b3ad"
+    },
+    {
+      "path": "synced-metadata.json",
+      "bytes": 662,
+      "sha256": "5463295f69f38c9c1096d77d55b034beb1bb10d7665ae563879b000aabbb418d"
+    },
+    {
+      "path": "synced-package.log",
+      "bytes": 76,
+      "sha256": "41410ddbf849e8e57c9ab1979479a0d50d7511849261424171ec52efbb5bb7db"
+    },
+    {
+      "path": "synced-preflight/downstream-lock.log",
+      "bytes": 67,
+      "sha256": "8a6f8a655b27b245bf7ff2a9f90f228185e192e03d80a177d1a8668e33a3c351"
+    },
+    {
+      "path": "synced-preflight/downstream.log",
+      "bytes": 436,
+      "sha256": "fda1c4459ec2f29f345ad10576e36db60f4dadb66034b26c67ca2d1fe1f37474"
+    },
+    {
+      "path": "synced-preflight/package-jelven-rustdx-cli.log",
+      "bytes": 1931,
+      "sha256": "540e20df64be4c7f31d94adcbf8166d79b4ee34687de3dfcfbc105ca78e1d4bc"
+    },
+    {
+      "path": "synced-preflight/package-jelven-rustdx-complete.log",
+      "bytes": 10392,
+      "sha256": "a48866d92a9432a8b2c1198fddf3b4da792caa7619a39ad74efa8af5c508777b"
+    },
+    {
+      "path": "synced-preflight/package-staging-lock.log",
+      "bytes": 481,
+      "sha256": "8083bfc86893023fb47e07522d9febbc7ec55c02b8db27c570b8f837c176e41e"
+    },
+    {
+      "path": "synced-preflight/preflight.json",
+      "bytes": 418846,
+      "sha256": "86bb34a4d25aae1e1fd4a9ba98ae2f5aeb0e64348729907a2c3f3d17ef6d48d1"
+    },
+    {
+      "path": "synced-preflight/signature-consumers/consumers.json",
+      "bytes": 3424,
+      "sha256": "d8ae68cfc453d195d900bc3474180ab0f9d0aee0e642a4bcc1aeec64f673bb84"
+    },
+    {
+      "path": "synced-preflight/signature-consumers/current.log",
+      "bytes": 375,
+      "sha256": "d5a09b96bc1295569fa34b7410741ef3e61d44fd15933e3f180708d12f59c51e"
+    },
+    {
+      "path": "synced-preflight/signature-consumers/legacy-calendar.log",
+      "bytes": 57105,
+      "sha256": "f384970b6124f708a28e1c39bfb7a41a28855435782fa7b375a9cf55f084a952"
+    },
+    {
+      "path": "synced-preflight/signature-consumers/legacy-finance.log",
+      "bytes": 56295,
+      "sha256": "14cd3cd04f0db784eac40c718226209560bf38b1a43b24cccd27d3a1f53e1eb1"
+    },
+    {
+      "path": "synced-preflight/signature-consumers/legacy-heartbeat.log",
+      "bytes": 56315,
+      "sha256": "48836bf4d2fcbbbad896ae6ce126221571ffcd04320367c48822395e2a70098d"
+    },
+    {
+      "path": "synced-preflight/signature-consumers.log",
+      "bytes": 96,
+      "sha256": "6c6e63bdf0b26266837073dc268d6dbd2ff1197f5e427c3e65ef6277ade44b20"
+    },
+    {
+      "path": "synced-preflight/unpacked-cli-lock.log",
+      "bytes": 110,
+      "sha256": "9dca1df974668e75ec3871d6c449acfb52c165cff4af59614414b26a61962514"
+    },
+    {
+      "path": "synced-preflight/unpacked-cli.log",
+      "bytes": 1568,
+      "sha256": "a2b15bdc3b92f60aaa5684f7f229554245e410755323d76fac085073dd4c05cb"
+    },
+    {
+      "path": "tests.log",
+      "bytes": 66831,
+      "sha256": "3fd68225c6189658506cdaccb17e30aef702b58f9166f48f0fcade2a35cb3efb"
+    },
+    {
+      "path": "version-final.log",
+      "bytes": 782,
+      "sha256": "ce7530b70d1ab58fcab9cd271f084b3a2ee235226f31b550eae99cf9d12ff70a"
+    },
+    {
+      "path": "versions.log",
+      "bytes": 21,
+      "sha256": "e2e2eca5e05d722b46268da90a5f6981d2c50bb04852f2545aff82a31f3d1462"
+    }
+  ]
+}

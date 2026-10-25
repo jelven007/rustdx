@@ -1,6 +1,12 @@
 # 工程目录与责任边界
 
-更新日期：2026-10-24。根目录是虚拟Cargo工作区，统一依赖、profiles和锁文件；产品逻辑按核心库与应用分开，测试样本就近放置。包名、Rust导入路径和二进制名保持兼容，源码path依赖使用新位置。
+<!-- lifecycle:registry -->
+读者：开发/部署；责任：架构维护者。源码核验：2026-10-25；每90日及目录或依赖方向变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
+源码核验：2026-10-25。供开发者、测试和部署维护者定位文件与依赖；责任为架构维护者。权威输入是Cargo工作区、实际源码和部署配置。每次目录/依赖改变及每90日复核；触发后未同步或超过周期即过期。治理登记见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)。
+
+根目录是虚拟Cargo工作区，统一依赖、profiles和锁文件。核心库、采集CLI、单机控制层分别承担产品责任；不按未来微服务假设拆出空包。决策见[ADR-0001](decisions/0001-production-boundaries.md)。
 
 ## 1. 当前目录
 
@@ -20,7 +26,11 @@ rustdx/
 │       │   └── operation.rs / pool.rs / cache.rs / indicators.rs
 │       ├── tests/fixtures/             # 固定二进制、报文、独立期望
 │       ├── tests/snapshots/            # Rust结构版本快照
-│       ├── examples/                   # 使用、采样、诊断
+│       ├── examples/
+│       │   ├── usage/                  # 应用使用
+│       │   ├── capture/                # 原始请求/响应采样
+│       │   ├── validation/             # 显式在线验收
+│       │   └── diagnostics/            # 调试及性能探针
 │       └── benches/                    # 指标性能观测
 ├── apps/
 │   ├── rustdx-cli/                     # jelven-rustdx-cli / rustdx_cli / rustdx
@@ -38,11 +48,16 @@ rustdx/
 ├── tools/fuzz/                         # 独立workspace与锁文件
 ├── config/                             # 无凭据配置及版本化参考数据
 │   ├── calendars/
-│   └── runner/
+│   ├── runtime/                        # 无凭据env模板
+│   ├── runner/                         # 严格Job及TCP来源模板
+│   ├── maintenance/ / consumption/     # 事实维护及消费样例
+│   ├── acceptance/                     # 验收矩阵/目标模板
+│   └── release/ / documentation/       # 版本/门禁与文档登记
 ├── deploy/                             # 数据库/systemd/告警/恢复模板
-│   ├── clickhouse/
-│   ├── acceptance/
-│   └── runner/
+│   ├── production/
+│   │   ├── clickhouse/                 # 持久数据库模板
+│   │   └── runner/                     # systemd/DB/告警
+│   └── acceptance/                     # 独立临时数据库环境
 ├── scripts/                            # 可从仓库外调用的工程工具
 │   ├── dev/ / ops/ / bench/
 │   ├── validation/
@@ -71,7 +86,7 @@ cargo bench -p jelven-rustdx-complete --bench indicators
 cargo install --path apps/rustdx-cli --locked
 ```
 
-crate内部相对测试路径以该crate为基准；需要工程级证据的测试从CARGO_MANIFEST_DIR定位根目录。脚本从自身位置定位根目录。根目录没有src/lib.rs，不再作为path依赖入口。
+45个核心示例在Cargo.toml显式登记名称和新路径，autoexamples=false；同名命令保持有效。采样及validation示例可能联网，不属于默认离线验收。crate内部相对测试路径以该crate为基准；工程级证据从CARGO_MANIFEST_DIR定位根目录。脚本从自身位置定位根目录。根目录没有src/lib.rs，不作为path依赖入口。
 
 ## 3. 文件放置和所有权
 
@@ -91,6 +106,4 @@ target、本机.cargo、fuzz语料、日志和私有配置属于本机/运行环
 
 ## 4. 迁移和清理
 
-本次移动src/tests/examples/benches、两个应用、外部测试、fuzz及文档；同步Cargo、CI、脚本、include引用和应用path依赖。已实施的重复计划、需求跳转页、一次性临时审计生成脚本和Finder元数据删除；原始证据、必要参考来源、许可证及运行数据保留。
-
-逐文件原路径、新路径、摘要及删除原因见[迁移清单](../testing/evidence/project-restructure-20261024/migration.json)，使用方升级步骤见[迁移记录](../release/PROJECT_RESTRUCTURE.md)。原始JSON中的旧路径是采样时事实，通过映射定位；不能全局替换后仍声称摘要未变。
+2026-10-24完成根工作区分层；本次完善示例分组、生产/验收部署、运行env和生命周期文档。完成阶段报告归archive，根审查材料归testing/evidence。逐文件摘要及兼容入口见[当前迁移说明](../release/STRUCTURE_MIGRATION.md)。冻结JSON中的旧路径仍是当时事实，解析器通过迁移映射定位。

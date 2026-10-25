@@ -1,0 +1,13 @@
+test_all_decimal_carries_and_limit (test_versioning.VersionPolicy) ... ok
+test_event_payload_and_main_cap (test_versioning.VersionPolicy) ... ok
+test_no_local_or_feature_write_entry (test_versioning.VersionPolicy) ... ok
+test_owned_metadata_locks_frontend_and_history (test_versioning.VersionPolicy) ... ok
+test_pr_inheritance_and_illegal_local_increment (test_versioning.VersionPolicy) ... ok
+test_rejected_write_fails_without_repeated_increments (test_versioning.VersionPolicy) ... ok
+test_remote_replay_multi_commit_push_cas_lost_ack_and_tags (test_versioning.VersionPolicy) ... ok
+test_workflow_order_all_checkout_revisions_and_permissions (test_versioning.VersionPolicy) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 16.489s
+
+OK

@@ -1,5 +1,9 @@
 # 日期化涨跌幅规则
 
+<!-- lifecycle:registry -->
+读者：应用集成/运营；责任：规则维护者。源码核验：2026-10-25；每30日及交易所规则公告或核实区间变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 核实日期：2026-10-22。`RULE_VERSION = exchange-rules/2026-07-06`。主板规则查询覆盖2014-01-01起，创业板2009-10-30起，科创板2019-07-22起，北交所2021-11-15起；均截止核实日期。范围外返回错误，不推测旧制度或未来政策。
 
 对应源码7cd02e7及后续优化，尚未发布新crate版本。业务使用与证券事实维护见[OPERATIONS.md](../operations/OPERATIONS.md)，接口和迁移见[DEVELOPMENT.md](../development/DEVELOPMENT.md)、[MIGRATION.md](../release/MIGRATION.md)。外部日历扩展不会自动扩大本规则核实范围。

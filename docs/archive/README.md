@@ -4,6 +4,9 @@
 
 17项工程迭代收尾见[最终检查报告](development/OPTIMIZATION_FINAL_20261025.md)，另有[批量预算与目录查找](development/OPTIMIZATION_BATCH_METADATA_20261025.md)、[在线调度与留存预览](development/OPTIMIZATION_ACQUISITION_RETENTION_20261025.md)；真实范围与目标生产边界分别保留。
 
+版本流程实施及本机/隔离验证见[版本规则实施记录](development/VERSION_POLICY_IMPLEMENTATION_20261025.md)；
+当前有效规则见[版本管理](../release/VERSION_POLICY.md)。
+
 最新专项：[通用资源与推送门禁修复](development/RESOURCE_CONTRACT_PUSH_ACCEPTANCE_FIX_20261024.md)、[板块完整MD5与严格解析修复](development/BLOCK_FILE_INTEGRITY_FIX_20261024.md)、[TCP日线整数股数修复](development/TCP_DAILY_INTEGER_SHARES_FIX_20261024.md)、[0feb日期编码修复与两节点日期对照](development/RECENT_MINUTES_DATE_SELECTOR_FIX_20261024.md)。旧差异和错位的原始记录保持不变，修复后范围另行取证。
 
 ## 按领域检索
@@ -24,3 +27,5 @@
 原始报文、JSON、参考源码和日志在[testing/evidence](../testing/evidence)，字节按原摘要保留。路径搬迁、删除原因及原文件摘要见[迁移清单](../testing/evidence/project-restructure-20261024/migration.json)，核验规则见[证据管理](../testing/EVIDENCE.md)。
 
 报告中代码块的旧运行命令用于复现当时环境；当前命令入口见[开发说明](../development/DEVELOPMENT.md)。保留的第三方源码快照遵循其原许可证，仅作为协议与独立核验来源。
+
+本次归档保留原文：[17项优化进度](development/OPTIMIZATION_PROGRESS_20261025.md)、[系统优化进度](development/SYSTEM_OPTIMIZATION_PROGRESS_20261025.md)、[原审查](development/RUSTDX_OPTIMIZATION_REVIEW_20261022.md)、[原目录迁移](release/PROJECT_RESTRUCTURE_20261024.md)、[源码交付](release/OPTIMIZATION_SOURCE_DELIVERY_20261025.md)、[2.0.0发布](release/PUBLICATION_20261025.md)。旧相对/绝对路径通过[迁移说明](../release/STRUCTURE_MIGRATION.md)追溯，正文保留当时事实。

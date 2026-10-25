@@ -7,9 +7,12 @@ import io
 import json
 from pathlib import Path, PurePosixPath
 import subprocess
+import sys
 import tarfile
 
 from source_scope import digest_file, fingerprint, git_paths
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "validation"))
+from evidence_paths import relocated_path
 
 ROOT = Path(__file__).resolve().parents[2]
 PREFIXES = ("docs/testing/evidence/", "project-review-20261022/")
@@ -20,7 +23,7 @@ def safe_path(root, name):
     relative = PurePosixPath(name)
     if relative.is_absolute() or ".." in relative.parts or not relative.parts:
         raise ValueError(f"unsafe evidence path: {name}")
-    path = root / str(relative)
+    path = relocated_path(root, str(relative))
     for parent in [path, *path.parents]:
         if parent == root:
             break
@@ -71,6 +74,11 @@ def inventory(root, include_local=False):
     expected_local = {row["path"]: row for row in local}
     if include_local:
         names.update({name: "local_retained" for name in expected_local})
+    migrated_frozen = {}
+    for old, identity in frozen.items():
+        if old.startswith("project-review-20261022/"):
+            moved = relocated_path(root, old).relative_to(root).as_posix()
+            migrated_frozen[moved] = identity
     records = []
     for name, availability in sorted(names.items()):
         path = safe_path(root, name)
@@ -83,8 +91,9 @@ def inventory(root, include_local=False):
             for block in iter(lambda: stream.read(1024 * 1024), b""):
                 sha.update(block)
                 blob.update(block)
-        if name in frozen:
-            mode, kind, oid = frozen[name]
+        identity = frozen.get(name, migrated_frozen.get(name))
+        if identity:
+            mode, kind, oid = identity
             actual_mode = "100755" if path.stat().st_mode & 0o111 else "100644"
             if kind != "blob" or mode != actual_mode or oid != blob.hexdigest():
                 raise ValueError(f"frozen HEAD evidence changed: {name}")
@@ -97,7 +106,7 @@ def inventory(root, include_local=False):
             "files_sha256": fingerprint(records), "frozen_head_bytes": "verified",
             "local_binaries_included": include_local, "local_binaries_declared": len(local),
             "local_binaries_reference": LOCAL, "remote_object_store": "not configured",
-            "retention": "Existing Git history and local originals retained; no migration or deletion performed."}
+            "retention": "Existing evidence bytes retained; recorded path migrations resolved separately."}
 
 
 def bundle(root, manifest, destination, prefix):

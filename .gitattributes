@@ -1,6 +1,6 @@
 # Frozen evidence is reviewed by recorded hashes; preserve bytes on every platform.
 docs/testing/evidence/** -text -diff -whitespace
-project-review-20261022/** -text -diff -whitespace
+docs/testing/evidence/project-review-20261022/** -text -diff -whitespace
 # Bounded reports and reference source are reviewable without newline conversion.
 docs/testing/evidence/**/summary.json diff
 docs/testing/evidence/**/inventory.json diff

@@ -24,7 +24,7 @@ const MAX_BYTES: usize = 64 * 1024 * 1024;
 const STOCKS: [(u16, &str); 3] = [(0, "000001"), (0, "159915"), (1, "510300")];
 
 #[cfg(test)]
-#[path = "../tests/common/extended_protocol.rs"]
+#[path = "../../tests/common/extended_protocol.rs"]
 mod protocol;
 
 fn save(path: &Path, value: &impl serde::Serialize) -> io::Result<()> {

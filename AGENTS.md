@@ -15,3 +15,20 @@
 - 新测试与固定夹具就近放在所属 crate；原始协议/验收证据放 `docs/testing/evidence`，历史分析和实施报告放 `docs/archive`。
 - 当前文档从 `docs/README.md` 导航；保持 FR-01 至 FR-18 追踪，跨接口消费规则统一维护在 `docs/development/APPLICATION_INTEGRATION.md`。
 - 不改写冻结证据的字节、来源或历史摘要来满足新检查；路径迁移与新的验证结果另行记录。
+
+# 版本与分支
+
+- 每项任务使用独立分支和工作目录，通过 PR 合入 `main`。
+- 开发、提交、本地合并和功能分支推送不改版本；合并最新主线可继承版本。
+- `VERSION` 严格采用单数字 `a.b.c`，十进制进位，最高 `9.9.9`。
+- 每次远程 `main` push 仅由 CI 递增一次，同次多提交仍一次，重跑复用 `run_id` 记录。
+- CI 先同步自有包/前后端元数据、锁及当前文档，再执行全部质量检查，通过后打 `v<版本>` 标签。
+- 新增元数据登记到 `config/release/versions.json`；不修改第三方/协议/数据版本及历史证据。
+- 完整执行与权限边界见 [版本管理](docs/release/VERSION_POLICY.md)。
+
+# 文档与生产模板
+
+- 关键文档登记到 `config/documentation/registry.json`，同PR更新FR追踪、权威合同和核验日期；执行导航与生命周期检查。
+- 生产模板位于 `deploy/production`，隔离验收位于 `deploy/acceptance`；环境模板位于 `config/runtime`，由shell或服务管理器显式注入。
+- 核心示例按usage/capture/validation/diagnostics分组并显式注册Cargo名称。
+- 主线全部检查通过后由CI保留最近三个 `history/*` 源码引用；v标签、数据目录、账本、冻结证据和备份保留独立管理。

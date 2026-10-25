@@ -42,8 +42,9 @@
 | release/preflight.py | 源码归档/身份及解包下游预检 | Python3、Rust1.89/Cargo；默认干净树，--snapshot允许审核未提交源码；不上传或提交 |
 | release/source_scope.py | scope1工程文件身份 | 排除大型历史证据；就近离线夹具保留 |
 | release/evidence_manifest.py | 历史原件库存、获取校验及可选分发包 | Python3 stdlib/Git；核对冻结HEAD与12份本地collector，无删除/上传 |
-| release/release_gate.py | 干净HEAD最新三平台/MSRV/质量/两库等结果及实际包制品门禁 | gh只读API；离线记录不授予发布资格，发布脚本确认前后调用 |
-| release/check_consumers.py | 独立新2.0调用方运行与旧日历/心跳/财务E0308预期失败 | Python3、Rust1.89/Cargo；支持源码或实际解包核心，输出目录在仓库外；只覆盖已声明破坏性签名 |
+| release/release_gate.py | CI加号提交对应最新运行尝试的三平台/MSRV/质量/两库/标签及实际包制品门禁 | gh只读API；按run_id与原推送SHA定位，制品绑定实际检查SHA；离线记录不授予发布资格 |
+| release/check_consumers.py | 独立当前调用方运行与旧日历/心跳/财务E0308预期失败 | Python3、Rust1.89/Cargo；支持源码或实际解包核心，输出目录在仓库外；只覆盖已声明破坏性签名 |
+| release/versioning.py | 单数字版本、登记元数据与main推送幂等加号/标签 | Python3 stdlib/Git；本地check/check-pr只读，prepare/tag限定GitHub main push；见[版本规则](../docs/release/VERSION_POLICY.md) |
 
 ```sh
 bash scripts/dev/run_comprehensive_test.sh offline
@@ -64,3 +65,5 @@ report默认保存到`${TMPDIR:-/tmp}/rustdx-reports`，可通过RUSTDX_REPORT_D
 发布脚本只在正式发包任务使用，本次目录整理没有运行。全all-features/MSRV/fuzz门禁另见[开发说明](../docs/development/DEVELOPMENT.md)及[版本交付](../docs/release/RELEASES.md)。
 
 `bench/measure_runner_history.py --binary /absolute/rustdx-runner --output /external/history.json`在新的私有临时root构造20,000条合成Job/观测、显式迁移schema3→4，再测量metrics/status的CLI耗时和RSS；保留样本和日志，不使用业务root，不代表生产采集进程树内存。runner的`plan --config /absolute/job.json`提供不联网的应有键/初始并发预检，合同见[应用接入](../docs/development/APPLICATION_INTEGRATION.md)。
+
+文档治理检查：`python3 scripts/validation/check_documentation_lifecycle.py`；登记、核验周期和责任见[治理说明](../docs/development/DOCUMENTATION_GOVERNANCE.md)。历史证据路径按迁移映射解析，原始manifest不重写。

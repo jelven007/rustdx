@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "source_base": "696e80040abc935a32ab2c12bacc86c40bfa6a36",
+  "scope": "Current local source; external tests skipped, target production not claimed.",
+  "checks": [
+    {
+      "label": "fmt",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 3.555,
+      "log": "fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 10.698,
+      "log": "clippy.log",
+      "sha256": "5911a898fd683efc773694fa8db9396bd49d7f5e9d0a815ef42a3a6556af3b5a"
+    },
+    {
+      "label": "build",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "build",
+        "--workspace",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 52.199,
+      "log": "build.log",
+      "sha256": "86399d176e084133228caf631fdfdf23d52ae25a013394d0231129318721dea3"
+    },
+    {
+      "label": "tests",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "--workspace",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 185.306,
+      "log": "tests.log",
+      "sha256": "980ec4803e4e2474ad48383ec8dbd7eba03f9b9e8baeb62b76335518697a3e3e"
+    },
+    {
+      "label": "rustdoc",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "doc",
+        "--workspace",
+        "--all-features",
+        "--no-deps",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 9.56,
+      "log": "rustdoc.log",
+      "sha256": "c82538fc5cf7dd4d5a09bca853deb09ce134e5e641a7ece824fd8fc75e6065f1"
+    },
+    {
+      "label": "python",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 28.606,
+      "log": "python.log",
+      "sha256": "1e9b5c5a41c33882029e87350e95ab741763098127c70925422a38b66ca1e036"
+    },
+    {
+      "label": "documentation",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.143,
+      "log": "documentation.log",
+      "sha256": "da2944b17b6bd95364d436b9ff9ef885c120cca6fb13b27b07f4b1a7ec5b034e"
+    },
+    {
+      "label": "lifecycle",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation_lifecycle.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.245,
+      "log": "lifecycle.log",
+      "sha256": "feebf7e702ebab6ed8ff407b0d63361d4d2924726da2cfd6b60349cfe030b452"
+    },
+    {
+      "label": "version",
+      "command": [
+        "python3",
+        "scripts/release/versioning.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.158,
+      "log": "version.log",
+      "sha256": "e2e2eca5e05d722b46268da90a5f6981d2c50bb04852f2545aff82a31f3d1462"
+    },
+    {
+      "label": "metadata",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "metadata",
+        "--no-deps",
+        "--format-version",
+        "1",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 0.031,
+      "log": "metadata.log",
+      "sha256": "5bf6b0c19a0c18e6ed96985d651b3bc66115e3916bd0b402de6d529cf6d383ce"
+    },
+    {
+      "label": "fuzz-lock",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "metadata",
+        "--manifest-path",
+        "tools/fuzz/Cargo.toml",
+        "--format-version",
+        "1",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 101,
+      "seconds": 0.098,
+      "log": "fuzz-lock.log",
+      "sha256": "b14437e224dfc61ce208f1c10f785f9413df8bc1792e2bbc99c9deb2afc82e4d"
+    },
+    {
+      "label": "fuzz-lock-final",
+      "command": [
+        "env",
+        "CARGO_HOME=/Users/bytedance/Documents/rustdx/.cargo",
+        "RUSTUP_HOME=/Users/bytedance/Documents/rustdx/.cargo/rustup",
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "metadata",
+        "--manifest-path",
+        "tools/fuzz/Cargo.toml",
+        "--format-version",
+        "1",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "log": "fuzz-lock-final.log",
+      "sha256": "26326880a5bfa5c935eca25df2f0ea4ba70f532a3ea2b3b0f01073d49c5119c1"
+    },
+    {
+      "label": "actionlint",
+      "command": [
+        "/tmp/rustdx-version-policy-20261025/bin/actionlint"
+      ],
+      "exit_code": 0,
+      "log": "actionlint.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "documentation-final",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation.py"
+      ],
+      "exit_code": 0,
+      "log": "documentation-final.log",
+      "sha256": "da2944b17b6bd95364d436b9ff9ef885c120cca6fb13b27b07f4b1a7ec5b034e"
+    },
+    {
+      "label": "lifecycle-final",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation_lifecycle.py"
+      ],
+      "exit_code": 0,
+      "log": "lifecycle-final.log",
+      "sha256": "feebf7e702ebab6ed8ff407b0d63361d4d2924726da2cfd6b60349cfe030b452"
+    },
+    {
+      "label": "version-final",
+      "command": [
+        "python3",
+        "scripts/release/versioning.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "log": "version-final.log",
+      "sha256": "e2e2eca5e05d722b46268da90a5f6981d2c50bb04852f2545aff82a31f3d1462"
+    },
+    {
+      "label": "python-final",
+      "exit_code": 0,
+      "log": "python-final.log",
+      "sha256": "261d7e4b971dc2f83451f6007bf6afb5f8540f265bd03c872bd85afd5c9cb209"
+    },
+    {
+      "label": "runner-local",
+      "exit_code": 0,
+      "log": "runner-local.log",
+      "sha256": "2dd6d63d9732a9771e261d38373456fd32b5cf35d3bf65c0bbffce07104356b2"
+    }
+  ],
+  "resolved_failure": "fuzz-lock initial101: inherited feature lock lacked main Windows dependency; added only windows-sys0.61.2 retaining third-party versions. Final metadata0.",
+  "final_status": "passed after fuzz lock correction; snapshot package-final passed; target runtime not claimed"
+}

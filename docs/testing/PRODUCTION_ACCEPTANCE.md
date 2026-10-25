@@ -1,5 +1,9 @@
 # 当前验收矩阵
 
+<!-- lifecycle:registry -->
+读者：产品/运维；责任：验收维护者。源码核验：2026-10-25；每30日及新验收结果或未关闭范围变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 更新日期：2026-10-25。本文区分当前能力、已取得的验证和未关闭的生产门禁。实际命令与环境见所引用证据；当前版本号不能作为源码身份。
 
 ## 1. 判定层级
@@ -53,8 +57,8 @@
 | 最新源码、RowBinary与固定Linux | [第五阶段报告](../archive/development/REMAINING_ACCEPTANCE_STAGE5_20261024.md)、[支持包](evidence/acceptance-stage5-20261024)、[最终源码身份](evidence/acceptance-stage5-20261024/source-pacing-final-manifest.json) |
 | 第五阶段实际数据库/环境 | [Linux命令](evidence/acceptance-stage5-20261024/linux/evidence/results.json)、[真实历史](evidence/acceptance-stage5-20261024/linux/evidence/real-history.json)、[环境/二进制](evidence/acceptance-stage5-20261024/linux/evidence/environment.json)、[清理审计](evidence/acceptance-stage5-20261024/linux/evidence/cleanup-audit.json) |
 | 服务端原生备份恢复 | [第六阶段报告](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)、[最终演练](evidence/acceptance-stage6-20261024/linux/evidence/attempt2/recovery.json)、[输入与日志](evidence/acceptance-stage6-20261024/linux)、[清理审计](evidence/acceptance-stage6-20261024/linux/evidence/cleanup-audit.json) |
-| 本次目录重组 | [迁移记录](../release/PROJECT_RESTRUCTURE.md)、[验证JSON](evidence/project-restructure-20261024/verification.json) |
-| 17项优化最终范围 | [收尾报告](../archive/development/OPTIMIZATION_FINAL_20261025.md)、[工程及性能支持包](evidence/optimization-final-20261025)、[执行进度](../development/OPTIMIZATION_PROGRESS.md)；与此前实帧/固定Linux证据按各自源码身份区分 |
+| 本次目录重组 | [迁移记录](../archive/release/PROJECT_RESTRUCTURE_20261024.md)、[验证JSON](evidence/project-restructure-20261024/verification.json) |
+| 17项优化最终范围 | [收尾报告](../archive/development/OPTIMIZATION_FINAL_20261025.md)、[工程及性能支持包](evidence/optimization-final-20261025)、[执行进度](../archive/development/OPTIMIZATION_PROGRESS_20261025.md)；与此前实帧/固定Linux证据按各自源码身份区分 |
 | 早期生产结果 | [历史验收报告](../archive/validation/PRODUCTION_ACCEPTANCE_THROUGH_20261024.md) |
 
 10月10日约2981万行ClickHouse结果属于当时版本；10月23日779,200历史行与runner模拟事实是不同范围。第五阶段分别记录初始源码的macOS实验服务及最终源码的固定Linux镜像执行；按源码身份、命令及实际范围判定，不因相同版本号或旧服务通过推导生产通过。

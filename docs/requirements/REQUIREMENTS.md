@@ -1,8 +1,14 @@
 # rustdx 产品需求文档
 
-文档版本：3.1。更新日期：2026-10-25。适用对象：当前仓库源码。本文件是需求的唯一主文档，FR-01至FR-18编号继续有效；需求、实现、验证与运营责任按同一编号追踪。工程目录采用核心库、应用、外部测试和工具工作区分层。
+<!-- lifecycle:registry -->
+读者：产品/开发/验收；责任：产品维护者。源码核验：2026-10-25；每90日及可观察行为、范围或FR变更复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
 
-核心库与CLI的Cargo版本均为`2.0.0`，可执行程序为`rustdx`；两包已发布到crates.io，实际包、源码身份及核验范围见[发布记录](../release/PUBLICATION_20261025.md)。crates.io的1.12.2/1.8.2属于历史发布内容，部署记录同时保存源码及二进制摘要。破坏性日历/心跳/财务签名按[迁移说明](../release/MIGRATION.md)处理。功能实现、测试通过、真实源验证、目标生产验收是不同结论，不能互相代替。
+当前源码版本：<!-- version:project -->2.0.0<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+
+文档修订：生产工程生命周期，2026-10-25。适用对象：当前仓库源码。本文件是需求的唯一主文档，FR-01至FR-18编号继续有效；需求、实现、验证与运营责任按同一编号追踪。工程目录采用核心库、应用、外部测试和工具工作区分层。
+
+当前核心库与CLI版本随VERSION同步，可执行程序为`rustdx`；历史两包2.0.0已发布到crates.io，实际包、源码身份及核验范围见[发布记录](../archive/release/PUBLICATION_20261025.md)。新源码版本的上传独立执行。crates.io的1.12.2/1.8.2属于历史发布内容，部署记录同时保存源码及二进制摘要。破坏性日历/心跳/财务签名按[迁移说明](../release/MIGRATION.md)处理。功能实现、测试通过、真实源验证、目标生产验收是不同结论，不能互相代替。
 
 ## 1. 产品定位与目标
 
@@ -329,7 +335,7 @@ unknown、确认丢失或目标未开始均不自动INSERT；停止在途请求�
 
 TCP日线来源v2按新请求与schema2收据封存；旧v1归档保持原字节/摘要/字段值并可离线重放，不将有损旧股量改写成精确结果。本轮没有重跑数据库服务端恢复，新增证据只覆盖日线股数修复及相关工程回归。
 
-**验收依据：** WAL在线备份、隔离恢复、字节篡改拒绝及固定目录导出，Linux真实两库案例也执行控制层恢复；第六阶段配合ClickHouse原生ZIP/MongoDB BSON完整备份恢复到空目录，两个固定版本全字段、约束/索引和导出一致，新服务启动至完整核验约5.81秒。生产RPO/RTO、Mongo物理卷/journal/oplog/PITR继续待验。临时systemd在限额下运行CLI版本命令退出0，不等于生产runner/metrics模板安装或目标账户/调度通过。见[部署恢复说明](../../deploy/runner/README.md)、[第五阶段](../archive/development/REMAINING_ACCEPTANCE_STAGE5_20261024.md)及[第六阶段](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)。
+**验收依据：** WAL在线备份、隔离恢复、字节篡改拒绝及固定目录导出，Linux真实两库案例也执行控制层恢复；第六阶段配合ClickHouse原生ZIP/MongoDB BSON完整备份恢复到空目录，两个固定版本全字段、约束/索引和导出一致，新服务启动至完整核验约5.81秒。生产RPO/RTO、Mongo物理卷/journal/oplog/PITR继续待验。临时systemd在限额下运行CLI版本命令退出0，不等于生产runner/metrics模板安装或目标账户/调度通过。见[部署恢复说明](../../deploy/production/runner/README.md)、[第五阶段](../archive/development/REMAINING_ACCEPTANCE_STAGE5_20261024.md)及[第六阶段](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)。
 
 ## 6. 非功能要求与运行约束
 
@@ -362,9 +368,9 @@ SLA、生产吞吐、P95告警值、完整进程树内存、磁盘余量、RPO/R
 | FR-07 | `crates/rustdx-core/src/file/`、`crates/rustdx-core/src/tcp/stock/*_request.rs`、`tools/fuzz/` | [协议接口](../architecture/PROTOCOL_REQUESTS.md)、[夹具说明](../../crates/rustdx-core/tests/fixtures/README.md)、checked_parsers fuzz |
 | FR-09、FR-10、FR-11 | `crates/rustdx-core/src/indicators.rs`、`crates/rustdx-core/tests/`、`crates/rustdx-core/benches/`、`.github/`、`scripts/`、`docs/` | [验证方法](../testing/VALIDATION.md)、[项目结构](../architecture/PROJECT_STRUCTURE.md)、独立公式回归 |
 | FR-13、FR-14 | `crates/rustdx-core/src/tcp/evidence.rs`、`apps/rustdx-cli/src/tcp_evidence.rs`、`observation.rs`、`quality.rs` | [runner接口](../../apps/rustdx-runner/README.md)、[观测](../operations/OBSERVABILITY.md)、[第三轮记录](../archive/history/OPTIMIZATION_ROUND3.md) |
-| FR-13、FR-15至FR-18 | `crates/rustdx-core/src/tcp/evidence.rs`、`apps/rustdx-cli/src/tcp_evidence.rs`、`apps/rustdx-runner/`、`config/runner/`、`deploy/runner/` | [组件实施](../archive/development/PRODUCTION_IMPLEMENTATION.md)、[第五阶段Linux复验](../archive/development/REMAINING_ACCEPTANCE_STAGE5_20261024.md)、[第六阶段备份恢复](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)、control_plane/wire_archive及[初始组件证据](../testing/evidence/runner-implementation-20261023.json) |
+| FR-13、FR-15至FR-18 | `crates/rustdx-core/src/tcp/evidence.rs`、`apps/rustdx-cli/src/tcp_evidence.rs`、`apps/rustdx-runner/`、`config/runner/`、`deploy/production/runner/` | [组件实施](../archive/development/PRODUCTION_IMPLEMENTATION.md)、[第五阶段Linux复验](../archive/development/REMAINING_ACCEPTANCE_STAGE5_20261024.md)、[第六阶段备份恢复](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)、control_plane/wire_archive及[初始组件证据](../testing/evidence/runner-implementation-20261023.json) |
 | FR-03、FR-04、FR-07、FR-13、FR-15至FR-18 | `apps/rustdx-cli/src/tcp_day.rs`、`tcp_day/acquisition.rs`、`apps/rustdx-runner/src/{config,pipeline,supervisor}.rs` | [来源消费合同](../development/APPLICATION_INTEGRATION.md#9-tcp日线采集与runner发布)、[有界调度与留存](../archive/development/OPTIMIZATION_ACQUISITION_RETENTION_20261025.md)；40证券80行模拟，真实全市场/分钟仍待验 |
-| FR-09至FR-13、FR-15至FR-18 | `scripts/bench/`、`scripts/release/`、`.github/workflows/ci.yml`、`pipeline/facts.rs`、`database/capacity.rs`、`io/factors.rs` | [17项执行记录](../development/OPTIMIZATION_PROGRESS.md)；同机性能、独立包消费及职责拆分回归，远端CI未运行 |
+| FR-09至FR-13、FR-15至FR-18 | `scripts/bench/`、`scripts/release/`、`.github/workflows/ci.yml`、`pipeline/facts.rs`、`database/capacity.rs`、`io/factors.rs` | [17项执行记录](../archive/development/OPTIMIZATION_PROGRESS_20261025.md)；同机性能、独立包消费及职责拆分回归，远端CI未运行 |
 | FR-01、FR-02、FR-04、FR-06、FR-10、FR-11、FR-13至FR-18 | `operation.rs`、runner只读/迁移/恢复/消费/汇总/计量/plan、`scripts/release/`、`scripts/validation/audit_task_admission.py` | [A01–A12最终工程验证](../archive/development/SYSTEM_OPTIMIZATION_FINAL_20261025.md)、[任务准入](../testing/TASK_ADMISSION.md)；新SHA远端门禁、真实事实/两库和目标生产仍待验收 |
 
 截至2026-10-24，证据层级如下；目录迁移与第五阶段新取得的外部验证分别留证：
@@ -393,6 +399,16 @@ SLA、生产吞吐、P95告警值、完整进程树内存、磁盘余量、RPO/R
 | 多主机协调 | 只实现同机受管互斥 | `[TBD]`明确调度拓扑、外部写入约定及协调方案并验收 |
 | 生产服务指标 | 长期延迟/成功率、SLA、RPO/RTO及保留期未知 | `[TBD]`业务批准指标，按真实长周期负载和恢复演练测量 |
 | 协议业务边界 | 26同码已覆盖；候选/未知字段、市场2、0547盘中主动推送、0feb响应日期、完整资源校验和其他增强契约尚未全验收 | 按[字段状态](../reference/RESPONSE_FIELD_SEMANTICS.md)对实际市场/日期/单位/字段/推送窗口取得独立证据；淘汰兼容对象须另行版本安排 |
-| crate正式发布 | 核心/CLI 2.0.0已发布；完整门禁、注册表依赖和实际下载包核验通过 | 本次记录见[发布结果](../release/PUBLICATION_20261025.md)；后续版本独立执行发布门禁 |
+| crate正式发布 | 核心/CLI 2.0.0已发布；完整门禁、注册表依赖和实际下载包核验通过 | 本次记录见[发布结果](../archive/release/PUBLICATION_20261025.md)；后续版本独立执行发布门禁 |
 
 当前功能完成不意味着上述外部事实已经取得。上线前验收流程见[运维手册](../runbooks/RUNBOOK.md)，源码交付及历史版本见[版本说明](../release/RELEASES.md)。
+
+## 生产系统需求管理
+
+本次范围是生产工程的组织与交付能力，FR-01至FR-18保持稳定。需求修改由产品维护者确认可观察行为，开发者更新实现与测试，运营者确认业务事实和可用版本，部署维护者确认现场资源与恢复。责任角色不代表已经指定生产人员。
+
+需求分为源码已实现、独立样本已验证、固定环境已验证、目标生产待验四类。新“已通过”结论必须绑定源码、环境、输入、命令与原始输出。发布条件是范围内应有键与字段验证、所有配置目标verified及目录提交；退出0、空行情、包版本号和样本行数不能代替这些条件。
+
+需求到实现/测试/运营手册的逐项关系见[追踪矩阵](TRACEABILITY.md)。新需求先确定FR或新编号、失败/未知行为、兼容性、输入事实和关闭证据，再修改方案与代码。文档结构与生命周期检查纳入FR-10/FR-11，版本递增/历史引用遵循发布政策，不改变FR-16的数据目录语义。
+
+变更验收顺序：明确任务范围 → 更新权威合同 → 实现与故障回归 → 本机工程检查 → PR同SHA检查 → 主线CI同步版本并复验 → 标签及历史保留。真实全市场、2027事实、0547主动推送、目标Linux/systemd、长期SLO及生产RPO/RTO继续按当前验收矩阵逐项关闭。

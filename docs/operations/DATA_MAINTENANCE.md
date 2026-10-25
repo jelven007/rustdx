@@ -1,5 +1,9 @@
 # 日历、规则与证券历史维护
 
+<!-- lifecycle:registry -->
+读者：数据运营；责任：事实维护者。源码核验：2026-10-25；每30日及日历、证券事实或公告变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 更新日期：2026-10-24。数据格式验证不能证明公告内容和证券状态事实；维护者须保存原始证据并复核语义。版本化参考文件在config/calendars，核心实现位于crates/rustdx-core；当前维护数据与固定测试证据分别管理。
 
 本轮核实上交所[年度休市页](https://www.sse.com.cn/disclosure/dealinstruc/closed/)及深交所[英文交易日历](https://www.szse.cn/English/services/trading/calendar/index.html)，分别整理为[沪市参考日历](../../config/calendars/sse-2026.json)和[深市参考日历](../../config/calendars/szse-2026.json)。工作日休市19天，交易日242天；调休周末仍休市。自动回归逐日比较两份数据与`trade_date_a/2026.0`，涵盖365天。

@@ -1,6 +1,10 @@
 # 运维手册
 
-更新日期：2026-10-24。业务名单、行情日和可用版本由[运营流程](../operations/OPERATIONS.md)审核；本手册负责部署、资源、故障及恢复。CLI状态以[导入约定](../operations/IMPORTS.md)为准，runner详细步骤见[部署恢复](../../deploy/runner/README.md)。
+<!-- lifecycle:registry -->
+读者：部署/值守；责任：运维维护者。源码核验：2026-10-25；每30日及事故、权限、资源、恢复或阈值变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
+更新日期：2026-10-25。业务名单、行情日和可用版本由[运营流程](../operations/OPERATIONS.md)审核；本手册负责部署、资源、故障及恢复。CLI状态以[导入约定](../operations/IMPORTS.md)为准，runner详细步骤见[部署恢复](../../deploy/production/runner/README.md)。
 
 ## 1. 部署前置与安装
 
@@ -105,8 +109,18 @@ rustdx-runner --no-tcp-startup restore --root /srv/backups/rustdx-001 \
 
 backup.json是完整备份标记；恢复要求全新隔离目录及restore-validated.json，通过后再按业务批准流程切换。备份包括已提交WAL、文件、目录及请求证据，数据库服务端数据卷/日志另行备份或新命名空间重建并验收。
 
-数据库全备与控制备份须在停止发布、确认无在途写入的同一固定版本边界取得；数据库原生恢复到空目录后，分别核对所需历史版本的文件与数据库导出、全部键/字段、约束和索引，再恢复调度。不能直接改归档端点/收据或开启覆盖非空表来迁就恢复结果。第六阶段已验证固定Linux两库的静止原生全备空目录恢复；Mongo物理卷/journal/oplog/PITR及生产RPO/RTO仍待验。具体编排见[runner恢复说明](../../deploy/runner/README.md#5-备份与隔离恢复)、[固定版本消费约定](../development/APPLICATION_INTEGRATION.md#10-恢复后的固定版本消费)和[演练证据](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)。
+数据库全备与控制备份须在停止发布、确认无在途写入的同一固定版本边界取得；数据库原生恢复到空目录后，分别核对所需历史版本的文件与数据库导出、全部键/字段、约束和索引，再恢复调度。不能直接改归档端点/收据或开启覆盖非空表来迁就恢复结果。第六阶段已验证固定Linux两库的静止原生全备空目录恢复；Mongo物理卷/journal/oplog/PITR及生产RPO/RTO仍待验。具体编排见[runner恢复说明](../../deploy/production/runner/README.md#5-备份与隔离恢复)、[固定版本消费约定](../development/APPLICATION_INTEGRATION.md#10-恢复后的固定版本消费)和[演练证据](../archive/development/REMAINING_ACCEPTANCE_STAGE6_20261024.md)。
 
 清理前确认无活跃任务、未知写入、待发布或待清理产物；锁文件存在不代表锁活动，也不能删除锁文件解除正在持有的锁。缓存、归档和备份按明确保留期清理。
 
-代码/二进制回退、旧catalog版本消费和数据库恢复分别执行。源码回退不会回滚CSV、清单或数据库；使用旧结构源码时按该提交构建，升级路径见[迁移说明](../release/PROJECT_RESTRUCTURE.md)。
+代码/二进制回退、旧catalog版本消费和数据库恢复分别执行。源码回退不会回滚CSV、清单或数据库；使用旧结构源码时按该提交构建，升级路径见[迁移说明](../archive/release/PROJECT_RESTRUCTURE_20261024.md)。
+
+## 8. 上线、值守和维护闭环
+
+按以下顺序完成目标部署：固定已检查源码/二进制 → DBA准备新命名空间与最小权限 → 安装持久根目录/网络许可/硬配额 → 注入publisher.env并原子安装Job → 隔离单次运行 → 全范围验证 → 安装runner/metrics定时器 → 告警与恢复演练 → 登记现场证据。
+
+模板入口为deploy/production/runner，临时验证使用deploy/acceptance。已有固定Linux两库静止全备空目录恢复证据；用户目标账户、生产runner/metrics、全量/持续负载、物理Mongo恢复与实际RPO/RTO仍须现场核实。
+
+值守升级链：保存现场 → 确认worker/进程组和在途请求 → 判断封存/DB/目录阶段 → 选择recover或隔离新release → 精确复验 → 业务方确认固定目录 → 恢复调度。未结束Attempt、unknown、目录不推进和textfile不刷新单独告警；阈值结合Job预算和业务日历配置。
+
+每30日复核本手册和OBSERVABILITY，每次事故、资源/数据库/告警阈值、恢复或权限变化立即更新并记录现场核验。清理先做只读retention_preview；人工审核后另行设计执行，不以三个源码历史引用限制数据保留。紧急操作不改冻结清单、端点或SHA，恢复证据保存新目录。

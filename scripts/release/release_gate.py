@@ -11,15 +11,19 @@ import subprocess
 import zipfile
 
 from source_scope import digest_file, inventory
+from versioning import receipt_commit
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def check_runs(sha, policy, workflows):
+def check_runs(sha, policy, workflows, version_event=None):
     issues, selected = [], {}
     for workflow, expected_jobs in policy["workflows"].items():
+        event_sha = version_event["source_head"] if version_event else sha
         candidates = [run for run in workflows.get(workflow, [])
-                      if run.get("head_sha") == sha and run.get("event") in policy["events"]
+                      if run.get("head_sha") == event_sha and run.get("event") in policy["events"]
+                      and (version_event is None or (
+                          str(run.get("id")) == version_event["run_id"] and version_event["commit"] == sha))
                       and run.get("path", "").split("@")[0] == ".github/workflows/" + workflow]
         if not candidates:
             issues.append(f"{workflow}:missing_current_sha_run")
@@ -76,12 +80,13 @@ def paged(endpoint, key):
     raise ValueError("GitHub response exceeds page budget")
 
 
-def collect(repository, sha, policy):
+def collect(repository, sha, policy, version_event=None):
     workflows = {}
     for workflow in policy["workflows"]:
-        runs = paged(f"repos/{repository}/actions/workflows/{workflow}/runs?head_sha={sha}", "workflow_runs")
+        event_sha = version_event["source_head"] if version_event else sha
+        runs = paged(f"repos/{repository}/actions/workflows/{workflow}/runs?head_sha={event_sha}", "workflow_runs")
         selected, _ = check_runs(sha, dict(policy, workflows={workflow: policy["workflows"][workflow]}),
-                                 {workflow: runs})
+                                 {workflow: runs}, version_event)
         if workflow in selected:
             run = selected[workflow]
             # The attempts endpoint avoids treating jobs from an older successful rerun as current.
@@ -89,6 +94,20 @@ def collect(repository, sha, policy):
                 f"repos/{repository}/actions/runs/{run['id']}/attempts/{run.get('run_attempt', 1)}/jobs", "jobs")
         workflows[workflow] = runs
     return workflows
+
+
+def current_version_event(root, sha):
+    names = subprocess.check_output(
+        ["git", "-C", str(root), "diff-tree", "--no-commit-id", "--name-only", "-r", sha]
+    ).decode().splitlines()
+    receipts = [name for name in names if re.fullmatch(r"\.github/version-events/[1-9][0-9]*\.json", name)]
+    if len(receipts) != 1:
+        raise ValueError("release HEAD must be a CI version commit with one push receipt")
+    run_id = Path(receipts[0]).stem
+    event = receipt_commit(root, sha, run_id)
+    if event is None or event["commit"] != sha:
+        raise ValueError("release HEAD does not match the version receipt")
+    return event
 
 
 def main():
@@ -130,17 +149,22 @@ def main():
             path.relative_to(args.preflight.parent.resolve())
             if digest_file(path) != binary["sha256"]:
                 raise ValueError("reviewed release binary changed")
-        workflows = json.loads(args.snapshot_runs.read_text()) if args.snapshot_runs else collect(args.repository, sha, policy)
-        selected, issues = check_runs(sha, policy, workflows)
-        report.update(workflows=selected, issues=issues, binaries=local.get("binaries", []))
+        version_event = current_version_event(ROOT, sha)
+        workflows = (json.loads(args.snapshot_runs.read_text()) if args.snapshot_runs
+                     else collect(args.repository, sha, policy, version_event))
+        selected, issues = check_runs(sha, policy, workflows, version_event)
+        report.update(workflows=selected, issues=issues, binaries=local.get("binaries", []),
+                      version_event=version_event)
         report["inputs"] = {name: digest_file(ROOT / name) for name in [
+            "VERSION", "config/release/versions.json",
             "Cargo.lock", "config/release/gates.json", "config/release/action-pins.json",
             "deploy/acceptance/compose.yml", "deploy/acceptance/tool-archives.sha256"]}
         if not issues and not args.snapshot_runs:
-            run_id = selected["ci.yml"]["id"]
+            run_id = selected[policy["artifact_workflow"]]["id"]
             artifacts = paged(f"repos/{args.repository}/actions/runs/{run_id}/artifacts", "artifacts")
             matches = [row for row in artifacts if row["name"] == policy["artifact"].format(sha=sha)
-                       and not row.get("expired") and row.get("workflow_run", {}).get("head_sha") == sha]
+                       and not row.get("expired")
+                       and row.get("workflow_run", {}).get("head_sha") == version_event["source_head"]]
             if len(matches) != 1:
                 raise ValueError("current-SHA package artifact missing or expired")
             artifact = matches[0]

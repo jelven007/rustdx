@@ -1,8 +1,12 @@
 # 固定数据库配置与故障验收
 
+<!-- lifecycle:registry -->
+读者：测试/DBA；责任：数据库测试维护者。源码核验：2026-10-25；每30日及数据库/工具或恢复配置变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 验收配置位于[deploy/acceptance](../../deploy/acceptance/compose.yml)：Linux ClickHouse 25.8.33.6 Alpine、MongoDB 8.0.16，固定镜像索引SHA-256；2026-10-23已向Docker Hub核对版本tag与digest。ClickHouse的25.8大版本tag现在也固定到该digest，避免下次启动静默改变版本。
 
-验收数据库只绑定本机18123/27018，使用临时容器存储。ClickHouse限制2 CPU、容器2GiB、单查询512MiB/2线程，全局线程池512槽位/最多64个空闲线程；MongoDB限制2 CPU、容器1GiB、WiredTiger缓存0.25GiB。本机实验构建的大批量实测发现128槽位被后台/嵌套线程池占满并阻塞查询，因此提高到仍有上限的512；CLI有界查询额外关闭并行输出格式化，减少附加线程池需求。这是可复现验收配置；生产ClickHouse继续使用[原部署配置](../../deploy/clickhouse/compose.yml)的凭据与持久卷，生产容量须按实际负载测量。
+验收数据库只绑定本机18123/27018，使用临时容器存储。ClickHouse限制2 CPU、容器2GiB、单查询512MiB/2线程，全局线程池512槽位/最多64个空闲线程；MongoDB限制2 CPU、容器1GiB、WiredTiger缓存0.25GiB。本机实验构建的大批量实测发现128槽位被后台/嵌套线程池占满并阻塞查询，因此提高到仍有上限的512；CLI有界查询额外关闭并行输出格式化，减少附加线程池需求。这是可复现验收配置；生产ClickHouse继续使用[原部署配置](../../deploy/production/clickhouse/compose.yml)的凭据与持久卷，生产容量须按实际负载测量。
 
 需要Docker Compose及PATH中的mongoimport 100.12.2、mongosh 2.5.10。Rust最低1.89：
 
