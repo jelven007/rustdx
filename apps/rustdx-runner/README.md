@@ -1,5 +1,11 @@
 # rustdx-runner
 
+当前runner源码版本：<!-- version:runner -->0.1.0<!-- /version -->；由主线CI同步，publish=false。
+
+<!-- lifecycle:registry -->
+读者：开发/部署；责任：runner维护者。源码核验2026-10-25，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../docs/development/DOCUMENTATION_GOVERNANCE.md)。
+<!-- /lifecycle -->
+
 Rust2024 / MSRV1.89 的同步单机生产控制层。采集支持明确的本地 `.day` 目录或有总预算的显式 TCP 日线来源，数据契约固定为 A 股、日线、原价、人民币元及股；worker生成私有文件，发布者完成业务覆盖和可选数据库验收后推进SQLite中的目录指针。该crate版本0.1.0，不发布到crates.io。
 
 ## 发布链路
@@ -37,7 +43,7 @@ rustdx-runner backup --root /var/lib/rustdx --destination /srv/backups/rustdx-00
 rustdx-runner restore --root /srv/backups/rustdx-001 --destination /srv/restore/rustdx-001
 ```
 
-配置入口为[严格Job JSON](../../config/runner/job.example.json)；数据库由DBA预建[表/索引](../../deploy/runner/README.md)，运行期只查询/插入，不执行DDL、upsert或删除。凭据使用JSON中指定的`RUSTDX_`环境变量，worker清空继承环境。ClickHouse使用普通MergeTree，MongoDB使用完整唯一索引；不复用旧平面表。
+配置入口为[严格Job JSON](../../config/runner/job.example.json)；数据库由DBA预建[表/索引](../../deploy/production/runner/README.md)，运行期只查询/插入，不执行DDL、upsert或删除。凭据使用JSON中指定的`RUSTDX_`环境变量，worker清空继承环境。ClickHouse使用普通MergeTree，MongoDB使用完整唯一索引；不复用旧平面表。
 
 `status/metrics/catalog`及文件消费只打开已有账本，不创建或迁移。空目录和不兼容schema返回错误；初始化/迁移使用`migrate`，写入/迁移由根目录控制锁排他保护。库调用方用`Ledger::open_existing_readonly`查询，持有`RootLock`后用`open_writer`写入；旧`open`在初始化/迁移期间自行取得锁。SQLite只读连接仍可能需要WAL/shm辅助文件，不是不可变快照；严格零写巡检采用留存工具的私有WAL快照。
 
@@ -114,4 +120,4 @@ RUSTDX_TEST_CLI="$PWD/target/debug/rustdx" \
 
 `include-ignored`还须设置真实隔离目标的`RUSTDX_TEST_CH_URL/USER/PASSWORD`、`RUSTDX_TEST_MONGO_URI/MONGOSH`。旧实现的两库实测见归档；2026-10-24的分页/持久会话变更已有本地HTTP和进程回归，真实两库及全量吞吐需重新验收。数据库CI已预建runner独立目标并显式执行全部control_plane测试，含600只模拟证券/1,200行版本隔离、指针中断恢复、确认丢失和离线恢复；配置更新不等于远端CI已经通过。
 
-实际市场事实、稳定Linux、全量负载和长期SLO须分别验收；单机回归不等于这些门禁已通过。部署与操作见[部署说明](../../deploy/runner/README.md)，详细结果见[实施记录](../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。
+实际市场事实、稳定Linux、全量负载和长期SLO须分别验收；单机回归不等于这些门禁已通过。部署与操作见[部署说明](../../deploy/production/runner/README.md)，详细结果见[实施记录](../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。

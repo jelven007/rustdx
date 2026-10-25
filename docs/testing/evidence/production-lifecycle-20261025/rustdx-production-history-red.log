@@ -1,0 +1,20 @@
+test_history_retains_three_by_main_order_and_old_replay_cannot_resurrect (test_versioning.VersionPolicy) ... FAIL
+
+======================================================================
+FAIL: test_history_retains_three_by_main_order_and_old_replay_cannot_resurrect (test_versioning.VersionPolicy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bytedance/Documents/rustdx/.worktrees/production-lifecycle-20261025/scripts/validation/tests/test_versioning.py", line 223, in test_history_retains_three_by_main_order_and_old_replay_cannot_resurrect
+    self.assertEqual(v.history_refs(root), expected)
+AssertionError: {'refs/tags/history/newer': '12cf1259d5cbea8adddf00af803cf0ea[74 chars]ef4'} != {'refs/tags/history/source-2.0.2': '169709466a344995ae96ea4a0[168 chars]129'}
+- {'refs/tags/history/newer': '12cf1259d5cbea8adddf00af803cf0ea57b03d8a',
+-  'refs/tags/history/old': 'f01fcb333b665cfaaa5635dc15c02b9ce7380ef4'}
++ {'refs/tags/history/source-2.0.2': '169709466a344995ae96ea4a0ea155334a587dbc',
++  'refs/tags/history/source-2.0.3': 'adb34acafa3ac87e74b2fe391a347adb7746c47d',
++  'refs/tags/history/source-2.0.4': '52b8072c560100b42f5e486deb0127b681e8a129'}
+
+----------------------------------------------------------------------
+Ran 1 test in 20.011s
+
+FAILED (failures=1)
+Expected red: disabling retention was detected.

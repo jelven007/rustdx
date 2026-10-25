@@ -1,5 +1,9 @@
 # rustdx 当前架构
 
+<!-- lifecycle:registry -->
+读者：架构/开发；责任：架构维护者。源码核验：2026-10-25；每90日及组件或边界变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 更新日期：2026-10-24。本文描述当前源码，需求见[FR-01至FR-18](../requirements/REQUIREMENTS.md)，发布与恢复设计见[技术方案](PRODUCTION_FUSION_PLAN.md)。历次风险和修复结果保存在[历史架构评估](../archive/architecture/REVIEWS_THROUGH_20261024.md)。
 
 ## 1. 分层与依赖
@@ -66,4 +70,4 @@ TCP日线窗口最多8线程，启动前预留原始行、正文、receipt和wir
 | 跨主机与高可用 | 当前无跨机协调 | 明确外部协调和失效写入隔离方案后单独实现 |
 | 数据库灾难恢复 | 本地账本/文件可隔离恢复 | 服务端一致性备份、恢复或新命名空间重建及精确验收 |
 
-目录整理本身保留公开API；当前2.0.0有明确破坏性迁移，见[迁移说明](../release/MIGRATION.md)。同步有界设计继续保留。新目录规则见[工程结构](PROJECT_STRUCTURE.md)，实际检查范围见[当前验收矩阵](../testing/PRODUCTION_ACCEPTANCE.md)。
+目录整理本身保留公开API；当前 <!-- version:project -->2.0.0<!-- /version --> 源码包含明确破坏性迁移，见[迁移说明](../release/MIGRATION.md)。同步有界设计继续保留。新目录规则见[工程结构](PROJECT_STRUCTURE.md)，实际检查范围见[当前验收矩阵](../testing/PRODUCTION_ACCEPTANCE.md)。

@@ -1,0 +1,4 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.0 (/private/tmp/rustdx-production-package-final-20261025/unpacked/jelven-rustdx-complete-2.0.0)
+[1m[32m   Compiling[0m rustdx-package-consumer v0.0.0 (/private/tmp/rustdx-production-package-final-20261025/downstream)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 9.48s
+[1m[32m     Running[0m `/private/tmp/rustdx-production-package-20261025/target/debug/rustdx-package-consumer`

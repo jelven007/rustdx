@@ -1,12 +1,16 @@
 # 导入证据与故障恢复
 
+<!-- lifecycle:registry -->
+读者：开发/运营/运维；责任：数据导入维护者。源码核验：2026-10-25；每30日及清单/数据库状态变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 更新日期：2026-10-24。本说明是CLI兼容导入清单和恢复状态的唯一字段口径，源码位于apps/rustdx-cli，尚未发布新crate版本。运营成功判定见[OPERATIONS.md](OPERATIONS.md)，部署、现场核查及恢复步骤见[RUNBOOK.md](../runbooks/RUNBOOK.md)。
 
-runner的insert-only、唯一release、完整目录和账本schema3属于独立发布路径，不复用CLI平面表恢复语义；模型对照见[生产方案](../architecture/PRODUCTION_FUSION_PLAN.md)，步骤见[runner部署](../../deploy/runner/README.md)。
+runner的insert-only、唯一release、完整目录和账本schema3属于独立发布路径，不复用CLI平面表恢复语义；模型对照见[生产方案](../architecture/PRODUCTION_FUSION_PLAN.md)，步骤见[runner部署](../../deploy/production/runner/README.md)。
 
 `day` 在解析/采集开始前写入运行清单。默认最新清单为 `<output>.manifest.json`；`--report report.json` 可替换该路径。每次运行还保留 `<清单路径>.<run_id>.json`，供后续核查。清单通过同目录原子替换持久化，Unix 同步目录项。
 
-同一run_id归档在检查点更新，结束后保存最终结果；每个检查点先保存归档，再保存最新清单。两文件分别原子更新，不构成一个事务。参数/路径冲突、锁获取或下载来源解析可能发生在采集开始前，这些失败不保证生成清单。project_version来自CLI Cargo版本，当前为2.0.0；部署/运营记录另存源码及二进制摘要，同版本号不作为内容身份。
+同一run_id归档在检查点更新，结束后保存最终结果；每个检查点先保存归档，再保存最新清单。两文件分别原子更新，不构成一个事务。参数/路径冲突、锁获取或下载来源解析可能发生在采集开始前，这些失败不保证生成清单。project_version来自CLI Cargo版本，当前为 <!-- version:cli -->2.0.0<!-- /version -->；部署/运营记录另存源码及二进制摘要，同版本号不作为内容身份。
 
 当前schema_version=7。schema3增加database_verification，schema4增加覆盖告警，schema5增加可配回读批量/耗时及CSV行序摘要，schema6增加每任务阶段观测与新鲜度。schema7收敛为通达信采集契约并移除专用HTTP页字段；runner读取schema6/7，其他消费者须按版本处理。run_version是本次客户端开始时间的纳秒标识；ClickHouse沿用表内服务端纳秒默认版本，MongoDB按`(date,code)` upsert，两者不能混作客户端版本。
 

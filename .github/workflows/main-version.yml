@@ -1,0 +1,59 @@
+name: Main version
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# No shared main concurrency queue: GitHub can replace pending push events.
+jobs:
+  prepare:
+    name: Prepare version
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      commit: ${{ steps.version.outputs.commit }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Sync all version metadata and record this push exactly once
+        id: version
+        run: python3 scripts/release/versioning.py prepare
+
+  quality:
+    name: Quality
+    needs: prepare
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+    with:
+      revision: ${{ needs.prepare.outputs.commit }}
+      baseline: ${{ github.event.before }}
+
+  tag:
+    name: Tag checked version
+    needs: [prepare, quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.prepare.outputs.commit }}
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Tag only the commit that passed all quality jobs
+        run: python3 scripts/release/versioning.py tag

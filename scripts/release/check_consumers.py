@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import time
 
@@ -118,8 +119,9 @@ def main():
     # Reuse an explicitly provided external target; otherwise isolate all artifacts.
     env.setdefault("CARGO_TARGET_DIR", str(output / "target"))
     try:
-        if core_version != "2.0.0" or core_requirement != "^" + core_version:
-            raise RuntimeError("consumer contract requires matching core/CLI 2.0.0")
+        if (not re.fullmatch(r"[0-9]\.[0-9]\.[0-9]", core_version)
+                or cli["version"] != core_version or core_requirement != "^" + core_version):
+            raise RuntimeError("consumer contract requires matching decimal core/CLI versions")
         report["toolchain"] = subprocess.check_output(cargo + ["--version"], env=env).decode().strip()
         for name, (success, source, diagnostic) in CASES.items():
             directory = output / name

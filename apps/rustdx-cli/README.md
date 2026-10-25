@@ -1,6 +1,10 @@
 # rustdx CLI
 
-包名 `jelven-rustdx-cli 2.0.0`（已发布crates.io），库名 `rustdx_cli`，二进制 `rustdx`。Rust 2024 / MSRV 1.89。处理通达信日线目录、官网 ZIP、指定 URL 或本地 ZIP，输出 CSV、质量清单，或导入 ClickHouse/MongoDB 并精确回读。
+当前源码版本：<!-- version:project -->2.0.0<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+
+包名 `jelven-rustdx-cli`，当前版本由上方标记描述；库名 `rustdx_cli`，二进制 `rustdx`。Rust 2024 / MSRV 1.89。处理通达信日线目录、官网 ZIP、指定 URL 或本地 ZIP，输出 CSV、质量清单，或导入 ClickHouse/MongoDB 并精确回读。
+
+下方安装命令使用已发布的历史2.0.0包；当前源码安装命令随后列出。
 
 ```sh
 cargo install --locked jelven-rustdx-cli --version 2.0.0

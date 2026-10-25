@@ -1,0 +1,6 @@
+warning: Patch `jelven-rustdx-complete v2.0.1 (/private/tmp/rustdx-version-policy-20261025/synced-preflight/unpacked/jelven-rustdx-complete-2.0.1)` was not used in the crate graph.
+Perhaps you misspelled the source URL being patched.
+Possible URLs for `[patch.<URL>]`:
+    /private/tmp/rustdx-version-policy-20261025/synced-preflight/package-workspace/crates/rustdx-core
+     Locking 211 packages to latest Rust 1.89 compatible versions
+      Adding zip v2.4.2 (available: v8.6.0)

@@ -1,5 +1,9 @@
 # checked协议接口与独立解码
 
+<!-- lifecycle:registry -->
+读者：开发/集成者；责任：网络及协议维护者。源码核验2026-10-25，每90日及checked请求合同变化复核，治理见[登记](../development/DOCUMENTATION_GOVERNANCE.md)。
+<!-- /lifecycle -->
+
 本接口属于2026-10-23起仓库源码，2026-10-24更新财务语义、报价精度与26命令接入。Cargo版本未变，尚未发布。同步TCP、网络许可、重试与整任务时限沿用现有实现。
 
 外部应用共同遵循[调用约定](../development/APPLICATION_INTEGRATION.md)，按市场身份、单位/未知值、完成标志、批量错误、订阅状态和共享预算消费结果。全部高层/低层签名及结果字段见[26命令接口手册](../reference/COMMAND_API.md)，业务含义、候选单位、未知槽及证据范围见[字段解析状态](../reference/RESPONSE_FIELD_SEMANTICS.md)；本页说明构包与解码边界。

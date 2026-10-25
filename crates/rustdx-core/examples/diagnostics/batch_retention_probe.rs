@@ -9,7 +9,7 @@ use std::{
     time::Duration,
 };
 
-#[path = "../tests/common/ip_pool.rs"]
+#[path = "../../tests/common/ip_pool.rs"]
 mod ip_pool_test;
 
 fn main() {

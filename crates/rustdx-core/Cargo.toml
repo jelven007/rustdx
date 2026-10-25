@@ -1,5 +1,6 @@
 [package]
 name = "jelven-rustdx-complete"
+autoexamples = false
 version = "2.0.0"
 edition.workspace = true
 rust-version.workspace = true
@@ -48,3 +49,183 @@ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(docsrs)'] }
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
+
+[[example]]
+name = "batch_retention_probe"
+path = "examples/diagnostics/batch_retention_probe.rs"
+
+[[example]]
+name = "capture_eltdx_330_commands"
+path = "examples/capture/capture_eltdx_330_commands.rs"
+
+[[example]]
+name = "capture_enhanced_history_transaction"
+path = "examples/capture/capture_enhanced_history_transaction.rs"
+
+[[example]]
+name = "capture_modern_commands"
+path = "examples/capture/capture_modern_commands.rs"
+
+[[example]]
+name = "capture_nine_commands"
+path = "examples/capture/capture_nine_commands.rs"
+
+[[example]]
+name = "capture_quote_precision"
+path = "examples/capture/capture_quote_precision.rs"
+
+[[example]]
+name = "capture_recent_minutes_boundaries"
+path = "examples/capture/capture_recent_minutes_boundaries.rs"
+
+[[example]]
+name = "capture_resources"
+path = "examples/capture/capture_resources.rs"
+
+[[example]]
+name = "debug_raw_data"
+path = "examples/diagnostics/debug_raw_data.rs"
+
+[[example]]
+name = "local_data"
+path = "examples/usage/local_data.rs"
+
+[[example]]
+name = "metadata_hot_path"
+path = "examples/diagnostics/metadata_hot_path.rs"
+
+[[example]]
+name = "production_smoke"
+path = "examples/validation/production_smoke.rs"
+
+[[example]]
+name = "protocol_capture"
+path = "examples/capture/protocol_capture.rs"
+
+[[example]]
+name = "reliable_client"
+path = "examples/usage/reliable_client.rs"
+
+[[example]]
+name = "shared_quote_metadata"
+path = "examples/usage/shared_quote_metadata.rs"
+
+[[example]]
+name = "stream_bars"
+path = "examples/usage/stream_bars.rs"
+
+[[example]]
+name = "test_builder"
+path = "examples/usage/test_builder.rs"
+
+[[example]]
+name = "test_cache"
+path = "examples/usage/test_cache.rs"
+
+[[example]]
+name = "test_chinese_encoding"
+path = "examples/diagnostics/test_chinese_encoding.rs"
+
+[[example]]
+name = "test_concept_query"
+path = "examples/diagnostics/test_concept_query.rs"
+
+[[example]]
+name = "test_connection"
+path = "examples/diagnostics/test_connection.rs"
+
+[[example]]
+name = "test_connection_pool"
+path = "examples/diagnostics/test_connection_pool.rs"
+
+[[example]]
+name = "test_data_validation"
+path = "examples/usage/test_data_validation.rs"
+
+[[example]]
+name = "test_error_handling"
+path = "examples/usage/test_error_handling.rs"
+
+[[example]]
+name = "test_finance_info"
+path = "examples/diagnostics/test_finance_info.rs"
+
+[[example]]
+name = "test_five_level_quotes"
+path = "examples/diagnostics/test_five_level_quotes.rs"
+
+[[example]]
+name = "test_index_quotes"
+path = "examples/diagnostics/test_index_quotes.rs"
+
+[[example]]
+name = "test_index_quotes_debug"
+path = "examples/diagnostics/test_index_quotes_debug.rs"
+
+[[example]]
+name = "test_industry_info"
+path = "examples/diagnostics/test_industry_info.rs"
+
+[[example]]
+name = "test_minute_time"
+path = "examples/diagnostics/test_minute_time.rs"
+
+[[example]]
+name = "test_prev_day"
+path = "examples/usage/test_prev_day.rs"
+
+[[example]]
+name = "test_readme_examples"
+path = "examples/usage/test_readme_examples.rs"
+
+[[example]]
+name = "test_security_list"
+path = "examples/diagnostics/test_security_list.rs"
+
+[[example]]
+name = "test_security_quotes"
+path = "examples/diagnostics/test_security_quotes.rs"
+
+[[example]]
+name = "test_security_quotes_debug"
+path = "examples/diagnostics/test_security_quotes_debug.rs"
+
+[[example]]
+name = "test_security_quotes_raw"
+path = "examples/diagnostics/test_security_quotes_raw.rs"
+
+[[example]]
+name = "test_tcp_connection"
+path = "examples/diagnostics/test_tcp_connection.rs"
+
+[[example]]
+name = "test_technical_indicators"
+path = "examples/usage/test_technical_indicators.rs"
+
+[[example]]
+name = "test_trading_calendar"
+path = "examples/usage/test_trading_calendar.rs"
+
+[[example]]
+name = "test_transaction"
+path = "examples/diagnostics/test_transaction.rs"
+
+[[example]]
+name = "transaction_all"
+path = "examples/usage/transaction_all.rs"
+
+[[example]]
+name = "transaction_amount"
+path = "examples/usage/transaction_amount.rs"
+
+[[example]]
+name = "validate_enhanced_history_day"
+path = "examples/validation/validate_enhanced_history_day.rs"
+
+[[example]]
+name = "validate_quote_push"
+path = "examples/validation/validate_quote_push.rs"
+
+[[example]]
+name = "validate_recent_auction"
+path = "examples/validation/validate_recent_auction.rs"

@@ -1,0 +1,50 @@
+     Locking 71 packages to latest Rust 1.89.0 compatible versions
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling cfg-if v1.0.5
+   Compiling typenum v1.20.1
+   Compiling rustversion v1.0.23
+   Compiling autocfg v1.5.1
+   Compiling adler2 v2.0.1
+   Compiling zmij v1.0.23
+   Compiling thiserror v2.0.21
+   Compiling core-foundation-sys v0.8.7
+   Compiling crc32fast v1.5.1
+   Compiling miniz_oxide v0.8.5
+   Compiling hashbrown v0.17.1
+   Compiling iana-time-zone v0.1.65
+   Compiling generic-array v0.14.7
+   Compiling log v0.4.34
+   Compiling memchr v2.8.3
+   Compiling num-traits v0.2.19
+   Compiling bumpalo v3.20.3
+   Compiling equivalent v1.0.2
+   Compiling serde_json v1.0.154
+   Compiling simd-adler32 v0.3.10
+   Compiling flate2 v1.1.0
+   Compiling zopfli v0.8.3
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling indexmap v2.14.0
+   Compiling digest v0.10.7
+   Compiling encoding_rs v0.8.42
+   Compiling scopeguard v1.2.0
+   Compiling simdutf8 v0.1.5
+   Compiling multiversion_no_op v1.0.0
+   Compiling itoa v1.0.18
+   Compiling md-5 v0.10.6
+   Compiling miniz_oxide v0.9.1
+   Compiling syn v3.0.9
+   Compiling serde_derive v1.0.229
+   Compiling thiserror-impl v2.0.21
+   Compiling displaydoc v0.2.7
+   Compiling zip v2.4.2
+   Compiling serde v1.0.229
+   Compiling chrono v0.4.45
+   Compiling trade_date_a v2026.0.0
+   Compiling jelven-rustdx-complete v2.0.0 (/Users/bytedance/Documents/rustdx/.worktrees/version-policy-20261025/crates/rustdx-core)
+   Compiling rustdx-consumer-current v0.0.0 (/private/tmp/rustdx-version-policy-20261025/source-consumers/current)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 22.22s
+     Running `/tmp/rustdx-system-optimization-20261025/target/debug/rustdx-consumer-current`

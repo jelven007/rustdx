@@ -1,5 +1,9 @@
 # 初始IP池与当日有效IP池
 
+<!-- lifecycle:registry -->
+读者：开发/集成者；责任：网络及协议维护者。源码核验2026-10-25，每90日及节点探测或每日刷新变化复核，治理见[登记](../development/DOCUMENTATION_GOVERNANCE.md)。
+<!-- /lifecycle -->
+
 核心入口为 `rustdx_complete::tcp::ip::{IpPool, default_pool}`。保留原有40个
 `STOCK_IP`地址作为默认初始值，包含39个7709端口和1个7719端口；初始池
 与有效池是独立状态。集成项目可维护共享默认池，也可将独立的`IpPool`

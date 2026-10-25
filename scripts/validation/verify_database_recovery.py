@@ -389,11 +389,11 @@ print(JSON.stringify({validator_error:121,unique_error:11000,rows:before}));
             self.docker("image-inspect", "image", "inspect", image)
         self.ch("ch-version", "SELECT version()")
         self.mongo("mongo-version", "print(db.version());")
-        sql = (self.repo / "deploy/runner/clickhouse.sql").read_text().replace(
+        sql = (self.repo / "deploy/production/runner/clickhouse.sql").read_text().replace(
             "rustdx_versioned", self.database)
         for i, statement in enumerate(sql.split(";")[:2]):
             self.ch(f"provision-ch-{i}", statement)
-        js = (self.repo / "deploy/runner/mongodb.js").read_text().replace(
+        js = (self.repo / "deploy/production/runner/mongodb.js").read_text().replace(
             "rustdx_versioned", self.database)
         self.mongo("provision-mongo", js)
         for revision in [1, 2]:

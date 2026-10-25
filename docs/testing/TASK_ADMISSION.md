@@ -1,5 +1,9 @@
 # 任务准入与目标部署验收
 
+<!-- lifecycle:registry -->
+读者：测试/产品；责任：验收维护者。源码核验：2026-10-25；每30日及准入合同或任务范围变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+<!-- /lifecycle -->
+
 更新日期：2026-10-25。对应A12、FR-03、FR-04、FR-15至FR-18。消费规则统一以[应用接入](../development/APPLICATION_INTEGRATION.md)为准，已有真实结论以[验收矩阵](PRODUCTION_ACCEPTANCE.md)为准。
 
 ## 1. 分开判定任务与环境

@@ -1,5 +1,9 @@
 # 运行配置与参考数据
 
+<!-- lifecycle:registry -->
+读者：开发/部署；责任：配置维护者。源码核验2026-10-25，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../docs/development/DOCUMENTATION_GOVERNANCE.md)。
+<!-- /lifecycle -->
+
 本目录保存无凭据示例及版本化参考日历。CLI读取进程环境和命令行，**不会自动加载runtime.env或Job JSON**。新增runner通过`run --config`显式读取严格JSON，配置职责相互独立。
 
 runner可选[TCP日线Job](runner/tcp-day.example.json)，与本地day目录互斥。
@@ -10,10 +14,10 @@ source_as_of/planned_date为实际北京时间采集日，through早于该日。
 
 ## 环境变量
 
-复制[runtime.env.example](runtime.env.example)为runtime.env，在本地修改后由shell/部署平台导出：
+复制[runtime.env.example](runtime/env.example)为runtime.env，在本地修改后由shell/部署平台导出：
 
 ```sh
-cp config/runtime.env.example config/runtime.env
+cp config/runtime/env.example config/runtime.env
 # 编辑本地值后，在仓库根执行；文件内容须可信
 set -a
 . config/runtime.env
@@ -56,9 +60,11 @@ rustdx --no-tcp-startup data-status --calendar config/calendars/sse-2026.json --
 
 [runner/job.example.json](runner/job.example.json)是当前本地A股原价日线契约的严格配置，字段包含根目录/CLI、来源与策略修订、日期、完整事实、源/工作空间/行数/期限预算及可选数据库目标。所有路径为绝对路径；全零公告摘要必须替换为实际SHA-256，不能直接作为真实事实执行。`database_targets: []`只发布文件，多目标须全部精确verified。
 
-[runner/publisher.env.example](runner/publisher.env.example)只给出变量名，实际凭据由密钥管理注入。JSON不含凭据值，worker清空继承环境；清空环境不构成同UID权限隔离。Job文件须由维护流程原子更新，定时器反复执行相同身份只去重，不自动制造次日Job/事实。详细格式/命令见[runner](../apps/rustdx-runner/README.md)，DBA、systemd和恢复见[部署说明](../deploy/runner/README.md)。
+[runner/publisher.env.example](runtime/publisher.env.example)只给出变量名，实际凭据由密钥管理注入。JSON不含凭据值，worker清空继承环境；清空环境不构成同UID权限隔离。Job文件须由维护流程原子更新，定时器反复执行相同身份只去重，不自动制造次日Job/事实。详细格式/命令见[runner](../apps/rustdx-runner/README.md)，DBA、systemd和恢复见[部署说明](../deploy/production/runner/README.md)。
 
 [acceptance/task-matrix.json](acceptance/task-matrix.json)与[部署验收模板](acceptance/deployment.example.json)
 用于独立任务/目标证据准入，不是runner Job配置；默认Unknown拒绝，方法见[任务准入](../docs/testing/TASK_ADMISSION.md)。
 [release/gates.json](release/gates.json)和[Action清单](release/action-pins.json)固定同SHA发布要求，
 [offline-fixtures.json](release/offline-fixtures.json)记录工程包所需小夹具的历史来源及摘要。
+
+当前文档登记见[documentation/registry.json](documentation/registry.json)，版本与前后端元数据登记见[release/versions.json](release/versions.json)。两者供CI检查，不是产品运行配置。

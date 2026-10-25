@@ -1,0 +1,24 @@
+{
+  "simulation": true,
+  "version": "2.0.1",
+  "cargo_versions": {
+    "jelven-rustdx-complete": "2.0.1",
+    "jelven-rustdx-cli": "2.0.1",
+    "rustdx-runner": "2.0.1",
+    "tests-integration": "2.0.1"
+  },
+  "production_version": "2.0.0",
+  "package_command": [
+    "python3",
+    "/tmp/rustdx-version-policy-20261025/synced-source/scripts/release/preflight.py",
+    "--output",
+    "/tmp/rustdx-version-policy-20261025/synced-preflight",
+    "--offline",
+    "--skip-workspace-checks",
+    "--build-cache",
+    "/tmp/rustdx-system-optimization-20261025/target",
+    "--cargo",
+    "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo"
+  ],
+  "exit_code": 0
+}
