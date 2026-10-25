@@ -4,7 +4,7 @@ Rust 行情库、通达信日线处理工具和单机数据发布控制层。项
 
 当前源码覆盖 eltdx 3.3.0 的 26 个同码命令，并提供 day/lc/gbbq 文件解析、复权、指标、日历和日期化规则。26 个同码入口不代表所有增强业务契约已经验收：市场2、0feb响应日期、0547真实盘中主动推送及目标生产负载仍有明确边界。
 
-核心包 `jelven-rustdx-complete 2.0.0`，导入名 `rustdx_complete`；CLI 包 `jelven-rustdx-cli 2.0.0`，二进制 `rustdx`；控制层 `rustdx-runner 0.1.0` 不发布。2.0.0为当前源码的未发布主版本，应用和部署须固定提交、源码摘要与锁文件，迁移见[行为说明](docs/release/MIGRATION.md)。
+核心包 `jelven-rustdx-complete 2.0.0`，导入名 `rustdx_complete`；CLI 包 `jelven-rustdx-cli 2.0.0`，二进制 `rustdx`；控制层 `rustdx-runner 0.1.0` 不发布。核心与CLI 2.0.0已发布到crates.io，源码身份和包摘要见[发布记录](docs/release/PUBLICATION_20261025.md)，迁移见[行为说明](docs/release/MIGRATION.md)。
 
 ## 快速开始
 
@@ -20,14 +20,20 @@ rustdx day /path/to/lday -o /path/to/stocks.csv \
 
 本地文件和运维命令默认不初始化行情TCP。HTTP下载/数据库连接按命令实际需要启动；TCP采集核验自己的冻结节点。`--tcp-warmup`显式测速和预热通用当日IP池；普通在线调用见[外部应用调用约定](docs/development/APPLICATION_INTEGRATION.md)。
 
-应用使用当前源码：
+从crates.io安装CLI：
+
+```sh
+cargo install --locked jelven-rustdx-cli --version 2.0.0
+```
+
+应用使用已发布核心库：
 
 ```toml
 [dependencies]
-rustdx-complete = { package = "jelven-rustdx-complete", path = "/path/to/rustdx/crates/rustdx-core" }
+rustdx-complete = { package = "jelven-rustdx-complete", version = "=2.0.0" }
 ```
 
-当前2.0.0尚未上传注册表；已发布1.x包不包含当前所有新增接口。
+源码集成可改用 `path = "/path/to/rustdx/crates/rustdx-core"`，并固定提交和锁文件。已发布1.x包不包含2.0.0的全部新增接口。
 
 ## 工程入口
 

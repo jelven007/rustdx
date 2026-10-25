@@ -7,7 +7,7 @@
 rustdx-complete = { package = "jelven-rustdx-complete", version = "2.0.0" }
 ```
 
-2.0.0是当前未发布主版本，注册表安装须等待实际发布；源码集成固定提交和锁文件。日历所有入口返回Result，财务/心跳返回新类型，迁移说明在仓库docs/release/MIGRATION.md。接口文档通过 `cargo doc -p jelven-rustdx-complete --no-deps` 构建。
+2.0.0已发布到crates.io，发布源码及包摘要见仓库docs/release/PUBLICATION_20261025.md；源码集成固定提交和锁文件。日历所有入口返回Result，财务/心跳返回新类型，迁移说明在仓库docs/release/MIGRATION.md。接口文档通过 `cargo doc -p jelven-rustdx-complete --no-deps` 构建。
 
 库采用同步 I/O 和有界线程，TCP 主连接、池、订阅及重连共享网络预算。配置须在首次初始化前完成。证券键保留市场和代码，源量/价格/金额按协议与周期解释，未知值不得补零；分页检查完成状态，批量逐项处理结果，订阅按同步状态恢复。
 

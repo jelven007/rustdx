@@ -1,8 +1,8 @@
 # 数据语义与迁移
 
-更新日期：2026-10-24。当前源码版本为核心/CLI 2.0.0，尚未上传注册表；下方较早章节保留当轮版本事实。外部应用共同消费约定见[应用接入](../development/APPLICATION_INTEGRATION.md)。
+更新日期：2026-10-25。核心/CLI 2.0.0已发布到crates.io，源码身份和实际包摘要见[发布记录](PUBLICATION_20261025.md)。下方较早章节保留当轮版本事实，其变更已纳入2.0.0；runner仍仅交付源码与二进制。外部应用共同消费约定见[应用接入](../development/APPLICATION_INTEGRATION.md)。
 
-## 2.0.0主版本迁移与等待契约（未发布）
+## 2.0.0主版本迁移与等待契约（已发布）
 
 采用破坏性主版本升级，CLI依赖核心2.0.0。包名、导入名、二进制名保持原值，
 1.x调用方不得假定新返回类型兼容；正式发布身份另含提交、源码与Cargo.lock摘要、
@@ -191,7 +191,7 @@ runner账本schema2从阶段一schema1自动增加目标/请求证据表；新�
 
 ## 仓库源码优化（2026-10-23，尚未发布新crate版本）
 
-10月22日源码提交7cd02e7、5fb5b70、401265c、1f9f739已进入main；10月23日六步本地优化见[NEXT_OPTIMIZATION.md](../archive/history/NEXT_OPTIMIZATION.md)。该轮核心库/CLI的Cargo版本为1.12.2/1.8.2，crates.io上的这两个版本是10月11日历史发布内容；当前工作区已升2.0.0且未上传，使用新行为须从源码或本地审核包构建。完整文档见[索引](../README.md)，此前分支交付与两个历史快照见[RELEASES.md](RELEASES.md)。
+10月22日源码提交7cd02e7、5fb5b70、401265c、1f9f739已进入main；10月23日六步本地优化见[NEXT_OPTIMIZATION.md](../archive/history/NEXT_OPTIMIZATION.md)。该轮核心库/CLI的Cargo版本为1.12.2/1.8.2，crates.io上的这两个版本是10月11日历史发布内容；上述优化现已纳入已发布2.0.0，安装和发布身份见[发布记录](PUBLICATION_20261025.md)。完整文档见[索引](../README.md)，此前分支交付与两个历史快照见[RELEASES.md](RELEASES.md)。
 
 `day`默认写运行清单和run_id归档，`--report`可更改路径；该轮schema_version为6，保留database_verification及verified状态，增加覆盖告警、回读批量/耗时、摘要行序及[每任务阶段观测](../operations/OBSERVABILITY.md)。默认4096键一批，`RUSTDX_VERIFY_BATCH_ROWS=1..16384`可调，仍精确核对全部导出数值；verified才允许清理CSV。规范化字段摘要改为CSV行序，schema3/4旧摘要可能不同，CSV字节摘要不变。同机同目标写入锁覆盖前因子读取至验收结束。Mongo需mongosh/mongoimport，长驻mongosh独立回读替代逐批mongoexport。数据库单次操作最多300秒并受整任务deadline约束，失败保留CSV；详见[IMPORTS.md](../operations/IMPORTS.md)。不可信文件使用`try_from_bytes/try_from_chunk/try_parse/try_to_vec`，旧单条入口保留。
 

@@ -1,15 +1,15 @@
 # rustdx CLI
 
-包名 `jelven-rustdx-cli 2.0.0`（未发布），库名 `rustdx_cli`，二进制 `rustdx`。Rust 2024 / MSRV 1.89。处理通达信日线目录、官网 ZIP、指定 URL 或本地 ZIP，输出 CSV、质量清单，或导入 ClickHouse/MongoDB 并精确回读。
+包名 `jelven-rustdx-cli 2.0.0`（已发布crates.io），库名 `rustdx_cli`，二进制 `rustdx`。Rust 2024 / MSRV 1.89。处理通达信日线目录、官网 ZIP、指定 URL 或本地 ZIP，输出 CSV、质量清单，或导入 ClickHouse/MongoDB 并精确回读。
 
 ```sh
-cargo install --path apps/rustdx-cli --locked
+cargo install --locked jelven-rustdx-cli --version 2.0.0
 rustdx day /path/to/lday -o /path/to/stocks.csv \
   --report /path/to/collection.json
 rustdx day --help
 ```
 
-以上构建命令从仓库根执行。所有全局参数放在子命令前；本地命令默认不初始化行情TCP，`--tcp-warmup`显式测速和预热。HTTP或数据库按实际需要使用网络。
+源码安装从仓库根执行 `cargo install --path apps/rustdx-cli --locked`。所有全局参数放在子命令前；本地命令默认不初始化行情TCP，`--tcp-warmup`显式测速和预热。HTTP或数据库按实际需要使用网络。
 
 成功须同时满足退出码、清单、产物与适用的数据库精确验收；`acknowledged` 仍须继续回读。失败、确认丢失或不一致时保留 CSV，恢复前核实目标及较新数据。
 

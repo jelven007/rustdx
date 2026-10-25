@@ -1,6 +1,6 @@
 # 源码与软件包交付
 
-更新日期：2026-10-25。当前工作区使用核心/CLI 2.0.0（未发布）与runner0.1.0；已发布1.x是历史内容。主版本迁移和本地包验证不构成提交、推送、部署或注册表发布。
+更新日期：2026-10-25。核心/CLI 2.0.0已发布到crates.io，runner0.1.0交付源码与二进制。发布包来自提交`82c6de4e52dae907cb9055d4cd07bbb9444e0c47`；注册表实际包摘要、核验结果和安装命令见[发布记录](PUBLICATION_20261025.md)。已发布1.x是历史内容。
 
 ## 1. 交付单位与身份
 
@@ -57,7 +57,7 @@ contracts制品，核对preflight身份、实际两crate字节摘要及清单。
 离线`--snapshot-runs`只审核记录，始终不授予发布资格。
 
 Action官方ref和运行时元信息固定在[工具清单](../../config/release/action-pins.json)，
-Node24及最低runner要求需在目标Actions环境满足；新SHA远端执行尚待取得。
+Node24及最低runner要求需在目标Actions环境满足；本次发布提交的9项远端门禁已通过，后续新提交仍需独立核验。
 Mongo工具解压前按`deploy/acceptance/tool-archives.sha256`检查，数据库镜像digest
 及上述配置摘要进入release manifest。manifest记录本地patch范围和注册表待验证状态。
 数据库CI监听所有main推送/PR，避免发布提交因仅修改文档而没有同SHA结果。
@@ -79,7 +79,9 @@ Mongo工具解压前按`deploy/acceptance/tool-archives.sha256`检查，数据�
 
 发布脚本在确认前完成本机及远端门禁，确认后重新核对源码/审核包，并重查最新远端结果。
 核心上传并等待索引可见后，CLI不使用本地patch执行注册表dry-run，再上传。
-实际发布仍须另有任务授权与凭据，runner不发布到crates.io；本轮没有运行实际publish。
+实际发布须有任务授权与凭据，runner不发布到crates.io。本次已完成核心上传、
+索引可见、CLI无本地patch的注册表dry-run和上传，并核验两个注册表下载包。
+发布前门禁记录与发布后结果分别保存，详见[发布记录](PUBLICATION_20261025.md)。
 
 ## 5. 本次迁移交付
 
