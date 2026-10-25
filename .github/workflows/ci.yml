@@ -51,7 +51,7 @@ jobs:
         run: cargo build --profile test --workspace ${{ matrix.package_args }} --all-targets --all-features --locked
 
       - name: Test
-        run: cargo test --workspace ${{ matrix.package_args }} --all-features --locked
+        run: cargo test --workspace ${{ matrix.package_args }} --all-features --locked --no-fail-fast
 
       - name: Runner CLI and local fault regressions (Unix)
         if: runner.os != 'Windows'

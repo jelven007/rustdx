@@ -336,14 +336,22 @@ fn idle_failure_invalidates_and_next_request_reconnects_without_mixing_sessions(
 
 #[test]
 fn raw_extraction_stops_idle_worker_and_preserves_the_socket() {
-    let (config, handle) = server(1, |request| {
+    let (sent, received) = mpsc::channel();
+    let (config, handle) = server(1, move |request| {
         assert_eq!(request, HEARTBEAT_REQUEST);
+        sent.send(()).unwrap();
+        // Exceed several I/O polls so extraction must finish the pending frame,
+        // rather than aborting it when the idle loop is stopped.
+        std::thread::sleep(Duration::from_millis(80));
         ack()
     });
     let mut tcp = Tcp::with_config(&config).unwrap();
     tcp.set_heartbeat_interval(Some(Duration::from_millis(10)))
         .unwrap();
+    received.recv_timeout(Duration::from_secs(1)).unwrap();
     let (mut stream, mut buffer, _) = tcp.into_inner();
+    assert_eq!(stream.read_timeout().unwrap(), Some(config.timeout));
+    assert_eq!(stream.write_timeout().unwrap(), Some(config.timeout));
     stream.write_all(HEARTBEAT_REQUEST).unwrap();
     let mut header = [0; 16];
     buffer.read_exact(&mut header).unwrap();

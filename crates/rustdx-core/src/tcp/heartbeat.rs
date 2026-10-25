@@ -81,6 +81,7 @@ impl Default for FrameGate {
 #[derive(Debug, Default)]
 struct Stop {
     stopped: AtomicBool,
+    abort_io: AtomicBool,
     wait: Mutex<()>,
     wake: Condvar,
 }
@@ -136,8 +137,12 @@ impl IdleHeartbeat {
                                     }
                                 };
                                 let started = Instant::now();
-                                let result =
-                                    exchange(&mut worker_socket, timeout, observer.as_deref());
+                                let result = exchange(
+                                    &mut worker_socket,
+                                    timeout,
+                                    observer.as_deref(),
+                                    &worker_stop.abort_io,
+                                );
                                 global().request_result(result.is_ok());
                                 global().observation(started.elapsed(), false);
                                 global().endpoint_result(endpoint, result.is_ok());
@@ -179,12 +184,16 @@ impl IdleHeartbeat {
         })
     }
 
-    /// shutdown wakes a pending read on drop/reconnect. Raw extraction instead
-    /// waits for the current bounded heartbeat and leaves a successful socket open.
+    /// Drop/reconnect also aborts polled I/O: Windows shutdown does not reliably
+    /// wake a read on a cloned socket. Raw extraction waits for the current
+    /// bounded heartbeat and leaves a successful socket open.
     pub fn stop(&mut self, shutdown: bool) {
         let Some(handle) = self.handle.take() else {
             return;
         };
+        if shutdown {
+            self.stop.abort_io.store(true, Ordering::Release);
+        }
         self.stop.stopped.store(true, Ordering::Release);
         self.stop.wake.notify_all();
         if shutdown {
@@ -204,6 +213,7 @@ fn exchange(
     socket: &mut TcpStream,
     timeout: Duration,
     observer: Option<&dyn FrameObserver>,
+    abort_io: &AtomicBool,
 ) -> io::Result<()> {
     let endpoint = socket.peer_addr()?;
     if let Some(observer) = observer {
@@ -214,12 +224,11 @@ fn exchange(
     }
     let result: io::Result<()> = (|| {
         let deadline = deadline_after(timeout)?;
-        socket.set_write_timeout(Some(remaining(deadline)?))?;
-        socket.write_all(HEARTBEAT_REQUEST)?;
+        write_until(socket, HEARTBEAT_REQUEST, deadline, abort_io)?;
         let mut header = [0; 16];
-        read_until(socket, &mut header, deadline)?;
+        read_until(socket, &mut header, deadline, abort_io)?;
         let mut body = vec![0; usize::from(u16::from_le_bytes([header[12], header[13]]))];
-        read_until(socket, &mut body, deadline)?;
+        read_until(socket, &mut body, deadline, abort_io)?;
         if let Some(observer) = observer {
             observer.observe(FrameEvent::Response {
                 endpoint,
@@ -230,6 +239,10 @@ fn exchange(
         }
         super::frame::matches(&header, HEARTBEAT_REQUEST)?;
         decode_heartbeat(&super::decode_frame(&header, &body, true)?)?;
+        // Clones share socket options. Raw extraction must not inherit the
+        // short polling timeout used only to stop this worker promptly.
+        socket.set_read_timeout(Some(timeout))?;
+        socket.set_write_timeout(Some(timeout))?;
         Ok(())
     })();
     if let (Err(error), Some(observer)) = (&result, observer) {
@@ -242,14 +255,66 @@ fn exchange(
     result
 }
 
-fn read_until(socket: &mut TcpStream, bytes: &mut [u8], deadline: Instant) -> io::Result<()> {
+fn io_poll_timeout(deadline: Instant, abort_io: &AtomicBool) -> io::Result<Duration> {
+    if abort_io.load(Ordering::Acquire) {
+        return Err(io::Error::new(
+            io::ErrorKind::ConnectionAborted,
+            "heartbeat stopped",
+        ));
+    }
+    Ok(remaining(deadline)?.min(Duration::from_millis(20)))
+}
+
+fn write_until(
+    socket: &mut TcpStream,
+    bytes: &[u8],
+    deadline: Instant,
+    abort_io: &AtomicBool,
+) -> io::Result<()> {
     let mut offset = 0;
     while offset < bytes.len() {
-        socket.set_read_timeout(Some(remaining(deadline)?))?;
+        socket.set_write_timeout(Some(io_poll_timeout(deadline, abort_io)?))?;
+        match socket.write(&bytes[offset..]) {
+            Ok(0) => return Err(io::ErrorKind::WriteZero.into()),
+            Ok(n) => offset += n,
+            Err(error)
+                if matches!(
+                    error.kind(),
+                    io::ErrorKind::Interrupted
+                        | io::ErrorKind::TimedOut
+                        | io::ErrorKind::WouldBlock
+                ) =>
+            {
+                continue;
+            }
+            Err(error) => return Err(error),
+        }
+    }
+    Ok(())
+}
+
+fn read_until(
+    socket: &mut TcpStream,
+    bytes: &mut [u8],
+    deadline: Instant,
+    abort_io: &AtomicBool,
+) -> io::Result<()> {
+    let mut offset = 0;
+    while offset < bytes.len() {
+        socket.set_read_timeout(Some(io_poll_timeout(deadline, abort_io)?))?;
         match socket.read(&mut bytes[offset..]) {
             Ok(0) => return Err(io::ErrorKind::UnexpectedEof.into()),
             Ok(n) => offset += n,
-            Err(error) if error.kind() == io::ErrorKind::Interrupted => continue,
+            Err(error)
+                if matches!(
+                    error.kind(),
+                    io::ErrorKind::Interrupted
+                        | io::ErrorKind::TimedOut
+                        | io::ErrorKind::WouldBlock
+                ) =>
+            {
+                continue;
+            }
             Err(error) => return Err(error),
         }
     }

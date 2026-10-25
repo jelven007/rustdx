@@ -8,6 +8,7 @@
 - 新增checked缓存合并，等待/读取/fetch/返回共享预算，识别条带重入，超期成功不交付；旧入口等待契约单独保留。
 - 本地CLI/runner默认离线，通用TCP预热改为`--tcp-warmup`显式选项；在线来源继续核验自己的节点。
 - TCP日线及报文归档在所有平台同步文件内容，仅在Unix同步父目录，修复Windows采集返回拒绝访问；CI构建复用test profile并限制并行编译，避免保留重复的完整构建产物。
+- 心跳后台I/O按20毫秒重查停止信号，修复Windows关闭克隆socket后阻塞读取仍延迟Drop；原始socket提取等待当前完整心跳，并恢复正常读写超时。
 
 逐项状态、检查和未验收范围见[优化执行记录](docs/development/OPTIMIZATION_PROGRESS.md)。
 
