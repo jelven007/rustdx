@@ -57,7 +57,12 @@ fn write_new(root: &Path, path: &Path, bytes: &[u8]) -> io::Result<()> {
     let mut file = OpenOptions::new().write(true).create_new(true).open(path)?;
     file.write_all(bytes)?;
     file.sync_all()?;
-    File::open(root)?.sync_all()
+    // Directory handles can be synced on Unix; Windows rejects File::open on a directory.
+    #[cfg(unix)]
+    File::open(root)?.sync_all()?;
+    #[cfg(not(unix))]
+    let _ = root;
+    Ok(())
 }
 
 impl FrameArchive {

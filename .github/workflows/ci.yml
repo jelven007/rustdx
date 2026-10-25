@@ -20,6 +20,8 @@ jobs:
   test:
     name: Build / Test (${{ matrix.os }})
     timeout-minutes: 30
+    env:
+      CARGO_BUILD_JOBS: "2"
     strategy:
       fail-fast: false
       matrix:
@@ -45,7 +47,8 @@ jobs:
         uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
 
       - name: Build (all targets)
-        run: cargo build --workspace ${{ matrix.package_args }} --all-targets --all-features --locked
+        # Match cargo test's profile instead of retaining a second full set of binaries.
+        run: cargo build --profile test --workspace ${{ matrix.package_args }} --all-targets --all-features --locked
 
       - name: Test
         run: cargo test --workspace ${{ matrix.package_args }} --all-features --locked

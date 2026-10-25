@@ -265,11 +265,14 @@ fn write_new(path: &Path, bytes: &[u8]) -> io::Result<()> {
     let mut file = OpenOptions::new().write(true).create_new(true).open(path)?;
     file.write_all(bytes)?;
     file.sync_all()?;
-    File::open(
-        path.parent()
-            .ok_or_else(|| invalid("missing parent directory"))?,
-    )?
-    .sync_all()
+    let parent = path
+        .parent()
+        .ok_or_else(|| invalid("missing parent directory"))?;
+    #[cfg(unix)]
+    File::open(parent)?.sync_all()?;
+    #[cfg(not(unix))]
+    let _ = parent;
+    Ok(())
 }
 
 #[derive(Debug, Serialize)]
