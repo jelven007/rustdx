@@ -1,6 +1,6 @@
 [package]
 name = "rustdx-fuzz"
-version = "2.0.1"
+version = "2.0.2"
 publish = false
 edition = "2024"
 rust-version = "1.89"
