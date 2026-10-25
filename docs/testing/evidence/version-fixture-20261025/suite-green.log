@@ -1,0 +1,41 @@
+test_fixed_required_fields_and_changed_scope (test_consumption_and_facts.Consumption) ... ok
+test_issuer_bytes_must_match_the_pinned_digest (test_consumption_and_facts.Consumption) ... ok
+test_unknown_dates_and_securities_and_mutated_announcement_are_rejected (test_consumption_and_facts.Facts) ... ok
+test_stale_missing_and_unregistered_operational_docs_fail (test_documentation_lifecycle.DocumentationLifecycle) ... ok
+test_old_manifest_verifies_and_bundles_original_names_without_changing_bytes (test_evidence_migration.EvidenceMigration) ... ok
+test_complete_due_changed_and_missing_categories (test_fact_maintenance.Maintenance) ... ok
+test_owner_self_review_and_path_escape_rejected (test_fact_maintenance.Maintenance) ... ok
+test_identity_and_sets_must_match (test_indicator_comparison.Comparison) ... ok
+test_invalid_statistics_and_schema_are_rejected (test_indicator_comparison.Comparison) ... ok
+test_regression_and_changed_result_fail_gate (test_indicator_comparison.Comparison) ... ok
+test_actual_package_artifact_rejects_dirty_mismatched_or_changed_bytes (test_release_gates.ReleaseGates) ... ok
+test_all_platforms_current_sha_latest_attempt_and_workflow_identity (test_release_gates.ReleaseGates) ... ok
+test_engineering_identity_excludes_history_and_includes_new_source (test_release_gates.ReleaseGates) ... ok
+test_evidence_digest_missing_path_escape_duplicate_and_bundle (test_release_gates.ReleaseGates) ... ok
+test_offline_fixture_identity_is_available_without_historical_directories (test_release_gates.ReleaseGates) ... ok
+test_required_acceptance_inputs_are_not_hidden_by_runtime_ignore_rules (test_release_gates.ReleaseGates) ... ok
+test_version_receipt_binds_original_push_and_checked_sha (test_release_gates.ReleaseGates) ... ok
+test_changed_evidence_active_worker_and_scan_limits_refuse_preview (test_retention_preview.RetentionTests) ... ok
+test_committed_wal_is_included_without_creating_live_shm_or_writes (test_retention_preview.RetentionTests) ... ok
+test_historical_catalogs_receipts_failed_evidence_backups_and_trend (test_retention_preview.RetentionTests) ... ok
+test_real_proof_field_is_verified_in_catalog_and_targets (test_retention_preview.RetentionTests) ... ok
+test_restored_paths_are_mapped_without_changing_historical_ledger (test_retention_preview.RetentionTests) ... ok
+test_symlinks_escape_lock_conflict_and_previous_scope_rejected (test_retention_preview.RetentionTests) ... ok
+test_complete_scoped_records_wrong_target_unknown_fields_over_limit_and_tampering (test_task_admission.Admission) ... ok
+test_unknown_template_denied_and_new_tasks_do_not_inherit_daily_contract (test_task_admission.Admission) ... ok
+test_all_decimal_carries_and_limit (test_versioning.VersionPolicy) ... ok
+test_event_payload_and_main_cap (test_versioning.VersionPolicy) ... ok
+test_fixture_bootstrap_is_independent_of_checkout_version (test_versioning.VersionPolicy) ... ok
+test_history_atomic_race_and_lost_ack_converge (test_versioning.VersionPolicy) ... ok
+test_history_retains_three_by_main_order_and_old_replay_cannot_resurrect (test_versioning.VersionPolicy) ... ok
+test_no_local_or_feature_write_entry (test_versioning.VersionPolicy) ... ok
+test_owned_metadata_locks_frontend_and_history (test_versioning.VersionPolicy) ... ok
+test_pr_inheritance_and_illegal_local_increment (test_versioning.VersionPolicy) ... ok
+test_rejected_write_fails_without_repeated_increments (test_versioning.VersionPolicy) ... ok
+test_remote_replay_multi_commit_push_cas_lost_ack_and_tags (test_versioning.VersionPolicy) ... ok
+test_workflow_order_all_checkout_revisions_and_permissions (test_versioning.VersionPolicy) ... ok
+
+----------------------------------------------------------------------
+Ran 36 tests in 31.891s
+
+OK

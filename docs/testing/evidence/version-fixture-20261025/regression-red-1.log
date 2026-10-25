@@ -1,0 +1,29 @@
+test_fixture_bootstrap_is_independent_of_checkout_version (test_versioning.VersionPolicy) ... 
+======================================================================
+FAIL: test_fixture_bootstrap_is_independent_of_checkout_version (test_versioning.VersionPolicy) (version='2.0.1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bytedance/Documents/rustdx/.worktrees/version-fixture-20261025/scripts/validation/tests/test_versioning.py", line 55, in test_fixture_bootstrap_is_independent_of_checkout_version
+    self.assertEqual(v.check(root), policy["bootstrap_version"])
+AssertionError: '2.0.1' != '2.0.0'
+- 2.0.1
+?     ^
++ 2.0.0
+?     ^
+
+
+======================================================================
+FAIL: test_fixture_bootstrap_is_independent_of_checkout_version (test_versioning.VersionPolicy) (version='7.8.9')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/bytedance/Documents/rustdx/.worktrees/version-fixture-20261025/scripts/validation/tests/test_versioning.py", line 55, in test_fixture_bootstrap_is_independent_of_checkout_version
+    self.assertEqual(v.check(root), policy["bootstrap_version"])
+AssertionError: '7.8.9' != '2.0.0'
+- 7.8.9
++ 2.0.0
+
+
+----------------------------------------------------------------------
+Ran 1 test in 1.425s
+
+FAILED (failures=2)

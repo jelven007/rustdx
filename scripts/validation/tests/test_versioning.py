@@ -27,6 +27,10 @@ def fixture(root):
         target = root / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / name, target)
+    # Tests need a stable origin after the real main has advanced.
+    for name, text in v.desired_files(root, policy["bootstrap_version"], policy,
+                                      bootstrap=True).items():
+        (root / name).write_text(text)
     # Historical Cargo files and version text must never be synchronized.
     historical = root / "docs/testing/evidence/sample/Cargo.toml"
     historical.parent.mkdir(parents=True)
@@ -38,6 +42,25 @@ def fixture(root):
 
 
 class VersionPolicy(unittest.TestCase):
+    def test_fixture_bootstrap_is_independent_of_checkout_version(self):
+        for version in ["2.0.1", "7.8.9"]:
+            with self.subTest(version=version), tempfile.TemporaryDirectory() as directory:
+                source, root = Path(directory) / "source", Path(directory) / "fixture"
+                source.mkdir()
+                root.mkdir()
+                fixture(source)
+                policy = v.registry(source)
+                files = v.desired_files(source, version, policy)
+                for name, text in files.items():
+                    (source / name).write_text(text)
+                original = {name: (source / name).read_bytes() for name in files}
+                with patch.object(sys.modules[__name__], "ROOT", source):
+                    fixture(root)
+                self.assertEqual(v.check(root), policy["bootstrap_version"])
+                self.assertEqual(v.check(source, strict=True), version)
+                self.assertEqual({name: (source / name).read_bytes() for name in files},
+                                 original)
+
     def test_all_decimal_carries_and_limit(self):
         for n in range(999):
             old, new = ".".join(f"{n:03d}"), ".".join(f"{n + 1:03d}")
