@@ -252,30 +252,56 @@ mod tests {
 
     #[test]
     fn cancellation_and_deadline_kill_blocked_pipe_and_descendants() {
-        for cancel in [false, true] {
-            let task = OperationContext::new(Duration::from_millis(100), None).unwrap();
-            let _guard = task.enter();
-            let mut process =
-                Process::spawn(Command::new("sh").args(["-c", "sleep 5 & wait"]), 1024).unwrap();
+        for cancel_delay in [None, Some(Duration::ZERO), Some(Duration::from_millis(200))] {
+            let directory = tempfile::tempdir().unwrap();
+            let ready = directory.path().join("ready");
+            let mut process = Process::spawn(
+                Command::new("sh")
+                    .args(["-c", "dd bs=1 count=1 of=/dev/null 2>/dev/null; touch \"$RUSTDX_TEST_READY\"; sleep 30 & wait"])
+                    .env("RUSTDX_TEST_READY", &ready),
+                1024,
+            )
+            .unwrap();
             let pid = process.worker.as_ref().unwrap().child.id();
+            let bytes = vec![b'x'; 1024 * 1024];
+            let saved = evidence();
+            // Cancellation has its own budget; process startup is outside it.
+            let budget = if cancel_delay.is_some() {
+                Duration::from_secs(10)
+            } else {
+                Duration::from_millis(100)
+            };
+            let task = OperationContext::new(budget, None).unwrap();
+            let _guard = task.enter();
             let context = task.clone();
-            let canceller = thread::spawn(move || {
-                if cancel {
-                    thread::sleep(POLL);
+            let canceller = cancel_delay.map(|delay| {
+                thread::spawn(move || {
+                    let waiting = Instant::now();
+                    // Reading one byte proves the large pipe write has begun.
+                    while !ready.exists() {
+                        assert!(waiting.elapsed() < Duration::from_secs(5));
+                        thread::sleep(POLL);
+                    }
+                    // The delayed case exceeds the old 100ms cancellation deadline.
+                    thread::sleep(delay);
                     context.cancel();
-                }
+                })
             });
             let start = Instant::now();
-            let error = process
-                .exchange(vec![b'x'; 1024 * 1024], evidence())
-                .unwrap_err();
+            let error = process.exchange(bytes, saved).unwrap_err();
+            drop(process);
+            if let Some(canceller) = canceller {
+                canceller.join().unwrap();
+            }
             assert_eq!(
                 error.category(),
-                if cancel { "cancelled" } else { "timeout" }
+                if cancel_delay.is_some() {
+                    "cancelled"
+                } else {
+                    "timeout"
+                }
             );
-            drop(process);
-            canceller.join().unwrap();
-            assert!(start.elapsed() < Duration::from_secs(1));
+            assert!(start.elapsed() < Duration::from_secs(5));
             assert!(!crate::supervisor::process_group_alive(pid));
         }
     }

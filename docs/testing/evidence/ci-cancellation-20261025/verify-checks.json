@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "source_base": "bd0dd006ad24d440a983b9ed88c481a65291c256",
+  "phase": "verify",
+  "checks": [
+    {
+      "label": "regression-final",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "database_process::tests::cancellation_and_deadline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 5.629,
+      "log": "regression-final.log",
+      "sha256": "9d977f5fd08a60085f7eaeef3af1e7cb055c8a8a7fae3802ad7b644f22a51b26"
+    },
+    {
+      "label": "fmt",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.747,
+      "log": "fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "clippy",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "-p",
+        "rustdx-runner",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 9.21,
+      "log": "clippy.log",
+      "sha256": "e79f32be0dc341f4f92f349c355c0aa3116e04b839ee30c4232f34c8386cc9fc"
+    },
+    {
+      "label": "runner-suite",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 101,
+      "expected_exit_code": 0,
+      "seconds": 33.557,
+      "log": "runner-suite.log",
+      "sha256": "19315522ea778fb800cc719eab93cb178d1ed1d7d6f870303827ba6679c5fa7b"
+    }
+  ]
+}

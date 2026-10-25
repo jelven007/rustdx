@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "source_base": "bd0dd006ad24d440a983b9ed88c481a65291c256",
+  "phase": "reverse",
+  "checks": [
+    {
+      "label": "reverse-proof",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "database_process::tests::cancellation_and_deadline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "expected_exit_code": 101,
+      "seconds": 5.045,
+      "log": "reverse-proof.log",
+      "sha256": "3b17bdf0152433b5649981d11f763d75f30eddeece2587a23eae92ce20314006"
+    }
+  ]
+}
