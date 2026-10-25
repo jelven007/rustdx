@@ -1,0 +1,19 @@
+warning: Patch `jelven-rustdx-complete v2.0.1 (/private/tmp/rustdx-version-policy-20261025/synced-preflight/unpacked/jelven-rustdx-complete-2.0.1)` was not used in the crate graph.
+Perhaps you misspelled the source URL being patched.
+Possible URLs for `[patch.<URL>]`:
+    /private/tmp/rustdx-version-policy-20261025/synced-preflight/package-workspace/crates/rustdx-core
+   Packaging jelven-rustdx-cli v2.0.1 (/private/tmp/rustdx-version-policy-20261025/synced-preflight/package-workspace/apps/rustdx-cli)
+warning: ignoring example `csv` as `examples/csv.rs` is not included in the published package
+warning: ignoring example `excel` as `examples/excel.rs` is not included in the published package
+warning: ignoring example `tcp_wire` as `examples/tcp_wire.rs` is not included in the published package
+warning: ignoring test `calendar_datasets` as `tests/calendar_datasets.rs` is not included in the published package
+warning: ignoring test `cli` as `tests/cli.rs` is not included in the published package
+warning: ignoring test `cli_deadline` as `tests/cli_deadline.rs` is not included in the published package
+warning: ignoring test `database_acceptance` as `tests/database_acceptance.rs` is not included in the published package
+warning: ignoring test `day_streaming` as `tests/day_streaming.rs` is not included in the published package
+warning: ignoring test `http_budget` as `tests/http_budget.rs` is not included in the published package
+warning: ignoring test `maintenance_status` as `tests/maintenance_status.rs` is not included in the published package
+warning: ignoring test `mongo_credentials` as `tests/mongo_credentials.rs` is not included in the published package
+warning: ignoring test `tcp_day` as `tests/tcp_day.rs` is not included in the published package
+warning: ignoring test `tcp_startup` as `tests/tcp_startup.rs` is not included in the published package
+    Packaged 31 files, 328.3KiB (88.0KiB compressed)

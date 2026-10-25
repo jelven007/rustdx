@@ -82,19 +82,36 @@ class ReleaseGates(unittest.TestCase):
                              "jobs": [{"name": job, "status": "completed", "conclusion": "success"} for job in jobs]}]
                      for index, (name, jobs) in enumerate(policy["workflows"].items(), 1)}
         self.assertFalse(check_runs(sha, policy, workflows)[1])
+        workflow = policy["artifact_workflow"]
         for mutation in ["missing_windows", "cancelled", "old_sha", "pull_request", "rerun_failed", "wrong_workflow"]:
             changed = copy.deepcopy(workflows)
-            run = changed["ci.yml"][0]
+            run = changed[workflow][0]
             if mutation == "missing_windows":
-                run["jobs"].pop(2)
+                run["jobs"] = [job for job in run["jobs"] if "windows-latest" not in job["name"]]
             elif mutation == "rerun_failed":
-                changed["ci.yml"].append(dict(run, id=100, conclusion="failure"))
+                changed[workflow].append(dict(run, id=100, conclusion="failure"))
             else:
                 key, value = {"cancelled": ("conclusion", "cancelled"), "old_sha": ("head_sha", "b" * 40),
                               "pull_request": ("event", "pull_request"),
                               "wrong_workflow": ("path", ".github/workflows/other.yml")}[mutation]
                 run[key] = value
             self.assertTrue(check_runs(sha, policy, changed)[1], mutation)
+
+    def test_version_receipt_binds_original_push_and_checked_sha(self):
+        policy = json.loads((ROOT / "config/release/gates.json").read_text())
+        sha, source = "a" * 40, "b" * 40
+        event = dict(commit=sha, source_head=source, run_id="123")
+        workflow = policy["artifact_workflow"]
+        run = dict(id=123, head_sha=source, event="push", path=".github/workflows/" + workflow,
+                   status="completed", conclusion="success", run_attempt=2,
+                   jobs=[dict(name=job, status="completed", conclusion="success")
+                         for job in policy["workflows"][workflow]])
+        self.assertFalse(check_runs(sha, policy, {workflow: [run]}, event)[1])
+        for changed in [dict(run, id=124), dict(run, head_sha=sha), dict(run, conclusion="failure")]:
+            self.assertTrue(check_runs(sha, policy, {workflow: [changed]}, event)[1])
+        self.assertTrue(check_runs("c" * 40, policy, {workflow: [run]}, event)[1])
+        failed = dict(run, conclusion="failure", run_attempt=3)
+        self.assertTrue(check_runs(sha, policy, {workflow: [run, failed]}, event)[1])
 
     def test_actual_package_artifact_rejects_dirty_mismatched_or_changed_bytes(self):
         policy = json.loads((ROOT / "config/release/gates.json").read_text())

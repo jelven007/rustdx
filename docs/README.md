@@ -1,6 +1,6 @@
 # rustdx 文档入口
 
-更新日期：2026-10-25。本文档集对应当前工作区源码；当前核心与CLI为2.0.0，本地兼容及解包检查已完成，未上传发布包。实现、离线回归、真实样本验证和目标生产验收分别记录。
+更新日期：2026-10-25。本文档集对应当前工作区源码；当前项目版本为 <!-- version:project -->2.0.0<!-- /version -->，未上传发布包。实现、离线回归、真实样本验证和目标生产验收分别记录。
 
 当前17项可实施工程已迭代处理，见[优化执行进度](development/OPTIMIZATION_PROGRESS.md)和[最终检查与限制](archive/development/OPTIMIZATION_FINAL_20261025.md)。包括checked正确性、离线默认、2.0迁移、具体结果/字段资格、事实巡检、持久指标、批量预算、10000证券有界日线计划、留存预览、CI与职责拆分；实盘窗口、未来官方事实和目标生产仍按证据范围判定。
 
@@ -22,7 +22,7 @@ A01–A12的可实施工程已按[系统优化方案](archive/architecture/SYSTE
 | 测试和验收 | [验证方法](testing/VALIDATION.md)、[当前验收矩阵](testing/PRODUCTION_ACCEPTANCE.md) | [数据库验收](testing/DATABASE_ACCEPTANCE.md)、[证据说明](testing/EVIDENCE.md)、[任务准入](testing/TASK_ADMISSION.md) |
 | 数据运营 | [运营流程与成功判定](operations/OPERATIONS.md) | [数据维护](operations/DATA_MAINTENANCE.md)、[导入状态](operations/IMPORTS.md)、[观测口径](operations/OBSERVABILITY.md) |
 | 部署和故障恢复 | [运维手册](runbooks/RUNBOOK.md) | [部署入口](../deploy/README.md)、[runner部署与恢复](../deploy/runner/README.md)、[运行数据约定](../data/README.md) |
-| 发布和升级 | [源码与包发布](release/RELEASES.md)、[行为迁移](release/MIGRATION.md) | [本次目录迁移与删除](release/PROJECT_RESTRUCTURE.md)、[CHANGELOG](../CHANGELOG.md) |
+| 发布和升级 | [源码与包发布](release/RELEASES.md)、[行为迁移](release/MIGRATION.md) | [版本规则](release/VERSION_POLICY.md)、[本次目录迁移与删除](release/PROJECT_RESTRUCTURE.md)、[CHANGELOG](../CHANGELOG.md) |
 | 历史分析 | [归档索引](archive/README.md) | 原始采样、摘要和日志保存在 [testing/evidence](testing/evidence) |
 
 ## 文档维护规则

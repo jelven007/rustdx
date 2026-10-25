@@ -2,7 +2,7 @@
 
 更新日期：2026-10-24。适用于应用通过 `rustdx_complete::tcp::stock::Client`、checked 请求及公开结果模型使用本仓库核心库。逐命令签名、返回字段和具体参数上限见[26命令接口手册](../reference/COMMAND_API.md)，已解析/候选/未知字段及证据范围见[字段解析状态](../reference/RESPONSE_FIELD_SEMANTICS.md)；本页定义跨接口的调用和消费规则。
 
-当前核心包为 `jelven-rustdx-complete 2.0.0`（未发布），Rust 导入名为 `rustdx_complete`，最低 Rust 1.89、edition 2024。当前新增接口使用仓库源码；已发布1.x包不等于当前工作区。集成应用固定源码提交、源码摘要、依赖锁文件和所用接口版本，更新时检查[迁移说明](../release/MIGRATION.md)。
+当前核心包为 `jelven-rustdx-complete`，版本 <!-- version:core -->2.0.0<!-- /version -->（未发布），Rust 导入名为 `rustdx_complete`，最低 Rust 1.89、edition 2024。当前新增接口使用仓库源码；已发布1.x包不等于当前工作区。集成应用固定源码提交、源码摘要、依赖锁文件和所用接口版本，更新时检查[迁移说明](../release/MIGRATION.md)。
 
 源码path依赖使用 `/path/to/rustdx/crates/rustdx-core`；根目录现在是虚拟Cargo工作区。目录升级、安装和验证入口见[目录迁移](../release/PROJECT_RESTRUCTURE.md)。以下六类规则继续作为所有外部调用方的共同契约。
 

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "bootstrap_version": "2.0.0",
+  "cargo": {
+    "crates/rustdx-core/Cargo.toml": "jelven-rustdx-complete",
+    "apps/rustdx-cli/Cargo.toml": "jelven-rustdx-cli",
+    "apps/rustdx-runner/Cargo.toml": "rustdx-runner",
+    "tests/integration/Cargo.toml": "tests-integration",
+    "tools/fuzz/Cargo.toml": "rustdx-fuzz"
+  },
+  "bootstrap_packages": {
+    "jelven-rustdx-complete": "2.0.0",
+    "jelven-rustdx-cli": "2.0.0",
+    "rustdx-runner": "0.1.0",
+    "tests-integration": "1.1.0",
+    "rustdx-fuzz": "0.0.0"
+  },
+  "locks": ["Cargo.lock", "tools/fuzz/Cargo.lock"],
+  "json_metadata": [],
+  "documents": [
+    "README.md",
+    "crates/rustdx-core/README.md",
+    "apps/rustdx-cli/README.md",
+    "docs/README.md",
+    "docs/architecture/PROJECT_ANALYSIS.md",
+    "docs/development/APPLICATION_INTEGRATION.md",
+    "docs/operations/IMPORTS.md",
+    "docs/operations/OPERATIONS.md",
+    "docs/release/MIGRATION.md",
+    "docs/release/RELEASES.md",
+    "docs/release/VERSION_POLICY.md",
+    "docs/requirements/REQUIREMENTS.md"
+  ]
+}

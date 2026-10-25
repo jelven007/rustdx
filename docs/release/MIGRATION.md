@@ -1,6 +1,6 @@
 # 数据语义与迁移
 
-更新日期：2026-10-24。当前源码版本为核心/CLI 2.0.0，尚未上传注册表；下方较早章节保留当轮版本事实。外部应用共同消费约定见[应用接入](../development/APPLICATION_INTEGRATION.md)。
+更新日期：2026-10-24。当前源码版本为 <!-- version:project -->2.0.0<!-- /version -->，尚未上传注册表；下方章节保留当轮版本事实。自动加号见[版本规则](VERSION_POLICY.md)，外部应用共同消费约定见[应用接入](../development/APPLICATION_INTEGRATION.md)。
 
 ## 2.0.0主版本迁移与等待契约（未发布）
 

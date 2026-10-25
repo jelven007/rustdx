@@ -6,7 +6,7 @@ runner的insert-only、唯一release、完整目录和账本schema3属于独立�
 
 `day` 在解析/采集开始前写入运行清单。默认最新清单为 `<output>.manifest.json`；`--report report.json` 可替换该路径。每次运行还保留 `<清单路径>.<run_id>.json`，供后续核查。清单通过同目录原子替换持久化，Unix 同步目录项。
 
-同一run_id归档在检查点更新，结束后保存最终结果；每个检查点先保存归档，再保存最新清单。两文件分别原子更新，不构成一个事务。参数/路径冲突、锁获取或下载来源解析可能发生在采集开始前，这些失败不保证生成清单。project_version来自CLI Cargo版本，当前为2.0.0；部署/运营记录另存源码及二进制摘要，同版本号不作为内容身份。
+同一run_id归档在检查点更新，结束后保存最终结果；每个检查点先保存归档，再保存最新清单。两文件分别原子更新，不构成一个事务。参数/路径冲突、锁获取或下载来源解析可能发生在采集开始前，这些失败不保证生成清单。project_version来自CLI Cargo版本，当前为 <!-- version:cli -->2.0.0<!-- /version -->；部署/运营记录另存源码及二进制摘要，同版本号不作为内容身份。
 
 当前schema_version=7。schema3增加database_verification，schema4增加覆盖告警，schema5增加可配回读批量/耗时及CSV行序摘要，schema6增加每任务阶段观测与新鲜度。schema7收敛为通达信采集契约并移除专用HTTP页字段；runner读取schema6/7，其他消费者须按版本处理。run_version是本次客户端开始时间的纳秒标识；ClickHouse沿用表内服务端纳秒默认版本，MongoDB按`(date,code)` upsert，两者不能混作客户端版本。
 

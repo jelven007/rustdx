@@ -4,6 +4,9 @@
 
 17项工程迭代收尾见[最终检查报告](development/OPTIMIZATION_FINAL_20261025.md)，另有[批量预算与目录查找](development/OPTIMIZATION_BATCH_METADATA_20261025.md)、[在线调度与留存预览](development/OPTIMIZATION_ACQUISITION_RETENTION_20261025.md)；真实范围与目标生产边界分别保留。
 
+版本流程实施及本机/隔离验证见[版本规则实施记录](development/VERSION_POLICY_IMPLEMENTATION_20261025.md)；
+当前有效规则见[版本管理](../release/VERSION_POLICY.md)。
+
 最新专项：[通用资源与推送门禁修复](development/RESOURCE_CONTRACT_PUSH_ACCEPTANCE_FIX_20261024.md)、[板块完整MD5与严格解析修复](development/BLOCK_FILE_INTEGRITY_FIX_20261024.md)、[TCP日线整数股数修复](development/TCP_DAILY_INTEGER_SHARES_FIX_20261024.md)、[0feb日期编码修复与两节点日期对照](development/RECENT_MINUTES_DATE_SELECTOR_FIX_20261024.md)。旧差异和错位的原始记录保持不变，修复后范围另行取证。
 
 ## 按领域检索

@@ -1,0 +1,99 @@
+[
+  {
+    "name": "python",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts/validation/tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-25T00:41:46.155314+00:00",
+    "log": "python.log"
+  },
+  {
+    "name": "versions",
+    "command": [
+      "python3",
+      "scripts/release/versioning.py",
+      "check"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-25T00:42:05.111102+00:00",
+    "log": "versions.log"
+  },
+  {
+    "name": "documentation",
+    "command": [
+      "python3",
+      "scripts/validation/check_documentation.py"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-25T00:42:05.243390+00:00",
+    "log": "documentation.log"
+  },
+  {
+    "name": "fmt",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-25T00:42:05.634742+00:00",
+    "log": "fmt.log"
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--all-features",
+      "--locked",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-25T00:42:09.197844+00:00",
+    "log": "clippy.log"
+  },
+  {
+    "name": "tests",
+    "command": [
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "+1.89.0",
+      "test",
+      "--workspace",
+      "--all-features",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-25T00:42:43.875112+00:00",
+    "log": "tests.log"
+  },
+  {
+    "name": "consumers",
+    "command": [
+      "python3",
+      "scripts/release/check_consumers.py",
+      "--output",
+      "/tmp/rustdx-version-policy-20261025/source-consumers",
+      "--cargo",
+      "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "started_at": "2026-10-25T00:47:56.660087+00:00",
+    "log": "consumers.log"
+  }
+]

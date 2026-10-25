@@ -1,6 +1,6 @@
 # 源码与软件包交付
 
-更新日期：2026-10-25。当前工作区使用核心/CLI 2.0.0（未发布）与runner0.1.0；已发布1.x是历史内容。主版本迁移和本地包验证不构成提交、推送、部署或注册表发布。
+更新日期：2026-10-25。当前项目版本为 <!-- version:project -->2.0.0<!-- /version -->（未发布），runner 为 <!-- version:runner -->0.1.0<!-- /version -->；已发布1.x是历史内容。加号流程见[版本规则](VERSION_POLICY.md)。本地包验证不构成注册表发布。
 
 ## 1. 交付单位与身份
 
@@ -39,7 +39,7 @@ CLI验证使用解包核心的本地patch；正式CLI注册表验证在核心索
 开始/结束及实际发布确认后重新核对源码，变动则拒绝继续。
 
 `python3 scripts/release/check_consumers.py --output /outside/new-directory`验证
-独立2.0调用方可编译运行，以及旧日历/财务/心跳返回类型调用方按声明失败。
+独立当前调用方可编译运行，以及旧日历/财务/心跳返回类型调用方按声明失败。
 该检查不是完整API diff，也不把预期失败解释为兼容。工具链/包版本/源码与
 锁摘要及每个编译结果写入报告，可指定`--cargo`、`--toolchain`和`--offline`。
 CI的contracts任务同时执行源码调用方和上述实际解包消费；MSRV、行为、
@@ -51,8 +51,9 @@ Actions须推送后实际核对结果，本机验证不能代替远端执行。
 新output，实际源码/包核对照常执行，缓存路径写入报告，不授予二进制位级可复现结论。
 `release_gate.py --preflight /review/preflight.json --output /review/release-manifest.json`
 通过`gh api`读取[必需门禁](../../config/release/gates.json)，要求当前干净HEAD的
-最新push/手工运行、三平台、MSRV、质量、消费者/包、fuzz、性能和数据库任务全部成功。
-重跑失败/取消/遗漏任一平台均拒绝；PR合并SHA不能代替当前提交。再下载当前SHA的
+对应 Main version 推送运行、三平台、MSRV、质量、消费者/包、fuzz、性能、数据库和标签任务全部成功。
+用当前提交引入的加号记录定位原始 push SHA 和 run_id，检查最新运行尝试；
+重跑失败/取消/遗漏任一平台均拒绝。再下载当前检查提交 SHA 的
 contracts制品，核对preflight身份、实际两crate字节摘要及清单。
 离线`--snapshot-runs`只审核记录，始终不授予发布资格。
 
@@ -60,11 +61,11 @@ Action官方ref和运行时元信息固定在[工具清单](../../config/release
 Node24及最低runner要求需在目标Actions环境满足；新SHA远端执行尚待取得。
 Mongo工具解压前按`deploy/acceptance/tool-archives.sha256`检查，数据库镜像digest
 及上述配置摘要进入release manifest。manifest记录本地patch范围和注册表待验证状态。
-数据库CI监听所有main推送/PR，避免发布提交因仅修改文档而没有同SHA结果。
+数据库检查由统一 CI 调用，覆盖所有 main 推送/PR，包括仅修改文档的提交。
 
 ## 3. 源码交付与历史引用
 
-提交应只包含本次已核实工作，不回滚已有未提交修改。推送、合并或发布按任务实际授权执行；本次结构整理不自动操作远端引用。远端CI结果须实际核实，不由本机结果推导。
+提交应只包含本次已核实工作，不回滚已有未提交修改。每项任务使用独立分支和工作目录，经 PR 合入 main；本地开发、提交、合并和功能分支推送不加号。远端 CI 先同步版本后检查，成功后打标签；结果须实际核实，不由本机结果推导。
 
 已有history/source-20261022和history/release-1.12.2-1.8.2记录保留在[历史交付报告](../archive/release/DELIVERY_20261022.md)。它们属于当时目录结构；检出旧提交后按对应文档构建。标签解引用后的提交才是源码身份。
 
@@ -72,7 +73,7 @@ Mongo工具解压前按`deploy/acceptance/tool-archives.sha256`检查，数据�
 
 ## 4. 正式软件包发布
 
-1. 提升核心/CLI版本及CLI注册表依赖，更新CHANGELOG和[行为迁移](MIGRATION.md)状态。
+1. 使用主线 CI 已同步并通过检查、打标签的版本，更新CHANGELOG和[行为迁移](MIGRATION.md)状态也须经 PR，由 CI 递增。
 2. 完成工程、同SHA远端门禁、实际包清单和核心注册表dry-run，确认源码与最终上传包一致。
 3. 按scripts/release/publish.sh先核心后CLI，等待核心索引可见。
 4. 核实注册表版本、CLI依赖、包内源码/许可证及校验和，记录发布结果。
