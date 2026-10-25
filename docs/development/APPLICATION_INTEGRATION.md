@@ -4,7 +4,7 @@
 读者：应用集成者；责任：API维护者。源码核验：2026-10-25；每90日及跨接口消费合同变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
-当前源码版本：<!-- version:project -->2.0.0<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+当前源码版本：<!-- version:project -->2.0.1<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
 更新日期：2026-10-24。适用于应用通过 `rustdx_complete::tcp::stock::Client`、checked 请求及公开结果模型使用本仓库核心库。逐命令签名、返回字段和具体参数上限见[26命令接口手册](../reference/COMMAND_API.md)，已解析/候选/未知字段及证据范围见[字段解析状态](../reference/RESPONSE_FIELD_SEMANTICS.md)；本页定义跨接口的调用和消费规则。
 
