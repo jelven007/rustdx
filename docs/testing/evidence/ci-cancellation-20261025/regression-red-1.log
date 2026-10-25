@@ -1,0 +1,23 @@
+[1m[32m   Compiling[0m jelven-rustdx-cli v2.0.1 (/Users/bytedance/Documents/rustdx/.worktrees/version-fixture-20261025/apps/rustdx-cli)
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.1 (/Users/bytedance/Documents/rustdx/.worktrees/version-fixture-20261025/crates/rustdx-core)
+[1m[32m   Compiling[0m rustdx-runner v2.0.1 (/Users/bytedance/Documents/rustdx/.worktrees/version-fixture-20261025/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 47.74s
+[1m[32m     Running[0m unittests src/lib.rs (/Users/bytedance/Documents/rustdx/target/debug/deps/rustdx_runner-9bcb052b17b04152)
+
+running 1 test
+
+thread 'database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants' panicked at apps/rustdx-runner/src/database_process.rs:272:13:
+assertion `left == right` failed
+  left: "timeout"
+ right: "cancelled"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants ... FAILED
+
+failures:
+
+failures:
+    database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.23s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p rustdx-runner --lib`

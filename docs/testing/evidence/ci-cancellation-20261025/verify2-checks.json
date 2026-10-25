@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "source_base": "bd0dd006ad24d440a983b9ed88c481a65291c256",
+  "phase": "verify2",
+  "checks": [
+    {
+      "label": "regression-final-second",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "database_process::tests::cancellation_and_deadline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.824,
+      "log": "regression-final-second.log",
+      "sha256": "2f7334b36b020f08a12a64198751e5626a6d6281457c5118290d22e11aa2457c"
+    },
+    {
+      "label": "fmt-second",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.664,
+      "log": "fmt-second.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "clippy-second",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "clippy",
+        "-p",
+        "rustdx-runner",
+        "--all-targets",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.453,
+      "log": "clippy-second.log",
+      "sha256": "10f1ba50f552985fc50169bfa5574495934bf659f9aace9dad7ee24b0913f831"
+    },
+    {
+      "label": "runner-suite-second",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--all-features",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 10.626,
+      "log": "runner-suite-second.log",
+      "sha256": "8fac53b0427e50ac56d8cd367a9cf9976416f0bd6bc0e318e6457fae057dfab0"
+    },
+    {
+      "label": "python-suite-second",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 24.865,
+      "log": "python-suite-second.log",
+      "sha256": "d412b999b6b6a18687d3bcd1a20e69f91c2ed2c8c76baeb3369ff4989a2594d4"
+    },
+    {
+      "label": "documentation-second",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation.py"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.181,
+      "log": "documentation-second.log",
+      "sha256": "da2944b17b6bd95364d436b9ff9ef885c120cca6fb13b27b07f4b1a7ec5b034e"
+    },
+    {
+      "label": "lifecycle-second",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation_lifecycle.py"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.286,
+      "log": "lifecycle-second.log",
+      "sha256": "feebf7e702ebab6ed8ff407b0d63361d4d2924726da2cfd6b60349cfe030b452"
+    },
+    {
+      "label": "version-second",
+      "command": [
+        "python3",
+        "scripts/release/versioning.py",
+        "check-pr",
+        "--base",
+        "origin/main"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.352,
+      "log": "version-second.log",
+      "sha256": "7f20219a2b938dbd8484ed3b245858f750f5bd202d60b182b5aea669e7d32a8c"
+    }
+  ]
+}

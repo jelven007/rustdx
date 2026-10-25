@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "source_base": "bd0dd006ad24d440a983b9ed88c481a65291c256",
+  "phase": "green",
+  "checks": [
+    {
+      "label": "regression-green",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "database_process::tests::cancellation_and_deadline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 7.978,
+      "log": "regression-green.log",
+      "sha256": "5b72bad1865c35eb39bb88e70c54035f27d2a3fc8215d268a13f85ae71b29238"
+    }
+  ]
+}

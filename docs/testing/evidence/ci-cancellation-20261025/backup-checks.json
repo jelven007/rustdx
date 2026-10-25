@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "source_base": "bd0dd006ad24d440a983b9ed88c481a65291c256",
+  "phase": "backup",
+  "checks": [
+    {
+      "label": "backup-isolated-1",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "wal_backup_restore_and_corruption_detection",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.615,
+      "log": "backup-isolated-1.log",
+      "sha256": "31b48377ce1de53a7045c2078804612b8f3e5d5e22272c7407463023be77dda9"
+    },
+    {
+      "label": "backup-isolated-2",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "wal_backup_restore_and_corruption_detection",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.619,
+      "log": "backup-isolated-2.log",
+      "sha256": "fd69c24b7ed3c7b42baed067a9172bb1f624d086d81c76153c1f9fab28303592"
+    },
+    {
+      "label": "backup-isolated-3",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--test",
+        "control_plane",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "wal_backup_restore_and_corruption_detection",
+        "--",
+        "--exact",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "seconds": 0.398,
+      "log": "backup-isolated-3.log",
+      "sha256": "468da8871c36c041a94d76d4f14ec9284fde39920c85e7648794a6b2757193d1"
+    }
+  ]
+}

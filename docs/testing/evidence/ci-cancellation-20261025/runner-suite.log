@@ -1,0 +1,78 @@
+[1m[32m   Compiling[0m rustdx-runner v2.0.1 (/Users/bytedance/Documents/rustdx/.worktrees/version-fixture-20261025/apps/rustdx-runner)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 24.45s
+[1m[32m     Running[0m unittests src/lib.rs (/Users/bytedance/Documents/rustdx/target/debug/deps/rustdx_runner-9bcb052b17b04152)
+
+running 12 tests
+test database::capacity::tests::capacity_rejects_io_proof_entries_and_bytes_before_transmission ... ok
+test error_tests::cancellation_and_deadline_keep_their_category_through_stages_and_io_wrappers ... ok
+test database::tests::full_contract_row_roundtrips_and_requires_every_field ... ok
+test database_process::tests::malformed_responses_retain_bounded_evidence ... ok
+test ops::observation_tests::projection_overflow_and_invalid_records_leave_raw_history_unchanged ... ok
+test storage::meter_tests::dynamic_meter_counts_sqlite_journal_and_disappearing_files_and_reconciles ... ok
+test ops::observation_tests::invalid_historical_record_rolls_back_schema_and_projection_migration ... ok
+test database_process::tests::one_process_handles_batches_and_requires_clean_exit ... ok
+test database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants ... ok
+test database::tests::stable_key_readback_crosses_batch_and_partition_boundaries ... ok
+test storage::meter_tests::dynamic_meter_avoids_rescanning_fixed_file_history ... ok
+test ops::observation_tests::projection_matches_legacy_scan_and_rebuild_for_large_history ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.45s
+
+[1m[32m     Running[0m unittests src/main.rs (/Users/bytedance/Documents/rustdx/target/debug/deps/rustdx_runner-c350eb2bfff8b39e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[32m     Running[0m tests/administration.rs (/Users/bytedance/Documents/rustdx/target/debug/deps/administration-561fa8eed05a29ff)
+
+running 5 tests
+test readonly_sees_committed_wal_while_writer_holds_lock ... ok
+test backup_and_restore_reject_parent_aliases_and_traversal_before_writing ... ok
+test readonly_requires_existing_current_schema_and_never_initializes ... ok
+test total_backup_and_restore_budgets_include_completion_files ... ok
+test prior_schema_backup_restores_unchanged_and_requires_explicit_migration ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+
+[1m[32m     Running[0m tests/control_plane.rs (/Users/bytedance/Documents/rustdx/target/debug/deps/control_plane-ca012176bb2db9a2)
+
+running 22 tests
+test ambiguous_database_write_preserves_evidence_and_recovery_never_reinserts ... ignored, requires RUSTDX_TEST_CLI and RUSTDX_TEST_CH_USER/PASSWORD
+test database_capacity_rejects_before_request_or_unknown_target ... ignored, requires RUSTDX_TEST_CLI; uses no database service
+test durable_seal_recovers_without_recollection_and_older_revision_can_be_quarantined ... ignored, requires RUSTDX_TEST_CLI
+test local_run_and_collector_are_offline_without_an_explicit_warmup ... ignored, requires RUSTDX_TEST_CLI pointing to the built current CLI
+test real_cli_release_revision_missing_coverage_and_isolated_restore ... ignored, requires RUSTDX_TEST_CLI pointing at the built rustdx executable
+test real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence ... ignored, requires provisioned isolated ClickHouse/MongoDB and RUSTDX_TEST_* settings
+test scheduled_tcp_scope_publishes_only_after_all_expected_keys_match ... ignored, requires RUSTDX_TEST_CLI; synthetic 40-security loopback scope
+test tcp_daily_release_revision_missing_keys_and_offline_recovery ... ignored, requires RUSTDX_TEST_CLI; loopback synthetic TCP, no external service
+test evidence_limits_path_traversal_and_controller_exclusion ... ok
+test tcp_runner_rejects_forged_csv_even_with_matching_report_digest ... ignored, requires RUSTDX_TEST_CLI and /usr/bin/python3; loopback synthetic TCP
+test tcp_config_excludes_ambiguous_source_offline_and_historical_vintage ... ok
+test catalog_cas_preserves_previous_pointer_and_append_only_events ... ok
+test deduplication_and_one_active_attempt_survive_reopen ... ok
+test persisted_worker_statistics_survive_reopen_and_missing_records_are_not_zero_samples ... ok
+test wal_backup_restore_and_corruption_detection ... FAILED
+test failed_publication_event_rolls_back_pointer_and_job_state ... ok
+test strict_config_and_unknown_history_refuse_before_spawn ... ok
+test explicit_worker_cancellation_is_not_reported_as_timeout ... ok
+test all_explicitly_exempt_keys_publish_empty_partitions_without_a_collector ... ok
+test tcp_explicitly_exempt_scope_publishes_without_contacting_the_source ... ok
+test offline_plan_reports_expected_keys_missing_inputs_and_archive_limited_parallelism ... ok
+test managed_deadline_kills_worker_and_recovery_does_not_rerun ... ok
+
+failures:
+
+---- wal_backup_restore_and_corruption_detection stdout ----
+
+thread 'wal_backup_restore_and_corruption_detection' panicked at apps/rustdx-runner/tests/control_plane.rs:213:46:
+called `Result::unwrap()` on an `Err` value: Invalid("controller already running or lock unavailable: lock acquisition failed because the operation would block")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    wal_backup_restore_and_corruption_detection
+
+test result: FAILED. 12 passed; 1 failed; 9 ignored; 0 measured; 0 filtered out; finished in 2.18s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p rustdx-runner --test control_plane`

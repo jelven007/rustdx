@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "source_base": "bd0dd006ad24d440a983b9ed88c481a65291c256",
+  "phase": "red",
+  "checks": [
+    {
+      "label": "regression-red-1",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "database_process::tests::cancellation_and_deadline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "expected_exit_code": 101,
+      "seconds": 49.399,
+      "log": "regression-red-1.log",
+      "sha256": "f1803370d9b31570bb6b45ae197726172a1cc782d069e65ee21eba1f9af838ba"
+    },
+    {
+      "label": "regression-red-2",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "database_process::tests::cancellation_and_deadline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "expected_exit_code": 101,
+      "seconds": 0.673,
+      "log": "regression-red-2.log",
+      "sha256": "109d551136166650a0a69feeaf7fb947ce2998446f575bfe4911691cf8ec4b1e"
+    },
+    {
+      "label": "regression-red-3",
+      "command": [
+        "/Users/bytedance/Documents/rustdx/.cargo/bin/cargo",
+        "+1.89.0",
+        "test",
+        "-p",
+        "rustdx-runner",
+        "--lib",
+        "--all-features",
+        "--locked",
+        "--offline",
+        "database_process::tests::cancellation_and_deadline",
+        "--",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "expected_exit_code": 101,
+      "seconds": 0.625,
+      "log": "regression-red-3.log",
+      "sha256": "4c7683cab0d62e45aa7209ad247e39fa61fa86b401b69657d234f59c93f2e20d"
+    }
+  ]
+}
