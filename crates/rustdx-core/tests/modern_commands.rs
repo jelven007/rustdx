@@ -1,6 +1,6 @@
 //! New default command paths: independent fixtures and complete local wire I/O.
 use rustdx_complete::tcp::{
-    self, HEARTBEAT_REQUEST, PACK1, Tcp, TcpConfig,
+    self, FrameEvent, FrameObserver, HEARTBEAT_REQUEST, PACK1, Tcp, TcpConfig,
     stock::{
         Client, PrecisionSnapshot, SecurityBoard, SecurityCategory, SecurityDirectoryRequest,
         TodayMinuteRequest, TradeProtocol, TradeQuery, decode_security_directory,
@@ -63,6 +63,19 @@ fn ack() -> Vec<u8> {
     bytes
 }
 
+#[derive(Debug, Default)]
+struct FrameTrace(Mutex<Vec<String>>);
+
+impl FrameObserver for FrameTrace {
+    fn observe(&self, event: FrameEvent<'_>) -> io::Result<()> {
+        let mut events = self.0.lock().unwrap();
+        if events.len() < 32 {
+            events.push(format!("{event:?}"));
+        }
+        Ok(())
+    }
+}
+
 fn read_request(stream: &mut TcpStream) -> io::Result<Vec<u8>> {
     let mut header = [0; 10];
     stream.read_exact(&mut header)?;
@@ -102,7 +115,7 @@ fn server(
         ..Default::default()
     };
     let handle = std::thread::spawn(move || {
-        for _ in 0..connections {
+        for connection in 0..connections {
             let (mut socket, _) = listener.accept().unwrap();
             // Exercise fragmented reads without adding Nagle/delayed-ACK
             // latency to the independently configured heartbeat deadlines.
@@ -112,7 +125,15 @@ fn server(
                 .unwrap();
             assert_eq!(read_request(&mut socket).unwrap(), PACK1);
             frame(&mut socket, PACK1, &[0, 0]).unwrap();
-            while let Ok(request) = read_request(&mut socket) {
+            loop {
+                let request = match read_request(&mut socket) {
+                    Ok(request) => request,
+                    Err(error) => {
+                        eprintln!("connection {connection} request read ended: {error:?}");
+                        break;
+                    }
+                };
+                eprintln!("connection {connection} request: {request:?}");
                 if frame(&mut socket, &request, &reply(&request)).is_err() {
                     break;
                 }
@@ -312,14 +333,20 @@ fn idle_failure_invalidates_and_next_request_reconnects_without_mixing_sessions(
             sent.send(()).unwrap();
             vec![0; 2] // malformed ack
         } else {
+            assert_eq!(&request[10..12], &[0x4e, 4]);
             vec![42, 0]
         }
     });
-    let mut tcp = Tcp::with_config(&config).unwrap();
+    let trace = Arc::new(FrameTrace::default());
+    let mut tcp = Tcp::with_config_and_observer(&config, trace.clone()).unwrap();
     let connection = tcp.connection_id();
     tcp.set_heartbeat_interval(Some(Duration::from_millis(10)))
         .unwrap();
-    received.recv_timeout(Duration::from_secs(1)).unwrap();
+    let notification = received.recv_timeout(Duration::from_secs(1));
+    assert!(
+        notification.is_ok(),
+        "idle heartbeat notification: {notification:?}; trace={trace:#?}; tcp={tcp:#?}"
+    );
     let until = Instant::now() + Duration::from_secs(1);
     while tcp.is_reusable() && Instant::now() < until {
         std::thread::sleep(Duration::from_millis(1));

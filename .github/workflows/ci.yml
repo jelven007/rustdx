@@ -50,6 +50,17 @@ jobs:
         # Match cargo test's profile instead of retaining a second full set of binaries.
         run: cargo build --profile test --workspace ${{ matrix.package_args }} --all-targets --all-features --locked
 
+      - name: Repeated idle heartbeat failure and reconnect (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          foreach ($iteration in 1..10) {
+            Write-Output "Idle heartbeat recovery iteration $iteration"
+            cargo test -p jelven-rustdx-complete --test modern_commands --all-features --locked `
+              idle_failure_invalidates_and_next_request_reconnects_without_mixing_sessions -- --exact --nocapture
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
       - name: Test
         run: cargo test --workspace ${{ matrix.package_args }} --all-features --locked --no-fail-fast
 
