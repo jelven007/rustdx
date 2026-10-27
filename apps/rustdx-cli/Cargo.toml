@@ -1,6 +1,6 @@
 [package]
 name        = "jelven-rustdx-cli"
-version     = "2.0.2"
+version     = "2.0.3"
 edition     = "2024"
 rust-version = "1.89"
 license     = "MIT"
@@ -35,7 +35,7 @@ thiserror = { workspace = true }
 
 [dependencies.rustdx-complete]
 package = "jelven-rustdx-complete"
-version  = "2.0.2"
+version  = "2.0.3"
 path = "../../crates/rustdx-core"
 
 [dependencies.ureq]

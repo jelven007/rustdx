@@ -4,7 +4,7 @@
 读者：开发/发布；责任：发布维护者。源码核验：2026-10-27；每30日及CI、包发布或权限变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
-当前源码版本：<!-- version:project -->2.0.2<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+当前源码版本：<!-- version:project -->2.0.3<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
 更新日期：2026-10-27。历史核心/CLI 2.0.0已发布到crates.io，runner仅交付源码与二进制。该次注册表发布来自提交`82c6de4e52dae907cb9055d4cd07bbb9444e0c47`；实际包摘要、核验结果和安装命令见[发布记录](../archive/release/PUBLICATION_20261025.md)。当前源码版本不证明同版本已经上传。
 

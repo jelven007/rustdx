@@ -1,12 +1,12 @@
 # rustdx
 
-当前源码版本：<!-- version:project -->2.0.2<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+当前源码版本：<!-- version:project -->2.0.3<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
 Rust 行情库、通达信日线处理工具和单机数据发布控制层。项目使用 Rust 2024，最低 Rust 1.89，采用同步 I/O、有界线程和显式资源预算。
 
 当前源码覆盖 eltdx 3.3.0 的 26 个同码命令，并提供 day/lc/gbbq 文件解析、复权、指标、日历和日期化规则。26 个同码入口不代表所有增强业务契约已经验收：市场2、0feb响应日期、0547真实盘中主动推送及目标生产负载仍有明确边界。
 
-当前核心包 `jelven-rustdx-complete` <!-- version:core -->2.0.2<!-- /version -->，导入名 `rustdx_complete`；CLI 包 `jelven-rustdx-cli` <!-- version:cli -->2.0.2<!-- /version -->，二进制 `rustdx`；控制层 `rustdx-runner` <!-- version:runner -->2.0.2<!-- /version --> 不发布。历史核心与CLI 2.0.0已发布到crates.io，源码身份和包摘要见[发布记录](docs/archive/release/PUBLICATION_20261025.md)，迁移见[行为说明](docs/release/MIGRATION.md)。
+当前核心包 `jelven-rustdx-complete` <!-- version:core -->2.0.3<!-- /version -->，导入名 `rustdx_complete`；CLI 包 `jelven-rustdx-cli` <!-- version:cli -->2.0.3<!-- /version -->，二进制 `rustdx`；控制层 `rustdx-runner` <!-- version:runner -->2.0.3<!-- /version --> 不发布。历史核心与CLI 2.0.0已发布到crates.io，源码身份和包摘要见[发布记录](docs/archive/release/PUBLICATION_20261025.md)，迁移见[行为说明](docs/release/MIGRATION.md)。
 
 ## 快速开始
 

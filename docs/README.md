@@ -4,7 +4,7 @@
 读者：所有维护者；责任：文档维护者。源码核验2026-10-27，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](development/DOCUMENTATION_GOVERNANCE.md)。
 <!-- /lifecycle -->
 
-当前源码版本：<!-- version:project -->2.0.2<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+当前源码版本：<!-- version:project -->2.0.3<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
 更新日期：2026-10-27。本文档集对应当前源码。读者按工作任务进入下表；维护者按[文档治理](development/DOCUMENTATION_GOVERNANCE.md)和[FR追踪矩阵](requirements/TRACEABILITY.md)更新相关材料。
 

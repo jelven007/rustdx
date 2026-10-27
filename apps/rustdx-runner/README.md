@@ -1,6 +1,6 @@
 # rustdx-runner
 
-当前runner源码版本：<!-- version:runner -->2.0.2<!-- /version -->；由主线CI同步，publish=false。
+当前runner源码版本：<!-- version:runner -->2.0.3<!-- /version -->；由主线CI同步，publish=false。
 
 <!-- lifecycle:registry -->
 读者：开发/部署；责任：runner维护者。源码核验2026-10-25，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../docs/development/DOCUMENTATION_GOVERNANCE.md)。

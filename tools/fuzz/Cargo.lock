@@ -329,7 +329,7 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "jelven-rustdx-complete"
-version = "2.0.2"
+version = "2.0.3"
 dependencies = [
  "chrono",
  "encoding_rs",
@@ -483,7 +483,7 @@ checksum = "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf"
 
 [[package]]
 name = "rustdx-fuzz"
-version = "2.0.2"
+version = "2.0.3"
 dependencies = [
  "jelven-rustdx-complete",
  "libfuzzer-sys",
