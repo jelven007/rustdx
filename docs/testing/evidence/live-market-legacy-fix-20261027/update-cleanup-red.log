@@ -1,0 +1,24 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 3.72s
+[1m[32m     Running[0m tests/quote_subscription.rs (/private/tmp/rustdx-system-optimization-packages-20261025/target/debug/deps/quote_subscription-ddbbc6cec5bcdcad)
+
+running 1 test
+test update_revocation_and_cancellation_release_the_connection ... FAILED
+
+failures:
+
+---- update_revocation_and_cancellation_release_the_connection stdout ----
+
+thread 'update_revocation_and_cancellation_release_the_connection' panicked at crates/rustdx-core/tests/quote_subscription.rs:332:9:
+assertion `left == right` failed
+  left: 1
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    update_revocation_and_cancellation_release_the_connection
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 26 filtered out; finished in 0.00s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p jelven-rustdx-complete --test quote_subscription`

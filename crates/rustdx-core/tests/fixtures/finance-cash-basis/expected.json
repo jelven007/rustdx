@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "market": 0,
+  "code": "000001",
+  "updated_date": 20261024,
+  "report_period": "2026-09-30",
+  "reference_url": "https://static.cninfo.com.cn/finalpage/2026-10-24/1225621667.PDF",
+  "reference_pdf_sha256": "40257a9c9bedab90335b30c61e5c4812a18cfcdae5ead78ba475b676866dc31a",
+  "reference_text_sha256": "1c53092fdaea50dda6c790a66e0e113c3ab52b4ec8f70cb507ea5825ff098e35",
+  "pdf_page": 33,
+  "currency": "CNY",
+  "disclosed_unit": "million_yuan",
+  "operating": 283221,
+  "investing": 6503,
+  "financing": -281209,
+  "exchange_rate_effect": -2643,
+  "reported_net_change": 5872,
+  "total_excluding_exchange_rate_effect": 8515,
+  "source_offset": 104,
+  "source_raw_bits": 1258417592,
+  "scope": "This fixed issuer/update only: the source slot matches the sum of three activity cash flows before FX. The reported cash-equivalent net change remains distinct and is not substituted for the source."
+}

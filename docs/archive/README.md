@@ -2,6 +2,16 @@
 
 本目录保存历次研究、实施与验收结果，日期和样本范围按原报告解释。当前需求、架构及生产状态从[当前文档](../README.md)进入；历史结论不随目录移动升级为当前全量或生产通过。
 
+2026-10-27[实时遗留修复](development/LIVE_MARKET_LEGACY_FIX_20261027.md)记录持续刷新、Q3财务冲突拒绝、日线并列参考及分钟边界诊断，附收盘前两节点与日期端点原帧独立回放；上游源差异、被动推送与完整保存期限未升级为已验收。
+
+同日[上游能力补证](development/UPSTREAM_CAPABILITIES_FIX_20261027.md)记录现金汇率口径、发送前半帧同id归属修复，以及456次请求/43,200点的扩大分钟原帧重放与历史跨节点源差异。两阶段证据各自冻结，当前资格以应用合同和验收矩阵为准。
+
+同日[事实范围复查](development/FACT_SCOPE_REVIEW_20261027.md)保存7份官方规则原件及局部对照，
+没有续期统一规则截止；独立分钟候选合同见[ADR-0002](../architecture/decisions/0002-minute-archive.md)。
+
+同日[全面优化实施](development/COMPREHENSIVE_OPTIMIZATION_20261027.md)记录14项工程、
+缓存/真实文件测量、全冻结库存恢复、长时fuzz和实际包消费；市场事实与目标Linux仍有外部缺口。
+
 17项工程迭代收尾见[最终检查报告](development/OPTIMIZATION_FINAL_20261025.md)，另有[批量预算与目录查找](development/OPTIMIZATION_BATCH_METADATA_20261025.md)、[在线调度与留存预览](development/OPTIMIZATION_ACQUISITION_RETENTION_20261025.md)；真实范围与目标生产边界分别保留。
 
 版本流程实施及本机/隔离验证见[版本规则实施记录](development/VERSION_POLICY_IMPLEMENTATION_20261025.md)；

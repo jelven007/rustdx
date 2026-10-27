@@ -1,10 +1,10 @@
 # 采集阶段观测
 
 <!-- lifecycle:registry -->
-读者：值守/运营；责任：运维维护者。源码核验：2026-10-25；每30日及指标、阈值或告警变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：值守/运营；责任：运维维护者。源码核验：2026-10-27；每30日及指标、阈值或告警变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
-更新日期：2026-10-24。本文定义统计范围；运营人员按业务名单和日期判断可用性，运维人员按[运维手册](../runbooks/RUNBOOK.md)设置告警和恢复。生产阈值依据目标环境和批准SLO维护。
+更新日期：2026-10-27。本文定义统计范围；运营人员按业务名单和日期判断可用性，运维人员按[运维手册](../runbooks/RUNBOOK.md)设置告警和恢复。生产阈值依据目标环境和批准SLO维护。
 
 当前schema7在day清单中保留schema6引入的`observations`及`freshness`，不改变CSV列或数据库逻辑键。`rustdx_cli::observation`提供可克隆的每任务观测对象、线程作用域、失败自动计数的RAII阶段及临时文件写入包装；解析工作线程显式进入同一任务，不使用进程全局阶段计数。
 
@@ -31,8 +31,30 @@
 
 新增runner可从SQLite账本导出结构化状态和Prometheus textfile，包含Job状态、未结束Attempt、事件、发布时间、指标刷新时点与剩余磁盘。`metrics --output`原子替换；它不把CLI阶段P95合并为跨任务P95，也不把自然日发布时间差当交易日覆盖。systemd指标timer及告警只是部署模板，阈值须结合实际Job预算/日历与批准SLO；字段/命令和接入步骤见[runner部署](../../deploy/production/runner/README.md)。本机回归不提供长期生产P95或SLO。
 
-runner现在为collector设置私有`RUSTDX_TASK_OBSERVATIONS`路径与attempt身份。CLI成功、业务失败或协作取消退出时原子保存本进程网络计数和任务阶段；runner核对attempt并记录监督进程PID后写入SQLite schema3的`attempt_observations`，兼容collector包装器启动的CLI子进程。独立metrics进程累加这些持久记录，以owner=worker/controller区分；controller请求计数取任务前后差值，进程峰值/P95不当作任务值。SIGKILL或未进入主逻辑的worker保存unavailable记录，不能当零请求；不把metrics进程的NetworkStats代入worker，也不合并各任务的P95。controller记录在发布事务前持久化，发布成败读取账本状态。
+runner现在为collector设置私有`RUSTDX_TASK_OBSERVATIONS`路径与attempt身份。CLI成功、业务失败或协作取消退出时原子保存本进程网络计数和任务阶段；runner核对attempt并记录监督进程PID后写入SQLite schema4的`attempt_observations`，兼容collector包装器启动的CLI子进程。独立metrics进程读取随原始记录原子更新的汇总投影，以owner=worker/controller区分；controller请求计数取任务前后差值，进程峰值/P95不当作任务值。SIGKILL或未进入主逻辑的worker保存unavailable记录，不能当零请求；不把metrics进程的NetworkStats代入worker，也不合并各任务的P95。controller记录在发布事务前持久化，发布成败读取账本状态。汇总损坏时显式`rebuild-metrics`；旧schema3备份原样恢复后再迁移。实现与schema锚点见[observations.rs](../../apps/rustdx-runner/src/observations.rs)和[ledger.rs](../../apps/rustdx-runner/src/ledger.rs)。
 
 `scripts/bench/measure_process_tree.py --output new.json --disk-root ROOT --interval 1 -- COMMAND`在Linux/macOS采样专属进程组及后代的同时RSS、FD、线程、进程数和声明目录逻辑字节，保留原始样本、缺失采样和峰值。短命进程或采样间峰值可能遗漏；磁盘逻辑字节不是分配块或未声明远端数据库容量。工具只终止自身创建的进程组。线上硬上限仍由systemd/cgroup/文件系统配额保障；worker同时巡检workspace字节和最小剩余磁盘。
 
 本地固定版本恢复入口为`scripts/validation/verify_local_recovery.py`，它在新目录执行一致性备份、隔离restore及同一catalog版本全CSV字节比较，保存命令、耗时和摘要。数据库原生恢复继续走`verify_database_recovery.py`；本地恢复不证明远端数据库、持续写入、生产权限或批准RPO/RTO。
+
+`business-metrics --config JOB --publish-by RFC3339 --audit-max-bytes BYTES --output NEW.prom`
+补充单个显式应有Job的业务观测，独立于全账本汇总。部署时由同一调度器更新JOB和批准截止，
+并维护独立textfile；一个文件只承载一个scope，多实例告警须限定job/instance。
+入口不联网、不采集，不将历史Job自动替换为今天。
+
+| 信号 | 口径与失败含义 |
+| --- | --- |
+| business_required | 已校验日历内有交易日为1，明确假期为0；事实无法读取时为-1，不能解释为无任务 |
+| business_deadline_configured / publish_by_timestamp_seconds | 业务批准截止是否明确；未给截止不生成时间值，另行告警 |
+| business_job_released / unfinished_attempts | 精确Job身份的已发布状态及未结束Attempt；旧任务发布不抵消新Job逾期 |
+| business_facts_available / fact_remaining_days | 日历/名单/证券状态覆盖与公告字节检查；剩余期按北京时间今天至各数据截止的自然日数，可为负，不自动续期或建立来源真实性 |
+| business_key_check_available / missing_keys / extra_keys | 固定当前catalog并逐行核对完整应有Trading键；核实停牌/退市不要求零行情行；缺数据与读回损坏不假装0缺键 |
+| business_missing_partitions / revision_gaps | 包含免行情日期的应有分区，以及低于配置修订或source_as_of的分区 |
+| business_source | 已发布冻结请求的local_day/requested_tcp模式；未发布为unpublished，不能推导真实PassivePush |
+| consumer_audit_bytes / limit_bytes / quota_configured | 独立consumer-audit目录的有界逻辑字节扫描及显式配额；不是文件系统已执行硬配额 |
+
+来源语义资格继续由独立消费/任务准入审核授予；业务指标不把结构/摘要检查升级为价格、量额或
+被动推送资格。原件丢失、篡改、已封存CSV损坏或扫描预算耗尽使出口失败，旧textfile不刷新，
+由missing/stale告警发现。审计增长用同一目录连续gauge的deriv观测，不合并P95，也不自动删除。
+[告警模板](../../deploy/production/runner/alerts.yml)覆盖缺配置、逾期、事实缺口/截止、
+发布缺键、指标失效和审计空间；实际通知与恢复解除仍须目标环境验证。

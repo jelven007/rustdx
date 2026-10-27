@@ -1,0 +1,61 @@
+{
+  "auto_reconnect": 0,
+  "endpoint": "180.153.18.170:7709",
+  "finished_utc": "2026-10-27T06:57:59.942477Z",
+  "heartbeat": false,
+  "idle_timeout_seconds": 2,
+  "precision_source": "/private/tmp/rustdx-live-market-20261027/focus-sh",
+  "refreshes": [
+    {
+      "connection_id": 1,
+      "generation": 0,
+      "index": 0,
+      "origin": "requested_refresh",
+      "status": "Synchronized",
+      "utc": "2026-10-27T06:57:52.540277Z"
+    },
+    {
+      "connection_id": 1,
+      "generation": 0,
+      "index": 1,
+      "origin": "requested_refresh",
+      "status": "Synchronized",
+      "utc": "2026-10-27T06:57:54.615981Z"
+    },
+    {
+      "connection_id": 1,
+      "generation": 0,
+      "index": 2,
+      "origin": "requested_refresh",
+      "status": "Synchronized",
+      "utc": "2026-10-27T06:57:57.297602Z"
+    },
+    {
+      "connection_id": 1,
+      "generation": 0,
+      "index": 3,
+      "origin": "requested_refresh",
+      "status": "Synchronized",
+      "utc": "2026-10-27T06:57:59.940921Z"
+    }
+  ],
+  "scope": "Four poll_update calls with explicit passive/refresh source distinction",
+  "source": "live_tcp",
+  "started_utc": "2026-10-27T06:57:52.461391Z",
+  "status": "captured",
+  "symbols": [
+    [
+      0,
+      "000001"
+    ],
+    [
+      0,
+      "159915"
+    ],
+    [
+      1,
+      "510300"
+    ]
+  ],
+  "synthetic": false
+}

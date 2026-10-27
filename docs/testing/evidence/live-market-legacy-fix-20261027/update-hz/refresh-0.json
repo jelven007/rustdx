@@ -1,0 +1,429 @@
+{
+  "requested": [
+    {
+      "market": 0,
+      "code": "000001"
+    },
+    {
+      "market": 0,
+      "code": "159915"
+    },
+    {
+      "market": 1,
+      "code": "510300"
+    }
+  ],
+  "page": {
+    "records": [
+      {
+        "market_raw": 0,
+        "code": "000001",
+        "active_raw": 4739,
+        "price": 11.48,
+        "previous_close": 11.3,
+        "open": 11.27,
+        "high": 11.55,
+        "low": 11.24,
+        "price_fields_raw": [
+          1148,
+          -18,
+          -21,
+          7,
+          -24
+        ],
+        "time_raw": null,
+        "update_cursor": 145745,
+        "status_or_unknown_raw": 0,
+        "total_volume_raw": 1495452,
+        "current_volume_raw": 28,
+        "amount": 1711590784.0,
+        "amount_raw": 1321994651,
+        "inside_volume_raw": 547210,
+        "outside_volume_raw": 948243,
+        "after_outside_raw": 0,
+        "open_amount_raw": 863620,
+        "bids": [
+          {
+            "price": 11.47,
+            "volume_raw": 11865,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 4673,
+            "price_delta_raw": -1148
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -1148
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -1148
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -1148
+          }
+        ],
+        "asks": [
+          {
+            "price": 11.47,
+            "volume_raw": 11865,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -1148
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -1148
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -1148
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -1148
+          }
+        ],
+        "scale": {
+          "decimal": 2,
+          "divisor": 100
+        },
+        "tail_raw": [
+          209,
+          13,
+          14,
+          193,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          252,
+          17,
+          252,
+          17,
+          0,
+          0,
+          252,
+          17,
+          252,
+          17,
+          0,
+          0,
+          252,
+          17,
+          252,
+          17,
+          0,
+          0,
+          252,
+          17,
+          252,
+          17,
+          0,
+          0,
+          252,
+          17,
+          252,
+          17,
+          0,
+          0,
+          252,
+          17,
+          252,
+          17,
+          0,
+          0
+        ]
+      },
+      {
+        "market_raw": 0,
+        "code": "159915",
+        "active_raw": 4815,
+        "price": 2.566,
+        "previous_close": 2.651,
+        "open": 2.678,
+        "high": 2.69,
+        "low": 2.563,
+        "price_fields_raw": [
+          2566,
+          85,
+          112,
+          124,
+          -3
+        ],
+        "time_raw": null,
+        "update_cursor": 145745,
+        "status_or_unknown_raw": 0,
+        "total_volume_raw": 35794700,
+        "current_volume_raw": 8368,
+        "amount": 9427670016.0,
+        "amount_raw": 1342995381,
+        "inside_volume_raw": 17718236,
+        "outside_volume_raw": 18076464,
+        "after_outside_raw": 0,
+        "open_amount_raw": 265560,
+        "bids": [
+          {
+            "price": 2.565,
+            "volume_raw": 182926,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -2566
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -2566
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -2566
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -2566
+          }
+        ],
+        "asks": [
+          {
+            "price": 2.565,
+            "volume_raw": 182926,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 12158,
+            "price_delta_raw": -2566
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -2566
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -2566
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -2566
+          }
+        ],
+        "scale": {
+          "decimal": 3,
+          "divisor": 1000
+        },
+        "tail_raw": [
+          208,
+          70,
+          151,
+          19,
+          4,
+          0,
+          17,
+          54,
+          36,
+          64,
+          198,
+          40,
+          198,
+          40,
+          0,
+          0,
+          198,
+          40,
+          198,
+          40,
+          0,
+          0,
+          198,
+          40,
+          198,
+          40,
+          0,
+          0,
+          198,
+          40,
+          198,
+          40,
+          0,
+          0,
+          198,
+          40,
+          198,
+          40,
+          0,
+          0,
+          198,
+          40,
+          198,
+          40,
+          0,
+          0
+        ]
+      },
+      {
+        "market_raw": 1,
+        "code": "510300",
+        "active_raw": 4884,
+        "price": 4.128,
+        "previous_close": 4.179,
+        "open": 4.186,
+        "high": 4.192,
+        "low": 4.127,
+        "price_fields_raw": [
+          4128,
+          51,
+          58,
+          64,
+          -1
+        ],
+        "time_raw": null,
+        "update_cursor": 145750,
+        "status_or_unknown_raw": 0,
+        "total_volume_raw": 13839878,
+        "current_volume_raw": 1429,
+        "amount": 5765390848.0,
+        "amount_raw": 1336660593,
+        "inside_volume_raw": 6485617,
+        "outside_volume_raw": 7354262,
+        "after_outside_raw": 0,
+        "open_amount_raw": 0,
+        "bids": [
+          {
+            "price": 4.127,
+            "volume_raw": 67139,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 5320,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          }
+        ],
+        "asks": [
+          {
+            "price": 4.127,
+            "volume_raw": 67139,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          }
+        ],
+        "scale": {
+          "decimal": 3,
+          "divisor": 1000
+        },
+        "tail_raw": [
+          208,
+          14,
+          93,
+          50,
+          2,
+          0,
+          150,
+          33,
+          132,
+          64,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0
+        ]
+      }
+    ],
+    "source": {
+      "opcode": 1351,
+      "endpoint": "115.238.56.198:7709",
+      "fetched_at": "2026-10-27T06:57:52.569816Z",
+      "connection_id": 1,
+      "metadata_generation": 0
+    }
+  }
+}

@@ -9,6 +9,7 @@ from pathlib import Path, PurePosixPath
 import subprocess
 import sys
 import tarfile
+import tempfile
 
 from source_scope import digest_file, fingerprint, git_paths
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "validation"))
@@ -41,6 +42,14 @@ def validate_manifest(manifest):
         raise ValueError("evidence entry budget")
     if len({row["path"] for row in records}) != len(records):
         raise ValueError("duplicate evidence path")
+    for row in records:
+        name = row["path"]
+        if (not isinstance(name, str) or PurePosixPath(name).is_absolute()
+                or any(part in ("", ".", "..") for part in name.split("/"))
+                or type(row["bytes"]) is not int or row["bytes"] < 0
+                or not isinstance(row["sha256"], str) or len(row["sha256"]) != 64
+                or any(c not in "0123456789abcdef" for c in row["sha256"])):
+            raise ValueError("invalid evidence record")
     if fingerprint(records) != manifest["files_sha256"]:
         raise ValueError("manifest identity differs")
     return records
@@ -134,9 +143,57 @@ def bundle(root, manifest, destination, prefix):
                                "sha256": digest_file(destination), "prefix": prefix})
 
 
+def restore(root, manifest, archive):
+    """Retrieve a pinned local bundle into a new root; never overwrite retained bytes."""
+    records = validate_manifest(manifest)
+    identity = manifest["archive"]
+    if root.exists() or root.is_symlink() or not root.parent.is_dir():
+        raise ValueError("restore requires a new root with an existing parent")
+    if (archive.is_symlink() or not archive.is_file()
+            or archive.stat().st_size != identity["bytes"]
+            or digest_file(archive) != identity["sha256"]):
+        raise ValueError("archive identity differs or archive is unavailable")
+    expected = {row["path"]: row for row in records}
+    seen = set()
+    with tempfile.TemporaryDirectory(prefix=".evidence-restore-", dir=root.parent) as temporary:
+        staging = Path(temporary) / "payload"
+        staging.mkdir()
+        with tarfile.open(archive, mode="r|gz") as stream:
+            for member in stream:
+                row = expected.get(member.name)
+                if (row is None or member.name in seen or not member.isfile()
+                        or member.size != row["bytes"] or member.issparse()):
+                    raise ValueError("unexpected, duplicate or invalid archive entry")
+                path = safe_path(staging, member.name)
+                path.parent.mkdir(parents=True, exist_ok=True)
+                digest, size = hashlib.sha256(), 0
+                with stream.extractfile(member) as source, path.open("xb") as destination:
+                    for block in iter(lambda: source.read(1024 * 1024), b""):
+                        size += len(block)
+                        if size > row["bytes"]:
+                            raise ValueError("archive entry exceeds declared bytes")
+                        digest.update(block)
+                        destination.write(block)
+                if size != row["bytes"] or digest.hexdigest() != row["sha256"]:
+                    raise ValueError("archive entry identity differs")
+                seen.add(member.name)
+        if seen != expected.keys() or verify(staging, manifest)["status"] != "passed":
+            raise ValueError("archive is incomplete")
+        if digest_file(archive) != identity["sha256"]:
+            raise ValueError("archive changed during restore")
+        # Original archived names are retained, including names in old manifests.
+        # Do not merge into an existing checkout or apply its path migrations.
+        if root.exists() or root.is_symlink():
+            raise ValueError("restore root appeared during retrieval")
+        staging.rename(root)
+    return dict(status="passed", checked_entries=len(records),
+                archive_sha256=identity["sha256"], files_sha256=manifest["files_sha256"],
+                scope="Pinned archive and original file bytes; semantic qualification remains separate.")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["inventory", "verify", "bundle"])
+    parser.add_argument("command", choices=["inventory", "verify", "bundle", "restore"])
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--manifest", type=Path)
@@ -144,7 +201,7 @@ def main():
     parser.add_argument("--archive", type=Path)
     parser.add_argument("--prefix", default="docs/testing/evidence/")
     args = parser.parse_args()
-    if args.output.exists() or args.archive and args.archive.exists():
+    if args.output.exists() or args.command == "bundle" and args.archive and args.archive.exists():
         parser.error("use new outputs; never overwrite frozen material")
     root = args.root.resolve()
     if args.command == "inventory":
@@ -158,7 +215,8 @@ def main():
         else:
             if not args.archive:
                 parser.error("--archive is required")
-            result = bundle(root, manifest, args.archive, args.prefix)
+            result = (restore(root, manifest, args.archive) if args.command == "restore"
+                      else bundle(root, manifest, args.archive, args.prefix))
     args.output.write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps({key: result[key] for key in ["status", "checked_entries"] if key in result}))
     return 0 if result.get("status", "passed") == "passed" else 1

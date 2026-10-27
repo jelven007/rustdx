@@ -1,12 +1,22 @@
 # 数据语义与迁移
 
 <!-- lifecycle:registry -->
-读者：升级集成者；责任：API及发布维护者。源码核验：2026-10-25；每90日及破坏性行为或升级路径变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：升级集成者；责任：API及发布维护者。源码核验：2026-10-27；每90日及破坏性行为或升级路径变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 当前源码版本：<!-- version:project -->2.0.2<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
-更新日期：2026-10-25。核心/CLI 2.0.0已发布到crates.io，源码身份和实际包摘要见[发布记录](../archive/release/PUBLICATION_20261025.md)。下方较早章节保留当轮版本事实，其变更已纳入2.0.0；runner仍仅交付源码与二进制。外部应用共同消费约定见[应用接入](../development/APPLICATION_INTEGRATION.md)。
+更新日期：2026-10-27。核心/CLI 2.0.0已发布到crates.io，源码身份和实际包摘要见[发布记录](../archive/release/PUBLICATION_20261025.md)。下方较早章节保留当轮版本事实，其变更已纳入2.0.0；runner仍仅交付源码与二进制。外部应用共同消费约定见[应用接入](../development/APPLICATION_INTEGRATION.md)。
+
+## 实时遗留问题修复（2026-10-27，未发布）
+
+新增`QuoteUpdate`及`QuoteSubscription::poll_update(idle_timeout)`，可在被动空闲后请求刷新，来源由枚举显式区分。需要连续更新的调用方可采用该入口并检查`synchronized_snapshot()`；旧`poll_push`行为保持。RequestedRefresh不作为被动推送验收证据。
+
+默认财务增加固定平安银行Q3范围。`FinanceFieldValue::candidate_value()`在适用profile已登记字段与原始位模式冲突时改为None，新增`candidate_rejection()`及可选JSON字段说明原因。旧H1已匹配10字段、无适用profile的候选和未知槽行为保持；依赖候选值永远可用的调用方须处理拒绝，不能用raw换算绕过已知冲突。
+
+新增`DayFileReference`及`MinuteSeries::compare_reference`，分别输出日线并列参考/原TCP差异及分钟完整参照诊断。它们没有改变默认Client、CLI或runner数据源，也没有扩大0feb日期资格。签名、参考范围和业务消费见[接口手册](../reference/COMMAND_API.md)及[应用接入](../development/APPLICATION_INTEGRATION.md)，真实差异和回归见[修复报告](../archive/development/LIVE_MARKET_LEGACY_FIX_20261027.md)。本分支版本保持2.0.2，未提交、推送或发布。
+
+后续新增`FinanceCashFlowReconciliation`和`FinanceSnapshot::cash_flow_reconciliation()`：固定平安2026-Q3的两种现金口径差额由汇率影响严格解释，旧净变动字段继续拒绝。refresh发送前已有本地半帧时，不再仅凭相同message id将其当作后发请求响应；该帧入被动队列后继续等待真实响应。两项均有红绿反转回归，现金诊断另有独立外部调用验证。扩大0feb采样暴露历史跨节点/日线端点差异，未给出固定TTL或通用日期资格；来源边界见[补证报告](../archive/development/UPSTREAM_CAPABILITIES_FIX_20261027.md)，不需要重标历史缓存。
 
 ## 2.0.0主版本迁移与等待契约（已发布）
 

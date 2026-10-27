@@ -1114,6 +1114,37 @@ mod tests {
     }
 
     #[test]
+    fn parallel_file_reads_observe_complete_atomic_replacements() {
+        let dir =
+            std::env::temp_dir().join(format!("rustdx-cache-read-replace-{}", std::process::id()));
+        let cache = FileCache::try_with_capacity(&dir, 2, 128 * 1024).unwrap();
+        cache
+            .try_set("same", &[1; 32 * 1024], Duration::from_secs(60))
+            .unwrap();
+        std::thread::scope(|scope| {
+            scope.spawn(|| {
+                for marker in 2..=25 {
+                    cache
+                        .try_set("same", &[marker; 32 * 1024], Duration::from_secs(60))
+                        .unwrap();
+                }
+            });
+            for _ in 0..4 {
+                scope.spawn(|| {
+                    for _ in 0..100 {
+                        let value = cache.try_get("same").unwrap().unwrap();
+                        assert_eq!(value.len(), 32 * 1024);
+                        assert!((1..=25).contains(&value[0]));
+                        assert!(value.iter().all(|byte| *byte == value[0]));
+                    }
+                });
+            }
+        });
+        assert_eq!(cache.usage().unwrap().entries, 1);
+        fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
     fn test_file_cache_expiry() {
         let temp_dir = std::env::temp_dir().join("rustdx_test_cache_expiry");
         let cache = FileCache::new(&temp_dir);

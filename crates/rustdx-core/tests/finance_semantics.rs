@@ -164,14 +164,8 @@ fn evidence_is_scoped_to_symbol_update_and_each_field() {
         bytes[offset..offset + 4].copy_from_slice(&(-1.0_f32).to_le_bytes());
         let snapshot = decode(&bytes);
         assert_eq!(snapshot.field(field).value(), None);
-        assert_eq!(
-            snapshot.field(field).candidate_value().unwrap(),
-            if field == F::ReportedEps {
-                -1.0
-            } else {
-                -1000.0
-            }
-        );
+        assert_eq!(snapshot.field(field).candidate_value(), None);
+        assert!(snapshot.field(field).candidate_rejection().is_some());
         let basis = match field {
             F::ReportedEps => snapshot.eps_basis,
             F::NetProfit => snapshot.net_profit_basis,

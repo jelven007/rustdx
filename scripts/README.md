@@ -8,6 +8,7 @@
 | ops/diagnose_network.sh | 通达信握手与心跳诊断，可传IP:端口 | Cargo及网络；失败传播退出码 |
 | ops/retention_preview.py | 历史catalog/release/账本/数据库回执/显式备份依赖及容量趋势预览 | Python3 stdlib、Unix共享控制锁；只读现有目录/SQLite，全部登记历史受保护，候选只供审核，不删除 |
 | bench/measure_day_memory.py | 新旧二进制内存/字段摘要核对 | Python3、不同SHA的两版二进制、系统计时工具 |
+| bench/measure_day_replay.py | 固定真实day的1/4/8worker各5轮字节一致性、阶段与RSS测量 | Python3、实际release CLI及明确原始来源；复制到新测量目录，不生成市场资格 |
 | bench/run_indicator_comparison.py | 指定Git基线与当前批量指标同机AB/BA交替比较 | Python3、Rust1.89；固定实际二进制输入、共同harness、profile/锁、硬件/工具链/源码/二进制摘要，schema2，默认7样本/1.5倍门槛 |
 | bench/compare_indicators.py | schema2统计/输入/环境身份及回退门禁 | Python3；拒绝schema1观察数据、不同会话/锁/硬件/工具链、非法样本、输出变化及超阈值 |
 | bench/measure_database_readback.py | 65,536行首次/重复写入及完整回读测量 | Python3、CLI、真实隔离CH/Mongo及mongoimport/mongosh |
@@ -15,9 +16,13 @@
 | validation/verify_consumption_fields.py | 必需财务字段矩阵与raw_bits/发行人证据摘要核验 | Python3 stdlib；固定矩阵或调用方新矩阵，默认无网络，不扩大旧资格 |
 | validation/audit_point_in_time_facts.py | job应有日期/证券、点时状态缺口、区间重叠、公告摘要和独立日历核验 | Python3 stdlib；只读配置与原文件，Unknown非零退出，不续期事实 |
 | validation/audit_fact_maintenance.py | 五类事实维护责任、独立复核、证据字节和下次复核日巡检 | Python3 stdlib；缺口退出1并保留报告，不发通知、不续期、不替代语义/应有键审核 |
+| validation/audit_minute_archive.py | 独立分钟候选的日期/槽/价格/股量/分金额、日闭合、raw摘要、修订与保存预算校验 | Python3 stdlib；显式manifest/root/previous/as-of/output，结果放档案外；只读，不发布或证明真实被动能力 |
+| validation/build_fuzz_seeds.py | 真实正文/压缩帧SHA与截断/计数/长度边界种子生成 | Python3 stdlib；只写新目录，64MiB/20,000份上界，保留原来源，不修改冻结证据 |
 | validation/audit_task_admission.py | 四类任务独立准入与同身份目标验收封套核验 | Python3 stdlib；Unknown/缺入口/字段/全键/目标资源/恢复缺口拒绝，不执行部署 |
 | validation/check_documentation.py | 当前文档本地链接/锚点及FR-01至FR-18核验 | Python3 stdlib；遍历前排除历史证据、归档及target，不改旧文档 |
 | validation/verify_local_recovery.py | 新目录一致性备份/隔离恢复、固定catalog版本全CSV字节比较 | Python3及runner；读取明确root，备份到新目录，不代表数据库原生恢复 |
+| validation/verify_runner_local.py | 真实CLI/runner和12条官网day的相邻日期窗口、修订、空间拒绝及固定版本新目录恢复 | Python3和本机二进制；合成事实明确标注，隔离目录内运行，不代表市场或Linux生产资格 |
+| validation/audit_retention_policy.py | 四类独立留存期/硬配额/备份周期、owner与不可变存储输入核验 | Python3 stdlib；缺输入退出1，不实施配额、不写外部存储、不删除 |
 | validation/verify_database_recovery.py | 两个runner版本、两库原生全备与全新数据目录恢复、全字段/索引/约束核对及失败保护 | Linux、同源码CLI/runner、Docker及mongosh/mongodump/mongorestore；固定digest、自建loopback容器，保留原生备份和逐命令证据 |
 | validation/verify_kline_pytdx.py | K线独立期望重解 | Python3、six、指定固定pytdx源码 |
 | validation/verify_protocol_pytdx.py | 快照/财务/逐笔重解，--capture显式采样 | 同上；参考源码先核对SHA，不下载可执行代码 |

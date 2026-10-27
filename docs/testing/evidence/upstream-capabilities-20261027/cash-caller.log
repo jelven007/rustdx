@@ -1,0 +1,13 @@
+[1m[32m   Compiling[0m rustdx-upstream-window-probe v0.0.0 (/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/probe-tool)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 0.47s
+[1m[32m     Running[0m `/private/tmp/rustdx-system-optimization-packages-20261025/target/debug/cash-reconciliation-caller /private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core/tests/fixtures/finance-q3/response.bin`
+{
+  "source_raw_bits": 1258417592,
+  "source_total_excluding_fx_yuan": 8515000000.0,
+  "operating_yuan": 283221000000.0,
+  "investing_yuan": 6503000000.0,
+  "financing_yuan": -281209000000.0,
+  "exchange_rate_effect_yuan": -2643000000.0,
+  "reported_net_change_yuan": 5872000000.0,
+  "evidence": "https://static.cninfo.com.cn/finalpage/2026-10-24/1225621667.PDF"
+}

@@ -1,7 +1,7 @@
 # 日期化涨跌幅规则
 
 <!-- lifecycle:registry -->
-读者：应用集成/运营；责任：规则维护者。源码核验：2026-10-25；每30日及交易所规则公告或核实区间变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：应用集成/运营；责任：规则维护者。源码核验：2026-10-27；每30日及交易所规则公告或核实区间变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 核实日期：2026-10-22。`RULE_VERSION = exchange-rules/2026-07-06`。主板规则查询覆盖2014-01-01起，创业板2009-10-30起，科创板2019-07-22起，北交所2021-11-15起；均截止核实日期。范围外返回错误，不推测旧制度或未来政策。
@@ -32,9 +32,12 @@
 - [深交所创业板交易规定解读](https://investor.szse.cn/institute/rules/t20200807_580310.html)：改革前ST为5%、改革后20%、旧退市整理期例外。
 - [深交所改革实施一周年](https://www.szse.cn/www/aboutus/trends/news/t20210824_587951.html)：确认2020-08-24启动。
 - [上交所2014投教资料](https://edu.sse.com.cn/best/article/mcontent/c/4731131.shtml)：主板10%、风险警示5%。
-- [上交所2026年交易规则](https://www.sse.com.cn/lawandrules/sselawsrules2025/trade/universal/c/c_20260424_10816492.shtml)：2026-07-06生效；3.3.13普通幅度/IPO，3.3.17取整及最小报价，风险警示章节的10%规则。
+- [上交所2026年交易规则](https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml)：2026-07-06生效；3.3.13普通幅度/IPO，3.3.17取整及最小报价，风险警示章节的10%规则。
 - [深交所2026修订要点](https://investor.szse.cn/institute/bookshelf/poster/P020260603538459373082.pdf)：明确主板风险警示5%→10%及2026-07-06生效。
 - [北交所2021交易规则](https://www.bse.cn/jygl_list/200010919.html)：2021-11-15生效、平移首日30%；3.3.11/3.3.12列明30%及IPO首日例外。
 - [上证报2023-04-08](https://paper.cnstock.com/html/2023-04/08/content_1745806.htm)：主板注册制首批2023-04-10上市，前5日无幅度限制。
 
 这些资料核实规则，不提供逐只证券的上市/ST/退市历史数据库。规则调用方仍须提供对应事实。
+
+2026-10-27取得的7份官方原件及局部对照见[事实范围复查](../archive/development/FACT_SCOPE_REVIEW_20261027.md)。
+单次材料读取不构成历史全范围与后续实施公告的独立审核，统一截止未延长。

@@ -1,0 +1,8 @@
+[1m[32m   Compiling[0m jelven-rustdx-cli v2.0.2 (/private/tmp/rustdx-upstream-capabilities-20261027/apps/rustdx-cli)
+[1m[32m    Checking[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core)
+[1m[32m Documenting[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core)
+[1m[32m Documenting[0m jelven-rustdx-cli v2.0.2 (/private/tmp/rustdx-upstream-capabilities-20261027/apps/rustdx-cli)
+[1m[32m Documenting[0m rustdx-runner v2.0.2 (/private/tmp/rustdx-upstream-capabilities-20261027/apps/rustdx-runner)
+[1m[32m Documenting[0m tests-integration v2.0.2 (/private/tmp/rustdx-upstream-capabilities-20261027/tests/integration)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 7.03s
+[1m[32m   Generated[0m ]8;;file://cm9027fwhg/private/tmp/rustdx-system-optimization-packages-20261025/target/doc/rustdx_cli/index.html\/private/tmp/rustdx-system-optimization-packages-20261025/target/doc/rustdx_cli/index.html]8;;\ and 4 other files

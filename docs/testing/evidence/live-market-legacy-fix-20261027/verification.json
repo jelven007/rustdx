@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "generated_utc": "2026-10-27T09:49:02.846793+00:00",
+  "base_commit": "18cc661d1b0ff0169dcbfcaa571f48a5b96dcdf3",
+  "branch": "fix/live-market-legacy-20261027",
+  "version": "2.0.2",
+  "committed": false,
+  "pushed": false,
+  "environment": {
+    "os": "macOS",
+    "rust_toolchain": "1.89.0",
+    "cwd": "/private/tmp/rustdx-live-market-fix-20261027",
+    "offline": true,
+    "locked": true,
+    "CARGO_HOME": "/Users/bytedance/Documents/rustdx/.cargo",
+    "RUSTUP_HOME": "/Users/bytedance/Documents/rustdx/.cargo/rustup",
+    "CARGO_TARGET_DIR": "/private/tmp/rustdx-system-optimization-packages-20261025/target",
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+  },
+  "checks": [
+    {
+      "command": "cargo +1.89.0 fmt --all --check",
+      "exit_code": 0,
+      "log": "fmt.log"
+    },
+    {
+      "command": "cargo +1.89.0 clippy --offline --locked --workspace --all-targets --all-features -j2 -- -D warnings",
+      "exit_code": 0,
+      "log": "clippy.log"
+    },
+    {
+      "command": "cargo +1.89.0 test --offline --locked --workspace --all-features -j2",
+      "exit_code": 0,
+      "log": "workspace-tests.log",
+      "reported_totals": {
+        "passed": 596,
+        "failed": 0,
+        "ignored": 28,
+        "measured": 0,
+        "filtered": 0
+      },
+      "unit_and_integration_reported": {
+        "passed": 539,
+        "failed": 0,
+        "ignored": 10,
+        "measured": 0,
+        "filtered": 0
+      },
+      "doctests_reported": {
+        "passed": 57,
+        "failed": 0,
+        "ignored": 18,
+        "measured": 0,
+        "filtered": 0
+      },
+      "external_early_return_is_not_online_validation": true
+    },
+    {
+      "command": "RUSTDOCFLAGS='-D warnings' cargo +1.89.0 doc --offline --locked --workspace --all-features --no-deps -j2",
+      "exit_code": 0,
+      "log": "rustdoc.log"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts/validation/tests",
+      "exit_code": 0,
+      "passed": 36,
+      "log": "python-tests.log"
+    },
+    {
+      "command": "python3 scripts/validation/verify_consumption_fields.py --root /private/tmp/rustdx-live-market-fix-20261027 --matrix config/consumption/finance-sample.json --output /private/tmp/rustdx-live-market-fix-20261027-artifacts/finance-consumption.json",
+      "exit_code": 0,
+      "entries": 1,
+      "result": "finance-consumption.json"
+    },
+    {
+      "command": "python3 scripts/release/check_consumers.py --offline --output /private/tmp/rustdx-live-market-fix-20261027-artifacts/consumers",
+      "exit_code": 0,
+      "expected_cases": 4,
+      "result": "consumers/consumers.json"
+    },
+    {
+      "command": "RUSTDX_TEST_CLI=/private/tmp/rustdx-system-optimization-packages-20261025/target/debug/rustdx RUSTDX_TEST_CH_USER=default RUSTDX_TEST_CH_PASSWORD='' cargo +1.89.0 test --offline --locked -p rustdx-runner --test control_plane -j2 -- --include-ignored --skip real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence",
+      "exit_code": 0,
+      "passed": 21,
+      "filtered": 1,
+      "log": "cli-control-faults.log"
+    },
+    {
+      "command": "python3 scripts/validation/check_documentation.py --output /private/tmp/rustdx-live-market-fix-20261027-artifacts/documentation-navigation-delivery.json",
+      "exit_code": 0,
+      "result": "documentation-navigation-delivery.json",
+      "documents": 51,
+      "links": 1107
+    },
+    {
+      "command": "python3 scripts/validation/check_documentation_lifecycle.py --today 2026-10-27",
+      "exit_code": 0,
+      "result": "documentation-lifecycle-final.json",
+      "documents": 34
+    },
+    {
+      "command": "python3 scripts/release/versioning.py check --strict",
+      "exit_code": 0,
+      "version": "2.0.2",
+      "log": "version-check-final.log"
+    },
+    {
+      "command": "python3 docs/testing/evidence/live-market-legacy-fix-20261027/replay_updates.py --source . --output /private/tmp/rustdx-live-market-fix-20261027-artifacts/live-replay-portable.json",
+      "exit_code": 0,
+      "result": "live-replay-portable.json",
+      "updates": 8,
+      "minute_requests": 66
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "regression_scope": {
+    "targeted_passed": 39,
+    "q3_verified_fields": 17,
+    "q3_cash_conflict_rejected": true,
+    "daily_reference_rows": 27237,
+    "preserved_daily_differences": 44,
+    "minute_reference_points": 209,
+    "minute_difference_indexes": [
+      119,
+      208
+    ],
+    "poll_update_passive_fallback_reverse_test_failed_then_restored": true
+  },
+  "unresolved": [
+    "Upstream Q3 cash-net-change value differs from issuer disclosure",
+    "One historical daily volume differs by 9 shares; 43 amounts differ by 1 ULP",
+    "Minute price/volume providers differ at 11:30",
+    "Passive push not observed; requested refresh is explicitly separate",
+    "Full minute date qualification and retention window not established",
+    "Other securities, market 2, actual databases, deployment and long-term scope remain separate"
+  ],
+  "not_executed": [
+    "actual database services",
+    "fuzz",
+    "Linux/Windows",
+    "remote CI",
+    "production deployment",
+    "long-term load"
+  ],
+  "original_worktree_preserved": {
+    "docs/testing/VALIDATION.md": "2ae8b43095953f75b48231daff1cd9ebbdec8707e965e8718d5004158b116bbd",
+    "scripts/validation/verify_database_recovery.py": "78cd23ea98eb8c7eb12d90baf00e9f81cb511936b3fecb764b78ba9a4e9e1ff7"
+  },
+  "historical_tracked_evidence_diff": "empty"
+}

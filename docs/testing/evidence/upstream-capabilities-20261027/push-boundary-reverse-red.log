@@ -1,0 +1,43 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core)
+[0m[1m[33mwarning[0m[0m[1m: variable `pre_request_frame` is assigned to, but never used[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/src/tcp/stock/quote_subscription.rs:249:17[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m249[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m        let mut pre_request_frame = !self.staging.is_empty();[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                 [0m[0m[1m[33m^^^^^^^^^^^^^^^^^[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: consider using `_pre_request_frame` instead[0m
+[0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: `#[warn(unused_variables)]` on by default[0m
+
+[0m[1m[33mwarning[0m[0m[1m: value assigned to `pre_request_frame` is never read[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/src/tcp/stock/quote_subscription.rs:287:13[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m287[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            pre_request_frame = false;[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m             [0m[0m[1m[33m^^^^^^^^^^^^^^^^^[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m    [0m[0m[1m[38;5;12m= [0m[0m[1mhelp[0m[0m: maybe it is overwritten before being read?[0m
+[0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: `#[warn(unused_assignments)]` on by default[0m
+
+[1m[33mwarning[0m[1m:[0m `jelven-rustdx-complete` (lib) generated 2 warnings
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 13.63s
+[1m[32m     Running[0m tests/quote_subscription.rs (/private/tmp/rustdx-system-optimization-packages-20261025/target/debug/deps/quote_subscription-ddbbc6cec5bcdcad)
+
+running 1 test
+test partial_push_received_before_refresh_cannot_satisfy_the_new_request ... FAILED
+
+failures:
+
+---- partial_push_received_before_refresh_cannot_satisfy_the_new_request stdout ----
+
+thread 'partial_push_received_before_refresh_cannot_satisfy_the_new_request' panicked at crates/rustdx-core/tests/quote_subscription.rs:85:5:
+assertion `left == right` failed
+  left: Some(11)
+ right: Some(12)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    partial_push_received_before_refresh_cannot_satisfy_the_new_request
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 27 filtered out; finished in 0.01s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p jelven-rustdx-complete --test quote_subscription`

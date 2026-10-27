@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "protected_references_override_age": true,
+  "classes": {
+    "release": {"owner": null, "minimum_days": null, "hard_quota_bytes": null, "backup_interval_seconds": null},
+    "consumer_audit": {"owner": null, "minimum_days": null, "hard_quota_bytes": null, "backup_interval_seconds": null},
+    "database_evidence": {"owner": null, "minimum_days": null, "hard_quota_bytes": null, "backup_interval_seconds": null},
+    "backup": {"owner": null, "minimum_days": null, "hard_quota_bytes": null, "backup_interval_seconds": null}
+  },
+  "immutable_evidence_store": null,
+  "reviewer": null,
+  "reviewed_at": null
+}

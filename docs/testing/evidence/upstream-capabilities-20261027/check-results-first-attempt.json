@@ -1,0 +1,57 @@
+[
+  {
+    "name": "fmt",
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:08:19.359685+00:00",
+    "finished_utc": "2026-10-27T10:08:22.621090+00:00",
+    "log": "fmt.log"
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "clippy",
+      "--offline",
+      "--locked",
+      "--workspace",
+      "--all-features",
+      "-j2",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:08:22.624226+00:00",
+    "finished_utc": "2026-10-27T10:08:54.976279+00:00",
+    "log": "clippy.log"
+  },
+  {
+    "name": "workspace-tests",
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "test",
+      "--offline",
+      "--locked",
+      "--workspace",
+      "--all-features",
+      "-j2"
+    ],
+    "environment_override": {},
+    "exit_code": 101,
+    "started_utc": "2026-10-27T10:08:54.979267+00:00",
+    "finished_utc": "2026-10-27T10:14:57.477273+00:00",
+    "log": "workspace-tests.log"
+  }
+]

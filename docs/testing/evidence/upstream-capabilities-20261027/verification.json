@@ -1,0 +1,419 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "generated_utc": "2026-10-27T10:20:32.968668+00:00",
+  "base_commit": "18cc661d1b0ff0169dcbfcaa571f48a5b96dcdf3",
+  "branch": "fix/upstream-capabilities-20261027",
+  "version": "2.0.2",
+  "committed": false,
+  "pushed": false,
+  "environment": {
+    "os": "macOS",
+    "rust_toolchain": "1.89.0",
+    "cwd": "/private/tmp/rustdx-upstream-capabilities-20261027",
+    "offline": true,
+    "locked": true,
+    "CARGO_HOME": "/Users/bytedance/Documents/rustdx/.cargo",
+    "RUSTUP_HOME": "/Users/bytedance/Documents/rustdx/.cargo/rustup",
+    "CARGO_TARGET_DIR": "/private/tmp/rustdx-system-optimization-packages-20261025/target",
+    "RUSTDX_SKIP_INTEGRATION_TESTS": "1"
+  },
+  "checks": [
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "fmt",
+        "--all",
+        "--check"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:08:19.359685+00:00",
+      "finished_utc": "2026-10-27T10:08:22.621090+00:00",
+      "log": "fmt.log"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "clippy",
+        "--offline",
+        "--locked",
+        "--workspace",
+        "--all-features",
+        "-j2",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:08:22.624226+00:00",
+      "finished_utc": "2026-10-27T10:08:54.976279+00:00",
+      "log": "clippy.log"
+    },
+    {
+      "name": "workspace-tests",
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "test",
+        "--offline",
+        "--locked",
+        "--workspace",
+        "--all-features",
+        "-j2"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:16:55.616112+00:00",
+      "finished_utc": "2026-10-27T10:17:40.197825+00:00",
+      "log": "workspace-tests.log"
+    },
+    {
+      "name": "rustdoc",
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "doc",
+        "--offline",
+        "--locked",
+        "--workspace",
+        "--all-features",
+        "-j2",
+        "--no-deps"
+      ],
+      "environment_override": {
+        "RUSTDOCFLAGS": "-D warnings"
+      },
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:17:40.198353+00:00",
+      "finished_utc": "2026-10-27T10:17:47.274927+00:00",
+      "log": "rustdoc.log"
+    },
+    {
+      "name": "python-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/validation/tests"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:17:47.275767+00:00",
+      "finished_utc": "2026-10-27T10:18:12.878478+00:00",
+      "log": "python-tests.log"
+    },
+    {
+      "name": "finance-consumption",
+      "command": [
+        "python3",
+        "scripts/validation/verify_consumption_fields.py",
+        "--root",
+        "/private/tmp/rustdx-upstream-capabilities-20261027",
+        "--matrix",
+        "config/consumption/finance-sample.json",
+        "--output",
+        "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/finance-consumption.json"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:18:12.879566+00:00",
+      "finished_utc": "2026-10-27T10:18:12.976790+00:00",
+      "log": "finance-consumption.log"
+    },
+    {
+      "name": "consumers",
+      "command": [
+        "python3",
+        "scripts/release/check_consumers.py",
+        "--offline",
+        "--output",
+        "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/consumers"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:18:12.977390+00:00",
+      "finished_utc": "2026-10-27T10:18:23.357656+00:00",
+      "log": "consumers.log"
+    },
+    {
+      "name": "cash-caller",
+      "command": [
+        "cargo",
+        "+1.89.0",
+        "run",
+        "--manifest-path",
+        "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/probe-tool/Cargo.toml",
+        "--offline",
+        "--locked",
+        "-j2",
+        "--bin",
+        "cash-reconciliation-caller",
+        "--",
+        "/private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core/tests/fixtures/finance-q3/response.bin"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:18:23.358264+00:00",
+      "finished_utc": "2026-10-27T10:18:24.185129+00:00",
+      "log": "cash-caller.log"
+    },
+    {
+      "name": "replay",
+      "command": [
+        "python3",
+        "docs/testing/evidence/upstream-capabilities-20261027/replay.py",
+        "--output",
+        "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/independent-replay-final.json"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:18:24.185749+00:00",
+      "finished_utc": "2026-10-27T10:18:24.629666+00:00",
+      "log": "replay.log"
+    },
+    {
+      "name": "replay-negative",
+      "command": [
+        "python3",
+        "docs/testing/evidence/upstream-capabilities-20261027/replay_negative.py",
+        "--output",
+        "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/negative-replay.json"
+      ],
+      "environment_override": {},
+      "exit_code": 0,
+      "started_utc": "2026-10-27T10:18:24.630625+00:00",
+      "finished_utc": "2026-10-27T10:18:24.980556+00:00",
+      "log": "replay-negative.log"
+    },
+    {
+      "name": "documentation-navigation",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation.py",
+        "--output",
+        "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/documentation-navigation-final.json"
+      ],
+      "exit_code": 0,
+      "log": "documentation-navigation.log",
+      "started_utc": "2026-10-27T10:20:28.918689+00:00",
+      "finished_utc": "2026-10-27T10:20:29.074476+00:00"
+    },
+    {
+      "name": "documentation-lifecycle",
+      "command": [
+        "python3",
+        "scripts/validation/check_documentation_lifecycle.py",
+        "--today",
+        "2026-10-27"
+      ],
+      "exit_code": 0,
+      "log": "documentation-lifecycle.log",
+      "started_utc": "2026-10-27T10:20:29.076207+00:00",
+      "finished_utc": "2026-10-27T10:20:29.514636+00:00"
+    },
+    {
+      "name": "version-check",
+      "command": [
+        "python3",
+        "scripts/release/versioning.py",
+        "check",
+        "--strict"
+      ],
+      "exit_code": 0,
+      "log": "version-check.log",
+      "started_utc": "2026-10-27T10:20:29.516715+00:00",
+      "finished_utc": "2026-10-27T10:20:29.684076+00:00"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "diff-check.log",
+      "started_utc": "2026-10-27T10:20:29.685241+00:00",
+      "finished_utc": "2026-10-27T10:20:29.736377+00:00"
+    }
+  ],
+  "workspace_reported_totals": {
+    "passed": 599,
+    "failed": 0,
+    "ignored": 28,
+    "measured": 0,
+    "filtered": 0
+  },
+  "unit_and_integration_reported": {
+    "passed": 542,
+    "failed": 0,
+    "ignored": 10,
+    "measured": 0,
+    "filtered": 0
+  },
+  "doctests_reported": {
+    "passed": 57,
+    "failed": 0,
+    "ignored": 18,
+    "measured": 0,
+    "filtered": 0
+  },
+  "external_early_return_is_not_online_validation": true,
+  "first_workspace_attempt": {
+    "exit_code": 101,
+    "log": "workspace-tests-first-failure.log",
+    "failed_test": "database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants",
+    "failed_assertion": "!crate::supervisor::process_group_alive(pid)",
+    "independent_repetitions": [
+      {
+        "command": [
+          "cargo",
+          "+1.89.0",
+          "test",
+          "--offline",
+          "--locked",
+          "-p",
+          "rustdx-runner",
+          "--lib",
+          "--all-features",
+          "-j2",
+          "database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants",
+          "--",
+          "--exact"
+        ],
+        "exit_code": 0,
+        "log": "process-cleanup-isolated-1.log",
+        "started_utc": "2026-10-27T10:15:58.472607+00:00",
+        "finished_utc": "2026-10-27T10:16:46.815086+00:00"
+      },
+      {
+        "command": [
+          "cargo",
+          "+1.89.0",
+          "test",
+          "--offline",
+          "--locked",
+          "-p",
+          "rustdx-runner",
+          "--lib",
+          "--all-features",
+          "-j2",
+          "database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants",
+          "--",
+          "--exact"
+        ],
+        "exit_code": 0,
+        "log": "process-cleanup-isolated-2.log",
+        "started_utc": "2026-10-27T10:16:46.815131+00:00",
+        "finished_utc": "2026-10-27T10:16:47.753477+00:00"
+      },
+      {
+        "command": [
+          "cargo",
+          "+1.89.0",
+          "test",
+          "--offline",
+          "--locked",
+          "-p",
+          "rustdx-runner",
+          "--lib",
+          "--all-features",
+          "-j2",
+          "database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants",
+          "--",
+          "--exact"
+        ],
+        "exit_code": 0,
+        "log": "process-cleanup-isolated-3.log",
+        "started_utc": "2026-10-27T10:16:47.753504+00:00",
+        "finished_utc": "2026-10-27T10:16:48.473096+00:00"
+      }
+    ],
+    "root_cause": "not confirmed; failure did not recur in three isolated runs",
+    "production_or_test_code_changed_for_this_failure": false
+  },
+  "python_passed": 36,
+  "consumers_expected_cases": 4,
+  "documentation_navigation": {
+    "schema_version": 1,
+    "status": "passed",
+    "documents": 51,
+    "links": 1124,
+    "issues": [],
+    "missing_fr": [],
+    "scope": "Current navigation only; archived content and frozen evidence bytes are not edited."
+  },
+  "documentation_lifecycle": {
+    "schema_version": 1,
+    "status": "passed",
+    "checked_on": "2026-10-27",
+    "documents": 34,
+    "issues": [],
+    "scope": "Static lifecycle and cadence; source-change semantics require PR review."
+  },
+  "regression": {
+    "quote_subscription_passed": 28,
+    "finance_cash_basis_passed": 2,
+    "cash_basis_reverse_test_failed_then_restored": true,
+    "push_boundary_old_logic_failed_three_times_then_fixed": true,
+    "push_boundary_reverse_test_failed_then_restored": true,
+    "fixed_q3_verified_fields": 17,
+    "original_cash_net_field_still_rejected": true,
+    "cash_difference_explained_as_fx_only_in_fixed_scope": true,
+    "minute_requests": 456,
+    "nonempty_requests": 180,
+    "empty_requests": 276,
+    "minute_records": 43200,
+    "cross_node_difference_keys": 33,
+    "official_day_endpoint_samples": 106,
+    "official_day_difference_samples": 35,
+    "official_day_missing_samples": [
+      [
+        "hz",
+        20261027
+      ],
+      [
+        "sh",
+        20261027
+      ]
+    ],
+    "synthetic_corruption_rejections": 4
+  },
+  "resolved": [
+    "Locally received partial push cannot satisfy the later same-id refresh request",
+    "Fixed Q3 cash difference explained by disclosed exchange-rate effect"
+  ],
+  "unresolved": [
+    "Actual 0547 passive push not independently observed",
+    "Continuous complete minute history, all-point correctness and retention TTL unverified",
+    "33 historical date/symbol samples differ across nodes",
+    "35 of 106 sampled sz000001 minute/day endpoint comparisons differ",
+    "Original 44 daily differences and 11:30 minute price/volume differences preserved",
+    "Other securities/versions, universal minute date and volume qualification remain separate",
+    "Initial process-group cleanup assertion failed once; root cause not confirmed"
+  ],
+  "not_executed": [
+    "actual database services",
+    "fuzz",
+    "Linux/Windows",
+    "remote CI",
+    "production deployment",
+    "long-term load"
+  ],
+  "original_worktree_preserved": {
+    "docs/testing/VALIDATION.md": "2ae8b43095953f75b48231daff1cd9ebbdec8707e965e8718d5004158b116bbd",
+    "scripts/validation/verify_database_recovery.py": "78cd23ea98eb8c7eb12d90baf00e9f81cb511936b3fecb764b78ba9a4e9e1ff7"
+  },
+  "historical_tracked_evidence_diff": "empty",
+  "first_stage_frozen_files_preserved": 642,
+  "scope": "Engineering and fixed-source evidence only; patch reconstruction is recorded in delivery.json"
+}

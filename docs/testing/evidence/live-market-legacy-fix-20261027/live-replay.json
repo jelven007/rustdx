@@ -1,0 +1,822 @@
+{
+  "schema": 1,
+  "checked_utc": "2026-10-27T09:35:52.489149+00:00",
+  "updates": [
+    {
+      "endpoint": "115.238.56.198:7709",
+      "frame_checks": 5,
+      "update_calls": 4,
+      "same_connection_and_generation": true,
+      "origin": "requested_refresh",
+      "market_changes_observed": true,
+      "changes": [
+        {
+          "index": 0,
+          "returned_rows": 3,
+          "market_changes": []
+        },
+        {
+          "index": 1,
+          "returned_rows": 2,
+          "market_changes": [
+            {
+              "market": 0,
+              "code": "000001",
+              "previous_cursor": 145745,
+              "cursor": 145754
+            },
+            {
+              "market": 1,
+              "code": "510300",
+              "previous_cursor": 145750,
+              "cursor": 145753
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "returned_rows": 2,
+          "market_changes": [
+            {
+              "market": 0,
+              "code": "159915",
+              "previous_cursor": 145745,
+              "cursor": 145754
+            },
+            {
+              "market": 1,
+              "code": "510300",
+              "previous_cursor": 145753,
+              "cursor": 145756
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "returned_rows": 1,
+          "market_changes": [
+            {
+              "market": 1,
+              "code": "510300",
+              "previous_cursor": 145756,
+              "cursor": 145759
+            }
+          ]
+        }
+      ],
+      "started_utc": "2026-10-27T06:57:52.484670Z",
+      "finished_utc": "2026-10-27T06:57:59.932092Z",
+      "passive_push_verified": false
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "frame_checks": 5,
+      "update_calls": 4,
+      "same_connection_and_generation": true,
+      "origin": "requested_refresh",
+      "market_changes_observed": true,
+      "changes": [
+        {
+          "index": 0,
+          "returned_rows": 3,
+          "market_changes": []
+        },
+        {
+          "index": 1,
+          "returned_rows": 2,
+          "market_changes": [
+            {
+              "market": 0,
+              "code": "000001",
+              "previous_cursor": 145745,
+              "cursor": 145754
+            },
+            {
+              "market": 1,
+              "code": "510300",
+              "previous_cursor": 145750,
+              "cursor": 145753
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "returned_rows": 2,
+          "market_changes": [
+            {
+              "market": 0,
+              "code": "159915",
+              "previous_cursor": 145745,
+              "cursor": 145754
+            },
+            {
+              "market": 1,
+              "code": "510300",
+              "previous_cursor": 145753,
+              "cursor": 145756
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "returned_rows": 1,
+          "market_changes": [
+            {
+              "market": 1,
+              "code": "510300",
+              "previous_cursor": 145756,
+              "cursor": 145759
+            }
+          ]
+        }
+      ],
+      "started_utc": "2026-10-27T06:57:52.461391Z",
+      "finished_utc": "2026-10-27T06:57:59.942477Z",
+      "passive_push_verified": false
+    }
+  ],
+  "windows": [
+    {
+      "endpoint": "115.238.56.198:7709",
+      "probes": 33,
+      "wire_replay": "passed",
+      "results": [
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260105-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260105
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260105-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260105
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260105-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260105
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260401-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260401
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260401-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260401
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260401-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260401
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260506-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260506
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260506-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260506
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260506-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260506
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260601-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260601
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260601-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260601
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260601-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260601
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260701-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260701
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260701-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260701
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260701-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260701
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260803-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260803
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260803-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260803
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260803-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260803
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260810-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260810
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260810-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260810
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260810-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260810
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260814-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260814
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260814-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260814
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260814-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260814
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260817-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260817
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260817-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260817
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260817-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260817
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260901-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260901
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260901-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260901
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260901-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260901
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20261026-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20261026
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20261026-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20261026
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20261026-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20261026
+        }
+      ],
+      "independent_day_open_close_checks": [
+        {
+          "requested_date": 20260105,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260401,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260506,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260601,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260701,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260803,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260810,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260814,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260817,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260901,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20261026,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        }
+      ],
+      "actual_trading_dates_qualified": false,
+      "retention_window_guaranteed": false
+    },
+    {
+      "endpoint": "180.153.18.170:7709",
+      "probes": 33,
+      "wire_replay": "passed",
+      "results": [
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260105-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260105
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260105-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260105
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260105-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260105
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260401-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260401
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260401-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260401
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260401-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260401
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260506-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260506
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260506-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260506
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260506-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260506
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260601-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260601
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260601-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260601
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260601-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260601
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260701-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260701
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260701-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260701
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260701-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260701
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260803-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260803
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260803-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260803
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260803-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260803
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260810-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260810
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260810-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260810
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260810-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260810
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260814-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260814
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260814-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260814
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260814-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260814
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260817-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260817
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260817-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260817
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260817-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260817
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20260901-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260901
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20260901-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20260901
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20260901-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20260901
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "000001",
+          "file": "recent-20261026-0-000001.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20261026
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "159915",
+          "file": "recent-20261026-0-159915.json",
+          "market": 0,
+          "points": 240,
+          "requested_date": 20261026
+        },
+        {
+          "actual_date_qualified": false,
+          "code": "510300",
+          "file": "recent-20261026-1-510300.json",
+          "market": 1,
+          "points": 240,
+          "requested_date": 20261026
+        }
+      ],
+      "independent_day_open_close_checks": [
+        {
+          "requested_date": 20260105,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260401,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260506,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260601,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260701,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260803,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260810,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260814,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260817,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20260901,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        },
+        {
+          "requested_date": 20261026,
+          "reference": "official-current/sz000001.day",
+          "open_matches": true,
+          "close_matches": true
+        }
+      ],
+      "actual_trading_dates_qualified": false,
+      "retention_window_guaranteed": false
+    }
+  ]
+}

@@ -149,6 +149,35 @@ pub struct MinutePoint {
     pub price_raw: i64,
     pub average_raw: i64,
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub enum MinuteReferencePosition {
+    SessionOpen,
+    MorningClose,
+    AfternoonOpen,
+    CapturedTail,
+    Interior,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct MinuteReferenceDifference {
+    pub index: u16,
+    pub synthetic_label: String,
+    pub position: MinuteReferencePosition,
+    pub tcp_price_raw: i64,
+    pub reference_price_raw: i64,
+    pub tcp_cumulative_volume_raw: i64,
+    pub reference_cumulative_volume_raw: Option<i64>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct MinuteReferenceComparison {
+    pub all_prices_match: bool,
+    /// Raw comparison only; this never establishes either provider's unit.
+    pub all_raw_cumulative_volumes_match: Option<bool>,
+    pub differences: Vec<MinuteReferenceDifference>,
+}
+
 #[derive(Debug, Clone)]
 pub struct MinuteSeries {
     pub request: RecentMinutesRequest,
@@ -237,6 +266,77 @@ impl MinuteSeries {
     /// Offline decoding cannot reconstruct this acquisition evidence.
     pub fn wire_request(&self) -> Option<&[u8]> {
         self.wire_request.as_deref()
+    }
+
+    /// Diagnose a complete independently dated reference without qualifying the
+    /// date, time labels, or volume units. Optional volume controls must be raw
+    /// cumulative values aligned to the same reference price points. The first
+    /// TCP point includes earlier session volume; no artificial 09:30 is added.
+    pub fn compare_reference(
+        &self,
+        reference: &MinuteDateReference,
+        cumulative_volume_raw: Option<&[i64]>,
+    ) -> io::Result<MinuteReferenceComparison> {
+        if reference.symbol != self.request.symbol
+            || reference.trading_date != self.request.requested_date
+            || reference.scale != self.scale
+            || reference.controls.len() != self.page.records.len()
+            || self.page.source.opcode != RECENT_MINUTES_COMMAND
+            || cumulative_volume_raw.is_some_and(|values| {
+                values.len() != reference.controls.len()
+                    || values.iter().any(|value| *value < 0)
+                    || values.windows(2).any(|pair| pair[0] > pair[1])
+            })
+        {
+            return Err(invalid("分时参照范围或完整原始累计量不一致"));
+        }
+        let mut decoded = decode_with_scale(&self.request, &self.page.raw_payload, self.scale)?;
+        decoded.wire_request = self.wire_request.clone();
+        if self.content()? != decoded.content()? {
+            return Err(invalid("分时公开字段与原始正文不一致"));
+        }
+        let mut result = MinuteReferenceComparison {
+            all_prices_match: true,
+            all_raw_cumulative_volumes_match: cumulative_volume_raw.map(|_| true),
+            differences: Vec::new(),
+        };
+        let mut cumulative = 0_i64;
+        for (index, (control, point)) in reference
+            .controls
+            .iter()
+            .zip(&self.page.records)
+            .enumerate()
+        {
+            cumulative = add(cumulative, point.volume_raw)?;
+            let reference_volume = cumulative_volume_raw.map(|values| values[index]);
+            let price_matches =
+                control.index == point.index && control.price_raw == point.price_raw;
+            let volume_matches = reference_volume.is_none_or(|value| value == cumulative);
+            result.all_prices_match &= price_matches;
+            if let Some(matches) = &mut result.all_raw_cumulative_volumes_match {
+                *matches &= volume_matches;
+            }
+            if !price_matches || !volume_matches {
+                result.differences.push(MinuteReferenceDifference {
+                    index: point.index,
+                    synthetic_label: point.time_label.clone(),
+                    position: match index {
+                        0 => MinuteReferencePosition::SessionOpen,
+                        119 => MinuteReferencePosition::MorningClose,
+                        120 => MinuteReferencePosition::AfternoonOpen,
+                        _ if index + 1 == self.page.records.len() => {
+                            MinuteReferencePosition::CapturedTail
+                        }
+                        _ => MinuteReferencePosition::Interior,
+                    },
+                    tcp_price_raw: point.price_raw,
+                    reference_price_raw: control.price_raw,
+                    tcp_cumulative_volume_raw: cumulative,
+                    reference_cumulative_volume_raw: reference_volume,
+                });
+            }
+        }
+        Ok(result)
     }
 
     /// Match all price points against an independently dated reference, then
@@ -473,7 +573,7 @@ mod date_tests {
             .with_date_reference(reference(&series))
             .unwrap();
         assert_eq!(qualified.require_trading_date().unwrap(), 20261022);
-        for fault in 0..13 {
+        for fault in 0..19 {
             let mut changed = qualified.clone();
             match fault {
                 0 => changed.request = RecentMinutesRequest::new(0, "000002", 20261022).unwrap(),
@@ -488,7 +588,21 @@ mod date_tests {
                 9 => changed.page.source.endpoint = Some("127.0.0.2:7709".parse().unwrap()),
                 10 => changed.page.source.metadata_generation = Some(2),
                 11 => changed.page.source.connection_id = Some(2),
-                _ => changed.page.raw_payload = [0_u8].as_slice().into(),
+                12 => changed.page.raw_payload = [0_u8].as_slice().into(),
+                13 => changed.page.source.opcode = super::super::DELISTED_BARS_COMMAND,
+                14 => changed.page.source.fetched_at = None,
+                15 => changed.wire_request = Some(changed.request.encode(8).unwrap().into()),
+                16 => {
+                    changed.page.records.pop();
+                }
+                17 => changed.page.records[0].average_raw += 1,
+                _ => {
+                    let mut payload = changed.page.raw_payload.to_vec();
+                    // Another syntactically valid response still loses the old binding.
+                    *payload.last_mut().unwrap() += 1;
+                    assert!(decode_with_scale(&changed.request, &payload, changed.scale).is_ok());
+                    changed.page.raw_payload = payload.into();
+                }
             }
             assert!(changed.require_trading_date().is_err(), "fault={fault}");
             assert!(changed.date_reference().is_none());

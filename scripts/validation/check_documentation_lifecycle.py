@@ -4,6 +4,7 @@ import argparse
 from datetime import date, datetime, timezone
 import json
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[2]
 FIELDS = {"path", "quadrant", "owner", "audience", "source_of_truth", "verified_on",
@@ -58,9 +59,33 @@ def check(root, today=None):
                 name = path.relative_to(root).as_posix()
                 if name not in registered:
                     issues.append(f"{name}: unregistered critical document")
+    anchor_ids = set()
+    for anchor in policy.get("source_anchors", []):
+        identifier = anchor["id"]
+        try:
+            if not identifier or identifier in anchor_ids or not anchor["documents"]:
+                raise ValueError("invalid anchor identity or empty documents")
+            anchor_ids.add(identifier)
+            values = []
+            for name, pattern in [(anchor["source"], anchor["source_pattern"]),
+                                  *[(doc["path"], doc["pattern"]) for doc in anchor["documents"]]]:
+                relative = Path(name)
+                path = root / relative
+                if relative.is_absolute() or ".." in relative.parts or path.is_symlink():
+                    raise ValueError("unsafe source anchor path")
+                path.resolve().relative_to(root)
+                matches = list(re.finditer(pattern, path.read_text()))
+                if len(matches) != 1 or len(matches[0].groups()) != 1:
+                    raise ValueError(f"{name}: source anchor must match one value")
+                values.append(matches[0].group(1))
+            if len(set(values)) != 1:
+                raise ValueError(f"source/document values differ: {values}")
+        except (ValueError, OSError, re.error) as error:
+            issues.append(f"{identifier}: {error}")
     return dict(schema_version=1, status="failed" if issues else "passed",
                 checked_on=current.isoformat(), documents=len(registered), issues=issues,
-                scope="Static lifecycle and cadence; source-change semantics require PR review.")
+                source_anchors=len(anchor_ids),
+                scope="Lifecycle, cadence and registered source values; other source semantics require PR review.")
 
 
 def main():

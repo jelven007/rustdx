@@ -1,0 +1,8 @@
+[package]
+name="rustdx-consumer-legacy-calendar"
+version="0.0.0"
+edition="2024"
+[workspace]
+[dependencies]
+chrono="0.4"
+rustdx_complete={package="jelven-rustdx-complete",path="/private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core"}

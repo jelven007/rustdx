@@ -1,0 +1,11 @@
+[1m[32m   Compiling[0m cpufeatures v0.2.17
+[1m[32m   Compiling[0m sha2 v0.10.9
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core)
+[0m[1m[38;5;9merror[E0432][0m[0m[1m: unresolved import `rustdx_complete::tcp::stock::DayFileReference`[0m
+[0m [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/daily_reference.rs:2:23[0m
+[0m  [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m2[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    DailyBarsRequest, DayFileReference, decode_daily_bars,[0m
+[0m  [0m[0m[1m[38;5;12m|[0m[0m                       [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mno `DayFileReference` in `tcp::stock`[0m
+
+[0m[1mFor more information about this error, try `rustc --explain E0432`.[0m
+[1m[31merror[0m[1m:[0m could not compile `jelven-rustdx-complete` (test "daily_reference") due to 1 previous error

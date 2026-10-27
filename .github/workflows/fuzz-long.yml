@@ -1,0 +1,55 @@
+name: Long parser fuzz
+
+on:
+  schedule:
+    - cron: "23 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [checked_parsers, modern_parsers]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@683b588c487a69d01f6c6ddf40f036ff682cc2c8
+        with:
+          toolchain: nightly
+      - uses: swatinem/rust-cache@e9d7b9f1e587218970671bac74e5511ed9506e6a # v2
+        with:
+          workspaces: tools/fuzz
+      - run: cargo metadata --locked --format-version 1 > /dev/null
+        working-directory: tools/fuzz
+      - run: cargo install cargo-fuzz --locked
+      - run: python3 scripts/validation/build_fuzz_seeds.py --output-directory tools/fuzz/corpus
+      - name: Save toolchain and run identity
+        run: |
+          rustc -Vv > tools/fuzz/toolchain.txt
+          git rev-parse HEAD > tools/fuzz/revision.txt
+          printf '%s\n' '${{ github.run_id }}' > tools/fuzz/random-seed.txt
+      - name: Fuzz for ten minutes with retained inputs
+        working-directory: tools/fuzz
+        run: |
+          set -o pipefail
+          cargo fuzz run ${{ matrix.target }} --fuzz-dir . -- \
+            -seed=${{ github.run_id }} -max_total_time=600 -max_len=65536 \
+            2>&1 | tee fuzz.log
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: fuzz-${{ matrix.target }}-${{ github.run_id }}
+          path: |
+            tools/fuzz/corpus/
+            tools/fuzz/artifacts/
+            tools/fuzz/fuzz.log
+            tools/fuzz/toolchain.txt
+            tools/fuzz/revision.txt
+            tools/fuzz/random-seed.txt

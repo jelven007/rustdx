@@ -24,7 +24,7 @@ use crate::{
     storage,
 };
 
-mod capacity;
+pub(crate) mod capacity;
 use capacity::{BATCH, Capacity, IO_LIMIT, RESPONSE_LIMIT};
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]

@@ -399,6 +399,59 @@ fn fixture(base: &Path, cli: &Path) -> Config {
     }
 }
 
+#[test]
+fn business_metrics_distinguish_missing_publication_facts_and_holiday() {
+    let temp = TempDir::new().unwrap();
+    let config = fixture(temp.path(), Path::new("/not-used"));
+    let now = chrono::DateTime::parse_from_rfc3339("2026-07-07T16:00:00+08:00").unwrap();
+    let text = pipeline::business_metrics(&config, Some(now), Some(1024), now).unwrap();
+    assert!(text.contains("rustdx_business_required 1\n"));
+    assert!(text.contains("rustdx_business_missing_keys 2\n"));
+    assert!(text.contains("rustdx_business_job_released 0\n"));
+    assert!(text.contains("rustdx_business_facts_available 1\n"));
+    assert!(text.contains("rustdx_business_fact_remaining_days{kind=\"history\"} 0\n"));
+    let history = fs::read_to_string(&config.security_history).unwrap();
+    fs::write(
+        &config.security_history,
+        history.replace("\"Trading\"", "\"Suspended\""),
+    )
+    .unwrap();
+    let text = pipeline::business_metrics(&config, Some(now), Some(1024), now).unwrap();
+    assert!(text.contains("rustdx_business_expected_keys 2\n"));
+    assert!(text.contains("rustdx_business_missing_keys 0\n"));
+    assert!(text.contains("rustdx_business_missing_partitions 2\n"));
+    fs::write(
+        &config.security_history,
+        history.replace("\"Trading\"", "\"Unknown\""),
+    )
+    .unwrap();
+    let text = pipeline::business_metrics(&config, Some(now), Some(1024), now).unwrap();
+    assert!(text.contains("rustdx_business_facts_available 0\n"));
+    fs::write(&config.security_history, &history).unwrap();
+    fs::create_dir_all(config.root.join("consumer-audit")).unwrap();
+    fs::write(config.root.join("consumer-audit/raw"), [0_u8; 2048]).unwrap();
+    let text = pipeline::business_metrics(&config, None, Some(1024), now).unwrap();
+    assert!(text.contains("rustdx_consumer_audit_bytes 2048\n"));
+    assert!(text.contains("rustdx_consumer_audit_limit_bytes 1024\n"));
+    let mut holiday = config.clone();
+    holiday.from = "2026-07-06".parse().unwrap();
+    holiday.through = holiday.from;
+    fs::write(
+        &holiday.calendar,
+        serde_json::to_vec(&json!({"version":"synthetic-calendar","source":"unit-test",
+            "start":"2026-07-06","end":"2026-07-07","holidays":["2026-07-06"]}))
+        .unwrap(),
+    )
+    .unwrap();
+    let text = pipeline::business_metrics(&holiday, None, None, now).unwrap();
+    assert!(text.contains("rustdx_business_required 0\n"));
+    assert!(text.contains("rustdx_business_missing_keys 0\n"));
+    fs::write(&holiday.security_history, b"corrupted").unwrap();
+    let text = pipeline::business_metrics(&holiday, None, None, now).unwrap();
+    assert!(text.contains("rustdx_business_facts_available 0\n"));
+    assert!(text.contains("rustdx_business_deadline_configured 0\n"));
+}
+
 fn write_day(source: &Path, dates: &[u32], close: u32) {
     let mut bytes = Vec::new();
     for date in dates {
@@ -520,6 +573,51 @@ fn offline_plan_reports_expected_keys_missing_inputs_and_archive_limited_paralle
             .to_string()
             .contains("Unknown")
     );
+}
+
+#[test]
+fn offline_plan_forecasts_all_database_targets_and_splits_only_between_complete_dates() {
+    use rustdx_runner::config::DatabaseTarget;
+    let temp = TempDir::new().unwrap();
+    let cli = temp.path().join("not-executable");
+    fs::write(&cli, b"SYNTHETIC; must not execute").unwrap();
+    let mut config = fixture(temp.path(), &cli);
+    config.database_targets = ["first", "second"]
+        .into_iter()
+        .map(|id| DatabaseTarget::Clickhouse {
+            id: id.into(),
+            url: "http://127.0.0.1:9".into(),
+            table: "test.bars".into(),
+            user_env: "RUSTDX_PLAN_MISSING_USER".into(),
+            password_env: "RUSTDX_PLAN_MISSING_PASSWORD".into(),
+        })
+        .collect();
+    let plan = pipeline::preflight_plan(&config, 8, 10).unwrap();
+    let database = &plan["database"];
+    assert_eq!(database["per_target"]["rows"], 2);
+    assert_eq!(database["per_target"]["operations"], 11);
+    assert_eq!(database["targets"].as_array().unwrap().len(), 2);
+    let per_target = database["per_target"]["evidence_bytes"].as_u64().unwrap();
+    let total = database["all_target_evidence_bytes"].as_u64().unwrap();
+    assert_eq!(total, per_target * 2);
+    assert_eq!(plan["history_windows"].as_array().unwrap().len(), 1);
+
+    config.max_workspace_bytes = total - 1;
+    let limited = pipeline::preflight_plan(&config, 8, 10).unwrap();
+    assert_eq!(limited["can_start"], false);
+    assert_eq!(limited["database"]["budget_fits"], false);
+    let windows = limited["history_windows"].as_array().unwrap();
+    assert_eq!(windows.len(), 2);
+    assert_eq!(windows[0]["from"], "2026-07-06");
+    assert_eq!(windows[0]["through"], "2026-07-06");
+    assert_eq!(windows[1]["from"], "2026-07-07");
+    assert_eq!(windows[1]["through"], "2026-07-07");
+    for window in windows {
+        assert_eq!(window["expected_keys"], 1);
+        assert_eq!(window["trading_rows"], 1);
+        assert_eq!(window["database_budget_fits"], true);
+    }
+    assert!(!config.root.exists());
 }
 
 #[test]

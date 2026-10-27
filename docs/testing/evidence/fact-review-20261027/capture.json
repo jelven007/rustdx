@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "captured_on": "2026-10-27",
+  "files": [
+    {
+      "path": "sse-rule-2026.html",
+      "source": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/c_20260424_10816482.shtml",
+      "bytes": 33615,
+      "sha256": "758840542d49dd5d448a4ff8f42e9210085afef7b5e5c01d2f56adfc4c8151c4",
+      "retrieval": "HTTPS curl",
+      "qualification": "original_bytes_obtained_pending_scope_review"
+    },
+    {
+      "path": "szse-rule-2026.html",
+      "source": "https://www.szse.cn/lawrules/rule/trade/current/t20260424_620190.html",
+      "bytes": 19374,
+      "sha256": "08d05a9d3f9c7dac31e8ac33712bac26b3995585718031e99a953e9128eec2d2",
+      "retrieval": "HTTPS curl",
+      "qualification": "original_bytes_obtained_pending_scope_review"
+    },
+    {
+      "path": "szse-rule-2026.pdf",
+      "source": "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713155663.pdf",
+      "bytes": 282084,
+      "sha256": "9b66f8b0db70f84a25ef1ccb4ee2351001724e408117552d75f6d8993483c586",
+      "retrieval": "HTTPS curl",
+      "qualification": "original_bytes_obtained_pending_scope_review"
+    },
+    {
+      "path": "bse-rule-2026.docx",
+      "source": "https://www.bse.cn/uploads/6/file/public/202604/20260424170528_52kqyhc7p9.docx",
+      "bytes": 82385,
+      "sha256": "56145494879dbb8192e9f6e2b5c91cbad102364de83b799c14b263f9a7c50cd2",
+      "retrieval": "HTTPS curl",
+      "qualification": "original_bytes_obtained_pending_scope_review"
+    },
+    {
+      "path": "sse-rule-2026.docx",
+      "source": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/e3a3b98e36894edca77841837936e006.docx",
+      "bytes": 65302,
+      "sha256": "fc922c433438b2636cb631eab25cca405209712acbb6aaded768c45456ff8888",
+      "retrieval": "HTTPS curl",
+      "qualification": "original_bytes_obtained_pending_scope_review"
+    },
+    {
+      "path": "sse-deferred-2026.docx",
+      "source": "https://www.sse.com.cn/lawandrules/sselawsrules2025/stocks/exchange/c/10816482/files/c4510656662e48dc9d8d0deb8cc864b3.docx",
+      "bytes": 16476,
+      "sha256": "f4a0d0976a01e3e95f82460170900993824b70d91183e42d09e13ba10a9958c5",
+      "retrieval": "HTTPS curl",
+      "qualification": "original_bytes_obtained_pending_scope_review"
+    },
+    {
+      "path": "szse-explanation-2026.pdf",
+      "source": "https://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713346617.pdf",
+      "bytes": 141508,
+      "sha256": "3a309bf5b4f7b2ee170b897084397568c7a1db939b398f4ab8999587501c727a",
+      "retrieval": "HTTPS curl",
+      "qualification": "original_bytes_obtained_pending_scope_review"
+    }
+  ],
+  "bse_html": "curl HTTP403; WebFetch retrieved transformed body; original docx obtained separately",
+  "rule_cutoff_extended": false,
+  "derivatives": [
+    {
+      "path": "bse-rule-2026-derived.txt",
+      "bytes": 38004,
+      "sha256": "d69447446ef7125aa044cfeb66a7b869a4e36ad5ae8344d3e7f7e2deb79d2d4b",
+      "original": false
+    },
+    {
+      "path": "sse-deferred-2026-derived.txt",
+      "bytes": 2525,
+      "sha256": "12a52db69d6393d4b94f6697dd572de90e9de2bea9ae220fe2ddf2543d12fb15",
+      "original": false
+    },
+    {
+      "path": "sse-rule-2026-derived.txt",
+      "bytes": 56490,
+      "sha256": "7c73fa3dcd3034457b9afb9700b5d170231e61ba823e30756e1e0e1f9fdfd52f",
+      "original": false
+    },
+    {
+      "path": "szse-explanation-2026-derived.txt",
+      "bytes": 3397,
+      "sha256": "7670c224145acff2435b67e078c346dab4afd3a8a76f39ff2c35a6337eea8ea0",
+      "original": false
+    },
+    {
+      "path": "szse-rule-2026-derived.txt",
+      "bytes": 51750,
+      "sha256": "ffbdec63ccb18db749c4c2dd0d5ba93ed4b3c509208deb8e1e38cae7869f9a7c",
+      "original": false
+    }
+  ],
+  "extraction": {
+    "python": "3.9.6",
+    "pypdf": "6.21.2",
+    "docx": "stdlib zipfile/XML; original docx retained"
+  }
+}

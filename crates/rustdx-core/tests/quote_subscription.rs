@@ -50,6 +50,186 @@ fn subscribe(config: &TcpConfig, options: SubscriptionOptions) -> QuoteSubscript
     QuoteSubscription::with_config(config, &[(0, "000001")], Arc::new(metadata()), options).unwrap()
 }
 #[test]
+fn partial_push_received_before_refresh_cannot_satisfy_the_new_request() {
+    let _guard = SERIAL.lock().unwrap();
+    let (sent_tx, sent_rx) = mpsc::channel();
+    let (config, server) = setup(move |mut stream| {
+        let baseline = request(&mut stream);
+        stream
+            .write_all(&response(&baseline, &refresh_payload(10)))
+            .unwrap();
+        // An unsolicited message id can coincide with the next request id.
+        // Its first bytes were received before that request was sent.
+        let mut push = response(&baseline, &refresh_payload(11));
+        push[5..9].copy_from_slice(&2u32.to_le_bytes());
+        stream.write_all(&push[..7]).unwrap();
+        sent_tx.send(()).unwrap();
+        let refresh = request(&mut stream);
+        assert_eq!(&refresh[1..5], &2u32.to_le_bytes());
+        stream.write_all(&push[7..]).unwrap();
+        stream
+            .write_all(&response(&refresh, &refresh_payload(12)))
+            .unwrap();
+        let mut byte = [0];
+        assert_eq!(stream.read(&mut byte).unwrap(), 0);
+    });
+    let mut sub = subscribe(&config, SubscriptionOptions::default());
+    sub.refresh().unwrap();
+    sent_rx.recv().unwrap();
+    assert!(sub.poll_push(Duration::from_millis(10)).unwrap().is_none());
+    let refresh = sub.refresh().unwrap();
+    let push = sub.poll_push(Duration::from_secs(1)).unwrap().unwrap();
+    let state = sub.synchronized_snapshot().unwrap();
+    sub.close();
+    server.join().unwrap();
+    assert_eq!(refresh.page.records[0].update_cursor, Some(12));
+    assert_eq!(push.refresh.page.records[0].update_cursor, Some(11));
+    assert_eq!(push.message_id, 2);
+    assert_eq!(state.states[0].cursor, 12);
+}
+
+#[test]
+fn idle_update_refreshes_a_node_without_passive_push() {
+    let _guard = SERIAL.lock().unwrap();
+    let (config, server) = setup(move |mut stream| {
+        let baseline = request(&mut stream);
+        stream
+            .write_all(&response(&baseline, &refresh_payload(10)))
+            .unwrap();
+        let refresh = request(&mut stream);
+        assert_eq!(
+            u16::from_le_bytes(refresh[10..12].try_into().unwrap()),
+            0x0547
+        );
+        assert_eq!(u32::from_le_bytes(refresh[21..25].try_into().unwrap()), 10);
+        stream
+            .write_all(&response(&refresh, &refresh_payload(11)))
+            .unwrap();
+        let mut byte = [0];
+        assert_eq!(stream.read(&mut byte).unwrap(), 0);
+    });
+    let mut sub = subscribe(&config, SubscriptionOptions::default());
+    sub.refresh().unwrap();
+    let connection = sub.synchronized_snapshot().unwrap().connection_id;
+    let update = sub.poll_update(Duration::from_millis(10)).unwrap();
+    let QuoteUpdate::RequestedRefresh(refresh) = update else {
+        panic!("a requested response must not be labeled as passive push");
+    };
+    assert_eq!(refresh.page.records[0].update_cursor, Some(11));
+    let state = sub.synchronized_snapshot().unwrap();
+    assert_eq!(state.connection_id, connection);
+    assert_eq!(state.generation, 0);
+    assert_eq!(state.states[0].cursor, 11);
+    sub.close();
+    server.join().unwrap();
+}
+
+#[test]
+fn idle_update_returns_a_queued_push_without_sending_a_refresh() {
+    let _guard = SERIAL.lock().unwrap();
+    let (config, server) = setup(move |mut stream| {
+        let baseline = request(&mut stream);
+        let mut push = response(&baseline, &refresh_payload(10));
+        push[5..9].copy_from_slice(&99u32.to_le_bytes());
+        stream.write_all(&push).unwrap();
+        stream
+            .write_all(&response(&baseline, &refresh_payload(11)))
+            .unwrap();
+        let mut byte = [0];
+        assert_eq!(stream.read(&mut byte).unwrap(), 0);
+    });
+    let mut sub = subscribe(&config, SubscriptionOptions::default());
+    sub.refresh().unwrap();
+    let update = sub.poll_update(Duration::from_millis(10)).unwrap();
+    let QuoteUpdate::PassivePush(push) = update else {
+        panic!("queued pushes must preserve their source");
+    };
+    assert_eq!(push.message_id, 99);
+    assert_eq!(sub.synchronized_snapshot().unwrap().states[0].cursor, 11);
+    sub.close();
+    server.join().unwrap();
+}
+
+#[test]
+fn update_initial_baseline_and_zero_wait_preserve_the_session_contract() {
+    let _guard = SERIAL.lock().unwrap();
+    let (config, server) = setup(move |mut stream| {
+        let req = request(&mut stream);
+        stream
+            .write_all(&response(&req, &refresh_payload(10)))
+            .unwrap();
+        let mut byte = [0];
+        assert_eq!(stream.read(&mut byte).unwrap(), 0);
+    });
+    let mut sub = subscribe(&config, SubscriptionOptions::default());
+    assert_eq!(
+        sub.poll_update(Duration::ZERO).unwrap_err().kind(),
+        io::ErrorKind::InvalidInput
+    );
+    assert_eq!(sub.snapshot().status, DepthSyncStatus::AwaitingBaseline);
+    assert!(matches!(
+        sub.poll_update(Duration::from_secs(1)).unwrap(),
+        QuoteUpdate::RequestedRefresh(_)
+    ));
+    sub.synchronized_snapshot().unwrap();
+    sub.close();
+    server.join().unwrap();
+}
+
+#[test]
+fn update_retains_partial_push_during_requested_refresh_and_propagates_eof() {
+    let _guard = SERIAL.lock().unwrap();
+    let (sent_tx, sent_rx) = mpsc::channel();
+    let (config, server) = setup(move |mut stream| {
+        let baseline = request(&mut stream);
+        stream
+            .write_all(&response(&baseline, &refresh_payload(10)))
+            .unwrap();
+        let mut push = response(&baseline, &refresh_payload(11));
+        push[5..9].copy_from_slice(&99u32.to_le_bytes());
+        stream.write_all(&push[..7]).unwrap();
+        sent_tx.send(()).unwrap();
+        let refresh = request(&mut stream);
+        stream.write_all(&push[7..]).unwrap();
+        stream
+            .write_all(&response(&refresh, &refresh_payload(12)))
+            .unwrap();
+        let mut byte = [0];
+        assert_eq!(stream.read(&mut byte).unwrap(), 0);
+    });
+    let mut sub = subscribe(&config, SubscriptionOptions::default());
+    sub.refresh().unwrap();
+    sent_rx.recv().unwrap();
+    assert!(matches!(
+        sub.poll_update(Duration::from_millis(10)).unwrap(),
+        QuoteUpdate::RequestedRefresh(_)
+    ));
+    assert_eq!(sub.synchronized_snapshot().unwrap().states[0].cursor, 12);
+    assert!(matches!(
+        sub.poll_update(Duration::from_millis(10)).unwrap(),
+        QuoteUpdate::PassivePush(_)
+    ));
+    assert_eq!(sub.synchronized_snapshot().unwrap().states[0].cursor, 12);
+    sub.close();
+    server.join().unwrap();
+
+    let (config, server) = setup(move |mut stream| {
+        let req = request(&mut stream);
+        stream
+            .write_all(&response(&req, &refresh_payload(10)))
+            .unwrap();
+    });
+    let mut sub = subscribe(&config, SubscriptionOptions::default());
+    sub.refresh().unwrap();
+    server.join().unwrap();
+    assert_eq!(
+        sub.poll_update(Duration::from_secs(1)).unwrap_err().kind(),
+        io::ErrorKind::UnexpectedEof
+    );
+    assert_eq!(sub.snapshot().status, DepthSyncStatus::Invalid);
+}
+
+#[test]
 fn poll_preserves_partial_header_and_body_and_close_releases_permit() {
     let _guard = SERIAL.lock().unwrap();
     let baseline_active = network_stats().active;
@@ -196,6 +376,30 @@ fn endpoint_revocation_and_operation_cancellation_close_the_subscription() {
         server.join().unwrap();
     }
 }
+#[test]
+fn update_revocation_and_cancellation_release_the_connection() {
+    let _guard = SERIAL.lock().unwrap();
+    for revoke in [true, false] {
+        let (config, server) = setup(move |mut stream| {
+            let mut byte = [0];
+            assert_eq!(stream.read(&mut byte).unwrap(), 0);
+        });
+        let before = network_stats().active;
+        let mut sub = subscribe(&config, SubscriptionOptions::default());
+        let operation = OperationContext::new(Duration::from_secs(1), None).unwrap();
+        let _operation_guard = operation.enter();
+        if revoke {
+            config.ip_pool.as_ref().unwrap().remove(config.ip.unwrap());
+        } else {
+            operation.cancel();
+        }
+        assert!(sub.poll_update(Duration::from_millis(10)).is_err());
+        assert_eq!(network_stats().active, before);
+        assert_eq!(sub.snapshot().status, DepthSyncStatus::Invalid);
+        server.join().unwrap();
+    }
+}
+
 #[test]
 fn checked_query_rejects_wrong_message_identity() {
     let _guard = SERIAL.lock().unwrap();

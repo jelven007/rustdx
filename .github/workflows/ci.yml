@@ -98,6 +98,15 @@ jobs:
       - name: Test
         run: cargo test --workspace ${{ matrix.package_args }} --all-features --locked --no-fail-fast
 
+      - name: Repeated process group cancellation regression (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          for iteration in $(seq 1 100); do
+            cargo test -p rustdx-runner --lib --locked \
+              database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants \
+              -- --exact --nocapture || exit $?
+          done
+
       - name: Runner CLI and local fault regressions (Unix)
         if: runner.os != 'Windows'
         env:
@@ -166,6 +175,8 @@ jobs:
         run: cargo test -p jelven-rustdx-complete --lib --locked
       - name: Offline evidence, retention and benchmark comparison regressions
         run: python3 -m unittest discover -s scripts/validation/tests -v
+      - name: Record external tests that were not executed
+        run: python3 scripts/validation/run_online_tests.py --output "$RUNNER_TEMP/online-inventory"
       - name: Standalone current and legacy signature consumers
         run: python3 scripts/release/check_consumers.py --output "$RUNNER_TEMP/source-consumers"
       - name: Actual package extraction and downstream consumption
@@ -178,6 +189,7 @@ jobs:
           name: contracts-${{ inputs.revision || github.sha }}
           path: |
             ${{ runner.temp }}/source-consumers/*.json
+            ${{ runner.temp }}/online-inventory/online-tests.json
             ${{ runner.temp }}/source-consumers/*.log
             ${{ runner.temp }}/package-preflight/preflight.json
             ${{ runner.temp }}/package-preflight/*.log
@@ -204,12 +216,21 @@ jobs:
         run: cargo metadata --locked --format-version 1 > /dev/null
         working-directory: tools/fuzz
       - run: cargo install cargo-fuzz --locked
+      - name: Build pinned real-frame and semantic-boundary seeds
+        run: python3 scripts/validation/build_fuzz_seeds.py --output-directory tools/fuzz/corpus
       - name: Checked parser smoke fuzzing
-        run: cargo fuzz run checked_parsers --fuzz-dir . -- -max_total_time=30 -max_len=4096
+        run: cargo fuzz run checked_parsers --fuzz-dir . -- -seed=20261027 -max_total_time=30 -max_len=65536
         working-directory: tools/fuzz
       - name: Modern command and refresh decoder smoke fuzzing
-        run: cargo fuzz run modern_parsers --fuzz-dir . -- -max_total_time=30 -max_len=65536
+        run: cargo fuzz run modern_parsers --fuzz-dir . -- -seed=20261027 -max_total_time=30 -max_len=65536
         working-directory: tools/fuzz
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: parser-fuzz-${{ inputs.revision || github.sha }}
+          path: |
+            tools/fuzz/corpus/
+            tools/fuzz/artifacts/
 
   performance:
     name: Same-host indicator regression

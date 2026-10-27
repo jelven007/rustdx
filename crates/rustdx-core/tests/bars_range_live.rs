@@ -12,12 +12,8 @@ fn date_of(dt: &rustdx_complete::tcp::helper::DateTime) -> u32 {
 }
 
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn bars_range_5m_ordered_deduped_in_window() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut client = Client::new()?;
     let bars = client.bars_range(0, "000001", 0, Some(20260801), Some(20260907))?;
     assert!(!bars.is_empty(), "5 分钟线窗口不应为空");
@@ -55,12 +51,8 @@ fn bars_range_5m_ordered_deduped_in_window() -> std::io::Result<()> {
 }
 
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn k_day_ascending_contract() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut client = Client::new()?;
     let bars = client.k(1, "600519", Some(20260601), Some(20260907))?;
     assert!(!bars.is_empty(), "日K窗口不应为空");
@@ -71,12 +63,8 @@ fn k_day_ascending_contract() -> std::io::Result<()> {
 }
 
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn bars_single_page_ascending() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut client = Client::new()?;
     let bars = client.bars(0, "000001", 0, 0, 100)?;
     assert!(!bars.is_empty());
@@ -88,12 +76,8 @@ fn bars_single_page_ascending() -> std::io::Result<()> {
 
 /// recheck_empty 开启：正常股结果与非开启一致（重试路径不被触发）。
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn recheck_empty_config_no_regression() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let config = rustdx_complete::tcp::TcpConfig {
         recheck_empty: true,
         retry_delay_ms: 200,
@@ -111,12 +95,8 @@ fn recheck_empty_config_no_regression() -> std::io::Result<()> {
 
 /// bars_batch（连接池并行路径）与 bars_range（单连接路径）单只结果逐根一致。
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn bars_batch_matches_single() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let stocks = [(1u16, "600519"), (0, "000001"), (1, "600000")];
     let mut client = Client::new()?;
     let batch = client.bars_batch(&stocks, 9, Some(20260601), Some(20260907), 3)?;
@@ -139,12 +119,8 @@ fn bars_batch_matches_single() -> std::io::Result<()> {
 
 /// `Client::index_bars_range` 指数日线区间契约，使用指数响应解析器。
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn index_bars_range_day_contract() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut client = Client::new()?;
     // 上证指数（market=1, code=000001）
     let bars = client.index_bars_range(1, "000001", 9, Some(20260801), Some(20260909))?;
