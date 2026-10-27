@@ -82,3 +82,11 @@ docs/testing/evidence/acceptance-stage6-20261024/**/collector.bin
 config/runtime/*.env
 !docs/testing/evidence/production-lifecycle-*/*.log
 !docs/testing/evidence/production-lifecycle-*/**/*.log
+
+# 2026-10-27实时遗留修复的有限回归、失败取证与独立消费日志。
+!docs/testing/evidence/live-market-legacy-fix-20261027/*.log
+!docs/testing/evidence/live-market-legacy-fix-20261027/consumers/*.log
+
+# 同日上游能力补证的有限原始检查与红绿反转日志。
+!docs/testing/evidence/upstream-capabilities-20261027/*.log
+!docs/testing/evidence/upstream-capabilities-20261027/consumers/*.log

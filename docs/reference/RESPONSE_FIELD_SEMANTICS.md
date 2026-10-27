@@ -1,12 +1,12 @@
 # 接口返回字段解析状态
 
 <!-- lifecycle:registry -->
-读者：应用集成/测试；责任：协议维护者。源码核验：2026-10-25；每90日及字段解释或资格证据变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：应用集成/测试；责任：协议维护者。源码核验：2026-10-27；每90日及字段解释或资格证据变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
-核对日期：2026-10-24。对应当前工作区源码的 **26个同码命令（2项会话、24项业务）**，关联需求 FR-03、FR-07、FR-13。当前已经实现结构解码、部分单位换算和业务派生；字段语义、日期、数量单位及来源覆盖仍按各自证据范围判断，不能把26项入口覆盖理解为所有返回字段已完成业务核验。
+核对日期：2026-10-27。对应当前工作区源码的 **26个同码命令（2项会话、24项业务）**，关联需求 FR-03、FR-07、FR-13。当前已经实现结构解码、部分单位换算和业务派生；字段语义、日期、数量单位及来源覆盖仍按各自证据范围判断，不能把26项入口覆盖理解为所有返回字段已完成业务核验。
 
-本页维护字段解析状态、候选解释及其验证边界；完整签名、字段类型和参数限制见[26命令接口手册](COMMAND_API.md)。跨接口消费规则统一维护在[外部应用调用约定](../development/APPLICATION_INTEGRATION.md)，实际回归与实盘范围见[当前验收矩阵](../testing/PRODUCTION_ACCEPTANCE.md)。本次只更新文档，不新增采样或提升已有证据资格。
+本页维护字段解析状态、候选解释及其验证边界；完整签名、字段类型和参数限制见[26命令接口手册](COMMAND_API.md)。跨接口消费规则统一维护在[外部应用调用约定](../development/APPLICATION_INTEGRATION.md)，实际回归与实盘范围见[当前验收矩阵](../testing/PRODUCTION_ACCEPTANCE.md)。2026-10-27新增修复与取证见[本轮报告](../archive/development/LIVE_MARKET_LEGACY_FIX_20261027.md)；历史冻结证据保持原资格。
 
 <a id="parsing-status"></a>
 ## 1. 状态定义与实际API
@@ -46,7 +46,7 @@
 | [0004](COMMAND_API.md#cmd-0004) | `HeartbeatAck`：`server_date_raw / server_date / reserved_raw / raw_payload` | 日期整数解码，合法日期转Option | 日期零值/非法值解释为None并保留raw；心跳日期不证明证券交易日期或正在交易 |
 | [000d](COMMAND_API.md#cmd-000d) | `Client`会话、连接身份 | 握手流程与响应身份检查已实现 | 未提供完整 `HandshakeInfo`业务模型，不输出已核实主站名称/产品/会话时段 |
 | [000f](COMMAND_API.md#cmd-000f) | `XdxrData`：身份、日期、category、四个复用槽 | 按类别解码；category=1有分红/送配解释 | 其他类别不得套分红单位；6/15等增强语义和逐槽raw模型仍有差距 |
-| [0010](COMMAND_API.md#cmd-0010) | `FinanceSnapshot / FinanceRaw`：31槽、日期、原编码、单位、资格及证据 | raw已解码；24个命名槽有候选单位；默认10字段有范围内独立证据 | 其余命名槽为候选，7槽Unknown；默认证据只适用于固定平安银行样本，详见第3节 |
+| [0010](COMMAND_API.md#cmd-0010) | `FinanceSnapshot / FinanceRaw`：31槽、日期、原编码、单位、资格及证据 | raw已解码；24个命名槽有候选单位；默认H1为10字段、Q3为17字段独立证据 | Q3现金净变动与公告冲突，拒绝候选换算；7槽Unknown，范围详见第3节 |
 | [02c5](COMMAND_API.md#cmd-02c5) | `BlockMetadata`：size、MD5及raw/来源 | 大小和MD5字符串已解码；verify_content检查完整长度/32hex/实际MD5，保留reserved_raw与尾部 | 单独metadata查询不代表验算；MD5一致性不证明文件业务权威性 |
 | [02cf](COMMAND_API.md#cmd-02cf) | `CompanyInfoDirectory`：栏目名、文件名、start/length及raw | 固定152字节目录、GBK文本、字节范围已解码 | 栏目名不构成结构化财报字段；市场2仅参数支持，网络范围未验收 |
 | [02d0](COMMAND_API.md#cmd-02d0) | `CompanyInfoTextChunk / CompanyInfoText`：raw字节、text、chunks、complete | 按目录范围读齐字节后GBK解码 | 是栏目文本；未自动抽取财务指标、报告期、公告事件或行业事实 |
@@ -54,11 +54,11 @@
 | [044e](COMMAND_API.md#cmd-044e) | `u16`证券目录条数 | 总数量已解码，用于044d范围检查 | 包括多类证券，不是A股数/上市公司数；不确认目录是交易所完整名单 |
 | [0452](COMMAND_API.md#cmd-0452) | `SpecialLimitRecord`：market_raw/code_number_raw/code、upper/lower_price及bits | 代码格式化和上下限f32已解码 | 仅主站特殊表，缺席不证明无限价；规则生效日与适用制度须另核实 |
 | [051b](COMMAND_API.md#cmd-051b) | `IntradayAuxPoint`：整数双序列或previous_day/current_day浮点双序列 | selector=11采用浮点布局，其他采用整数布局 | 序列名为供应商/社区解释，量单位与未命名selector仍待核实；没有源日期/时间戳 |
-| [052b](COMMAND_API.md#cmd-052b) | `DailyBar`（旧名`DelistedBar`）：响应日期、OHLC、股数/手数、金额及原始槽 | 价格/1000，volume_shares为u32整数股，volume_lots=股/100；金额为非负有限binary32 | 两节点3只在市A股的24条日线全部字段与官网day精确一致；旧金额算法已修复，原历史材料不改；未知尾部保留，市场2/完整历史未验收 |
+| [052b](COMMAND_API.md#cmd-052b) | `DailyBar`（旧名`DelistedBar`）：响应日期、OHLC、股数/手数、金额及原始槽；`DailyReferenceComparison`并列参考 | 价格/1000，volume_shares为u32整数股，volume_lots=股/100；金额为非负有限binary32 | 历史24条样本精确一致；10月27日四证券27,237条与官网day有44条源差异，显式参考核对保留差异及原值；市场2/完整历史未验收 |
 | [052d](COMMAND_API.md#cmd-052d) | `KlineData / IndexKlineData`：dt/OHLC/vol/amount，指数家数；可转CanonicalBar | 价格/1000；金额按非负有限IEEE754 binary32；标准适配显式源量单位 | vol依品种/category保留源值；dt为bar时点，非逐笔时间；区间/源成交额资格另检查 |
 | [0537](COMMAND_API.md#cmd-0537) | `TodayMinuteSeries / TodayMinutePoint`：price/average_price/volume_raw、合成time_label、raw | 价格按目录精度；均价额外除100；量保留raw | trading_date=None，标签按索引合成；240点不证明日期、全会话交易或全品种单位 |
 | [053e](COMMAND_API.md#cmd-053e) | `QuoteData / QuotePage`：OHLC、累计量额、五档、涨跌/涨速、servertime及精度 | 价格按目录精度；change/change_percent本地计算，speed按/100换算，时间字符串解析 | QuoteData无market/raw全槽；部分辅助槽被跳过；量单位非全品种核验，servertime不是逐笔成交时间 |
-| [0547](COMMAND_API.md#cmd-0547) | `QuoteRefresh / QuotePush / DepthSnapshot`：BasicQuote五档、游标、接收时点、会话状态 | 五档按目录精度；游标与累计行情更新已解析，维护全证券基线 | 游标不是时间戳；raw状态/尾部未全面命名；Synchronized不代表实际盘中主动推送已验收 |
+| [0547](COMMAND_API.md#cmd-0547) | `QuoteRefresh / QuotePush / QuoteUpdate / DepthSnapshot`：BasicQuote五档、游标、接收时点、会话状态 | 五档按目录精度；poll_update区分被动推送与请求刷新，维护全证券基线 | 两节点收盘前主动刷新有变化；游标不是时间戳，Synchronized及RequestedRefresh不证明被动推送 |
 | [054b](COMMAND_API.md#cmd-054b) | `CategoryQuote`：BasicQuote一档及rise_speed/short_turnover/opening_rush等 | 有目录的价格换算；上述三个有符号指标/100；额外浮点及raw保留 | 指标窗口/分母和未命名槽仍受供应商语义限制；缺精度价格None；动态榜单不构成冻结截面 |
 | [054c](COMMAND_API.md#cmd-054c) | `SnapshotPage / BasicQuote`：身份、可选价格、一档、原始量额/时间槽、tail_raw | 基础报价结构与目录价格换算已实现 | time_raw未自动形成成交时间戳，status_or_unknown_raw等保留；缺失证券另列missing_codes |
 | [056a](COMMAND_API.md#cmd-056a) | `AuctionPoint`：minute/second、price及bits、匹配量、未匹配绝对量/符号 | 报文时分秒和f32价格已解码；有符号数量拆绝对值/符号 | 是竞价过程快照，含09:25；正负号未升级为交易所确认买卖侧，量单位/实际日期未全面核实 |
@@ -75,43 +75,45 @@
 
 依据：[原始模型](../../crates/rustdx-core/src/tcp/stock/finance_raw.rs)、[语义模型与默认证据](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs)、[独立字段期望](../../crates/rustdx-core/tests/fixtures/protocol/finance.semantic.expected.json)。
 
-下表偏移以 `FinanceRaw::body()` 的136字节主体为基准，不包含数量、市场和代码。所有浮点槽先保留f32位模式，再扩展为f64换算；“候选元/股”等单位是当前基线定义，不证明所有字段已有独立核验。表中“默认有证据”只有在市场0、代码000001、更新日期20260815及**该字段原始位模式完全匹配**时才产生Verified。
+下表偏移以 `FinanceRaw::body()` 的136字节主体为基准，不包含数量、市场和代码。所有浮点槽先保留f32位模式，再扩展为f64换算；“候选元/股”等单位是当前基线定义，不证明所有字段已有独立核验。默认证据限市场0、代码000001：H1更新20260815/报告期2026-06-30，Q3更新20261024/报告期2026-09-30，且**该字段原始位模式完全匹配**。Q3独立公告与逐字段位模式见[expected.json](../../crates/rustdx-core/tests/fixtures/finance-q3/expected.json)。
 
 | 主体偏移 | `FinanceField` | 当前业务解释 | 候选单位/倍率 | 默认独立证据 |
 | --- | --- | --- | --- | --- |
 | 0 | `CirculatingShares` | 流通股本 | 股，×10000 | 无 |
-| 16 | `TotalShares` | 总股本 | 股，×10000 | 有，限样本命中 |
+| 16 | `TotalShares` | 总股本 | 股，×10000 | H1/Q3 |
 | 20 | `Slot01` | 未知槽 | Unknown，不换算 | 无 |
 | 24 | `Slot02` | 未知槽 | Unknown，不换算 | 无 |
 | 28 | `Slot03` | 未知槽 | Unknown，不换算 | 无 |
 | 32 | `Slot04` | 未知槽 | Unknown，不换算 | 无 |
 | 36 | `Slot05` | 未知槽 | Unknown，不换算 | 无 |
-| 40 | `ReportedEps` | 来源披露每股收益 | 元/股，×1 | 有，限样本命中 |
-| 44 | `TotalAssets` | 总资产 | 元，×1000 | 有，限样本命中 |
+| 40 | `ReportedEps` | 来源披露每股收益 | 元/股，×1 | H1/Q3 |
+| 44 | `TotalAssets` | 总资产 | 元，×1000 | H1/Q3 |
 | 48 | `CurrentAssets` | 流动资产 | 元，×1000 | 无 |
-| 52 | `FixedAssets` | 固定资产 | 元，×1000 | 无 |
-| 56 | `IntangibleAssets` | 无形资产 | 元，×1000 | 无 |
-| 60 | `ShareholderCount` | 股东数量 | 计数，×1 | 无 |
+| 52 | `FixedAssets` | 固定资产 | 元，×1000 | Q3 |
+| 56 | `IntangibleAssets` | 无形资产 | 元，×1000 | Q3 |
+| 60 | `ShareholderCount` | 股东数量 | 计数，×1 | Q3 |
 | 64 | `CurrentLiabilities` | 流动负债 | 元，×1000 | 无 |
 | 68 | `LongTermLiabilities` | 长期负债 | 元，×1000 | 无 |
-| 72 | `CapitalReserve` | 资本公积 | 元，×1000 | 无 |
-| 76 | `NetAssets` | 净资产/权益候选槽 | 元，×1000 | 有，限样本命中 |
-| 80 | `OperatingRevenue` | 营业收入 | 元，×1000 | 有，限样本命中 |
+| 72 | `CapitalReserve` | 资本公积 | 元，×1000 | Q3 |
+| 76 | `NetAssets` | 净资产/权益候选槽 | 元，×1000 | H1/Q3 |
+| 80 | `OperatingRevenue` | 营业收入 | 元，×1000 | H1/Q3 |
 | 84 | `Slot17` | 未知槽 | Unknown，不换算 | 无 |
 | 88 | `Receivables` | 应收款项 | 元，×1000 | 无 |
-| 92 | `OperatingProfit` | 营业利润 | 元，×1000 | 有，限样本命中 |
-| 96 | `InvestmentIncome` | 投资收益 | 元，×1000 | 无 |
-| 100 | `OperatingCashFlow` | 经营现金流 | 元，×1000 | 有，限样本命中 |
-| 104 | `CashFlowNetChange` | 现金流净变动 | 元，×1000 | 无 |
+| 92 | `OperatingProfit` | 营业利润 | 元，×1000 | H1/Q3 |
+| 96 | `InvestmentIncome` | 投资收益 | 元，×1000 | Q3 |
+| 100 | `OperatingCashFlow` | 经营现金流 | 元，×1000 | H1/Q3 |
+| 104 | `CashFlowNetChange` | 现金流净变动 | 元，×1000 | Q3冲突控制，当前值拒绝 |
 | 108 | `Inventory` | 存货 | 元，×1000 | 无 |
-| 112 | `ProfitBeforeTax` | 利润总额 | 元，×1000 | 有，限样本命中 |
-| 116 | `AfterTaxProfit` | 税后利润候选槽 | 元，×1000 | 无 |
-| 120 | `NetProfit` | 净利润候选槽 | 元，×1000 | 有，限样本命中 |
-| 124 | `RetainedProfit` | 未分配利润 | 元，×1000 | 无 |
-| 128 | `NetAssetsPerShare` | 每股净资产 | 元/股，×1 | 有，限样本命中 |
+| 112 | `ProfitBeforeTax` | 利润总额 | 元，×1000 | H1/Q3 |
+| 116 | `AfterTaxProfit` | 税后利润候选槽 | 元，×1000 | Q3 |
+| 120 | `NetProfit` | 净利润候选槽 | 元，×1000 | H1/Q3 |
+| 124 | `RetainedProfit` | 未分配利润 | 元，×1000 | Q3 |
+| 128 | `NetAssetsPerShare` | 每股净资产 | 元/股，×1 | H1/Q3 |
 | 132 | `Slot29` | 未知槽 | Unknown，不换算 | 无 |
 
-固定样本全部命中时为10个Verified、14个BaselineCandidate、7个Unknown；其他证券/更新版本在没有适用独立profile时为24个BaselineCandidate、7个Unknown。`value()`对Candidate/Unknown返回None；`candidate_value()`对已知单位提供显式基线换算，对Unknown返回None。候选值与已验证值数值相同也不改变资格。
+H1固定样本为10个Verified、14个BaselineCandidate、7个Unknown；Q3固定样本为17个Verified、7个BaselineCandidate、7个Unknown，其中现金净变动原值85.15亿元与公告58.72亿元冲突。冲突字段仍保留raw及BaselineCandidate状态，但`value()`和`candidate_value()`均为None，`candidate_rejection()`给出`EvidenceConflict { expected_raw_bits }`。没有适用profile的其他证券/更新版本为24个BaselineCandidate、7个Unknown；已知单位仍可显式候选换算，Unknown返回None。候选值与已验证值数值相同也不改变资格。
+
+固定Q3的差额已由公告物理第33页严格解释：三项活动现金流合计8,515百万元，汇率影响−2,643后净增加5,872百万元。`cash_flow_reconciliation()`返回两种口径的并列诊断及源bits；范围和原位模式不符拒绝。这个匹配只解释该记录的源槽含义，不升级旧净变动字段的Verified数量，也不把相同口径推广到H1或其他证券/版本，见[独立期望](../../crates/rustdx-core/tests/fixtures/finance-cash-basis/expected.json)和[应用合同](../development/APPLICATION_INTEGRATION.md)。
 
 `FinanceProfile::verify`记录逐字段预期raw_bits，调用方负责其独立依据；代码只能检查范围与位模式匹配，不能审计外部证据真实性。未知槽不能通过该入口升级。样本通过的标准值仍保留源f32精度，不替换成公告显示的十进制整数。
 
@@ -120,8 +122,8 @@
 | `province() / industry()` | 主体4/6偏移的原u16编码 | 没有自动映射为已核实行政区/行业名称 |
 | `updated_date_raw() / updated_date()` | 主体8偏移的源日期槽 | 更新日不是报告期；0为未知，非法非零日期解码失败 |
 | `ipo_date_raw() / ipo_date()` | 主体12偏移的源日期槽 | 主站上市日期字段不替代经公告核实的历史上市阶段/证券状态 |
-| `report_period` | 命中profile且至少一个字段Verified才由证据提供 | 默认样本为2026-06-30，不能从更新日或财务等式推断 |
-| `eps_basis` | 一般为reported_unspecified，默认样本EPS命中后为basic_and_diluted_interim | 不自动作为TTM、年化或其他证券的基本/稀释口径 |
+| `report_period` | 命中profile且至少一个字段Verified才由证据提供 | H1为2026-06-30、Q3为2026-09-30，不能从更新日或财务等式推断 |
+| `eps_basis` | 一般为reported_unspecified；H1 EPS命中为basic_and_diluted_interim、Q3为basic_and_diluted_year_to_date | 不自动作为TTM、年化或其他证券的基本/稀释口径 |
 | `net_profit_basis / net_assets_basis` | 一般unspecified；默认样本相应字段命中后为attributable_to_bank_shareholders / consolidated_total_equity | 两者口径不同；不能把所有权益槽解释为归母权益 |
 | `semantic_schema_version / profile_version` | 当前为1 / tdx-0010-field-units-v1 | 描述本库规则版本，不是财报版本或外部核验完成标志 |
 
@@ -177,6 +179,10 @@
 
 0feb旧非空日期冲突已定位为ordinal请求编码错误，修复样本通过同日0fb4和带日期日线对照；原始错位材料保留，见[修复报告](../archive/development/RECENT_MINUTES_DATE_SELECTOR_FIX_20261024.md)。响应仍没有日期回显，通用日期门禁的消费要求由[接入规则第2节](../development/APPLICATION_INTEGRATION.md#2-价格数量金额和未知值)定义。0537、0fb4、0fc5/0fc6及056a也不能用本地获取日或请求日补造响应交易日；这些类型没有统一的 `require_trading_date` getter。
 
+新增`MinuteReferenceComparison`只报告完整价格点和可选原始累计量的跨源差异。10月27日209点夹具在119（11:30）有价量差、208有量差；边界分类为诊断位置，不是已核验交易时刻。`DailyReferenceComparison`明确并列原TCP、day标准值及字段差异；四证券27,237条的44条差异保持原值。接口范围与来源责任见[应用接入](../development/APPLICATION_INTEGRATION.md)，不借参考结果改写原接口资格。
+
+扩大分钟采样的456次请求、43,200点精确重解通过，33组日期/证券有跨节点源差异（价格1,227点、均价5,934点、量3,397点）。sz000001的106组官网day开末价对照有35组差异，其中4组含开价差、35组含末价差；冻结day不含20261027。最早已采非空日期只说明当前节点可得性，不能据此定义完整保存窗口，详见[补证结果](../testing/evidence/upstream-capabilities-20261027/independent-replay.json)。
+
 <a id="flow-f10-fields"></a>
 ## 6. 资金流、F10与板块解释边界
 
@@ -202,10 +208,10 @@ F10的02cf已解释栏目名、GBK文件名和字节范围；02d0已完成该范
 
 | 字段范围 | 已有依据入口 | 当前未关闭范围 |
 | --- | --- | --- |
-| 财务与价格精度 | [实施记录](../archive/development/FINANCE_QUOTE_SEMANTICS_IMPLEMENTATION_20261024.md)、[独立财务期望](../../crates/rustdx-core/tests/fixtures/protocol/finance.semantic.expected.json) | 其他证券/更新版本、候选槽单位、7个未知槽及报告口径 |
+| 财务与价格精度 | [H1实施记录](../archive/development/FINANCE_QUOTE_SEMANTICS_IMPLEMENTATION_20261024.md)、[Q3独立期望](../../crates/rustdx-core/tests/fixtures/finance-q3/expected.json)、[现金口径对照](../../crates/rustdx-core/tests/fixtures/finance-cash-basis/expected.json) | 固定Q3差额已解释为汇率影响；原净变动字段仍拒绝不同口径，其他证券/更新版本、候选槽单位、7个未知槽及报告口径未扩大 |
 | 成交事件/金额 | [事件模型记录](../archive/development/TRADE_EVENT_MODEL_IMPLEMENTATION_20261024.md)、[金额语义记录](../archive/development/TRADE_AMOUNT_SEMANTICS_IMPLEMENTATION_20261024.md)、[金额差异分析](../archive/validation/ENHANCED_HISTORY_AMOUNT_DIFFERENCE_20261024.md) | 交易所逐笔完整性、全品种价量单位、末价估算误差及独立盘后源额 |
-| 近期分时/竞价 | [实际合同报告](../archive/validation/LIVE_COMMAND_CONTRACT_VALIDATION_20261024.md)、[非空夹具与窗口报告](../archive/validation/NONEMPTY_FIXTURES_PUSH_WINDOW_20261024.md)、[日期编码修复](../archive/development/RECENT_MINUTES_DATE_SELECTOR_FIX_20261024.md) | 0feb通用日期资格/完整保存窗口，竞价量单位/精确侧别及跨证券日期对应 |
-| 0547推送 | [推送验证](../archive/validation/QUOTE_PUSH_VALIDATION_20261024.md) | 实际连续交易窗口中被动推送、状态变化与游标推进共同成立 |
+| 近期分时/竞价 | [日期编码修复](../archive/development/RECENT_MINUTES_DATE_SELECTOR_FIX_20261024.md)、[扩大窗口原帧回放](../testing/evidence/upstream-capabilities-20261027/independent-replay.json) | 历史跨节点/日线端点源差异、0feb通用日期资格/完整保存窗口，竞价量单位/精确侧别及跨证券日期对应 |
+| 0547推送 | [历史推送验证](../archive/validation/QUOTE_PUSH_VALIDATION_20261024.md)、[本轮主动刷新回放](../testing/evidence/live-market-legacy-fix-20261027/live-replay.json)、[半帧边界修复](../archive/development/UPSTREAM_CAPABILITIES_FIX_20261027.md) | 本地发送前半帧归属修复已回归；真实被动推送仍未观察到，RequestedRefresh不关闭该门禁 |
 | 26同码命令/F10/退市/资源 | [26命令报告](../archive/validation/ELTDX_3_3_0_26_COMMANDS_IMPLEMENTATION_20261024.md)、[资源合同修复](../archive/development/RESOURCE_CONTRACT_PUSH_ACCEPTANCE_FIX_20261024.md) | 市场2、完整增强合同、供应商统计业务单位/日期与其他资源格式；通用下载不带声明hash/原子性 |
 
 字段升级为已核验时，须记录证券/市场、命令/参数、日期/报告口径、源单位、原请求/响应、节点/获取时点、独立参考、原始位模式或允许误差及适用范围。profile命中、浮点误差范围、公式一致性和实际日期真实性分别检查；一个维度通过不能替代其他维度。

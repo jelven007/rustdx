@@ -1,0 +1,31 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 2.04s
+[1m[32m     Running[0m tests/finance_q3.rs (/private/tmp/rustdx-system-optimization-packages-20261025/target/debug/deps/finance_q3-f8b67a173ea2f3a0)
+
+running 2 tests
+test q3_disclosure_qualifies_seventeen_fields_and_rejects_cash_conflict ... FAILED
+test q3_evidence_is_not_reused_for_another_update_symbol_or_changed_value ... FAILED
+
+failures:
+
+---- q3_disclosure_qualifies_seventeen_fields_and_rejects_cash_conflict stdout ----
+
+thread 'q3_disclosure_qualifies_seventeen_fields_and_rejects_cash_conflict' panicked at crates/rustdx-core/tests/finance_q3.rs:15:39:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- q3_evidence_is_not_reused_for_another_update_symbol_or_changed_value stdout ----
+
+thread 'q3_evidence_is_not_reused_for_another_update_symbol_or_changed_value' panicked at crates/rustdx-core/tests/finance_q3.rs:75:13:
+assertion `left == right` failed
+  left: Some(1.0)
+ right: None
+
+
+failures:
+    q3_disclosure_qualifies_seventeen_fields_and_rejects_cash_conflict
+    q3_evidence_is_not_reused_for_another_update_symbol_or_changed_value
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p jelven-rustdx-complete --test finance_q3`

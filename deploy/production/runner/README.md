@@ -1,7 +1,7 @@
 # 单机 runner 部署与恢复
 
 <!-- lifecycle:registry -->
-读者：部署/值守；责任：运维维护者。源码核验2026-10-25，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../../docs/development/DOCUMENTATION_GOVERNANCE.md)。
+读者：部署/值守；责任：运维维护者。源码核验2026-10-27，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../../docs/development/DOCUMENTATION_GOVERNANCE.md)。
 <!-- /lifecycle -->
 
 模板用于 Linux/systemd 的本地 `.day` 采集与版本发布。实际代码仍是同步 I/O、有界线程和子进程；没有跨机协调、跨库事务或内置 Web 服务。模板未在目标 Linux 验收，资源数值是起始配置，须按实际负载调整。
@@ -60,6 +60,13 @@ rustdx-runner --no-tcp-startup metrics --root /var/lib/rustdx \
 ```
 
 部署方预先创建 textfile 目录并赋予 `rustdx` 写权限，node_exporter取得读取权限。指标包含 Job 状态、未结束 Attempt、事件数、当前发布时点、刷新时点和剩余磁盘。首次初始化账本后再启用指标定时器。`alerts.yml` 提供待核查、指标失效和预留空间示例；多实例场景须按 job/instance 限定缺失判断，空间阈值须与 Job 配置同步。发布新鲜度 SLO应结合维护日历和应有 Job，不能用周末/假期的自然小时差证明缺失。
+
+调度器另行周期执行`business-metrics --config /etc/rustdx/job.json --publish-by RFC3339
+--audit-max-bytes BYTES --output /var/lib/node_exporter/textfile_collector/rustdx-business.prom`。
+替换为批准截止和独立审计配额；缺参数会输出未配置指标，不使用示例数值代替批准值。
+该入口重验日历/状态并读固定版本全键，较全账本汇总更重；按工作量设置超时/频率，
+缺损会停止刷新。输出文件只对应一个Job，字段与告警失败口径见[观测合同](../../../docs/operations/OBSERVABILITY.md)。
+audit字节只是监测，仍须部署实际文件系统硬配额及单独备份/留存策略。
 
 ## 4. 故障与恢复
 

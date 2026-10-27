@@ -1,0 +1,9 @@
+[1m[32m     Locking[0m 2 packages to latest Rust 1.89 compatible versions
+[1m[36m      Adding[0m cpufeatures v0.2.17
+[1m[36m      Adding[0m sha2 v0.10.9
+[1m[32m   Compiling[0m libc v0.2.191
+[1m[32m   Compiling[0m cpufeatures v0.2.17
+[1m[32m   Compiling[0m sha2 v0.10.9
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core)
+[1m[32m   Compiling[0m rustdx-live-refresh-check v0.0.0 (/private/tmp/rustdx-live-market-fix-20261027-artifacts/refresh-tool)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`dev` profile [unoptimized + debuginfo]]8;;\ target(s) in 9.62s

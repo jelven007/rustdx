@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+<title>关于发布《深圳证券交易所交易规则（2026年修订）》的通知</title>
+<script>
+  if(location.protocol == 'https:'){
+    document.write('<link href="https://res.szse.cn/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />');
+  }else{
+    document.write('<link href="http://res.static.szse.cn/common/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />');
+  }
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+<meta http-equiv="cache-control" content="max-age=0">
+<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="expires" content="Web, 26 Feb 1997 08:21:57 GMT">
+<meta http-equiv="pragma" content="no-cache">
+<meta name="author" content="www.szse.cn">
+<meta name="description" content="深交所官网">
+<meta name="keywords" content="深交所,深交所官网,深圳证券交易所,交易所,交易所官网,深圳证券交易所官网">
+<meta name="renderer" content=webkit>
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google" value="notranslate"> 
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="screen-orientation" content="portrait">
+<meta name="full-screen" content="yes">
+<meta name="browermode" content="application">
+<meta name="x5-orientation" content="portrait">
+<meta name="HandheldFriendly" content="true">
+<script type="text/javascript">
+	var u = navigator.userAgent;
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;//android终端
+
+	function addElementMeta(name,  content) {
+		var head = document.getElementsByTagName('head')[0];
+		var meta = document.createElement('meta');
+
+		meta.setAttribute('name', name);
+		meta.setAttribute('content', content);
+		head.appendChild(meta);
+	}
+	if(isAndroid) {
+		addElementMeta('x5-fullscreen', 'true');
+		addElementMeta('x5-page-mode', 'app');
+	}
+</script> 
+    <script>
+  (function () {
+    var _versionDate = new Date().getTime();
+    if (location.protocol == 'https:') {
+      var _path = 'https://res.szse.cn';
+    } else {
+      var _path = 'http://res.static.szse.cn';
+    }
+    // _path = _path.replace(".static.", ".");
+    //var _path = 'http://res.szse.cn';
+    //document.write( " <script src='" + _path + "/common/js/first.js?random=" + _versionDate + "'> <\/script> ");
+    var _host = 'http://www.szse.cn';
+    if (location.protocol == 'https:') {
+      _host = 'https://www.szse.cn';
+    }
+
+
+    var backDomain = 'http://www.sse.org.cn'
+    var reg = /([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+)\.?(:\d+)?/;
+    if (backDomain && window.location.host.match(reg)[2] === backDomain.match(reg)[2]) {
+      _host = 'http://www.sse.org.cn';
+      _path = 'http://res.static.sse.org.cn';
+      if (location.protocol == 'https:') {
+        _host = 'https://www.sse.org.cn';
+        _path = 'https://res.static.sse.org.cn';
+      }
+
+    }
+
+    _path = _path.replace(".static.", ".");
+
+    document.write(" <script src='" + _host + "/szsePath.js?random=" + _versionDate + "'> <\/script> "
+      + " <script src='" + _path + "/common/js/concatversion.js?random=" + _versionDate + "'> <\/script> ");
+  }());
+</script>
+
+<script>
+
+  function backDomainLinkSwitch(value, type) {
+    var _port = location.port ? (":" + location.port) : "";
+    var reg = /([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+)\.?(:\d+)?/;
+    var urlRegx = /(.*)(http:|https:)(\/\/)(([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+))\.?(:\d+)?(.*)/;
+
+    // html字符串替换
+    if (type == 'str') {
+      var strArr = value.split("=");
+      strArr = strArr.map(function (v) {
+        var host = reg.test(v) ? v.match(reg)[0] : null;
+        if (pathObj.szseHosts.indexOf(host) > -1) {
+          if (window.location.protocol == 'https:' && urlRegx.test(v)) {
+            v = v.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+          };
+          if (pathObj.current_host === pathObj.back_host) {
+            v = v.replace(pathObj.main_host, pathObj.back_host);
+          }
+        }
+        return v
+      });
+      value = strArr.join("=");
+      return value;
+    }
+
+    // a标签地址替换
+    if (type === 'A') {
+      var eleA = document.querySelectorAll(value);
+      for (var i = 0; i < eleA.length; i++) {
+        var href = eleA[i].getAttribute("href");
+        var host = reg.test(href) ? href.match(reg)[0] : null;
+        if (href && pathObj.szseHosts.indexOf(host) > -1) {
+          if (window.location.protocol == 'https:') {
+            href = href.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+          };
+          if (pathObj.current_host === pathObj.back_host) {
+            href = href.replace(pathObj.main_host, pathObj.back_host);
+          }
+          eleA[i].setAttribute('href', href);
+        }
+      }
+    }
+
+    // 单链接替换
+    if (type === "link") {
+      if (window.location.protocol == 'https:' && !!value) {
+        value = value.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+      };
+      if (pathObj.current_host === pathObj.back_host) {
+        var host = reg.test(value) ? value.match(reg)[0] : null;
+        if (value && pathObj.szseHosts.indexOf(host) > -1) {
+          value = value.replace(pathObj.main_host, pathObj.back_host);
+        }
+      }
+      return value;
+    }
+
+    // 背景图地址更换
+    if (type === "background") {
+      var eleBg = document.querySelectorAll(value);
+      for (var i = 0; i < eleBg.length; i++) {
+        var href = eleBg[i].style.backgroundImage;
+        if (window.location.protocol == 'https:' && !!href) {
+          href = href.replace(urlRegx, '$1https:$3$4' + _port + '$9');
+        };
+        var host = reg.test(href) ? href.match(reg)[0] : null;
+        if (href && pathObj.szseHosts.indexOf(host) > -1) {
+          if (pathObj.current_host === pathObj.back_host) {
+            href = href.replace(pathObj.main_host, pathObj.back_host);
+          }
+          eleBg[i].style.backgroundImage = href;
+        }
+      }
+    }
+
+  }
+
+</script>
+
+<script>
+   if(document.cookie.indexOf('ft_language=1')>-1){
+    var style = document.createElement('style');
+    style.textContent='body{visibility:hidden;}';
+    document.head.appendChild(style);
+  }
+</script>
+<script>
+    addComCssFile()
+</script>
+<script>
+        changeVertion('/modules/report/css/report.css', 'css');
+        changeVertion('/modules/aboutus_column/introduction/css/journal.css', 'css');
+    </script>
+    <script>
+  changeVertion('/lib/validator/validator.min.css', 'css');
+  changeVertion('/common/plugins/css/index.min.css', 'css');
+  changeVertion('/common/css/form.css', 'css');
+  changeVertion('/common/css/articleDetailUtil.css','css');
+</script>
+</head>
+  <body class="article-body">
+    <script>
+  navMenuAJAX('/application/publicindex/header/index.html', '/application/publicindex/header/index.html', 'header', 'www');
+</script>
+<div class="g-locationnav">
+    <div class="banner-wrap">
+      <img src="http://res.static.szse.cn/common/images/legalrules-banner.jpg" />
+    </div>
+    <div class="g-container">
+      <div class="g-banner-txt">
+            <h2 class="hidden-xs">通用</h2>
+            <p>
+              <img src="http://res.static.szse.cn/common/icon/er-banneradr.png" />位置：<a href="../../../" class="CurrChnlCls">法律规则</a>/<a href="../../" class="CurrChnlCls">本所业务规则</a>/<a href="../" class="CurrChnlCls">交易类</a>/<a href="./" class="CurrChnlCls">通用</a>
+            </p>
+          </div>
+    </div>
+</div>
+  
+      <div class="g-container-wrap">
+            <div class="g-container">
+<!--startprint-->
+                <div class="news-detail-con g-conbox"> 
+                	<div class="des-header">
+                  <h2 class="title">关于发布《深圳证券交易所交易规则（2026年修订）》的通知</h2>
+                  		<script>
+                  			var curSubTitle ='';
+                  			if(curSubTitle != ''){
+                  				document.write('<h4 style="text-align: center;" class="sub-title"><i class=""></i><span class="">'+curSubTitle+'</span></h4>')
+                  			}                  		
+                  		</script>
+              <div class="time">时间：<span>2026-04-24</span></div>
+              <div class="des-switchsize">
+                字体：
+                <span class="bigger">大</span>
+                <span class="medium">中</span>
+                <span class="smaller">小</span>
+              </div>
+    					
+        	</div>
+    				 <div class="des-content" id="desContent">
+                       <p class="MsoNormal" style="margin-right: 0pt; margin-left: 0pt; line-height: 200%; font-size: 16px; text-align: center;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><span face="宋体" style="font-family: 宋体;">深证上〔</span><span face="宋体" style="font-family: 宋体;">2026〕</span></span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">551</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">号</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-right: 0.0000pt; margin-left: 0.0000pt; mso-para-margin-right: 0.0000gd; mso-para-margin-left: 0.0000gd; text-indent: 23.6000pt; mso-char-indent-count: 2.0000; text-autospace: ideograph-numeric; mso-pagination: none; line-height: 200%;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">&nbsp; &nbsp; &nbsp;</span></p>
+<p class="MsoNormal" style="margin-right: 0pt; margin-left: 0pt; line-height: 200%; text-align: left; font-size: 16px;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">各市场参与人：</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-right: 0.0000pt; margin-left: 0.0000pt; mso-para-margin-right: 0.0000gd; mso-para-margin-left: 0.0000gd; text-indent: 23.6000pt; mso-char-indent-count: 2.0000; text-autospace: ideograph-numeric; mso-pagination: none; line-height: 200%;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><span face="宋体" style="font-family: 宋体;">为了贯彻落实中国证监会《关于深化创业板改革</span> <span face="宋体" style="font-family: 宋体;">更好服务新质生产力发展的意见》有关要求，</span></span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">提升交易制度适应性，增强市场内在稳定性</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">，本所对《深圳证券交易所交易规则》进行了修订，经中国证监会批准，现予发布。</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-right: 0.0000pt; margin-left: 0.0000pt; mso-para-margin-right: 0.0000gd; mso-para-margin-left: 0.0000gd; text-indent: 23.6000pt; mso-char-indent-count: 2.0000; text-autospace: ideograph-numeric; mso-pagination: none; line-height: 200%;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">本规则自</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">2026年7月6日起施行。</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><span face="宋体" style="font-family: 宋体;">本所于</span><span face="宋体" style="font-family: 宋体;">2023年2月17日发布的《深圳证券交易所交易规则（2023年修订）》（深证上〔2023〕98号）同时废止。</span></span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-right: 0.0000pt; margin-left: 0.0000pt; mso-para-margin-right: 0.0000gd; mso-para-margin-left: 0.0000gd; text-indent: 23.6000pt; mso-char-indent-count: 2.0000; text-autospace: ideograph-numeric; mso-pagination: none; line-height: 200%;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">&nbsp;</span></p>
+<p class="MsoNormal" style="margin-right: 0.0000pt; margin-left: 0.0000pt; mso-para-margin-right: 0.0000gd; mso-para-margin-left: 0.0000gd; text-indent: 23.6000pt; mso-char-indent-count: 2.0000; text-autospace: ideograph-numeric; mso-pagination: none; line-height: 200%;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><span face="宋体" style="font-family: 宋体;">附件：</span><span face="宋体" style="font-family: 宋体;">1．<a href="http://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713155663.pdf" target="_blank" rel="noopener" oldsrc="W020260424690713155663.pdf">深圳证券交易所交易规则（2026年修订）</a></span></span></p>
+<p class="MsoNormal" style="margin-right: 0.0000pt; margin-left: 0.0000pt; mso-para-margin-right: 0.0000gd; mso-para-margin-left: 0.0000gd; text-indent: 23.6000pt; mso-char-indent-count: 2.0000; text-autospace: ideograph-numeric; mso-pagination: none; line-height: 200%;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">&nbsp; &nbsp; 2．<a href="http://docs.static.szse.cn/www/lawrules/rule/trade/current/W020260424690713346617.pdf" target="_blank" rel="noopener" oldsrc="W020260424690713346617.pdf">《深圳证券交易所交易规则》修订说明</a></span></p>
+<p class="MsoNormal" style="margin-right: 0.0000pt; margin-left: 0.0000pt; mso-para-margin-right: 0.0000gd; mso-para-margin-left: 0.0000gd; text-indent: 23.6000pt; mso-char-indent-count: 2.0000; text-autospace: ideograph-numeric; mso-pagination: none; line-height: 200%;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">&nbsp;</span></p>
+<p class="MsoNormal" style="margin-right: 0.0000pt; margin-left: 0.0000pt; mso-para-margin-right: 0.0000gd; mso-para-margin-left: 0.0000gd; text-indent: 23.6000pt; mso-char-indent-count: 2.0000; text-autospace: ideograph-numeric; mso-pagination: none; line-height: 200%;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">&nbsp;</span></p>
+<p class="MsoNormal" style="margin-right: 0pt; margin-left: 0pt; text-indent: 23.6pt; line-height: 200%; text-align: right;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">深圳证券交易所</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><o:p></o:p></span></p>
+<p class="MsoNormal" style="margin-right: 0pt; margin-left: 0pt; text-indent: 23.6pt; line-height: 200%; text-align: right;"><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">20</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">26年4月</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">24</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;">日</span><span style="mso-spacerun: 'yes'; font-family: 宋体; line-height: 200%; font-size: 12.0000pt; mso-font-kerning: 1.0000pt;"><o:p></o:p></span></p>
+                    </div>
+                    <script>
+                        var oldCon = document.getElementById("desContent").innerHTML;
+                        oldCon = oldCon.replace(/(o:p)|(u:p)/gi,'span');
+                        oldCon = oldCon.replace(/&lt;!--\[endif\]--&gt;/g,"");
+                        document.getElementById("desContent").innerHTML = oldCon;
+                    </script>
+<!--endprint-->
+    				<div class="des-footer">
+    					<div class="article-page display-none">
+                   
+    						
+    					</div>
+    					<div class="article-btn">
+    						<a href="javascript:void(0);" class="btn btn-gray art-print">打印</a>
+        						<a href="javascript:void(0);" target="_blank" class="btn btn-gray ml10 art-collect">收藏</a>
+        						<a href="javascript:void(0);" class="btn btn-gray ml10 art-close">关闭</a>
+    					</div>
+    				</div>  
+				</div>
+     
+            </div>
+      </div>
+
+    <script>
+  changeVertion('/common/js/toggleBig5.js', 'js');
+  navMenuAJAX('/application/publicindex/footer/index.html','/application/publicindex/footer/index.html', 'footer','www');
+  addComJsFile();
+</script>
+    <script>
+  (function () {
+    var _versionDate = new Date().getTime();
+
+    var _host = 'http://www.szse.cn';
+    if (location.protocol == 'https:') {
+      _host = 'https://www.szse.cn';
+    }
+
+    var backDomain = 'http://www.sse.org.cn'
+    var reg = /([a-zA-Z0-9][-a-zA-Z0-9]{0,62})((\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+)\.?(:\d+)?/;
+    if (backDomain && window.location.host.match(reg)[2] === backDomain.match(reg)[2]) {
+      _host = 'http://www.sse.org.cn';
+      if (location.protocol == 'https:') {
+        _host = 'https://www.sse.org.cn';
+      }
+
+    }
+    document.write(" <script src='" + _host + "/dynamicmodule/index/sysconfig.js?random=" + _versionDate + "'> <\/script> ");
+
+  }());
+</script>
+    <script>
+    	var articleDetail = {
+    		docTitle:'关于发布《深圳证券交易所交易规则（2026年修订）》的通知',
+    		subDocTitle:'',
+    		docAbstract:'',
+                articleId:'620190',
+		channelCode:'szserulestradeCurrency_news',
+    channelId : '12813'
+    	}
+    </script>
+    <script>
+    	changeVertion('/common/js/articleDetail.js','js');
+    </script>
+    <script>
+  changeVertion('/lib/validator/jquery.validate.js', 'js');
+  changeVertion('/common/js/jquery.validate_extend.js', 'js');
+  changeVertion('/lib/webuploader-0.1.5/webuploader.js', 'js');
+  changeVertion('/common/plugins/index.min.js', 'js');
+  changeVertion('/common/js/articleDetailUtil.js','js');
+</script>
+  </body>
+</html>
+
+
+

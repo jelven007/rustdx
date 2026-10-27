@@ -47,8 +47,9 @@ mod finance_raw;
 pub use finance_raw::{FINANCE_BODY_SIZE, FinanceRaw, decode_finance_raw};
 mod finance_semantics;
 pub use finance_semantics::{
-    FINANCE_SEMANTIC_SCHEMA_VERSION, FinanceField, FinanceFieldValue, FinanceProfile,
-    FinanceSemanticStatus, FinanceSnapshot, FinanceUnit, decode_finance, normalize_finance,
+    FINANCE_SEMANTIC_SCHEMA_VERSION, FinanceCandidateRejection, FinanceCashFlowReconciliation,
+    FinanceField, FinanceFieldValue, FinanceProfile, FinanceSemanticStatus, FinanceSnapshot,
+    FinanceUnit, decode_finance, normalize_finance,
 };
 mod price_scale;
 pub use price_scale::PriceScale;
@@ -138,7 +139,11 @@ pub use company_info_request::{
     CompanyInfoTextChunk, CompanyInfoTextRequest, MAX_COMPANY_INFO_CHUNK, company_info_text,
     decode_company_info_directory, decode_company_info_text,
 };
+mod daily_reference;
 mod delisted_bars;
+pub use daily_reference::{
+    DailyReferenceComparison, DailyReferenceField, DailyReferenceRecord, DayFileReference,
+};
 pub use delisted_bars::{
     DELISTED_BARS_COMMAND, DailyBar, DailyBarsPage, DailyBarsRequest, DelistedBar,
     DelistedBarsCollection, DelistedBarsPage, DelistedBarsRequest, MAX_DELISTED_BARS_COUNT,

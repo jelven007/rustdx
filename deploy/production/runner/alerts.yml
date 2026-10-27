@@ -29,3 +29,73 @@ groups:
           severity: warning
         annotations:
           summary: No Rustdx metrics are available
+      - alert: RustdxBusinessMetricsMissing
+        expr: absent(rustdx_business_metrics_timestamp_seconds)
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: The expected job scope has no business metrics
+      - alert: RustdxBusinessMetricsStale
+        expr: time() - rustdx_business_metrics_timestamp_seconds > 180
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Business scope or fixed-version verification stopped refreshing
+      - alert: RustdxBusinessDeadlineUnconfigured
+        expr: rustdx_business_deadline_configured == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: The job publication deadline is not configured
+      - alert: RustdxBusinessPublicationOverdue
+        expr: (rustdx_business_required == 1) and (rustdx_business_job_released == 0) and (time() > rustdx_business_publish_by_timestamp_seconds)
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: The expected business job missed its explicit publication deadline
+      - alert: RustdxBusinessFactsUnavailable
+        expr: rustdx_business_facts_available == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Calendar, universe or security states cannot qualify the job scope
+      - alert: RustdxBusinessFactsExpiring
+        expr: rustdx_business_fact_remaining_days <= 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: A fact dataset has reached its verification cutoff
+      - alert: RustdxPublishedCoverageInvalid
+        expr: ((rustdx_business_missing_keys + rustdx_business_extra_keys + rustdx_business_missing_partitions + rustdx_business_revision_gaps) > 0) and (rustdx_business_job_released == 1)
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Published keys, partitions or revisions do not cover the configured job
+      - alert: RustdxConsumerAuditQuotaUnconfigured
+        expr: rustdx_consumer_audit_quota_configured == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Consumer readback evidence has no declared independent quota
+      - alert: RustdxConsumerAuditQuotaReached
+        expr: rustdx_consumer_audit_bytes >= rustdx_consumer_audit_limit_bytes
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Consumer readback evidence reached its declared quota
+      - alert: RustdxConsumerAuditGrowing
+        expr: deriv(rustdx_consumer_audit_bytes[1h]) > 0
+        for: 1h
+        labels:
+          severity: info
+        annotations:
+          summary: Consumer readback evidence is growing and needs retention review

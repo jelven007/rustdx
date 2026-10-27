@@ -339,6 +339,15 @@ struct CacheFile {
     expiry: u64,
 }
 
+struct FileCacheLock(fs::File);
+
+impl Drop for FileCacheLock {
+    fn drop(&mut self) {
+        // Closing alone can defer unlock on Windows or leave a Unix clone holding it.
+        let _ = self.0.unlock();
+    }
+}
+
 impl FileCache {
     /// 创建新的文件缓存
     ///
@@ -397,7 +406,7 @@ impl FileCache {
         })
     }
 
-    fn lock(&self) -> io::Result<fs::File> {
+    fn lock(&self) -> io::Result<FileCacheLock> {
         let file = fs::OpenOptions::new()
             .read(true)
             .write(true)
@@ -408,7 +417,7 @@ impl FileCache {
         loop {
             crate::operation::check()?;
             match file.try_lock() {
-                Ok(()) => return Ok(file),
+                Ok(()) => return Ok(FileCacheLock(file)),
                 Err(fs::TryLockError::WouldBlock) if Instant::now() < deadline => {
                     crate::operation::sleep(Duration::from_millis(20))?;
                 }
@@ -1113,6 +1122,66 @@ mod tests {
         cache.clear();
     }
 
+    #[cfg(unix)]
+    #[test]
+    fn file_lock_owner_drop_releases_while_duplicated_handle_remains_open() {
+        let dir = std::env::temp_dir().join(format!("rustdx-cache-owner-{}", std::process::id()));
+        let cache = FileCache::try_new(&dir).unwrap();
+        let owner = cache.lock().unwrap();
+        let inherited = owner.0.try_clone().unwrap();
+        let contender = fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open(dir.join(".rustdx-cache.lock"))
+            .unwrap();
+        assert!(matches!(
+            contender.try_lock(),
+            Err(fs::TryLockError::WouldBlock)
+        ));
+        drop(owner);
+        let acquired = contender.try_lock();
+        assert!(
+            acquired.is_ok(),
+            "owner release must not wait for duplicated handles: {acquired:?}"
+        );
+        contender.unlock().unwrap();
+        drop(contender);
+        drop(inherited);
+        fs::remove_dir_all(dir).unwrap();
+    }
+
+    #[test]
+    fn parallel_file_reads_observe_complete_atomic_replacements() {
+        let dir =
+            std::env::temp_dir().join(format!("rustdx-cache-read-replace-{}", std::process::id()));
+        let cache = FileCache::try_with_capacity(&dir, 2, 128 * 1024).unwrap();
+        cache
+            .try_set("same", &[1; 32 * 1024], Duration::from_secs(60))
+            .unwrap();
+        std::thread::scope(|scope| {
+            scope.spawn(|| {
+                for marker in 2..=25 {
+                    cache
+                        .try_set("same", &[marker; 32 * 1024], Duration::from_secs(60))
+                        .unwrap();
+                }
+            });
+            for _ in 0..4 {
+                let cache = &cache;
+                scope.spawn(move || {
+                    for _ in 0..100 {
+                        let value = cache.try_get("same").unwrap().unwrap();
+                        assert_eq!(value.len(), 32 * 1024);
+                        assert!((1..=25).contains(&value[0]));
+                        assert!(value.iter().all(|byte| *byte == value[0]));
+                    }
+                });
+            }
+        });
+        assert_eq!(cache.usage().unwrap().entries, 1);
+        fs::remove_dir_all(dir).unwrap();
+    }
+
     #[test]
     fn test_file_cache_expiry() {
         let temp_dir = std::env::temp_dir().join("rustdx_test_cache_expiry");
@@ -1390,13 +1459,21 @@ mod tests {
                     .args(["--exact", "cache::tests::file_cache_process_writer"])
                     .env("RUSTDX_CACHE_TEST_DIR", &dir)
                     .env("RUSTDX_CACHE_TEST_WORKER", worker.to_string())
-                    .stdout(std::process::Stdio::null())
+                    .stdout(std::process::Stdio::piped())
+                    .stderr(std::process::Stdio::piped())
                     .spawn()
                     .unwrap(),
             );
         }
-        for child in &mut children {
-            assert!(child.wait().unwrap().success());
+        for child in children {
+            let output = child.wait_with_output().unwrap();
+            assert!(
+                output.status.success(),
+                "cache writer failed: {}\nstdout:\n{}\nstderr:\n{}",
+                output.status,
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr),
+            );
         }
         let cache = FileCache::try_with_capacity(&dir, 3, 96).unwrap();
         assert!(cache.usage().unwrap().entries <= 3);

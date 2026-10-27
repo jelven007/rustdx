@@ -11,12 +11,8 @@ use rustdx_complete::tcp::stock::Kline;
 use rustdx_complete::tcp::{self, Tcp};
 
 #[test]
+#[ignore = "external TCP diagnostic; run the strict online suite explicitly"]
 fn probe_kline_adj_field() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut tcp = Tcp::new()?;
 
     // 三种字段值下解析出的日 K 数据
@@ -26,6 +22,10 @@ fn probe_kline_adj_field() -> std::io::Result<()> {
         k.send[22..24].copy_from_slice(&field.to_le_bytes());
         let raw = tcp::send_recv(&mut tcp, &k.send, "probe-adj")?.0;
         k.recv_parsed(&mut tcp)?;
+        assert!(
+            !k.result().is_empty(),
+            "online adjustment probe is unavailable"
+        );
         println!(
             "field=0x{field:04x} raw[{}]: {}",
             raw.len(),

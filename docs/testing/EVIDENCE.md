@@ -1,7 +1,7 @@
 # 证据与固定样本管理
 
 <!-- lifecycle:registry -->
-读者：测试/审查；责任：测试维护者。源码核验：2026-10-25；每90日及证据schema、路径或保全规则变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：测试/审查；责任：测试维护者。源码核验：2026-10-27；每90日及证据schema、路径或保全规则变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 更新日期：2026-10-25。证据用于证明明确源码、时点、环境和输入范围下的结论；摘要验证字节完整性，不证明公告或第三方返回的真实性。
@@ -51,7 +51,12 @@ python3 scripts/release/evidence_manifest.py bundle \
   --manifest /review/new-evidence.json \
   --prefix docs/testing/evidence/system-review-20261025/ \
   --archive /review/new-bundle.tar.gz --output /review/new-bundle.json
+python3 scripts/release/evidence_manifest.py restore \
+  --manifest /review/new-bundle.json --archive /review/new-bundle.tar.gz \
+  --root /review/new-restored-root --output /review/new-restore.json
 ```
+
+`restore`要求目标根目录尚不存在、父目录已存在。它先核对归档大小/SHA，在私有暂存目录核对全部条目、原路径、大小和SHA，再生成新根目录。损坏/缺少/额外条目、重复、链接和路径穿越明确失败，不覆盖已有工作树。旧清单的路径原样恢复；迁移映射仍在使用阶段独立解析。按需取得归档后可离线恢复；远端不可变存储尚须部署方配置，工具不自动上传或删除历史证据。
 
 库存逐文件流式SHA-256；已提交原件同时核对HEAD的Git blob身份/模式，改变即拒绝，
 不刷新旧摘要。`verify`报告missing/changed和`ordinary_git/local_retained`可得性；

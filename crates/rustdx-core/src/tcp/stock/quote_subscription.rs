@@ -80,6 +80,15 @@ pub struct QuotePush {
     pub refresh: QuoteRefresh,
     resident_bytes: usize,
 }
+
+/// Explicit source distinction for nodes that only answer refresh requests.
+/// Requested refreshes never count as evidence of passive server push.
+#[derive(Debug, Clone)]
+pub enum QuoteUpdate {
+    PassivePush(QuotePush),
+    RequestedRefresh(QuoteRefresh),
+}
+
 pub trait PushObserver: std::fmt::Debug + Send + Sync {
     fn observe(&self, endpoint: SocketAddr, push: &QuotePush) -> io::Result<()>;
 }
@@ -235,6 +244,9 @@ impl QuoteSubscription {
             .ok_or_else(|| invalid("订阅消息号耗尽，请重建"))?;
         let request = self.request()?;
         let send = request.encode(id)?;
+        // A frame already started before this request cannot be its response,
+        // even when the unsolicited message id coincides with the new id.
+        let mut pre_request_frame = !self.staging.is_empty();
         let tcp = self.healthy()?;
         let endpoint = tcp.get_ref().0.peer_addr()?;
         if let Some(observer) = &self.observer {
@@ -271,7 +283,9 @@ impl QuoteSubscription {
             if opcode != super::QUOTE_REFRESH_COMMAND {
                 return Err(invalid("订阅连接收到其他命令"));
             }
-            if message == id {
+            let is_response = message == id && !pre_request_frame;
+            pre_request_frame = false;
+            if is_response {
                 if let Some(observer) = &self.observer {
                     observer.observe(FrameEvent::Response {
                         endpoint,
@@ -326,6 +340,23 @@ impl QuoteSubscription {
         }
         result
     }
+
+    /// Wait for a passive update, then explicitly refresh if the node is idle.
+    /// Initial or rebuilt sessions request a baseline immediately. No background
+    /// thread, heartbeat, reconnect or change to poll_push's passive contract.
+    pub fn poll_update(&mut self, idle_timeout: Duration) -> io::Result<QuoteUpdate> {
+        if idle_timeout.is_zero() {
+            return Err(input("持续更新的空闲等待须大于0，避免忙循环"));
+        }
+        if self.status == DepthSyncStatus::AwaitingBaseline {
+            return self.refresh().map(QuoteUpdate::RequestedRefresh);
+        }
+        match self.poll_push(idle_timeout)? {
+            Some(push) => Ok(QuoteUpdate::PassivePush(push)),
+            None => self.refresh().map(QuoteUpdate::RequestedRefresh),
+        }
+    }
+
     fn read_frame(&mut self, deadline: Instant) -> io::Result<Option<([u8; 16], Vec<u8>)>> {
         loop {
             self.healthy()?;

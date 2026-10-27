@@ -9,6 +9,10 @@
 | protocol/ | 两证券快照、财务及当日/历史逐笔原始夹具；新财务语义和多精度价格期望JSON | [manifest](protocol/manifest.json)保留历史摘要；财务新期望来自官方中报，报价新期望来自独立腾讯行情 |
 | recent_minutes_nonempty/ | 两主站、六证券、两请求日期的24组非空0feb完整帧及5760条独立期望 | [来源与摘要](recent_minutes_nonempty/README.md)；真实非空字段回归，响应没有回显日期，不能据此证明请求日期或保存窗口 |
 | recent_minutes_date_selector/ | 日期schema2的两主站六证券六交易日72组非空帧及17,280条独立期望 | [来源与摘要](recent_minutes_date_selector/README.md)；同日0fb4/日线对照，旧8月注释夹具原字节保留，实际selector为6月；通用日期资格未升级 |
+| finance-q3/ | 20261024更新的平安银行原0010正文、Q3公告PDF及逐页文本、18项独立预期 | [expected.json](finance-q3/expected.json)；17字段匹配，现金净变动冲突控制，原值不替换 |
+| finance-cash-basis/ | 固定Q3合并现金流三活动/汇率/净增加的独立整数操作数及公告摘要 | [expected.json](finance-cash-basis/expected.json)；85.15亿元三活动合计减26.43亿元汇率影响为58.72亿元，原净变动字段仍拒绝不同口径 |
+| daily-reference/ | 官网四证券day原字节及052b完整页正文、27,237条逐日对照 | [manifest.json](daily-reference/manifest.json)；保留1条股数差9股/43条金额1ULP差，不授予全市场权威性 |
+| minute-boundary/ | 10月27日209点0feb正文及独立腾讯分时原JSON/完整价量期望 | [expected.json](minute-boundary/expected.json)；119点价量差、208点量差不通过平移/删点资格化日期 |
 | apps/rustdx-cli/tests/（仓库根） | CLI端到端与本地HTTP/文件回归 | [CLI测试](../../../../apps/rustdx-cli/tests)就近生成隔离样本 |
 
 独立参考期望CSV进入版本控制，`.gitignore`只对这两组`*.expected.csv`开例外；不要通过全局放开CSV把运行数据入库。protocol四份CSV已按既有manifest摘要核对后补入，解决干净检出缺少预期结果的问题。

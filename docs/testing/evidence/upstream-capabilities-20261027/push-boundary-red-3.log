@@ -1,0 +1,23 @@
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 0.14s
+[1m[32m     Running[0m tests/quote_subscription.rs (/private/tmp/rustdx-system-optimization-packages-20261025/target/debug/deps/quote_subscription-ddbbc6cec5bcdcad)
+
+running 1 test
+test partial_push_received_before_refresh_cannot_satisfy_the_new_request ... FAILED
+
+failures:
+
+---- partial_push_received_before_refresh_cannot_satisfy_the_new_request stdout ----
+
+thread 'partial_push_received_before_refresh_cannot_satisfy_the_new_request' panicked at crates/rustdx-core/tests/quote_subscription.rs:85:5:
+assertion `left == right` failed
+  left: Some(11)
+ right: Some(12)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    partial_push_received_before_refresh_cannot_satisfy_the_new_request
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 27 filtered out; finished in 0.01s
+
+[1m[31merror[0m[1m:[0m test failed, to rerun pass `-p jelven-rustdx-complete --test quote_subscription`

@@ -129,6 +129,12 @@ pub enum FinanceSemanticStatus {
     Unknown,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum FinanceCandidateRejection {
+    EvidenceConflict { expected_raw_bits: u32 },
+}
+
 #[derive(Debug, Clone, Serialize)]
 pub struct FinanceFieldValue {
     field: FinanceField,
@@ -137,6 +143,8 @@ pub struct FinanceFieldValue {
     semantic_status: FinanceSemanticStatus,
     normalized_value: Option<f64>,
     evidence: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    candidate_rejection: Option<FinanceCandidateRejection>,
 }
 
 impl FinanceFieldValue {
@@ -159,11 +167,18 @@ impl FinanceFieldValue {
     pub fn value(&self) -> Option<f64> {
         self.normalized_value
     }
-    /// Explicitly opt into the baseline's proposed conversion. Not verification.
+    /// Explicitly opt into the baseline's proposed conversion. Known conflicts
+    /// with scoped independent evidence reject even this candidate conversion.
     pub fn candidate_value(&self) -> Option<f64> {
+        if self.candidate_rejection.is_some() {
+            return None;
+        }
         self.unit
             .multiplier()
             .map(|scale| f64::from(self.raw_value()) * scale)
+    }
+    pub fn candidate_rejection(&self) -> Option<FinanceCandidateRejection> {
+        self.candidate_rejection
     }
     pub fn evidence(&self) -> Option<&str> {
         self.evidence.as_deref()
@@ -228,6 +243,21 @@ impl FinanceProfile {
     }
 }
 
+/// Independently disclosed cash-flow controls for one fixed record. The source
+/// total excludes FX; the reported cash-equivalent net change includes FX.
+/// This diagnostic does not qualify `FinanceField::CashFlowNetChange`.
+#[derive(Debug, Clone, Serialize)]
+pub struct FinanceCashFlowReconciliation {
+    pub source_raw_bits: u32,
+    pub source_total_excluding_fx_yuan: f64,
+    pub operating_yuan: f64,
+    pub investing_yuan: f64,
+    pub financing_yuan: f64,
+    pub exchange_rate_effect_yuan: f64,
+    pub reported_net_change_yuan: f64,
+    pub evidence: &'static str,
+}
+
 #[derive(Debug, Clone, Serialize)]
 pub struct FinanceSnapshot {
     raw: FinanceRaw,
@@ -263,6 +293,35 @@ impl FinanceSnapshot {
     }
     pub fn fields(&self) -> &[FinanceFieldValue] {
         &self.fields
+    }
+    /// Explain the fixed Ping An 2026-Q3 cash difference without replacing the
+    /// source value or assigning this basis to other records. All operands are
+    /// independently disclosed on PDF page 33; raw float32 values stay intact.
+    pub fn cash_flow_reconciliation(&self) -> io::Result<FinanceCashFlowReconciliation> {
+        self.require_fields(&[FinanceField::OperatingCashFlow])?;
+        let cash = self.field(FinanceField::CashFlowNetChange);
+        if self.market() != 0
+            || self.code() != "000001"
+            || self.raw.updated_date_raw() != 20261024
+            || self.report_period != NaiveDate::from_ymd_opt(2026, 9, 30)
+            || self.field(FinanceField::OperatingCashFlow).raw_bits() != 0x4d87_0ce0
+            || cash.raw_bits() != 0x4b01_edb8
+        {
+            return Err(io::Error::new(
+                io::ErrorKind::Unsupported,
+                "现金流口径对照未覆盖该证券、更新版本或原值",
+            ));
+        }
+        Ok(FinanceCashFlowReconciliation {
+            source_raw_bits: cash.raw_bits(),
+            source_total_excluding_fx_yuan: f64::from(cash.raw_value()) * 1000.0,
+            operating_yuan: 283_221_000_000.0,
+            investing_yuan: 6_503_000_000.0,
+            financing_yuan: -281_209_000_000.0,
+            exchange_rate_effect_yuan: -2_643_000_000.0,
+            reported_net_change_yuan: 5_872_000_000.0,
+            evidence: "https://static.cninfo.com.cn/finalpage/2026-10-24/1225621667.PDF",
+        })
     }
     /// Applications declare the exact fields they consume. Candidate or unknown
     /// fields fail the whole requirement; no default zero or candidate fallback.
@@ -321,7 +380,8 @@ pub fn normalize_finance(raw: FinanceRaw, profile: Option<&FinanceProfile>) -> F
     let fields = FinanceField::ALL.map(|field| {
         let raw_bits = raw.u32(field.body_offset());
         let unit = field.unit();
-        let verified = scope.is_some_and(|scope| scope.expected.get(&field) == Some(&raw_bits));
+        let expected = scope.and_then(|scope| scope.expected.get(&field)).copied();
+        let verified = expected == Some(raw_bits);
         FinanceFieldValue {
             field,
             raw_bits,
@@ -337,6 +397,11 @@ pub fn normalize_finance(raw: FinanceRaw, profile: Option<&FinanceProfile>) -> F
                 f64::from(f32::from_bits(raw_bits)) * unit.multiplier().expect("known unit")
             }),
             evidence: verified.then(|| scope.expect("verified scope").evidence.clone()),
+            candidate_rejection: expected.filter(|expected| *expected != raw_bits).map(
+                |expected_raw_bits| FinanceCandidateRejection::EvidenceConflict {
+                    expected_raw_bits,
+                },
+            ),
         }
     });
     let any_verified = fields
@@ -361,7 +426,7 @@ pub fn normalize_finance(raw: FinanceRaw, profile: Option<&FinanceProfile>) -> F
     }
 }
 
-/// Default scoped evidence from the preserved Ping An 2026-H1 sample. Numeric
+/// Default scoped evidence from preserved Ping An 2026-H1 and Q3 samples. Numeric
 /// equality alone never verifies another symbol, update date or field value.
 pub fn decode_finance(
     request: &FinanceRequest<'_>,
@@ -390,12 +455,52 @@ pub fn decode_finance(
     ] {
         profile = profile.verify(field, raw_bits)?;
     }
+    let mut q3 = FinanceProfile::new(
+        0,
+        "000001",
+        20261024,
+        NaiveDate::from_ymd_opt(2026, 9, 30).expect("fixed report date"),
+        "https://static.cninfo.com.cn/finalpage/2026-10-24/1225621667.PDF",
+    )?;
+    // Disclosure-derived binary32 expectations, including exact share count
+    // on PDF page 4. Cash net change uses the reported-net basis as a control.
+    // The source's pre-FX total is explained by cash_flow_reconciliation;
+    // neither basis replaces the wire value or qualifies a different record.
+    for (field, raw_bits) in [
+        (FinanceField::TotalShares, 0x49ec_e37f),
+        (FinanceField::ReportedEps, 0x3ff8_51ec),
+        (FinanceField::TotalAssets, 0x4fb1_64db),
+        (FinanceField::FixedAssets, 0x4b20_4f10),
+        (FinanceField::IntangibleAssets, 0x4aa1_6850),
+        (FinanceField::ShareholderCount, 0x48c6_7b80),
+        (FinanceField::CapitalReserve, 0x4c99_6f4c),
+        (FinanceField::NetAssets, 0x4e04_ba55),
+        (FinanceField::OperatingRevenue, 0x4cc4_a5cc),
+        (FinanceField::OperatingProfit, 0x4c32_b506),
+        (FinanceField::InvestmentIncome, 0x4b71_8bf0),
+        (FinanceField::OperatingCashFlow, 0x4d87_0ce0),
+        (FinanceField::CashFlowNetChange, 0x4ab3_3300),
+        (FinanceField::ProfitBeforeTax, 0x4c32_68da),
+        (FinanceField::AfterTaxProfit, 0x4c15_7b94),
+        (FinanceField::NetProfit, 0x4c15_7b94),
+        (FinanceField::RetainedProfit, 0x4d8d_5eac),
+        (FinanceField::NetAssetsPerShare, 0x41c4_7ae1),
+    ] {
+        q3 = q3.verify(field, raw_bits)?;
+    }
     Ok(decode_finance_raw(request, bytes)?
         .into_iter()
         .map(|raw| {
-            let mut value = normalize_finance(raw, Some(&profile));
+            let scope = [&profile, &q3]
+                .into_iter()
+                .find(|scope| scope.matches(&raw));
+            let mut value = normalize_finance(raw, scope);
             if value.reported_eps().is_some() {
-                value.eps_basis = "basic_and_diluted_interim";
+                value.eps_basis = if value.raw.updated_date_raw() == 20261024 {
+                    "basic_and_diluted_year_to_date"
+                } else {
+                    "basic_and_diluted_interim"
+                };
             }
             if value.net_profit_yuan().is_some() {
                 value.net_profit_basis = "attributable_to_bank_shareholders";

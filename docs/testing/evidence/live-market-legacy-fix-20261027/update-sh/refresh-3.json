@@ -1,0 +1,161 @@
+{
+  "requested": [
+    {
+      "market": 0,
+      "code": "000001"
+    },
+    {
+      "market": 0,
+      "code": "159915"
+    },
+    {
+      "market": 1,
+      "code": "510300"
+    }
+  ],
+  "page": {
+    "records": [
+      {
+        "market_raw": 1,
+        "code": "510300",
+        "active_raw": 4882,
+        "price": 4.128,
+        "previous_close": 4.179,
+        "open": 4.186,
+        "high": 4.192,
+        "low": 4.127,
+        "price_fields_raw": [
+          4128,
+          51,
+          58,
+          64,
+          -1
+        ],
+        "time_raw": null,
+        "update_cursor": 145759,
+        "status_or_unknown_raw": 0,
+        "total_volume_raw": 13839878,
+        "current_volume_raw": 1429,
+        "amount": 5765390848.0,
+        "amount_raw": 1336660593,
+        "inside_volume_raw": 6487304,
+        "outside_volume_raw": 7352575,
+        "after_outside_raw": 0,
+        "open_amount_raw": 0,
+        "bids": [
+          {
+            "price": 4.127,
+            "volume_raw": 74501,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 4982,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          }
+        ],
+        "asks": [
+          {
+            "price": 4.127,
+            "volume_raw": 74501,
+            "price_delta_raw": -1
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          },
+          {
+            "price": 0.0,
+            "volume_raw": 0,
+            "price_delta_raw": -4128
+          }
+        ],
+        "scale": {
+          "decimal": 3,
+          "divisor": 1000
+        },
+        "tail_raw": [
+          208,
+          14,
+          93,
+          50,
+          2,
+          0,
+          150,
+          33,
+          132,
+          64,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0,
+          224,
+          64,
+          224,
+          64,
+          0,
+          0
+        ]
+      }
+    ],
+    "source": {
+      "opcode": 1351,
+      "endpoint": "180.153.18.170:7709",
+      "fetched_at": "2026-10-27T06:57:59.938382Z",
+      "connection_id": 1,
+      "metadata_generation": 0
+    }
+  }
+}

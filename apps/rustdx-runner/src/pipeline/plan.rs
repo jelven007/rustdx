@@ -1,6 +1,12 @@
 //! Read-only planning against explicit inputs. Execution must freeze and validate them again.
-use std::{collections::BTreeSet, fs, path::Path};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs,
+    path::Path,
+};
 
+use chrono::NaiveDate;
+use rustdx_complete::calendar::CalendarProvider;
 use rustdx_complete::limit::TradingState;
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
@@ -9,8 +15,81 @@ use super::{facts, tcp_request};
 use crate::{
     Result,
     config::{Config, MAX_JSON},
+    database::capacity::{Capacity, IO_LIMIT},
     invalid, storage,
 };
+
+// Fixed canonical fields, six finite f64s and bounded ASCII dataset/release IDs.
+// This is an upper bound, not a measurement of the not-yet-collected rows.
+const PLAN_ROW_BYTES: u64 = 1024;
+
+fn database_plan(config: &Config, rows: u64) -> Result<Value> {
+    let capacity = Capacity::estimate(
+        rows,
+        rows.checked_mul(PLAN_ROW_BYTES)
+            .ok_or_else(|| invalid("plan database row byte overflow"))?,
+    )?;
+    let mut usage = storage::TreeUsage::default();
+    let mut reasons = Vec::new();
+    for target in &config.database_targets {
+        if let Err(error) = capacity.check(0, usage, config.max_workspace_bytes) {
+            reasons.push(format!("{}:{error}", target.id()));
+        }
+        usage.bytes = usage
+            .bytes
+            .checked_add(capacity.evidence_bytes)
+            .ok_or_else(|| invalid("plan database evidence byte overflow"))?;
+        usage.entries = usage
+            .entries
+            .checked_add(capacity.evidence_entries)
+            .ok_or_else(|| invalid("plan database evidence entry overflow"))?;
+    }
+    Ok(json!({
+        "per_target":capacity,"targets":config.database_targets.iter().map(|t| t.id()).collect::<Vec<_>>(),
+        "all_target_evidence_bytes":usage.bytes,"all_target_evidence_entries":usage.entries,
+        "evidence_byte_headroom":config.max_workspace_bytes.saturating_sub(usage.bytes),
+        "budget_fits":reasons.is_empty(),"blockers":reasons,
+        "limits":{"per_target_operations":IO_LIMIT,"per_target_proof_bytes":MAX_JSON,
+            "all_target_entries":storage::MAX_TREE_ENTRIES,"all_target_bytes":config.max_workspace_bytes},
+        "row_bytes_upper_bound":PLAN_ROW_BYTES,
+        "scope":"new release, publication and one recovery; runtime remeasures sealed row bytes and existing evidence; consumer audit is separate",
+    }))
+}
+
+fn history_windows(config: &Config, days: &BTreeMap<NaiveDate, (u64, u64)>) -> Result<Vec<Value>> {
+    let mut windows = Vec::new();
+    let mut from = config.from;
+    let mut expected = 0;
+    let mut trading = 0;
+    let mut has_day = false;
+    let window = |from, through, expected, trading| -> Result<Value> {
+        let database = database_plan(config, trading)?;
+        Ok(
+            json!({"from":from,"through":through,"expected_keys":expected,"trading_rows":trading,
+            "database_budget_fits":database["budget_fits"],
+            "all_target_evidence_bytes":database["all_target_evidence_bytes"]}),
+        )
+    };
+    for (&date, &(day_expected, day_trading)) in days {
+        if has_day && database_plan(config, trading + day_trading)?["budget_fits"] == false {
+            windows.push(window(
+                from,
+                date.pred_opt()
+                    .ok_or_else(|| invalid("plan date underflow"))?,
+                expected,
+                trading,
+            )?);
+            from = date;
+            expected = 0;
+            trading = 0;
+        }
+        expected += day_expected;
+        trading += day_trading;
+        has_day = true;
+    }
+    windows.push(window(from, config.through, expected, trading)?);
+    Ok(windows)
+}
 
 fn bytes(path: &Path) -> Result<u64> {
     let meta = fs::symlink_metadata(path)?;
@@ -35,10 +114,20 @@ pub fn preflight_plan(config: &Config, connection_limit: usize, max_keys: usize)
     let mut suspended = 0_u64;
     let mut delisted = 0_u64;
     let mut trading_codes = BTreeSet::new();
+    let mut days: BTreeMap<_, _> = facts
+        .calendar
+        .trading_days_between(config.from, config.through)
+        .map_err(|e| invalid(e.to_string()))?
+        .into_iter()
+        .map(|date| (date, (0_u64, 0_u64)))
+        .collect();
     facts::visit_expected(config, &facts, |date, code, state| {
+        let day = days.entry(date).or_default();
+        day.0 += 1;
         let state = match state {
             TradingState::Trading => {
                 trading += 1;
+                day.1 += 1;
                 trading_codes.insert(code.to_owned());
                 "trading"
             }
@@ -149,9 +238,21 @@ pub fn preflight_plan(config: &Config, connection_limit: usize, max_keys: usize)
             .ok_or_else(|| invalid("plan root has no existing ancestor"))?;
     }
     let free = storage::free_bytes(parent)?;
-    if free < snapshot_bytes.saturating_add(config.min_free_bytes) {
+    let database = database_plan(config, trading)?;
+    if database["budget_fits"] == false {
+        blockers.push("database_capacity".into());
+    }
+    let evidence_bytes = database["all_target_evidence_bytes"]
+        .as_u64()
+        .ok_or_else(|| invalid("plan database byte forecast missing"))?;
+    if free
+        < snapshot_bytes
+            .saturating_add(evidence_bytes)
+            .saturating_add(config.min_free_bytes)
+    {
         blockers.push("disk_reserve".into());
     }
+    let windows = history_windows(config, &days)?;
     let result = json!({
         "schema_version":1,"mode":"offline_plan","dataset_id":config.dataset_id,
         "contract":config.contract_version,"from":config.from,"through":config.through,
@@ -164,7 +265,8 @@ pub fn preflight_plan(config: &Config, connection_limit: usize, max_keys: usize)
             "additional_space_required":"CSV, normalization SQLite/journal and sealed manifests; runtime budgets still apply",
             "free_bytes":free,"free_sample_path":parent,"min_free_bytes":config.min_free_bytes},
         "collection_deadline_seconds":collection_seconds,"publication_reserve_seconds":config.publish_reserve_seconds,
-        "tcp":tcp,"collector_needed":trading != 0,
+        "tcp":tcp,"collector_needed":trading != 0,"database":database,"history_windows":windows,
+        "history_window_contract":"complete expected universe per date; execute chronologically with frozen facts and nondecreasing source revision/as_of; catalog continuity and all runtime budgets are revalidated",
         "qualification":"input coverage and initial reservations only; no network, deployment or full-history completion verification",
     });
     if serde_json::to_vec(&result)?.len() as u64 > MAX_JSON {

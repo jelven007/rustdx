@@ -1,0 +1,70 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core)
+[0m[1m[38;5;9merror[E0599][0m[0m[1m: no method named `compare_reference` found for struct `rustdx_complete::tcp::stock::MinuteSeries` in the current scope[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/minute_reference.rs:27:29[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m27[0m[0m  [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    let comparison = series.compare_reference(&reference, Some(&volumes)).unwrap();[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                             [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;14mhelp[0m[0m: there is a method `date_reference` with a similar name, but with different arguments[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0m/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core/src/tcp/stock/recent_minutes.rs:226:5[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m226[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    pub fn date_reference(&self) -> Option<&MinuteDateReference> {[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;14m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+
+[0m[1m[38;5;9merror[E0433][0m[0m[1m: failed to resolve: use of undeclared type `MinuteReferencePosition`[0m
+[0m  [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/minute_reference.rs:33:35[0m
+[0m   [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m33[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    assert_eq!(boundary.position, MinuteReferencePosition::MorningClose);[0m
+[0m   [0m[0m[1m[38;5;12m|[0m[0m                                   [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9muse of undeclared type `MinuteReferencePosition`[0m
+
+[0m[1m[38;5;9merror[E0599][0m[0m[1m: no method named `compare_reference` found for struct `rustdx_complete::tcp::stock::MinuteSeries` in the current scope[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/minute_reference.rs:48:20[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m48[0m[0m  [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    assert!(series.compare_reference(&reference, Some(&volumes[..volumes.len()-1])).is_err());[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                    [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;14mhelp[0m[0m: there is a method `date_reference` with a similar name, but with different arguments[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0m/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core/src/tcp/stock/recent_minutes.rs:226:5[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m226[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    pub fn date_reference(&self) -> Option<&MinuteDateReference> {[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;14m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+
+[0m[1m[38;5;9merror[E0599][0m[0m[1m: no method named `compare_reference` found for struct `rustdx_complete::tcp::stock::MinuteSeries` in the current scope[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/minute_reference.rs:51:17[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m51[0m[0m  [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    assert!(bad.compare_reference(&reference, Some(&volumes)).is_err());[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                 [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;14mhelp[0m[0m: there is a method `date_reference` with a similar name, but with different arguments[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0m/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core/src/tcp/stock/recent_minutes.rs:226:5[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m226[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    pub fn date_reference(&self) -> Option<&MinuteDateReference> {[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;14m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+
+[0m[1m[38;5;9merror[E0599][0m[0m[1m: no method named `compare_reference` found for struct `rustdx_complete::tcp::stock::MinuteSeries` in the current scope[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/minute_reference.rs:54:20[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m54[0m[0m  [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    assert!(series.compare_reference(&reference, Some(&bad)).is_err());[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                    [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;14mhelp[0m[0m: there is a method `date_reference` with a similar name, but with different arguments[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0m/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core/src/tcp/stock/recent_minutes.rs:226:5[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m226[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    pub fn date_reference(&self) -> Option<&MinuteDateReference> {[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;14m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+
+[0m[1m[38;5;9merror[E0599][0m[0m[1m: no method named `compare_reference` found for struct `rustdx_complete::tcp::stock::MinuteSeries` in the current scope[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/minute_reference.rs:55:25[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m55[0m[0m  [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    let prices = series.compare_reference(&reference, None).unwrap();[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m                         [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;14mhelp[0m[0m: there is a method `date_reference` with a similar name, but with different arguments[0m
+[0m   [0m[0m[1m[38;5;12m--> [0m[0m/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core/src/tcp/stock/recent_minutes.rs:226:5[0m
+[0m    [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m226[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    pub fn date_reference(&self) -> Option<&MinuteDateReference> {[0m
+[0m    [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;14m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+
+[0m[1mSome errors have detailed explanations: E0433, E0599.[0m
+[0m[1mFor more information about an error, try `rustc --explain E0433`.[0m
+[1m[31merror[0m[1m:[0m could not compile `jelven-rustdx-complete` (test "minute_reference") due to 6 previous errors

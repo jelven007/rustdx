@@ -1,0 +1,65 @@
+[
+  {
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "test",
+      "--offline",
+      "--locked",
+      "-p",
+      "rustdx-runner",
+      "--lib",
+      "--all-features",
+      "-j2",
+      "database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants",
+      "--",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "log": "process-cleanup-isolated-1.log",
+    "started_utc": "2026-10-27T10:15:58.472607+00:00",
+    "finished_utc": "2026-10-27T10:16:46.815086+00:00"
+  },
+  {
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "test",
+      "--offline",
+      "--locked",
+      "-p",
+      "rustdx-runner",
+      "--lib",
+      "--all-features",
+      "-j2",
+      "database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants",
+      "--",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "log": "process-cleanup-isolated-2.log",
+    "started_utc": "2026-10-27T10:16:46.815131+00:00",
+    "finished_utc": "2026-10-27T10:16:47.753477+00:00"
+  },
+  {
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "test",
+      "--offline",
+      "--locked",
+      "-p",
+      "rustdx-runner",
+      "--lib",
+      "--all-features",
+      "-j2",
+      "database_process::tests::cancellation_and_deadline_kill_blocked_pipe_and_descendants",
+      "--",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "log": "process-cleanup-isolated-3.log",
+    "started_utc": "2026-10-27T10:16:47.753504+00:00",
+    "finished_utc": "2026-10-27T10:16:48.473096+00:00"
+  }
+]

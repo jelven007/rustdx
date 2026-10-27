@@ -1,0 +1,177 @@
+[
+  {
+    "name": "fmt",
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:08:19.359685+00:00",
+    "finished_utc": "2026-10-27T10:08:22.621090+00:00",
+    "log": "fmt.log"
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "clippy",
+      "--offline",
+      "--locked",
+      "--workspace",
+      "--all-features",
+      "-j2",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:08:22.624226+00:00",
+    "finished_utc": "2026-10-27T10:08:54.976279+00:00",
+    "log": "clippy.log"
+  },
+  {
+    "name": "workspace-tests",
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "test",
+      "--offline",
+      "--locked",
+      "--workspace",
+      "--all-features",
+      "-j2"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:16:55.616112+00:00",
+    "finished_utc": "2026-10-27T10:17:40.197825+00:00",
+    "log": "workspace-tests.log"
+  },
+  {
+    "name": "rustdoc",
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "doc",
+      "--offline",
+      "--locked",
+      "--workspace",
+      "--all-features",
+      "-j2",
+      "--no-deps"
+    ],
+    "environment_override": {
+      "RUSTDOCFLAGS": "-D warnings"
+    },
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:17:40.198353+00:00",
+    "finished_utc": "2026-10-27T10:17:47.274927+00:00",
+    "log": "rustdoc.log"
+  },
+  {
+    "name": "python-tests",
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts/validation/tests"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:17:47.275767+00:00",
+    "finished_utc": "2026-10-27T10:18:12.878478+00:00",
+    "log": "python-tests.log"
+  },
+  {
+    "name": "finance-consumption",
+    "command": [
+      "python3",
+      "scripts/validation/verify_consumption_fields.py",
+      "--root",
+      "/private/tmp/rustdx-upstream-capabilities-20261027",
+      "--matrix",
+      "config/consumption/finance-sample.json",
+      "--output",
+      "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/finance-consumption.json"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:18:12.879566+00:00",
+    "finished_utc": "2026-10-27T10:18:12.976790+00:00",
+    "log": "finance-consumption.log"
+  },
+  {
+    "name": "consumers",
+    "command": [
+      "python3",
+      "scripts/release/check_consumers.py",
+      "--offline",
+      "--output",
+      "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/consumers"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:18:12.977390+00:00",
+    "finished_utc": "2026-10-27T10:18:23.357656+00:00",
+    "log": "consumers.log"
+  },
+  {
+    "name": "cash-caller",
+    "command": [
+      "cargo",
+      "+1.89.0",
+      "run",
+      "--manifest-path",
+      "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/probe-tool/Cargo.toml",
+      "--offline",
+      "--locked",
+      "-j2",
+      "--bin",
+      "cash-reconciliation-caller",
+      "--",
+      "/private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core/tests/fixtures/finance-q3/response.bin"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:18:23.358264+00:00",
+    "finished_utc": "2026-10-27T10:18:24.185129+00:00",
+    "log": "cash-caller.log"
+  },
+  {
+    "name": "replay",
+    "command": [
+      "python3",
+      "docs/testing/evidence/upstream-capabilities-20261027/replay.py",
+      "--output",
+      "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/independent-replay-final.json"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:18:24.185749+00:00",
+    "finished_utc": "2026-10-27T10:18:24.629666+00:00",
+    "log": "replay.log"
+  },
+  {
+    "name": "replay-negative",
+    "command": [
+      "python3",
+      "docs/testing/evidence/upstream-capabilities-20261027/replay_negative.py",
+      "--output",
+      "/private/tmp/rustdx-upstream-capabilities-20261027-artifacts/negative-replay.json"
+    ],
+    "environment_override": {},
+    "exit_code": 0,
+    "started_utc": "2026-10-27T10:18:24.630625+00:00",
+    "finished_utc": "2026-10-27T10:18:24.980556+00:00",
+    "log": "replay-negative.log"
+  }
+]

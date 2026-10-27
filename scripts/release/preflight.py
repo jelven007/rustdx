@@ -83,6 +83,14 @@ def extract_package(crate, destination):
     return destination / prefix
 
 
+def package_path(directory, package, version):
+    """Select the package just requested; other cached versions are unrelated."""
+    path = directory / f"{package}-{version}.crate"
+    if path.is_symlink() or not path.is_file():
+        raise RuntimeError(f"current package missing or invalid: {path.name}")
+    return path
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path, help="new directory outside the repository")
@@ -119,13 +127,23 @@ def main():
     locked = ["--locked"] + (["--offline"] if args.offline else [])
     try:
         report["cargo"] = subprocess.check_output(cargo + ["--version"], env=env).decode().strip()
+        metadata = json.loads(subprocess.check_output(
+            cargo + ["metadata", "--no-deps", "--format-version", "1"] + locked, env=env, cwd=ROOT))
+        versions = {row["name"]: row["version"] for row in metadata["packages"]
+                    if row["name"] in PACKAGES}
+        if versions.keys() != PACKAGES.keys():
+            raise RuntimeError("package metadata missing")
+        report["package_versions"] = versions
         source_archive(records, output / "source.tar.gz")
         report["source_archive_sha256"] = sha((output / "source.tar.gz").read_bytes())
         if not args.skip_workspace_checks:
             for label, command in [
                 ("fmt", cargo + ["fmt", "--all", "--", "--check"]),
                 ("clippy", cargo + ["clippy", "--workspace", "--all-targets", "--all-features"] + locked + ["--", "-D", "warnings"]),
-                ("tests", cargo + ["test", "--workspace", "--all-targets", "--all-features"] + locked),
+                # Compile every target with Clippy above; run the CI test suite
+                # here. Standalone performance harnesses require explicit input
+                # directories and are measured separately, outside test timing.
+                ("tests", cargo + ["test", "--workspace", "--all-features", "--no-fail-fast"] + locked),
                 ("doctests", cargo + ["test", "--workspace", "--doc", "--all-features"] + locked),
                 ("strict-docs", cargo + ["doc", "--workspace", "--all-features", "--no-deps"] + locked),
                 ("python", [sys.executable, "-m", "unittest", "discover", "-s", "scripts/validation/tests", "-v"]),
@@ -171,10 +189,7 @@ def main():
                 report["staging_lock_sha256"] = sha((package_root / "Cargo.lock").read_bytes())
             run(cargo + ["package", "-p", package, "--allow-dirty", "--no-verify"] + locked + package_patch,
                 output, f"package-{package}", report["checks"], env, cwd=package_root)
-            crates = list((build_target / "package").glob(f"{package}-*.crate"))
-            if len(crates) != 1:
-                raise RuntimeError(f"expected one package for {package}")
-            crate = crates[0]
+            crate = package_path(build_target / "package", package, versions[package])
             if args.build_cache:
                 destination = output / "target/package" / crate.name
                 destination.parent.mkdir(parents=True, exist_ok=True)

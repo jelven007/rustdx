@@ -1,6 +1,6 @@
 //! 集成测试：`Client::k_batch`（连接池并行）与 `Client::k_adjusted`（本地复权）。
 //!
-//! 均连接真实通达信服务器。用 `RUSTDX_SKIP_INTEGRATION_TESTS=1` 可跳过。
+//! 均连接真实通达信服务器，默认ignored；严格在线入口显式执行。
 
 use rustdx_complete::tcp::helper::DateTime;
 use rustdx_complete::tcp::stock::{Adj, Client};
@@ -8,12 +8,8 @@ use std::collections::HashSet;
 
 /// k_batch 结果与逐只 k() 完全一致（日期 + 收盘价），且顺序保持输入顺序。
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn tcp_k_batch_matches_k() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let stocks = [
         (1u16, "600000"),
         (0, "000001"),
@@ -27,6 +23,7 @@ fn tcp_k_batch_matches_k() -> std::io::Result<()> {
     let mut c = Client::new()?;
     for (row, &(m, code)) in batch.iter().zip(&stocks) {
         let d = row.result.as_ref().expect("单只拉取应成功");
+        assert!(!d.is_empty(), "{code} 在线日线为空");
         let single = c.k(m, code, Some(20250101), None)?;
         assert_eq!(d.len(), single.len(), "{code} 根数不一致");
         for (a, b) in d.iter().zip(&single) {
@@ -44,16 +41,17 @@ fn tcp_k_batch_matches_k() -> std::io::Result<()> {
 
 /// k_batch 输入顺序返回 + 空列表安全。
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn tcp_k_batch_empty_and_order() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
     let client = Client::new()?;
     assert!(client.k_batch(&[], None, None, 4)?.is_empty());
     let rows = client.k_batch(&[(1, "600000"), (1, "600519")], Some(20260101), None, 2)?;
     assert_eq!(rows[0].code, "600000");
     assert_eq!(rows[1].code, "600519");
+    assert!(
+        rows.iter()
+            .all(|row| row.result.as_ref().is_ok_and(|bars| !bars.is_empty()))
+    );
     Ok(())
 }
 
@@ -62,12 +60,8 @@ fn tcp_k_batch_empty_and_order() -> std::io::Result<()> {
 /// 2. 后复权首日收盘 = 原始首日收盘（以上市为基准）；
 /// 3. 原始序列中除权日开盘相对前收明显跳空，前复权后跳空被消除（收益率连续）。
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn tcp_k_adjusted_qfq_hfq() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut c = Client::new()?;
     let raw = c.k(1, "600519", None, None)?;
     assert!(!raw.is_empty(), "茅台日K为空");
@@ -133,11 +127,8 @@ fn tcp_k_adjusted_qfq_hfq() -> std::io::Result<()> {
 
 /// 复权区间过滤：k_adjusted 的 begin/end 与 k() 一致。
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn tcp_k_adjusted_range() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
     let mut c = Client::new()?;
     let q = c.k_adjusted(1, "600519", Adj::Qfq, Some(20240101), Some(20241231))?;
     assert!(!q.is_empty());

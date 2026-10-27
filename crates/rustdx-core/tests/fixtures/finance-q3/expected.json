@@ -1,0 +1,211 @@
+{
+  "schema": 1,
+  "market": 0,
+  "code": "000001",
+  "updated_date": 20261024,
+  "report_period": "2026-09-30",
+  "reference_url": "https://static.cninfo.com.cn/finalpage/2026-10-24/1225621667.PDF",
+  "reference_pdf_sha256": "40257a9c9bedab90335b30c61e5c4812a18cfcdae5ead78ba475b676866dc31a",
+  "payload_sha256": "25f31d977776e2a1cb390f4f8c0b6f1258c6da399bc0740cffba6a921940e093",
+  "fields": [
+    {
+      "field": "total_shares",
+      "offset": 16,
+      "multiplier": 10000,
+      "official": 19405918198,
+      "expected_bits": 1240261503,
+      "raw_bits": 1240261503,
+      "verified": true,
+      "pdf_page": 4,
+      "text_sha256": "3c2d2fdf883980861e827af1a9e3d19519a480696461fe279fe32f3ee279492c"
+    },
+    {
+      "field": "reported_eps",
+      "offset": 40,
+      "multiplier": 1,
+      "official": 1.94,
+      "expected_bits": 1073238508,
+      "raw_bits": 1073238508,
+      "verified": true,
+      "pdf_page": 31,
+      "text_sha256": "67412c16de48d838aa4463bd6e57e506305b76ceb3fd5adfa98f0967ccc24f22"
+    },
+    {
+      "field": "total_assets",
+      "offset": 44,
+      "multiplier": 1000,
+      "official": 5952354000000,
+      "expected_bits": 1337025755,
+      "raw_bits": 1337025755,
+      "verified": true,
+      "pdf_page": 29,
+      "text_sha256": "50909a806723493cc0cfd6e5c0d6c6e4b8a21f8039a7e4a93b7e50762961e004"
+    },
+    {
+      "field": "fixed_assets",
+      "offset": 52,
+      "multiplier": 1000,
+      "official": 10506000000,
+      "expected_bits": 1260408592,
+      "raw_bits": 1260408592,
+      "verified": true,
+      "pdf_page": 29,
+      "text_sha256": "50909a806723493cc0cfd6e5c0d6c6e4b8a21f8039a7e4a93b7e50762961e004"
+    },
+    {
+      "field": "intangible_assets",
+      "offset": 56,
+      "multiplier": 1000,
+      "official": 5289000000,
+      "expected_bits": 1252091984,
+      "raw_bits": 1252091984,
+      "verified": true,
+      "pdf_page": 29,
+      "text_sha256": "50909a806723493cc0cfd6e5c0d6c6e4b8a21f8039a7e4a93b7e50762961e004"
+    },
+    {
+      "field": "shareholder_count",
+      "offset": 60,
+      "multiplier": 1,
+      "official": 406492,
+      "expected_bits": 1220967296,
+      "raw_bits": 1220967296,
+      "verified": true,
+      "pdf_page": 25,
+      "text_sha256": "3db43a70f92537842754a3f8363ab8a90e643e7e62372711a7afcd380385beb8"
+    },
+    {
+      "field": "capital_reserve",
+      "offset": 72,
+      "multiplier": 1000,
+      "official": 80444000000,
+      "expected_bits": 1285123916,
+      "raw_bits": 1285123916,
+      "verified": true,
+      "pdf_page": 29,
+      "text_sha256": "50909a806723493cc0cfd6e5c0d6c6e4b8a21f8039a7e4a93b7e50762961e004"
+    },
+    {
+      "field": "net_assets",
+      "offset": 76,
+      "multiplier": 1000,
+      "official": 556701000000,
+      "expected_bits": 1308932693,
+      "raw_bits": 1308932693,
+      "verified": true,
+      "pdf_page": 29,
+      "text_sha256": "50909a806723493cc0cfd6e5c0d6c6e4b8a21f8039a7e4a93b7e50762961e004"
+    },
+    {
+      "field": "operating_revenue",
+      "offset": 80,
+      "multiplier": 1000,
+      "official": 103100000000,
+      "expected_bits": 1287955916,
+      "raw_bits": 1287955916,
+      "verified": true,
+      "pdf_page": 31,
+      "text_sha256": "67412c16de48d838aa4463bd6e57e506305b76ceb3fd5adfa98f0967ccc24f22"
+    },
+    {
+      "field": "operating_profit",
+      "offset": 92,
+      "multiplier": 1000,
+      "official": 46847000000,
+      "expected_bits": 1278391558,
+      "raw_bits": 1278391558,
+      "verified": true,
+      "pdf_page": 31,
+      "text_sha256": "67412c16de48d838aa4463bd6e57e506305b76ceb3fd5adfa98f0967ccc24f22"
+    },
+    {
+      "field": "investment_income",
+      "offset": 96,
+      "multiplier": 1000,
+      "official": 15830000000,
+      "expected_bits": 1265732592,
+      "raw_bits": 1265732592,
+      "verified": true,
+      "pdf_page": 31,
+      "text_sha256": "67412c16de48d838aa4463bd6e57e506305b76ceb3fd5adfa98f0967ccc24f22"
+    },
+    {
+      "field": "operating_cash_flow",
+      "offset": 100,
+      "multiplier": 1000,
+      "official": 283221000000,
+      "expected_bits": 1300696288,
+      "raw_bits": 1300696288,
+      "verified": true,
+      "pdf_page": 33,
+      "text_sha256": "1c53092fdaea50dda6c790a66e0e113c3ab52b4ec8f70cb507ea5825ff098e35"
+    },
+    {
+      "field": "profit_before_tax",
+      "offset": 112,
+      "multiplier": 1000,
+      "official": 46769000000,
+      "expected_bits": 1278372058,
+      "raw_bits": 1278372058,
+      "verified": true,
+      "pdf_page": 31,
+      "text_sha256": "67412c16de48d838aa4463bd6e57e506305b76ceb3fd5adfa98f0967ccc24f22"
+    },
+    {
+      "field": "after_tax_profit",
+      "offset": 116,
+      "multiplier": 1000,
+      "official": 39186000000,
+      "expected_bits": 1276476308,
+      "raw_bits": 1276476308,
+      "verified": true,
+      "pdf_page": 31,
+      "text_sha256": "67412c16de48d838aa4463bd6e57e506305b76ceb3fd5adfa98f0967ccc24f22"
+    },
+    {
+      "field": "net_profit",
+      "offset": 120,
+      "multiplier": 1000,
+      "official": 39186000000,
+      "expected_bits": 1276476308,
+      "raw_bits": 1276476308,
+      "verified": true,
+      "pdf_page": 3,
+      "text_sha256": "a59cef60ce2a8b918f5ac3873f6e0a240834385ded769a2ff5f74b6e19fb26b5"
+    },
+    {
+      "field": "retained_profit",
+      "offset": 124,
+      "multiplier": 1000,
+      "official": 296474000000,
+      "expected_bits": 1301110444,
+      "raw_bits": 1301110444,
+      "verified": true,
+      "pdf_page": 29,
+      "text_sha256": "50909a806723493cc0cfd6e5c0d6c6e4b8a21f8039a7e4a93b7e50762961e004"
+    },
+    {
+      "field": "net_assets_per_share",
+      "offset": 128,
+      "multiplier": 1,
+      "official": 24.56,
+      "expected_bits": 1103395553,
+      "raw_bits": 1103395553,
+      "verified": true,
+      "pdf_page": 3,
+      "text_sha256": "a59cef60ce2a8b918f5ac3873f6e0a240834385ded769a2ff5f74b6e19fb26b5"
+    },
+    {
+      "field": "cash_flow_net_change",
+      "offset": 104,
+      "multiplier": 1000,
+      "official": 5872000000,
+      "expected_bits": 1253257984,
+      "raw_bits": 1258417592,
+      "verified": false,
+      "pdf_page": 33,
+      "text_sha256": "1c53092fdaea50dda6c790a66e0e113c3ab52b4ec8f70cb507ea5825ff098e35"
+    }
+  ],
+  "scope": "Exact binary32 checks against the issuer disclosure; no source value substitution."
+}

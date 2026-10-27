@@ -1,0 +1,1062 @@
+{
+  "market": 0,
+  "code": "000001",
+  "date": 20261027,
+  "decimal": 2,
+  "source": "https://web.ifzq.gtimg.cn/appstock/app/minute/query?code=sz000001",
+  "sha256": "d1472367ae328effb3adf8c011958b25c6f828d72345723a2e2b61f65f93b78a",
+  "controls": [
+    {
+      "index": 0,
+      "price_raw": 1127
+    },
+    {
+      "index": 1,
+      "price_raw": 1129
+    },
+    {
+      "index": 2,
+      "price_raw": 1125
+    },
+    {
+      "index": 3,
+      "price_raw": 1125
+    },
+    {
+      "index": 4,
+      "price_raw": 1127
+    },
+    {
+      "index": 5,
+      "price_raw": 1125
+    },
+    {
+      "index": 6,
+      "price_raw": 1125
+    },
+    {
+      "index": 7,
+      "price_raw": 1126
+    },
+    {
+      "index": 8,
+      "price_raw": 1128
+    },
+    {
+      "index": 9,
+      "price_raw": 1130
+    },
+    {
+      "index": 10,
+      "price_raw": 1132
+    },
+    {
+      "index": 11,
+      "price_raw": 1132
+    },
+    {
+      "index": 12,
+      "price_raw": 1131
+    },
+    {
+      "index": 13,
+      "price_raw": 1133
+    },
+    {
+      "index": 14,
+      "price_raw": 1133
+    },
+    {
+      "index": 15,
+      "price_raw": 1132
+    },
+    {
+      "index": 16,
+      "price_raw": 1131
+    },
+    {
+      "index": 17,
+      "price_raw": 1131
+    },
+    {
+      "index": 18,
+      "price_raw": 1131
+    },
+    {
+      "index": 19,
+      "price_raw": 1131
+    },
+    {
+      "index": 20,
+      "price_raw": 1131
+    },
+    {
+      "index": 21,
+      "price_raw": 1131
+    },
+    {
+      "index": 22,
+      "price_raw": 1133
+    },
+    {
+      "index": 23,
+      "price_raw": 1134
+    },
+    {
+      "index": 24,
+      "price_raw": 1131
+    },
+    {
+      "index": 25,
+      "price_raw": 1130
+    },
+    {
+      "index": 26,
+      "price_raw": 1130
+    },
+    {
+      "index": 27,
+      "price_raw": 1130
+    },
+    {
+      "index": 28,
+      "price_raw": 1131
+    },
+    {
+      "index": 29,
+      "price_raw": 1131
+    },
+    {
+      "index": 30,
+      "price_raw": 1132
+    },
+    {
+      "index": 31,
+      "price_raw": 1133
+    },
+    {
+      "index": 32,
+      "price_raw": 1132
+    },
+    {
+      "index": 33,
+      "price_raw": 1133
+    },
+    {
+      "index": 34,
+      "price_raw": 1136
+    },
+    {
+      "index": 35,
+      "price_raw": 1135
+    },
+    {
+      "index": 36,
+      "price_raw": 1137
+    },
+    {
+      "index": 37,
+      "price_raw": 1136
+    },
+    {
+      "index": 38,
+      "price_raw": 1137
+    },
+    {
+      "index": 39,
+      "price_raw": 1138
+    },
+    {
+      "index": 40,
+      "price_raw": 1138
+    },
+    {
+      "index": 41,
+      "price_raw": 1139
+    },
+    {
+      "index": 42,
+      "price_raw": 1139
+    },
+    {
+      "index": 43,
+      "price_raw": 1140
+    },
+    {
+      "index": 44,
+      "price_raw": 1139
+    },
+    {
+      "index": 45,
+      "price_raw": 1138
+    },
+    {
+      "index": 46,
+      "price_raw": 1136
+    },
+    {
+      "index": 47,
+      "price_raw": 1137
+    },
+    {
+      "index": 48,
+      "price_raw": 1139
+    },
+    {
+      "index": 49,
+      "price_raw": 1140
+    },
+    {
+      "index": 50,
+      "price_raw": 1142
+    },
+    {
+      "index": 51,
+      "price_raw": 1141
+    },
+    {
+      "index": 52,
+      "price_raw": 1142
+    },
+    {
+      "index": 53,
+      "price_raw": 1142
+    },
+    {
+      "index": 54,
+      "price_raw": 1143
+    },
+    {
+      "index": 55,
+      "price_raw": 1145
+    },
+    {
+      "index": 56,
+      "price_raw": 1147
+    },
+    {
+      "index": 57,
+      "price_raw": 1147
+    },
+    {
+      "index": 58,
+      "price_raw": 1148
+    },
+    {
+      "index": 59,
+      "price_raw": 1149
+    },
+    {
+      "index": 60,
+      "price_raw": 1148
+    },
+    {
+      "index": 61,
+      "price_raw": 1148
+    },
+    {
+      "index": 62,
+      "price_raw": 1148
+    },
+    {
+      "index": 63,
+      "price_raw": 1149
+    },
+    {
+      "index": 64,
+      "price_raw": 1148
+    },
+    {
+      "index": 65,
+      "price_raw": 1149
+    },
+    {
+      "index": 66,
+      "price_raw": 1148
+    },
+    {
+      "index": 67,
+      "price_raw": 1149
+    },
+    {
+      "index": 68,
+      "price_raw": 1149
+    },
+    {
+      "index": 69,
+      "price_raw": 1148
+    },
+    {
+      "index": 70,
+      "price_raw": 1149
+    },
+    {
+      "index": 71,
+      "price_raw": 1149
+    },
+    {
+      "index": 72,
+      "price_raw": 1149
+    },
+    {
+      "index": 73,
+      "price_raw": 1148
+    },
+    {
+      "index": 74,
+      "price_raw": 1148
+    },
+    {
+      "index": 75,
+      "price_raw": 1148
+    },
+    {
+      "index": 76,
+      "price_raw": 1150
+    },
+    {
+      "index": 77,
+      "price_raw": 1149
+    },
+    {
+      "index": 78,
+      "price_raw": 1149
+    },
+    {
+      "index": 79,
+      "price_raw": 1150
+    },
+    {
+      "index": 80,
+      "price_raw": 1151
+    },
+    {
+      "index": 81,
+      "price_raw": 1149
+    },
+    {
+      "index": 82,
+      "price_raw": 1150
+    },
+    {
+      "index": 83,
+      "price_raw": 1150
+    },
+    {
+      "index": 84,
+      "price_raw": 1150
+    },
+    {
+      "index": 85,
+      "price_raw": 1150
+    },
+    {
+      "index": 86,
+      "price_raw": 1150
+    },
+    {
+      "index": 87,
+      "price_raw": 1150
+    },
+    {
+      "index": 88,
+      "price_raw": 1149
+    },
+    {
+      "index": 89,
+      "price_raw": 1150
+    },
+    {
+      "index": 90,
+      "price_raw": 1149
+    },
+    {
+      "index": 91,
+      "price_raw": 1149
+    },
+    {
+      "index": 92,
+      "price_raw": 1148
+    },
+    {
+      "index": 93,
+      "price_raw": 1149
+    },
+    {
+      "index": 94,
+      "price_raw": 1148
+    },
+    {
+      "index": 95,
+      "price_raw": 1149
+    },
+    {
+      "index": 96,
+      "price_raw": 1149
+    },
+    {
+      "index": 97,
+      "price_raw": 1150
+    },
+    {
+      "index": 98,
+      "price_raw": 1149
+    },
+    {
+      "index": 99,
+      "price_raw": 1150
+    },
+    {
+      "index": 100,
+      "price_raw": 1150
+    },
+    {
+      "index": 101,
+      "price_raw": 1150
+    },
+    {
+      "index": 102,
+      "price_raw": 1149
+    },
+    {
+      "index": 103,
+      "price_raw": 1151
+    },
+    {
+      "index": 104,
+      "price_raw": 1150
+    },
+    {
+      "index": 105,
+      "price_raw": 1150
+    },
+    {
+      "index": 106,
+      "price_raw": 1149
+    },
+    {
+      "index": 107,
+      "price_raw": 1151
+    },
+    {
+      "index": 108,
+      "price_raw": 1150
+    },
+    {
+      "index": 109,
+      "price_raw": 1150
+    },
+    {
+      "index": 110,
+      "price_raw": 1150
+    },
+    {
+      "index": 111,
+      "price_raw": 1150
+    },
+    {
+      "index": 112,
+      "price_raw": 1151
+    },
+    {
+      "index": 113,
+      "price_raw": 1149
+    },
+    {
+      "index": 114,
+      "price_raw": 1149
+    },
+    {
+      "index": 115,
+      "price_raw": 1148
+    },
+    {
+      "index": 116,
+      "price_raw": 1148
+    },
+    {
+      "index": 117,
+      "price_raw": 1149
+    },
+    {
+      "index": 118,
+      "price_raw": 1148
+    },
+    {
+      "index": 119,
+      "price_raw": 1147
+    },
+    {
+      "index": 120,
+      "price_raw": 1147
+    },
+    {
+      "index": 121,
+      "price_raw": 1147
+    },
+    {
+      "index": 122,
+      "price_raw": 1148
+    },
+    {
+      "index": 123,
+      "price_raw": 1149
+    },
+    {
+      "index": 124,
+      "price_raw": 1149
+    },
+    {
+      "index": 125,
+      "price_raw": 1150
+    },
+    {
+      "index": 126,
+      "price_raw": 1148
+    },
+    {
+      "index": 127,
+      "price_raw": 1149
+    },
+    {
+      "index": 128,
+      "price_raw": 1148
+    },
+    {
+      "index": 129,
+      "price_raw": 1149
+    },
+    {
+      "index": 130,
+      "price_raw": 1150
+    },
+    {
+      "index": 131,
+      "price_raw": 1150
+    },
+    {
+      "index": 132,
+      "price_raw": 1150
+    },
+    {
+      "index": 133,
+      "price_raw": 1150
+    },
+    {
+      "index": 134,
+      "price_raw": 1150
+    },
+    {
+      "index": 135,
+      "price_raw": 1150
+    },
+    {
+      "index": 136,
+      "price_raw": 1151
+    },
+    {
+      "index": 137,
+      "price_raw": 1150
+    },
+    {
+      "index": 138,
+      "price_raw": 1151
+    },
+    {
+      "index": 139,
+      "price_raw": 1150
+    },
+    {
+      "index": 140,
+      "price_raw": 1150
+    },
+    {
+      "index": 141,
+      "price_raw": 1152
+    },
+    {
+      "index": 142,
+      "price_raw": 1151
+    },
+    {
+      "index": 143,
+      "price_raw": 1151
+    },
+    {
+      "index": 144,
+      "price_raw": 1151
+    },
+    {
+      "index": 145,
+      "price_raw": 1151
+    },
+    {
+      "index": 146,
+      "price_raw": 1151
+    },
+    {
+      "index": 147,
+      "price_raw": 1151
+    },
+    {
+      "index": 148,
+      "price_raw": 1151
+    },
+    {
+      "index": 149,
+      "price_raw": 1150
+    },
+    {
+      "index": 150,
+      "price_raw": 1149
+    },
+    {
+      "index": 151,
+      "price_raw": 1150
+    },
+    {
+      "index": 152,
+      "price_raw": 1148
+    },
+    {
+      "index": 153,
+      "price_raw": 1149
+    },
+    {
+      "index": 154,
+      "price_raw": 1150
+    },
+    {
+      "index": 155,
+      "price_raw": 1150
+    },
+    {
+      "index": 156,
+      "price_raw": 1151
+    },
+    {
+      "index": 157,
+      "price_raw": 1150
+    },
+    {
+      "index": 158,
+      "price_raw": 1150
+    },
+    {
+      "index": 159,
+      "price_raw": 1151
+    },
+    {
+      "index": 160,
+      "price_raw": 1152
+    },
+    {
+      "index": 161,
+      "price_raw": 1151
+    },
+    {
+      "index": 162,
+      "price_raw": 1152
+    },
+    {
+      "index": 163,
+      "price_raw": 1152
+    },
+    {
+      "index": 164,
+      "price_raw": 1151
+    },
+    {
+      "index": 165,
+      "price_raw": 1151
+    },
+    {
+      "index": 166,
+      "price_raw": 1151
+    },
+    {
+      "index": 167,
+      "price_raw": 1152
+    },
+    {
+      "index": 168,
+      "price_raw": 1152
+    },
+    {
+      "index": 169,
+      "price_raw": 1152
+    },
+    {
+      "index": 170,
+      "price_raw": 1151
+    },
+    {
+      "index": 171,
+      "price_raw": 1152
+    },
+    {
+      "index": 172,
+      "price_raw": 1152
+    },
+    {
+      "index": 173,
+      "price_raw": 1151
+    },
+    {
+      "index": 174,
+      "price_raw": 1151
+    },
+    {
+      "index": 175,
+      "price_raw": 1152
+    },
+    {
+      "index": 176,
+      "price_raw": 1152
+    },
+    {
+      "index": 177,
+      "price_raw": 1153
+    },
+    {
+      "index": 178,
+      "price_raw": 1152
+    },
+    {
+      "index": 179,
+      "price_raw": 1150
+    },
+    {
+      "index": 180,
+      "price_raw": 1151
+    },
+    {
+      "index": 181,
+      "price_raw": 1152
+    },
+    {
+      "index": 182,
+      "price_raw": 1152
+    },
+    {
+      "index": 183,
+      "price_raw": 1152
+    },
+    {
+      "index": 184,
+      "price_raw": 1152
+    },
+    {
+      "index": 185,
+      "price_raw": 1152
+    },
+    {
+      "index": 186,
+      "price_raw": 1151
+    },
+    {
+      "index": 187,
+      "price_raw": 1151
+    },
+    {
+      "index": 188,
+      "price_raw": 1152
+    },
+    {
+      "index": 189,
+      "price_raw": 1151
+    },
+    {
+      "index": 190,
+      "price_raw": 1153
+    },
+    {
+      "index": 191,
+      "price_raw": 1153
+    },
+    {
+      "index": 192,
+      "price_raw": 1154
+    },
+    {
+      "index": 193,
+      "price_raw": 1152
+    },
+    {
+      "index": 194,
+      "price_raw": 1154
+    },
+    {
+      "index": 195,
+      "price_raw": 1154
+    },
+    {
+      "index": 196,
+      "price_raw": 1154
+    },
+    {
+      "index": 197,
+      "price_raw": 1154
+    },
+    {
+      "index": 198,
+      "price_raw": 1155
+    },
+    {
+      "index": 199,
+      "price_raw": 1155
+    },
+    {
+      "index": 200,
+      "price_raw": 1153
+    },
+    {
+      "index": 201,
+      "price_raw": 1153
+    },
+    {
+      "index": 202,
+      "price_raw": 1152
+    },
+    {
+      "index": 203,
+      "price_raw": 1153
+    },
+    {
+      "index": 204,
+      "price_raw": 1155
+    },
+    {
+      "index": 205,
+      "price_raw": 1154
+    },
+    {
+      "index": 206,
+      "price_raw": 1155
+    },
+    {
+      "index": 207,
+      "price_raw": 1155
+    },
+    {
+      "index": 208,
+      "price_raw": 1154
+    }
+  ],
+  "raw_cumulative_volumes": [
+    39200,
+    58324,
+    67949,
+    79835,
+    86675,
+    93844,
+    98819,
+    108315,
+    116761,
+    125059,
+    138058,
+    154774,
+    173607,
+    179896,
+    187886,
+    197590,
+    203986,
+    211985,
+    217010,
+    220171,
+    229223,
+    231988,
+    243884,
+    248142,
+    256087,
+    260100,
+    265228,
+    269082,
+    272561,
+    276865,
+    281636,
+    291687,
+    295436,
+    301088,
+    323178,
+    334268,
+    340731,
+    345911,
+    351596,
+    360449,
+    373861,
+    391965,
+    402344,
+    412678,
+    420512,
+    427811,
+    433393,
+    437185,
+    446608,
+    457174,
+    479436,
+    485978,
+    496561,
+    499087,
+    510653,
+    540239,
+    564609,
+    572192,
+    590117,
+    613018,
+    621221,
+    632760,
+    643053,
+    663859,
+    673828,
+    678747,
+    687594,
+    701314,
+    703695,
+    709139,
+    720846,
+    721965,
+    727151,
+    733013,
+    735414,
+    737231,
+    752825,
+    755879,
+    759086,
+    776384,
+    779756,
+    786088,
+    795437,
+    807842,
+    809112,
+    811166,
+    813912,
+    817407,
+    821221,
+    825997,
+    828079,
+    832747,
+    835899,
+    840218,
+    844206,
+    845286,
+    846789,
+    848213,
+    852002,
+    858354,
+    859684,
+    861470,
+    863939,
+    869951,
+    872477,
+    875694,
+    879209,
+    881655,
+    885969,
+    888517,
+    889882,
+    893292,
+    895030,
+    899278,
+    900432,
+    904294,
+    906217,
+    907938,
+    910357,
+    913222,
+    926933,
+    929111,
+    934783,
+    936728,
+    939504,
+    943230,
+    948481,
+    951924,
+    952852,
+    954567,
+    958934,
+    960675,
+    962961,
+    973646,
+    975763,
+    979392,
+    993569,
+    998168,
+    999124,
+    1002472,
+    1008198,
+    1011089,
+    1014164,
+    1016639,
+    1018317,
+    1019742,
+    1023880,
+    1029065,
+    1030868,
+    1033012,
+    1039983,
+    1050444,
+    1053270,
+    1055049,
+    1057352,
+    1062325,
+    1065054,
+    1067501,
+    1069259,
+    1071494,
+    1088317,
+    1091016,
+    1093418,
+    1096684,
+    1098691,
+    1103678,
+    1104793,
+    1112812,
+    1114788,
+    1117455,
+    1119453,
+    1122282,
+    1127238,
+    1131186,
+    1133989,
+    1137336,
+    1142272,
+    1157732,
+    1171757,
+    1175801,
+    1179744,
+    1182902,
+    1184062,
+    1186193,
+    1192151,
+    1197518,
+    1198934,
+    1203202,
+    1205964,
+    1207671,
+    1213405,
+    1232943,
+    1236213,
+    1250903,
+    1258167,
+    1273712,
+    1276228,
+    1282380,
+    1288420,
+    1291867,
+    1299177,
+    1302084,
+    1310721,
+    1315629,
+    1322905,
+    1327461,
+    1331241,
+    1334785,
+    1339055
+  ],
+  "differing_indexes": [
+    119,
+    208
+  ],
+  "scope": "Raw cumulative-volume comparison only; external volume unit remains unqualified."
+}

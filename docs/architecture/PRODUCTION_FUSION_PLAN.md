@@ -1,7 +1,7 @@
 # rustdx 生产技术方案
 
 <!-- lifecycle:registry -->
-读者：开发/运维；责任：架构维护者。源码核验：2026-10-25；每90日及发布状态或部署拓扑变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：开发/运维；责任：架构维护者。源码核验：2026-10-27；每90日及发布状态或部署拓扑变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 版本：3.0；2026-10-24。方案对应当前单机实现，按[需求](../requirements/REQUIREMENTS.md)追踪。拟扩展能力集中在第8节，不将设计目标表述为已验收结果。
@@ -42,6 +42,8 @@ flowchart LR
 
 worker使用剩余deadline，并为封存/发布预留预算。采集正常取消后有宽限期；超时终止独立进程组。源文件、记录数、工作空间及空闲磁盘受配置限制；周期扫描可能遇到暂存文件消失，封存时再次计量。
 
+进程组清理先终止并reap leader，再在原有200ms窗口内补终止仍存在的组成员，覆盖首轮信号与后代创建交错的情况。期限不续期，仍有成员或状态不明确时保持恢复/备份拒绝；不以signal0存在性检查推断业务完成。实现见[supervisor.rs](../../apps/rustdx-runner/src/supervisor.rs)。
+
 day使用同字节快照完成摘要和解析，每块4096条，质量和收益跨块连续。A股乱序/重复拒绝，非A股兼容路径最多8路磁盘归并。输出顺序确定，切换线程数不改变CSV。
 
 runner流式回读CSV，独立重放冻结day的范围内全部记录，精确核对源字段，再通过SQLite临时表核对应有/意外键。所有检查通过后生成按日期和证券顺序确定的分区。
@@ -55,7 +57,7 @@ TCP日线选择独立052b整数股数来源合同，有总预算schedule时最�
 
 ## 4. 账本与不可变发布
 
-一个根目录同时只有一个控制进程；SQLite使用WAL，账本schema为3，增加持久worker/controller观测。Job/Attempt、追加事件、release和目录指针分别持久化。worker启动前先登记Attempt，文件封存后再登记release。
+一个根目录同时只有一个控制进程；SQLite使用WAL，账本schema为4，保留持久worker/controller观测并增加可重建汇总投影。Job/Attempt、追加事件、release和目录指针分别持久化。worker启动前先登记Attempt，文件封存后再登记release。旧schema3备份先原样恢复，再显式`migrate`；`rebuild-metrics`从原始观测重建汇总，不能修改原始审计记录。源码锚点见[账本](../../apps/rustdx-runner/src/ledger.rs)和[汇总](../../apps/rustdx-runner/src/observations.rs)。
 
 封存包含源、事实、契约和产物库存；私有rename、文件/目录fsync后只读。目录保存全部日期分区映射，未变化分区继续引用已有release。源修订必须增加，source_as_of不得降低，完整目录不留交易日分区缺口。
 
@@ -74,6 +76,8 @@ TCP日线选择独立052b整数股数来源合同，有总预算schedule时最�
 | 发布 | schema7清单 | 全部目标verified后目录事务提交 |
 
 runner每批512行，传输/spawn前fsync请求并事务登记intent。完整限额内响应持久后确认，再精确回读；请求/响应上限各8MiB，证据受工作空间预算约束。CH保存query_id，Mongo保存逻辑请求和完整响应。
+
+只读`plan`在采集前按应有Trading键、每行1024字节保守上界和[容量公式](../../apps/rustdx-runner/src/database/capacity.rs)输出每目标操作/证明以及全部目标证据空间。不足时整任务`can_start=false`，另给出完整日期窗口建议；单日仍不足的窗口保留失败标记。窗口不拆同日证券，执行时仍冻结输入、核对目录连续性与修订单调性。plan不初始化账本、不读取凭据、不联网；封存后按真实行字节和现有证据重新计算。实现见[pipeline/plan.rs](../../apps/rustdx-runner/src/pipeline/plan.rs)。
 
 unknown、确认丢失或目标尚未开始时，recover不自动INSERT。核查服务器在途请求、原请求/响应和账本后，可以明确隔离未发布候选，用全新release重做；晚到旧请求只作用于旧release。已经verified的原凭据保持不变，恢复核验另存证据。
 

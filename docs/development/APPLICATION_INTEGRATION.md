@@ -1,12 +1,12 @@
 # 外部应用调用约定
 
 <!-- lifecycle:registry -->
-读者：应用集成者；责任：API维护者。源码核验：2026-10-25；每90日及跨接口消费合同变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](DOCUMENTATION_GOVERNANCE.md)登记。
+读者：应用集成者；责任：API维护者。源码核验：2026-10-27；每90日及跨接口消费合同变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 当前源码版本：<!-- version:project -->2.0.2<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
-更新日期：2026-10-24。适用于应用通过 `rustdx_complete::tcp::stock::Client`、checked 请求及公开结果模型使用本仓库核心库。逐命令签名、返回字段和具体参数上限见[26命令接口手册](../reference/COMMAND_API.md)，已解析/候选/未知字段及证据范围见[字段解析状态](../reference/RESPONSE_FIELD_SEMANTICS.md)；本页定义跨接口的调用和消费规则。
+更新日期：2026-10-27。适用于应用通过 `rustdx_complete::tcp::stock::Client`、checked 请求及公开结果模型使用本仓库核心库。逐命令签名、返回字段和具体参数上限见[26命令接口手册](../reference/COMMAND_API.md)，已解析/候选/未知字段及证据范围见[字段解析状态](../reference/RESPONSE_FIELD_SEMANTICS.md)；本页定义跨接口的调用和消费规则。
 
 已发布的历史核心包为 `jelven-rustdx-complete 2.0.0`，Rust 导入名为 `rustdx_complete`，最低 Rust 1.89、edition 2024。注册表可使用精确依赖 `version = "=2.0.0"`，发布源码与包摘要见[发布记录](../archive/release/PUBLICATION_20261025.md)。集成应用固定源码提交、源码摘要、依赖锁文件和所用接口版本，更新时检查[迁移说明](../release/MIGRATION.md)。
 
@@ -38,7 +38,7 @@
 | 052b成交量 | `volume_shares`为股；`volume_lots`为股数/100 |
 | 052d、分时、快照、成交的量 | 按品种/周期核实源单位；不能统一乘100，标准K线转换显式传 `VolumeUnit` |
 | 金额 | 当前052d与052b金额均为非负有限IEEE754 binary32；不能套报价金额算法；052b旧指数算法缺少隐含首位，已修复 |
-| 财务 | 逐字段读取unit、semantic_status和evidence；`value()`仅提供已验证值，`candidate_value()`是显式候选换算 |
+| 财务 | 逐字段读取unit、semantic_status和evidence；`value()`仅提供已验证值；`candidate_value()`是显式候选换算，已知证据冲突时返回None并提供`candidate_rejection()` |
 | 0ffc比例 | 是百分点，不是0..1比例；净额沿源total_amount单位 |
 
 `CanonicalBar::provenance` 保留原始category、command/market/start/count、股票或指数解码类型、转换前成交量、源量单位及依据。网络标准化另存端点、连接ID/代次和接收时间；离线解码不补造网络来源。`Period::Day`不能还原category 4/9，`Minute1`不能还原7/8，应保存请求元数据。旧 `from_kline` 缺少请求信息，明确保留 `request=None`；可重建来源时使用 `from_kline_request/from_index_kline_request`。`CallerSpecified`只表示调用方选定单位，`Referenced`保存调用方维护的版本/证据标识，都不自动代表交易所核验。
@@ -49,7 +49,11 @@
 
 0feb解码默认为`Unverified { reason: ServerDoesNotEchoTradingDate }`，`require_trading_date()`返回Unsupported。调用方确有独立带日期参照时，可用`MinuteDateReference::new`声明完整证券、日期、标尺、全部分钟价格点、HTTPS来源和原始文件SHA-256，再调用`with_date_reference`。该入口重解原始正文，要求全部价格点匹配，并绑定请求、节点、连接、获取时间、目录代次、正文和解码字段；成功后为`IndependentlyReferenced`。这只表达调用方证据范围内的日期参照，不是主站回显、通用日期验收或量/均价/合成标签资格。任何公开字段或来源被修改，getter、日期门禁和序列化均降为未核实。按交易日分区或发布必须在最终使用前调用门禁；非空、240点或请求日本身不能资格化。
 
+`MinuteSeries::compare_reference(&reference, cumulative_volume_raw)`对完整独立价格点及可选原始累计量作诊断，返回全部价格/累计量是否匹配、差异索引、合成标签及会话边界位置。累计量须与参考价格逐点对齐、非负且不递减；重解正文后拒绝被改写的DTO。该接口不提升日期、时间或量单位资格。2026-10-27平安银行209点参照中，11:30价格raw为1146/1147、累计量913147/913222，末点另有量差；首点09:31的39200已包含此前会话量。保留差异，不整体平移标签、补09:30或删除119点以通过日期门禁，见[本轮修复](../archive/development/LIVE_MARKET_LEGACY_FIX_20261027.md)。
+
 `RECENT_MINUTES_DATE_SCHEMA_VERSION=2` 的selector为有效YYYYMMDD整数的32位补码，即 `date.wrapping_neg()`，按小端发送。旧schema1使用ordinal公式，20260817/18实际发送了20260609/10的selector；历史缓存必须保留旧请求参数、字节与schema，不能直接给旧数据重新标为8月。离线核验工具对缺少版本字段的旧材料按schema1读取，新采样必须写入 `recent_minutes_date_schema_version=2`。
+
+2026-10-27收盘后扩大到两节点各228次请求，独立回放共43,200点。当前采样最早非空日期为sz000001的20000609、sz159915的20111209、sh510300的20120528；各自前一个已采交易日期为空。33组日期/证券的两节点分钟原值存在差异，sz000001与官网day的106组开末价对照中35组有差异；当日20261027不在该冻结day文件中。以上只登记请求日期可得性及源差异，不推导连续历史、准确全点、固定保存年数或永久保存。原帧及逐点差异索引见[能力补证](../archive/development/UPSTREAM_CAPABILITIES_FIX_20261027.md)。
 
 成交事件的 `num/trade_count_raw` 不是稳定成交ID。保留状态5/8和未知事件，先保存原始事件再按业务资格筛选；`ConfirmedByProfile` 是协议配置规则确认，不是交易所独立核验。末价×聚合量属于估算，不是精确源成交额。
 
@@ -63,9 +67,17 @@
 
 财务使用`FinanceSnapshot::require_fields(&[...])`声明非空、唯一的必需字段；任何候选/未知、未核实报告期或被改写的语义版本都拒绝整组消费。该门禁验证数值资格，不自动证明TTM、年度化、基本/稀释或合并口径。固定样本矩阵在[finance-sample.json](../../config/consumption/finance-sample.json)，通过`scripts/validation/verify_consumption_fields.py`同时核验原响应、参考数据和发行人原文件摘要；其他证券、期次和字段须独立补证。
 
+默认财务另覆盖市场0/000001、更新日20261024、报告期2026-09-30的17个逐位匹配字段。现金净变动源值85.15亿元与公告58.72亿元冲突，`value()`及`candidate_value()`均为None，`candidate_rejection()`为`EvidenceConflict { expected_raw_bits }`；raw原值保持可见。该拒绝也适用于自定义profile已登记但未匹配的字段；不能改用候选值绕过已知冲突。未适用profile的字段仍按原基线候选规则处理。Q3独立期望及公告原字节见[夹具](../../crates/rustdx-core/tests/fixtures/finance-q3/expected.json)，旧H1矩阵不变。
+
+该固定记录可调用`FinanceSnapshot::cash_flow_reconciliation()`取得`FinanceCashFlowReconciliation`诊断：公告经营283,221、投资6,503、筹资−281,209百万元合计8,515，汇率影响−2,643后净增加5,872百万元，严格解释两值差额。返回源bits、不含汇率合计、各活动/汇率/披露净额（均为元）及公告URL。入口检查证券、更新日、报告期、语义/profile版本、经营现金流和现金槽原位模式，未覆盖范围返回Unsupported。该解释不重新命名或资格化原`CashFlowNetChange`，不会替换其原值/拒绝规则；固定独立期望见[现金口径夹具](../../crates/rustdx-core/tests/fixtures/finance-cash-basis/expected.json)。
+
+`DayFileReference::new`校验调用方提供的day原字节、SHA-256、市场/代码、HTTPS来源、32字节布局及严格递增唯一日期；`compare_page`重解052b正文，拒绝错证券、被改写的DTO或参考缺日。结果逐条同时给出未修改的`tcp`、来源为`TdxDayFile`的`reference: CanonicalBar`及`differing_fields`，另存双方来源与参考摘要。业务显式选择reference时须同时留存差异；接口不静默替换Client、CLI或runner的052b原值。摘要证明字节一致性，day文件本身没有证券身份槽，外部来源/摘要属于该证券及原TCP请求的真实性仍由调用方核实。四证券27,237条核对中有1条股数差9股及43条金额差1ULP，不能补股或放宽误差把源差异变成精确一致。
+
 | 实际消费范围 | 单位/日期与资格 | 证据与边界 |
 | --- | --- | --- |
 | 0010固定sz000001更新20260815、2026-H1的10字段 | 逐raw_bits换算；报告期及必需字段门禁 | 固定矩阵核验；14命名槽仍候选、7槽未知 |
+| 0010固定sz000001更新20261024、2026-Q3的17字段 | 逐raw_bits及公告报告期；EPS为本年前三季度基本/稀释口径 | 7命名槽候选，其中现金净变动拒绝候选换算；7槽未知 |
+| 052b与显式day参考核对 | 原TCP及参考标准值并列、逐字段差异、来源摘要 | 参考不改变原TCP资格；全点对比保留44条源差异，调用方核实来源身份 |
 | 052b runner沪深A股、已结束日线 | 整数股数仅转f64一次，日期来自原响应；固定volume证据摘要 | 精确原帧重放与全部字段回读；真实独立核验仍限已有24条 |
 | 052d其他品种/category、近期分时量 | 调用方声明单位与来源，保留转换前值；没有通用Verified | 不继承052b或其他category资格；扩大范围先补证 |
 | 0fc5/0fc6事件、估算额与源额 | 协议事件资格、估算与报告金额分别存储 | 独立业务核验仍待补；估算不能替代源额 |
@@ -78,6 +90,20 @@ F10文本的complete表示指定字节范围读齐，不代表指标已经结构
 通用资源使用`Client::file_content/resource_file`，采用300字节路径、声明块长和未知尾部合同。完整下载必须检查`complete/termination`或调用`ResourceFile::require_complete()`；字节/块数/响应预算耗尽得到的前缀不能当全文件，即使前缀本身能解析。短/空块只说明观察到主站资源末尾，不提供声明MD5或下载期间原子性。`resource_stats`要求完整文件、ZIP大小/中央目录/CRC、严格GBK及唯一CFG键；`StatsRow.candidate_values`全部仍是候选语义，保留`fields_raw`、`stats_date_raw`和`unparsed_lines`，不能按字段名自动升级为已核验价格、股本、金额或交易日期。资源字节与raw_payload须另存，serde输出不含它们。
 
 DTO序列化不等于原始证据归档。`CommandPage.raw_payload`、`DelistedBarsPage.raw_payload`及`BlockFile.content/BlockMetadata.raw_payload`在serde输出中被跳过，普通QuoteData/KlineData也未暴露全部原始槽；需要重放时显式保存原字节或启用FrameObserver，并关联请求、响应身份和运行/归档ID。离线结果缺少的网络来源不补造为现场采样。
+
+完整分钟档案使用独立合同，见[ADR-0002](../architecture/decisions/0002-minute-archive.md)；
+候选结构与入口为[示例](../../config/consumption/minute-archive.example.json)和
+[audit_minute_archive.py](../../scripts/validation/audit_minute_archive.py)。
+每个JSONL行包含market、code、date、slot、price_minor（人民币分）、volume_shares、
+amount_minor（人民币分）、cumulative_volume_shares及cumulative_amount_minor；
+每个分区分别固定日期、槽位、价格、量、额独立证据和全天控制量额。Trading必须完整覆盖声明槽，
+停牌/摘牌明确免行情且有点时事实；不从请求日期或合成标签赋予资格。
+每个证据含相对path、bytes和SHA256；独立资格另含HTTPS source及independently_reviewed，
+原取得另含endpoint、captured_at、response及按来源要求的request/origin_evidence。
+校验covered只说明固定字节和调用方声明一致，不证明来源真实权威。
+retention的days、max_bytes、max_files、max_freshness_seconds由业务部署方明确填写，
+缺值拒绝；revision/source_as_of不回退、保留窗口内分区不丢失，结果记录原始来源分类及稳定重放摘要。
+输出放在档案外的新文件；候选校验不发布、不删除，也不把RequestedRefresh升级为PassivePush。
 
 ## 3. 分页完成状态与失败
 
@@ -124,6 +150,14 @@ DTO序列化不等于原始证据归档。`CommandPage.raw_payload`、`DelistedB
 
 `KlineData<'a>/IndexKlineData<'a>/BatchKline<'a>/BatchBars<'a>` 的代码借用输入字符串，输入生命周期必须覆盖结果使用期。应用跨线程存储、缓存或持久化时应采用拥有证券身份的自有模型或明确的标准化模型，不把全部Client结果视为完全owned。
 
+完整离线调用链见[checked_owned_bars](../../crates/rustdx-core/examples/usage/checked_owned_bars.rs)：
+显式Symbol/Period → KlineRequest → checked decoder → owned CanonicalBar → 原子JSON。
+借用请求释放后仍保留市场、周期、价格口径、来源单位及依据、原请求页和解码器；
+缺少网络取得信息时保留None。示例不授予日期、量额或生产发布资格。
+`LegacyIndicatorError`是原根路径错误的明确别名；
+`IncrementalIndicatorError`是原`indicators::IndicatorError`的明确别名，适用于try_ema/try_macd及增量状态。
+两条旧路径保留，两类错误不隐式互换。
+
 多Client应用可按业务进程生命周期持有`Arc<QuoteMetadataStore>`，先预热全部所需市场，再用`with_quote_metadata`共享，见[示例](../../crates/rustdx-core/examples/usage/shared_quote_metadata.rs)。借用查找不分配临时代码String；每市场刷新原子替换该市场，其他市场及旧Arc读者保留原世代。跨日仍拒绝过期目录，进程间Store不共享。
 
 ## 5. 0547订阅与推送状态
@@ -139,7 +173,11 @@ DTO序列化不等于原始证据归档。`CommandPage.raw_payload`、`DelistedB
 | `Invalid` | 停止将残留quote视为当前有效行情，刷新目录后 `rebuild` |
 | `Closed` | 会话已关闭，后续需要重新创建 |
 
-通过 `refresh/poll_push/snapshot/rebuild/close` 管理会话；局部poll超时的None不证明没有更新。收到更新后**替换该证券状态**，不要再次累加累计成交量、成交额或内外盘。
+通过 `refresh/poll_push/poll_update/snapshot/rebuild/close` 管理会话；局部poll超时的None不证明没有更新。收到更新后**替换该证券状态**，不要再次累加累计成交量、成交额或内外盘。
+
+需要持续更新时调用`poll_update(idle_timeout)`，等待基线时立即主动refresh；其余状态先等被动推送，局部空闲超时再主动refresh。idle_timeout必须大于0，调用继承受管连接、父任务期限、取消、队列及失效处理。返回`QuoteUpdate::PassivePush(QuotePush)`或`RequestedRefresh(QuoteRefresh)`，调用方必须保留来源区别，随后用`synchronized_snapshot()`检查完整消费资格；无后台线程或自动重连。`poll_push`仍只读被动推送。2026-10-27收盘前两节点各4次调用均为RequestedRefresh，行情及游标变化已独立回放；这关闭无被动推送时客户端无持续更新入口的问题，不证明主站被动推送能力。
+
+refresh发送前本地已收到的半帧即使message id碰巧等于新请求id，补齐后也按被动帧入队，继续等真正响应。该边界只覆盖已观察到的本地前缀；不能据此断言服务器未读帧的产生时点。模拟回归已验证先7字节、同id推送游标11、真正响应游标12的归属。固定eltdx3.3.0源码未发现0547额外激活步骤；另一TQ接口的`subscribe_hq`不能作为0547被动推送证据，见[补证报告](../archive/development/UPSTREAM_CAPABILITIES_FIX_20261027.md)。真实被动推送资格仍须盘中单独取证。
 
 队列默认且最大256帧/8MiB。队列溢出、游标回退、断线、精度跨日等失效需要显式恢复，不能静默丢帧并继续标记同步。`close/Drop`释放连接。同步会话实现及工程测试通过不代表真实盘中主动推送已完成验收，实际交易窗口边界见[推送验证](../archive/validation/QUOTE_PUSH_VALIDATION_20261024.md)。
 
@@ -243,6 +281,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 ## 9. TCP日线采集与runner发布
 
 runner输出仍使用`a-share/day/raw/cny/shares/v1`，新采集输入合同为`a-share/tcp-052b/day/raw/cny/integer-shares/v2`，请求及逐证券收据schema=2。配置`tcp_day`显式端点、单位依据SHA-256及页/单证券原始行/单证券正文/全部报文预算；与本地day目录互斥。新runner冻结`Request.schedule`，支持最多10000只排序唯一沪深A股，最多8个同步采集线程并受共享网络许可约束。旧无schedule请求维持串行、32只上限及原字节离线重放；新采集拒绝旧052d合同。不隐式映射北交所，不接收五分钟、复权或当天日线。
+
+只读`plan`按实际应有键核对事实范围，同时给出每目标数据库操作/证明上限、全部目标证据字节/条目及余量；每行1024字节是采集前保守上界，封存后仍按真实字节重算。预算不足时`can_start=false`，建议窗口只在日期之间分割并保留同日完整名单；单日无法容纳仍拒绝。按时间顺序执行窗口，保持同一事实版本、完整catalog连续性及修订/source_as_of单调；plan不会核验既有catalog、创建账本、读取凭据或联网。实现锚点为[plan.rs](../../apps/rustdx-runner/src/pipeline/plan.rs)与[capacity.rs](../../apps/rustdx-runner/src/database/capacity.rs)。
 
 可用`Config.tcp_day_schedule`显式冻结`max_parallel/timeout_seconds/max_raw_rows/max_payload_bytes`。省略时并行取`workers.min(8)`，期限取整任务扣除发布预留，原始行总量取单证券上限×证券数（至多10亿），正文总量取`max_source_bytes`。总行、CSV、所有wire/receipt归档仍独立限制。每个窗口启动前预留单证券最大原始行、正文上限加131070字节的最后一页/空页确认余量、receipt及wire空间；不足时减小窗口或拒绝启动，不截断为成功。正文预算计解压后页面，不是RSS，网络压缩字节和探测报文另计。保守预留可能在仍有少量余额时拒绝下一证券，应按计划调整单证券上限。
 

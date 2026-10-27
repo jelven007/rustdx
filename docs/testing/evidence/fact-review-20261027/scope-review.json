@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-27",
+  "capture_manifest": "capture.json",
+  "review_kind": "single_executor_scope_comparison",
+  "independent_review_complete": false,
+  "rule_checked_through": "2026-10-22",
+  "cutoff_extended": false,
+  "calendar_through": "2026-12-31",
+  "local_clause_comparisons": [
+    {"source": "sse-rule-2026.docx", "clauses": ["3.3.13", "3.3.17", "6.6", "11.9"], "result": "current_core_percentages_and_ipo_boundaries_match"},
+    {"source": "szse-rule-2026.pdf", "clauses": ["3.3.13", "3.3.15", "3.3.19"], "result": "current_main_chinext_percentages_and_ipo_boundaries_match"},
+    {"source": "bse-rule-2026.docx", "clauses": ["3.3.11", "3.3.12", "10.6"], "result": "current_beijing_percentage_and_first_ipo_session_match"},
+    {"source": "sse-deferred-2026.docx", "clauses": ["3.6.2", "3.6.3", "3.6.4", "3.6.9", "3.6.10"], "result": "deferred_block_trade_subclauses_must_not_inherit_july_6"}
+  ],
+  "missing": [
+    "complete_later_amendment_and_implementation_inventory",
+    "independent_review_of_all_applicable_historical_rule_intervals",
+    "beijing_transfer_first_session_original_evidence",
+    "legacy_chinext_delisting_and_registration_start_originals",
+    "operator_assigned_owners_and_reviewers",
+    "approved_business_universe_and_listing_st_suspension_originals",
+    "2027_exchange_calendar"
+  ],
+  "qualification": "materials_obtained_with_partial_scope_comparison_only"
+}

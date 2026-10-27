@@ -670,6 +670,7 @@ dependencies = [
  "proptest",
  "serde",
  "serde_json",
+ "sha2",
  "thiserror",
  "trade_date_a",
  "windows-sys 0.61.2",

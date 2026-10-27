@@ -1,0 +1,20 @@
+[package]
+name = "rustdx-live-refresh-check"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.89"
+publish = false
+
+[[bin]]
+name = "rustdx-live-update-check"
+path = "main.rs"
+
+[[bin]]
+name = "rustdx-minute-window-check"
+path = "window.rs"
+
+[dependencies]
+rustdx-complete = { package = "jelven-rustdx-complete", path = "/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core" }
+chrono = "0.4"
+serde_json = "1"
+serde = "1"

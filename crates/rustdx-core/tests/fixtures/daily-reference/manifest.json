@@ -1,0 +1,862 @@
+{
+  "source_url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+  "endpoint": "115.238.56.198:7709",
+  "captured_date": "2026-10-27",
+  "symbols": [
+    {
+      "market": 0,
+      "code": "000001",
+      "file": "sz000001.day",
+      "sha256": "d0c169a32b03bb63e2588512d630e5021c73318e315303205ca7a6eaebc67173",
+      "rows": 8477,
+      "pages": [
+        {
+          "start": 0,
+          "count": 800,
+          "file": "sz000001-00000.payload.bin",
+          "sha256": "c076b6724f66c69816cdfbe06f91f8d55afdb840f48da377ba32e5bc84946307"
+        },
+        {
+          "start": 800,
+          "count": 800,
+          "file": "sz000001-00800.payload.bin",
+          "sha256": "286294b40f232030bc0b4a02a166a44ab97043262f3aa862b6976262fef0f5be"
+        },
+        {
+          "start": 1600,
+          "count": 800,
+          "file": "sz000001-01600.payload.bin",
+          "sha256": "2e84ace25377aee23a6f371e7a52da49b6479c3df5a0f46b3083c49d08add466"
+        },
+        {
+          "start": 2400,
+          "count": 800,
+          "file": "sz000001-02400.payload.bin",
+          "sha256": "0512a81b4d23af423dfc9af3b8d6d39c4896667e1dc8acd861b4382d5ccf0f5a"
+        },
+        {
+          "start": 3200,
+          "count": 800,
+          "file": "sz000001-03200.payload.bin",
+          "sha256": "26ea6f0bfe36d1e00957b80167d46d12813bf78bb0f5cffdacc2563a9e74f09d"
+        },
+        {
+          "start": 4000,
+          "count": 800,
+          "file": "sz000001-04000.payload.bin",
+          "sha256": "0139033573c9bb312a3a0fea05c88476dafd8e05b0a59b09ba55017e10150053"
+        },
+        {
+          "start": 4800,
+          "count": 800,
+          "file": "sz000001-04800.payload.bin",
+          "sha256": "71aad4364ba8c305f1b89747f0d91e96f305e47555804bcccef0c19b2dbf7de0"
+        },
+        {
+          "start": 5600,
+          "count": 800,
+          "file": "sz000001-05600.payload.bin",
+          "sha256": "73edfb756a5f0b93d006e7c17c0a21500029b3c297f30814e1f76e04ea3cd750"
+        },
+        {
+          "start": 6400,
+          "count": 800,
+          "file": "sz000001-06400.payload.bin",
+          "sha256": "ebd26ef0da40d3d8373aa2da376eafbdc6ddaad40e21c18b9fc4fb1c124875ed"
+        },
+        {
+          "start": 7200,
+          "count": 800,
+          "file": "sz000001-07200.payload.bin",
+          "sha256": "04dd61821da229ccff2b1b26055b142a023c9195ac9fdc3a532dd31589b9be2d"
+        },
+        {
+          "start": 8000,
+          "count": 800,
+          "file": "sz000001-08000.payload.bin",
+          "sha256": "7e23484970630948832c2b1ef7ce8091aff7075ab5d9f829030b7cbfc099c0e2"
+        },
+        {
+          "start": 8477,
+          "count": 800,
+          "file": "sz000001-08477.payload.bin",
+          "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+        }
+      ],
+      "differences": []
+    },
+    {
+      "market": 0,
+      "code": "000988",
+      "file": "sz000988.day",
+      "sha256": "9ef465fa3313259af231642624a9bf78c96bf30ca3efa010ab707546ec11c095",
+      "rows": 6319,
+      "pages": [
+        {
+          "start": 0,
+          "count": 800,
+          "file": "sz000988-00000.payload.bin",
+          "sha256": "66ea0c915a0ccb9c0b531b2d37867b3d1577d6a384ab7c9c20adebf9be0b01f9"
+        },
+        {
+          "start": 800,
+          "count": 800,
+          "file": "sz000988-00800.payload.bin",
+          "sha256": "a52627fae378db011f2e4c2ff1df931ba63ffd493a1fc5b86558c1dbff056a58"
+        },
+        {
+          "start": 1600,
+          "count": 800,
+          "file": "sz000988-01600.payload.bin",
+          "sha256": "d66938ab6639c6671d3369aa9ccba0d93ff2d97683404ee387fb148089e9877a"
+        },
+        {
+          "start": 2400,
+          "count": 800,
+          "file": "sz000988-02400.payload.bin",
+          "sha256": "24aa8c269c1ce87d5b43d7da29ab156ffcc9505fa1f606bf1cb214ace0b55e9c"
+        },
+        {
+          "start": 3200,
+          "count": 800,
+          "file": "sz000988-03200.payload.bin",
+          "sha256": "529bec4ea338a93e66e8c9253e2d605770b125e2df26d64cfb7b9cc96fc54d30"
+        },
+        {
+          "start": 4000,
+          "count": 800,
+          "file": "sz000988-04000.payload.bin",
+          "sha256": "f47727aeacf1ff9185f18a5c6fe69afec38362786ffe83d77ae2ad2b43634d93"
+        },
+        {
+          "start": 4800,
+          "count": 800,
+          "file": "sz000988-04800.payload.bin",
+          "sha256": "f29d0ed15b85995c649df5610dc5b7463ca687c45ee2db0ea3b2a58c7a18e097"
+        },
+        {
+          "start": 5600,
+          "count": 800,
+          "file": "sz000988-05600.payload.bin",
+          "sha256": "ba7f288ebdf00e3e61d5e8305b08eeae68d68e9136aff9dc78e55cd029dd159b"
+        },
+        {
+          "start": 6319,
+          "count": 800,
+          "file": "sz000988-06319.payload.bin",
+          "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+        }
+      ],
+      "differences": [
+        {
+          "date": 20150701,
+          "fields": [
+            "vol"
+          ],
+          "tcp": {
+            "vol": 40905300
+          },
+          "official": {
+            "vol": 40905309
+          }
+        }
+      ]
+    },
+    {
+      "market": 1,
+      "code": "600000",
+      "file": "sh600000.day",
+      "sha256": "388e21032ade098e74db7230310f5f9000b6607be40646a72ccd0a3992304cf4",
+      "rows": 6413,
+      "pages": [
+        {
+          "start": 0,
+          "count": 800,
+          "file": "sh600000-00000.payload.bin",
+          "sha256": "798424c6f7a9639cdc5a4876a09e26fd2b8eaa9d58875b5ca7b02bcb12c407c1"
+        },
+        {
+          "start": 800,
+          "count": 800,
+          "file": "sh600000-00800.payload.bin",
+          "sha256": "796fd351fd65141f7dd079c00e2a709edcb7198fc1f1d4037c0741091b825a5b"
+        },
+        {
+          "start": 1600,
+          "count": 800,
+          "file": "sh600000-01600.payload.bin",
+          "sha256": "7fcbb256626028146f14a54b18ca498bc07afa7d1208a8c2b6d5ab5e80026047"
+        },
+        {
+          "start": 2400,
+          "count": 800,
+          "file": "sh600000-02400.payload.bin",
+          "sha256": "4ecb3484b81e6cb892f38543e1004fe786d37c76b01991cd43187ca57f6745bb"
+        },
+        {
+          "start": 3200,
+          "count": 800,
+          "file": "sh600000-03200.payload.bin",
+          "sha256": "9c7e5e39f15e6290d25214290dfdcdbfe93bb5bbd5392f108c6c0c20cf4784ac"
+        },
+        {
+          "start": 4000,
+          "count": 800,
+          "file": "sh600000-04000.payload.bin",
+          "sha256": "e7ce5c50421ea5f557bfa6df0e4f8ef06f0d6a724c731b9cf241f125a3e0b852"
+        },
+        {
+          "start": 4800,
+          "count": 800,
+          "file": "sh600000-04800.payload.bin",
+          "sha256": "4c90560a5d81c365444ba314788bde0fd8932efa5522d6b2d6b6d36d21c1ce28"
+        },
+        {
+          "start": 5600,
+          "count": 800,
+          "file": "sh600000-05600.payload.bin",
+          "sha256": "160b1b8cd48e026bd97ce7ec4a248a279a452ab8908d3d7302a46eca338b9aac"
+        },
+        {
+          "start": 6400,
+          "count": 800,
+          "file": "sh600000-06400.payload.bin",
+          "sha256": "5f3b0694adc335aa6d65316d76d81830d94cb8a5bcc2035779beef5fa3ed7e87"
+        },
+        {
+          "start": 6413,
+          "count": 800,
+          "file": "sh600000-06413.payload.bin",
+          "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+        }
+      ],
+      "differences": [
+        {
+          "date": 20120926,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 202126608.0
+          },
+          "official": {
+            "amount": 202126624.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20130626,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 1016856768.0
+          },
+          "official": {
+            "amount": 1016856704.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20130809,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 444645216.0
+          },
+          "official": {
+            "amount": 444645248.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20170214,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 217924144.0
+          },
+          "official": {
+            "amount": 217924160.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20170217,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 231623664.0
+          },
+          "official": {
+            "amount": 231623680.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20170228,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 200661648.0
+          },
+          "official": {
+            "amount": 200661664.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20170421,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 340453088.0
+          },
+          "official": {
+            "amount": 340453120.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20171012,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 223204016.0
+          },
+          "official": {
+            "amount": 223204032.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20171020,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 224781264.0
+          },
+          "official": {
+            "amount": 224781280.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20180112,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 313215072.0
+          },
+          "official": {
+            "amount": 313215104.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20180621,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 234236784.0
+          },
+          "official": {
+            "amount": 234236768.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20180925,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 164580496.0
+          },
+          "official": {
+            "amount": 164580512.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20180927,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 252306128.0
+          },
+          "official": {
+            "amount": 252306112.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20181017,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 271564064.0
+          },
+          "official": {
+            "amount": 271564096.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20181123,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 155566096.0
+          },
+          "official": {
+            "amount": 155566112.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20190115,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 158126128.0
+          },
+          "official": {
+            "amount": 158126144.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20191105,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 962257344.0
+          },
+          "official": {
+            "amount": 962257408.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20191225,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 167407888.0
+          },
+          "official": {
+            "amount": 167407904.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20200410,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 169625904.0
+          },
+          "official": {
+            "amount": 169625920.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20200714,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 919482304.0
+          },
+          "official": {
+            "amount": 919482240.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20210531,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 381740384.0
+          },
+          "official": {
+            "amount": 381740416.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20210628,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 326457376.0
+          },
+          "official": {
+            "amount": 326457344.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20221206,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 224448672.0
+          },
+          "official": {
+            "amount": 224448688.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20221216,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 232171552.0
+          },
+          "official": {
+            "amount": 232171536.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20230210,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 86527408.0
+          },
+          "official": {
+            "amount": 86527416.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20230223,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 82898816.0
+          },
+          "official": {
+            "amount": 82898808.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20230413,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 186717632.0
+          },
+          "official": {
+            "amount": 186717616.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20230515,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 373081728.0
+          },
+          "official": {
+            "amount": 373081760.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20230713,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 198390784.0
+          },
+          "official": {
+            "amount": 198390800.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20230801,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 234625792.0
+          },
+          "official": {
+            "amount": 234625808.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20230914,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 252575936.0
+          },
+          "official": {
+            "amount": 252575920.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20231027,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 136008288.0
+          },
+          "official": {
+            "amount": 136008272.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20231114,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 94936064.0
+          },
+          "official": {
+            "amount": 94936056.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20231123,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 108872448.0
+          },
+          "official": {
+            "amount": 108872440.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20231228,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 231691616.0
+          },
+          "official": {
+            "amount": 231691600.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20240603,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 496075072.0
+          },
+          "official": {
+            "amount": 496075040.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20241105,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 414411264.0
+          },
+          "official": {
+            "amount": 414411296.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20250106,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 804593536.0
+          },
+          "official": {
+            "amount": 804593472.0
+          },
+          "amount_ulp_difference": 1
+        }
+      ]
+    },
+    {
+      "market": 1,
+      "code": "600519",
+      "file": "sh600519.day",
+      "sha256": "3e0aa3e23be5ded8e5a1008804005428f56e4ae489224510895b71321c477ba6",
+      "rows": 6028,
+      "pages": [
+        {
+          "start": 0,
+          "count": 800,
+          "file": "sh600519-00000.payload.bin",
+          "sha256": "039adcae53fa92ba93794c11f546636b6fd013c4f3c1c684ce43dc73b865f9ba"
+        },
+        {
+          "start": 800,
+          "count": 800,
+          "file": "sh600519-00800.payload.bin",
+          "sha256": "53d883c526bb20ee1ebaaea5717463be412426d005fc5281604bdd7ad0803138"
+        },
+        {
+          "start": 1600,
+          "count": 800,
+          "file": "sh600519-01600.payload.bin",
+          "sha256": "70d4eac130b75ff41b04c43a4e89b9852b97e4eef75e3375c63597f308df6412"
+        },
+        {
+          "start": 2400,
+          "count": 800,
+          "file": "sh600519-02400.payload.bin",
+          "sha256": "24eaa98e9c2ae34eadedf3ab1ef7286523d1ca6b712751fbfd3c9b5dca9b79ba"
+        },
+        {
+          "start": 3200,
+          "count": 800,
+          "file": "sh600519-03200.payload.bin",
+          "sha256": "8105cd0724f54817637513b234b40c61ce646086a2e0f9485471aee77dbc0f42"
+        },
+        {
+          "start": 4000,
+          "count": 800,
+          "file": "sh600519-04000.payload.bin",
+          "sha256": "4e4d89fe9f422520c64aa98e960d72ee4931464e859dae9505e3bb0e57a4da85"
+        },
+        {
+          "start": 4800,
+          "count": 800,
+          "file": "sh600519-04800.payload.bin",
+          "sha256": "2e5a21008aae872bd9ad45742dc7df01c546b704d723a5832d2c7dbcc2e8fdcb"
+        },
+        {
+          "start": 5600,
+          "count": 800,
+          "file": "sh600519-05600.payload.bin",
+          "sha256": "d97cb5b47f4d7641a11b1bd9375ab57f3539eeff3811d00d636eec1ec1a2286b"
+        },
+        {
+          "start": 6028,
+          "count": 800,
+          "file": "sh600519-06028.payload.bin",
+          "sha256": "96a296d224f285c67bee93c30f8a309157f0daa35dc5b87e410b78630a09cfc7"
+        }
+      ],
+      "differences": [
+        {
+          "date": 20120620,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 277398304.0
+          },
+          "official": {
+            "amount": 277398336.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20121116,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 441363616.0
+          },
+          "official": {
+            "amount": 441363648.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20170313,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 1027592768.0
+          },
+          "official": {
+            "amount": 1027592832.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20170907,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 1605408640.0
+          },
+          "official": {
+            "amount": 1605408512.0
+          },
+          "amount_ulp_difference": 1
+        },
+        {
+          "date": 20190819,
+          "fields": [
+            "amount"
+          ],
+          "tcp": {
+            "amount": 3471557888.0
+          },
+          "official": {
+            "amount": 3471558144.0
+          },
+          "amount_ulp_difference": 1
+        }
+      ]
+    }
+  ],
+  "scope": "Original day files and TCP payloads; differences are preserved."
+}

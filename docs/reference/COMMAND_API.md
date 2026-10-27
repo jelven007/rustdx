@@ -1,7 +1,7 @@
 # rustdx 当前 26 命令接口手册：业务含义与使用约束
 
 <!-- lifecycle:registry -->
-读者：应用集成者；责任：API维护者。源码核验：2026-10-25；每90日及签名、参数或字段变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：应用集成者；责任：API维护者。源码核验：2026-10-27；每90日及签名、参数或字段变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 核对日期：2026-10-24。范围为 eltdx 3.3.0 注册的 **2项会话 + 24项业务命令**，展示 rustdx **当前源码实际可用接口**；包含高层 Client、独立请求/解码器、结果字段及相关本地处理。当前工作区包含未提交源码，不能用已发布 crate 版本推定所有新增方法均存在。[cite:1](#cite-1)[cite:6](#cite-6)
@@ -229,9 +229,11 @@ pub fn finance_legacy(&mut self, market: u16, code: &str) -> std::io::Result<Fin
 
 业务含义：取得主站保存的最新基础财务槽和元信息。它不是任意报告期财报查询，也不是完整三张财务报表。[cite:3](#cite-3)
 
-推荐结果 `FinanceSnapshot`，通过 `raw()` 读取 `FinanceRaw`，通过 `field(FinanceField)`、`fields()` 读取 31 个财务槽。元信息包括 `report_period:Option<NaiveDate>`、`semantic_schema_version`、`profile_version`、`eps_basis`、利润/净资产口径、来源和获取时间。字段提供 `raw_bits/raw_value/unit/semantic_status/value/candidate_value/evidence`。
+推荐结果 `FinanceSnapshot`，通过 `raw()` 读取 `FinanceRaw`，通过 `field(FinanceField)`、`fields()` 读取 31 个财务槽。元信息包括 `report_period:Option<NaiveDate>`、`semantic_schema_version`、`profile_version`、`eps_basis`、利润/净资产口径、来源和获取时间。字段提供 `raw_bits/raw_value/unit/semantic_status/value/candidate_value/candidate_rejection/evidence`。
 
-使用约束：`value()` 只给独立核验并命中证券、更新日期、原始位模式的标准业务值；其余候选值为 None。`candidate_value()` 是显式采用基线换算，不能升级为 Verified。候选数量乘 10000、金额乘 1000、每股金额/数量计数乘 1，未知槽不换算；具体字段证据与报告期必须同读。EPS 不自动视作 TTM 或年化。默认独立证据局限于已保存的平安银行样本及已验证字段；其他证券或更新版本不会凭数值接近自动验证。逐槽偏移、候选单位、10个默认证据字段与7个未知槽见[财务字段状态](RESPONSE_FIELD_SEMANTICS.md#finance-fields)。
+使用约束：`value()` 只给独立核验并命中证券、更新日期、原始位模式的标准业务值；其余候选值为 None。`candidate_value()` 是显式采用基线换算，不能升级为 Verified；命中profile范围但字段位模式与独立预期冲突时也为None，`candidate_rejection()`提供原因。候选数量乘 10000、金额乘 1000、每股金额/数量计数乘 1，未知槽不换算；具体字段证据与报告期必须同读。EPS 不自动视作 TTM 或年化。默认证据为市场0/000001的H1更新20260815（10字段）及Q3更新20261024（17字段）；Q3现金净变动已知冲突，原值仍保留。其他证券/更新版本不会凭数值接近自动验证。逐槽偏移、候选单位及7个未知槽见[财务字段状态](RESPONSE_FIELD_SEMANTICS.md#finance-fields)。
+
+`FinanceSnapshot::cash_flow_reconciliation() -> io::Result<FinanceCashFlowReconciliation>`只解释固定000001/20261024/2026-Q3的现金口径：经营+投资+筹资=85.15亿元，汇率影响−26.43亿元后为公告净增加58.72亿元。范围、报告期、规则版本或原位模式未匹配返回Unsupported；该诊断不改原净变动槽的value/candidate拒绝和默认数据源。全部操作数来自公告物理第33页，精确依据见[固定期望](../../crates/rustdx-core/tests/fixtures/finance-cash-basis/expected.json)。
 
 `finance_snapshot` 是高层同义入口；`finance_legacy` 返回 `FinanceInfoData`，沿用历史名称与单位。无数据时高层返回 NotFound。当前每次单证券，并未实现 eltdx 的真正多证券 0010 报文。建议按日缓存，财报更新后重取；不得将 legacy 财务单位混入标准值。[cite:3](#cite-3)
 
@@ -516,6 +518,33 @@ pub fn delisted_bars_all_batch(
 
 使用约束：单页/旧扫描支持市场0/1/2、trim 后六位数字；start:u16，count=1–800。range入口支持市场0/1及规范六位数字，市场2未验收。价格千分元、日日期为 UTC+8 零时；成交量是变长整数**股数**，手数=股数/100；金额按非负有限IEEE754 binary32解码，旧TDX指数算法漏掉隐含首位已修复。`DailyBar/DailyBarsRequest/DailyBarsPage/decode_daily_bars`保留通用命名和旧名称兼容。
 
+显式day参考入口（[源码](../../crates/rustdx-core/src/tcp/stock/daily_reference.rs)）：
+
+```rust
+// impl DayFileReference
+pub fn new(
+    market: u16, code: &str, bytes: &[u8], source: &str, sha256: &str,
+) -> io::Result<Self>;
+pub fn symbol(&self) -> &str;
+pub fn raw_bytes(&self) -> &[u8];
+pub fn compare_page(&self, page: &DailyBarsPage) -> io::Result<DailyReferenceComparison>;
+
+pub enum DailyReferenceField { Open, High, Low, Close, Amount, Volume }
+pub struct DailyReferenceRecord {
+    pub tcp: DailyBar,
+    pub reference: CanonicalBar,
+    pub differing_fields: Vec<DailyReferenceField>,
+}
+pub struct DailyReferenceComparison {
+    pub reference_source: String,
+    pub reference_sha256: String,
+    pub tcp_source: CommandSource,
+    pub records: Vec<DailyReferenceRecord>,
+}
+```
+
+参考为非空、最多2MiB的完整32字节day记录，日期严格递增唯一，source为最多4096字节的HTTPS标识，SHA-256须与原字节匹配。compare_page重解TCP正文，核对请求市场/代码及opcode，拒绝DTO改写或参考缺日；返回参考标准值同时保留原TCP及精确字段差异，不改默认采集来源。外部来源属于该证券、原请求真实性和业务选择由调用方负责，见[消费规则](../development/APPLICATION_INTEGRATION.md#21-字段消费步骤)。
+
 range入口复用`BarRangeOptions`，从start=0按raw数量推进，短页继续；空页按配置复查，越过begin或观察到空页才`complete=true`。页预算/行数/字节/偏移终止返回不完整状态；跨连接/观察日期、冲突或不推进报错。`BarRangeCollection.command=0x052b`，category=9只是日线分类，报文没有category槽。保存全部页范围与收据，再检查业务日期是否缺失；完整枚举不证明交易所全部历史。
 
 完整扫描按实际条数前进，短页继续直到空页；相同日期且 OHLC/量/额/尾部相同的重叠合并，原始页保留；同日冲突或整页无新增日期报错。默认预算同 CommandScanOptions，预算/偏移结束 complete=false。`delisted_bars_scan` 可从自选 start 开始，complete=true 只说明该起点到主站空页已枚举；从0开始也不证明交易所历史完整。建议首次全量建档，之后低频按需补取；三证券沪深样本已通过两节点独立核验，市场2未实测。[cite:2](#cite-2)[cite:7](#cite-7)
@@ -723,13 +752,15 @@ pub fn subscribe_depth(
 
 业务含义：以证券更新游标保持五档状态，接收更新响应和服务器未配对的主动推送。更新记录代表该证券完整状态，用来替换；累计量额不能再次累加。[cite:1](#cite-1)[cite:8](#cite-8)
 
-`subscribe_depth` 返回独占连接的 `QuoteSubscription`。会话方法完整列于下方；`refresh()` 返回 `QuoteRefresh`，`poll_push(timeout)` 返回 `Option<QuotePush>`，`snapshot()` 返回 `DepthSnapshot`，含 status、connection_id、generation、states、queued_frames/bytes。每个 DepthState 包含 symbol、quote:Option<BasicQuote>、cursor:u32、received_at。
+`subscribe_depth` 返回独占连接的 `QuoteSubscription`。会话方法完整列于下方；`refresh()` 返回 `QuoteRefresh`，`poll_push(timeout)` 返回 `Option<QuotePush>`，`poll_update(idle_timeout)`返回`QuoteUpdate`，`snapshot()` 返回 `DepthSnapshot`，含 status、connection_id、generation、states、queued_frames/bytes。每个 DepthState 包含 symbol、quote:Option<BasicQuote>、cursor:u32、received_at。
 
 使用约束：1–100个不同证券，市场0/1，当日精度目录必须可用。订阅额外占用一个连接许可，保留原 Client 查询连接，关闭订阅连接后台心跳。队列默认且最大256帧/8MiB，refresh_timeout默认15秒（可被策略/外层期限缩短）；容量计入原始体、解码记录及暂存，不只计wire大小。
 
 先建立全证券基线再使用 Synchronized 状态；AwaitingBaseline 可能只有部分证券，Invalid 中残留quote仅供诊断。poll超时返回None不是证明无更新；本地poll可保留半帧。断线、队列溢出、游标回退、目录跨日等令会话失效，不静默丢推送；rebuild 使用新目录重建连接/代次/基线，close/Drop释放连接。
 
-不要把订阅 Tcp 交回查询池。`RefreshRequest::recv` 消耗传入 Tcp 做一次刷新，重复使用宜走会话。建议持续轮询poll，按业务需求低频主动refresh，而不是每证券新建订阅。同步传输/状态测试已具备；**真实盘中主动推送仍待有效交易窗口验收**。[cite:8](#cite-8)
+不要把订阅 Tcp 交回查询池。`RefreshRequest::recv` 消耗传入 Tcp 做一次刷新，重复使用宜走会话。`poll_update`要求非零空闲等待：等待基线时立即refresh，其余先poll_push，None后refresh；返回PassivePush或RequestedRefresh并遵循原错误/期限/取消/许可释放合同。两节点收盘前RequestedRefresh状态变化已独立核验；**真实被动推送仍未观察到**，不能将请求刷新计作被动证据。[cite:8](#cite-8)
+
+发送refresh前本地已有半帧时，补齐的第一帧不以相同message id满足新请求，而是按推送排队后继续等响应。该修复有模拟红绿反转证据，只证明已接收前缀的归属；实际盘中被动能力及其他未观察帧时点仍须独立验收，见[补证报告](../archive/development/UPSTREAM_CAPABILITIES_FIX_20261027.md)。
 
 
 签名依据：[subscribe_depth](../../crates/rustdx-core/src/tcp/stock/client/extended_queries.rs#L142)。
@@ -761,10 +792,16 @@ pub fn set_push_observer(&mut self, observer: Option<Arc<dyn PushObserver>>);
 pub fn snapshot(&self) -> DepthSnapshot;
 
 
+pub fn synchronized_snapshot(&self) -> io::Result<DepthSnapshot>;
+
+
 pub fn refresh(&mut self) -> io::Result<QuoteRefresh>;
 
 
 pub fn poll_push(&mut self, timeout: Duration) -> io::Result<Option<QuotePush>>;
+
+
+pub fn poll_update(&mut self, idle_timeout: Duration) -> io::Result<QuoteUpdate>;
 
 
 pub fn rebuild(&mut self, metadata: Arc<PrecisionSnapshot>) -> io::Result<QuoteRefresh>;
@@ -775,6 +812,12 @@ pub fn close(&mut self);
 
 ```
 
+```rust
+pub enum QuoteUpdate {
+    PassivePush(QuotePush),
+    RequestedRefresh(QuoteRefresh),
+}
+```
 
 <a id="cmd-054b"></a>
 ### 054b：服务端分类行情排行
@@ -1110,6 +1153,37 @@ pub fn recent_minutes_batch(
 使用约束：市场0/1、六位ASCII字母数字、有效YYYYMMDD，最多240点，无start/count。日期schema2将YYYYMMDD整数取32位补码，按小端发送（`date.wrapping_neg()`）；旧ordinal公式会错选日期。未回显日期，时间标签同0537为合成会话标签。价格/均价用当日目录精度，均价再多除100；量仍raw。批量按证券返回，最多10万项并先加载精度。
 
 **旧日期冲突已定位为请求编码错误**：旧20260817/18请求实际选中20260609/10。修正后的两节点、六证券、六交易日共17,280个分钟点与同日0fb4一致，开盘/末价与日期日线一致，见[修复报告](../archive/development/RECENT_MINUTES_DATE_SELECTOR_FIX_20261024.md)。Nonempty/解码成功仍不能证明任意日期真实性。按交易日分区或发布前调用`require_trading_date()`，默认Unsupported；调用方可用`MinuteDateReference`与`with_date_reference`绑定完整独立价格点、日期、来源摘要及本次原始结果。改写公开字段或来源后资格失效；日期参照不证明量/均价/合成标签或通用日期。消费约定见[应用接入第2节](../development/APPLICATION_INTEGRATION.md#2-价格数量金额和未知值)，字段状态见[日期边界](RESPONSE_FIELD_SEMANTICS.md#market-fields)。建议近期归档核对日期、盘中关注池3–5秒起步；历史数据低频重取。[cite:9](#cite-9)
+
+完整参照诊断签名（[源码](../../crates/rustdx-core/src/tcp/stock/recent_minutes.rs)）：
+
+```rust
+// impl MinuteSeries
+pub fn compare_reference(
+    &self,
+    reference: &MinuteDateReference,
+    cumulative_volume_raw: Option<&[i64]>,
+) -> io::Result<MinuteReferenceComparison>;
+
+pub enum MinuteReferencePosition {
+    SessionOpen, MorningClose, AfternoonOpen, CapturedTail, Interior,
+}
+pub struct MinuteReferenceDifference {
+    pub index: u16,
+    pub synthetic_label: String,
+    pub position: MinuteReferencePosition,
+    pub tcp_price_raw: i64,
+    pub reference_price_raw: i64,
+    pub tcp_cumulative_volume_raw: i64,
+    pub reference_cumulative_volume_raw: Option<i64>,
+}
+pub struct MinuteReferenceComparison {
+    pub all_prices_match: bool,
+    pub all_raw_cumulative_volumes_match: Option<bool>,
+    pub differences: Vec<MinuteReferenceDifference>,
+}
+```
+
+参照价格须覆盖全部点并匹配证券/请求日/标尺；可选累计量须同长度、非负、不递减。重解正文后拒绝DTO修改。无量参照时量匹配状态为None；结果仅诊断，不改变日期门禁、合成标签或任一来源的量单位。
 
 
 签名依据：[recent_minutes](../../crates/rustdx-core/src/tcp/stock/client/extended_queries.rs#L50) · [recent_minutes_batch](../../crates/rustdx-core/src/tcp/stock/client/extended_queries.rs#L226)。
@@ -3094,7 +3168,30 @@ pub enum FinanceSemanticStatus {
 ```
 
 
-**FinanceFieldValue** · [定义](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs#L133)
+**FinanceCandidateRejection** · [定义](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs)
+
+```rust
+pub enum FinanceCandidateRejection {
+    EvidenceConflict { expected_raw_bits: u32 },
+}
+```
+
+**FinanceCashFlowReconciliation** · [定义](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs)
+
+```rust
+pub struct FinanceCashFlowReconciliation {
+    pub source_raw_bits: u32,
+    pub source_total_excluding_fx_yuan: f64,
+    pub operating_yuan: f64,
+    pub investing_yuan: f64,
+    pub financing_yuan: f64,
+    pub exchange_rate_effect_yuan: f64,
+    pub reported_net_change_yuan: f64,
+    pub evidence: &'static str,
+}
+```
+
+**FinanceFieldValue** · [定义](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs)
 
 ```rust
 pub struct FinanceFieldValue {
@@ -3103,7 +3200,7 @@ pub struct FinanceFieldValue {
 ```
 
 
-**FinanceProfile** · [定义](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs#L176)
+**FinanceProfile** · [定义](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs)
 
 ```rust
 pub struct FinanceProfile {
@@ -3112,7 +3209,7 @@ pub struct FinanceProfile {
 ```
 
 
-**FinanceSnapshot** · [定义](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs#L228)
+**FinanceSnapshot** · [定义](../../crates/rustdx-core/src/tcp/stock/finance_semantics.rs)
 
 ```rust
 pub struct FinanceSnapshot {
@@ -3160,6 +3257,9 @@ pub fn value(&self) -> Option<f64>;
 pub fn candidate_value(&self) -> Option<f64>;
 
 
+pub fn candidate_rejection(&self) -> Option<FinanceCandidateRejection>;
+
+
 pub fn evidence(&self) -> Option<&str>;
 
 
@@ -3192,6 +3292,12 @@ pub fn field(&self, field: FinanceField) -> &FinanceFieldValue;
 
 
 pub fn fields(&self) -> &[FinanceFieldValue];
+
+
+pub fn cash_flow_reconciliation(&self) -> io::Result<FinanceCashFlowReconciliation>;
+
+
+pub fn require_fields(&self, required: &[FinanceField]) -> io::Result<()>;
 
 
 pub fn total_shares(&self) -> Option<f64>;

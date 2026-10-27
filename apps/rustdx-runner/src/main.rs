@@ -8,12 +8,18 @@ use rustdx_runner::{
 #[derive(FromArgs)]
 /// Single-host production collection, immutable publication and recovery.
 struct Args {
-    /// run, plan, migrate, rebuild-metrics, recover, status, metrics, catalog, export, backup or restore
+    /// run, plan, business-metrics, migrate, rebuild-metrics, recover, status, metrics, catalog, export, backup or restore
     #[argh(positional)]
     action: String,
     /// strict JSON job configuration (run)
     #[argh(option)]
     config: Option<PathBuf>,
+    /// operator-approved business publication deadline (RFC3339)
+    #[argh(option)]
+    publish_by: Option<chrono::DateTime<chrono::FixedOffset>>,
+    /// independent consumer-audit hard quota in bytes (reported, not enforced here)
+    #[argh(option)]
+    audit_max_bytes: Option<u64>,
     /// controller root (all actions except run)
     #[argh(option)]
     root: Option<PathBuf>,
@@ -129,6 +135,7 @@ fn run() -> Result<()> {
         args.action.as_str(),
         "run"
             | "plan"
+            | "business-metrics"
             | "migrate"
             | "rebuild-metrics"
             | "recover"
@@ -143,9 +150,38 @@ fn run() -> Result<()> {
     ) {
         return Err(Error::Invalid("unknown action".into()));
     }
-    if matches!(args.action.as_str(), "run" | "plan") {
+    if matches!(args.action.as_str(), "run" | "plan" | "business-metrics") {
         let mut config = Config::load(&required(args.config.clone(), "config")?)?;
         config.no_tcp_startup |= args.no_tcp_startup;
+        if args.action == "business-metrics" {
+            if args.tcp_warmup {
+                return Err(Error::Invalid(
+                    "business metrics cannot request TCP warmup".into(),
+                ));
+            }
+            let operation = rustdx_complete::operation::OperationContext::new(
+                Duration::from_secs(args.timeout),
+                args.cancel_file.clone(),
+            )?;
+            let _scope = operation.enter();
+            let text = pipeline::business_metrics(
+                &config,
+                args.publish_by,
+                args.audit_max_bytes,
+                chrono::Utc::now().fixed_offset(),
+            )?;
+            if let Some(output) = args.output {
+                use std::io::Write;
+                let (atomic, mut file) = rustdx_complete::atomic_file::AtomicFile::create(&output)?;
+                file.write_all(text.as_bytes())?;
+                rustdx_complete::operation::check().map_err(Error::from)?;
+                drop(file);
+                atomic.commit()?;
+            } else {
+                print!("{text}");
+            }
+            return Ok(());
+        }
         if args.action == "plan" {
             if args.tcp_warmup {
                 return Err(Error::Invalid(

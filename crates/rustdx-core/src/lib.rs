@@ -30,6 +30,13 @@ pub mod pool;
 // 重新导出常用错误类型
 pub use error::{CacheError, Error, IndicatorError, Result, TcpError, ValidationError};
 
+/// Error used by the legacy general `Error::Indicator` wrapper.
+/// The original `IndicatorError` path remains available.
+pub use error::IndicatorError as LegacyIndicatorError;
+/// Parameter errors returned by checked EMA/MACD APIs and incremental states.
+/// The original `indicators::IndicatorError` path remains available.
+pub use indicators::IndicatorError as IncrementalIndicatorError;
+
 // 重新导出Builder
 pub use builder::KlineBuilder;
 

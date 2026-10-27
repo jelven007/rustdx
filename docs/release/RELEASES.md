@@ -1,12 +1,12 @@
 # 源码与软件包交付
 
 <!-- lifecycle:registry -->
-读者：开发/发布；责任：发布维护者。源码核验：2026-10-25；每30日及CI、包发布或权限变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：开发/发布；责任：发布维护者。源码核验：2026-10-27；每30日及CI、包发布或权限变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 当前源码版本：<!-- version:project -->2.0.2<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
-更新日期：2026-10-25。历史核心/CLI 2.0.0已发布到crates.io，runner仅交付源码与二进制。该次注册表发布来自提交`82c6de4e52dae907cb9055d4cd07bbb9444e0c47`；实际包摘要、核验结果和安装命令见[发布记录](../archive/release/PUBLICATION_20261025.md)。当前源码版本不证明同版本已经上传。
+更新日期：2026-10-27。历史核心/CLI 2.0.0已发布到crates.io，runner仅交付源码与二进制。该次注册表发布来自提交`82c6de4e52dae907cb9055d4cd07bbb9444e0c47`；实际包摘要、核验结果和安装命令见[发布记录](../archive/release/PUBLICATION_20261025.md)。当前源码版本不证明同版本已经上传。
 
 ## 1. 交付单位与身份
 
@@ -33,7 +33,7 @@ CLI验证使用解包核心的本地patch；正式CLI注册表验证在核心索
 离线CLI打包也在隔离工作区使用该patch并生成审核锁文件；源Cargo.lock不改动。
 源码文件清单、HEAD/dirty/lock摘要、固定顺序/时间的源码归档与包/检查摘要
 写入schema2的`preflight.json`。工程scope1排除`docs/testing/evidence/`和
-`docs/testing/evidence/project-review-20261022/`，其他跟踪及非忽略新文件均计入；历史证据另行核验。
+根目录`project-review-20261022/`，其他跟踪及非忽略新文件均计入；历史证据另行核验。
 离线回归所需小样本在所属crate，来源/原摘要与派生范围见
 [夹具清单](../../config/release/offline-fixtures.json)。工程归档不承诺完整历史演练。
 
@@ -46,6 +46,7 @@ CLI验证使用解包核心的本地patch；正式CLI注册表验证在核心索
 
 `python3 scripts/release/check_consumers.py --output /outside/new-directory`验证
 独立2.0调用方可编译运行，以及旧日历/财务/心跳返回类型调用方按声明失败。
+实际包消费另核对两类IndicatorError别名及真实帧checked→owned JSON的市场、周期、单位和请求元数据。
 该检查不是完整API diff，也不把预期失败解释为兼容。工具链/包版本/源码与
 锁摘要及每个编译结果写入报告，可指定`--cargo`、`--toolchain`和`--offline`。
 CI的contracts任务同时执行源码调用方和上述实际解包消费；MSRV、行为、
@@ -55,6 +56,8 @@ Actions须推送后实际核对结果，本机验证不能代替远端执行。
 完整本机预检还执行Python、严格Rustdoc及CLI/runner发布构建，记录二进制摘要。
 可用`--build-cache /external/cargo-target`复用编译缓存；审核crate和发布二进制复制到
 新output，实际源码/包核对照常执行，缓存路径写入报告，不授予二进制位级可复现结论。
+包选择使用只读Cargo metadata的准确包名/版本；旧版本缓存同存不构成错误，
+缺少当前版本或当前路径为链接仍拒绝，不能用旧包代替当前请求。
 `release_gate.py --preflight /review/preflight.json --output /review/release-manifest.json`
 通过`gh api`读取[必需门禁](../../config/release/gates.json)，要求当前干净HEAD的
 版本事件检查/既有push/手工运行、三平台、MSRV、质量、消费者/包、fuzz、性能和数据库任务全部成功。
@@ -63,7 +66,7 @@ contracts制品，核对preflight身份、实际两crate字节摘要及清单。
 离线`--snapshot-runs`只审核记录，始终不授予发布资格。
 
 Action官方ref和运行时元信息固定在[工具清单](../../config/release/action-pins.json)，
-Node24及最低runner要求需在目标Actions环境满足；本次发布提交的9项远端门禁已通过，后续新提交仍需独立核验。
+Node24及最低runner要求需在目标Actions环境满足；2026-10-25历史2.0.0发布提交的9项远端门禁已通过，后续新提交仍需独立核验。
 Mongo工具解压前按`deploy/acceptance/tool-archives.sha256`检查，数据库镜像digest
 及上述配置摘要进入release manifest。manifest记录本地patch范围和注册表待验证状态。
 数据库检查由PR或main版本工作流调用，覆盖每次推送，避免发布提交因仅修改文档而没有同SHA结果。
@@ -85,7 +88,7 @@ Mongo工具解压前按`deploy/acceptance/tool-archives.sha256`检查，数据�
 
 发布脚本在确认前完成本机及远端门禁，确认后重新核对源码/审核包，并重查最新远端结果。
 核心上传并等待索引可见后，CLI不使用本地patch执行注册表dry-run，再上传。
-实际发布须有任务授权与凭据，runner不发布到crates.io。本次已完成核心上传、
+实际发布须有任务授权与凭据，runner不发布到crates.io。2026-10-25历史2.0.0发布已完成核心上传、
 索引可见、CLI无本地patch的注册表dry-run和上传，并核验两个注册表下载包。
 发布前门禁记录与发布后结果分别保存，详见[发布记录](../archive/release/PUBLICATION_20261025.md)。
 

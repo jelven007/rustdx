@@ -1,0 +1,19 @@
+[package]
+name = "rustdx-upstream-window-probe"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.89"
+publish = false
+
+[dependencies]
+rustdx-complete = { package = "jelven-rustdx-complete", path = "/private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core" }
+chrono = "0.4"
+serde_json = "1"
+
+[[bin]]
+name = "rustdx-upstream-window-probe"
+path = "main.rs"
+
+[[bin]]
+name = "cash-reconciliation-caller"
+path = "cash-smoke.rs"

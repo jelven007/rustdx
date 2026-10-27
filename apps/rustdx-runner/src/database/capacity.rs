@@ -5,22 +5,22 @@ use crate::{Result, config::MAX_JSON, invalid, storage};
 
 pub(super) const BATCH: usize = 512;
 pub(super) const RESPONSE_LIMIT: u64 = 8 * 1024 * 1024;
-pub(super) const IO_LIMIT: u64 = 50_000;
+pub(crate) const IO_LIMIT: u64 = 50_000;
 const IO_OVERHEAD: u64 = 4096;
 const PROOF_IO_BYTES: u64 = 1536;
 
 #[derive(Debug, Serialize)]
-pub(super) struct Capacity {
+pub(crate) struct Capacity {
     rows: u64,
     batches: u64,
     operations: u64,
-    pub(super) evidence_bytes: u64,
-    pub(super) evidence_entries: u64,
+    pub(crate) evidence_bytes: u64,
+    pub(crate) evidence_entries: u64,
     proof_bytes: u64,
 }
 
 impl Capacity {
-    pub(super) fn estimate(rows: u64, row_bytes: u64) -> Result<Self> {
+    pub(crate) fn estimate(rows: u64, row_bytes: u64) -> Result<Self> {
         let batches = rows.div_ceil(BATCH as u64);
         // Initial inserts, verification and one recovery verification.
         // Consumer readbacks have a separate namespace and per-session budget.
@@ -49,7 +49,7 @@ impl Capacity {
         })
     }
 
-    pub(super) fn check(
+    pub(crate) fn check(
         &self,
         used_io: u64,
         usage: storage::TreeUsage,

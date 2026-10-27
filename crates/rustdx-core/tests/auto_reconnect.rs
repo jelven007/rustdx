@@ -2,19 +2,15 @@
 //!
 //! 真实连接服务器：先成功请求一次，再人为 shutdown 底层 TCP 连接，
 //! 下一次请求应触发「失败 → 自动重连 → 重发请求 → 成功」。
-//! 用 `RUSTDX_SKIP_INTEGRATION_TESTS=1` 可跳过。
+//! 默认ignored；使用严格在线入口显式执行，空响应为验收失败。
 
 use rustdx_complete::tcp::TcpConfig;
 use rustdx_complete::tcp::stock::Client;
 use std::net::Shutdown;
 
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn tcp_auto_reconnect_after_shutdown() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let config = TcpConfig {
         auto_reconnect: 2,
         ..Default::default()
@@ -23,12 +19,7 @@ fn tcp_auto_reconnect_after_shutdown() -> std::io::Result<()> {
 
     // 第一次请求成功
     let q1 = c.quotes(&[(1, "600000")])?;
-    if q1.is_empty() {
-        // 服务器端静默限流（空帧响应）当日无法验证重连恢复——跳过而非误报
-        println!("⚠️  行情服务器限流中（quotes 空响应），跳过本次验证");
-        return Ok(());
-    }
-    assert!(!q1.is_empty(), "首次行情请求应为空？");
+    assert!(!q1.is_empty(), "首次行情为空，无法验收自动重连");
 
     // 人为断开底层 TCP（服务器端随即感知连接关闭）
     c.tcp.get_ref().0.shutdown(Shutdown::Both)?;
@@ -42,19 +33,11 @@ fn tcp_auto_reconnect_after_shutdown() -> std::io::Result<()> {
 
 /// 默认 auto_reconnect=0 时，断线后请求应失败（保持旧行为）。
 #[test]
+#[ignore = "external TCP service; run the strict online suite explicitly"]
 fn tcp_no_auto_reconnect_fails_after_shutdown() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut c = Client::new()?; // 默认配置：不自动重连
     let q1 = c.quotes(&[(1, "600000")])?;
-    if q1.is_empty() {
-        println!("⚠️  行情服务器限流中（quotes 空响应），跳过本次验证");
-        return Ok(());
-    }
-    assert!(!q1.is_empty());
+    assert!(!q1.is_empty(), "首次行情为空，无法验收断线失败");
 
     c.tcp.get_ref().0.shutdown(Shutdown::Both)?;
     let r = c.quotes(&[(1, "600000")]);

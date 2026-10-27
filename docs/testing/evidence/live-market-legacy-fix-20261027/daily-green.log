@@ -1,0 +1,10 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-live-market-fix-20261027/crates/rustdx-core)
+[1m[32m    Finished[0m ]8;;https://doc.rust-lang.org/cargo/reference/profiles.html#default-profiles\`test` profile [optimized + debuginfo]]8;;\ target(s) in 21.87s
+[1m[32m     Running[0m tests/daily_reference.rs (/private/tmp/rustdx-system-optimization-packages-20261025/target/debug/deps/daily_reference-8241627ae803f19e)
+
+running 2 tests
+test wrong_symbol_missing_date_corrupt_reference_and_mutated_dto_are_rejected ... ok
+test original_archive_reconciliation_preserves_all_forty_four_source_differences ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+

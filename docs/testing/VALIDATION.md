@@ -1,10 +1,10 @@
 # 测试与验证方法
 
 <!-- lifecycle:registry -->
-读者：开发/测试；责任：测试维护者。源码核验：2026-10-25；每90日及测试策略、命令或门禁变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：开发/测试；责任：测试维护者。源码核验：2026-10-27；每90日及测试策略、命令或门禁变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
-更新日期：2026-10-25。目标是验证[需求FR-01至FR-18](../requirements/REQUIREMENTS.md)的可观察行为及故障边界。工程检查、真实源样本、数据库子集和目标生产验收分别记录，不累加重复执行的测试数量。
+更新日期：2026-10-27。目标是验证[需求FR-01至FR-18](../requirements/REQUIREMENTS.md)的可观察行为及故障边界。工程检查、真实源样本、数据库子集和目标生产验收分别记录，不累加重复执行的测试数量。
 
 ## 1. 常规门禁
 
@@ -17,7 +17,15 @@ RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo +1.89.0 test --workspace --all-features --
 RUSTDOCFLAGS='-D warnings' cargo doc --workspace --all-features --no-deps --locked
 ```
 
-cargo test包含文档测试；all-targets编译由Clippy覆盖。外部skip变量按存在性判定，设0也会跳过；本地TCP/HTTP模拟仍执行。提前return并显示ok的外部用例不计为在线验收。ignored用例按明确前置条件单独执行。
+cargo test包含文档测试；all-targets编译由Clippy覆盖。19个外部服务用例显式`ignored`，本地TCP/HTTP模拟仍执行；`RUSTDX_SKIP_INTEGRATION_TESTS`保留在旧命令中兼容调用方，新外部用例不通过变量提前返回成功。CI另存机器清单，明确`executed/skipped/failed`。严格在线入口仅在所需真实服务和交易窗口下显式执行；无数据、无服务、超时、零用例或任何跳过均使入口非零。
+
+```sh
+python3 scripts/validation/run_online_tests.py --mode inventory --output /review/new-online-inventory
+python3 scripts/validation/run_online_tests.py --mode execute --timeout-seconds 180 \
+  --output /review/new-online-run
+```
+
+在线入口按专属进程组限制每个suite的期限，保存全部命令/日志/结果。它核对所有声明用例实际完成，不能用一次通过授予公共源字段资格、历史完整性或生产验收。
 
 ## 2. 需求验证矩阵
 
@@ -52,6 +60,18 @@ python3 scripts/validation/freeze_recent_minutes_fixtures.py \
 
 响应身份专项使用合法正文配错前缀、opcode或消息号，核对连接失效、禁止自动重试、池释放、握手/探测、心跳、统计、截断与离线重放。实现及本轮范围见[响应正确性修复](../archive/development/RESPONSE_IDENTITY_FIX_20261022.md)。
 
+10月27日新增`finance_q3`、`daily_reference`、`minute_reference`及`quote_subscription`回归：Q3独立公告17字段/现金冲突、27,237条完整日线与44条源差异、209点分钟边界、无推送节点的持续刷新及取消/撤销/连接释放。逐字段期望来自独立公告/源材料，不由Rust输出反推；失败、反向回归及成功日志另留在[新证据](evidence/live-market-legacy-fix-20261027)。可离线复验：
+
+```sh
+RUSTDX_SKIP_INTEGRATION_TESTS=1 cargo +1.89.0 test -p jelven-rustdx-complete \
+  --test finance_q3 --test finance_semantics --test daily_reference \
+  --test minute_reference --test quote_subscription --locked
+python3 docs/testing/evidence/live-market-legacy-fix-20261027/replay_updates.py \
+  --source . --output /tmp/rustdx-live-market-replay-new.json
+```
+
+新原帧回放验证两节点收盘前主动刷新及66个日期/证券请求，保持请求刷新与被动推送的区别。端点非空及开末价对照不代替完整独立分钟点日期资格或完整保存期限。
+
 ## 4. 外部和数据库验收
 
 在线行情按业务选择示例和有效交易窗口，保存时间、节点、请求、返回及独立对照；`production_smoke`不代替全部26命令验收。[0feb编码修复](../archive/development/RECENT_MINUTES_DATE_SELECTOR_FIX_20261024.md)已完成两节点日期对照；通用日期资格、保存窗口和0547真实盘中主动推送仍单独取证。
@@ -63,18 +83,28 @@ Unix本地CLI/故障回归可使用CI中的明确过滤命令。Linux/macOS CI�
 ## 5. fuzz和性能
 
 ```sh
-cd tools/fuzz
-cargo +nightly fuzz run checked_parsers -- -max_total_time=30 -max_len=4096
+python3 scripts/validation/build_fuzz_seeds.py --output-directory tools/fuzz/corpus
+cargo +nightly fuzz run checked_parsers --fuzz-dir tools/fuzz -- -seed=20261027 -max_total_time=30 -max_len=65536
+cargo +nightly fuzz run modern_parsers --fuzz-dir tools/fuzz -- -seed=20261027 -max_total_time=30 -max_len=65536
 ```
 
-需要nightly及cargo-fuzz。ASan/覆盖率运行与普通目标执行分别记录；短时无崩溃不证明穷尽。异常保存最小复现并补有效回归。
+需要nightly及cargo-fuzz。新目录种子构建绑定每份真实正文/header/wire的原路径与SHA，
+另记录截断、计数字段上界、压缩长度与正文边界变异；原件不改写。PR保持30秒smoke，
+[长时工作流](../../.github/workflows/fuzz-long.yml)每周及手动运行每目标600秒，记录随机种子、
+工具链/提交、日志、corpus和崩溃输入。ASan/覆盖率运行与普通目标执行分别记录；
+无崩溃不证明穷尽，异常输入须最小化并补有效回归。配置存在不等于远端任务已执行。
 
 ```sh
 cargo bench -p jelven-rustdx-complete --bench indicators --locked
+RUSTDX_BENCH_ROOT=/absolute/new/cache-root cargo bench -p jelven-rustdx-complete --bench file_cache --locked
 python3 scripts/bench/measure_day_memory.py --help
+python3 scripts/bench/measure_day_replay.py --help
 ```
 
 窗口扩展观测与真实历史RSS对比须固定输入、参数、二进制摘要和环境；完整进程树与主进程分别测量，不把本机数据变成生产承诺。
+缓存基准将固定真实wire复制到1,000/10,000键，分别以1/4/8线程各测5轮命中及覆盖，
+记录锁等待在内的中位/P95、失败与已提交字节；复制键不是不同证券或生产请求。
+day重放入口固定真实文件及输出SHA、按1/4/8worker各测5轮，保存完整阶段数据。
 
 ## 6. 既往结构迁移验收
 
@@ -84,7 +114,7 @@ python3 scripts/bench/measure_day_memory.py --help
 
 | 层次 | 检查与证据 | 通过条件 |
 | --- | --- | --- |
-| 目录与导航 | Cargo metadata/全目标、文档链接、FR锚点、生命周期登记 | 所有路径可用、45示例名称保留、关键文档未过期 |
+| 目录与导航 | Cargo metadata/全目标、文档链接、FR锚点、生命周期登记 | 所有路径可用、46示例名称已注册、关键文档未过期 |
 | 源码行为 | workspace及Python故障回归、真实夹具重放 | 新源码命令退出0，输入来源及外部跳过项明确 |
 | 包与调用方 | 两crate实际清单、安全解包、独立新/旧签名消费 | 实际解包源码可用，预期破坏明确，不改第三方锁 |
 | 主线发布 | 同步后同SHA的全部CI任务 | 全部成功才有v标签；重跑不重复递增 |

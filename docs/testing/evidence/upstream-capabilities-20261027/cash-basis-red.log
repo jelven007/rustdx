@@ -1,0 +1,21 @@
+[1m[32m   Compiling[0m jelven-rustdx-complete v2.0.2 (/private/tmp/rustdx-upstream-capabilities-20261027/crates/rustdx-core)
+[0m[1m[38;5;9merror[E0599][0m[0m[1m: no method named `cash_flow_reconciliation` found for struct `FinanceSnapshot` in the current scope[0m
+[0m  [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/finance_cash_basis.rs:14:31[0m
+[0m   [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m14[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    let comparison = snapshot.cash_flow_reconciliation().unwrap();[0m
+[0m   [0m[0m[1m[38;5;12m|[0m[0m                               [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mmethod not found in `FinanceSnapshot`[0m
+
+[0m[1m[38;5;9merror[E0599][0m[0m[1m: no method named `cash_flow_reconciliation` found for struct `FinanceSnapshot` in the current scope[0m
+[0m  [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/finance_cash_basis.rs:64:26[0m
+[0m   [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m64[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m        assert!(snapshot.cash_flow_reconciliation().is_err());[0m
+[0m   [0m[0m[1m[38;5;12m|[0m[0m                          [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mmethod not found in `FinanceSnapshot`[0m
+
+[0m[1m[38;5;9merror[E0599][0m[0m[1m: no method named `cash_flow_reconciliation` found for struct `FinanceSnapshot` in the current scope[0m
+[0m  [0m[0m[1m[38;5;12m--> [0m[0mcrates/rustdx-core/tests/finance_cash_basis.rs:76:25[0m
+[0m   [0m[0m[1m[38;5;12m|[0m
+[0m[1m[38;5;12m76[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m        assert!(changed.cash_flow_reconciliation().is_err());[0m
+[0m   [0m[0m[1m[38;5;12m|[0m[0m                         [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mmethod not found in `FinanceSnapshot`[0m
+
+[0m[1mFor more information about this error, try `rustc --explain E0599`.[0m
+[1m[31merror[0m[1m:[0m could not compile `jelven-rustdx-complete` (test "finance_cash_basis") due to 3 previous errors

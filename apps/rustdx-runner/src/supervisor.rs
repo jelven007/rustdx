@@ -19,11 +19,12 @@ impl Drop for Worker {
         // Clean descendants even if a worker exits before its children.
         terminate_group(self.child.id());
         let _ = self.child.wait();
-        // The group leader can be reaped before orphaned descendants disappear
-        // from the OS process table. Bound this cleanup independently of a
-        // cancelled task; callers still reconcile if the group remains alive.
+        // A fork in progress can add a descendant after the first group signal.
+        // After reaping the leader, keep signalling the dedicated group within
+        // the same bounded cleanup window. Unknown survivors still block callers.
         let until = Instant::now() + Duration::from_millis(200);
         while process_group_alive(self.child.id()) && Instant::now() < until {
+            terminate_group(self.child.id());
             std::thread::sleep(Duration::from_millis(10));
         }
     }

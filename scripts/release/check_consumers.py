@@ -71,6 +71,48 @@ fn main() { let _ = legacy; }
 """,
         "FinanceSnapshot",
     ),
+    "checked-owned": (
+        True,
+        """
+use rustdx_complete::{
+    IncrementalIndicatorError, LegacyIndicatorError,
+    data::{CanonicalBar, Market, Period, Symbol, VolumeUnit},
+    tcp::stock::KlineRequest,
+};
+fn main() {
+    let incremental: rustdx_complete::indicators::IndicatorError =
+        IncrementalIndicatorError::ZeroPeriod;
+    assert!(matches!(rustdx_complete::indicators::try_ema(&[1.], 0),
+        Err(error) if error == incremental));
+    let legacy: rustdx_complete::IndicatorError =
+        LegacyIndicatorError::insufficient_data("SMA".into(), 20, 1);
+    assert!(matches!(rustdx_complete::Error::from(legacy),
+        rustdx_complete::Error::Indicator(_)));
+    let raw: Vec<u8> = vec![REAL_FRAME_BYTES];
+    let owned: Vec<CanonicalBar> = {
+        let symbol = Symbol::new(Market::Shenzhen, "000001").unwrap();
+        let request = KlineRequest::for_symbol(&symbol, Period::Day, 0, 3).unwrap();
+        request.decode_canonical_stock(&raw, VolumeUnit::Lots).unwrap()
+    };
+    assert_eq!(owned.len(), 3);
+    let encoded = serde_json::to_vec(&owned).unwrap();
+    let restored: serde_json::Value = serde_json::from_slice(&encoded).unwrap();
+    for bar in restored.as_array().unwrap() {
+        assert_eq!(bar["bar"]["symbol"]["market"], "shenzhen");
+        assert_eq!(bar["bar"]["symbol"]["code"], "000001");
+        assert_eq!(bar["period"], "Day");
+        assert_eq!(bar["price_basis"], "Raw");
+        assert_eq!(bar["source"], "TdxTcp");
+        assert_eq!(bar["provenance"]["source_volume_unit"], "Lots");
+        assert_eq!(bar["provenance"]["volume_unit_basis"], "CallerSpecified");
+        assert_eq!(bar["provenance"]["request"],
+            serde_json::json!({"category":9,"command":1325,"market":0,"start":0,"count":3}));
+        assert_eq!(bar["provenance"]["acquisition"], serde_json::Value::Null);
+    }
+}
+""",
+        None,
+    ),
 }
 
 
@@ -124,11 +166,17 @@ def main():
             raise RuntimeError("consumer contract requires matching decimal core/CLI versions")
         report["toolchain"] = subprocess.check_output(cargo + ["--version"], env=env).decode().strip()
         for name, (success, source, diagnostic) in CASES.items():
+            fixture_sha256 = None
+            if name == "checked-owned":
+                fixture = ROOT / "crates/rustdx-core/tests/fixtures/kline/stock-day.response.hex"
+                raw = bytes.fromhex(fixture.read_text().strip())
+                fixture_sha256 = sha(raw)
+                source = source.replace("REAL_FRAME_BYTES", ",".join(str(byte) for byte in raw))
             directory = output / name
             (directory / "src").mkdir(parents=True)
             (directory / "Cargo.toml").write_text(
                 '[package]\nname="rustdx-consumer-' + name + '"\nversion="0.0.0"\nedition="2024"\n'
-                '[workspace]\n[dependencies]\nchrono="0.4"\n'
+                '[workspace]\n[dependencies]\nchrono="0.4"\nserde_json="1"\n'
                 'rustdx_complete={package="jelven-rustdx-complete",path=' + json.dumps(str(core_directory)) + '}\n'
             )
             (directory / "src/main.rs").write_text(source.strip() + "\n")
@@ -162,6 +210,7 @@ def main():
                 "elapsed_seconds": time.monotonic() - started,
                 "source_sha256": sha(source.strip().encode()), "log": log.name,
                 "log_sha256": sha(log.read_bytes()),
+                "fixture_payload_sha256": fixture_sha256,
             })
             if not matched:
                 raise RuntimeError(f"consumer expectation failed: {name}; see {log}")

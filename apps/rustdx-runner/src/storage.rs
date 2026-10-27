@@ -222,6 +222,13 @@ impl RootLock {
     }
 }
 
+impl Drop for RootLock {
+    fn drop(&mut self) {
+        // A concurrent fork can retain the shared open file description until exec.
+        let _ = self._file.unlock();
+    }
+}
+
 /// Resolve an existing source and the parent of a new destination before any write.
 /// Parent aliases and `..` cannot place an ostensibly external copy inside source.
 pub(crate) fn isolated_destination(source: &Path, destination: &Path) -> Result<PathBuf> {
@@ -410,6 +417,28 @@ pub fn free_bytes(root: &Path) -> Result<u64> {
 #[cfg(not(unix))]
 pub fn free_bytes(_root: &Path) -> Result<u64> {
     Err(invalid("runner capacity checks require Unix"))
+}
+
+#[cfg(all(test, unix))]
+mod lock_tests {
+    use super::*;
+
+    #[test]
+    fn dropping_root_lock_releases_it_while_a_duplicated_handle_remains_open() {
+        let temp = tempfile::tempdir().unwrap();
+        let lock = RootLock::acquire(temp.path()).unwrap();
+        // A concurrent fork shares this open file description until exec.
+        let inherited = lock._file.try_clone().unwrap();
+        assert!(RootLock::acquire(temp.path()).is_err());
+        drop(lock);
+        let replacement = RootLock::acquire(temp.path())
+            .expect("dropping the owner must release its lock before inherited handles close");
+        assert!(RootLock::acquire(temp.path()).is_err());
+        drop(inherited);
+        assert!(RootLock::acquire(temp.path()).is_err());
+        drop(replacement);
+        RootLock::acquire(temp.path()).unwrap();
+    }
 }
 
 #[cfg(test)]

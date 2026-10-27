@@ -1,0 +1,165 @@
+{
+  "url": "https://data.tdx.com.cn/vipdoc/hsjday.zip",
+  "started_utc": "2026-10-27T06:29:44.090627+00:00",
+  "status": "captured",
+  "archive_headers": {
+    "Last-Modified": "Mon, 26 Oct 2026 07:58:57 GMT",
+    "Etag": "\"6adf0841-20cc95f7\"",
+    "Server": "nginx",
+    "Content-Type": "application/zip",
+    "Content-Length": "550278647",
+    "Accept-Ranges": "bytes",
+    "Connection": "close",
+    "Date": "Tue, 27 Oct 2026 06:29:44 GMT",
+    "EO-LOG-UUID": "17712572791243112290",
+    "EO-Cache-Status": "HIT"
+  },
+  "archive_bytes": 550278647,
+  "members": [
+    {
+      "member": "sh\\lday\\sh600000.day",
+      "file": "sh600000.day",
+      "sha256": "388e21032ade098e74db7230310f5f9000b6607be40646a72ccd0a3992304cf4",
+      "bytes": 205216,
+      "crc32": 2246273251,
+      "compression": 8,
+      "rows": 6413,
+      "first_date": 19991110,
+      "last_date": 20261026
+    },
+    {
+      "member": "sh\\lday\\sh600519.day",
+      "file": "sh600519.day",
+      "sha256": "3e0aa3e23be5ded8e5a1008804005428f56e4ae489224510895b71321c477ba6",
+      "bytes": 192896,
+      "crc32": 4159974503,
+      "compression": 8,
+      "rows": 6028,
+      "first_date": 20010827,
+      "last_date": 20261026
+    },
+    {
+      "member": "sz\\lday\\sz000001.day",
+      "file": "sz000001.day",
+      "sha256": "d0c169a32b03bb63e2588512d630e5021c73318e315303205ca7a6eaebc67173",
+      "bytes": 271264,
+      "crc32": 879022465,
+      "compression": 8,
+      "rows": 8477,
+      "first_date": 19910403,
+      "last_date": 20261026
+    },
+    {
+      "member": "sz\\lday\\sz000988.day",
+      "file": "sz000988.day",
+      "sha256": "9ef465fa3313259af231642624a9bf78c96bf30ca3efa010ab707546ec11c095",
+      "bytes": 202208,
+      "crc32": 381265293,
+      "compression": 8,
+      "rows": 6319,
+      "first_date": 20000608,
+      "last_date": 20261026
+    }
+  ],
+  "ranges": [
+    {
+      "start": 550213111,
+      "end": 550278646,
+      "sha256": "201cd0304d3ae286d9a81bfe5741873abadc051f910aab6d39dc0640995e8c22",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 549471973,
+      "end": 550278624,
+      "sha256": "ba5363e768a953c0aa20b37619fceefd032bc0b085c1346fa6a2a7893d0afd1d",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 58636639,
+      "end": 58636668,
+      "sha256": "bc6c53b0c1aa89d5cdf870683e3e6cfb4bd5da330ba1072a8c96a45b5232bdbe",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 58636669,
+      "end": 58636688,
+      "sha256": "9dcd905d91add36c8185a7bfddbee4d4e7e6605ec960deb3a86a7bbb256c8234",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 58636689,
+      "end": 58751899,
+      "sha256": "ce061d472a9835c17fddb637d98b9f12f085b145c246259b99c53c3020dca0dd",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 104189188,
+      "end": 104189217,
+      "sha256": "dfb9d240e24d8eaf0bfe68fddd776923bb6ce2cf24423c19c03758899576efe1",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 104189218,
+      "end": 104189237,
+      "sha256": "d08e8fdeffcdf2b1365dcef4f9e6494f8b32f6ebe3d85ca0b9ab98e9253dbf96",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 104189238,
+      "end": 104307171,
+      "sha256": "c4a30b945baa44206d10135b64d75d42fbca073dd0b94fde3c2d6a96c2fd5807",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 289935759,
+      "end": 289935788,
+      "sha256": "74ef928c5142506f08e13f550a2e2b30513aa7d32adfb3568b62614affc06b8a",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 289935789,
+      "end": 289935808,
+      "sha256": "0fd42b9701b850c600ffc9a0e10b5b127dcdb8c9927930ac6e6019f26db532f4",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 289935809,
+      "end": 290086025,
+      "sha256": "0c99f6b984418bc9cc4016f7e1f8e5fa19c8b5de2216399c7fa4d354782476bd",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 345424897,
+      "end": 345424926,
+      "sha256": "f528eaafdf1c8591d87d251298cd76edbcced9af1ff2227b5dabc355e76a5988",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 345424927,
+      "end": 345424946,
+      "sha256": "4a44742797021abb0b2262306d7dcf0133845fcb3db52c3f185c69ad5e07264f",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    },
+    {
+      "start": 345424947,
+      "end": 345540839,
+      "sha256": "b8a61285aaa87021c8658ece2c68291290d72a269d2cffc20b61ce628ab66e4a",
+      "etag": "\"6adf0841-20cc95f7\"",
+      "last_modified": "Mon, 26 Oct 2026 07:58:57 GMT"
+    }
+  ],
+  "finished_utc": "2026-10-27T06:29:54.128481+00:00"
+}

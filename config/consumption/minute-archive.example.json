@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "archive_id": "unverified-example",
+  "revision": 1,
+  "source_as_of": "2026-10-27T00:00:00+00:00",
+  "retention": {
+    "days": null,
+    "max_bytes": null,
+    "max_files": null,
+    "max_freshness_seconds": null
+  },
+  "expected": [
+    {
+      "market": "sz",
+      "code": "000001",
+      "date": "2026-10-26",
+      "state": "Trading",
+      "slots": ["09:31", "09:32"],
+      "evidence": null
+    }
+  ],
+  "partitions": []
+}

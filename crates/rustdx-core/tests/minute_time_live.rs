@@ -3,48 +3,35 @@
 //! - 与「今日历史分时」（协议稳定）交叉对照：点数与末点价格应一致；
 //! - 多服务器解析结果应一致。
 //!
-//! 非交易日/集合竞价前无当日分时（返回空），此时跳过对照断言。
+//! 非交易日/集合竞价前无当日分时，严格在线验收失败；默认ignored。
 use rustdx_complete::tcp::stock::{Client, HistoryMinuteTime};
 use rustdx_complete::tcp::{TcpConfig, Tdx};
 use std::time::Duration;
 
-fn skip_if_no_live(data: &[(f64, i32)]) -> bool {
-    if data.is_empty() {
-        println!("⚠️  当前无当日分时（非交易日或未开盘），跳过对照断言");
-        return true;
-    }
-    false
-}
-
 /// Client::minute（新协议解析）与今日历史分时（旧协议，稳定）逐项对照。
 #[test]
+#[ignore = "external current-day TCP data; run during the declared online window"]
 fn minute_time_live_matches_history() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut client = Client::new()?;
     for (market, code) in [(0u16, "000001"), (1, "600000")] {
         let live = client.minute(market, code)?;
-        if skip_if_no_live(&live.iter().map(|d| (d.price, d.vol)).collect::<Vec<_>>()) {
-            return Ok(());
-        }
+        assert!(!live.is_empty(), "{code}: 当日分时为空，无法完成在线验收");
 
         let today: u32 = {
             use chrono::Datelike;
-            let d = chrono::Local::now().date_naive();
+            let d = chrono::Utc::now()
+                .with_timezone(&rustdx_complete::data::exchange_timezone())
+                .date_naive();
             (d.year() as u32) * 10000 + d.month() * 100 + d.day()
         };
         let mut hmt = HistoryMinuteTime::new(market, code, today);
         hmt.recv_parsed(&mut client.tcp)?;
         let hist = hmt.result();
 
-        if hist.is_empty() {
-            // 盘初服务器端「今日历史分时」可能尚未生成（与当日分时不同步）
-            println!("⚠️  {code}: 今日历史分时暂未就绪，跳过对照");
-            return Ok(());
-        }
+        assert!(
+            !hist.is_empty(),
+            "{code}: 今日历史分时未就绪，无法完成在线验收"
+        );
         assert_eq!(
             live.len(),
             hist.len(),
@@ -65,12 +52,8 @@ fn minute_time_live_matches_history() -> std::io::Result<()> {
 
 /// 多台不同服务器的当日分时解析结果应一致（点数与末点价格）。
 #[test]
+#[ignore = "external current-day TCP data; run during the declared online window"]
 fn minute_time_live_multi_server() -> std::io::Result<()> {
-    if std::env::var("RUSTDX_SKIP_INTEGRATION_TESTS").is_ok() {
-        println!("⚠️  跳过集成测试 (RUSTDX_SKIP_INTEGRATION_TESTS 已设置)");
-        return Ok(());
-    }
-
     let mut results = Vec::new();
     for index in [0usize, 2, 8] {
         let config = TcpConfig::with_index(index, Duration::from_secs(5));
@@ -82,9 +65,10 @@ fn minute_time_live_multi_server() -> std::io::Result<()> {
             }
         };
         let data = client.minute(0, "000001")?;
-        if skip_if_no_live(&data.iter().map(|d| (d.price, d.vol)).collect::<Vec<_>>()) {
-            return Ok(());
-        }
+        assert!(
+            !data.is_empty(),
+            "服务器 #{index} 当日分时为空，无法完成在线验收"
+        );
         let last = data[data.len() - 1].price;
         println!("服务器 #{index}: {} 点, 末点 {last:.2}", data.len());
         results.push((index, data.len(), last));

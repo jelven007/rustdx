@@ -15,9 +15,24 @@ sys.path.insert(0, str(ROOT / "scripts/release"))
 from evidence_manifest import bundle, safe_path, verify
 from release_gate import check_runs, verify_packages
 from source_scope import fingerprint, inventory
+import preflight
 
 
 class ReleaseGates(unittest.TestCase):
+    def test_package_cache_selects_only_current_version_and_rejects_missing_or_link(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "jelven-rustdx-complete-2.0.0.crate").write_bytes(b"old")
+            current = root / "jelven-rustdx-complete-2.0.2.crate"
+            with self.assertRaises(RuntimeError):
+                preflight.package_path(root, "jelven-rustdx-complete", "2.0.2")
+            current.write_bytes(b"new")
+            self.assertEqual(preflight.package_path(root, "jelven-rustdx-complete", "2.0.2"), current)
+            current.unlink()
+            current.symlink_to(root / "jelven-rustdx-complete-2.0.0.crate")
+            with self.assertRaises(RuntimeError):
+                preflight.package_path(root, "jelven-rustdx-complete", "2.0.2")
+
     def test_required_acceptance_inputs_are_not_hidden_by_runtime_ignore_rules(self):
         names = ["config/acceptance/task-matrix.json", "config/acceptance/deployment.example.json",
                  "deploy/acceptance/tool-archives.sha256"]
