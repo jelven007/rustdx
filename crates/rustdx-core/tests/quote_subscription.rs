@@ -73,9 +73,23 @@ fn partial_push_received_before_refresh_cannot_satisfy_the_new_request() {
         let mut byte = [0];
         assert_eq!(stream.read(&mut byte).unwrap(), 0);
     });
-    let mut sub = subscribe(&config, SubscriptionOptions::default());
+    let tcp = Tcp::with_config(&config).unwrap();
+    let arrival = tcp.get_ref().0.try_clone().unwrap();
+    let mut sub = QuoteSubscription::from_tcp(
+        tcp,
+        RefreshRequest::from_stocks(&[(0, "000001")]).unwrap(),
+        Arc::new(metadata()),
+        SubscriptionOptions::default(),
+    )
+    .unwrap();
     sub.refresh().unwrap();
     sent_rx.recv().unwrap();
+    // A server write can still be buffered by TCP. Establish arrival before
+    // the short poll so this test actually stages a pre-request frame.
+    arrival
+        .set_read_timeout(Some(Duration::from_secs(1)))
+        .unwrap();
+    assert!(arrival.peek(&mut [0; 7]).unwrap() > 0);
     assert!(sub.poll_push(Duration::from_millis(10)).unwrap().is_none());
     let refresh = sub.refresh().unwrap();
     let push = sub.poll_push(Duration::from_secs(1)).unwrap().unwrap();
