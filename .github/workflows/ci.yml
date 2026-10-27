@@ -95,6 +95,17 @@ jobs:
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           }
 
+      - name: Diagnose file cache contention (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cargo test -p jelven-rustdx-complete --lib --all-features --locked `
+            cache::tests::parallel_file_reads_observe_complete_atomic_replacements -- --exact --nocapture
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cargo test -p jelven-rustdx-complete --lib --all-features --locked `
+            cache::tests::independent_processes_share_one_file_capacity_limit -- --exact --nocapture
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
       - name: Test
         run: cargo test --workspace ${{ matrix.package_args }} --all-features --locked --no-fail-fast
 

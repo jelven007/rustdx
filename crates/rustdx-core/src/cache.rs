@@ -1124,15 +1124,28 @@ mod tests {
         std::thread::scope(|scope| {
             scope.spawn(|| {
                 for marker in 2..=25 {
+                    let started = Instant::now();
                     cache
                         .try_set("same", &[marker; 32 * 1024], Duration::from_secs(60))
                         .unwrap();
+                    eprintln!(
+                        "[bug-windows-cache] writer marker={marker} elapsed_ms={}",
+                        started.elapsed().as_millis()
+                    );
                 }
             });
-            for _ in 0..4 {
-                scope.spawn(|| {
-                    for _ in 0..100 {
+            for reader in 0..4 {
+                let cache = &cache;
+                scope.spawn(move || {
+                    for index in 0..100 {
+                        let started = Instant::now();
                         let value = cache.try_get("same").unwrap().unwrap();
+                        if started.elapsed() >= Duration::from_millis(100) {
+                            eprintln!(
+                                "[bug-windows-cache] reader={reader} index={index} elapsed_ms={}",
+                                started.elapsed().as_millis()
+                            );
+                        }
                         assert_eq!(value.len(), 32 * 1024);
                         assert!((1..=25).contains(&value[0]));
                         assert!(value.iter().all(|byte| *byte == value[0]));
@@ -1396,6 +1409,7 @@ mod tests {
         let worker = std::env::var("RUSTDX_CACHE_TEST_WORKER").unwrap();
         let cache = FileCache::try_with_capacity(dir, 3, 96).unwrap();
         for index in 0..10 {
+            let started = Instant::now();
             cache
                 .try_set(
                     &format!("{worker}-{index}"),
@@ -1403,6 +1417,10 @@ mod tests {
                     Duration::from_secs(60),
                 )
                 .unwrap();
+            eprintln!(
+                "[bug-windows-cache] process worker={worker} index={index} elapsed_ms={}",
+                started.elapsed().as_millis()
+            );
             let usage = cache.usage().unwrap();
             assert!(usage.entries <= 3 && usage.bytes <= 96);
         }
@@ -1421,13 +1439,21 @@ mod tests {
                     .args(["--exact", "cache::tests::file_cache_process_writer"])
                     .env("RUSTDX_CACHE_TEST_DIR", &dir)
                     .env("RUSTDX_CACHE_TEST_WORKER", worker.to_string())
-                    .stdout(std::process::Stdio::null())
+                    .stdout(std::process::Stdio::piped())
+                    .stderr(std::process::Stdio::piped())
                     .spawn()
                     .unwrap(),
             );
         }
-        for child in &mut children {
-            assert!(child.wait().unwrap().success());
+        for child in children {
+            let output = child.wait_with_output().unwrap();
+            assert!(
+                output.status.success(),
+                "cache writer failed: {}\nstdout:\n{}\nstderr:\n{}",
+                output.status,
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr),
+            );
         }
         let cache = FileCache::try_with_capacity(&dir, 3, 96).unwrap();
         assert!(cache.usage().unwrap().entries <= 3);
