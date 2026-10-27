@@ -339,6 +339,15 @@ struct CacheFile {
     expiry: u64,
 }
 
+struct FileCacheLock(fs::File);
+
+impl Drop for FileCacheLock {
+    fn drop(&mut self) {
+        // Closing alone can defer unlock on Windows or leave a Unix clone holding it.
+        let _ = self.0.unlock();
+    }
+}
+
 impl FileCache {
     /// 创建新的文件缓存
     ///
@@ -397,7 +406,7 @@ impl FileCache {
         })
     }
 
-    fn lock(&self) -> io::Result<fs::File> {
+    fn lock(&self) -> io::Result<FileCacheLock> {
         let file = fs::OpenOptions::new()
             .read(true)
             .write(true)
@@ -408,7 +417,7 @@ impl FileCache {
         loop {
             crate::operation::check()?;
             match file.try_lock() {
-                Ok(()) => return Ok(file),
+                Ok(()) => return Ok(FileCacheLock(file)),
                 Err(fs::TryLockError::WouldBlock) if Instant::now() < deadline => {
                     crate::operation::sleep(Duration::from_millis(20))?;
                 }
@@ -1113,6 +1122,34 @@ mod tests {
         cache.clear();
     }
 
+    #[cfg(unix)]
+    #[test]
+    fn file_lock_owner_drop_releases_while_duplicated_handle_remains_open() {
+        let dir = std::env::temp_dir().join(format!("rustdx-cache-owner-{}", std::process::id()));
+        let cache = FileCache::try_new(&dir).unwrap();
+        let owner = cache.lock().unwrap();
+        let inherited = owner.0.try_clone().unwrap();
+        let contender = fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open(dir.join(".rustdx-cache.lock"))
+            .unwrap();
+        assert!(matches!(
+            contender.try_lock(),
+            Err(fs::TryLockError::WouldBlock)
+        ));
+        drop(owner);
+        let acquired = contender.try_lock();
+        assert!(
+            acquired.is_ok(),
+            "owner release must not wait for duplicated handles: {acquired:?}"
+        );
+        contender.unlock().unwrap();
+        drop(contender);
+        drop(inherited);
+        fs::remove_dir_all(dir).unwrap();
+    }
+
     #[test]
     fn parallel_file_reads_observe_complete_atomic_replacements() {
         let dir =
@@ -1124,28 +1161,16 @@ mod tests {
         std::thread::scope(|scope| {
             scope.spawn(|| {
                 for marker in 2..=25 {
-                    let started = Instant::now();
                     cache
                         .try_set("same", &[marker; 32 * 1024], Duration::from_secs(60))
                         .unwrap();
-                    eprintln!(
-                        "[bug-windows-cache] writer marker={marker} elapsed_ms={}",
-                        started.elapsed().as_millis()
-                    );
                 }
             });
-            for reader in 0..4 {
+            for _ in 0..4 {
                 let cache = &cache;
                 scope.spawn(move || {
-                    for index in 0..100 {
-                        let started = Instant::now();
+                    for _ in 0..100 {
                         let value = cache.try_get("same").unwrap().unwrap();
-                        if started.elapsed() >= Duration::from_millis(100) {
-                            eprintln!(
-                                "[bug-windows-cache] reader={reader} index={index} elapsed_ms={}",
-                                started.elapsed().as_millis()
-                            );
-                        }
                         assert_eq!(value.len(), 32 * 1024);
                         assert!((1..=25).contains(&value[0]));
                         assert!(value.iter().all(|byte| *byte == value[0]));
@@ -1409,7 +1434,6 @@ mod tests {
         let worker = std::env::var("RUSTDX_CACHE_TEST_WORKER").unwrap();
         let cache = FileCache::try_with_capacity(dir, 3, 96).unwrap();
         for index in 0..10 {
-            let started = Instant::now();
             cache
                 .try_set(
                     &format!("{worker}-{index}"),
@@ -1417,10 +1441,6 @@ mod tests {
                     Duration::from_secs(60),
                 )
                 .unwrap();
-            eprintln!(
-                "[bug-windows-cache] process worker={worker} index={index} elapsed_ms={}",
-                started.elapsed().as_millis()
-            );
             let usage = cache.usage().unwrap();
             assert!(usage.entries <= 3 && usage.bytes <= 96);
         }

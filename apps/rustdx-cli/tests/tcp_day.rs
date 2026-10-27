@@ -214,6 +214,8 @@ fn scheduled_scope_exceeds_32_with_bounded_parallelism_and_ordered_exact_replay(
     server.delay_ms.store(5, Ordering::SeqCst);
     let mut request = setup(temp.path(), server.endpoint);
     scheduled(&mut request, 40, 3);
+    // This success fixture persists hundreds of files on shared Windows CI hosts.
+    request.schedule.as_mut().unwrap().timeout_seconds = 60;
     fs::write(
         temp.path().join("tcp-request.json"),
         serde_json::to_vec(&request).unwrap(),
