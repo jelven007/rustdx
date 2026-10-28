@@ -114,7 +114,7 @@
       "verified_on": "2026-10-28",
       "cadence_days": 90,
       "state": "source-verified",
-      "trigger": "跨接口消费合同变化",
+      "trigger": "跨接口消费合同或文件缓存锁协议变化",
       "stale_signal": "超过核验周期，或触发变更后尚未同步文档",
       "check": "python3 scripts/validation/check_documentation_lifecycle.py"
     },

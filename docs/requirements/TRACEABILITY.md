@@ -19,7 +19,7 @@
 | FR-09 | core/src/indicators.rs | 独立公式单测、properties、indicator_error_aliases、indicators bench | OPERATIONS、APPLICATION_INTEGRATION |
 | FR-10 | scripts/release、validation、CI | MSRV/三平台、Python、真实包准确版本选择/独立签名及checked-owned消费、真实帧SHA及边界种子/长时fuzz、19个外部用例显式ignored及run_online_tests严格结果 | RELEASES、VALIDATION |
 | FR-11 | config/documentation、docs、AGENTS | 文档导航/生命周期、schema源码锚点、FR锚点、目录与保全摘要 | DOCUMENTATION_GOVERNANCE、STRUCTURE_MIGRATION |
-| FR-12 | core/src/cache.rs、tcp/stock/client | 缓存模块单测、file_cache固定输入基准、shared_quote_metadata、metadata_hot_path示例 | APPLICATION_INTEGRATION、RUNBOOK |
+| FR-12 | core/src/cache.rs、cache_windows_lock.rs、tcp/stock/client | 缓存模块单测、Windows原生排队交接/超时撤销/取消竞态、线程完整替换及独立进程容量回归、file_cache固定输入基准、shared_quote_metadata、metadata_hot_path示例 | APPLICATION_INTEGRATION、RUNBOOK |
 | FR-13 | core/src/tcp/evidence.rs、CLI/src/tcp_evidence.rs、scripts/release/evidence_manifest.py、validation/audit_minute_archive.py | wire_archive、帧/截断/篡改重放、固定归档安全restore、10月27日poll_update及扩大456次分钟请求原帧独立回放/跨节点差异、独立分钟槽/量额/修订/保存输入回归 | EVIDENCE、RUNBOOK、APPLICATION_INTEGRATION、ADR-0002 |
 | FR-14 | CLI/src/manifest、runner/src/observations.rs、ops.rs、pipeline/business.rs、scripts/ops/daily.py | 阶段并集/持久事件/刷新/剩余空间、规则独立剩余期、日历积压/批准逾期/批次保留/独立monitor、逐实例告警夹具 | OBSERVABILITY、OPERATIONS |
 | FR-15 | runner/src/pipeline、pipeline/plan.rs、controller、scripts/ops/{daily,production_gate}.py | control_plane缺键/免行情/去重/期限、行数与全部目标预算只拆完整日期、事实SHA绑定、实际runner日调度plan、缺准入禁止recover/run | OPERATIONS、TASK_ADMISSION |

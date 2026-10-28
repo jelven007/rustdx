@@ -275,7 +275,7 @@ CI配置覆盖Linux/macOS/Windows、all-features、MSRV、解析fuzz、独立调
 
 day下载缓存按来源隔离，来源锁持有至解析完成。续传核实版本及Content-Range，远端缓存须凭ETag或Last-Modified确认；本地替代ZIP先验证再发布，失败不破坏旧缓存。非交互环境重试耗尽后失败。
 
-**验收依据：** 缓存容量/过期/碰撞键、原子写入、并发获取及ZIP续传/来源锁/解压失败保护回归。见[开发说明](../development/DEVELOPMENT.md)。
+**验收依据：** 缓存容量/过期/碰撞键、原子写入、并发获取、Windows排队锁交接/超时撤销/取消竞态、线程完整替换及独立进程容量回归，以及ZIP续传/来源锁/解压失败保护回归。缓存锁的期限与底层I/O边界见[应用接入约定](../development/APPLICATION_INTEGRATION.md#6-连接预算超时重试和缓存)，检查入口见[开发说明](../development/DEVELOPMENT.md)。
 
 ### FR-13 来源留证与离线重放
 
