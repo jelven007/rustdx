@@ -1,6 +1,6 @@
 # Windows file-cache publication blocker
 
-Status: failure not reproduced with diagnostics; uninstrumented validation pending
+Status: uninstrumented failure reproduced; buffered lock-level diagnostics pending
 Mode: deep
 Severity: blocks release
 
@@ -36,3 +36,16 @@ No production fix is justified by this evidence. Temporary instrumentation
 is removed, restoring `cache.rs` byte-for-byte to the pre-diagnostic source.
 The original values, assertions, repetition count and lock deadline remain.
 Fresh uninstrumented PR and main gates are required before publication.
+
+The uninstrumented run 40633683998 again fails with all four readers reaching
+the unchanged five-second lock deadline; the test lasts 8.20 seconds.
+The other nine gates, including real isolated database acceptance, pass.
+This rules out treating the earlier instrumented success as release clearance.
+
+The next diagnostic records lock wait, hold duration, attempt count and unlock
+errors in thread-local memory. Each worker buffers operation results; logging
+occurs only after all five workers join, avoiding hot-path console scheduling.
+The four readers, 100 reads each, 24 replacements, full byte assertions and
+five-second deadline remain. Production builds have no timing instrumentation.
+Local Rust 1.89 formatting, core all-target/all-feature Clippy and the original
+complete-value regression pass before pushing this diagnostic.

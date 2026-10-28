@@ -339,12 +339,33 @@ struct CacheFile {
     expiry: u64,
 }
 
-struct FileCacheLock(fs::File);
+// bug-cache-windows DEBUG START: thread-local timings, no I/O while contending.
+#[cfg(test)]
+type CacheLockTiming = (Duration, Duration, usize, Option<io::ErrorKind>);
+#[cfg(test)]
+thread_local! {
+    static CACHE_LOCK_TIMING: std::cell::Cell<Option<CacheLockTiming>> =
+        const { std::cell::Cell::new(None) };
+}
+struct FileCacheLock(fs::File, #[cfg(test)] (Instant, Duration, usize));
+// bug-cache-windows DEBUG END
 
 impl Drop for FileCacheLock {
     fn drop(&mut self) {
         // Closing alone can defer unlock on Windows or leave a Unix clone holding it.
-        let _ = self.0.unlock();
+        let result = self.0.unlock();
+        // bug-cache-windows DEBUG START
+        #[cfg(test)]
+        CACHE_LOCK_TIMING.with(|timing| {
+            timing.set(Some((
+                self.1.1,
+                self.1.0.elapsed(),
+                self.1.2,
+                result.as_ref().err().map(io::Error::kind),
+            )));
+        });
+        let _ = result;
+        // bug-cache-windows DEBUG END
     }
 }
 
@@ -407,6 +428,12 @@ impl FileCache {
     }
 
     fn lock(&self) -> io::Result<FileCacheLock> {
+        // bug-cache-windows DEBUG START
+        #[cfg(test)]
+        let started = Instant::now();
+        #[cfg(test)]
+        let mut attempts = 0;
+        // bug-cache-windows DEBUG END
         let file = fs::OpenOptions::new()
             .read(true)
             .write(true)
@@ -416,12 +443,34 @@ impl FileCache {
         let deadline = Instant::now() + Duration::from_secs(5);
         loop {
             crate::operation::check()?;
+            // bug-cache-windows DEBUG START
+            #[cfg(test)]
+            {
+                attempts += 1;
+            }
+            // bug-cache-windows DEBUG END
             match file.try_lock() {
-                Ok(()) => return Ok(FileCacheLock(file)),
+                Ok(()) => {
+                    // bug-cache-windows DEBUG START
+                    #[cfg(test)]
+                    return Ok(FileCacheLock(
+                        file,
+                        (Instant::now(), started.elapsed(), attempts),
+                    ));
+                    #[cfg(not(test))]
+                    return Ok(FileCacheLock(file));
+                    // bug-cache-windows DEBUG END
+                }
                 Err(fs::TryLockError::WouldBlock) if Instant::now() < deadline => {
                     crate::operation::sleep(Duration::from_millis(20))?;
                 }
                 Err(fs::TryLockError::WouldBlock) => {
+                    // bug-cache-windows DEBUG START
+                    #[cfg(test)]
+                    CACHE_LOCK_TIMING.with(|timing| {
+                        timing.set(Some((started.elapsed(), Duration::ZERO, attempts, None)));
+                    });
+                    // bug-cache-windows DEBUG END
                     return Err(io::Error::new(
                         io::ErrorKind::TimedOut,
                         "文件缓存锁等待超时",
@@ -1158,25 +1207,82 @@ mod tests {
         cache
             .try_set("same", &[1; 32 * 1024], Duration::from_secs(60))
             .unwrap();
+        // bug-cache-windows DEBUG START: dump only after all workers have joined.
+        let started = Instant::now();
+        // bug-cache-windows DEBUG END
         std::thread::scope(|scope| {
-            scope.spawn(|| {
+            let writer = scope.spawn(|| {
+                // bug-cache-windows DEBUG START
+                let mut timings = Vec::with_capacity(24);
+                // bug-cache-windows DEBUG END
                 for marker in 2..=25 {
-                    cache
-                        .try_set("same", &[marker; 32 * 1024], Duration::from_secs(60))
-                        .unwrap();
-                }
-            });
-            for _ in 0..4 {
-                let cache = &cache;
-                scope.spawn(move || {
-                    for _ in 0..100 {
-                        let value = cache.try_get("same").unwrap().unwrap();
-                        assert_eq!(value.len(), 32 * 1024);
-                        assert!((1..=25).contains(&value[0]));
-                        assert!(value.iter().all(|byte| *byte == value[0]));
+                    // bug-cache-windows DEBUG START
+                    let operation = Instant::now();
+                    let result =
+                        cache.try_set("same", &[marker; 32 * 1024], Duration::from_secs(60));
+                    timings.push((
+                        marker,
+                        operation.duration_since(started),
+                        operation.elapsed(),
+                        CACHE_LOCK_TIMING.with(std::cell::Cell::get),
+                        result.as_ref().err().map(io::Error::kind),
+                    ));
+                    if result.is_err() {
+                        return (timings, false);
                     }
-                });
+                    // bug-cache-windows DEBUG END
+                }
+                (timings, true)
+            });
+            let mut readers = Vec::with_capacity(4);
+            for reader in 0..4 {
+                let cache = &cache;
+                readers.push((
+                    reader,
+                    scope.spawn(move || {
+                        // bug-cache-windows DEBUG START
+                        let mut timings = Vec::with_capacity(100);
+                        // bug-cache-windows DEBUG END
+                        for iteration in 0..100 {
+                            // bug-cache-windows DEBUG START
+                            let operation = Instant::now();
+                            let result = cache.try_get("same");
+                            timings.push((
+                                iteration,
+                                operation.duration_since(started),
+                                operation.elapsed(),
+                                CACHE_LOCK_TIMING.with(std::cell::Cell::get),
+                                result.as_ref().err().map(io::Error::kind),
+                            ));
+                            let value = match result {
+                                Ok(Some(value)) => value,
+                                _ => return (timings, false),
+                            };
+                            // bug-cache-windows DEBUG END
+                            assert_eq!(value.len(), 32 * 1024);
+                            assert!((1..=25).contains(&value[0]));
+                            assert!(value.iter().all(|byte| *byte == value[0]));
+                        }
+                        (timings, true)
+                    }),
+                ));
             }
+            // bug-cache-windows DEBUG START
+            let writer = writer.join().unwrap();
+            let readers: Vec<_> = readers
+                .into_iter()
+                .map(|(reader, handle)| (reader, handle.join().unwrap()))
+                .collect();
+            eprintln!("[bug-cache-windows] writer {writer:?}");
+            for (reader, result) in &readers {
+                eprintln!("[bug-cache-windows] reader {reader} {result:?}");
+            }
+            assert!(writer.1, "writer failed; see buffered timings");
+            assert!(
+                readers.iter().all(|(_, result)| result.1),
+                "reader failed; see buffered timings"
+            );
+            // bug-cache-windows DEBUG END
         });
         assert_eq!(cache.usage().unwrap().entries, 1);
         fs::remove_dir_all(dir).unwrap();
