@@ -332,7 +332,7 @@
       "owner": "API及发布维护者",
       "audience": "升级集成者",
       "source_of_truth": "docs/development/APPLICATION_INTEGRATION.md",
-      "verified_on": "2026-10-27",
+      "verified_on": "2026-10-28",
       "cadence_days": 90,
       "state": "source-verified",
       "trigger": "破坏性行为或升级路径变化",
