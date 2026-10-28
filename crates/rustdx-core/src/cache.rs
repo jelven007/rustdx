@@ -1158,19 +1158,50 @@ mod tests {
         cache
             .try_set("same", &[1; 32 * 1024], Duration::from_secs(60))
             .unwrap();
+        // bug-cache-windows DEBUG START: temporary CI operation timings.
+        let started = Instant::now();
+        // bug-cache-windows DEBUG END
         std::thread::scope(|scope| {
             scope.spawn(|| {
                 for marker in 2..=25 {
-                    cache
-                        .try_set("same", &[marker; 32 * 1024], Duration::from_secs(60))
-                        .unwrap();
+                    // bug-cache-windows DEBUG START
+                    let operation = Instant::now();
+                    eprintln!(
+                        "[bug-cache-windows] write {marker} start {:?}",
+                        started.elapsed()
+                    );
+                    let result =
+                        cache.try_set("same", &[marker; 32 * 1024], Duration::from_secs(60));
+                    eprintln!(
+                        "[bug-cache-windows] write {marker} end {:?} duration {:?} result {result:?}",
+                        started.elapsed(),
+                        operation.elapsed()
+                    );
+                    result.unwrap();
+                    // bug-cache-windows DEBUG END
                 }
             });
-            for _ in 0..4 {
+            for reader in 0..4 {
                 let cache = &cache;
                 scope.spawn(move || {
-                    for _ in 0..100 {
-                        let value = cache.try_get("same").unwrap().unwrap();
+                    for iteration in 0..100 {
+                        // bug-cache-windows DEBUG START
+                        let operation = Instant::now();
+                        let result = cache.try_get("same");
+                        if iteration == 0
+                            || iteration == 99
+                            || operation.elapsed() > Duration::from_millis(100)
+                            || result.is_err()
+                        {
+                            eprintln!(
+                                "[bug-cache-windows] reader {reader} iteration {iteration} end {:?} duration {:?} result {:?}",
+                                started.elapsed(),
+                                operation.elapsed(),
+                                result.as_ref().map(|value| value.as_ref().map(Vec::len))
+                            );
+                        }
+                        let value = result.unwrap().unwrap();
+                        // bug-cache-windows DEBUG END
                         assert_eq!(value.len(), 32 * 1024);
                         assert!((1..=25).contains(&value[0]));
                         assert!(value.iter().all(|byte| *byte == value[0]));
