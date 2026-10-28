@@ -1,6 +1,6 @@
 # Windows file-cache publication blocker
 
-Status: diagnostic evidence pending
+Status: failure not reproduced with diagnostics; uninstrumented validation pending
 Mode: deep
 Severity: blocks release
 
@@ -10,7 +10,8 @@ readers reach the five-second directory-lock deadline. The latest run's
 other nine gates pass. No release has been uploaded.
 
 The explicit owner unlock from the previous investigation is already present.
-The two current failures are retained in the local release report directory.
+The two current failures are retained outside the source workspace in the
+publication evidence directory.
 
 | Hypothesis | Prior / confidence | Predicted observation and evidence |
 | --- | --- | --- |
@@ -22,3 +23,16 @@ The two current failures are retained in the local release report directory.
 Temporary tagged logs only instrument the existing regression. Its values,
 four readers, 24 replacements, assertions and lock deadline are unchanged.
 Production code is unchanged while gathering current Windows evidence.
+
+Run 40632374247 passed all ten gates, including three repetitions of both
+Windows cache regressions and the full Windows suite. The 24-write bursts
+took 333.99ms, 358.41ms and 303.67ms; initial reader waits were at most
+386.18ms. No sharing violation or unlock failure was observed.
+
+These successful samples do not identify the cause of the earlier failures:
+slow I/O and scheduling remain inconclusive for those failed hosts, and
+the current samples do not prove five-second starvation or deferred ownership.
+No production fix is justified by this evidence. Temporary instrumentation
+is removed, restoring `cache.rs` byte-for-byte to the pre-diagnostic source.
+The original values, assertions, repetition count and lock deadline remain.
+Fresh uninstrumented PR and main gates are required before publication.
