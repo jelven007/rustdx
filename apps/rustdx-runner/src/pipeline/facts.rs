@@ -59,7 +59,8 @@ fn load_paths(
             "security history verification cutoff does not cover planned range",
         ));
     }
-    let history = SecurityHistory::try_from(history).map_err(|e| invalid(e.to_string()))?;
+    let history =
+        SecurityHistory::from_state_dataset(history).map_err(|e| invalid(e.to_string()))?;
     let universe: Universe =
         serde_json::from_slice(&storage::read_limited(universe_path, MAX_JSON)?)?;
     universe.validate(config)?;

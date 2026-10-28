@@ -109,6 +109,44 @@ jobs:
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           }
 
+      - name: Queued cache lock handoff and cancellation proof (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $path = Join-Path $PWD "crates/rustdx-core/src/cache_windows_lock.rs"
+          $original = [IO.File]::ReadAllBytes($path)
+          $source = [Text.Encoding]::UTF8.GetString($original)
+          $pattern = '(?m)^(\s*)LOCKFILE_EXCLUSIVE_LOCK,\r?$'
+          if ([regex]::Matches($source, $pattern).Count -ne 1) {
+            throw "Expected exactly one queued-lock call site"
+          }
+          $immediate = [regex]::Replace($source, $pattern,
+            '$1LOCKFILE_EXCLUSIVE_LOCK | windows_sys::Win32::Storage::FileSystem::LOCKFILE_FAIL_IMMEDIATELY,')
+          try {
+            [IO.File]::WriteAllText($path, $immediate, [Text.UTF8Encoding]::new($false))
+            foreach ($iteration in 1..3) {
+              Write-Output "Immediate-lock reverse regression iteration $iteration"
+              cargo test -p jelven-rustdx-complete --lib --all-features --locked `
+                cache::windows_lock::tests::queued_request_precedes_owner_reacquisition -- --exact --nocapture `
+                2>&1 | Tee-Object -Variable reverseOutput
+              $failure = $LASTEXITCODE
+              $text = $reverseOutput -join "`n"
+              if ($failure -ne 101 -or
+                  $text -notmatch 'test result: FAILED\. 0 passed; 1 failed;' -or
+                  $text -notmatch 'code:\s*33') {
+                throw "The queued-handoff regression must reject immediate acquisition"
+              }
+            }
+          } finally {
+            [IO.File]::WriteAllBytes($path, $original)
+          }
+          foreach ($iteration in 1..3) {
+            Write-Output "Restored queued-lock regression iteration $iteration"
+            cargo test -p jelven-rustdx-complete --lib --all-features --locked `
+              cache::windows_lock::tests:: -- --nocapture
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
       - name: Test
         run: cargo test --workspace ${{ matrix.package_args }} --all-features --locked --no-fail-fast
 
@@ -131,6 +169,13 @@ jobs:
           cargo test -p rustdx-runner --test control_plane --locked --
           --include-ignored
           --skip real_databases_isolate_versions_reject_extra_keys_and_restore_local_evidence
+
+      - name: Calendar queue with actual runner plan (Unix)
+        if: runner.os != 'Windows'
+        env:
+          RUSTDX_TEST_RUNNER: ${{ github.workspace }}/target/debug/rustdx-runner
+          RUSTDX_TEST_CLI: ${{ github.workspace }}/target/debug/rustdx
+        run: python3 -m unittest discover -s scripts/validation/tests -p test_daily.py -v
 
   quality:
     name: Format / Clippy / Documentation

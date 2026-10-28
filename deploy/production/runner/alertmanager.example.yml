@@ -1,0 +1,11 @@
+route:
+  receiver: rustdx-operations
+  group_by: [job, instance, alertname]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+receivers:
+  - name: rustdx-operations
+    webhook_configs:
+      - url_file: /etc/alertmanager/secrets/rustdx-webhook-url
+        send_resolved: true

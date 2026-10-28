@@ -25,6 +25,16 @@ pub fn business_metrics(
         return Err(invalid("consumer audit quota must be positive"));
     }
     let mut text = String::new();
+    let today = now
+        .with_timezone(&FixedOffset::east_opt(8 * 3600).expect("UTC+8"))
+        .date_naive();
+    let rules_through: chrono::NaiveDate = rustdx_complete::limit::RULE_CHECKED_THROUGH
+        .parse()
+        .map_err(|_| invalid("invalid rule horizon"))?;
+    text.push_str(&format!(
+        "rustdx_business_fact_remaining_days{{kind=\"rules\"}} {}\n",
+        (rules_through - today).num_days()
+    ));
     gauge(
         &mut text,
         "rustdx_business_metrics_timestamp_seconds",
@@ -110,9 +120,6 @@ pub fn business_metrics(
             return Ok(text);
         }
     };
-    let today = now
-        .with_timezone(&FixedOffset::east_opt(8 * 3600).expect("UTC+8"))
-        .date_naive();
     for (kind, through) in [
         ("calendar", facts.calendar.metadata().end),
         ("history", facts.history.dataset().checked_through),

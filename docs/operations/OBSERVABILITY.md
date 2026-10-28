@@ -1,10 +1,10 @@
 # 采集阶段观测
 
 <!-- lifecycle:registry -->
-读者：值守/运营；责任：运维维护者。源码核验：2026-10-27；每30日及指标、阈值或告警变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：值守/运营；责任：运维维护者。源码核验：2026-10-28；每30日及指标、阈值或告警变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
-更新日期：2026-10-27。本文定义统计范围；运营人员按业务名单和日期判断可用性，运维人员按[运维手册](../runbooks/RUNBOOK.md)设置告警和恢复。生产阈值依据目标环境和批准SLO维护。
+更新日期：2026-10-28。本文定义统计范围；运营人员按业务名单和日期判断可用性，运维人员按[运维手册](../runbooks/RUNBOOK.md)设置告警和恢复。生产阈值依据目标环境和批准SLO维护。
 
 当前schema7在day清单中保留schema6引入的`observations`及`freshness`，不改变CSV列或数据库逻辑键。`rustdx_cli::observation`提供可克隆的每任务观测对象、线程作用域、失败自动计数的RAII阶段及临时文件写入包装；解析工作线程显式进入同一任务，不使用进程全局阶段计数。
 
@@ -38,15 +38,15 @@ runner现在为collector设置私有`RUSTDX_TASK_OBSERVATIONS`路径与attempt�
 本地固定版本恢复入口为`scripts/validation/verify_local_recovery.py`，它在新目录执行一致性备份、隔离restore及同一catalog版本全CSV字节比较，保存命令、耗时和摘要。数据库原生恢复继续走`verify_database_recovery.py`；本地恢复不证明远端数据库、持续写入、生产权限或批准RPO/RTO。
 
 `business-metrics --config JOB --publish-by RFC3339 --audit-max-bytes BYTES --output NEW.prom`
-补充单个显式应有Job的业务观测，独立于全账本汇总。部署时由同一调度器更新JOB和批准截止，
-并维护独立textfile；一个文件只承载一个scope，多实例告警须限定job/instance。
-入口不联网、不采集，不将历史Job自动替换为今天。
+补充单个显式应有Job的业务观测，独立于全账本汇总。日调度器按最新应有交易日生成该Job与批准截止，
+独立monitor定时器重新读取日历、catalog及积压，不信任旧`current.json`。
+一个business文件只承载一个scope，多实例告警须限定job/instance。该runner入口不联网、不采集。
 
 | 信号 | 口径与失败含义 |
 | --- | --- |
 | business_required | 已校验日历内有交易日为1，明确假期为0；事实无法读取时为-1，不能解释为无任务 |
 | business_deadline_configured / publish_by_timestamp_seconds | 业务批准截止是否明确；未给截止不生成时间值，另行告警 |
-| business_job_released / unfinished_attempts | 精确Job身份的已发布状态及未结束Attempt；旧任务发布不抵消新Job逾期 |
+| business_job_released / unfinished_attempts | 精确Job身份的已发布状态及未结束Attempt；日调度器的实际逾期以daily_overdue_dates为准，监测生成的新Job未登记不单独表示逾期 |
 | business_facts_available / fact_remaining_days | 日历/名单/证券状态覆盖与公告字节检查；剩余期按北京时间今天至各数据截止的自然日数，可为负，不自动续期或建立来源真实性 |
 | business_key_check_available / missing_keys / extra_keys | 固定当前catalog并逐行核对完整应有Trading键；核实停牌/退市不要求零行情行；缺数据与读回损坏不假装0缺键 |
 | business_missing_partitions / revision_gaps | 包含免行情日期的应有分区，以及低于配置修订或source_as_of的分区 |
@@ -58,3 +58,16 @@ runner现在为collector设置私有`RUSTDX_TASK_OBSERVATIONS`路径与attempt�
 由missing/stale告警发现。审计增长用同一目录连续gauge的deriv观测，不合并P95，也不自动删除。
 [告警模板](../../deploy/production/runner/alerts.yml)覆盖缺配置、逾期、事实缺口/截止、
 发布缺键、指标失效和审计空间；实际通知与恢复解除仍须目标环境验证。
+
+`daily.py monitor`另原子写出0644的daily textfile。`daily_expected_dates/pending_dates/overdue_dates`
+分别计应有、缺日期或显式修订、超过批准发布截止的积压，全部积压不因批次上限消失；
+`daily_source_ready`表示来源就绪记录当前有效，`daily_fact_blocked_dates`计本批次事实/plan阻塞，
+`daily_registry_attention`独立反映五类责任复核状态。`fact_remaining_days{kind="rules"}`在其他
+事实读取失败时仍输出，不把规则延期推导成原价日线状态不可用。
+
+在Prometheus侧独立维护每个`job/instance`的`rustdx_expected_instance`，missing使用
+`expected unless on(job,instance) actual`，一个健康实例不能掩盖另一个缺失实例。
+业务/daily每5分钟刷新，模板以900秒判stale；逾期读取整个daily积压。
+[PromQL用例](../../deploy/production/runner/alerts.test.yml)可用`promtool test rules`核验，
+[Alertmanager模板](../../deploy/production/runner/alertmanager.example.yml)用`url_file`读取部署密钥并发送恢复通知。
+实际通知、PromQL执行和Linux服务启动继续要求目标现场证据。

@@ -45,6 +45,9 @@
   },
   "required_reports": ["target_smoke", "fact_coverage", "field_semantics", "full_readback", "fault_recovery", "resources", "access_controls", "backup_recovery", "sustained_load"],
   "required_faults": ["stop_restart", "lost_acknowledgement", "worker_interruption", "catalog_failure_after_seal", "fixed_old_version_read"],
+  "required_quota_cases": ["workspace_enospc_preserves_pointer", "consumer_audit_enospc_preserves_output", "database_evidence_enospc_blocks_publication"],
+  "required_access_checks": ["publisher_cannot_ddl_update_delete", "consumer_cannot_write", "worker_cannot_read_publisher_secrets", "notification_delivery_verified"],
+  "required_recovery_checks": ["consumer_audit", "shared_quiescent_boundary", "account_roles_restored", "isolated_target", "backup_corruption_rejected"],
   "resource_limits": ["process_tree_rss_bytes", "fds", "threads", "disk_bytes", "stage_latency_ms"],
   "load_measurements": ["duration_seconds", "completed_jobs", "failed_jobs"],
   "approval_meaning": "Reviewed evidence envelope consistency only; does not execute deployment or upgrade runtime qualification getters."

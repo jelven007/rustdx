@@ -26,7 +26,8 @@ class Admission(unittest.TestCase):
     def test_complete_scoped_records_wrong_target_unknown_fields_over_limit_and_tampering(self):
         matrix = json.loads((ROOT / "config/acceptance/task-matrix.json").read_text())
         request = json.loads((ROOT / "config/acceptance/deployment.example.json").read_text())
-        request["scope"] = {"markets": [0, 1], "securities": ["sh600000"], "date_range": ["2026-10-22", "2026-10-22"]}
+        request["scope"] = {"markets": [0, 1], "securities": ["sh600000"], "date_range": ["2026-10-22", "2026-10-22"],
+                            "required_fields": ["date", "close"]}
         request["expected_key_set"] = {"count": 1, "sha256": "a" * 64}
         for name in ["expected_keys", "time_basis", "finality", "source_revision_rule",
                      "disconnect_policy", "overflow_policy", "version_rule"]:
@@ -52,10 +53,13 @@ class Admission(unittest.TestCase):
             reports["full_readback"]["all_required_fields_equal"] = True
             reports["fault_recovery"]["passed_cases"] = matrix["required_faults"]
             reports["resources"].update(process_tree_measured=True, hard_disk_quota_verified=True,
+                                        quota_cases={name: True for name in matrix["required_quota_cases"]},
                                         maximums={name: 50 for name in matrix["resource_limits"]})
             reports["access_controls"].update({name: True for name in ["production_accounts", "acl_isolation", "allowed_directories", "scheduler", "alerts"]})
+            reports["access_controls"].update({name: True for name in matrix["required_access_checks"]})
             reports["backup_recovery"].update(control_ledger_and_files=True, database_native=True, fixed_versions_equal=True,
                                               measured={"rpo_seconds": 0, "rto_seconds": 50})
+            reports["backup_recovery"].update({name: True for name in matrix["required_recovery_checks"]})
             reports["sustained_load"].update(duration_seconds=100, completed_jobs=10, failed_jobs=0)
 
             def check(values):
@@ -67,6 +71,20 @@ class Admission(unittest.TestCase):
                 return audit(matrix, request, root)
 
             self.assertEqual(check(reports)["status"], "evidence_contract_complete")
+            for kind, names in [("access_controls", matrix["required_access_checks"]),
+                                ("backup_recovery", matrix["required_recovery_checks"])]:
+                for name in names:
+                    changed = copy.deepcopy(reports)
+                    changed[kind][name] = False
+                    self.assertEqual(check(changed)["status"], "admission_denied", name)
+            for name in matrix["required_quota_cases"]:
+                changed = copy.deepcopy(reports)
+                del changed["resources"]["quota_cases"][name]
+                self.assertEqual(check(changed)["status"], "admission_denied", name)
+            for fields in [[], ["close", "close"], ["minute"], "close"]:
+                request["scope"]["required_fields"] = fields
+                self.assertIn("daily_required_fields_invalid", check(reports)["issues"])
+            request["scope"]["required_fields"] = ["date", "close"]
             for mutation in ["target", "unknown", "rss", "recovery", "synthetic", "old_version",
                              "extra_keys", "bool_missing", "bool_failed"]:
                 changed = copy.deepcopy(reports)

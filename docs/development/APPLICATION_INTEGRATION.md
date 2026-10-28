@@ -1,12 +1,12 @@
 # 外部应用调用约定
 
 <!-- lifecycle:registry -->
-读者：应用集成者；责任：API维护者。源码核验：2026-10-27；每90日及跨接口消费合同变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](DOCUMENTATION_GOVERNANCE.md)登记。
+读者：应用集成者；责任：API维护者。源码核验：2026-10-28；每90日及跨接口消费合同变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 当前源码版本：<!-- version:project -->2.0.3<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
-更新日期：2026-10-27。适用于应用通过 `rustdx_complete::tcp::stock::Client`、checked 请求及公开结果模型使用本仓库核心库。逐命令签名、返回字段和具体参数上限见[26命令接口手册](../reference/COMMAND_API.md)，已解析/候选/未知字段及证据范围见[字段解析状态](../reference/RESPONSE_FIELD_SEMANTICS.md)；本页定义跨接口的调用和消费规则。
+更新日期：2026-10-28。适用于应用通过 `rustdx_complete::tcp::stock::Client`、checked 请求及公开结果模型使用本仓库核心库。逐命令签名、返回字段和具体参数上限见[26命令接口手册](../reference/COMMAND_API.md)，已解析/候选/未知字段及证据范围见[字段解析状态](../reference/RESPONSE_FIELD_SEMANTICS.md)；本页定义跨接口的调用和消费规则。
 
 已发布的历史核心包为 `jelven-rustdx-complete 2.0.0`，Rust 导入名为 `rustdx_complete`，最低 Rust 1.89、edition 2024。注册表可使用精确依赖 `version = "=2.0.0"`，发布源码与包摘要见[发布记录](../archive/release/PUBLICATION_20261025.md)。集成应用固定源码提交、源码摘要、依赖锁文件和所用接口版本，更新时检查[迁移说明](../release/MIGRATION.md)。
 
@@ -194,6 +194,11 @@ refresh发送前本地已收到的半帧即使message id碰巧等于新请求id�
 
 `MemoryCache`按到期时间优先驱逐，增量计量键/值字节；`get_shared`返回Arc视图，驱逐后已有视图仍有效，其占用由调用方负责。`FileCache`默认目录4096项/256MiB，`try_with_capacity`可配置；同目录实例应使用相同预算并通过OS锁协调写入/删除。读取过期项删除它，写入清理过期/中断暂存并优先驱逐最早到期项；提交文件受总预算限制，原子暂存另可能占一个最大64MiB项。目录扫描仍有成本，200000条目上限拒绝异常目录；不在缓存文件命名范围内的文件不清理。
 
+文件缓存目录锁等待上限为5秒，父任务期限/取消可提前终止。Windows使用一个持续排队的
+原生锁请求，避免连续写入抢占等待中的线程或进程；等待期间至多20毫秒重查任务。
+取消或超时后先撤销请求并确认内核完成，再释放请求内存；若取消与获取锁同时完成，
+还须显式解锁。底层驱动的取消确认及已开始的文件I/O无法强行抢占。
+
 `Cache::get_or_fetch_checked(key, &context, fetch)`使合并锁等待、二次读取及返回
 共用父任务期限/取消，`CacheFetchError::Operation`与`Fetch`分开保存。
 同线程同条带重入返回WouldBlock；慢fetch无法被强行抢占，闭包须协作检查任务
@@ -284,6 +289,12 @@ runner输出仍使用`a-share/day/raw/cny/shares/v1`，新采集输入合同为`
 
 只读`plan`按实际应有键核对事实范围，同时给出每目标数据库操作/证明上限、全部目标证据字节/条目及余量；每行1024字节是采集前保守上界，封存后仍按真实字节重算。预算不足时`can_start=false`，建议窗口只在日期之间分割并保留同日完整名单；单日无法容纳仍拒绝。按时间顺序执行窗口，保持同一事实版本、完整catalog连续性及修订/source_as_of单调；plan不会核验既有catalog、创建账本、读取凭据或联网。实现锚点为[plan.rs](../../apps/rustdx-runner/src/pipeline/plan.rs)与[capacity.rs](../../apps/rustdx-runner/src/database/capacity.rs)。
 
+计划枚举完整应有键后再判定`max_rows`，超限报告`expected_row_budget`；窗口同时满足行数与全部数据库预算，`row_budget_fits=false`的单日不能通过拆证券名单执行。运行时保持原行数硬上限。
+
+[日调度器](../../scripts/ops/daily.py)按独立交易日历、批准发布时刻/滞后及固定catalog生成完整日期任务，保留超出批次上限的积压。来源就绪记录绑定模板摘要、实际获取日、有效期和明确修订范围；普通刷新只补缺日期，修订已有日期须明确提高来源修订。每个任务在recover/run前按实际文件摘要、完整键集合与目标证据重新准入，缺证据保留积压并返回失败；恢复耗时后再次核验来源、事实和准入。
+
+原价日线使用`SecurityHistory::from_state_dataset`核验公告支持的状态事实；这不延长规则截止。默认`TryFrom`仍严格验证规则，`context_at`只在Trading且`rule_at`已核实的日期返回上下文。维护记录须绑定该dataset、实际日历/独立参考/证券历史/名单摘要和任务覆盖范围；规则到期单独告警，不能靠续写日期取得涨跌幅资格。
+
 可用`Config.tcp_day_schedule`显式冻结`max_parallel/timeout_seconds/max_raw_rows/max_payload_bytes`。省略时并行取`workers.min(8)`，期限取整任务扣除发布预留，原始行总量取单证券上限×证券数（至多10亿），正文总量取`max_source_bytes`。总行、CSV、所有wire/receipt归档仍独立限制。每个窗口启动前预留单证券最大原始行、正文上限加131070字节的最后一页/空页确认余量、receipt及wire空间；不足时减小窗口或拒绝启动，不截断为成功。正文预算计解压后页面，不是RSS，网络压缩字节和探测报文另计。保守预留可能在仍有少量余额时拒绝下一证券，应按计划调整单证券上限。
 
 最多一个窗口的单证券历史在采集；线程只返回计数，等待窗口全部join后，在调用线程按输入顺序独立回放并写CSV，未使用的预留才可复用。任一线程失败取消本采集上下文、等待所有线程退出并保留部分原码；不取消父任务。父期限始终可缩短计划期限。CSV写入先核预算；失败不生成complete报告或推进目录。schema8的`acquisition`记录实际总原始行、正文、归档、wire记录、证券数及窗口并行度，runner再次校验冻结计划和归档总量。
@@ -323,7 +334,7 @@ runner输出仍使用`a-share/day/raw/cny/shares/v1`，新采集输入合同为`
 
 查询使用已有账本只读打开，不初始化/迁移；迁移和写入持控制锁，空root不是有效的空数据集。备份/恢复目标以已有父目录实际路径检查隔离，清单和完成标记计入总字节预算。恢复账本的原Attempt路径作为审计事实保留；新的`restore-validated.json.original_roots`把逻辑定位映射到当前`attempts/<id>`，留存预览验证该映射及数据库proof原字节。恢复不会通过改写旧路径、摘要或Receipt来适配新root。
 
-`PinnedDataset.catalog()`返回固定目录的共享只读引用，清单保留在会话内。一次导出按release复用数据库会话，按目录日期顺序精确比较全部键/字段，每个日期验证终止空页，结束时每release检查完整总数。查询审计使用独立`consumer-audit`会话目录及SHA收据，至多50,000请求、200,000条目，字节上限为选中release冻结workspace预算最小值；不追加发布`target_io`。完成标记只证明回读核验，CSV仍须原子提交。审计总磁盘配额/保留期另定，控制层备份不复制它，当前预览保护该目录。
+`PinnedDataset.catalog()`返回固定目录的共享只读引用，清单保留在会话内。一次导出只有一个活动数据库会话，连续同release复用；目录日期切换release时，先检查完整release总数及进程退出，再释放网络许可。A/B/A重新打开A并再次检查完整总数，各日期仍精确核对全部键/字段和终止空页。查询审计使用独立`consumer-audit`会话目录及SHA收据，至多50,000请求、200,000条目，字节上限为选中release冻结workspace预算最小值；不追加发布`target_io`。完成标记只证明回读核验，CSV仍须原子提交。消费者持审计共享锁，控制层备份另取排他审计锁，活动回读时拒绝备份；静止后成功与失败审计均计入备份预算、库存摘要及隔离恢复。审计总磁盘硬配额/保留期仍由部署批准，预览继续保护该目录。
 
 账本schema4把原观测与可重建计数/阶段汇总在同一事务写入；metrics区分失败、unavailable及缺失记录。旧schema3备份可原字节恢复，但当前查询要求显式`migrate`；迁移异常回滚，`rebuild-metrics`在根锁内重建。不要通过改写历史JSON或只降低schema号回退。归一化输入固定后只检查变化部分，最终静止树完整核对及release摘要/清单预算仍执行。
 

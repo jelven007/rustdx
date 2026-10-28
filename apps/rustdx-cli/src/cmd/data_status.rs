@@ -58,9 +58,9 @@ impl DataStatusCmd {
             .security
             .as_ref()
             .map(|path| -> Result<_> {
-                Ok(SecurityHistory::try_from(serde_json::from_slice::<
-                    SecurityHistoryDataset,
-                >(&read(path)?)?)?)
+                Ok(SecurityHistory::from_state_dataset(
+                    serde_json::from_slice::<SecurityHistoryDataset>(&read(path)?)?,
+                )?)
             })
             .transpose()?;
         let as_of = self.as_of.unwrap_or_else(|| {

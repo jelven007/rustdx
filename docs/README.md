@@ -1,14 +1,18 @@
 # rustdx 文档入口
 
 <!-- lifecycle:registry -->
-读者：所有维护者；责任：文档维护者。源码核验2026-10-27，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](development/DOCUMENTATION_GOVERNANCE.md)。
+读者：所有维护者；责任：文档维护者。源码核验2026-10-28，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](development/DOCUMENTATION_GOVERNANCE.md)。
 <!-- /lifecycle -->
 
 当前源码版本：<!-- version:project -->2.0.3<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
-更新日期：2026-10-27。本文档集对应当前源码。读者按工作任务进入下表；维护者按[文档治理](development/DOCUMENTATION_GOVERNANCE.md)和[FR追踪矩阵](requirements/TRACEABILITY.md)更新相关材料。
+更新日期：2026-10-28。本文档集对应当前源码。读者按工作任务进入下表；维护者按[文档治理](development/DOCUMENTATION_GOVERNANCE.md)和[FR追踪矩阵](requirements/TRACEABILITY.md)更新相关材料。
 
 核心与CLI **2.0.0的历史注册表发布**见[发布记录](archive/release/PUBLICATION_20261025.md)。当前版本标记只描述源码，不证明新版本已上传。工程检查、真实源样本、固定数据库演练和用户目标生产分别留证。
+
+2026-10-28[生产改进](archive/development/PRODUCTION_FIXES_20261028.md)增加交易日积压调度、
+实际Job准入、状态与规则分离、跨release许可释放、消费审计一致备份和完整日期预算分窗。
+源码回归与目标Linux、生产权限/通知/长期负载的验收分别记录。
 
 当前实现是同步核心库、单次采集CLI和单机runner；完整市场事实由维护流程提供。目录、依赖方向及未实现的多机扩展见[项目结构](architecture/PROJECT_STRUCTURE.md)和[技术方案](architecture/PRODUCTION_FUSION_PLAN.md)。近期修复和历次结果从[归档索引](archive/README.md)追溯；当前待验边界以[生产验收矩阵](testing/PRODUCTION_ACCEPTANCE.md)为准。
 

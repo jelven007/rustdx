@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "task_type": "runner_day",
+  "runner": "/opt/rustdx/bin/rustdx-runner",
+  "template": "/etc/rustdx/job-template.json",
+  "initial_from": "2026-10-26",
+  "publication_lag_days": 1,
+  "publish_time": "18:00:00",
+  "max_jobs_per_run": 8,
+  "source_ready": "/etc/rustdx/source-ready.json",
+  "fact_registry": "/etc/rustdx/fact-maintenance.json",
+  "calendar_reference": "/etc/rustdx/calendar-reference.json",
+  "evidence_root": "/srv/rustdx/fact-evidence",
+  "state_directory": "/var/lib/rustdx-scheduler",
+  "metrics_output": "/var/lib/node_exporter/textfile_collector/rustdx_daily.prom",
+  "business_metrics_output": "/var/lib/node_exporter/textfile_collector/rustdx_business.prom",
+  "audit_max_bytes": 10737418240,
+  "task_matrix": "/etc/rustdx/task-matrix.json",
+  "dependency_lock": "/opt/rustdx/Cargo.lock",
+  "deployment_identity": "/etc/rustdx/installed-identity.json",
+  "admissions_directory": "/etc/rustdx/admissions",
+  "admission_evidence_root": "/srv/rustdx/acceptance"
+}

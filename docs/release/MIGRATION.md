@@ -1,12 +1,31 @@
 # 数据语义与迁移
 
 <!-- lifecycle:registry -->
-读者：升级集成者；责任：API及发布维护者。源码核验：2026-10-27；每90日及破坏性行为或升级路径变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
+读者：升级集成者；责任：API及发布维护者。源码核验：2026-10-28；每90日及破坏性行为或升级路径变化复核。状态为源码已核验，目标现场另验；过期信号和权威输入见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)登记。
 <!-- /lifecycle -->
 
 当前源码版本：<!-- version:project -->2.0.3<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
-更新日期：2026-10-27。核心/CLI 2.0.0已发布到crates.io，源码身份和实际包摘要见[发布记录](../archive/release/PUBLICATION_20261025.md)。下方较早章节保留当轮版本事实，其变更已纳入2.0.0；runner仍仅交付源码与二进制。外部应用共同消费约定见[应用接入](../development/APPLICATION_INTEGRATION.md)。
+更新日期：2026-10-28。核心/CLI 2.0.0已发布到crates.io，源码身份和实际包摘要见[发布记录](../archive/release/PUBLICATION_20261025.md)。2.0.0主版本迁移及较早历史章节保留当轮版本事实；2026-10-25之后的变更须使用新的已发布包或固定源码提交。runner仍仅交付源码与二进制。外部应用共同消费约定见[应用接入](../development/APPLICATION_INTEGRATION.md)。
+
+## 日常任务与恢复升级（2026-10-28，待新版发布）
+
+自动日常任务采用[生产调度入口](../../deploy/production/runner/README.md)，配置批准的业务起点、
+发布时间和应有实例；队列按日历及完整日期预算补采，晚到或修订来源须显式推进修订。
+TCP配置保留来源自身联网策略，本地来源继续离线。已有手工任务按原Job身份消费。
+
+事实与[任务准入](../testing/TASK_ADMISSION.md)须重新绑定实际日历、证券历史、公告字节、
+证券/日期/字段范围及责任复核记录；日线资格只覆盖登记字段。分钟、快照及订阅缺少
+专属runner合同时拒绝准入，不能沿用日线证明。状态事实维护和规则截止分别检查。
+
+恢复先按[恢复前置核验](../runbooks/RUNBOOK.md)核对实际安装、配置、事实、
+完整键、账户和配额证据。备份必须包含静止的消费审计并核验摘要，DBA原生备份与账本/
+release处于共同恢复边界；缺失新证据的旧备份不能仅凭文件存在宣称可恢复。
+MongoDB多release回读改为逐会话切换，不要求按release数量增加连接许可。
+
+FR-01至FR-18的消费合同继续以[应用接入](../development/APPLICATION_INTEGRATION.md)为准；
+现场负载、通知送达、硬配额及RPO/RTO待验范围见
+[七项实施记录](../archive/development/PRODUCTION_FIXES_20261028.md)。
 
 ## 实时遗留问题修复（2026-10-27，未发布）
 

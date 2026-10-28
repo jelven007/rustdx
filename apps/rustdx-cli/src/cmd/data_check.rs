@@ -28,6 +28,9 @@ pub struct DataCheckCmd {
     /// 可选：校验通过后原子发布到此路径。
     #[argh(option)]
     output: Option<PathBuf>,
+    /// 仅校验证券状态；不扩大已核实的涨跌幅规则范围。
+    #[argh(switch)]
+    state_only: bool,
 }
 
 fn compare_calendars(a: &dyn CalendarProvider, b: &dyn CalendarProvider) -> Result<usize> {
@@ -62,6 +65,9 @@ impl DataCheckCmd {
         inputs.extend(self.reference.iter().cloned());
         match self.kind.as_str() {
             "calendar" => {
+                if self.state_only {
+                    eyre::bail!("state-only仅适用于security");
+                }
                 let reference = self
                     .reference
                     .as_ref()
@@ -82,9 +88,12 @@ impl DataCheckCmd {
                 println!("逐日交叉核对通过：{sessions}个交易日；来源完整性仍由维护者核实");
             }
             "security" => {
-                let history = SecurityHistory::try_from(serde_json::from_slice::<
-                    SecurityHistoryDataset,
-                >(&bytes)?)?;
+                let dataset = serde_json::from_slice::<SecurityHistoryDataset>(&bytes)?;
+                let history = if self.state_only {
+                    SecurityHistory::from_state_dataset(dataset)?
+                } else {
+                    SecurityHistory::try_from(dataset)?
+                };
                 let directory = self
                     .evidence_dir
                     .as_ref()

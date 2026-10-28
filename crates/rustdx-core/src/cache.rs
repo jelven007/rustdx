@@ -45,6 +45,10 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
+#[cfg(windows)]
+#[path = "cache_windows_lock.rs"]
+mod windows_lock;
+
 /// 稳定文件键（FNV-1a两组种子）；文件内部另存原键校验，碰撞不会误读其他键。
 pub fn stable_key(key: &str) -> String {
     let hash = |seed: u64| {
@@ -407,13 +411,21 @@ impl FileCache {
     }
 
     fn lock(&self) -> io::Result<FileCacheLock> {
-        let file = fs::OpenOptions::new()
-            .read(true)
-            .write(true)
-            .create(true)
-            .truncate(false)
-            .open(self.dir.join(".rustdx-cache.lock"))?;
+        let mut options = fs::OpenOptions::new();
+        options.read(true).write(true).create(true).truncate(false);
+        #[cfg(windows)]
+        {
+            use std::os::windows::fs::OpenOptionsExt;
+            options.custom_flags(windows_sys::Win32::Storage::FileSystem::FILE_FLAG_OVERLAPPED);
+        }
+        let file = options.open(self.dir.join(".rustdx-cache.lock"))?;
         let deadline = Instant::now() + Duration::from_secs(5);
+        #[cfg(windows)]
+        {
+            windows_lock::lock(&file, deadline)?;
+            Ok(FileCacheLock(file))
+        }
+        #[cfg(not(windows))]
         loop {
             crate::operation::check()?;
             match file.try_lock() {
