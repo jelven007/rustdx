@@ -635,7 +635,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 
 [[package]]
 name = "jelven-rustdx-cli"
-version = "2.0.3"
+version = "2.0.4"
 dependencies = [
  "argh",
  "calamine",
@@ -658,7 +658,7 @@ dependencies = [
 
 [[package]]
 name = "jelven-rustdx-complete"
-version = "2.0.3"
+version = "2.0.4"
 dependencies = [
  "chrono",
  "csv",
@@ -1078,7 +1078,7 @@ checksum = "a157657054ffe556d8858504af8a672a054a6e0bd9e8ee531059100c0fa11bb2"
 
 [[package]]
 name = "rustdx-runner"
-version = "2.0.3"
+version = "2.0.4"
 dependencies = [
  "argh",
  "chrono",
@@ -1310,7 +1310,7 @@ dependencies = [
 
 [[package]]
 name = "tests-integration"
-version = "2.0.3"
+version = "2.0.4"
 dependencies = [
  "chrono",
  "insta",

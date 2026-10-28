@@ -1,6 +1,6 @@
 # rustdx CLI
 
-当前源码版本：<!-- version:project -->2.0.3<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+当前源码版本：<!-- version:project -->2.0.4<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
 包名 `jelven-rustdx-cli`，当前版本由上方标记描述；库名 `rustdx_cli`，二进制 `rustdx`。Rust 2024 / MSRV 1.89。处理通达信日线目录、官网 ZIP、指定 URL 或本地 ZIP，输出 CSV、质量清单，或导入 ClickHouse/MongoDB 并精确回读。
 

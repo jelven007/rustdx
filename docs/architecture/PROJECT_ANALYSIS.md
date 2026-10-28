@@ -70,4 +70,4 @@ TCP日线窗口最多8线程，启动前预留原始行、正文、receipt和wir
 | 跨主机与高可用 | 当前无跨机协调 | 明确外部协调和失效写入隔离方案后单独实现 |
 | 数据库灾难恢复 | 本地账本/文件可隔离恢复 | 服务端一致性备份、恢复或新命名空间重建及精确验收 |
 
-目录整理本身保留公开API；当前 <!-- version:project -->2.0.3<!-- /version --> 源码包含明确破坏性迁移，见[迁移说明](../release/MIGRATION.md)。同步有界设计继续保留。新目录规则见[工程结构](PROJECT_STRUCTURE.md)，实际检查范围见[当前验收矩阵](../testing/PRODUCTION_ACCEPTANCE.md)。
+目录整理本身保留公开API；当前 <!-- version:project -->2.0.4<!-- /version --> 源码包含明确破坏性迁移，见[迁移说明](../release/MIGRATION.md)。同步有界设计继续保留。新目录规则见[工程结构](PROJECT_STRUCTURE.md)，实际检查范围见[当前验收矩阵](../testing/PRODUCTION_ACCEPTANCE.md)。

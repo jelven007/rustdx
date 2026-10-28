@@ -1,6 +1,6 @@
 # rustdx_complete
 
-当前源码版本：<!-- version:project -->2.0.3<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
+当前源码版本：<!-- version:project -->2.0.4<!-- /version -->。数字由主线 CI 同步；注册表历史发布事实另列。
 
 通达信同步 TCP 行情、本地 day/lc/gbbq 文件解析、复权、指标、日历及日期化交易规则的 Rust 库。包名 `jelven-rustdx-complete`，导入名 `rustdx_complete`；Rust 2024，最低 Rust 1.89。
 
