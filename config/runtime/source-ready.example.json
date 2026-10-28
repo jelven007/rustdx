@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "status": "unverified",
+  "template_sha256": null,
+  "source_revision": null,
+  "source_as_of": null,
+  "complete_through": null,
+  "observed_at": null,
+  "valid_until": null,
+  "revision_range": null
+}

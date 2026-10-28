@@ -91,13 +91,49 @@ def main():
     parser.add_argument("--as-of", type=dt.date.fromisoformat,
                         default=dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date())
     parser.add_argument("--through", type=dt.date.fromisoformat)
+    parser.add_argument("--config", type=Path)
+    parser.add_argument("--calendar-reference", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    result = audit(load(args.registry), args.evidence_root, args.as_of, args.through)
+    if bool(args.config) != bool(args.calendar_reference):
+        parser.error("config and calendar-reference must be supplied together")
+    registry = load(args.registry)
+    result = (audit_job(registry, args.evidence_root, args.as_of, load(args.config),
+                        args.calendar_reference) if args.config else
+              audit(registry, args.evidence_root, args.as_of, args.through))
     with args.output.open("x") as stream:
         stream.write(json.dumps(result, indent=2, ensure_ascii=False) + "\n")
     print(json.dumps({"status": result["status"], "missing_categories": result["missing_categories"]}))
-    raise SystemExit(0 if result["status"] == "covered" else 1)
+    raise SystemExit(0 if result["status"] == "covered" and
+                     result.get("job_status", "covered") == "covered" else 1)
+
+
+def audit_job(registry, directory, as_of, job, calendar_reference):
+    """Bind independent review to the exact fact inputs consumed by this job."""
+    from audit_point_in_time_facts import audit as point_in_time
+    result = audit(registry, directory, as_of, dt.date.fromisoformat(job["through"]))
+    inputs = {name: hashlib.sha256(Path(job[name]).read_bytes()).hexdigest()
+              for name in ("calendar", "security_history", "universe")}
+    inputs["calendar_reference"] = hashlib.sha256(Path(calendar_reference).read_bytes()).hexdigest()
+    required = {"calendar": ("calendar", "calendar_reference"),
+                "listing_delisting": ("security_history",),
+                "st_suspension": ("security_history",), "universe": ("universe",)}
+    rows = {row["id"]: row for row in registry["entries"]}
+    issues = []
+    for category, names in required.items():
+        binding = {"dataset_id": job["dataset_id"], "inputs": {n: inputs[n] for n in names}}
+        matches = [r for r in result["entries"] if r["category"] == category and
+                   rows[r["id"]].get("binding") == binding]
+        if not any(r["status"] == "covered" and rows[r["id"]].get("checked_from") and
+                   dt.date.fromisoformat(rows[r["id"]]["checked_from"]) <=
+                   dt.date.fromisoformat(job["from"]) for r in matches):
+            issues.append("job_review_missing_or_uncovered:" + category)
+    coverage = point_in_time(job, Path(calendar_reference))
+    if coverage["status"] != "complete":
+        issues.append("point_in_time_coverage_incomplete")
+    result.update(job_status="attention_required" if issues else "covered",
+                  job_issues=issues, job_inputs=inputs, point_in_time=coverage)
+    return result
 
 
 if __name__ == "__main__":

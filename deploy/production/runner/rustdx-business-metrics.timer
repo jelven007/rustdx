@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Rustdx business monitoring every five minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+Persistent=true
+Unit=rustdx-business-metrics.service
+
+[Install]
+WantedBy=timers.target

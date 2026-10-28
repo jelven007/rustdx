@@ -36,6 +36,240 @@ struct BoundedOutput {
     remaining: u64,
 }
 
+#[cfg(all(test, unix))]
+mod tests {
+    use super::*;
+    use crate::{config::CONTRACT, database::Receipt, model::Evidence};
+    use serde_json::json;
+    use std::{
+        fs,
+        os::unix::fs::PermissionsExt,
+        process::{Command, Stdio},
+        time::Duration,
+    };
+
+    fn pinned(base: &Path) -> PinnedDataset {
+        let root = base.join("live");
+        storage::private_directory(&root).unwrap();
+        let mock = base.join("mongosh");
+        fs::write(&mock, include_bytes!("../tests/mock_mongosh.py")).unwrap();
+        fs::set_permissions(&mock, fs::Permissions::from_mode(0o700)).unwrap();
+        let mut catalog = Catalog {
+            schema_version: 1,
+            dataset_id: "fixture".into(),
+            version: 9,
+            previous_version: 8,
+            contract_version: CONTRACT.into(),
+            created_at: crate::now(),
+            partitions: BTreeMap::new(),
+            database_releases: BTreeMap::new(),
+        };
+        let mut manifests = BTreeMap::new();
+        let mut oracle = Vec::new();
+        let first: NaiveDate = "2026-07-06".parse().unwrap();
+        for index in 0..9 {
+            let release = format!("r{index}");
+            let directory = root.join("releases").join(&release);
+            storage::private_directory(&directory).unwrap();
+            let mut partitions = BTreeMap::new();
+            for offset in 0..11 {
+                let date = first + chrono::Days::new(offset);
+                let row = json!({"date":date,"market":"sh","code":"600000","instrument_class":"a_share",
+                    "open":10.0,"high":12.0,"low":9.0,"close":10.0 + index as f64 / 10.0,
+                    "amount_cny":12345.5,"volume_shares":101.0});
+                let mut writer = csv::Writer::from_writer(Vec::new());
+                writer
+                    .serialize(serde_json::from_value::<CanonicalRow>(row.clone()).unwrap())
+                    .unwrap();
+                let path = directory.join(format!("{date}.csv"));
+                fs::write(&path, writer.into_inner().unwrap()).unwrap();
+                let partition = Partition {
+                    date,
+                    release_id: release.clone(),
+                    file: storage::evidence(&directory, &path, 1024).unwrap(),
+                    rows: 1,
+                    exemptions: 0,
+                    source_revision: index + 1,
+                    source_as_of: first + chrono::Days::new(10),
+                };
+                let chosen = if (1..=8).contains(&offset) { offset } else { 0 };
+                if index == chosen {
+                    catalog.partitions.insert(date, partition.clone());
+                }
+                partitions.insert(date, partition);
+                let mut row = row;
+                row["dataset_id"] = json!("fixture");
+                row["release_id"] = json!(release);
+                row["contract_version"] = json!(CONTRACT);
+                oracle.push(row);
+            }
+            fs::write(directory.join("job.json"), serde_json::to_vec(&json!({
+                "schema_version":1,"root":root,"cli":mock,"dataset_id":"fixture","contract_version":CONTRACT,
+                "policy_revision":1,"source_revision":index + 1,"source_as_of":"2026-07-16",
+                "planned_date":"2026-07-16","from":"2026-07-06","through":"2026-07-16",
+                "day_directories":[base],"calendar":base.join("calendar"),"calendar_source_sha256":"a".repeat(64),
+                "security_history":base.join("history"),"universe":base.join("universe"),"facts_directory":base,
+                "timeout_seconds":60,"publish_reserve_seconds":10,"cancel_grace_seconds":1,
+                "workers":1,"max_source_bytes":1048576,"max_workspace_bytes":268435456,"max_rows":1000,"min_free_bytes":0
+            })).unwrap()).unwrap();
+            manifests.insert(
+                release.clone(),
+                ReleaseManifest {
+                    schema_version: 1,
+                    dataset_id: "fixture".into(),
+                    release_id: release.clone(),
+                    attempt_id: release.clone(),
+                    cli_run_id: "fixture".into(),
+                    collector_executed: true,
+                    contract_version: CONTRACT.into(),
+                    calendar_version: "fixture".into(),
+                    history_version: "fixture".into(),
+                    universe_version: "fixture".into(),
+                    from: first,
+                    through: first + chrono::Days::new(10),
+                    source_revision: index + 1,
+                    source_as_of: first + chrono::Days::new(10),
+                    created_at: crate::now(),
+                    files: Vec::new(),
+                    partitions,
+                },
+            );
+            catalog.database_releases.insert(
+                release,
+                vec![Receipt {
+                    target: crate::config::DatabaseTarget::Mongodb {
+                        id: "mongo".into(),
+                        database: "fixture".into(),
+                        collection: "bars".into(),
+                        uri_env: "RUSTDX_CONSUMER_TEST_URI".into(),
+                        mongosh: mock.clone(),
+                    },
+                    proof: Evidence {
+                        path: "unused".into(),
+                        sha256: "a".repeat(64),
+                        bytes: 0,
+                    },
+                }],
+            );
+        }
+        fs::write(
+            base.join("oracle.json"),
+            serde_json::to_vec(&json!({"rows":oracle,
+                "process_root":std::env::var_os("RUSTDX_CONSUMER_PROCESS_ROOT")
+                    .map(PathBuf::from).unwrap_or_else(|| base.to_path_buf())}))
+            .unwrap(),
+        )
+        .unwrap();
+        PinnedDataset {
+            root,
+            catalog,
+            manifests,
+        }
+    }
+
+    #[test]
+    fn interleaved_mongo_releases_release_permits_and_preserve_atomic_output() {
+        if let Some(base) = std::env::var_os("RUSTDX_CONSUMER_CHILD") {
+            let base = PathBuf::from(base);
+            let limit: usize = std::env::var("RUSTDX_CONSUMER_LIMIT")
+                .unwrap()
+                .parse()
+                .unwrap();
+            let permits = std::env::var_os("RUSTDX_CONSUMER_PERMITS")
+                .map(PathBuf::from)
+                .unwrap_or_else(|| base.join("permits"));
+            rustdx_complete::tcp::configure_network(rustdx_complete::tcp::NetworkPolicy {
+                max_connections: limit,
+                shared: Some(rustdx_complete::tcp::SharedNetworkPolicy {
+                    directory: permits,
+                    max_connections: limit,
+                }),
+                ..Default::default()
+            })
+            .unwrap();
+            let pinned = pinned(&base);
+            let operation =
+                rustdx_complete::operation::OperationContext::new(Duration::from_secs(15), None)
+                    .unwrap();
+            let _scope = operation.enter();
+            let output = base.join(format!("output-{}.csv", std::process::id()));
+            let from = "2026-07-06".parse().unwrap();
+            let through = "2026-07-16".parse().unwrap();
+            assert_eq!(
+                pinned
+                    .export_database(from, through, &output, 100, 10000, "mongo")
+                    .unwrap(),
+                11
+            );
+            let original = fs::read(&output).unwrap();
+            for flag in ["extra_count", "bad_query_id"] {
+                let mut oracle: serde_json::Value =
+                    serde_json::from_slice(&fs::read(base.join("oracle.json")).unwrap()).unwrap();
+                oracle[flag] = json!(true);
+                fs::write(
+                    base.join("oracle.json"),
+                    serde_json::to_vec(&oracle).unwrap(),
+                )
+                .unwrap();
+                assert!(
+                    pinned
+                        .export_database(from, through, &output, 100, 10000, "mongo")
+                        .is_err()
+                );
+                assert_eq!(fs::read(&output).unwrap(), original);
+                oracle[flag] = json!(false);
+                fs::write(
+                    base.join("oracle.json"),
+                    serde_json::to_vec(&oracle).unwrap(),
+                )
+                .unwrap();
+            }
+            return;
+        }
+        for limit in [1, 8] {
+            let temp = tempfile::tempdir().unwrap();
+            let output = Command::new(std::env::current_exe().unwrap())
+                .args(["--exact", "consumer::tests::interleaved_mongo_releases_release_permits_and_preserve_atomic_output"])
+                .env("RUSTDX_CONSUMER_CHILD", temp.path()).env("RUSTDX_CONSUMER_TEST_URI", temp.path())
+                .env("RUSTDX_CONSUMER_LIMIT", limit.to_string()).output().unwrap();
+            assert!(
+                output.status.success(),
+                "{}",
+                String::from_utf8_lossy(&output.stdout)
+            );
+            let state: serde_json::Value =
+                serde_json::from_slice(&fs::read(temp.path().join("processes.json")).unwrap())
+                    .unwrap();
+            assert_eq!(state["peak"], 1);
+        }
+        let temp = tempfile::tempdir().unwrap();
+        let mut children = Vec::new();
+        for name in ["consumer-a", "consumer-b"] {
+            let base = temp.path().join(name);
+            fs::create_dir(&base).unwrap();
+            children.push(Command::new(std::env::current_exe().unwrap())
+                .args(["--exact", "consumer::tests::interleaved_mongo_releases_release_permits_and_preserve_atomic_output"])
+                .env("RUSTDX_CONSUMER_CHILD", &base).env("RUSTDX_CONSUMER_TEST_URI", &base)
+                .env("RUSTDX_CONSUMER_LIMIT", "1")
+                .env("RUSTDX_CONSUMER_PERMITS", temp.path().join("shared-permits"))
+                .env("RUSTDX_CONSUMER_PROCESS_ROOT", temp.path())
+                .stdout(Stdio::piped()).stderr(Stdio::piped()).spawn().unwrap());
+        }
+        for child in children {
+            let output = child.wait_with_output().unwrap();
+            assert!(
+                output.status.success(),
+                "{}\n{}",
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            );
+        }
+        let state: serde_json::Value =
+            serde_json::from_slice(&fs::read(temp.path().join("processes.json")).unwrap()).unwrap();
+        assert_eq!(state["peak"], 1);
+    }
+}
+
 impl Write for BoundedOutput {
     fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
         rustdx_complete::operation::check().map_err(std::io::Error::other)?;
@@ -289,7 +523,8 @@ impl PinnedDataset {
             });
         writer.write_record(COLUMNS)?;
         let mut rows = 0_u64;
-        let mut sessions = BTreeMap::new();
+        // One live reader owns at most one network permit, even for A/B/A catalogs.
+        let mut session: Option<(&str, crate::database::ReadSession<'_>)> = None;
         let audit = if let Some(target) = target {
             let releases: std::collections::BTreeSet<_> = self
                 .catalog
@@ -312,22 +547,6 @@ impl PinnedDataset {
                 budget = budget.min(crate::database::readback_budget(&self.root, manifest)?);
             }
             let audit = crate::database::QueryAudit::new(&self.root, budget)?;
-            for release in releases {
-                let manifest = self
-                    .manifests
-                    .get(release)
-                    .ok_or_else(|| invalid("missing pinned release"))?;
-                let receipt = self
-                    .catalog
-                    .database_releases
-                    .get(release)
-                    .and_then(|r| r.iter().find(|r| r.target.id() == target))
-                    .ok_or_else(|| invalid("missing pinned receipt"))?;
-                sessions.insert(
-                    release,
-                    crate::database::ReadSession::new(&self.root, manifest, receipt, &audit),
-                );
-            }
             Some(audit)
         } else {
             None
@@ -346,16 +565,49 @@ impl PinnedDataset {
                 writer.serialize(row)?;
                 Ok(())
             };
-            if target.is_some() {
-                sessions
-                    .get(partition.release_id.as_str())
+            if let Some(target) = target {
+                if session
+                    .as_ref()
+                    .is_none_or(|(id, _)| *id != partition.release_id)
+                {
+                    if let Some((_, previous)) = session.take() {
+                        previous.finish()?;
+                        // Drop the process/permit before opening the next release.
+                        drop(previous);
+                    }
+                    let release = partition.release_id.as_str();
+                    let manifest = self
+                        .manifests
+                        .get(release)
+                        .ok_or_else(|| invalid("missing pinned release"))?;
+                    let receipt = self
+                        .catalog
+                        .database_releases
+                        .get(release)
+                        .and_then(|r| r.iter().find(|r| r.target.id() == target))
+                        .ok_or_else(|| invalid("missing pinned receipt"))?;
+                    session = Some((
+                        release,
+                        crate::database::ReadSession::new(
+                            &self.root,
+                            manifest,
+                            receipt,
+                            audit
+                                .as_ref()
+                                .ok_or_else(|| invalid("missing query audit"))?,
+                        ),
+                    ));
+                }
+                session
+                    .as_ref()
                     .ok_or_else(|| invalid("missing release read session"))?
+                    .1
                     .read_partition(partition.date, &mut visit)?;
             } else {
                 read_partition(&self.root, partition, &mut visit)?;
             }
         }
-        for session in sessions.values() {
+        if let Some((_, session)) = session.take() {
             session.finish()?;
         }
         if let Some(audit) = audit {

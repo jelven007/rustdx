@@ -66,12 +66,16 @@ fn history_windows(config: &Config, days: &BTreeMap<NaiveDate, (u64, u64)>) -> R
         let database = database_plan(config, trading)?;
         Ok(
             json!({"from":from,"through":through,"expected_keys":expected,"trading_rows":trading,
+            "row_budget_fits":expected <= config.max_rows,
             "database_budget_fits":database["budget_fits"],
             "all_target_evidence_bytes":database["all_target_evidence_bytes"]}),
         )
     };
     for (&date, &(day_expected, day_trading)) in days {
-        if has_day && database_plan(config, trading + day_trading)?["budget_fits"] == false {
+        if has_day
+            && (expected + day_expected > config.max_rows
+                || database_plan(config, trading + day_trading)?["budget_fits"] == false)
+        {
             windows.push(window(
                 from,
                 date.pred_opt()
@@ -121,7 +125,9 @@ pub fn preflight_plan(config: &Config, connection_limit: usize, max_keys: usize)
         .into_iter()
         .map(|date| (date, (0_u64, 0_u64)))
         .collect();
-    facts::visit_expected(config, &facts, |date, code, state| {
+    let mut enumeration = config.clone();
+    enumeration.max_rows = i64::MAX as u64;
+    facts::visit_expected(&enumeration, &facts, |date, code, state| {
         let day = days.entry(date).or_default();
         day.0 += 1;
         let state = match state {
@@ -175,6 +181,9 @@ pub fn preflight_plan(config: &Config, connection_limit: usize, max_keys: usize)
     }
     let mut source_bytes = fact_bytes;
     let mut blockers = Vec::new();
+    if expected > config.max_rows {
+        blockers.push("expected_row_budget".into());
+    }
     if config.tcp_day.is_none() && trading != 0 {
         for member in &facts.universe.members {
             if member.through < config.from || member.from > config.through {

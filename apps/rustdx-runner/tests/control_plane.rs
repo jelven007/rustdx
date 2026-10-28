@@ -209,10 +209,29 @@ fn wal_backup_restore_and_corruption_detection() {
     storage::private_directory(&root).unwrap();
     let mut ledger = Ledger::open(&root.join("ledger.sqlite")).unwrap();
     ledger.register("job", "fixture", "{}").unwrap();
+    let audit = root.join("consumer-audit/failed-session");
+    storage::private_directory(&audit).unwrap();
+    fs::write(
+        audit.join("request.json"),
+        b"failed query retained for investigation",
+    )
+    .unwrap();
     let backup = temp.path().join("backup");
     ops::backup(&root, &backup, 1024 * 1024).unwrap();
     let restored = temp.path().join("restored");
     ops::restore(&backup, &restored, 1024 * 1024).unwrap();
+    assert_eq!(
+        fs::read(restored.join("consumer-audit/failed-session/request.json")).unwrap(),
+        b"failed query retained for investigation"
+    );
+    fs::write(
+        backup.join("consumer-audit/failed-session/request.json"),
+        b"corrupted audit",
+    )
+    .unwrap();
+    let bad_audit = temp.path().join("bad-audit");
+    assert!(ops::restore(&backup, &bad_audit, 1024 * 1024).is_err());
+    assert!(!bad_audit.exists());
     assert_eq!(
         Ledger::open(&restored.join("ledger.sqlite"))
             .unwrap()
@@ -618,6 +637,50 @@ fn offline_plan_forecasts_all_database_targets_and_splits_only_between_complete_
         assert_eq!(window["database_budget_fits"], true);
     }
     assert!(!config.root.exists());
+}
+
+#[test]
+fn offline_plan_splits_row_limits_without_splitting_a_date_universe() {
+    let temp = TempDir::new().unwrap();
+    let cli = temp.path().join("not-executed");
+    fs::write(&cli, b"synthetic plan input").unwrap();
+    let mut config = fixture(temp.path(), &cli);
+    config.max_rows = 1;
+    let plan = pipeline::preflight_plan(&config, 1, 10).unwrap();
+    assert_eq!(plan["expected_keys"]["total"], 2);
+    assert_eq!(plan["can_start"], false);
+    assert!(
+        plan["blockers"]
+            .as_array()
+            .unwrap()
+            .contains(&json!("expected_row_budget"))
+    );
+    let windows = plan["history_windows"].as_array().unwrap();
+    assert_eq!(windows.len(), 2);
+    assert!(
+        windows
+            .iter()
+            .all(|w| w["expected_keys"] == 1 && w["row_budget_fits"] == true)
+    );
+    for (path, field) in [
+        (&config.universe, "members"),
+        (&config.security_history, "intervals"),
+    ] {
+        let mut value: serde_json::Value =
+            serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+        let mut row = value[field][0].clone();
+        row["code"] = json!("sh600001");
+        value[field].as_array_mut().unwrap().push(row);
+        fs::write(path, serde_json::to_vec(&value).unwrap()).unwrap();
+    }
+    let plan = pipeline::preflight_plan(&config, 1, 10).unwrap();
+    assert!(
+        plan["history_windows"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|w| w["expected_keys"] == 2 && w["row_budget_fits"] == false)
+    );
 }
 
 #[test]

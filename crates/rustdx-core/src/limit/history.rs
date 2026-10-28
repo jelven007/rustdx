@@ -74,7 +74,22 @@ pub struct SecurityHistory {
 impl TryFrom<SecurityHistoryDataset> for SecurityHistory {
     type Error = HistoryError;
 
-    fn try_from(mut dataset: SecurityHistoryDataset) -> Result<Self, Self::Error> {
+    fn try_from(dataset: SecurityHistoryDataset) -> Result<Self, Self::Error> {
+        Self::validate_dataset(dataset, false)
+    }
+}
+
+impl SecurityHistory {
+    /// Validate announcement-backed state independently of price-rule qualification.
+    /// This does not extend the checked rule horizon; `context_at` remains qualified.
+    pub fn from_state_dataset(dataset: SecurityHistoryDataset) -> Result<Self, HistoryError> {
+        Self::validate_dataset(dataset, true)
+    }
+
+    fn validate_dataset(
+        mut dataset: SecurityHistoryDataset,
+        state_only: bool,
+    ) -> Result<Self, HistoryError> {
         if dataset.version.trim().is_empty() {
             return Err(HistoryError::Invalid("版本不能为空"));
         }
@@ -95,6 +110,23 @@ impl TryFrom<SecurityHistoryDataset> for SecurityHistory {
                 return Err(HistoryError::Invalid("证券、板块或覆盖区间非法"));
             }
             interval.announcement.validate()?;
+            if matches!(interval.stage, ListingStage::Ipo { session: 0, .. })
+                || (interval.stage == ListingStage::BeijingTransfer
+                    && interval.board != Board::Beijing)
+                || (interval.stage == ListingStage::LegacyChiNextDelisting
+                    && (interval.board != Board::ChiNext
+                        || interval.start
+                            < NaiveDate::from_ymd_opt(2020, 8, 24).expect("reform date")))
+                || matches!(
+                    interval.stage,
+                    ListingStage::Ipo {
+                        registration: false,
+                        ..
+                    }
+                ) && interval.board == Board::Star
+            {
+                return Err(HistoryError::Invalid("不支持的上市阶段"));
+            }
             // IPO 序号是单日事实，不能作为一个多日区间的相同状态。
             if matches!(
                 interval.stage,
@@ -103,20 +135,21 @@ impl TryFrom<SecurityHistoryDataset> for SecurityHistory {
             {
                 return Err(HistoryError::Invalid("上市阶段/无幅度限制公告须逐日声明"));
             }
-            super::rule_at(RuleContext {
-                date: interval.start,
-                board: interval.board,
-                st: interval.st,
-                stage: interval.stage,
-            })
-            .map_err(|_| HistoryError::Invalid("不支持的规则或上市阶段"))?;
-            super::rule_at(RuleContext {
-                date: interval.end,
-                board: interval.board,
-                st: interval.st,
-                stage: interval.stage,
-            })
-            .map_err(|_| HistoryError::Invalid("区间末日超出支持规则"))?;
+            for date in [interval.start, interval.end] {
+                match super::rule_at(RuleContext {
+                    date,
+                    board: interval.board,
+                    st: interval.st,
+                    stage: interval.stage,
+                }) {
+                    Ok(_) => {}
+                    Err(
+                        super::LimitRuleError::UnsupportedDate
+                        | super::LimitRuleError::LegacyIpoFirstDay,
+                    ) if state_only => {}
+                    Err(_) => return Err(HistoryError::Invalid("不支持的规则或上市阶段")),
+                }
+            }
         }
         for pair in dataset.intervals.windows(2) {
             if pair[0].code == pair[1].code && pair[1].start <= pair[0].end {
@@ -135,12 +168,14 @@ impl SecurityHistory {
     /// 未覆盖、停牌或摘牌都不产生可计算的交易日规则。
     pub fn context_at(&self, code: &str, date: NaiveDate) -> Option<RuleContext> {
         let interval = self.state_at(code, date)?;
-        (interval.state == TradingState::Trading).then_some(RuleContext {
+        let context = RuleContext {
             date,
             board: interval.board,
             st: interval.st,
             stage: interval.stage,
-        })
+        };
+        (interval.state == TradingState::Trading && super::rule_at(context).is_ok())
+            .then_some(context)
     }
 
     pub fn state_at(&self, code: &str, date: NaiveDate) -> Option<&SecurityInterval> {
@@ -156,6 +191,37 @@ impl SecurityHistory {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn state_facts_survive_rule_expiry_without_qualifying_price_rules() {
+        let mut dataset: SecurityHistoryDataset = serde_json::from_value(serde_json::json!({
+            "version":"fixture","checked_through":"2026-10-28","intervals":[{
+                "code":"sh600000","start":"2026-10-28","end":"2026-10-28",
+                "board":"Main","st":false,"stage":"Seasoned","state":"Trading",
+                "announcement":{"url":"https://example.org/fixture","sha256":"a".repeat(64),
+                    "published":"2026-10-27","checked":"2026-10-28"}
+            }]
+        }))
+        .unwrap();
+        assert!(SecurityHistory::try_from(dataset.clone()).is_err());
+        let history = SecurityHistory::from_state_dataset(dataset.clone()).unwrap();
+        let date = dataset.intervals[0].start;
+        assert!(history.state_at("sh600000", date).is_some());
+        assert!(history.context_at("sh600000", date).is_none());
+        dataset.intervals[0].stage = ListingStage::Ipo {
+            session: 0,
+            registration: true,
+        };
+        assert!(SecurityHistory::from_state_dataset(dataset.clone()).is_err());
+        dataset.intervals[0].stage = ListingStage::BeijingTransfer;
+        assert!(SecurityHistory::from_state_dataset(dataset.clone()).is_err());
+        dataset.intervals[0].stage = ListingStage::Seasoned;
+        dataset.intervals.push(dataset.intervals[0].clone());
+        assert!(matches!(
+            SecurityHistory::from_state_dataset(dataset),
+            Err(HistoryError::Overlap(_))
+        ));
+    }
 
     #[test]
     fn gaps_overlaps_and_single_day_stages_are_explicit() {

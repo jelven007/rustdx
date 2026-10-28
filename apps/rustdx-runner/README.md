@@ -3,7 +3,7 @@
 当前runner源码版本：<!-- version:runner -->2.0.3<!-- /version -->；由主线CI同步，publish=false。
 
 <!-- lifecycle:registry -->
-读者：开发/部署；责任：runner维护者。源码核验2026-10-25，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../docs/development/DOCUMENTATION_GOVERNANCE.md)。
+读者：开发/部署；责任：runner维护者。源码核验2026-10-28，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../docs/development/DOCUMENTATION_GOVERNANCE.md)。
 <!-- /lifecycle -->
 
 Rust2024 / MSRV1.89 的同步单机生产控制层。采集支持明确的本地 `.day` 目录或有总预算的显式 TCP 日线来源，数据契约固定为 A 股、日线、原价、人民币元及股；worker生成私有文件，发布者完成业务覆盖和可选数据库验收后推进SQLite中的目录指针。该crate版本0.1.0，不发布到crates.io。
@@ -51,7 +51,14 @@ rustdx-runner restore --root /srv/backups/rustdx-001 --destination /srv/restore/
 
 首次数据库请求前按封存行数与JSON字节预测发布及一次恢复的I/O、证明和证据预算，全部目标共同检查release目录，不满足则在写入前拒绝。预测另存`database/<release>/capacity-*.json`。发布命名空间仍限制50,000次I/O、200,000目录条目及32MiB证明；重复恢复受剩余预算限制。消费查询使用独立命名空间，不再消耗发布`target_io`。
 
-`PinnedDataset`内部catalog及release清单固定，只提供`catalog()`共享只读访问。一次数据库导出按release复用会话，在日期顺序输出时逐键逐字段核对，每日终止空页仍检查，结束时每release检查一次完整总数。查询凭据写入`consumer-audit/q-<timestamp>-<pid>/<release>/<target>`；每请求保存request/response及SHA收据，只有全部回读核验成功才写`verified.json`，它不表示CSV已经原子提交。独立会话最多50,000次请求、200,000条目，字节上限取所选release冻结`max_workspace_bytes`的最小值；不取得控制锁，不修改账本。查询审计不随控制层备份复制，留存预览暂整体保护该目录，保留期限和总磁盘硬配额由部署方另行制定；不自动删除。
+`PinnedDataset`固定catalog及release清单，只提供`catalog()`共享只读访问。
+一次导出保持一个活动reader，连续同release复用；切换时先完整总数及进程退出核验，
+释放许可再打开下一release，A/B/A重新打开A。日期顺序逐键逐字段核对，每日终止空页仍检查。
+查询凭据写入`consumer-audit/q-<timestamp>-<pid>/<release>/<target>`；每请求保存原字节及SHA收据，
+全部回读成功才写`verified.json`，CSV随后原子提交。会话最多50,000次请求、200,000条目，
+字节上限取所选release冻结workspace最小值；不取得控制锁、不修改账本，但持独立审计共享锁。
+静止控制层备份取排他审计锁并复制成功/失败会话，库存摘要/预算/隔离恢复覆盖原字节。
+留存预览整体保护该目录，保留期限与总磁盘硬配额仍由部署批准；不自动删除。
 
 账本当前schema4。`migrate`在根锁内从原观测重建指标汇总并增加Job时间/Attempt归属索引；原JSON记录保留且只追加。`metrics`读取汇总，unavailable与缺失记录分别报告。`rustdx-runner rebuild-metrics --root /var/lib/rustdx`在事务内重建，异常或溢出回滚；原schema3备份可原字节恢复，恢复后须显式`migrate`才能运行当前查询。迁移前保留原备份，回退使用旧二进制与旧备份，不手改版本号。
 
@@ -69,7 +76,11 @@ run的严格JSON可设置`"no_tcp_startup": true`，也可使用命令行开关�
 
 `recover`对已登记、已封存候选继续核验与目录提交；没有持久release登记的中断Attempt会隔离，不自动重采。数据库unknown或某目标未开始时保持待核查，不重新INSERT；全部目标已确认时可继续精确回读。已verified的原凭据保持不变，恢复核验另存证据，使原目录候选可复用。仍有进程组时须通过服务管理器停止，避免误杀复用PID。`quarantine`只能处理未结束、没有活动worker的候选；已发布Attempt及指针不可撤改。
 
-备份持有同一控制锁，拒绝活动/不明确worker，使用SQLite在线备份API取得已提交WAL内容，同时复制候选、release、catalog和数据库请求/响应。只有最后写出的`backup.json`存在且所有摘要通过，备份才完整。恢复要求全新隔离目录，检查库存摘要、SQLite完整性/外键、全部release、历史目录引用和数据库证据，最终写出`restore-validated.json`；恢复操作本身不连接数据库、不自动切换生产目录，入口默认离线。这不是数据库服务端数据卷备份。
+备份持有控制锁与排他审计锁，拒绝活动/不明确worker及活动消费审计，
+使用SQLite在线备份API取得已提交WAL，同时复制候选、release、catalog、数据库请求/响应和消费审计。
+只有最后写出的`backup.json`及全部摘要通过，备份才完整。隔离恢复验证库存、SQLite/外键、
+全部release、历史引用和数据库/消费审计后写`restore-validated.json`；
+恢复本身不连接数据库、不自动切换生产目录，入口默认离线。这不是数据库服务端数据卷备份。
 
 备份/恢复解析已有父目录的实际路径，拒绝目标落入源目录或包含`..`；`max_bytes`包含清单/完成标记。新SQLite备份为独立DELETE模式快照，恢复校验无需额外WAL。恢复标记记录`original_roots`，历史账本绝对路径保持原字节；留存预览据此映射`attempts/<id>`，并验证Receipt的proof及其I/O摘要，不改写旧证据。
 
@@ -103,6 +114,12 @@ schema8采集报告声明`volume_unit=shares`、独立来源合同和`business_c
 实现和本地模拟结果见[第四阶段记录](../../docs/archive/development/REMAINING_FIXES_STAGE4_20261024.md)；整数股数修复与两节点24条全字段精确核对见[新报告](../../docs/archive/development/TCP_DAILY_INTEGER_SHARES_FIX_20261024.md)。五分钟、当天bar及全市场TCP负载仍未完成验收。
 
 ## 边界与验证
+
+[日调度器](../../scripts/ops/daily.py)支持prepare/run/monitor，使用
+[调度配置](../../config/runtime/daily.example.json)按独立交易日历、来源就绪和批准截止保留完整日期积压，
+每次run按实际Job摘要与目标证据准入，恢复后重验；缺证据保留积压并返回失败。
+只读plan完整枚举后判定max_rows，按行数及全部数据库预算只拆日期，单日超限仍拒绝。
+原价日线状态载入不扩大涨跌幅规则截止；统一消费与审核合同见[应用接入](../../docs/development/APPLICATION_INTEGRATION.md)和[任务准入](../../docs/testing/TASK_ADMISSION.md)。
 
 调用者提供已经维护并核实的完整市场事实。格式合法、摘要匹配只能证明材料一致，不能代替公告真实性与全市场名单完整性审核。只有明确核实的区间产生交易/停牌/退市状态，不用行情缺失推断状态。
 

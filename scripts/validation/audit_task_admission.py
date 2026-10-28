@@ -41,6 +41,14 @@ def audit(matrix, request, root):
     scope = request.get("scope")
     if not isinstance(scope, dict) or not scope or any(value in [None, "", "unknown"] for value in scope.values()):
         issues.append("explicit_scope_required")
+    if task_type == "runner_day":
+        allowed = {"date", "market", "code", "instrument_class", "open", "high", "low",
+                   "close", "amount_cny", "volume_shares"}
+        fields = scope.get("required_fields") if isinstance(scope, dict) else None
+        if (not isinstance(fields, list) or not fields or
+                not all(isinstance(f, str) and f in allowed for f in fields) or
+                len(set(fields)) != len(fields)):
+            issues.append("daily_required_fields_invalid")
     for name in ["expected_keys", "time_basis", "finality", "source_revision_rule",
                  "disconnect_policy", "overflow_policy", "version_rule"]:
         if not isinstance(request.get(name), str) or request[name] in ["", "unknown"]:
@@ -142,6 +150,9 @@ def audit(matrix, request, root):
         if case not in faults:
             issues.append(f"fault_case_missing:{case}")
     resources = reports.get("resources", {})
+    for case in matrix["required_quota_cases"]:
+        if resources.get("quota_cases", {}).get(case) is not True:
+            issues.append("quota_case_unverified:" + case)
     if resources.get("process_tree_measured") is not True or resources.get("hard_disk_quota_verified") is not True:
         issues.append("process_tree_and_hard_quota_required")
     for name in matrix["resource_limits"]:
@@ -149,11 +160,13 @@ def audit(matrix, request, root):
         if not positive_number(actual) or not positive_number(limits.get(name)) or actual > limits[name]:
             issues.append(f"resource_limit_unverified_or_exceeded:{name}")
     access = reports.get("access_controls", {})
-    for name in ["production_accounts", "acl_isolation", "allowed_directories", "scheduler", "alerts"]:
+    for name in ["production_accounts", "acl_isolation", "allowed_directories", "scheduler", "alerts",
+                 *matrix["required_access_checks"]]:
         if access.get(name) is not True:
             issues.append(f"access_control_unverified:{name}")
     recovery = reports.get("backup_recovery", {})
-    for name in ["control_ledger_and_files", "database_native", "fixed_versions_equal"]:
+    for name in ["control_ledger_and_files", "database_native", "fixed_versions_equal",
+                 *matrix["required_recovery_checks"]]:
         if recovery.get(name) is not True:
             issues.append(f"recovery_unverified:{name}")
     for name in ["rpo_seconds", "rto_seconds"]:

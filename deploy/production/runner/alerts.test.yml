@@ -1,0 +1,31 @@
+rule_files:
+  - alerts.yml
+evaluation_interval: 1m
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'rustdx_expected_instance{job="node",instance="healthy:9100"}'
+        values: '1+0x20'
+      - series: 'rustdx_expected_instance{job="node",instance="missing:9100"}'
+        values: '1+0x20'
+      - series: 'rustdx_metrics_timestamp_seconds{job="node",instance="healthy:9100"}'
+        values: '0+60x20'
+      - series: 'rustdx_business_metrics_timestamp_seconds{job="node",instance="healthy:9100"}'
+        values: '0+60x20'
+      - series: 'rustdx_daily_metrics_timestamp_seconds{job="node",instance="healthy:9100"}'
+        values: '0+60x20'
+      - series: 'rustdx_daily_overdue_dates{job="node",instance="healthy:9100"}'
+        values: '1+0x20'
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: RustdxMetricsMissing
+        exp_alerts:
+          - exp_labels: {severity: warning, job: node, instance: 'missing:9100'}
+            exp_annotations: {summary: No Rustdx metrics are available}
+          - exp_labels: {severity: warning, job: node, instance: 'rustdx-production.example:9100'}
+            exp_annotations: {summary: No Rustdx metrics are available}
+      - eval_time: 15m
+        alertname: RustdxBusinessPublicationOverdue
+        exp_alerts:
+          - exp_labels: {severity: critical, job: node, instance: 'healthy:9100'}
+            exp_annotations: {summary: The expected business job missed its explicit publication deadline}

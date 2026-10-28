@@ -229,6 +229,42 @@ impl Drop for RootLock {
     }
 }
 
+/// Shared by readback writers; exclusive during a backup's stationary boundary.
+pub(crate) struct ConsumerAuditLock(File);
+
+impl ConsumerAuditLock {
+    pub(crate) fn acquire(root: &Path, exclusive: bool) -> Result<Self> {
+        let path = root.join("consumer-audit.lock");
+        match fs::symlink_metadata(&path) {
+            Ok(meta) if !meta.is_file() || meta.file_type().is_symlink() => {
+                return Err(invalid("consumer audit lock must be a regular file"));
+            }
+            Ok(_) => {}
+            Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
+            Err(e) => return Err(e.into()),
+        }
+        let file = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .truncate(false)
+            .open(path)?;
+        let result = if exclusive {
+            file.try_lock()
+        } else {
+            file.try_lock_shared()
+        };
+        result.map_err(|e| invalid(format!("consumer audit is busy or lock unavailable: {e}")))?;
+        Ok(Self(file))
+    }
+}
+
+impl Drop for ConsumerAuditLock {
+    fn drop(&mut self) {
+        let _ = self.0.unlock();
+    }
+}
+
 /// Resolve an existing source and the parent of a new destination before any write.
 /// Parent aliases and `..` cannot place an ostensibly external copy inside source.
 pub(crate) fn isolated_destination(source: &Path, destination: &Path) -> Result<PathBuf> {
@@ -422,6 +458,21 @@ pub fn free_bytes(_root: &Path) -> Result<u64> {
 #[cfg(all(test, unix))]
 mod lock_tests {
     use super::*;
+
+    #[test]
+    fn audit_writers_and_backup_have_a_shared_quiescent_boundary() {
+        let temp = tempfile::tempdir().unwrap();
+        let a = ConsumerAuditLock::acquire(temp.path(), false).unwrap();
+        let b = ConsumerAuditLock::acquire(temp.path(), false).unwrap();
+        assert!(ConsumerAuditLock::acquire(temp.path(), true).is_err());
+        drop(a);
+        assert!(ConsumerAuditLock::acquire(temp.path(), true).is_err());
+        drop(b);
+        let backup = ConsumerAuditLock::acquire(temp.path(), true).unwrap();
+        assert!(ConsumerAuditLock::acquire(temp.path(), false).is_err());
+        drop(backup);
+        ConsumerAuditLock::acquire(temp.path(), false).unwrap();
+    }
 
     #[test]
     fn dropping_root_lock_releases_it_while_a_duplicated_handle_remains_open() {

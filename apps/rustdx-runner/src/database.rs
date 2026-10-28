@@ -86,6 +86,7 @@ enum Audit<'a> {
 
 /// Independent, bounded readback evidence. It never appends to the publication ledger.
 pub(crate) struct QueryAudit {
+    _lock: storage::ConsumerAuditLock,
     directory: PathBuf,
     sequence: Rc<Cell<u64>>,
     usage: Rc<RefCell<storage::TreeUsage>>,
@@ -94,6 +95,7 @@ pub(crate) struct QueryAudit {
 
 impl QueryAudit {
     pub(crate) fn new(root: &Path, max_bytes: u64) -> Result<Self> {
+        let lock = storage::ConsumerAuditLock::acquire(root, false)?;
         let parent = root.join("consumer-audit");
         storage::private_directory(&parent)?;
         let directory = parent.join(format!(
@@ -117,6 +119,7 @@ impl QueryAudit {
         }
         storage::write_new(&directory.join("session.json"), &bytes)?;
         Ok(Self {
+            _lock: lock,
             directory,
             sequence: Rc::new(Cell::new(0)),
             usage: Rc::new(RefCell::new(storage::TreeUsage {
@@ -941,6 +944,23 @@ impl<'a> ReadSession<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn backup_refuses_live_query_audits_before_creating_destination() {
+        let temp = tempfile::tempdir().unwrap();
+        let root = temp.path().join("live");
+        storage::private_directory(&root).unwrap();
+        drop(Ledger::open(&root.join("ledger.sqlite")).unwrap());
+        let first = QueryAudit::new(&root, 256 * 1024 * 1024).unwrap();
+        let second = QueryAudit::new(&root, 256 * 1024 * 1024).unwrap();
+        let backup = temp.path().join("backup");
+        assert!(crate::ops::backup(&root, &backup, 1024 * 1024).is_err());
+        assert!(!backup.exists());
+        drop(first);
+        assert!(crate::ops::backup(&root, &backup, 1024 * 1024).is_err());
+        drop(second);
+        crate::ops::backup(&root, &backup, 1024 * 1024).unwrap();
+    }
 
     #[test]
     fn stable_key_readback_crosses_batch_and_partition_boundaries() {

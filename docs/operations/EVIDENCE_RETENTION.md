@@ -1,7 +1,7 @@
 # 证据分发、运行留存与取回
 
 <!-- lifecycle:registry -->
-读者：运维/数据及发布维护者；责任：证据维护者。源码核验2026-10-27，每30日及留存、配额或取回入口变化复核。现场存储及恢复另验，见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)。
+读者：运维/数据及发布维护者；责任：证据维护者。源码核验2026-10-28，每30日及留存、配额或取回入口变化复核。现场存储及恢复另验，见[文档治理](../development/DOCUMENTATION_GOVERNANCE.md)。
 <!-- /lifecycle -->
 
 冻结证据保存原始字节、来源、摘要及历史结论。`evidence_manifest.py inventory/verify/bundle/restore`
@@ -17,7 +17,7 @@
 | 留存类 | 保留依据与边界 | 独立容量/备份输入 |
 | --- | --- | --- |
 | release | 所有登记catalog可达版本、原输入、固定manifest和历史摘要均受保护 | release硬配额与最短保存期；不得因年龄解除引用保护 |
-| consumer_audit | 数据库消费者查询原请求/响应，位于独立目录，未纳入控制层backup | 独立硬配额、最短保存期及备份周期；业务指标单独计量，备份另做一致性验证 |
+| consumer_audit | 成功与失败数据库消费者的原请求/响应，独立目录纳入静止控制层backup | 独立硬配额、最短保存期及备份周期；共享审计锁阻止与排他备份并发，库存/预算/隔离恢复验证覆盖原字节 |
 | database_evidence | 发布/恢复证明及全部数据库I/O，按release/target保留 | 独立硬配额及保存期；不能与consumer-audit预算相抵 |
 | backup | 本地一致控制层备份与数据库原生备份分别登记 | 硬配额、最短保存期、备份周期与目标RPO/RTO；取回至新目录核对固定版本 |
 

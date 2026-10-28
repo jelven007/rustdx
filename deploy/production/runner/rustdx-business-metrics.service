@@ -1,0 +1,21 @@
+[Unit]
+Description=Recompute independent Rustdx daily deadlines and business coverage
+After=local-fs.target
+
+[Service]
+Type=oneshot
+User=rustdx
+Group=rustdx
+UMask=0077
+ExecStart=/usr/bin/python3 /opt/rustdx/scripts/ops/daily.py monitor --settings /etc/rustdx/daily.json
+TimeoutStartSec=240
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/rustdx-scheduler /var/lib/node_exporter/textfile_collector
+ReadOnlyPaths=/var/lib/rustdx /srv/rustdx/inputs /srv/rustdx/fact-evidence /srv/rustdx/acceptance /opt/rustdx /etc/rustdx
+RestrictAddressFamilies=AF_UNIX
+MemoryMax=512M
+TasksMax=32
+LimitNOFILE=128

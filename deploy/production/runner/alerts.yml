@@ -1,4 +1,12 @@
 groups:
+  - name: rustdx-expected-instances
+    rules:
+      # Maintain this inventory on Prometheus independently of the monitored host.
+      - record: rustdx_expected_instance
+        expr: vector(1)
+        labels:
+          job: node
+          instance: rustdx-production.example:9100
   - name: rustdx-runner
     rules:
       - alert: RustdxMetricsStale
@@ -23,21 +31,21 @@ groups:
         annotations:
           summary: Free space is below the example job workspace plus reserve
       - alert: RustdxMetricsMissing
-        expr: absent(rustdx_metrics_timestamp_seconds)
+        expr: rustdx_expected_instance unless on(job, instance) rustdx_metrics_timestamp_seconds
         for: 10m
         labels:
           severity: warning
         annotations:
           summary: No Rustdx metrics are available
       - alert: RustdxBusinessMetricsMissing
-        expr: absent(rustdx_business_metrics_timestamp_seconds)
+        expr: rustdx_expected_instance unless on(job, instance) rustdx_business_metrics_timestamp_seconds
         for: 10m
         labels:
           severity: warning
         annotations:
           summary: The expected job scope has no business metrics
       - alert: RustdxBusinessMetricsStale
-        expr: time() - rustdx_business_metrics_timestamp_seconds > 180
+        expr: time() - rustdx_business_metrics_timestamp_seconds > 900
         for: 5m
         labels:
           severity: warning
@@ -51,7 +59,7 @@ groups:
         annotations:
           summary: The job publication deadline is not configured
       - alert: RustdxBusinessPublicationOverdue
-        expr: (rustdx_business_required == 1) and (rustdx_business_job_released == 0) and (time() > rustdx_business_publish_by_timestamp_seconds)
+        expr: rustdx_daily_overdue_dates > 0
         for: 1m
         labels:
           severity: critical
@@ -99,3 +107,31 @@ groups:
           severity: info
         annotations:
           summary: Consumer readback evidence is growing and needs retention review
+      - alert: RustdxDailyMetricsMissing
+        expr: rustdx_expected_instance unless on(job, instance) rustdx_daily_metrics_timestamp_seconds
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: Expected instance has no fresh daily queue metrics
+      - alert: RustdxDailyMetricsStale
+        expr: time() - rustdx_daily_metrics_timestamp_seconds > 900
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: Independent daily calendar and queue monitoring stopped
+      - alert: RustdxDailyFactsBlocked
+        expr: rustdx_daily_fact_blocked_dates > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Actual pending dates lack reviewed facts or a valid execution plan
+      - alert: RustdxMaintenanceReviewDue
+        expr: rustdx_daily_registry_attention > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: A fact ownership or review deadline needs attention

@@ -7,6 +7,8 @@
 | dev/run_comprehensive_test.sh | offline/quick/live/report检查 | Cargo；默认离线，live显式联网 |
 | ops/diagnose_network.sh | 通达信握手与心跳诊断，可传IP:端口 | Cargo及网络；失败传播退出码 |
 | ops/retention_preview.py | 历史catalog/release/账本/数据库回执/显式备份依赖及容量趋势预览 | Python3 stdlib、Unix共享控制锁；只读现有目录/SQLite，全部登记历史受保护，候选只供审核，不删除 |
+| ops/daily.py | 按独立日历/批准截止生成完整日期Job、来源有效期/明确修订、积压与独立监测 | Python3 stdlib、Unix文件锁、同源码runner；prepare/monitor只读业务数据并写调度状态/指标，run逐Job准入后recover/run，缺证据保积压并退出1 |
+| ops/production_gate.py | 每Job实际安装字节、矩阵、范围、全部键与有效期的执行前准入 | 由daily调用；九类真实目标封套和原日志须独立审核，缺失/变更/过期拒绝 |
 | bench/measure_day_memory.py | 新旧二进制内存/字段摘要核对 | Python3、不同SHA的两版二进制、系统计时工具 |
 | bench/measure_day_replay.py | 固定真实day的1/4/8worker各5轮字节一致性、阶段与RSS测量 | Python3、实际release CLI及明确原始来源；复制到新测量目录，不生成市场资格 |
 | bench/run_indicator_comparison.py | 指定Git基线与当前批量指标同机AB/BA交替比较 | Python3、Rust1.89；固定实际二进制输入、共同harness、profile/锁、硬件/工具链/源码/二进制摘要，schema2，默认7样本/1.5倍门槛 |
@@ -72,3 +74,7 @@ report默认保存到`${TMPDIR:-/tmp}/rustdx-reports`，可通过RUSTDX_REPORT_D
 `bench/measure_runner_history.py --binary /absolute/rustdx-runner --output /external/history.json`在新的私有临时root构造20,000条合成Job/观测、显式迁移schema3→4，再测量metrics/status的CLI耗时和RSS；保留样本和日志，不使用业务root，不代表生产采集进程树内存。runner的`plan --config /absolute/job.json`提供不联网的应有键/初始并发预检，合同见[应用接入](../docs/development/APPLICATION_INTEGRATION.md)。
 
 文档治理检查：`python3 scripts/validation/check_documentation_lifecycle.py`；登记、核验周期和责任见[治理说明](../docs/development/DOCUMENTATION_GOVERNANCE.md)。历史证据路径按迁移映射解析，原始manifest不重写。
+
+实际Job事实巡检增加`--config JOB --calendar-reference REFERENCE`，维护登记须绑定四类消费输入SHA
+和准确日期；总体与Job两状态均covered才退出0。日调度配置和systemd/告警步骤见
+[部署说明](../deploy/production/runner/README.md)，规则截止仍独立维护。

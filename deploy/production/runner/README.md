@@ -1,7 +1,7 @@
 # 单机 runner 部署与恢复
 
 <!-- lifecycle:registry -->
-读者：部署/值守；责任：运维维护者。源码核验2026-10-27，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../../docs/development/DOCUMENTATION_GOVERNANCE.md)。
+读者：部署/值守；责任：运维维护者。源码核验2026-10-28，每30日及配置/入口/操作变化复核，现场另验；见[文档治理](../../../docs/development/DOCUMENTATION_GOVERNANCE.md)。
 <!-- /lifecycle -->
 
 模板用于 Linux/systemd 的本地 `.day` 采集与版本发布。实际代码仍是同步 I/O、有界线程和子进程；没有跨机协调、跨库事务或内置 Web 服务。模板未在目标 Linux 验收，资源数值是起始配置，须按实际负载调整。
@@ -25,7 +25,14 @@ cargo +1.89.0 build --release -p jelven-rustdx-cli -p rustdx-runner
 
 每个 Job 明确 `planned_date`、`source_as_of`、日期范围、`policy_revision` 和 `source_revision`。修订已发布日期时，`source_revision` 必须增加，`source_as_of` 不能降低。扩展历史所用日历须覆盖完整目录。`database_targets: []` 表示只发布文件目录；配置多个目标时，全部验收通过才推进唯一目录指针。
 
-定时器执行已经维护的 Job 文件，不会按墙钟自动制造新的证券事实或来源修订。部署方须在输入维护完成后原子更新 Job；反复执行相同 Job 会去重。假期、来源未更新或事实覆盖不足须由维护流程处理。
+安装仓库的`scripts/ops`及`scripts/validation`到`/opt/rustdx/scripts/`，保存同源码`Cargo.lock`。
+复制[调度配置](../../../config/runtime/daily.example.json)到`/etc/rustdx/daily.json`，
+Job作为`job-template.json`，并配置独立日历、事实复核登记、安装身份和逐Job准入目录。
+创建`/var/lib/rustdx-scheduler`，审核初始日期、批准滞后/发布时刻、批次数和配额；
+示例预算须替换为目标批准值。维护者原子发布[来源就绪记录](../../../config/runtime/source-ready.example.json)，
+绑定模板SHA、实际获取日、完整截止、有效期和明确来源修订。调度器按交易日补积压，
+普通刷新不重做已发日期；已有日期修订须给revision_range并提高source_revision。
+事实责任登记绑定实际输入摘要和任务日期，规则截止不自动续期。
 
 ## 2. 数据库与凭据
 
@@ -46,7 +53,12 @@ ClickHouse 表使用普通 MergeTree，无 TTL、异步插入或替换合并；M
 
 ## 3. systemd 与指标
 
-安装本目录 `rustdx-runner.service/.timer` 和 `rustdx-metrics.service/.timer`，审核用户、路径、时限、内存、CPU与文件句柄后启用。runner启动前执行 `recover`；unknown 写入会阻断后续任务，避免服务重启变成重写。systemd `KillMode=control-group` 覆盖控制层和采集/数据库子进程；runner自身也管理 worker 的独立进程组。
+安装本目录`rustdx-runner.service/.timer`、`rustdx-metrics.service/.timer`和
+`rustdx-business-metrics.service/.timer`，审核用户、路径、时限、内存、CPU与文件句柄后启用。
+runner每15分钟全日检查交易日积压，独立monitor每5分钟重算；假期不新增应有日期，
+晚到来源和超过批次上限的积压保留。每个实际Job先准入再recover/run，恢复后重验；
+缺准入不会执行recover/run，返回失败供服务管理器记录。unknown写入继续阻断后续任务。
+systemd`KillMode=control-group`覆盖控制层和采集/数据库子进程；runner自身也管理worker独立进程组。
 
 为文件系统设置实际磁盘配额。采集工作目录和数据库证据各受配置预算监测；工作目录监测允许临时文件在扫描期间消失，最终封存会重计静止目录。周期监测不等于硬配额。示例首次运行预留空间须至少覆盖 workspace 加 `min_free_bytes`，还须为长期 release、账本、数据库证据和备份留容量。
 
@@ -61,12 +73,14 @@ rustdx-runner --no-tcp-startup metrics --root /var/lib/rustdx \
 
 部署方预先创建 textfile 目录并赋予 `rustdx` 写权限，node_exporter取得读取权限。指标包含 Job 状态、未结束 Attempt、事件数、当前发布时点、刷新时点和剩余磁盘。首次初始化账本后再启用指标定时器。`alerts.yml` 提供待核查、指标失效和预留空间示例；多实例场景须按 job/instance 限定缺失判断，空间阈值须与 Job 配置同步。发布新鲜度 SLO应结合维护日历和应有 Job，不能用周末/假期的自然小时差证明缺失。
 
-调度器另行周期执行`business-metrics --config /etc/rustdx/job.json --publish-by RFC3339
---audit-max-bytes BYTES --output /var/lib/node_exporter/textfile_collector/rustdx-business.prom`。
-替换为批准截止和独立审计配额；缺参数会输出未配置指标，不使用示例数值代替批准值。
-该入口重验日历/状态并读固定版本全键，较全账本汇总更重；按工作量设置超时/频率，
-缺损会停止刷新。输出文件只对应一个Job，字段与告警失败口径见[观测合同](../../../docs/operations/OBSERVABILITY.md)。
-audit字节只是监测，仍须部署实际文件系统硬配额及单独备份/留存策略。
+`daily.py monitor`独立重读日历和catalog，写0644的daily与business textfile，
+后者读取最新应有日期完整键。以daily_overdue_dates判断整个积压逾期，
+监测新生成的Job未登记不单独表示业务失败。维护Prometheus侧`rustdx_expected_instance`
+完整job/instance清单；模板以900秒判business/daily过期，missing逐实例比较，健康实例不会掩盖缺失实例。
+执行`promtool check rules alerts.yml`、`promtool test rules alerts.test.yml`和
+`amtool check-config alertmanager.example.yml`；[通知模板](alertmanager.example.yml)的url_file由密钥管理提供，
+在目标环境另验送达和恢复通知。字段口径见[观测合同](../../../docs/operations/OBSERVABILITY.md)。
+审计字节只是监测，仍须部署实际文件系统硬配额及批准留存策略。
 
 ## 4. 故障与恢复
 
@@ -93,7 +107,10 @@ rustdx-runner --no-tcp-startup export --root /srv/restore/rustdx-001 --dataset a
   --from 2026-10-22 --through 2026-10-22 --output /srv/exports/restored.csv
 ```
 
-备份持有控制锁并拒绝活动/不明确 worker，SQLite在线备份包含已提交WAL，同时保留 attempts、releases、catalogs和database证据。最后出现完整 `backup.json` 才是完成标记。恢复要求全新隔离目录，核验全部库存字节、SQLite完整性/外键、所有release及历史目录和数据库证据，再写 `restore-validated.json`。
+备份持有控制锁及排他审计锁，拒绝活动/不明确worker或活动数据库消费者。
+SQLite在线备份包含已提交WAL，同时保留attempts、releases、catalogs、database和consumer-audit
+成功/失败会话原字节，全部计入库存及总字节预算。最后出现完整`backup.json`才是完成标记。
+恢复要求全新隔离目录，核验全部库存字节、SQLite完整性/外键、所有release、历史目录和数据库/消费审计，再写`restore-validated.json`。
 
 这备份包含可重建数据的规范文件及控制账本，不是 ClickHouse/MongoDB 服务端数据卷或日志备份。恢复校验不连接数据库、不切换生产目录；数据库灾难恢复由数据库备份流程或明确的新命名空间/Job重建执行，再做精确验收。RTO/RPO、保留期、配额、Linux实际服务启动、数据库权限与长期负载必须在部署环境证明。
 
@@ -103,7 +120,11 @@ rustdx-runner --no-tcp-startup export --root /srv/restore/rustdx-001 --dataset a
 
 生产恢复到新端点时，先按[应用接入约定](../../../docs/development/APPLICATION_INTEGRATION.md)核查已归档目标身份。恢复控制文件不会自动重写原始请求证据或把收据指向另一库；端点迁移和业务切换须另外编排并验证。目标RPO/RTO与生产恢复通过状态继续按[验收矩阵](../../../docs/testing/PRODUCTION_ACCEPTANCE.md)管理。
 
-MongoDB按目标/release复用mongosh会话，每请求至多512行；固定catalog数据库导出也按release复用会话，独立查询审计不追加发布账本。`consumer-audit`不包含在控制层备份中，部署方须另定审计保留期限、总磁盘配额及采集方式；当前留存预览保护该目录，不自动删除。升级到schema4前保存旧备份，执行`migrate`，必要时用`rebuild-metrics`从原观测重建汇总；schema3备份可原样恢复后显式迁移。运行前可执行只读`plan`核对应有键和有效并发。
+MongoDB每请求至多512行；固定catalog导出保持一个活动reader，切换release先完整总数核验、
+结束并释放许可，A/B/A再次核验A。独立查询审计不追加发布账本，但通过共享审计锁与备份静止边界协调。
+部署方仍须批准审计保留期限和总磁盘硬配额；留存预览保护该目录，不自动删除。
+升级到schema4前保存旧备份，执行`migrate`，必要时用`rebuild-metrics`重建汇总；
+schema3备份可原样恢复后显式迁移。只读`plan`同时检查行数和数据库预算，只按完整日期分窗。
 
 1,200行工程模拟和单次20,000条指标历史测量不能代替全量吞吐量、稳定Linux或长期SLO验收。当前消费/计量合同见[runner说明](../../../apps/rustdx-runner/README.md)，已取得的历史及目标环境限制见[实施记录](../../../docs/archive/development/PRODUCTION_IMPLEMENTATION.md)。
 

@@ -407,6 +407,10 @@ print(JSON.stringify({validator_error:121,unique_error:11000,rows:before}));
             "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "catalog_version": 2, "quiesced": True, "rows_each_database": 2400,
             "release_ids": sorted({r["release_id"] for r in snapshot["clickhouse_rows"]})}
+        audit_inventory = inventory(self.work / "live" / "consumer-audit")
+        if not audit_inventory:
+            raise AssertionError("readback audit evidence missing at backup boundary")
+        self.write_json("consumer-audit-inventory.json", audit_inventory)
         self.runner("control-backup", "backup", "--root", self.work / "live",
                     "--destination", self.work / "control-backup")
         start = time.monotonic()
@@ -460,6 +464,9 @@ print(JSON.stringify({collections:0}));
                 backups / "mongo"])
             self.runner("control-restore", "restore", "--root", self.work / "control-backup",
                         "--destination", self.work / "restored-control")
+            # Check before after-exports add fresh audit sessions.
+            verify_inventory(self.work / "restored-control" / "consumer-audit", audit_inventory)
+            self.result["checks"]["consumer_audit_restored_at_shared_boundary"] = True
             after = self.exports("after", self.work / "restored-control")
             if before != after or snapshot != self.snapshot("after"):
                 raise AssertionError("restored full fields, metadata or fixed versions differ")

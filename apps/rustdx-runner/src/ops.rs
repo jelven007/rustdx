@@ -86,6 +86,7 @@ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
     let destination = storage::isolated_destination(root, destination)?;
     let destination = destination.as_path();
     let _lock = storage::RootLock::acquire(root)?;
+    let _audit_lock = storage::ConsumerAuditLock::acquire(root, true)?;
     let ledger = Ledger::open_existing_readonly(&root.join("ledger.sqlite"))?;
     if ledger
         .unfinished()?
@@ -116,7 +117,13 @@ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
             bytes: db_bytes,
         }],
     };
-    for name in ["attempts", "releases", "catalogs", "database"] {
+    for name in [
+        "attempts",
+        "releases",
+        "catalogs",
+        "database",
+        "consumer-audit",
+    ] {
         if root.join(name).exists() {
             forecast_tree(root, Path::new(name), &mut forecast.files)?;
         }
@@ -170,7 +177,13 @@ pub fn backup(root: &Path, destination: &Path, max_bytes: u64) -> Result<()> {
     }
     let mut remaining = max_bytes - inventory_bytes - db.bytes;
     let mut files = vec![db];
-    for name in ["attempts", "releases", "catalogs", "database"] {
+    for name in [
+        "attempts",
+        "releases",
+        "catalogs",
+        "database",
+        "consumer-audit",
+    ] {
         if root.join(name).exists() {
             storage::private_directory(&destination.join(name))?;
             copy_tree(
